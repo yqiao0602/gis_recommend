@@ -1,8 +1,6 @@
 # system_redesign/transformer_config.py
 """
-Configuration for Transformer sequence generation model
-
-V2.0: 使用图嵌入训练的L3嵌入初始化
+Configuration for transformer, set predictor, training, and inference.
 """
 from pathlib import Path
 
@@ -121,8 +119,8 @@ RANDOM_SEED = 42  # 可复现性
 
 # ===================== V4 Configuration =====================
 # V4 Paths
-V4_LABELED_WORKFLOWS_PATH = OUTPUT_DIR / "labeled_workflows_l3_v4_cleaned.json"
-V4_TASK_TYPE_VOCAB_PATH = OUTPUT_DIR / "task_type_vocabulary_v4.json"
+V4_LABELED_WORKFLOWS_PATH = OUTPUT_DIR / "pipeline" / "step8" / "labeled_workflows_l3_v4_cleaned.json"
+V4_TASK_TYPE_VOCAB_PATH = OUTPUT_DIR / "pipeline" / "step7" / "task_type_vocabulary_v4.json"
 V4_TRANSFORMER_MODEL_PATH = OUTPUT_DIR / "task_conditioned_transformer_model_v4.pth"
 V4_TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v4"
 V4_TRANSFORMER_CHECKPOINT_DIR.mkdir(exist_ok=True)
@@ -193,6 +191,19 @@ V4_SCORE_DIVERSITY_WEIGHT = 0.10  # unchanged
 V4_1_TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v4_1"
 V4_1_TRANSFORMER_CHECKPOINT_DIR.mkdir(exist_ok=True)
 
+# ===================== V4.3 Configuration (Fixed AR Schedule + Warm-start) =====================
+V4_3_TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v4_3"
+V4_3_TRANSFORMER_CHECKPOINT_DIR.mkdir(exist_ok=True)
+V4_3_WARMSTART_PATH = OUTPUT_DIR / "transformer_checkpoints_v4_2" / "best_model.pth"
+V4_3_TF_PHASE_EPOCHS = 0           # Skip TF-only phase (warm-start already learned)
+V4_3_SS_TF_START = 0.5             # Start AR-SS with tf=0.5 (faster AR exposure)
+V4_3_SS_TF_END = 0.0               # End with pure AR
+V4_3_AR_RATIO_START = 0.3          # Start AR ratio higher
+V4_3_AR_RATIO_END = 0.7            # Same end target
+V4_3_NUM_EPOCHS = 40               # Fewer epochs (warm-start converges faster)
+V4_3_WARMUP_EPOCHS = 2
+V4_3_EARLY_STOPPING_PATIENCE = 15
+
 # ===================== V4.2 Configuration (All Bug Fixes) =====================
 V4_2_TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v4_2"
 V4_2_TRANSFORMER_CHECKPOINT_DIR.mkdir(exist_ok=True)
@@ -236,8 +247,109 @@ V4_1_TASK_CLS_LOSS_WEIGHT = 0.1        # 任务分类损失权重
 # Warm-start from V4 best checkpoint
 V4_1_WARMSTART_PATH = V4_TRANSFORMER_CHECKPOINT_DIR / "best_model.pth"
 
+# ===================== V4.4 Configuration (Length-Aware Warm-start) =====================
+V4_4_TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v4_4"
+V4_4_TRANSFORMER_CHECKPOINT_DIR.mkdir(exist_ok=True)
+V4_4_WARMSTART_PATH = OUTPUT_DIR / "transformer_checkpoints_v4_3" / "best_model.pth"
+
+# V4.4 Training schedule — skip TF-only phase, go straight to AR-SS
+V4_4_TF_PHASE_EPOCHS = 0            # No TF-only phase (warm-start already learned TF)
+V4_4_SS_TF_START = 0.5              # AR-SS starts at tf=0.5
+V4_4_SS_TF_END = 0.0                # End with pure AR
+V4_4_AR_RATIO_START = 0.5           # 50% AR batches from the start
+V4_4_AR_RATIO_END = 1.0             # 100% AR batches at end
+V4_4_NUM_EPOCHS = 30                # Fewer epochs (warm-start converges faster)
+V4_4_WARMUP_EPOCHS = 2
+V4_4_EARLY_STOPPING_PATIENCE = 12
+
+# V4.4 Optimizer — lower LR for fine-tuning
+V4_4_OTHER_LR = 5e-5                # Lower than V4.2 (1e-4) to preserve learned weights
+V4_4_BERT_LR = 2e-6                 # Even lower for BERT layers
+V4_4_BATCH_SIZE = 32
+V4_4_GRADIENT_ACCUM_STEPS = 1
+
+# V4.4 Length-awareness
+V4_4_LENGTH_LOSS_WEIGHT = 0.5       # Much stronger than V4.2 (0.1)
+V4_4_EARLY_END_PENALTY = 2.0        # Penalize END before 70% of target length
+V4_4_EARLY_END_THRESHOLD = 0.7      # Fraction of target length before END is penalized
+V4_4_AR_DYNAMIC_MIN_RATIO = 0.5     # Block END before 50% of target length in AR
+
+# ===================== Set Predictor Configuration =====================
+SET_PREDICTOR_CHECKPOINT_DIR = OUTPUT_DIR / "set_predictor_checkpoints_v3"
+SET_PREDICTOR_CHECKPOINT_DIR.mkdir(exist_ok=True)
+SET_PREDICTOR_ACTIVE_TOKENS_PATH = OUTPUT_DIR / "set_predictor_active_tokens.json"
+SET_PREDICTOR_D_CONDITION = 256
+SET_PREDICTOR_D_HIDDEN = 512                # V3 rich heads 的隐层宽度
+SET_PREDICTOR_NUM_COUNT_CLASSES = 3         # V3: {1, 2, 3+}（不含0，binary head 单独处理）
+SET_PREDICTOR_NUM_ATTN_HEADS = 4
+SET_PREDICTOR_DROPOUT = 0.2
+SET_PREDICTOR_BERT_UNFREEZE_LAYERS = 2
+SET_PREDICTOR_BATCH_SIZE = 64
+SET_PREDICTOR_LR = 5e-4
+SET_PREDICTOR_BERT_LR = 1e-5
+SET_PREDICTOR_NUM_EPOCHS = 30
+SET_PREDICTOR_WARMUP_EPOCHS = 3
+SET_PREDICTOR_PATIENCE = 10
+SET_PREDICTOR_SOFT_PRIOR_THRESHOLD = 0.70   # soft prior 生效阈值
+SET_PREDICTOR_CONFIDENCE_THRESHOLD = 0.80   # hard/threshold mode 使用阈值
+SET_PREDICTOR_MIN_SET_SIZE = 3
+SET_PREDICTOR_NUM_SELF_ATTN_LAYERS = 2      # V3: token-token self-attention layers (0=V2行为)
+SET_PREDICTOR_SELF_ATTN_DIM_FF = 512        # Self-Attention FFN 宽度
+
+# ===================== V4.5 Configuration (Balanced Sampling + Stronger Task Signal) =====================
+V4_5_TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v4_5"
+V4_5_TRANSFORMER_CHECKPOINT_DIR.mkdir(exist_ok=True)
+V4_5_WARMSTART_PATH = OUTPUT_DIR / "transformer_checkpoints_v4_3" / "best_model.pth"
+
+# Same schedule as V4.4
+V4_5_TF_PHASE_EPOCHS = 0
+V4_5_SS_TF_START = 0.5
+V4_5_SS_TF_END = 0.0
+V4_5_AR_RATIO_START = 0.5
+V4_5_AR_RATIO_END = 1.0
+V4_5_NUM_EPOCHS = 30
+V4_5_WARMUP_EPOCHS = 2
+V4_5_EARLY_STOPPING_PATIENCE = 12
+V4_5_OTHER_LR = 5e-5
+V4_5_BERT_LR = 2e-6
+V4_5_BATCH_SIZE = 32
+V4_5_GRADIENT_ACCUM_STEPS = 1
+V4_5_LENGTH_LOSS_WEIGHT = 0.5
+V4_5_EARLY_END_PENALTY = 2.0
+V4_5_EARLY_END_THRESHOLD = 0.7
+V4_5_AR_DYNAMIC_MIN_RATIO = 0.5
+
+# V4.5 specific
+V4_5_TASK_CLS_LOSS_WEIGHT = 0.3   # Up from 0.1 — stronger task-type signal
+V4_5_BALANCED_SAMPLING = True      # WeightedRandomSampler by task type
+
+# ===================== V4.6 Configuration (Gradient Fix + AR-based Model Selection) =====================
+V4_6_TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v4_6"
+V4_6_TRANSFORMER_CHECKPOINT_DIR.mkdir(exist_ok=True)
+V4_6_WARMSTART_PATH = OUTPUT_DIR / "transformer_checkpoints_v4_3" / "best_model.pth"
+
+# Same schedule as V4.4/V4.5
+V4_6_TF_PHASE_EPOCHS = 0
+V4_6_SS_TF_START = 0.5
+V4_6_SS_TF_END = 0.0
+V4_6_AR_RATIO_START = 0.5
+V4_6_AR_RATIO_END = 1.0
+V4_6_NUM_EPOCHS = 30
+V4_6_WARMUP_EPOCHS = 2
+V4_6_EARLY_STOPPING_PATIENCE = 12
+V4_6_OTHER_LR = 5e-5
+V4_6_BERT_LR = 2e-6
+V4_6_BATCH_SIZE = 16               # 降低：不 detach 需要更多显存
+V4_6_GRADIENT_ACCUM_STEPS = 2      # 等效 batch=32
+V4_6_AR_MAX_STEPS = 20             # 降低：减少 AR 展开的显存开销
+V4_6_LENGTH_LOSS_WEIGHT = 0.5
+V4_6_EARLY_END_PENALTY = 2.0
+V4_6_EARLY_END_THRESHOLD = 0.7
+V4_6_AR_DYNAMIC_MIN_RATIO = 0.5
+V4_6_TASK_CLS_LOSS_WEIGHT = 0.3   # 继承 V4.5
+
 print("="*70)
-print("Transformer Configuration (V2.0 - With L3 Embeddings + V4/V4.1 Extension)")
+print("Transformer Configuration (L3 Embeddings + V4/V4.6 + Set Predictor)")
 print("="*70)
 print(f"  Device: {DEVICE}")
 print(f"  Model: d_model={D_MODEL}, n_heads={N_HEADS}, n_layers={N_LAYERS}")

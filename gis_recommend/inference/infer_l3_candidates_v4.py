@@ -37,6 +37,8 @@ from gis_recommend.config.transformer_config import (
     V4_MAX_SEQ_LENGTH, V4_MAX_MEMORY_TOKENS, V4_BERT_UNFREEZE_LAYERS,
     V4_TRANSFORMER_CHECKPOINT_DIR, V4_TASK_TYPE_VOCAB_PATH,
     L3_EMBEDDINGS_PATH,
+    SET_PREDICTOR_CHECKPOINT_DIR, SET_PREDICTOR_CONFIDENCE_THRESHOLD,
+    SET_PREDICTOR_MIN_SET_SIZE, SET_PREDICTOR_SOFT_PRIOR_THRESHOLD,
 )
 from gis_recommend.models.transformer_model_v4 import TaskConditionedL3TransformerModelV4
 from gis_recommend.models.task_text_processor import TaskVocabularyBuilder
@@ -106,6 +108,7 @@ class L3SequenceInferencerV4:
         min_length: int = 5,
         repetition_penalty: float = 1.2,
         no_repeat_ngram: int = 3,
+        set_predictor_path: Optional[Path] = None,
     ):
         self.device = device
         self.num_beam_groups = num_beam_groups
@@ -126,10 +129,13 @@ class L3SequenceInferencerV4:
         self.l3_code_to_l2: Dict[str, str] = {}
         self.expected_length = 8
         self._length_stats = self._load_length_stats()
+        self.use_topk_set_prediction = True  # Top-K mode for set predictor
+        self.set_prior_mode = 'soft'  # 'off' | 'soft' | 'hard'
 
         self._load_model(checkpoint_path)
         self._load_vocab()
         self._load_transition_matrix()
+        self._load_set_predictor(set_predictor_path)
 
     def _load_length_stats(self) -> dict:
         """Load pre-computed per-task-type length stats."""
@@ -140,7 +146,7 @@ class L3SequenceInferencerV4:
                 data = json.load(f)
             print(f"  [OK] Length stats loaded ({len(data.get('by_task_type', {}))} task types)")
             return data
-        print(f"  [INFO] No length stats file found, using default expected_length=12")
+        print(f"  [INFO] No length stats file found, using default expected_length=8")
         return {}
 
     def set_expected_length(self, task_type: str):
@@ -244,6 +250,60 @@ class L3SequenceInferencerV4:
                 self.allowed_next[a] = allowed
         print(f"  Transition matrix: {len(self.allowed_next)} states")
 
+    def _load_set_predictor(self, path: Optional[Path] = None):
+        """Load set predictor for constrained decoding. Graceful degradation if not found."""
+        self.set_predictor = None
+        if path is None:
+            path = SET_PREDICTOR_CHECKPOINT_DIR / "best_model.pth"
+        if not Path(path).exists():
+            print(f"  [INFO] Set predictor not found at {path}, running without constraints")
+            return
+        try:
+            from gis_recommend.models.set_predictor_v3 import L3SetPredictor
+            self.set_predictor = L3SetPredictor.from_checkpoint(str(path), device=self.device)
+            n = self.set_predictor.num_active_tokens
+            print(f"  [OK] Set predictor loaded ({n} active tokens)")
+        except Exception as e:
+            print(f"  [WARN] Failed to load set predictor: {e}")
+            self.set_predictor = None
+
+    @torch.no_grad()
+    def _predict_token_prior(self, inputs: Dict) -> Optional[Dict[int, float]]:
+        """Predict token presence probabilities for soft/hard constraint.
+
+        Returns:
+            Dict[token_id, p_present] or None if predictor unavailable / mode=off.
+        """
+        if self.set_predictor is None or self.set_prior_mode == 'off':
+            return None
+
+        scores_list = self.set_predictor.predict_token_scores(
+            inputs['task_type_id'],
+            inputs['text_input_ids'],
+            inputs['text_attention_mask'],
+        )
+        return scores_list[0]  # {token_id: p_present}
+
+    @torch.no_grad()
+    def _predict_token_set(self, inputs: Dict) -> Optional[Dict[int, int]]:
+        """Legacy: predict token set with hard counts. Used only in 'hard' mode."""
+        if self.set_predictor is None:
+            return None
+
+        top_k = self.expected_length if self.use_topk_set_prediction else 0
+        counts_list = self.set_predictor.predict_token_counts(
+            inputs['task_type_id'],
+            inputs['text_input_ids'],
+            inputs['text_attention_mask'],
+            confidence_threshold=SET_PREDICTOR_CONFIDENCE_THRESHOLD,
+            top_k=top_k,
+        )
+        counts = counts_list[0]
+        total = sum(counts.values())
+        if total < SET_PREDICTOR_MIN_SET_SIZE:
+            return None
+        return counts
+
     def _prepare_input(self, task_name: str, task_description: str, task_type: str):
         """Prepare model input tensors from task text."""
         task_type_id = self.task_vocab_builder.task_type_to_id.get(task_type, 0)
@@ -258,9 +318,43 @@ class L3SequenceInferencerV4:
             'text_attention_mask': enc['attention_mask'].to(self.device),
         }
 
-    def _apply_constraints(self, logits, gen_tokens_list, step):
-        """Apply decoding constraints to logits [B, V]."""
+    def _apply_constraints(self, logits, gen_tokens_list, step,
+                           token_priors=None, token_budgets=None):
+        """Apply decoding constraints to logits [B, V].
+
+        Args:
+            token_priors: List[Dict[int, float]] — soft mode, p_present per token
+            token_budgets: List[Dict[int, int]] — hard mode (legacy), count budget
+        """
         B = logits.size(0)
+
+        # ── Set predictor soft prior（只对高信心 token 做轻量提示）──
+        if self.set_prior_mode == 'soft' and token_priors is not None:
+            for b in range(B):
+                prior = token_priors[b] if b < len(token_priors) else None
+                if prior is not None:
+                    # 只对高信心 token 加小正偏置
+                    # 不对低概率 token 施加负偏置（避免误杀）
+                    for tok_id, p_present in prior.items():
+                        if tok_id < logits.size(1) and p_present > SET_PREDICTOR_SOFT_PRIOR_THRESHOLD:
+                            logits[b, tok_id] += 0.5  # 固定小偏置，温和引导
+
+        elif self.set_prior_mode == 'hard' and token_budgets is not None:
+            # Hard mask（旧逻辑，保留用于 A/B 对比）
+            for b in range(B):
+                budget = token_budgets[b] if b < len(token_budgets) else None
+                if budget is not None:
+                    remaining = sum(1 for v in budget.values() if v > 0)
+                    if remaining == 0:
+                        token_budgets[b] = None
+                    else:
+                        set_mask = torch.full((logits.size(1),), float('-inf'), device=logits.device)
+                        for tok_id, rem in budget.items():
+                            if rem > 0 and tok_id < logits.size(1):
+                                set_mask[tok_id] = 0.0
+                        set_mask[END_INDEX] = 0.0
+                        logits[b] += set_mask
+
         # Block special tokens
         logits[:, PAD_INDEX] = float('-inf')
         logits[:, UNK_INDEX] = float('-inf')
@@ -295,20 +389,40 @@ class L3SequenceInferencerV4:
                     mask = torch.full((logits.size(1),), float('-inf'), device=logits.device)
                     idx = torch.tensor(list(allowed), dtype=torch.long, device=logits.device)
                     mask[idx] = 0.0
-                    mask[END_INDEX] = 0.0  # Always allow END
+                    mask[END_INDEX] = 0.0
                     logits[b] += mask
-            # Consecutive token dedup: block same token as last generated
-            # Placed after transition constraints; absolute assignment overrides additive mask
-            if gen and len(gen) > 0:
-                last_token = gen[-1]
-                if last_token < logits.size(1):
-                    logits[b, last_token] = float('-inf')
 
-        # END token progressive boost: encourage stopping after expected_length
-        if step > self.expected_length:
-            overshoot = step - self.expected_length
-            bonus = 1.0 * overshoot
+        # END token progressive boost
+        grace = max(int(self.expected_length * 0.3), 2)
+        if step > self.expected_length + grace:
+            overshoot = step - self.expected_length - grace
+            bonus = 0.5 * overshoot
             logits[:, END_INDEX] += bonus
+
+        # 数值安全回退：如果所有 token 都是 -inf，只放开 transition 约束
+        for b in range(B):
+            if not torch.isfinite(logits[b]).any():
+                # 回退：均匀分布，保留 special token 屏蔽 + min_length
+                logits[b] = torch.ones_like(logits[b])  # 均匀正值（非零）
+                logits[b, PAD_INDEX] = float('-inf')
+                logits[b, UNK_INDEX] = float('-inf')
+                logits[b, START_INDEX] = float('-inf')
+                if step < self.min_length:
+                    logits[b, END_INDEX] = float('-inf')
+                # 重新施加 repetition penalty + no-repeat ngram
+                gen = gen_tokens_list[b]
+                if self.repetition_penalty != 1.0 and gen:
+                    for tok in set(gen):
+                        if tok < logits.size(1):
+                            logits[b, tok] /= self.repetition_penalty
+                ng = self.no_repeat_ngram
+                if ng > 0 and gen and len(gen) >= ng - 1:
+                    prefix = tuple(gen[-(ng - 1):])
+                    for s in range(len(gen) - ng + 1):
+                        if tuple(gen[s:s + ng - 1]) == prefix:
+                            blocked = gen[s + ng - 1]
+                            if blocked < logits.size(1):
+                                logits[b, blocked] = float('-inf')
 
         return logits
 
@@ -323,9 +437,23 @@ class L3SequenceInferencerV4:
         text_input_ids = inputs['text_input_ids']
         text_attention_mask = inputs['text_attention_mask']
 
-        # Each beam: (tokens_list, log_prob, finished)
-        beams = [([START_INDEX], 0.0, False) for _ in range(total_beams)]
-        # Track which tokens each group selected at each step (for diversity)
+        # ── Set predictor: get token prior (soft) or budget (hard) ──
+        token_prior = None
+        hard_budget_template = None
+        if self.set_prior_mode == 'soft':
+            token_prior = self._predict_token_prior(inputs)
+        elif self.set_prior_mode == 'hard':
+            hard_budget_template = self._predict_token_set(inputs)
+        # mode=='off': both are None
+
+        import copy
+
+        # Each beam: (tokens_list, log_prob, finished, budget_or_none)
+        beams = [
+            ([START_INDEX], 0.0, False,
+             dict(hard_budget_template) if hard_budget_template else None)
+            for _ in range(total_beams)
+        ]
         group_selected_tokens: List[List[Set[int]]] = [[] for _ in range(G)]
 
         for step in range(1, self.max_length):
@@ -335,17 +463,16 @@ class L3SequenceInferencerV4:
                 group_beams = beams[g * B: (g + 1) * B]
                 group_cands = []
 
-                for beam_idx, (tokens, lp, finished) in enumerate(group_beams):
+                for beam_idx, (tokens, lp, finished, budget) in enumerate(group_beams):
                     if finished:
-                        group_cands.append((tokens, lp, True))
+                        group_cands.append((tokens, lp, True, budget))
                         continue
 
-                    # Per-beam length cutoff
-                    if len(tokens) - 1 > self.expected_length * 1.5:
-                        group_cands.append((tokens, lp, True))
+                    cutoff = max(self.expected_length * 2.0, 15)
+                    if len(tokens) - 1 > cutoff:
+                        group_cands.append((tokens, lp, True, budget))
                         continue
 
-                    # Build input tensors for this beam
                     seq = torch.tensor([tokens], dtype=torch.long, device=self.device)
                     attn = torch.ones(1, len(tokens), dtype=torch.long, device=self.device)
 
@@ -353,15 +480,18 @@ class L3SequenceInferencerV4:
                         seq, task_type_ids, text_input_ids, text_attention_mask,
                         attention_mask=attn, return_aux=False,
                     )
-                    next_logits = logits[0, -1, :].clone()  # [V]
+                    next_logits = logits[0, -1, :].clone()
 
-                    # Apply constraints
-                    gen_tokens = tokens[1:]  # exclude START
+                    gen_tokens = tokens[1:]
                     expanded = next_logits.unsqueeze(0)
-                    self._apply_constraints(expanded, [gen_tokens], step)
+                    self._apply_constraints(
+                        expanded, [gen_tokens], step,
+                        token_priors=[token_prior] if token_prior else None,
+                        token_budgets=[budget] if budget else None,
+                    )
                     next_logits = expanded[0]
 
-                    # Diversity penalty: penalize tokens selected by previous groups
+                    # Diversity penalty
                     for prev_g in range(g):
                         if step - 1 < len(group_selected_tokens[prev_g]):
                             prev_selected = group_selected_tokens[prev_g][step - 1]
@@ -377,15 +507,17 @@ class L3SequenceInferencerV4:
                         new_lp = lp + topk_lp[k].item()
                         new_tokens = tokens + [tok]
                         new_finished = (tok == END_INDEX)
-                        group_cands.append((new_tokens, new_lp, new_finished))
+                        # Hard mode: decrement budget
+                        new_budget = copy.copy(budget) if budget else None
+                        if new_budget is not None and tok in new_budget:
+                            new_budget[tok] = max(new_budget[tok] - 1, 0)
+                        group_cands.append((new_tokens, new_lp, new_finished, new_budget))
 
-                # Select top-B candidates for this group
                 group_cands.sort(key=lambda x: x[1] / max(len(x[0]), 1), reverse=True)
                 selected = group_cands[:B]
 
-                # Record selected tokens for diversity
                 step_tokens = set()
-                for tokens_list, _, _ in selected:
+                for tokens_list, _, _, _ in selected:
                     if len(tokens_list) > step:
                         step_tokens.add(tokens_list[step])
                 if step - 1 < len(group_selected_tokens[g]):
@@ -397,8 +529,7 @@ class L3SequenceInferencerV4:
 
             beams = all_candidates
 
-            # Check if all beams finished
-            if all(f for _, _, f in beams):
+            if all(f for _, _, f, _ in beams):
                 break
 
         # Convert to candidates (take best from each group)
@@ -406,7 +537,7 @@ class L3SequenceInferencerV4:
         for g in range(G):
             group_beams = beams[g * B: (g + 1) * B]
             # Prefer finished beams
-            finished_beams = [(t, lp) for t, lp, f in group_beams if f]
+            finished_beams = [(t, lp) for t, lp, f, _ in group_beams if f]
             if finished_beams:
                 best = max(finished_beams, key=lambda x: x[1] / max(len(x[0]), 1))
             else:
@@ -429,14 +560,25 @@ class L3SequenceInferencerV4:
         text_input_ids = inputs['text_input_ids']
         text_attention_mask = inputs['text_attention_mask']
 
+        # ── Set predictor: get prior (soft) or budget (hard) ──
+        token_prior = None
+        hard_budget_template = None
+        if self.set_prior_mode == 'soft':
+            token_prior = self._predict_token_prior(inputs)
+        elif self.set_prior_mode == 'hard':
+            hard_budget_template = self._predict_token_set(inputs)
+
+        import copy
+
         candidates = []
         for _ in range(self.num_samples):
             tokens = [START_INDEX]
             total_lp = 0.0
+            budget = dict(hard_budget_template) if hard_budget_template else None
 
             for step in range(1, self.max_length):
-                # Early stop if past expected length cutoff
-                if step > self.expected_length * 1.5:
+                cutoff = max(self.expected_length * 2.0, 15)
+                if step > cutoff:
                     break
 
                 seq = torch.tensor([tokens], dtype=torch.long, device=self.device)
@@ -448,10 +590,13 @@ class L3SequenceInferencerV4:
                 )
                 next_logits = logits[0, -1, :].clone()
 
-                # Apply constraints
                 gen = tokens[1:]
                 expanded = next_logits.unsqueeze(0)
-                self._apply_constraints(expanded, [gen], step)
+                self._apply_constraints(
+                    expanded, [gen], step,
+                    token_priors=[token_prior] if token_prior else None,
+                    token_budgets=[budget] if budget else None,
+                )
                 next_logits = expanded[0]
 
                 # Temperature scaling
@@ -460,16 +605,18 @@ class L3SequenceInferencerV4:
                 # Top-p (nucleus) sampling
                 sorted_logits, sorted_idx = torch.sort(next_logits, descending=True)
                 cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
-                # Remove tokens with cumulative prob above threshold
                 remove_mask = cumulative_probs - F.softmax(sorted_logits, dim=-1) >= self.sampling_top_p
                 sorted_logits[remove_mask] = float('-inf')
-                # Scatter back
                 next_logits = torch.zeros_like(next_logits).scatter_(0, sorted_idx, sorted_logits)
 
                 probs = F.softmax(next_logits, dim=-1)
                 tok = torch.multinomial(probs, 1).item()
                 total_lp += F.log_softmax(next_logits, dim=-1)[tok].item()
                 tokens.append(tok)
+
+                # Hard mode: decrement budget
+                if budget is not None and tok in budget:
+                    budget[tok] = max(budget[tok] - 1, 0)
 
                 if tok == END_INDEX:
                     break
