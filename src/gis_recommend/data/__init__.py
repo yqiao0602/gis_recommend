@@ -53,17 +53,11 @@ def get_step_output_dir(step: int, outputs_dir=None) -> Path:
 
 
 def get_default_id_mappings_path(outputs_dir=None) -> Path:
-    """Return the best mapping file for the active outputs root."""
-    outputs_root = get_outputs_dir(outputs_dir)
-    candidates = [
-        outputs_root / "id_mappings_v2.json",
-        outputs_root / "id_mappings.json",
-        get_project_root() / "outputs" / "id_mappings.json",
-    ]
-    for candidate in candidates:
-        if candidate.exists():
-            return candidate
-    return candidates[0]
+    """Return the v2 id mappings file for the active outputs root (94-L3).
+
+    The legacy 350-L3 ``id_mappings.json`` fallback is retired.
+    """
+    return get_outputs_dir(outputs_dir) / "id_mappings_v2.json"
 
 
 def get_default_gee_skip_list_path(outputs_dir=None) -> Path | None:
