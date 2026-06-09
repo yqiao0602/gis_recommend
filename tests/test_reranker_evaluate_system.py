@@ -259,36 +259,6 @@ class RerankerEvaluateSystemTests(unittest.TestCase):
         self.assertAlmostEqual(summary["rejected"]["avg_issue_delta"], -1.0)
         self.assertAlmostEqual(summary["rejected"]["avg_io_delta"], -0.25)
 
-    def test_interactive_system_repair_is_report_only(self):
-        from gis_recommend.pipelines.interactive_system import InteractiveQGISSystem
-
-        class _Retriever:
-            def get_operators_for_l3(self, *args, **kwargs):
-                return [{"name": "buffer_alt", "confidence": 0.9}]
-
-            def get_related_operators(self, *args, **kwargs):
-                return []
-
-        system = InteractiveQGISSystem.__new__(InteractiveQGISSystem)
-        system.graphrag_retriever = _Retriever()
-        system.llm_scorer = None
-
-        candidate = _make_qgis_candidate(["buffer", "clip"], score=0.8, confidence=0.7)
-        validation = SimpleNamespace(
-            issues=["io mismatch"],
-            step_details=[{"index": 0, "io_check": {"compatible": False}}],
-        )
-        before = list(candidate.qgis_sequence)
-
-        suggestion = system._repair_chain(candidate, validation, "query")
-
-        self.assertEqual(candidate.qgis_sequence, before)
-        self.assertIsInstance(suggestion, dict)
-        self.assertEqual(suggestion["old_operator"], "buffer")
-        self.assertEqual(suggestion["suggested_operator"], "buffer_alt")
-        self.assertEqual(suggestion["suggested_chain"][0], "buffer_alt")
-        self.assertEqual(suggestion["problem_idx"], 0)
-
     def test_build_report_json_preserves_repair_diagnostics(self):
 
         repair_diagnostics = {

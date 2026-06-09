@@ -124,6 +124,31 @@ class V2DefaultConfigTests(unittest.TestCase):
                 for operator in mapper.l3_to_operators.get("L3_02_06_02", [])
             )
         )
+    def test_artifact_filenames_are_v2_regardless_of_output_dir_name(self):
+        """350-L3 dual-path removed: filenames must be v2 even when OUTPUT_DIR
+        is overridden to a directory NOT named 'outputs_v2'."""
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            custom = Path(tmp) / "custom_root"
+            custom.mkdir()
+            old = os.environ.get("GIS_OUTPUTS_DIR")
+            os.environ["GIS_OUTPUTS_DIR"] = str(custom)
+            os.environ.pop("GIS_VOCAB_SIZE", None)
+            os.environ.pop("GIS_L3_EMBEDDINGS", None)
+            try:
+                sys.modules.pop("gis_recommend.config.transformer_config", None)
+                cfg = importlib.import_module("gis_recommend.config.transformer_config")
+                self.assertEqual(cfg.ID_MAPPINGS_PATH.name, "id_mappings_v2.json")
+                self.assertEqual(cfg.L3_EMBEDDINGS_PATH.name, "l3_embeddings_v2.pt")
+                self.assertEqual(cfg.CLASSIFICATION_HIERARCHY.name, "classification_hierarchy_v2.csv")
+                self.assertEqual(cfg.VOCAB_SIZE, 94)
+            finally:
+                if old is not None:
+                    os.environ["GIS_OUTPUTS_DIR"] = old
+                else:
+                    os.environ.pop("GIS_OUTPUTS_DIR", None)
+                sys.modules.pop("gis_recommend.config.transformer_config", None)
 
 
 if __name__ == "__main__":

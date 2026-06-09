@@ -6,7 +6,8 @@ Runtime overrides (env vars):
   GIS_OUTPUTS_DIR  — point OUTPUT_DIR at an alternate outputs directory
                      (default: outputs_v2/).  All checkpoint / data paths that
                      anchor off OUTPUT_DIR follow unless overridden below.
-  GIS_VOCAB_SIZE   — override VOCAB_SIZE (and thus TOTAL_VOCAB_SIZE).
+                     Artifact filenames are always v2 (94-L3); the legacy
+                     350-L3 vocabulary and its filenames are retired.
   GIS_L3_EMBEDDINGS — explicit L3 embeddings file path (else derived from
                       OUTPUT_DIR).
   GIS_CLASSIFICATION_HIERARCHY — explicit hierarchy CSV path.
@@ -34,14 +35,6 @@ else:
     OUTPUT_DIR = PROJECT_ROOT / "outputs_v2"
 
 
-def _active_outputs_is_v2() -> bool:
-    return OUTPUT_DIR.name == "outputs_v2"
-
-
-def _output_artifact(v2_name: str, legacy_name: str) -> Path:
-    return OUTPUT_DIR / (v2_name if _active_outputs_is_v2() else legacy_name)
-
-
 def _env_path(name: str) -> Path | None:
     value = os.environ.get(name)
     return Path(value).resolve() if value else None
@@ -53,14 +46,13 @@ def _env_path(name: str) -> Path | None:
 LABELED_WORKFLOWS_PATH = OUTPUT_DIR / "labeled_workflows_l3.json"
 # 使用图嵌入训练的L3嵌入
 _env_emb = _env_path("GIS_L3_EMBEDDINGS")
-L3_EMBEDDINGS_PATH = _env_emb if _env_emb else _output_artifact("l3_embeddings_v2.pt", "l3_embeddings.pt")
+L3_EMBEDDINGS_PATH = _env_emb if _env_emb else OUTPUT_DIR / "l3_embeddings_v2.pt"
 TRANSFORMER_MODEL_PATH = OUTPUT_DIR / "task_conditioned_transformer_model_v3_with_l3_embeddings.pth"
 TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v3_l3emb"
 
 # ===================== Model Architecture =====================
-# Vocabulary
-# v2 merged vocabulary is the default; use GIS_VOCAB_SIZE for legacy runs.
-VOCAB_SIZE = int(os.environ.get("GIS_VOCAB_SIZE", "94"))
+# Vocabulary — 94 L3 primitives (v2). The legacy 350-L3 vocabulary is retired.
+VOCAB_SIZE = 94
 SPECIAL_TOKENS = {
     '<PAD>': -1,
     '<UNK>': -2,
@@ -415,8 +407,6 @@ QGIS_MAPPING_DIR = DATA_DIR / "QGIS"
 _env_hierarchy = _env_path("GIS_CLASSIFICATION_HIERARCHY")
 CLASSIFICATION_HIERARCHY = _env_hierarchy if _env_hierarchy else (
     OUTPUT_DIR / "classification_hierarchy_v2.csv"
-    if _active_outputs_is_v2()
-    else PROJECT_ROOT / "classification_hierarchy.csv"
 )
 
 # 77K 工作流数据（10 份 CSV summary + 11 个 workflow 输出目录）
@@ -434,7 +424,7 @@ GEE_WORKFLOW_SUMMARY = GEE_WORKFLOW_SUMMARY_FILES[-1]  # 向后兼容别名
 # HGT 输出路径
 HETERO_GRAPH_PATH = OUTPUT_DIR / "hetero_knowledge_graph.bin"
 _env_id_mappings = _env_path("GIS_ID_MAPPINGS")
-ID_MAPPINGS_PATH = _env_id_mappings if _env_id_mappings else _output_artifact("id_mappings_v2.json", "id_mappings.json")
+ID_MAPPINGS_PATH = _env_id_mappings if _env_id_mappings else OUTPUT_DIR / "id_mappings_v2.json"
 WORKFLOW_SEQUENCES_PATH = OUTPUT_DIR / "workflow_sequences_aligned.json"
 GRAPH_MODEL_PATH = OUTPUT_DIR / "graph_model.pth"
 HGT_MODEL_PATH = GRAPH_MODEL_PATH  # 向后兼容别名
