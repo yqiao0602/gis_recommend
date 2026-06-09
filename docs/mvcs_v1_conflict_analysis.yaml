@@ -1,0 +1,746 @@
+# ==============================================================================
+# MVCS v1 — Structured Conflict Analysis
+# Generated from: docs/mvcs_v1.spec
+# Categories:
+#   BACKFLOW  — implicit path from Snapshot/Interpretive back into Runtime
+#   INDIRECT  — Interpretive Report affects Runtime via non-obvious mechanism
+#   OVERLAP   — semantic duplication across different layers
+#   TRANSITIVE — Forbidden Edge Graph closure vulnerability
+# ==============================================================================
+
+conflicts:
+
+  # ===========================================================================
+  # C001 — format_version typed as snapshot_evidence but gating runtime
+  # ===========================================================================
+  - conflict_id: C001
+    category: BACKFLOW
+    title: >
+      provenance.format_version typed as snapshot_evidence
+      but Gate 1 uses it to block runtime loading
+    affected_rules:
+      - "format_version_gate (Gate 1)"
+      - "SCHEMA_CONSTRAINT_MAP['provenance.format_version']"
+      - "EDGE_GRAPH: ('snapshot','runtime') = RESTRICTED:model_state_dict_only"
+    exploit_path: >
+      The EDGE_GRAPH declares that snapshot→runtime is restricted to
+      model_state_dict only. However, provenance.format_version is typed
+      as snapshot_evidence (line 512) with can_affect_runtime=true (line 516)
+      and gate_id=1. This means TWO snapshot_evidence fields affect runtime
+      (format_version + model_state_dict), but the EDGE_GRAPH only
+      acknowledges model_state_dict.
+
+      This creates ambiguity: if a future maintainer reads EDGE_GRAPH and
+      concludes "only model_state_dict can gate loading," they may remove
+      format_version checking without realizing it's also a gate.
+    severity: HIGH
+    root_cause: >
+      format_version is semantically structural (it determines whether the
+      checkpoint format is parseable), but the schema classifies it as
+      snapshot_evidence. The correct classification is structural —
+      format_version is as structural as model_state_dict's keys.
+    recommended_patch:
+      action: "retype field"
+      field: "provenance.format_version"
+      from_type: "snapshot_evidence"
+      to_type: "structural"
+      rationale: >
+        format_version is a structural gate, not evidence. It belongs in the
+        structural layer alongside model_state_dict. This makes the
+        EDGE_GRAPH accurate: both structural fields (format_version +
+        model_state_dict) can affect runtime.
+      spec_change: >
+        In SCHEMA_CONSTRAINT_MAP:
+          provenance.format_version.type: snapshot_evidence → structural
+        In EDGE_GRAPH:
+          ("snapshot","runtime"): "RESTRICTED:structural_fields_only"
+        In RULE format_version_gate:
+          Add comment: "format_version is structural, not evidential"
+
+  # ===========================================================================
+  # C002 — recompute_metrics() needs model.load_state_dict() but L020 forbids
+  # ===========================================================================
+  - conflict_id: C002
+    category: BACKFLOW
+    title: >
+      recompute_metrics() MUST call model.load_state_dict() to function,
+      but L020 forbids model.load_state_dict in evidence/*.py
+    affected_rules:
+      - "evidence_module_only_reads_snapshot (L020)"
+      - "recompute_metrics() in evidence/_recompute.py"
+      - "EDGE_GRAPH: ('interpretive','runtime') = FORBIDDEN"
+    exploit_path: >
+      _recompute.py is in evidence/ (Interpretive layer). Its docstring says
+      "Loads a model from checkpoint, re-runs evaluation." To do this, it MUST:
+
+        1. Instantiate a TaskConditionedL3TransformerModelV4
+        2. torch.load(checkpoint_path)
+        3. model.load_state_dict(ckpt['model_state_dict'])  ← L020 FORBIDS THIS
+        4. model.eval()
+        5. Run forward passes on DataLoader
+
+      Without step 3, recompute_metrics() cannot function. With step 3, it
+      violates L020. This is a self-contradiction within the spec.
+
+      Additionally, model.load_state_dict() is an in-place mutation of model
+      parameters — it changes runtime state. An interpretive function
+      mutating runtime state blurs the boundary between Interpretation
+      and Runtime.
+    severity: HIGH
+    root_cause: >
+      recompute_metrics() is classified as interpretive (pure function over
+      snapshots), but metric recomputation inherently requires loading model
+      weights and running forward passes — operations that mutate runtime
+      state. The Interpretive layer's "pure function, no side effects"
+      contract cannot hold for recompute_metrics().
+    recommended_patch:
+      action: "split function across layers"
+      details: >
+        Option A (preferred):
+          Move recompute_metrics() OUT of evidence/ into a new module
+          evaluation/recompute_metrics.py. This module:
+            - Is NOT in the forbidden import graph (evaluation can import evidence)
+            - Calls evidence._validity and evidence._schemas for metadata
+            - Calls model.load_state_dict() and runs forward passes for recomputation
+            - Labels output as derived_truth
+          evidence/ retains only pure functions (classify_validity, reconstruct_lineage,
+          compare_metrics, diff_dispatch, generate_archaeology_report).
+
+        Option B:
+          Keep recompute_metrics() in evidence/ but add an explicit exception
+          to L020 and L021 for _recompute.py:
+            L020-b: "grep 'model.load_state_dict' in evidence/*.py EXCEPT _recompute.py"
+            L021-b: "grep 'DataLoader' in evidence/*.py EXCEPT _recompute.py"
+          Document that _recompute.py is the SOLE evidence module allowed to
+          mutate runtime model state, and only for metric recomputation.
+      spec_changes:
+        - "IF Option A: move recompute_metrics + RecomputeReport + RecomputeContext + DivergenceFlag to evaluation/"
+        - "IF Option B: add _recompute.py exception to L020, L021; add __layer_mutable__: true to _recompute.py"
+
+  # ===========================================================================
+  # C003 — Transitive import: training → evaluation → evidence
+  # ===========================================================================
+  - conflict_id: C003
+    category: TRANSITIVE
+    title: >
+      FORBIDDEN_IMPORT_GRAPH only blocks direct imports;
+      training→evaluation→evidence is a transitive bypass
+    affected_rules:
+      - "FORBIDDEN_IMPORT_GRAPH"
+      - "L001-L008 (direct import grep only)"
+      - "no_evidence_import_in_training"
+      - "no_evidence_import_in_inference"
+      - "EDGE_GRAPH: ('interpretive','runtime') = FORBIDDEN"
+    exploit_path: >
+      Step 1: evaluation/runner.py imports from gis_recommend.evidence
+              (allowed — evaluation is NOT in FORBIDDEN_IMPORT_GRAPH).
+
+      Step 2: evaluation/runner.py defines a function
+              `auto_select_best_checkpoint()` that calls
+              classify_checkpoint_validity() and compare_metrics(),
+              then returns the path of the "best" checkpoint.
+
+      Step 3: training/train_v4_6.py imports from evaluation.runner:
+              `from gis_recommend.evaluation.runner import auto_select_best_checkpoint`
+              (allowed — training importing evaluation is not forbidden).
+
+      Step 4: training/train_v4_6.py calls auto_select_best_checkpoint()
+              during warm-start to decide which checkpoint to load.
+
+      Result: Evidence functions (classify_checkpoint_validity, compare_metrics)
+              transitively control runtime behavior (which checkpoint gets
+              warm-started), completely bypassing L001-L008.
+
+      The grep-based LINT_RULES only check for direct import strings.
+      They cannot detect this 2-hop transitive path.
+    severity: HIGH
+    root_cause: >
+      FORBIDDEN_IMPORT_GRAPH is an adjacency list (direct edges only).
+      It does not compute the transitive closure. evaluation is permitted
+      to import evidence, and training is permitted to import evaluation.
+      The composition creates an unblocked path.
+    recommended_patch:
+      action: "close transitive closure"
+      details: >
+        1. Extend FORBIDDEN_IMPORT_GRAPH to include transitive rules:
+           "If A imports B and B imports evidence, then A must not call
+            any evidence-originated function or type."
+
+        2. Add LINT_RULES for transitive import detection:
+           L033: "For each file in training/*.py, compute its transitive
+           import closure. If the closure includes any gis_recommend.evidence
+           symbol, flag BoundaryViolation."
+
+        3. Alternatively, declare that evaluation MAY import evidence
+           but MUST NOT re-export evidence types/functions in its
+           public API. Add to evaluation_boundary_stub:
+           __forbidden_reexports__ = ["gis_recommend.evidence.*"]
+
+        4. Add to FORBIDDEN_METHOD_GRAPH:
+           ("training", "evaluation"): ["*evidence*", "ValidityReport",
+           "ComparisonReport", "ArchaeologyReport"]
+
+  # ===========================================================================
+  # C004 — legacy fields semantically duplicate metric_bundle fields
+  # ===========================================================================
+  - conflict_id: C004
+    category: OVERLAP
+    title: >
+      val_loss, ar_token_acc, ar_seq_em, epoch exist in both legacy layer
+      and metric_bundle with different type classifications
+    affected_rules:
+      - "SCHEMA_CONSTRAINT_MAP['val_loss'] (type=legacy)"
+      - "SCHEMA_CONSTRAINT_MAP['metric_bundle.metrics[*].value'] (type=snapshot_evidence)"
+      - "SCHEMA_CONSTRAINT_MAP['epoch'] (type=legacy)"
+      - "SCHEMA_CONSTRAINT_MAP['metric_bundle.epoch_context.epoch'] (type=snapshot_evidence)"
+      - "SNAPSHOT_RUNTIME_ACCESS (legacy fields: ALLOWED:display_only, metric_bundle: FORBIDDEN)"
+    exploit_path: >
+      The spec declares two sources of truth for the same values:
+
+        checkpoint['val_loss']     = 1.9327  (legacy, ALLOWED:display_only)
+        checkpoint['metric_bundle']
+                 ['metrics'][0]
+                 ['value']         = 1.9327  (snapshot_evidence, FORBIDDEN:runtime_access)
+
+      Exploit scenario:
+        1. Training loop reads checkpoint['val_loss'] for display (allowed).
+        2. A post-hoc script modifies checkpoint['val_loss'] in place
+           (modifying only the legacy field, not metric_bundle).
+        3. Loading code that respects the "legacy is display_only" rule
+           shows wrong val_loss.
+        4. Interpretive code that reads metric_bundle (authoritative) sees
+           the original value.
+        5. The two values now DIVERGE — and the spec provides no rule
+           for which one is authoritative when they disagree.
+
+      Additionally: metric_bundle is FORBIDDEN:runtime_access, but
+      the same information is available via legacy fields which ARE
+      accessible. The prohibition on reading metric_bundle is
+      circumventable by reading the legacy fields instead.
+    severity: MED
+    root_cause: >
+      Backward compatibility creates semantic duplication. The legacy fields
+      exist so old code doesn't break, but they carry the same semantics
+      as metric_bundle fields under a different access policy.
+    recommended_patch:
+      action: "declare authoritative source and deprecation timeline"
+      details: >
+        1. Add explicit rule: "metric_bundle is the SOLE authoritative
+           source for all metric values. Legacy fields are convenience
+           copies that MUST be written identically to their metric_bundle
+           counterparts. If they diverge, metric_bundle wins."
+
+        2. Add cross-validation at save time:
+           RULE legacy_fields_must_match_metric_bundle:
+             scope: training.*.save_checkpoint
+             enforce: REQUIRED
+             error: MetricConsistencyError
+             check: >
+               checkpoint_dict.val_loss == metric_bundle.metrics[val_loss].value
+               AND checkpoint_dict.epoch == metric_bundle.epoch_context.epoch
+               (and similarly for ar_token_acc, ar_seq_em)
+
+        3. Mark legacy fields as deprecated in schema:
+           val_loss: {type: "legacy", deprecated: true, replaced_by: "metric_bundle.metrics"}
+
+  # ===========================================================================
+  # C005 — model_config semantically overlaps config_snapshot.constants
+  # ===========================================================================
+  - conflict_id: C005
+    category: OVERLAP
+    title: >
+      model_config is a semantic subset of config_snapshot.constants
+      with no cross-validation rule
+    affected_rules:
+      - "SCHEMA_CONSTRAINT_MAP['model_config']"
+      - "SCHEMA_CONSTRAINT_MAP['provenance.config_snapshot.constants']"
+    exploit_path: >
+      model_config stores: {max_memory_tokens, d_model, n_heads, n_layers}
+      config_snapshot.constants stores: ALL V4_* values including
+      V4_D_MODEL, V4_N_HEADS, V4_N_LAYERS, V4_MAX_MEMORY_TOKENS.
+
+      These SHOULD be identical, but nothing enforces it:
+
+        model_config.d_model           = 256
+        config_snapshot.constants.V4_D_MODEL = 512
+
+      Which value reflects the actual model architecture?
+        - Gate 2 checks shapes against the live model, not these stored values.
+        - model_config is "display_only" — never verified.
+        - config_snapshot is "write_once" — never verified against model_config.
+
+      An attacker or bug could set model_config to values that don't match
+      the actual model, making display-only information misleading without
+      triggering any gate.
+    severity: MED
+    root_cause: >
+      model_config was an existing field before v5. config_snapshot.constants
+      was added by v5 to capture the full config. The overlap was not
+      recognized during schema design.
+    recommended_patch:
+      action: "add cross-validation or eliminate duplication"
+      details: >
+        Option A (add validation):
+          RULE model_config_matches_config_snapshot:
+            scope: training.*.build_provenance_block
+            enforce: REQUIRED
+            error: ConfigConsistencyError
+            check: >
+              model_config.d_model == config_snapshot.constants.V4_D_MODEL
+              AND model_config.n_heads == config_snapshot.constants.V4_N_HEADS
+              AND model_config.n_layers == config_snapshot.constants.V4_N_LAYERS
+              AND model_config.max_memory_tokens == config_snapshot.constants.V4_MAX_MEMORY_TOKENS
+
+        Option B (eliminate model_config):
+          Deprecate model_config entirely. Gate 2 gets d_model/n_heads/n_layers
+          from the live model architecture, not from the stored dict.
+          Config values are in config_snapshot.constants.
+
+  # ===========================================================================
+  # C006 — ONLY_ALLOWED_RUNTIME_GATES is a mutable Python list
+  # ===========================================================================
+  - conflict_id: C006
+    category: INDIRECT
+    title: >
+      ONLY_ALLOWED_RUNTIME_GATES is defined as a mutable list;
+      runtime modification of the gate whitelist is not prevented
+    affected_rules:
+      - "ONLY_ALLOWED_RUNTIME_GATES"
+      - "Gate 1 and Gate 2"
+      - "EDGE_GRAPH: ('interpretive','runtime') = FORBIDDEN"
+    exploit_path: >
+      _boundary.py defines:
+
+        ONLY_ALLOWED_RUNTIME_GATES = [
+            {"gate_id": 1, "name": "format_version_check", ...},
+            {"gate_id": 2, "name": "model_state_dict_shape_check", ...},
+        ]
+
+      Any module that imports _boundary (including evaluation/ or a
+      malicious script) can:
+
+        from gis_recommend.evidence._boundary import ONLY_ALLOWED_RUNTIME_GATES
+        ONLY_ALLOWED_RUNTIME_GATES.append({
+            "gate_id": 3,
+            "name": "val_loss_threshold_gate",
+            "trigger": "torch.load",
+            "check": "checkpoint.val_loss < 2.0",
+            "failure": "raise StructuralIncompatibilityError",
+        })
+
+      This silently adds a third runtime gate that blocks checkpoint loading
+      based on metric values — exactly what FORBIDDEN_AS_GATE prohibits.
+      The spec has no mechanism to detect or prevent this mutation.
+    severity: MED
+    root_cause: >
+      Gate configuration is mutable Python state with no immutability
+      protection. The spec assumes the list won't be modified but
+      provides no enforcement.
+    recommended_patch:
+      action: "freeze gate configuration"
+      details: >
+        1. Define ONLY_ALLOWED_RUNTIME_GATES as a tuple of
+           frozen dataclasses, not a list of dicts:
+
+             from dataclasses import dataclass
+             @dataclass(frozen=True)
+             class RuntimeGate:
+                 gate_id: int
+                 name: str
+                 trigger: str
+                 check: str
+                 failure: str
+
+             ONLY_ALLOWED_RUNTIME_GATES: tuple[RuntimeGate, ...] = (
+                 RuntimeGate(1, "format_version_check", ...),
+                 RuntimeGate(2, "model_state_dict_shape_check", ...),
+             )
+
+        2. Add RULE gate_list_immutable:
+             scope: ALL
+             enforce: INVARIANT
+             check: >
+               len(ONLY_ALLOWED_RUNTIME_GATES) == 2
+               AND ONLY_ALLOWED_RUNTIME_GATES[0].gate_id == 1
+               AND ONLY_ALLOWED_RUNTIME_GATES[1].gate_id == 2
+
+  # ===========================================================================
+  # C007 — decode_policy capture timing not enforced
+  # ===========================================================================
+  - conflict_id: C007
+    category: OVERLAP
+    title: >
+      No rule enforces that metric_bundle.decode_policy matches the
+      actual decode config used during the evaluation that produced the metrics
+    affected_rules:
+      - "decode_policy_must_exist_when_decode_dependent_metrics_present"
+      - "SCHEMA_CONSTRAINT_MAP['metric_bundle.decode_policy']"
+    exploit_path: >
+      The training loop does (pseudocode):
+
+        1. self.evaluate_generation()  # uses self.decode_rep_penalty=1.0
+        2. self.decode_rep_penalty = 2.0  # config changes
+        3. build_metric_bundle(
+               decode_rep_penalty=2.0,  # captures CURRENT value
+               ...
+               gen_metrics=gen_m,       # metrics from step 1, measured at 1.0
+           )
+
+      The metric_bundle now claims ar_token_acc was measured with
+      rep_penalty=2.0, but it was actually measured at 1.0.
+      The decode_policy in the bundle is a LIE.
+
+      There is no rule that validates:
+        "decode_policy captured in metric_bundle MUST equal the decode
+         configuration that was active when evaluate_generation() ran."
+
+      This is a Runtime Enforce gap: the rule requires decode_policy to
+      EXIST, but not to be ACCURATE.
+    severity: MED
+    root_cause: >
+      The spec enforces completeness of decode_policy (it must be non-null)
+      but does not enforce correctness (it must match what was actually used).
+    recommended_patch:
+      action: "add timing constraint"
+      details: >
+        Add RULE decode_policy_must_match_evaluation_config:
+          scope: training.*.evaluate_generation
+          trigger: when gen_metrics are collected
+          enforce: REQUIRED
+          error: DecodePolicyMismatchError
+          check: >
+            The decode parameters passed to build_metric_bundle()
+            MUST be read from the SAME object attributes
+            (self.decode_rep_penalty, self.decode_rep_window, etc.)
+            that _greedy_decode_batch() / _nucleus_sample() consumed
+            during the evaluate_generation() call that produced gen_metrics.
+
+        Implementation: capture a snapshot of decode config BEFORE
+        calling evaluate_generation(), and pass that snapshot to
+        build_metric_bundle().
+
+  # ===========================================================================
+  # C008 — EDGE_GRAPH missing transitive evaluation→disk→training path
+  # ===========================================================================
+  - conflict_id: C008
+    category: TRANSITIVE
+    title: >
+      interpretive → evaluation → disk → training forms an indirect
+      runtime control path not covered by EDGE_GRAPH
+    affected_rules:
+      - "EDGE_GRAPH: ('interpretive','runtime') = FORBIDDEN"
+      - "no_interpretive_output_controls_runtime"
+    exploit_path: >
+      Step 1: Evaluation script calls compare_metrics(cp_a, cp_b).
+              Gets ComparisonReport showing cp_b has higher ar_token_acc.
+
+      Step 2: Evaluation script writes a file:
+              outputs/best_checkpoint.txt → "transformer_checkpoints_v4_6/best_model.pth"
+
+      Step 3: A CI/CD pipeline or deployment script reads best_checkpoint.txt
+              and deploys cp_b to production.
+
+      Step 4: The deployed model is now serving predictions — the
+              ComparisonReport indirectly determined which model is live.
+
+      The EDGE_GRAPH only covers in-process edges. The disk/network is
+      an unmodeled edge that can carry interpretive output back into
+      runtime control. The spec's "operator decides" is bypassed when
+      the "operator" is an automated script that reads interpretive output.
+    severity: MED
+    root_cause: >
+      The EDGE_GRAPH models only direct code-level dependencies within
+      a single Python process. It does not model the filesystem,
+      environment variables, CLI arguments, or CI/CD pipelines as
+      edges in the dependency graph. Interpretive output written to
+      disk can be consumed by automated systems that affect runtime.
+    recommended_patch:
+      action: "document out-of-scope boundary"
+      details: >
+        This vulnerability is inherent to any system where automated
+        tooling consumes human-readable reports. It cannot be closed
+        at the code level.
+
+        Mitigations:
+          1. Add to the spec an explicit "Trust Boundary" section:
+             "Interpretive Report outputs are designed for HUMAN
+             consumption. Automated consumption of interpretive reports
+             for deployment decisions is outside the spec's security
+             model and is the responsibility of the operational pipeline."
+
+          2. Add metadata to all interpretive report dataclasses:
+             __advisory_only__ = True
+             __not_for_automated_decision__ = True
+
+          3. Add to LINT_RULES:
+             L034: "**/*.py", "grep 'ComparisonReport.*if.*deploy|ArchaeologyReport.*if.*switch'",
+             "NO_MATCH"
+
+  # ===========================================================================
+  # C009 — L020/L021 exceptions needed for _recompute.py expose detection gap
+  # ===========================================================================
+  - conflict_id: C009
+    category: BACKFLOW
+    title: >
+      Even with L020/L021 exceptions for _recompute.py, DataLoader(shuffle=False)
+      passes static analysis but still mutates runtime state via model.eval()
+    affected_rules:
+      - "L021: DataLoader.*shuffle=True → NO_MATCH"
+      - "evidence_module_only_reads_snapshot"
+    exploit_path: >
+      L021 only forbids DataLoader with shuffle=True:
+
+        ["L021", "evidence/*.py",
+         "grep 'DataLoader.*shuffle=True'", "NO_MATCH"]
+
+      A DataLoader with shuffle=False passes this check. But:
+
+        1. _recompute.py creates DataLoader(dataset, shuffle=False)
+        2. model.eval() is called (not model.train(), so L017 passes)
+        3. Forward passes are run — this changes CUDA state (memory
+           allocations, CUDA kernel launches, RNG state for dropout
+           even in eval mode)
+
+      The claim "evidence_module_only_reads_snapshot" is false for
+      _recompute.py — it reads snapshot AND executes model computation.
+      The static checks L016-L021 catch the most obvious violations
+      (torch.save, model.train(), optimizer.step(), loss.backward())
+      but cannot catch that model forward passes are NOT read-only
+      operations in practice (CUDA state mutation, memory allocation).
+    severity: LOW
+    root_cause: >
+      Static grep checks cannot distinguish "model forward pass for
+      evaluation" from "model forward pass for training." Both look
+      like `model(...)` in source code.
+    recommended_patch:
+      action: "acknowledge as acceptable violation"
+      details: >
+        This is the cost of having recompute_metrics() as a function.
+        The forward pass is inherently stateful (CUDA, memory).
+        The spec should:
+
+        1. Explicitly document that _recompute.py is the SOLE evidence
+           module permitted to:
+           - Call model.load_state_dict()
+           - Create DataLoader instances
+           - Execute model forward passes
+
+        2. Add a module-level marker:
+           __layer__ = "interpretive_report"
+           __allows_model_execution__ = True  # exception to pure-function rule
+
+        3. Update L020 and L021 to exempt _recompute.py explicitly:
+           L020: "evidence/*.py EXCEPT _recompute.py"
+           L021: "evidence/*.py EXCEPT _recompute.py"
+
+  # ===========================================================================
+  # C010 — torch.load(weights_only=True) bypass potential
+  # ===========================================================================
+  - conflict_id: C010
+    category: BACKFLOW
+    title: >
+      If any evidence module calls torch.load without weights_only=True,
+      a crafted checkpoint can execute arbitrary code during deserialization
+    affected_rules:
+      - "format_version_gate (Gate 1) — bypassed if code runs before gate check"
+      - "model_state_dict_shape_gate (Gate 2)"
+      - "evidence_module_only_reads_snapshot"
+    exploit_path: >
+      _validity.py, _lineage.py, _recompute.py, _compare.py, _archaeology.py
+      all need to read checkpoint files. If any of them calls:
+
+        ckpt = torch.load(path, map_location='cpu')  # weights_only defaults to False
+
+      A checkpoint .pth file is a pickle archive. A crafted file can
+      execute arbitrary Python code during torch.load(), before any
+      gate check runs. This completely bypasses Gate 1 and Gate 2
+      because the malicious code runs DURING deserialization, before
+      the format_version or model_state_dict are even accessible.
+
+      Current training code (train_v4_2.py:975, train_v4_6.py:386) uses
+      weights_only=True, but the spec does not MANDATE weights_only=True
+      for evidence module checkpoint loading.
+    severity: LOW
+    root_cause: >
+      torch.load without weights_only=True is a known deserialization
+      vulnerability. The spec assumes but does not enforce safe loading.
+    recommended_patch:
+      action: "mandate weights_only=True"
+      details: >
+        Add RULE all_checkpoint_loading_must_use_weights_only:
+          scope: ALL
+          enforce: REQUIRED
+          error: UnsafeDeserializationError
+          check: >
+            FORALL torch.load() calls in ALL modules:
+              weights_only parameter IS True
+
+        Add to LINT_RULES:
+          L035: "**/*.py",
+                "ast_detect: torch.load(...) call without weights_only=True",
+                "NO_MATCH"
+
+        This is a defense-in-depth measure — even though the current
+        code already uses weights_only=True, the spec should mandate it
+        to prevent future regressions.
+
+  # ===========================================================================
+  # C011 — SNAPSHOT_RUNTIME_ACCESS contains unenforced display_only labels
+  # ===========================================================================
+  - conflict_id: C011
+    category: INDIRECT
+    title: >
+      SNAPSHOT_RUNTIME_ACCESS labels legacy fields as "ALLOWED:display_only"
+      but nothing prevents them from being used in control flow
+    affected_rules:
+      - "SNAPSHOT_RUNTIME_ACCESS"
+      - "L024-L025 (if.*provenance.*: / if.*metric_bundle.*: with control flow)"
+    exploit_path: >
+      SNAPSHOT_RUNTIME_ACCESS declares:
+
+        "epoch":       "ALLOWED:display_only"
+        "val_loss":    "ALLOWED:display_only"
+
+      But "display_only" is a human-readable label, not a machine-enforceable
+      constraint. The only enforcement is L024/L025 which check for
+      specific patterns (if.*provenance.*: and if.*metric_bundle.*:).
+
+      Exploit: training code reads checkpoint['epoch'] and uses it to
+      decide the curriculum phase:
+
+        ckpt_epoch = checkpoint['epoch']
+        if ckpt_epoch < 10:
+            self.use_curriculum_phase_1()
+        else:
+            self.use_curriculum_phase_2()
+
+      This gates runtime behavior based on epoch — violating the
+      "display_only" label. But epoch is NOT provenance and NOT
+      metric_bundle, so L024-L025 don't catch it. No LINT_RULE
+      checks for this pattern.
+    severity: MED
+    root_cause: >
+      "display_only" is a documentation convention, not a checkable
+      constraint. L024-L025 only cover provenance and metric_bundle
+      access patterns, but leave epoch, val_loss, ar_token_acc, and
+      ar_seq_em unguarded by any control-flow detection rule.
+    recommended_patch:
+      action: "extend control-flow detection to ALL display_only fields"
+      details: >
+        Add LINT_RULES:
+
+          L036: "training/*.py",
+                "ast_detect: if statement whose condition depends on
+                 checkpoint['epoch']",
+                "NO_MATCH"
+
+          L037: "training/*.py",
+                "ast_detect: if statement whose condition depends on
+                 checkpoint['val_loss'] OR checkpoint['ar_token_acc']
+                 OR checkpoint['ar_seq_em']",
+                "NO_MATCH"
+
+        Alternatively, remove legacy display_only fields from the
+        checkpoint entirely and require all access to go through
+        metric_bundle (which IS covered by L025).
+
+  # ===========================================================================
+  # C012 — overlapping enforce scope creates dual-authority ambiguity
+  # ===========================================================================
+  - conflict_id: C012
+    category: OVERLAP
+    title: >
+      provenance_write_once (Runtime Enforce) and provenance_no_backfill
+      (Snapshot Evidence) enforce overlapping invariants at different layers
+    affected_rules:
+      - "provenance_write_once (R04)"
+      - "provenance_no_backfill (R06)"
+      - "run_id_unchanged_within_run (R05)"
+    exploit_path: >
+      Three rules protect provenance immutability:
+
+        R04 (provenance_write_once):
+          scope: training.*.save_checkpoint
+          enforce: IMMUTABLE
+          layer: Runtime Enforce
+
+        R05 (run_id_unchanged_within_run):
+          scope: training.*.save_checkpoint
+          enforce: INVARIANT
+          layer: Runtime Enforce
+
+        R06 (provenance_no_backfill):
+          scope: evidence._provenance
+          enforce: FORBIDDEN
+          layer: Snapshot Evidence
+
+      R04 and R05 are enforced at save time (within the training process).
+      R06 is enforced by static analysis (no backfill code patterns).
+
+      Gap: R04+R05 only protect against in-process modification during
+      training. R06 protects against post-hoc backfill. But neither protects
+      against:
+
+        Process A (training) saves checkpoint → exits.
+        Process B (separate script) loads checkpoint, modifies provenance,
+        saves checkpoint. Process B is NOT evidence/ code — it's an
+        external script that doesn't import evidence at all.
+
+      The load-modify-save pattern in Process B is caught by L026 (VS004),
+      but L026 is a grep-based static check on **/*.py in the project.
+      An external script outside the project is undetectable.
+
+      The real protection is the HASH CHAIN (provenance contains
+      parent_checkpoint_sha256, and the training_history cross-references
+      the checkpoint sha256). But the spec doesn't mandate hash chain
+      verification as an automated check — it's only documented in the
+      narrative as a manual verification.
+    severity: LOW
+    root_cause: >
+      Three overlapping rules create an illusion of comprehensive protection,
+      but the actual enforcement surface has gaps. External-process
+      modification can only be detected by hash chain verification,
+      which is not automated in the spec.
+    recommended_patch:
+      action: "add automated hash chain verification"
+      details: >
+        1. Consolidate R04+R05+R06 into a single invariant:
+           "Provenance is immutable after first write, enforced in-process
+            at save time, and verifiable cross-process via hash chain."
+
+        2. Add RULE hash_chain_must_verify:
+             scope: evidence._validity.classify_checkpoint_validity
+             trigger: whenever a checkpoint is validated
+             enforce: REQUIRED_CHECK
+             error: HashChainMismatch (ADVISORY ONLY — never gates)
+             check: >
+               IF provenance.parent_checkpoint_sha256 IS NOT NULL:
+                 sha256(parent_checkpoint_file) == parent_checkpoint_sha256
+
+        3. Add to IntegrityCheck dataclass:
+           hash_chain_valid: bool | None
+
+# ==============================================================================
+# SEVERITY SUMMARY
+# ==============================================================================
+
+severity_summary:
+  HIGH:
+    - C001  # format_version type misattribution
+    - C002  # recompute_metrics needs model.load_state_dict
+    - C003  # transitive import bypass
+  MED:
+    - C004  # legacy/metric_bundle semantic duplication
+    - C005  # model_config/config_snapshot overlap
+    - C006  # mutable gate list
+    - C007  # decode_policy timing not enforced
+    - C008  # interpretive→evaluation→disk→training
+    - C011  # display_only unenforceable
+  LOW:
+    - C009  # DataLoader shuffle=False passes static check
+    - C010  # torch.load weights_only not mandated
+    - C012  # overlapping immutability rules
+
+# ==============================================================================
+# END
+# ==============================================================================

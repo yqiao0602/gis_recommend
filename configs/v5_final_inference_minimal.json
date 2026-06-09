@@ -1,0 +1,34 @@
+{
+  "entrypoint": "scripts/infer_v5_final_minimal.py",
+  "checkpoint": "outputs_v2/v5_final_checkpoints/latest_model.pt",
+  "transition_matrix": "outputs_v2/transition_allowed_next.json",
+  "output": "outputs_v2/evaluation_reports/v5_final_prediction_smoke.json",
+  "decode": {
+    "beam_width": 5,
+    "max_len": 16,
+    "end_probability_threshold": 0.95,
+    "io_mask": "applied_before_token_selection",
+    "alpha_noise": "off_at_inference"
+  },
+  "prediction_artifact": {
+    "schema_version": "gis_recommend.v5_final.prediction.v1",
+    "includes": [
+      "pred_tokens",
+      "beam_candidates",
+      "decode_trace",
+      "alpha_trace",
+      "token_probabilities",
+      "end_timing",
+      "repetition_statistics",
+      "diagnostic_graph",
+      "checkpoint_metadata"
+    ]
+  },
+  "runtime_boundary": {
+    "checkpoint_loading": "strict_v5_wrapped_payload_only",
+    "raw_checkpoint_fallback": false,
+    "strict_false_loading": false,
+    "diagnostics_gate_execution": false,
+    "provenance_gates_loading": "format_version_only"
+  }
+}

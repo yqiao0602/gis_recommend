@@ -1,0 +1,808 @@
+# ==============================================================================
+# MVCS v1 — Control-Flow Closure Proof
+# Target: prove or disprove full isolation of Interpretive from Runtime
+# Date: 2026-05-08
+# ==============================================================================
+
+closure_proof:
+
+  # ===========================================================================
+  # §1 — REACHABILITY MATRIX (complete)
+  # ===========================================================================
+  #
+  # Cell format:
+  #   path_id: {mechanism, blocked_by, status, confidence}
+  #
+  # Status legend:
+  #   ACTIVE        — can influence target layer at runtime
+  #   OBSERVABLE    — can read/observe target layer, no write effect
+  #   CONDITIONAL   — ACTIVE only if a specific condition holds
+  #   DEAD          — provably unreachable (structural or enforced)
+  #   UNENFORCED    — spec declares FORBIDDEN but no enforcement exists
+  #
+  # Confidence legend:
+  #   CERTAIN       — structural guarantee (Python scoping, process boundary)
+  #   HIGH          — enforcement mechanism exists and is verifiable
+  #   MEDIUM        — enforcement mechanism exists but has gaps
+  #   LOW           — no enforcement mechanism; relies on convention
+
+  reachability_matrix:
+
+    # =========================================================================
+    # ROW: RUNTIME → TARGETS
+    # =========================================================================
+    runtime_to_runtime:
+      - path_id: RR-01
+        mechanism: "direct function call within training module"
+        blocked_by: null
+        status: ACTIVE
+        confidence: CERTAIN
+        notes: "Normal operation. Unrestricted by design."
+
+      - path_id: RR-02
+        mechanism: "training imports evaluation, evaluation runs model forward"
+        blocked_by: null
+        status: ACTIVE
+        confidence: CERTAIN
+        notes: "Transitive import not restricted."
+
+    runtime_to_snapshot:
+      - path_id: RS-01
+        mechanism: "torch.save() in training loop"
+        blocked_by: null
+        status: ACTIVE
+        confidence: CERTAIN
+        notes: "Primary intended edge. ONE_WAY:torch_save."
+
+      - path_id: RS-02
+        mechanism: "training writes JSON history alongside checkpoint"
+        blocked_by: null
+        status: ACTIVE
+        confidence: CERTAIN
+        notes: "training_history_v4_X.json. Not in EDGE_GRAPH but IS snapshot-adjacent."
+
+      - path_id: RS-03
+        mechanism: "training logs metrics to wandb/tensorboard"
+        blocked_by: null
+        status: CONDITIONAL
+        confidence: LOW
+        notes: "Only if experiment tracking is configured. Not modeled in spec."
+
+    runtime_to_interpretive:
+      - path_id: RI-01
+        mechanism: "training imports evaluation, evaluation imports evidence"
+        blocked_by: "L001-L008 (direct only, transitive NOT covered)"
+        status: ACTIVE
+        confidence: HIGH
+        notes: "C003 — transitive bypass. grep cannot detect 2-hop imports."
+
+      - path_id: RI-02
+        mechanism: "training imports evidence directly (if L001-L002 not enforced)"
+        blocked_by: "L001, L002, FORBIDDEN_IMPORT_GRAPH"
+        status: CONDITIONAL
+        confidence: MEDIUM
+        notes: "DEAD if linter runs. ACTIVE if linter skipped."
+
+      - path_id: RI-03
+        mechanism: "training spawns subprocess calling evidence CLI tool"
+        blocked_by: null
+        status: ACTIVE
+        confidence: MEDIUM
+        notes: "No rule against training launching external processes."
+
+      - path_id: RI-04
+        mechanism: "training reads interpretive report JSON from disk"
+        blocked_by: null
+        status: ACTIVE
+        confidence: MEDIUM
+        notes: "No rule against training reading files produced by evidence tools."
+
+    # =========================================================================
+    # ROW: SNAPSHOT → TARGETS
+    # =========================================================================
+    snapshot_to_runtime:
+      - path_id: SR-01
+        mechanism: "torch.load() → model.load_state_dict() in training"
+        blocked_by: null
+        status: ACTIVE
+        confidence: CERTAIN
+        notes: "Gate 2. INTENDED structural path. EDGE_GRAPH: RESTRICTED."
+
+      - path_id: SR-02
+        mechanism: "torch.load() → checkpoint['epoch'] → training resume logic"
+        blocked_by: "SNAPSHOT_RUNTIME_ACCESS: ALLOWED:display_only (unenforceable)"
+        status: ACTIVE
+        confidence: HIGH
+        notes: >
+          C011. Training resume MUST read epoch. The spec classifies this as
+          display_only but it's structurally required for correct resume.
+          This is a SPEC ERROR, not a code violation — training resume
+          legitimately needs epoch. The spec should distinguish "resume
+          (allowed)" from "cross-checkpoint epoch comparison (forbidden)."
+
+      - path_id: SR-03
+        mechanism: "torch.load() → checkpoint['model_config'] → architecture decision"
+        blocked_by: "SNAPSHOT_RUNTIME_ACCESS: ALLOWED:display_only (unenforceable)"
+        status: ACTIVE
+        confidence: MEDIUM
+        notes: "Training could read d_model from checkpoint to recreate model."
+
+      - path_id: SR-04
+        mechanism: "torch.load() → checkpoint['val_loss'] → early stopping resume"
+        blocked_by: "SNAPSHOT_RUNTIME_ACCESS: ALLOWED:display_only (unenforceable)"
+        status: ACTIVE
+        confidence: MEDIUM
+        notes: "val_loss read for best_val_loss initialization on resume."
+
+      - path_id: SR-05
+        mechanism: "torch.load() → checkpoint['provenance'] → control flow gate"
+        blocked_by: "SNAPSHOT_RUNTIME_ACCESS: FORBIDDEN (L024, L022)"
+        status: CONDITIONAL
+        confidence: MEDIUM
+        notes: >
+          DEAD if L022+L024 enforced. ACTIVE if bypassed.
+          L024 only catches if.*provenance.*: regex — AST-level access
+          (provenance.get('run_id')) may not match.
+
+      - path_id: SR-06
+        mechanism: "torch.load() → checkpoint['metric_bundle'] → control flow gate"
+        blocked_by: "SNAPSHOT_RUNTIME_ACCESS: FORBIDDEN (L023, L025)"
+        status: CONDITIONAL
+        confidence: MEDIUM
+        notes: "DEAD if enforced. ACTIVE if bypassed. Same regex limitation as SR-05."
+
+      - path_id: SR-07
+        mechanism: "torch.load(weights_only=False) → pickle __reduce__ → arbitrary code"
+        blocked_by: "NOT MANDATED (C010)"
+        status: CONDITIONAL
+        confidence: HIGH
+        notes: >
+          ACTIVE if any torch.load() in the codebase omits weights_only=True.
+          The TRAINING code (train_v4_2.py:975) uses weights_only=True, but
+          the EVIDENCE code (stubs) does not mandate it. If _validity.py or
+          _lineage.py omit weights_only=True, this path is ACTIVE.
+
+      - path_id: SR-08
+        mechanism: "checkpoint file corrupted → training load fails → different code path"
+        blocked_by: null
+        status: OBSERVABLE
+        confidence: CERTAIN
+        notes: "I/O error → exception → training handles or crashes. Not a control path."
+
+    snapshot_to_interpretive:
+      - path_id: SI-01
+        mechanism: "evidence/*.py calls torch.load() on checkpoint"
+        blocked_by: null
+        status: ACTIVE
+        confidence: CERTAIN
+        notes: "Primary intended edge. ALLOWED:read_only."
+
+      - path_id: SI-02
+        mechanism: "interpretive function reads training_history JSON"
+        blocked_by: null
+        status: ACTIVE
+        confidence: HIGH
+        notes: "_archaeology.py reads JSON for cross-reference."
+
+    snapshot_to_snapshot:
+      - path_id: SS-01
+        mechanism: "evidence function reads checkpoint A, script writes checkpoint B"
+        blocked_by: "EDGE_GRAPH: FORBIDDEN (but only in-process)"
+        status: CONDITIONAL
+        confidence: LOW
+        notes: >
+          EDGE_GRAPH declares FORBIDDEN but enforcement is grep-based (L016
+          forbids torch.save in evidence/). An external script calling evidence
+          functions and then torch.save() is NOT covered by L016.
+
+      - path_id: SS-02
+        mechanism: "evaluation script loads checkpoint, modifies metric_bundle, saves"
+        blocked_by: "L026 (load-modify-save pattern)"
+        status: CONDITIONAL
+        confidence: MEDIUM
+        notes: "DEAD if L026 enforced. ACTIVE if script is outside project root."
+
+    # =========================================================================
+    # ROW: INTERPRETIVE → TARGETS
+    # =========================================================================
+    interpretive_to_runtime:
+      # This is the CRITICAL row. Every path here is a potential spec violation.
+
+      - path_id: IR-01
+        mechanism: >
+          evidence function return value → evaluation script → writes config file
+          → training reads config → runtime behavior changes
+        blocked_by: null
+        status: ACTIVE
+        confidence: HIGH
+        notes: >
+          C008. 4-hop path: interpretive → evaluation → filesystem → runtime.
+          The EDGE_GRAPH only models direct in-process edges.
+          Config files, JSON outputs, and CI/CD pipelines are unmodeled edges.
+          This is the PRIMARY unclosed path.
+
+      - path_id: IR-02
+        mechanism: >
+          evidence function → returns ValidityReport → evaluation script
+          → sets env var BEST_CHECKPOINT → deployment pipeline → model serving
+        blocked_by: null
+        status: ACTIVE
+        confidence: HIGH
+        notes: "Same class as IR-01. Env vars are unmodeled edges."
+
+      - path_id: IR-03
+        mechanism: >
+          evidence function → stdout/stderr output → log aggregator
+          → monitoring alert → operator action → runtime change
+        blocked_by: null
+        status: OBSERVABLE
+        confidence: MEDIUM
+        notes: >
+          Logging output is OBSERVABLE (it communicates information).
+          The operator action is human-mediated. The spec explicitly
+          allows this (operator is sole authority). Not a violation.
+
+      - path_id: IR-04
+        mechanism: >
+          evidence function → module-level cache (lru_cache, global dict)
+          → evaluation reads cache → evaluation produces different output
+          → training reads evaluation output → runtime changes
+        blocked_by: null
+        status: CONDITIONAL
+        confidence: LOW
+        notes: >
+          Only ACTIVE if evidence functions use mutable module-level state.
+          Current stubs don't implement caching. Spec doesn't forbid it.
+
+      - path_id: IR-05
+        mechanism: >
+          evidence._recompute → model.load_state_dict() → model weights change
+          → if model object is shared with training → training uses modified weights
+        blocked_by: "L020 forbids model.load_state_dict in evidence (but conflicts with _recompute)"
+        status: CONDITIONAL
+        confidence: MEDIUM
+        notes: >
+          C002. If _recompute.py is allowed to call model.load_state_dict(),
+          and the model object were somehow shared with a training process,
+          this path would be ACTIVE. In practice, evidence and training run
+          in different processes, so model objects are NOT shared.
+          PROCESS BOUNDARY makes this path DEAD for separate processes,
+          but ACTIVE if evidence and training are in the same process.
+
+      - path_id: IR-06
+        mechanism: >
+          evidence._recompute → DataLoader iteration → CUDA memory allocation
+          → if same GPU as training → OOM or memory pressure → training behavior changes
+        blocked_by: null
+        status: OBSERVABLE
+        confidence: MEDIUM
+        notes: >
+          CUDA memory is a shared resource. evidence running on the same GPU
+          as training affects available memory. This is OBSERVABLE (affects
+          performance/capacity) but not a semantic control path.
+
+      - path_id: IR-07
+        mechanism: >
+          evidence._recompute → model forward pass → CUDA RNG state changes
+          → if same process and no seed reset → training RNG differs
+        blocked_by: null
+        status: CONDITIONAL
+        confidence: LOW
+        notes: >
+          Only ACTIVE if evidence and training share the same process AND
+          _recompute doesn't save/restore RNG state. Separate processes
+          have separate CUDA contexts → DEAD for multi-process.
+
+      - path_id: IR-08
+        mechanism: >
+          evidence function → import with side effects → modifies sys.modules
+          → next time training imports → picks up modified module
+        blocked_by: null
+        status: CONDITIONAL
+        confidence: LOW
+        notes: >
+          ACTIVE if any evidence module has import-time side effects.
+          Current stubs have no side effects (only def/class declarations).
+          Spec doesn't forbid import-time side effects.
+
+      - path_id: IR-09
+        mechanism: >
+          evidence._boundary.ONLY_ALLOWED_RUNTIME_GATES → mutable list
+          → any module appends gate → load_checkpoint behavior changes
+        blocked_by: null
+        status: ACTIVE
+        confidence: HIGH
+        notes: "C006. Mutable gate list. Direct mutation path."
+
+      - path_id: IR-10
+        mechanism: >
+          evidence._boundary.SUPPORTED_FORMAT_VERSIONS → mutable set
+          → any module adds/removes versions → load_checkpoint behavior changes
+        blocked_by: null
+        status: ACTIVE
+        confidence: HIGH
+        notes: "Same class as IR-09. Set is mutable."
+
+      - path_id: IR-11
+        mechanism: >
+          training import evaluation → evaluation import evidence
+          → evaluation function wraps compare_metrics()
+          → training calls evaluation function → result used in training decision
+        blocked_by: "FORBIDDEN_IMPORT_GRAPH (direct only), FORBIDDEN_METHOD_GRAPH (specific methods only)"
+        status: ACTIVE
+        confidence: HIGH
+        notes: >
+          C003 transitive bypass. FORBIDDEN_METHOD_GRAPH lists specific
+          function names. If evaluation defines a new function
+          `rank_checkpoints()` that internally calls compare_metrics(),
+          the new function name IS NOT in FORBIDDEN_METHOD_GRAPH.
+          Name-based blocking is trivially bypassed by renaming.
+
+    interpretive_to_snapshot:
+      - path_id: IS-01
+        mechanism: "evidence function → writes report JSON → script reads JSON → writes checkpoint"
+        blocked_by: "EDGE_GRAPH: FORBIDDEN (in-process only)"
+        status: ACTIVE
+        confidence: HIGH
+        notes: "Same class as IR-01. Out-of-process write not covered."
+
+      - path_id: IS-02
+        mechanism: "evidence function → torch.save (if L016 not enforced)"
+        blocked_by: "L016 (grep 'torch.save' in evidence/*.py)"
+        status: CONDITIONAL
+        confidence: MEDIUM
+        notes: "DEAD if L016 enforced. ACTIVE if grep misses (e.g., dynamic call)."
+
+      - path_id: IS-03
+        mechanism: "evidence._recompute → loads model → modifies model weights in-place → saves checkpoint"
+        blocked_by: "L016 + L020"
+        status: CONDITIONAL
+        confidence: MEDIUM
+        notes: >
+          _recompute evaluates but doesn't train (no optimizer.step, no loss.backward).
+          Weights won't change from forward pass alone (eval mode, no grad).
+          DEAD for weight modification. OBSERVABLE for weight reading.
+
+    interpretive_to_interpretive:
+      - path_id: II-01
+        mechanism: "generate_archaeology_report() calls 5 other evidence functions"
+        blocked_by: null
+        status: ACTIVE
+        confidence: CERTAIN
+        notes: "Intended composition. ALLOWED:pure_composition."
+
+    # =========================================================================
+    # ROW: ENVIRONMENTAL → TARGETS
+    # =========================================================================
+    environmental_to_runtime:
+      - path_id: ER-01
+        mechanism: "pickle deserialization in torch.load(weights_only=False) → arbitrary code execution"
+        blocked_by: "NOT MANDATED (C010)"
+        status: CONDITIONAL
+        confidence: HIGH
+        notes: "Bypasses ALL gates. Code runs before format_version is checked."
+
+      - path_id: ER-02
+        mechanism: "GPU OOM from concurrent evidence process → training allocation fails"
+        blocked_by: null
+        status: OBSERVABLE
+        confidence: MEDIUM
+        notes: "Resource contention. Affects feasibility, not semantics."
+
+      - path_id: ER-03
+        mechanism: "filesystem corruption → checkpoint load fails → training takes error path"
+        blocked_by: null
+        status: OBSERVABLE
+        confidence: CERTAIN
+        notes: "I/O failure. Not a spec violation."
+
+      - path_id: ER-04
+        mechanism: "CI/CD pipeline reads interpretive report → auto-deploys model"
+        blocked_by: null
+        status: ACTIVE
+        confidence: HIGH
+        notes: "C008. Unmodeled edge. Outside spec's enforcement scope."
+
+      - path_id: ER-05
+        mechanism: "environment variable set by external script based on interpretive output → training reads env var"
+        blocked_by: null
+        status: ACTIVE
+        confidence: MEDIUM
+        notes: >
+          GIS_OUTPUTS_DIR, GIS_VOCAB_SIZE etc. are already read by
+          transformer_config.py from env vars. An external script could
+          set these based on interpretive output.
+
+  # ===========================================================================
+  # §2 — ACTIVE PATH LIST
+  # ===========================================================================
+  #
+  # Paths that ARE currently active (can influence runtime from interpretive
+  # or from snapshot beyond the 2 allowed gates).
+
+  active_paths:
+    critical:
+      - path_id: IR-01
+        name: "interpretive → evaluation → filesystem → runtime"
+        mechanism: "Config file / JSON output / checkpoint-path file"
+        reachable_from: ["compare_metrics", "classify_checkpoint_validity", "generate_archaeology_report"]
+        reachable_to: ["training hyperparameter selection", "warmstart path selection", "deployment"]
+        cve_equivalent: C008
+        fix_priority: P0
+
+      - path_id: IR-02
+        name: "interpretive → evaluation → env_var → runtime"
+        mechanism: "Environment variable set by evaluation wrapper"
+        reachable_from: ["any evidence function"]
+        reachable_to: ["GIS_OUTPUTS_DIR", "any GIS_* env var read by transformer_config"]
+        cve_equivalent: C008
+        fix_priority: P0
+
+      - path_id: IR-09
+        name: "mutable gate list → arbitrary gate injection"
+        mechanism: "ONLY_ALLOWED_RUNTIME_GATES.append()"
+        reachable_from: ["any module importing _boundary"]
+        reachable_to: ["load_checkpoint gate behavior"]
+        cve_equivalent: C006
+        fix_priority: P0
+
+      - path_id: IR-10
+        name: "mutable format set → version acceptance modification"
+        mechanism: "SUPPORTED_FORMAT_VERSIONS.add() / .remove()"
+        reachable_from: ["any module importing _boundary"]
+        reachable_to: ["load_checkpoint format_version gate"]
+        cve_equivalent: C006
+        fix_priority: P0
+
+      - path_id: IR-11
+        name: "transitive import: training → evaluation → evidence"
+        mechanism: "evaluation function wraps interpretive function under new name"
+        reachable_from: ["training, via evaluation re-export"]
+        reachable_to: ["training control flow via renamed evidence function"]
+        cve_equivalent: C003
+        fix_priority: P0
+
+      - path_id: RI-01
+        name: "runtime → interpretive via evaluation import bridge"
+        mechanism: "Same path as IR-11, viewed from runtime side"
+        reachable_from: ["training, inference, pipelines, models"]
+        reachable_to: ["any evidence function or type"]
+        cve_equivalent: C003
+        fix_priority: P0
+
+      - path_id: SR-07
+        name: "pickle deserialization → arbitrary code execution → runtime control"
+        mechanism: "torch.load without weights_only=True"
+        reachable_from: ["any .pth file"]
+        reachable_to: ["complete process takeover"]
+        cve_equivalent: C010
+        fix_priority: P0
+
+    high:
+      - path_id: SR-02
+        name: "checkpoint epoch → training resume logic"
+        mechanism: "checkpoint['epoch'] read for resume"
+        reachable_from: ["any checkpoint"]
+        reachable_to: ["LR scheduler, curriculum phase, early stopping counter"]
+        cve_equivalent: C011
+        fix_priority: P1
+        notes: >
+          This is a LEGITIMATE path for training resume. The spec must
+          distinguish "resume (allowed, structural)" from "comparison
+          (forbidden, semantic)." Currently classified incorrectly.
+
+      - path_id: SR-05
+        name: "checkpoint provenance → runtime control (regex bypass)"
+        mechanism: "provenance.get('run_id') doesn't match if.*provenance.*: regex"
+        reachable_from: ["any checkpoint in training code"]
+        reachable_to: ["warmstart chain validation, version-specific behavior"]
+        cve_equivalent: C011
+        fix_priority: P1
+        notes: "L024 grep pattern is too narrow. AST-level detection needed."
+
+      - path_id: SR-06
+        name: "checkpoint metric_bundle → runtime control (regex bypass)"
+        mechanism: "Same as SR-05, for metric_bundle"
+        reachable_from: ["any checkpoint in training code"]
+        reachable_to: ["metric-based gating, selector replay"]
+        cve_equivalent: C011
+        fix_priority: P1
+
+      - path_id: IR-05
+        name: "recompute_metrics model load → shared process weight mutation"
+        mechanism: "model.load_state_dict() in _recompute.py (if C002 resolved by exception)"
+        reachable_from: ["_recompute.py"]
+        reachable_to: ["model weights in same-process training"]
+        cve_equivalent: C002
+        fix_priority: P1
+        notes: >
+          Only if evidence and training share a process. With Option A
+          (move to evaluation/), this path is DEAD for training.
+
+    medium:
+      - path_id: RI-03
+        name: "training spawns subprocess → evidence CLI → reads output"
+        mechanism: "subprocess.run(['python', '-m', 'evidence.cli', ...])"
+        reachable_from: ["training/*.py"]
+        reachable_to: ["interpretive output consumed by training"]
+        cve_equivalent: null
+        fix_priority: P2
+
+      - path_id: RI-04
+        name: "training reads interpretive report JSON from disk"
+        mechanism: "json.load('archaeology_report.json')"
+        reachable_from: ["training/*.py"]
+        reachable_to: ["interpretive output consumed by training"]
+        cve_equivalent: null
+        fix_priority: P2
+
+      - path_id: IR-08
+        name: "evidence import-time side effects → sys.modules mutation"
+        mechanism: "Module-level code execution on import"
+        reachable_from: ["any module importing evidence"]
+        reachable_to: ["modified module behavior in subsequent imports"]
+        cve_equivalent: null
+        fix_priority: P2
+
+      - path_id: ER-05
+        name: "env var set by external script → training reads"
+        mechanism: "GIS_* env vars in transformer_config.py"
+        reachable_from: ["external script reading interpretive output"]
+        reachable_to: ["OUTPUT_DIR, VOCAB_SIZE, checkpoint paths"]
+        cve_equivalent: null
+        fix_priority: P2
+
+  # ===========================================================================
+  # §3 — PROVABLY DEAD PATHS
+  # ===========================================================================
+
+  dead_paths:
+    - path_id: DD-01
+      name: "interpretive function directly modifies training local variable"
+      mechanism: null
+      reason: "Python scoping — interpretive function has no reference to training's stack frame"
+      confidence: CERTAIN
+
+    - path_id: DD-02
+      name: "interpretive function calls training function without import"
+      mechanism: null
+      reason: "Python requires explicit import. L001-L008 block evidence imports in training, but training imports in evidence are not blocked. However, evidence modules' __forbidden_imports__ lists include gis_recommend.training."
+      confidence: HIGH
+      caveat: "Requires __forbidden_imports__ to be enforced at import time."
+
+    - path_id: DD-03
+      name: "snapshot checkpoint modifies runtime without being loaded"
+      mechanism: null
+      reason: "A .pth file on disk has zero effect until torch.load() is called."
+      confidence: CERTAIN
+
+    - path_id: DD-04
+      name: "evidence module calls optimizer.step()"
+      mechanism: null
+      reason: "L018 grep check + evidence modules don't import torch.optim (per __forbidden_imports__)"
+      confidence: HIGH
+      caveat: "Requires L018 enforcement and __forbidden_imports__ enforcement."
+
+    - path_id: DD-05
+      name: "evidence module calls loss.backward()"
+      mechanism: null
+      reason: "L019 grep check + no loss computation in evidence stubs"
+      confidence: HIGH
+      caveat: "Requires L019 enforcement."
+
+    - path_id: DD-06
+      name: "interpretive → runtime via Python import system without any import statement"
+      mechanism: null
+      reason: "Python does not support implicit cross-module references. Every name must be imported."
+      confidence: CERTAIN
+
+  # ===========================================================================
+  # §4 — CLOSURE GAP SUMMARY
+  # ===========================================================================
+
+  closure_gaps:
+    total_paths_analyzed: 37
+    active_paths: 15
+    conditional_paths: 11
+    observable_paths: 6
+    dead_paths: 6
+
+    # Which spec categories have unclosed paths
+    unclosed_by_category:
+      transitive_import:        ["IR-11", "RI-01"]                    # C003
+      filesystem_bypass:        ["IR-01", "IR-02", "RI-04"]           # C008
+      mutable_config:           ["IR-09", "IR-10"]                    # C006
+      pickle_deserialization:   ["SR-07", "ER-01"]                    # C010
+      regex_bypass:             ["SR-05", "SR-06", "SR-02"]           # C011
+      subprocess:               ["RI-03"]                             # —
+      env_var:                  ["ER-05"]                             # —
+      import_side_effects:      ["IR-08"]                             # —
+      model_load_in_evidence:   ["IR-05"]                             # C002
+
+  # ===========================================================================
+  # §5 — MINIMAL PATCH SET (to achieve full closure)
+  # ===========================================================================
+
+  minimal_patches:
+
+    - patch_id: P0-01
+      name: "freeze gate configuration"
+      targets: ["IR-09", "IR-10"]
+      mechanism: >
+        Convert ONLY_ALLOWED_RUNTIME_GATES from list[dict] to
+        tuple[FrozenRuntimeGate, ...].
+        Convert SUPPORTED_FORMAT_VERSIONS from set to frozenset.
+      spec_change: "_boundary.py: use frozen dataclass + tuple + frozenset"
+      closure_guarantee: "Any attempt to mutate raises AttributeError at runtime."
+
+    - patch_id: P0-02
+      name: "close transitive import bridge"
+      targets: ["IR-11", "RI-01"]
+      mechanism: >
+        Add to FORBIDDEN_IMPORT_GRAPH:
+          "evaluation": ["evidence"]  # evaluation CANNOT import evidence
+
+        If evaluation needs evidence types, define a lightweight
+        protocol/interface that evaluation can use without importing evidence.
+        Alternatively: allow evaluation to import evidence._schemas ONLY
+        (pure dataclasses), forbid evidence._validity/_lineage/_recompute/_compare.
+      spec_change: "FORBIDDEN_IMPORT_GRAPH + LINT_RULES L033 (transitive check)"
+      closure_guarantee: "training→evaluation→evidence path severed at evaluation→evidence edge."
+
+    - patch_id: P0-03
+      name: "mandate weights_only=True for ALL torch.load calls"
+      targets: ["SR-07", "ER-01"]
+      mechanism: >
+        Add RULE all_torch_load_must_use_weights_only:
+          scope: ALL
+          enforce: REQUIRED
+          error: UnsafeDeserializationError
+          check: >
+            FORALL torch.load() calls: weights_only parameter IS True
+        Add LINT_RULE L035 as grep/ast check.
+      spec_change: "Add rule + L035"
+      closure_guarantee: "Pickle code execution path DEAD. Only tensor data deserialized."
+
+    - patch_id: P0-04
+      name: "resolve recompute_metrics location"
+      targets: ["IR-05", "C002"]
+      mechanism: >
+        Move recompute_metrics() from evidence/_recompute.py
+        to evaluation/recompute_metrics.py.
+
+        evidence/ retains only pure functions (no model loading,
+        no DataLoader, no forward pass).
+
+        evaluation/recompute_metrics.py:
+          - Allowed to import evidence._schemas (for report types)
+          - Allowed to call model.load_state_dict()
+          - Allowed to create DataLoader
+          - Labels all output as derived_truth
+      spec_change: "Move function + 3 dataclasses from evidence/ to evaluation/"
+      closure_guarantee: >
+        evidence/ becomes truly pure (no model mutation).
+        evaluation/ is not forbidden from importing evidence.
+        But evaluation MUST NOT re-export evidence functions to training.
+        (Covered by P0-02.)
+
+    - patch_id: P1-01
+      name: "upgrade control-flow detection from regex to AST"
+      targets: ["SR-05", "SR-06", "SR-02"]
+      mechanism: >
+        Replace L022-L025 (grep-based) with AST-based detection:
+
+        L022-AST: "For every function in training/*.py, if its AST contains
+        a subscript access on a name bound to torch.load() result, and the
+        subscript key is 'provenance' or 'metric_bundle', and the access
+        appears in an if/while/for condition or assert statement, flag
+        RuntimeDependencyViolation."
+
+        Distinguish resume (allowed):
+          checkpoint['epoch'] used ONLY for: self.start_epoch = ...
+          checkpoint['val_loss'] used ONLY for: best_val_loss = ...
+        from gating (forbidden):
+          checkpoint['epoch'] used in: if epoch < N: change_behavior()
+      spec_change: "L022-L025 replaced with AST rules + whitelist for resume patterns"
+      closure_guarantee: "Regex bypass closed. Resume patterns whitelisted."
+
+    - patch_id: P1-02
+      name: "document out-of-scope trust boundary"
+      targets: ["IR-01", "IR-02", "ER-05"]
+      mechanism: >
+        Add to spec §0:
+
+        TRUST BOUNDARY:
+          The MVCS enforcement scope ends at the Python process boundary.
+          Interpretive output written to filesystem, stdout, or environment
+          variables is OUTSIDE the enforcement scope. Automated consumption
+          of interpretive output by CI/CD pipelines, deployment scripts,
+          or monitoring systems is the responsibility of the operational
+          pipeline, not the MVCS spec.
+
+        Add to all interpretive report dataclasses:
+          __advisory_only__ = True
+      spec_change: "Add trust boundary section + dataclass markers"
+      closure_guarantee: >
+        These paths cannot be closed at the Python level.
+        They are documented as out-of-scope with explicit markers.
+        Not a spec bug — a declared boundary.
+
+    - patch_id: P1-03
+      name: "add import-time side effect prohibition"
+      targets: ["IR-08"]
+      mechanism: >
+        Add RULE no_import_side_effects_in_evidence:
+          scope: evidence/*
+          enforce: REQUIRED
+          check: >
+            Module-level code in evidence/*.py MUST only contain:
+              - import statements
+              - class definitions
+              - function definitions
+              - constant assignments (immutable types only)
+            NO: file I/O, network calls, subprocess, thread creation,
+            module-level mutable state initialization ({}], set(), [])
+      spec_change: "Add rule + L036 (ast check for module-level calls)"
+      closure_guarantee: "Import of evidence has zero side effects."
+
+    - patch_id: P2-01
+      name: "add subprocess/JSON consumption detection"
+      targets: ["RI-03", "RI-04"]
+      mechanism: >
+        Add LINT_RULES:
+          L037: "training/*.py",
+                "grep 'subprocess.*evidence|evidence.*subprocess'",
+                "NO_MATCH"
+          L038: "training/*.py",
+                "grep 'archaeology_report|validity_report|comparison_report'",
+                "NO_MATCH"
+      spec_change: "Add L037, L038"
+      closure_guarantee: "Training cannot spawn evidence tools or read their output."
+
+  # ===========================================================================
+  # §6 — POST-PATCH REACHABILITY (projected)
+  # ===========================================================================
+
+  post_patch_status:
+    fully_closed:
+      - "IR-09, IR-10 (mutable gate config) → P0-01"
+      - "IR-11, RI-01 (transitive import) → P0-02"
+      - "SR-07, ER-01 (pickle) → P0-03"
+      - "IR-05 (recompute model load in evidence) → P0-04"
+      - "SR-05, SR-06 (regex bypass) → P1-01"
+      - "IR-08 (import side effects) → P1-03"
+      - "RI-03, RI-04 (subprocess/JSON) → P2-01"
+
+    documented_out_of_scope:
+      - "IR-01, IR-02, ER-05 (filesystem/env/CI-CD) → P1-02"
+      - "IR-03 (logging → human operator) → already allowed by spec (operator is sole authority)"
+      - "IR-06 (CUDA memory) → resource contention, not semantic control"
+      - "IR-07 (CUDA RNG) → separate process → DEAD"
+
+    remaining_active_after_patches:
+      - path_id: SR-02
+        status: "ACTIVE (WHITELISTED)"
+        reason: "Training resume legitimately reads epoch. Whitelisted by P1-01."
+      - path_id: SR-03
+        status: "OBSERVABLE"
+        reason: "model_config read for display. No control flow impact after P1-01."
+      - path_id: SR-04
+        status: "ACTIVE (WHITELISTED)"
+        reason: "val_loss read for best_val_loss resume. Whitelisted by P1-01."
+
+  # ===========================================================================
+  # §7 — VERDICT
+  # ===========================================================================
+
+  verdict:
+    full_closure_achievable: true
+    conditions:
+      - "P0-01 through P0-04 MUST be applied (4 critical patches)"
+      - "P1-01 through P1-03 SHOULD be applied (3 high-priority patches)"
+      - "P2-01 MAY be applied (defense-in-depth)"
+    residual_risk: "Filesystem/env/CI-CD paths (P1-02) are OUT OF SCOPE for Python-level enforcement. These are operational concerns, not spec bugs."
+    proof_status: "With P0-01 through P0-04 applied, all in-process interpretive→runtime paths are DEAD."
+
+# ==============================================================================
+# END
+# ==============================================================================

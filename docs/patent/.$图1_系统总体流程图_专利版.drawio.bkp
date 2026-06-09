@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="25.0.2">
+  <diagram name="图1-系统总体流程图">
+    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ====== Title ====== -->
+        <mxCell id="title" value="&lt;b&gt;图1  系统总体流程图&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="580" y="15" width="220" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ====== Input ====== -->
+        <mxCell id="input" value="&lt;b&gt;自然语言任务描述&lt;/b&gt;&lt;br&gt;（用户输入）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=2;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="590" y="70" width="200" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: Input to S3 -->
+        <mxCell id="e_in_s3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="input" target="s3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- LEFT COLUMN: Offline Construction (S1, KG, S2)               -->
+        <!-- Spans y=70..920 to match right column                        -->
+        <!-- ============================================================ -->
+
+        <!-- Offline label -->
+        <mxCell id="lbl_offline" value="&lt;i&gt;离线构建阶段&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="185" y="50" width="90" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- S1 Container (y=70, h=260) -->
+        <mxCell id="s1_box" value="&lt;b&gt;S1：知识图谱构建&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="70" y="70" width="340" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_1" value="多源GIS算子元数据获取&lt;br&gt;（QGIS、GEE、GRASS等）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s1_box">
+          <mxGeometry x="20" y="45" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_2" value="实体与关系抽取&lt;br&gt;（算子、数据类型、输入输出、语义关联）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s1_box">
+          <mxGeometry x="20" y="118" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_3" value="图数据库存储与管理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s1_box">
+          <mxGeometry x="20" y="191" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s1a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="s1_box" source="s1_1" target="s1_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s1b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="s1_box" source="s1_2" target="s1_3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Knowledge Graph cylinder (y=410, h=100) -->
+        <mxCell id="kg" value="&lt;b&gt;知识图谱&lt;/b&gt;&lt;br&gt;（图数据库）" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;size=14;" vertex="1" parent="1">
+          <mxGeometry x="165" y="410" width="150" height="100" as="geometry" />
+        </mxCell>
+        <!-- S1 to KG -->
+        <mxCell id="e_s1_kg" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="s1_box" target="kg">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- S2 Container (y=590, h=330 to reach y=920) -->
+        <mxCell id="s2_box" value="&lt;b&gt;S2：层次化操作原语分类体系构建&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="70" y="590" width="340" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_1" value="三级抽象分类体系设计&lt;br&gt;（L1大类 → L2子类 → L3操作原语）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s2_box">
+          <mxGeometry x="20" y="50" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_2" value="分类标准与命名规范" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s2_box">
+          <mxGeometry x="20" y="125" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_3" value="多源算子到L3操作原语的&lt;br&gt;语义映射（含置信度评分）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s2_box">
+          <mxGeometry x="20" y="200" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_4" value="监督样本构建&lt;br&gt;（GEE脚本解析 → L3操作序列标注）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s2_box">
+          <mxGeometry x="20" y="265" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s2a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="s2_box" source="s2_1" target="s2_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s2b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="s2_box" source="s2_2" target="s2_3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s2c" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="s2_box" source="s2_3" target="s2_4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- KG to S2 -->
+        <mxCell id="e_kg_s2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kg" target="s2_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- RIGHT COLUMN: Online Inference (S3-S6)                       -->
+        <!-- Spans y=180..920 (S3 top to S6 bottom)                       -->
+        <!-- ============================================================ -->
+
+        <!-- Online label -->
+        <mxCell id="lbl_online" value="&lt;i&gt;在线推理阶段&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="645" y="140" width="90" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- S3: Task Understanding (y=175, h=80) -->
+        <mxCell id="s3" value="&lt;b&gt;S3：任务语义理解&lt;/b&gt;&lt;br&gt;&lt;br&gt;大语言模型提取结构化语义特征&lt;br&gt;（任务名称、类型、约束条件）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="550" y="175" width="280" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: S3 to S4 -->
+        <mxCell id="e_s3_s4" value="任务条件向量" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="s3" target="s4_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- S4 Container (y=310, h=180) -->
+        <mxCell id="s4_box" value="&lt;b&gt;S4：操作原语序列生成&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="490" y="310" width="400" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_bert" value="文本编码器&lt;br&gt;（语义编码）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s4_box">
+          <mxGeometry x="20" y="40" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_film" value="条件注入模块&lt;br&gt;（逐层调制）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s4_box">
+          <mxGeometry x="150" y="40" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_dec" value="序列生成解码器&lt;br&gt;（自回归生成）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s4_box">
+          <mxGeometry x="280" y="40" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_beam" value="多样性约束候选序列生成&lt;br&gt;（分组搜索 + 长度惩罚 + 多因子评分）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s4_box">
+          <mxGeometry x="20" y="115" width="370" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s4a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="s4_box" source="s4_bert" target="s4_film">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s4b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="s4_box" source="s4_film" target="s4_dec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s4c" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="s4_box" source="s4_dec" target="s4_beam">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: S4 to S5 -->
+        <mxCell id="e_s4_s5" value="L3操作原语候选序列" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="s4_box" target="s5_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- S5 Container (y=550, h=135) -->
+        <mxCell id="s5_box" value="&lt;b&gt;S5：算子映射与候选链生成&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="490" y="550" width="400" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_1" value="语义相似度&lt;br&gt;融合评分" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s5_box">
+          <mxGeometry x="20" y="42" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_2" value="I/O类型归一化&lt;br&gt;与兼容性评估" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s5_box">
+          <mxGeometry x="150" y="42" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_3" value="带约束的&lt;br&gt;搜索扩展" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s5_box">
+          <mxGeometry x="280" y="42" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s5a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="s5_box" source="s5_1" target="s5_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s5b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="s5_box" source="s5_2" target="s5_3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: S5 to S6 -->
+        <mxCell id="e_s5_s6" value="候选算子链" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="s5_box" target="s6_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- S6 Container (y=740, h=180 => bottom=920) -->
+        <mxCell id="s6_box" value="&lt;b&gt;S6：多阶段融合推理与链修复&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="490" y="740" width="400" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_1" value="GraphRAG&lt;br&gt;结构化评分" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s6_box">
+          <mxGeometry x="20" y="42" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_2" value="语义评分&lt;br&gt;（大语言模型）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s6_box">
+          <mxGeometry x="150" y="42" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_3" value="迭代链修复&lt;br&gt;（替代搜索+回滚）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="s6_box">
+          <mxGeometry x="280" y="42" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_formula" value="融合评分 = 结构化评分 &amp;times; &amp;alpha; + 语义评分 &amp;times; (1 &amp;minus; &amp;alpha;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;dashed=1;" vertex="1" parent="s6_box">
+          <mxGeometry x="20" y="120" width="370" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s6a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="s6_box" source="s6_1" target="s6_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s6b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="s6_box" source="s6_2" target="s6_3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- S6 repair loop -->
+        <mxCell id="e_s6_loop" value="不改善则回滚" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;dashed=1;fontSize=9;fontColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="s6_box" source="s6_3" target="s6_1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="335" y="33" />
+              <mxPoint x="75" y="33" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ====== Output ====== -->
+        <mxCell id="output" value="&lt;b&gt;最优地理处理模型&lt;/b&gt;&lt;br&gt;（可执行算子链 + 结构化描述）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=2;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="570" y="980" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s6_out" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="s6_box" target="output">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- Cross-stage dashed connections                               -->
+        <!-- ============================================================ -->
+
+        <!-- KG to S4 (graph embedding init) -->
+        <mxCell id="e_kg_s4" value="图嵌入初始化" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=9;fontColor=#000000;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="kg" target="s4_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="450" y="440" />
+              <mxPoint x="450" y="364" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- KG to S5 (operator mapping query) -->
+        <mxCell id="e_kg_s5" value="算子映射查询" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=9;fontColor=#000000;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="kg" target="s5_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="480" />
+              <mxPoint x="440" y="615" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- KG to S6 (chain validation + repair) -->
+        <mxCell id="e_kg_s6" value="链验证与修复" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=9;fontColor=#000000;labelPosition=right;align=left;exitX=0;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="kg" target="s6_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="55" y="480" />
+              <mxPoint x="55" y="830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- S2 to S4 (training data) -->
+        <mxCell id="e_s2_s4" value="训练数据" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=9;fontColor=#000000;exitX=1;exitY=0.15;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="s2_box" target="s4_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="640" />
+              <mxPoint x="460" y="445" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- LLM shared component -->
+        <mxCell id="llm" value="&lt;b&gt;大语言模型&lt;/b&gt;&lt;br&gt;（LLM）" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;size=15;" vertex="1" parent="1">
+          <mxGeometry x="990" y="480" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- LLM to S3 -->
+        <mxCell id="e_llm_s3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="llm" target="s3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="960" y="480" />
+              <mxPoint x="960" y="215" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- LLM to S6 -->
+        <mxCell id="e_llm_s6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="llm" target="s6_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="960" y="540" />
+              <mxPoint x="960" y="830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ====== Interactive Q&A Section ====== -->
+
+        <!-- Q&A box -->
+        <mxCell id="qa_box" value="&lt;b&gt;交互式追问与解释&lt;/b&gt;&lt;br&gt;知识图谱检索上下文 + 大语言模型生成应答" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="555" y="1080" width="270" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Output to QA -->
+        <mxCell id="e_out_qa" value="用户追问" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontColor=#000000;fontSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="output" target="qa_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- QA feedback loop back to output -->
+        <mxCell id="e_qa_out" value="解释性应答" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontColor=#000000;fontSize=10;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="qa_box" target="output">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="870" y="1108" />
+              <mxPoint x="870" y="1008" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- KG to QA (dashed, context retrieval) -->
+        <mxCell id="e_kg_qa" value="上下文检索" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=9;fontColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="qa_box" target="kg">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="1108" />
+              <mxPoint x="40" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- LLM to QA (dashed, answer generation) -->
+        <mxCell id="e_llm_qa" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="llm" target="qa_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="540" />
+              <mxPoint x="950" y="1108" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

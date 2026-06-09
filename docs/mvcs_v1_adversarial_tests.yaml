@@ -1,0 +1,578 @@
+# ==============================================================================
+# MVCS v1 — Adversarial Test Suite
+# Generated from: docs/mvcs_v1.spec
+# Target: gis_recommend checkpoint v5 compliance verification
+# Total: 24 adversarial test cases
+# ==============================================================================
+
+test_suite:
+  name: "MVCS v1 Adversarial Validation"
+  version: "1.0.0"
+  total_cases: 24
+  coverage:
+    gates: [1, 2]
+    rules: [R01-R10]
+    violation_signatures: [VS001-VS012]
+    lint_rules: [L001-L032]
+    layers:
+      - RUNTIME_ENFORCE
+      - SNAPSHOT_EVIDENCE
+      - INTERPRETIVE_REPORT
+
+cases:
+
+  # ===========================================================================
+  # CATEGORY 1: STRUCTURAL GATE TESTS (Gate 1 & 2)
+  # ===========================================================================
+
+  - id: TC001
+    name: "format_version unsupported — Gate 1 must reject"
+    category: structural_gate
+    attack_vector: >
+      Construct a checkpoint with provenance.format_version = "gis_recommend.checkpoint.v9"
+      where v9 is NOT in SUPPORTED_FORMATS. model_state_dict keys and shapes are valid.
+    triggered_rules:
+      - rule_id: "format_version_gate"
+      - gate_id: 1
+      - lint_id: null
+      - vs_id: VS009
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: StructuralIncompatibilityError
+      error_message_contains: "Unsupported format"
+    rationale: >
+      This is the ONE automated gate (Law 10). format_version check is purely structural
+      string comparison. Even if all weights are valid, an unknown format must fail.
+    checkpoint_payload:
+      format_version: "gis_recommend.checkpoint.v9"
+      model_state_dict: valid
+      all_other_fields: valid
+
+  - id: TC002
+    name: "format_version missing — falls back to v1, must pass if v1 in SUPPORTED"
+    category: structural_gate
+    attack_vector: >
+      Construct a checkpoint with NO provenance block (pre-v5 format).
+      model_state_dict keys and shapes are valid.
+    triggered_rules:
+      - rule_id: "format_version_gate"
+      - gate_id: 1
+    expected:
+      behavior: pass
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: null
+    rationale: >
+      Backward compatibility: missing provenance implies v1.
+      v1 is in SUPPORTED_FORMATS. Loading must succeed.
+    checkpoint_payload:
+      provenance: null
+      model_state_dict: valid
+      model_config: valid
+
+  - id: TC003
+    name: "model_state_dict key missing — Gate 2 must reject"
+    category: structural_gate
+    attack_vector: >
+      Checkpoint is missing 'decoder_layers.2.weight' from model_state_dict.
+      Current model expects this key. All other keys match.
+    triggered_rules:
+      - rule_id: "model_state_dict_shape_gate"
+      - gate_id: 2
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: StructuralIncompatibilityError
+      error_message_contains: "Key mismatch"
+    checkpoint_payload:
+      model_state_dict:
+        missing_keys: ["decoder_layers.2.weight"]
+        all_other_keys: valid
+
+  - id: TC004
+    name: "model_state_dict shape mismatch — Gate 2 must reject"
+    category: structural_gate
+    attack_vector: >
+      Checkpoint has 'token_embedding.weight' with shape [5000, 256]
+      but current model expects [6000, 256]. Key exists, shape differs.
+    triggered_rules:
+      - rule_id: "model_state_dict_shape_gate"
+      - gate_id: 2
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: StructuralIncompatibilityError
+      error_message_contains: "Shape mismatch"
+    checkpoint_payload:
+      model_state_dict:
+        token_embedding.weight: [5000, 256]
+        expected_shape: [6000, 256]
+
+  - id: TC005
+    name: "format_version and shape BOTH invalid — Gate 1 must reject first"
+    category: structural_gate
+    attack_vector: >
+      Checkpoint has unsupported format_version AND shape mismatch.
+      Gate 1 must fire before Gate 2 is checked.
+    triggered_rules:
+      - rule_id: "format_version_gate"
+      - gate_id: 1
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: StructuralIncompatibilityError
+      error_message_contains: "Unsupported format"
+      gate_2_never_checked: true
+    rationale: >
+      Gate ordering matters: format_version is checked first.
+      If Gate 1 fails, Gate 2 must not be evaluated.
+
+  # ===========================================================================
+  # CATEGORY 2: PROVENANCE INTEGRITY TESTS (R03-R07)
+  # ===========================================================================
+
+  - id: TC006
+    name: "provenance missing on first save — Runtime Enforce must reject"
+    category: provenance_integrity
+    attack_vector: >
+      Training script calls torch.save() without building a provenance block.
+      checkpoint_dict lacks 'provenance' key entirely.
+    triggered_rules:
+      - rule_id: "provenance_must_exist_on_first_save"
+      - vs_id: null
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: ProvenanceError
+    checkpoint_payload:
+      has_provenance: false
+
+  - id: TC007
+    name: "provenance modified mid-run — Runtime Enforce must reject"
+    category: provenance_integrity
+    attack_vector: >
+      Training run saves checkpoint at epoch 5 (run_id = UUID_A).
+      At epoch 10, code attempts to save with a DIFFERENT provenance block
+      (run_id = UUID_B, or modified timestamp, or modified config_snapshot).
+      self._provenance_block was cached at epoch 5.
+    triggered_rules:
+      - rule_id: "provenance_write_once"
+      - rule_id: "run_id_unchanged_within_run"
+      - vs_id: VS005
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: ProvenanceIntegrityError
+      error_message_contains: "provenance block mismatch"
+    checkpoint_payload:
+      epoch_5: {provenance.run_id: "uuid-a"}
+      epoch_10: {provenance.run_id: "uuid-b"}
+
+  - id: TC008
+    name: "provenance backfilled after training — must be detectable"
+    category: provenance_integrity
+    attack_vector: >
+      Training completed. Operator runs a post-hoc script that:
+      1. torch.load() best_model.pth
+      2. Sets ckpt['provenance']['parent_run_id'] = 'discovered-later'
+      3. torch.save() back to best_model.pth
+    triggered_rules:
+      - rule_id: "provenance_no_backfill"
+      - rule_id: "snapshot_never_modified_after_save"
+      - vs_id: VS004
+      - vs_id: VS012
+      - lint_id: L026
+    expected:
+      behavior: reject (static analysis) | flag (dynamic detection)
+      intercepted_by: SNAPSHOT_EVIDENCE
+      violation: SnapshotModificationViolation
+    rationale: >
+      Static analysis detects load-modify-save pattern on same path (L026).
+      Dynamic check: provenance.timestamp_iso would be later than training_history
+      timestamp. The hash chain cross-reference breaks.
+    checkpoint_payload:
+      original_run_id: "uuid-a"
+      backfilled_parent: "uuid-discovered"
+
+  - id: TC009
+    name: "warmstart path dangling — parent_run_id must be null, not crash"
+    category: provenance_integrity
+    attack_vector: >
+      V4.6 config points warmstart_path to transformer_checkpoints_v4_3/best_model.pth.
+      V4.3 never ran — file does not exist.
+      Training must: set parent_run_id = null, parent_checkpoint_sha256 = null,
+      record warmstart_path in config_snapshot, and continue training.
+    triggered_rules:
+      - rule_id: "provenance_parent_null_when_warmstart_missing"
+    expected:
+      behavior: pass
+      intercepted_by: SNAPSHOT_EVIDENCE
+      error_type: null
+    checkpoint_payload:
+      provenance.parent_run_id: null
+      provenance.parent_checkpoint_sha256: null
+      provenance.config_snapshot.warmstart_path: "transformer_checkpoints_v4_3/best_model.pth"
+
+  # ===========================================================================
+  # CATEGORY 3: METRIC BUNDLE COMPLETENESS TESTS (R08-R10)
+  # ===========================================================================
+
+  - id: TC010
+    name: "decode_policy missing when AR metrics present — must reject"
+    category: metric_bundle_completeness
+    attack_vector: >
+      Checkpoint contains ar_token_acc (decode_dependent=true) and ar_seq_em
+      (decode_dependent=true) in metric_bundle.metrics[].
+      But metric_bundle.decode_policy is null/missing.
+    triggered_rules:
+      - rule_id: "decode_policy_must_exist_when_decode_dependent_metrics_present"
+      - vs_id: VS008
+      - lint_id: L031
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: IncompleteMetricError
+      error_message_contains: "decode_policy"
+    checkpoint_payload:
+      metric_bundle:
+        decode_policy: null
+        metrics:
+          - {name: "ar_token_acc", decode_dependent: true}
+          - {name: "ar_seq_em", decode_dependent: true}
+
+  - id: TC011
+    name: "decode_policy missing but NO decode-dependent metrics — must pass"
+    category: metric_bundle_completeness
+    attack_vector: >
+      Checkpoint contains only TF metrics (val_loss, ppl, top1_acc — all
+      decode_dependent=false). decode_policy is null.
+    triggered_rules:
+      - rule_id: "decode_policy_must_exist_when_decode_dependent_metrics_present"
+    expected:
+      behavior: pass
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: null
+    rationale: >
+      decode_policy is only required when decode-dependent metrics exist.
+      TF-only checkpoints don't need it.
+    checkpoint_payload:
+      metric_bundle:
+        decode_policy: null
+        metrics:
+          - {name: "val_loss", decode_dependent: false}
+          - {name: "ppl", decode_dependent: false}
+
+  - id: TC012
+    name: "selector_policy missing — must reject"
+    category: metric_bundle_completeness
+    attack_vector: >
+      Checkpoint has valid metrics and decode_policy, but selector_policy is null.
+    triggered_rules:
+      - rule_id: "selector_policy_must_exist"
+      - vs_id: VS007
+      - lint_id: L032
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: IncompleteMetricError
+      error_message_contains: "selector_policy"
+    checkpoint_payload:
+      metric_bundle:
+        selector_policy: null
+        decode_policy: {strategy: "greedy"}
+        metrics: valid
+
+  - id: TC013
+    name: "selector_policy direction invalid — must reject"
+    category: metric_bundle_completeness
+    attack_vector: >
+      selector_policy.direction = "neutral" (not in {"minimize", "maximize"}).
+    triggered_rules:
+      - rule_id: "selector_policy_must_exist"
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: IncompleteMetricError
+      error_message_contains: "direction"
+    checkpoint_payload:
+      metric_bundle.selector_policy.direction: "neutral"
+
+  - id: TC014
+    name: "metric_bundle entirely missing — must reject"
+    category: metric_bundle_completeness
+    attack_vector: >
+      torch.save() called without metric_bundle key in checkpoint_dict.
+    triggered_rules:
+      - rule_id: "metric_bundle_must_exist_on_save"
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: IncompleteMetricError
+    checkpoint_payload:
+      has_metric_bundle: false
+
+  # ===========================================================================
+  # CATEGORY 4: BOUNDARY VIOLATION TESTS (L001-L008, VS001)
+  # ===========================================================================
+
+  - id: TC015
+    name: "training module imports evidence — static analysis must flag"
+    category: boundary_violation
+    attack_vector: >
+      train_v4_6.py adds: from gis_recommend.evidence import classify_checkpoint_validity
+      and uses it to check a warm-start checkpoint before loading.
+    triggered_rules:
+      - rule_id: "no_evidence_import_in_training"
+      - vs_id: VS001
+      - lint_id: L001
+      - lint_id: L009
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: BoundaryViolation
+    code_diff: |
+      + from gis_recommend.evidence import classify_checkpoint_validity
+      + report = classify_checkpoint_validity(warmstart_path)
+      + if report.status != "valid":
+      +     raise RuntimeError("warm-start checkpoint invalid")
+
+  - id: TC016
+    name: "inference module imports evidence — static analysis must flag"
+    category: boundary_violation
+    attack_vector: >
+      infer_l3_candidates_v4.py adds: import gis_recommend.evidence
+    triggered_rules:
+      - rule_id: "no_evidence_import_in_inference"
+      - vs_id: VS001
+      - lint_id: L003
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: BoundaryViolation
+    code_diff: |
+      + import gis_recommend.evidence as ev
+
+  - id: TC017
+    name: "models module imports evidence — static analysis must flag"
+    category: boundary_violation
+    attack_vector: >
+      transformer_model_v4.py adds: from gis_recommend.evidence import ValidityReport
+    triggered_rules:
+      - rule_id: "no_evidence_import_in_models"
+      - vs_id: VS001
+      - lint_id: L005
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: BoundaryViolation
+    code_diff: |
+      + from gis_recommend.evidence import ValidityReport
+
+  - id: TC018
+    name: "pipelines module imports evidence — static analysis must flag"
+    category: boundary_violation
+    attack_vector: >
+      interactive_system.py adds: from gis_recommend.evidence import compare_metrics
+    triggered_rules:
+      - rule_id: "no_evidence_import_in_pipelines"
+      - vs_id: VS001
+      - lint_id: L007
+      - lint_id: L012
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: BoundaryViolation
+    code_diff: |
+      + from gis_recommend.evidence import compare_metrics
+
+  - id: TC019
+    name: "evidence module calls torch.save — static analysis must flag"
+    category: boundary_violation
+    attack_vector: >
+      evidence/_archaeology.py attempts to save a report as a .pth checkpoint file.
+    triggered_rules:
+      - rule_id: "evidence_module_only_reads_snapshot"
+      - vs_id: VS010
+      - lint_id: L016
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: BoundaryViolation
+    code_diff: |
+      + torch.save(report_dict, "archaeology_checkpoint.pth")
+
+  # ===========================================================================
+  # CATEGORY 5: INTERPRETIVE GATE VIOLATION TESTS (VS002, VS003, VS009)
+  # ===========================================================================
+
+  - id: TC020
+    name: "training uses provenance to gate execution — must flag"
+    category: interpretive_gate_violation
+    attack_vector: >
+      train_v4_6.py adds code that reads provenance.parent_run_id and
+      raises RuntimeError if the parent checkpoint is from a different trainer class.
+    triggered_rules:
+      - rule_id: "no_interpretive_output_controls_runtime"
+      - vs_id: VS002
+      - lint_id: L024
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: InterpretiveGateViolation
+    code_diff: |
+      + parent_id = checkpoint['provenance']['parent_run_id']
+      + if parent_id is None:
+      +     raise RuntimeError("Must warm-start from a valid parent")
+
+  - id: TC021
+    name: "training uses metric_bundle values to gate continuation — must flag"
+    category: interpretive_gate_violation
+    attack_vector: >
+      train_v4_6.py checks ar_token_acc from a loaded checkpoint and
+      calls sys.exit(1) if it's below 0.5.
+    triggered_rules:
+      - rule_id: "no_interpretive_output_controls_runtime"
+      - vs_id: VS003
+      - lint_id: L025
+      - lint_id: L029
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: InterpretiveGateViolation
+    code_diff: |
+      + if checkpoint['metric_bundle']['metrics'][3]['value'] < 0.5:
+      +     print("Model not good enough, aborting")
+      +     sys.exit(1)
+
+  - id: TC022
+    name: "interpretive function output used in if/else for training path — must flag"
+    category: interpretive_gate_violation
+    attack_vector: >
+      Training script calls reconstruct_lineage(), and if lineage.max_depth > 2,
+      switches to a different optimizer configuration.
+    triggered_rules:
+      - rule_id: "no_interpretive_output_controls_runtime"
+      - vs_id: VS002
+      - lint_id: L010
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: InterpretiveGateViolation
+    code_diff: |
+      + from gis_recommend.evidence import reconstruct_lineage
+      + graph = reconstruct_lineage(warmstart_path, known)
+      + if graph.max_depth > 2:
+      +     lr = lr * 0.5
+
+  # ===========================================================================
+  # CATEGORY 6: CROSS-LAYER ACCESS TESTS (EDGE_GRAPH violations)
+  # ===========================================================================
+
+  - id: TC023
+    name: "training reads metric_bundle to auto-select best epoch — must flag"
+    category: cross_layer_access
+    attack_vector: >
+      Training loop loads all epoch checkpoints, reads their metric_bundle
+      selector_policy, and automatically picks the "true best" epoch
+      across multiple runs. This is replaying the selector as an instruction.
+    triggered_rules:
+      - rule_id: "no_runtime_access_to_metric_bundle"
+      - vs_id: VS003
+      - edge: ("snapshot", "runtime") — RESTRICTED:model_state_dict_only
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: RuntimeDependencyViolation
+    code_diff: |
+      + best_epoch = max(checkpoints, key=lambda c: c['metric_bundle']['metrics'][-1]['value'])
+
+  - id: TC024
+    name: "inference loads provenance to change decode behavior — must flag"
+    category: cross_layer_access
+    attack_vector: >
+      Inference script reads metric_bundle.decode_policy from checkpoint and
+      automatically applies it as the active decode configuration,
+      bypassing the operator's choice.
+    triggered_rules:
+      - rule_id: "no_interpretive_output_controls_runtime"
+      - edge: ("snapshot", "runtime") — RESTRICTED:model_state_dict_only
+    expected:
+      behavior: reject
+      intercepted_by: RUNTIME_ENFORCE
+      error_type: InterpretiveGateViolation
+    code_diff: |
+      + ckpt = torch.load(path)
+      + decode_cfg = ckpt['metric_bundle']['decode_policy']
+      + generation_config.temperature = decode_cfg['temperature']
+      + generation_config.top_p = decode_cfg['top_p']
+
+# ==============================================================================
+# RULE COVERAGE MATRIX
+# ==============================================================================
+
+coverage_matrix:
+  rules:
+    format_version_gate:                          [TC001, TC002, TC005]
+    model_state_dict_shape_gate:                  [TC003, TC004]
+    provenance_must_exist_on_first_save:          [TC006]
+    provenance_write_once:                        [TC007]
+    run_id_unchanged_within_run:                  [TC007]
+    provenance_no_backfill:                       [TC008]
+    provenance_parent_null_when_warmstart_missing: [TC009]
+    metric_bundle_must_exist_on_save:             [TC014]
+    decode_policy_must_exist:                     [TC010, TC011]
+    selector_policy_must_exist:                   [TC012, TC013]
+    no_evidence_import_in_training:               [TC015]
+    no_evidence_import_in_inference:              [TC016]
+    no_evidence_import_in_models:                 [TC017]
+    no_evidence_import_in_pipelines:              [TC018]
+    evidence_module_only_reads_snapshot:          [TC019]
+    no_runtime_access_to_metric_bundle:           [TC023]
+    no_interpretive_output_controls_runtime:      [TC020, TC021, TC022, TC024]
+    snapshot_never_modified_after_save:           [TC008]
+
+  violation_signatures:
+    VS001:  [TC015, TC016, TC017, TC018]
+    VS002:  [TC020, TC022]
+    VS003:  [TC021, TC023]
+    VS004:  [TC008]
+    VS005:  [TC007]
+    VS007:  [TC012]
+    VS008:  [TC010]
+    VS009:  [TC001]
+    VS010:  [TC019]
+    VS012:  [TC008]
+
+  layers:
+    RUNTIME_ENFORCE:    [TC001, TC002, TC003, TC004, TC005, TC006, TC007,
+                         TC010, TC011, TC012, TC013, TC014, TC015, TC016,
+                         TC017, TC018, TC019, TC020, TC021, TC022, TC023, TC024]
+    SNAPSHOT_EVIDENCE:  [TC008, TC009]
+    INTERPRETIVE_REPORT: []  # No test cases trigger INTERPRETIVE only —
+                            # interpretive functions are passive by design.
+                            # The violation is when their output gates runtime,
+                            # which is caught by RUNTIME_ENFORCE tests above.
+
+  categories:
+    structural_gate:           [TC001, TC002, TC003, TC004, TC005]
+    provenance_integrity:      [TC006, TC007, TC008, TC009]
+    metric_bundle_completeness: [TC010, TC011, TC012, TC013, TC014]
+    boundary_violation:        [TC015, TC016, TC017, TC018, TC019]
+    interpretive_gate_violation: [TC020, TC021, TC022]
+    cross_layer_access:        [TC023, TC024]
+
+# ==============================================================================
+# EXPECTED RESULT DISTRIBUTION
+# ==============================================================================
+
+result_distribution:
+  reject: 21   # TC001, TC003-TC008, TC010, TC012-TC024
+  pass: 2      # TC002 (legacy backward compat), TC009 (dangling warmstart)
+                # TC011 (decode_policy null with no decode-dependent metrics)
+  pass_actual: 3
+  report_only: 0  # All report-only cases are converted to reject when they
+                   # cross the boundary into runtime control
+
+# ==============================================================================
+# END
+# ==============================================================================

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="25.0.2">
+  <diagram name="图2-知识图谱Schema">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1200" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ============ TITLE ============ -->
+        <mxCell id="title" value="&lt;b&gt;图2  知识图谱 Schema 结构图&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="240" y="10" width="320" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- ============ ROW 1: L1_Category ============ -->
+        <mxCell id="l1" value="&lt;b&gt;L1_Category&lt;/b&gt;（10 个）&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;code, name, description&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=12;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="295" y="60" width="210" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ============ ROW 2: L2_Category ============ -->
+        <mxCell id="l2" value="&lt;b&gt;L2_Category&lt;/b&gt;（78 个）&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;code, name, description&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=12;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="295" y="170" width="210" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ============ ROW 3: L3_Primitive ============ -->
+        <mxCell id="l3" value="&lt;b&gt;L3_Primitive&lt;/b&gt;（350 个）&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;code, name, description,&lt;br&gt;input_type, output_type&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=12;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="275" y="285" width="250" height="68" as="geometry" />
+        </mxCell>
+
+        <!-- ============ ROW 4: Operators ============ -->
+        <mxCell id="qgis" value="&lt;b&gt;QGIS_Operator&lt;/b&gt;（1291 个）&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;name, algorithm_id,&lt;br&gt;description, inputs, outputs&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=12;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="15" y="430" width="245" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="gee" value="&lt;b&gt;GEE_Operator&lt;/b&gt;（1425 个）&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;name, description,&lt;br&gt;category, parameters, returns&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=12;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="540" y="430" width="245" height="68" as="geometry" />
+        </mxCell>
+
+        <!-- ============ ROW 5: Input / Output ============ -->
+        <mxCell id="input" value="&lt;b&gt;Input&lt;/b&gt;（14772 个）&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;parameter_name,&lt;br&gt;description, optional&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=12;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="110" y="595" width="200" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="output" value="&lt;b&gt;Output&lt;/b&gt;（3421 个）&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;parameter_name,&lt;br&gt;description&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=12;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="490" y="595" width="200" height="62" as="geometry" />
+        </mxCell>
+
+        <!-- ============ ROW 6: DataType ============ -->
+        <mxCell id="dtype" value="&lt;b&gt;DataType&lt;/b&gt;（486 个）&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;name, category, mime_types&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=12;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="285" y="740" width="230" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES: Hierarchy ============ -->
+        <!-- L2 → L1: belongs_to_l1 -->
+        <mxCell id="e_l2l1" value="belongs_to_l1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontSize=12;fontColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="l2" target="l1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- L3 → L2: belongs_to_l2 -->
+        <mxCell id="e_l3l2" value="belongs_to_l2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontSize=12;fontColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="l3" target="l2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES: Operator → L3 mappings ============ -->
+        <!-- QGIS → L3: maps_to_l3 -->
+        <mxCell id="e_q2l3" value="maps_to_l3&lt;br&gt;&lt;i&gt;(confidence)&lt;/i&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontSize=11;fontColor=#000000;exitX=0.7;exitY=0;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="qgis" target="l3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GEE → L3: maps_to_l3 -->
+        <mxCell id="e_g2l3" value="maps_to_l3&lt;br&gt;&lt;i&gt;(confidence)&lt;/i&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontSize=11;fontColor=#000000;exitX=0.3;exitY=0;exitDx=0;exitDy=0;entryX=0.85;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="gee" target="l3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES: Operator → Input/Output ============ -->
+        <!-- QGIS → Input: hasInput (direct, no crossing) -->
+        <mxCell id="e_q2i" value="hasInput" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;fontSize=11;fontColor=#000000;exitX=0.35;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="qgis" target="input">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- QGIS → Output: hasOutput (crosses center) -->
+        <mxCell id="e_q2o" value="hasOutput" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;fontSize=11;fontColor=#000000;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" edge="1" parent="1" source="qgis" target="output">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="199" y="548" />
+              <mxPoint x="540" y="548" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GEE → Output: hasOutput (direct, no crossing) -->
+        <mxCell id="e_g2o" value="hasOutput" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;fontSize=11;fontColor=#000000;exitX=0.65;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="gee" target="output">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GEE → Input: hasInput (crosses center) -->
+        <mxCell id="e_g2i" value="hasInput" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;fontSize=11;fontColor=#000000;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" edge="1" parent="1" source="gee" target="input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="601" y="560" />
+              <mxPoint x="260" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ============ EDGES: Input/Output → DataType ============ -->
+        <!-- Input → DataType: links_to -->
+        <mxCell id="e_i2d" value="links_to" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontSize=11;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.2;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="input" target="dtype">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Output → DataType: links_to -->
+        <mxCell id="e_o2d" value="links_to" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontSize=11;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="output" target="dtype">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGE: DataType self-loop (compatible_with) ============ -->
+        <mxCell id="e_compat" value="compatible_with（22 条）" style="rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;dashed=1;dashPattern=6 3;fontSize=11;fontColor=#000000;exitX=0.85;exitY=1;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="dtype" target="dtype">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="830" />
+              <mxPoint x="320" y="830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

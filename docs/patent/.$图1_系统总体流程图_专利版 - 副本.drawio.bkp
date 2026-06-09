@@ -1,0 +1,271 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
+  <diagram name="图1-系统总体流程图" id="0">
+    <mxGraphModel dx="1953" dy="1179" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="input" value="&lt;b&gt;自然语言任务描述&lt;/b&gt;&lt;br&gt;（用户输入）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=2;arcSize=50;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="485.5" y="66" width="409" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="e_in_s3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="input" target="s3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_offline" value="&lt;i&gt;离线构建阶段&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=16;fontColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="173" y="49" width="114" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_box" value="&lt;b&gt;知识图谱构建&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="70" y="78" width="340" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_1" value="多源GIS算子元数据获取&lt;br&gt;（QGIS、GEE、GRASS等）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s1_box" vertex="1">
+          <mxGeometry x="20" y="45" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_2" value="实体与关系抽取&lt;br&gt;（算子、数据类型、输入输出、语义关联）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s1_box" vertex="1">
+          <mxGeometry x="20" y="118" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_3" value="图数据库存储与管理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s1_box" vertex="1">
+          <mxGeometry x="20" y="191" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s1a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="s1_box" source="s1_1" target="s1_2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s1b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="s1_box" source="s1_2" target="s1_3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kg" value="&lt;b&gt;知识图谱&lt;/b&gt;&lt;br&gt;（图数据库）" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;size=14;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="165" y="410" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s1_kg" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="s1_box" target="kg" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_box" value="&lt;b&gt;层次化操作原语分类体系构建&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="70" y="570" width="340" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_1" value="三级抽象分类体系设计&lt;br&gt;（L1大类 → L2子类 → L3操作原语）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s2_box" vertex="1">
+          <mxGeometry x="20" y="50" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_2" value="分类标准与命名规范" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s2_box" vertex="1">
+          <mxGeometry x="20" y="125" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_3" value="多源算子到L3操作原语的&lt;br&gt;语义映射" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s2_box" vertex="1">
+          <mxGeometry x="20" y="200" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_4" value="监督样本构建&lt;br&gt;（GEE脚本解析 → L3操作序列标注）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s2_box" vertex="1">
+          <mxGeometry x="20" y="265" width="300" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s2a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="s2_box" source="s2_1" target="s2_2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s2b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="s2_box" source="s2_2" target="s2_3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s2c" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="s2_box" source="s2_3" target="s2_4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_kg_s2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="kg" target="s2_box" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="&lt;b&gt;任务语义理解&lt;/b&gt;&lt;br&gt;&lt;br&gt;大语言模型提取结构化语义特征&lt;br&gt;（任务名称、类型、约束条件）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="550" y="175" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s3_s4" value="任务条件向量" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="s3" target="s4_box" edge="1">
+          <mxGeometry x="-0.1636" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s4_box" value="&lt;b&gt;操作原语序列生成&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="490" y="310" width="400" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_bert" value="文本编码器&lt;br&gt;（语义编码）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s4_box" vertex="1">
+          <mxGeometry x="15" y="40" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_film" value="条件注入模块&lt;br&gt;（逐层调制）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s4_box" vertex="1">
+          <mxGeometry x="145" y="40" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_dec" value="序列生成解码器&lt;br&gt;（自回归生成）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s4_box" vertex="1">
+          <mxGeometry x="275" y="40" width="114" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_beam" value="多样性约束候选序列生成&lt;br&gt;（分组搜索 + 长度惩罚 + 多因子评分）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s4_box" vertex="1">
+          <mxGeometry x="15" y="115" width="375" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s4a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;" parent="s4_box" source="s4_bert" target="s4_film" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s4b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;" parent="s4_box" source="s4_film" target="s4_dec" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s4c" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="s4_box" source="s4_dec" target="s4_beam" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s4_s5" value="L3操作原语候选序列" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="s4_box" target="s5_box" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_box" value="&lt;b&gt;算子映射与候选链生成&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="490" y="550" width="400" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_1" value="语义相似度&lt;br&gt;融合评分" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s5_box" vertex="1">
+          <mxGeometry x="15" y="50" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_2" value="I/O类型归一化&lt;br&gt;与兼容性评估" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s5_box" vertex="1">
+          <mxGeometry x="145" y="50" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_3" value="带约束的&lt;br&gt;搜索扩展" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s5_box" vertex="1">
+          <mxGeometry x="275" y="50" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s5a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;" parent="s5_box" source="s5_1" target="s5_2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s5b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;" parent="s5_box" source="s5_2" target="s5_3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s5_s6" value="候选算子链" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="s5_box" target="s6_box" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_box" value="&lt;b&gt;多阶段融合推理与链修复&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=1;arcSize=6;html=1;fontStyle=1;fontColor=#000000;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="490" y="740" width="400" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="R4ErLJHxae0JHnyHbhUT-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="s6_box" source="s6_1" target="R4ErLJHxae0JHnyHbhUT-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_1" value="GraphRAG&lt;br&gt;结构化评分" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s6_box" vertex="1">
+          <mxGeometry x="10" y="59" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="R4ErLJHxae0JHnyHbhUT-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="s6_box" source="s6_2" target="s6_3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_2" value="融合评分&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;结构化评分 × α + 语义评分 × (1 − α)&lt;/span&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s6_box" vertex="1">
+          <mxGeometry x="224.5" y="131" width="164" height="59" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_3" value="迭代链修复&lt;br&gt;（替代搜索+回滚）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s6_box" vertex="1">
+          <mxGeometry x="223" y="59" width="167" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s6_loop" value="不改善则回滚" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;dashed=1;fontSize=16;fontColor=#000000;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="s6_box" target="s6_1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="325" y="40" />
+              <mxPoint x="65" y="40" />
+            </Array>
+            <mxPoint x="324" y="58" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="R4ErLJHxae0JHnyHbhUT-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="s6_box" source="R4ErLJHxae0JHnyHbhUT-3" target="s6_2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="R4ErLJHxae0JHnyHbhUT-3" value="语义评分&lt;br&gt;（大语言模型）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=16;" parent="s6_box" vertex="1">
+          <mxGeometry x="10" y="131" width="150" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="output" value="&lt;b&gt;最优地理处理模型&lt;/b&gt;&lt;br&gt;（可执行算子链 + 结构化描述）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=2;arcSize=50;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="115.75" y="979" width="680" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s6_out" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="690.25" y="940" as="sourcePoint" />
+            <mxPoint x="456" y="979" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="690" y="958" />
+              <mxPoint x="455" y="958" />
+              <mxPoint x="455" y="979" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_kg_s4" value="图嵌入初始化" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=16;fontColor=#000000;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" parent="1" source="kg" target="s4_box" edge="1">
+          <mxGeometry x="0.203" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="440" />
+              <mxPoint x="360" y="364" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_kg_s5" value="算子映射查询" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=16;fontColor=#000000;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="kg" target="s5_box" edge="1">
+          <mxGeometry x="-0.5806" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="480" />
+              <mxPoint x="430" y="615" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_kg_s6" value="链验证与修复" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=16;fontColor=#000000;labelPosition=right;align=left;exitX=0;exitY=0.7;exitDx=0;exitDy=0;" parent="1" source="kg" edge="1">
+          <mxGeometry x="0.5533" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="55" y="480" />
+              <mxPoint x="55" y="920" />
+            </Array>
+            <mxPoint x="490" y="920" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_s2_s4" value="训练数据" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=16;fontColor=#000000;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" target="s4_box" edge="1">
+          <mxGeometry x="0.2298" y="-8" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="640" />
+              <mxPoint x="460" y="445" />
+            </Array>
+            <mxPoint x="410" y="640" as="sourcePoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="llm" value="&lt;b&gt;大语言模型&lt;/b&gt;&lt;br&gt;（LLM）" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;size=15;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="990" y="471" width="110" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="e_llm_s3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="llm" target="s3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="960" y="480" />
+              <mxPoint x="960" y="215" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_llm_s6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="llm" target="s6_box" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1002" y="540" />
+              <mxPoint x="960" y="540" />
+              <mxPoint x="960" y="840" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qa_box" value="&lt;b&gt;交互式追问与解释&lt;/b&gt;&lt;br&gt;知识图谱检索上下文 + 大语言模型生成应答" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;strokeWidth=1.5;dashed=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="289" y="1080" width="333.5" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="e_out_qa" value="用户追问" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontColor=#000000;fontSize=16;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="output" target="qa_box" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_qa_out" value="解释性应答" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#000000;fontColor=#000000;fontSize=16;dashed=1;" parent="1" target="output" edge="1">
+          <mxGeometry x="0.4237" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="622" y="1070" />
+              <mxPoint x="887" y="1070" />
+              <mxPoint x="887" y="1008" />
+            </Array>
+            <mxPoint as="offset" />
+            <mxPoint x="622.5000000000001" y="1080" as="sourcePoint" />
+            <mxPoint x="813.2499999999998" y="1006.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_kg_qa" value="上下文检索" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;fontSize=16;fontColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="qa_box" target="kg" edge="1">
+          <mxGeometry x="-0.3269" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="1108" />
+              <mxPoint x="40" y="460" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_llm_qa" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#000000;dashed=1;dashPattern=8 4;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;" parent="1" source="llm" target="qa_box" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1002" y="540" />
+              <mxPoint x="960" y="540" />
+              <mxPoint x="960" y="1108" />
+              <mxPoint x="623" y="1108" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="R4ErLJHxae0JHnyHbhUT-2" value="&lt;i style=&quot;color: rgb(102, 102, 102); text-wrap: nowrap;&quot;&gt;在线推理阶段&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=default;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="660" y="140" width="60" height="13" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="Page-1">
+    <mxGraphModel dx="800" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="750" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="t" value="&lt;b&gt;图4 多阶段融合推理与链修复流程图&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="175" y="10" width="310" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Input -->
+        <mxCell id="in" value="候选算子链集合（来自S5）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="215" y="52" width="230" height="32" as="geometry" />
+        </mxCell>
+
+        <!-- ===== 4a dashed box ===== -->
+        <mxCell id="box_a" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="112" width="400" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="box_a_l" value="&lt;b&gt;阶段 4a：GraphRAG 结构化评分&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="135" y="113" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" value="计算结构化评分（I/O 兼容性、存在性、链校验）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="160" y="140" width="340" height="32" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_in_a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="in" target="a1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== 4b dashed box ===== -->
+        <mxCell id="box_b" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="218" width="400" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="box_b_l" value="&lt;b&gt;阶段 4b：LLM 语义融合评分&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="135" y="219" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" value="LLM 上下文评分 + 融合排序 &#8594; 选出最佳候选链" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="160" y="246" width="340" height="32" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 4a to 4b with annotation -->
+        <mxCell id="e_a_b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="a1" target="b1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_top" value="排序靠前的候选链" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="340" y="190" width="110" height="18" as="geometry" />
+        </mxCell>
+
+        <!-- ===== 4c dashed box (large) ===== -->
+        <mxCell id="box_c" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="316" width="460" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="box_c_l" value="&lt;b&gt;阶段 4c：迭代式算子链修复&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="105" y="317" width="190" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_b_d1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="b1" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Diamond 1: IO issues? -->
+        <mxCell id="d1" value="是否存在&lt;br&gt;I/O 问题？" style="rhombus;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="268" y="345" width="124" height="68" as="geometry" />
+        </mxCell>
+
+        <!-- D1 No: right then down to output (the ONLY exit from the loop) -->
+        <mxCell id="e_d1_no" value="否" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;entryX=1;entryY=0.5;fontSize=11;fontFamily=SimHei;" edge="1" parent="1" source="d1" target="out">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="379" />
+              <mxPoint x="500" y="712" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- D1 Yes: down to repair -->
+        <mxCell id="e_d1_yes" value="是" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=11;fontFamily=SimHei;" edge="1" parent="1" source="d1" target="r1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Repair step 1 -->
+        <mxCell id="r1" value="问题定位与替代算子检索" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="230" y="445" width="200" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- Repair step 2 -->
+        <mxCell id="r2" value="LLM 选择替代、替换与重新验证" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="220" y="507" width="220" height="34" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_r1_r2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="r1" target="r2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Diamond 2: improved? -->
+        <mxCell id="d2" value="问题数&lt;br&gt;是否减少？" style="rhombus;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;fontFamily=SimHei;" vertex="1" parent="1">
+          <mxGeometry x="268" y="572" width="124" height="68" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_r2_d2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="r2" target="d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- D2 Yes: accept, loop back to D1 (re-check) via LEFT -->
+        <mxCell id="e_d2_yes" value="是（接受替换）" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0;entryY=0.5;fontSize=10;fontFamily=SimHei;" edge="1" parent="1" source="d2" target="d1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="150" y="606" />
+              <mxPoint x="150" y="379" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- D2 No: rollback, loop back to r1 (try other) via RIGHT -->
+        <mxCell id="e_d2_no" value="否（撤销，尝试&lt;br&gt;其他方案）" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;exitX=1;exitY=0.5;entryX=1;entryY=0.5;fontSize=10;fontFamily=SimHei;" edge="1" parent="1" source="d2" target="r1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="606" />
+              <mxPoint x="460" y="462" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ===== Output ===== -->
+        <mxCell id="out" value="&lt;b&gt;输出地理处理算子链&lt;/b&gt;&lt;br&gt;（融合评分 + 校验结果 + 修复日志）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;fontSize=12;fontFamily=SimHei;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="195" y="690" width="270" height="44" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

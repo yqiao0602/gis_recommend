@@ -1,0 +1,35 @@
+# System Redesign Dependencies — reproducible lock file
+# For a minimal install use: pip install -e .
+# For the full eval stack use: pip install -e .[all]
+# This file pins exact versions verified on the training server.
+
+# Python 3.10 environment
+python==3.10
+
+# ── Core inference & evaluation ─────────────────────────────────
+numpy==1.26.4
+torch==2.1.2
+transformers==4.36.2
+pydantic>=1.10,<3
+tqdm>=4.65.0
+
+# ── Reranker v3 semantic encoder ────────────────────────────────
+# Required when passing --reranker-v3 to gis-evaluate.
+sentence-transformers>=2.2,<3
+
+# ── Knowledge graph (Neo4j) ─────────────────────────────────────
+# Required by chain_repair, chain_validator, interactive_system, --use-repair
+neo4j>=5.0,<6
+
+# ── LLM API client ──────────────────────────────────────────────
+# Used by llm_scorer / llm_extractor / llm_task_type_retriever
+openai>=1.0
+
+# ── Training / graph embedding (optional for eval-only) ─────────
+torchdata==0.7.1
+dgl==2.2.1
+
+# ── Diagnostic utilities ────────────────────────────────────────
+matplotlib>=3.7.0
+seaborn>=0.12.0
+networkx>=3.1

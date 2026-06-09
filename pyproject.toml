@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gis-recommend"
+version = "4.2.0"
+description = "Task-conditioned transformer for recommending GIS operator sequences."
+requires-python = ">=3.9"
+dependencies = [
+    # Core runtime for inference & evaluation
+    "numpy>=1.24,<2",
+    "torch>=2.0",
+    "transformers>=4.30",
+    "tqdm>=4.65",
+    "pydantic>=1.10,<3",
+]
+
+[project.optional-dependencies]
+# Two-stage reranker v3 — query-aware semantic matching
+# Required by: gis-evaluate --reranker-v3
+reranker-v3 = [
+    "sentence-transformers>=2.2",
+]
+
+# Neo4j knowledge graph — required by chain repair, full QGIS chain validation,
+# and the interactive pipeline.
+# Required by: gis-evaluate --use-repair, interactive_system
+kg = [
+    "neo4j>=5.0",
+]
+
+# Training / graph embedding reproducibility
+# Required by: train_v4_*.py, build_graph_embeddings.py
+training = [
+    "dgl>=2.0",
+    "torchdata>=0.7",
+]
+
+# Plotting / visualization in diagnostic notebooks
+viz = [
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    "networkx>=3.1",
+]
+
+# Convenience: everything needed to run the full evaluation stack end-to-end
+all = [
+    "gis-recommend[reranker-v3,kg,training,viz]",
+]
+
+[project.scripts]
+gis-evaluate = "gis_recommend.evaluation.runner:main"
+gis-empirical-evaluate = "gis_recommend.evaluation.empirical:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

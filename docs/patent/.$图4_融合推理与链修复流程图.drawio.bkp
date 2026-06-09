@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile>
+  <diagram name="图4" id="fig4">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1500" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- 标题 -->
+        <mxCell id="title" value="图4 多阶段融合推理与链修复流程图" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="200" y="10" width="500" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- 输入 -->
+        <mxCell id="input" value="S5输出：候选算子链集合" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontFamily=SimSun;strokeColor=#000000;fillColor=#F5F5F5;" vertex="1" parent="1">
+          <mxGeometry x="310" y="55" width="280" height="36" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 4a 区域 ==================== -->
+        <mxCell id="zone4a" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="100" y="115" width="700" height="250" as="geometry"/>
+        </mxCell>
+        <mxCell id="zone4a_label" value="子阶段 4a：GraphRAG 结构化评分" style="text;html=1;align=left;verticalAlign=top;fontSize=13;fontStyle=1;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="110" y="118" width="300" height="22" as="geometry"/>
+        </mxCell>
+
+        <!-- 4a: 对每条候选链 -->
+        <mxCell id="a_foreach" value="遍历每条候选算子链 C" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="330" y="148" width="240" height="32" as="geometry"/>
+        </mxCell>
+
+        <!-- 4a: 四个评估维度并行 -->
+        <mxCell id="a_conf" value="映射置信度&#xa;均值 S̄_map" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="115" y="205" width="140" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="a_known" value="已知算子&#xa;占比 R_known" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="275" y="205" width="140" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="a_io" value="I/O兼容&#xa;评分 S_io" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="435" y="205" width="140" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="a_val" value="链校验&#xa;置信度 S_valid" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="595" y="205" width="140" height="44" as="geometry"/>
+        </mxCell>
+
+        <!-- 4a: 加权融合 -->
+        <mxCell id="a_fuse" value="S_struct = w₁·S̄_map + w₂·R_known + w₃·S_io + w₄·S_valid" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="275" width="500" height="32" as="geometry"/>
+        </mxCell>
+
+        <!-- 4a: 排序取Top-3 -->
+        <mxCell id="a_top3" value="按 S_struct 降序排列，取 Top-3" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="290" y="325" width="320" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- 4a edges -->
+        <mxCell id="e_in_a" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="input" target="a_foreach">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_foreach" target="a_conf">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_foreach" target="a_known">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_foreach" target="a_io">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_foreach" target="a_val">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a5" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_conf" target="a_fuse">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a6" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_known" target="a_fuse">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a7" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_io" target="a_fuse">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a8" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_val" target="a_fuse">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_a9" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_fuse" target="a_top3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 4b 区域 ==================== -->
+        <mxCell id="zone4b" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="100" y="385" width="700" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="zone4b_label" value="子阶段 4b：LLM 语义评分与融合排序" style="text;html=1;align=left;verticalAlign=top;fontSize=13;fontStyle=1;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="110" y="388" width="340" height="22" as="geometry"/>
+        </mxCell>
+
+        <!-- 4b: RAG上下文构建 -->
+        <mxCell id="b_rag" value="RAG上下文构建器&#xa;（算子详情、I/O关系 → Markdown）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="140" y="420" width="260" height="44" as="geometry"/>
+        </mxCell>
+
+        <!-- 4b: LLM评分 -->
+        <mxCell id="b_llm" value="LLM 语义评分&#xa;（0-10分：语义匹配、顺序合理性、&#xa;数据流完整性、冗余度）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="415" width="260" height="54" as="geometry"/>
+        </mxCell>
+
+        <!-- 4b: 融合公式 -->
+        <mxCell id="b_fuse" value="S_final = α · S_struct + (1-α) · S_llm / S_max" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="230" y="490" width="440" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- 4b: 选最佳 -->
+        <mxCell id="b_best" value="选择 S_final 最高的候选链为最佳链" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="270" y="535" width="360" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- 4b edges -->
+        <mxCell id="e_b0" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="a_top3" target="b_rag">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_b1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="b_rag" target="b_llm">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_b2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="b_llm" target="b_fuse">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_b3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="b_fuse" target="b_best">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 4c 区域 ==================== -->
+        <mxCell id="zone4c" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="50" y="590" width="800" height="800" as="geometry"/>
+        </mxCell>
+        <mxCell id="zone4c_label" value="子阶段 4c：迭代式算子链修复（最多 max_rounds 轮）" style="text;html=1;align=left;verticalAlign=top;fontSize=13;fontStyle=1;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="60" y="593" width="450" height="22" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 链校验 -->
+        <mxCell id="c_check" value="链校验器验证最佳链&#xa;（算子存在性 + I/O兼容性检查）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="290" y="625" width="320" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 有问题？ -->
+        <mxCell id="c_has_issue" value="存在I/O&#xa;兼容性问题？" style="rhombus;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="370" y="690" width="160" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 严重度排序 -->
+        <mxCell id="c_severity" value="按严重度排序问题步骤&#xa;（双端不兼容 &gt; 单端不兼容）&#xa;选取最严重步骤" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="300" y="790" width="300" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 替代检索 (两路) -->
+        <mxCell id="c_alt_l3" value="同L3映射查询&#xa;（L3←maps_to_l3←Op）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="140" y="870" width="210" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_alt_l2" value="同L2族查询&#xa;（Op→L3→L2←L3←Op）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="550" y="870" width="210" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: I/O预过滤 -->
+        <mxCell id="c_iofilter" value="I/O预过滤：检查替代算子与前驱/后继的数据类型兼容性&#xa;（双端兼容 &gt; 单端兼容，丢弃双端不兼容）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="180" y="940" width="540" height="44" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 有替代？ -->
+        <mxCell id="c_has_alt" value="存在可用&#xa;替代算子？" style="rhombus;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="370" y="1010" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: LLM选择 -->
+        <mxCell id="c_llm_sel" value="LLM引导替代选择&#xa;（上下文：前驱算子、后继算子、&#xa;L3语义、用户查询）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1100" width="300" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 深拷贝+替换 -->
+        <mxCell id="c_replace" value="深拷贝候选链 → 替换目标步骤算子&#xa;（保留原链作为回滚点）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1175" width="300" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 重新验证 -->
+        <mxCell id="c_reval" value="链校验器重新验证修复后的链" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1240" width="300" height="32" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 问题减少？ -->
+        <mxCell id="c_improved" value="问题数&#xa;是否减少？" style="rhombus;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="370" y="1300" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 回滚 -->
+        <mxCell id="c_rollback" value="回滚至修复前状态&#xa;终止修复循环" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontFamily=SimSun;strokeColor=#000000;fillColor=#F5F5F5;" vertex="1" parent="1">
+          <mxGeometry x="620" y="1300" width="180" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 4c: 跳过该步骤 -->
+        <mxCell id="c_skip" value="跳过该步骤&#xa;尝试下一问题" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;fillColor=#F5F5F5;" vertex="1" parent="1">
+          <mxGeometry x="620" y="1020" width="140" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 输出：无问题路径 -->
+        <mxCell id="c_ok" value="无问题" style="text;html=1;fontSize=11;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="540" y="700" width="50" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- 输出 -->
+        <mxCell id="output" value="输出：最优算子链 + 融合评分&#xa;+ 校验结果 + 修复日志" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontFamily=SimSun;strokeColor=#000000;fillColor=#F5F5F5;" vertex="1" parent="1">
+          <mxGeometry x="290" y="1420" width="320" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 4c edges ===== -->
+        <mxCell id="e_c0" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="b_best" target="c_check">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_c1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_check" target="c_has_issue">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- 无问题 → 输出 -->
+        <mxCell id="e_c_no" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_has_issue" target="output">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="725"/>
+              <mxPoint x="600" y="1440"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_c_no_label" value="否" style="text;html=1;fontSize=11;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="540" y="710" width="24" height="18" as="geometry"/>
+        </mxCell>
+        <!-- 有问题 → 严重度排序 -->
+        <mxCell id="e_c2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_has_issue" target="c_severity">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_c2_label" value="是" style="text;html=1;fontSize=11;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="455" y="768" width="20" height="18" as="geometry"/>
+        </mxCell>
+
+        <!-- 严重度 → 两路替代检索 -->
+        <mxCell id="e_c3a" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_severity" target="c_alt_l3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_c3b" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_severity" target="c_alt_l2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 两路 → I/O预过滤 -->
+        <mxCell id="e_c4a" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_alt_l3" target="c_iofilter">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_c4b" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_alt_l2" target="c_iofilter">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- I/O预过滤 → 有替代？ -->
+        <mxCell id="e_c5" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_iofilter" target="c_has_alt">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 无替代 → 跳过 -->
+        <mxCell id="e_c5_no" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_has_alt" target="c_skip">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_c5_no_label" value="否" style="text;html=1;fontSize=11;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="540" y="1025" width="24" height="18" as="geometry"/>
+        </mxCell>
+
+        <!-- 有替代 → LLM选择 -->
+        <mxCell id="e_c6" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_has_alt" target="c_llm_sel">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_c6_label" value="是" style="text;html=1;fontSize=11;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="455" y="1075" width="20" height="18" as="geometry"/>
+        </mxCell>
+
+        <!-- LLM → 深拷贝替换 -->
+        <mxCell id="e_c7" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_llm_sel" target="c_replace">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 替换 → 重新验证 -->
+        <mxCell id="e_c8" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_replace" target="c_reval">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 重新验证 → 问题减少？ -->
+        <mxCell id="e_c9" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_reval" target="c_improved">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 未减少 → 回滚 -->
+        <mxCell id="e_c10_no" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_improved" target="c_rollback">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_c10_no_label" value="否" style="text;html=1;fontSize=11;fontFamily=SimSun;" vertex="1" parent="1">
+          <mxGeometry x="540" y="1310" width="24" height="18" as="geometry"/>
+        </mxCell>
+
+        <!-- 减少 → 回到链校验（循环） -->
+        <mxCell id="e_c_loop" value="是（继续下一轮）" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;fontSize=11;fontFamily=SimSun;" edge="1" parent="1" source="c_improved" target="c_check">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="130" y="1330"/>
+              <mxPoint x="130" y="645"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 跳过 → 回到严重度排序（循环） -->
+        <mxCell id="e_c_skip_loop" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;dashed=1;" edge="1" parent="1" source="c_skip" target="c_severity">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="1040"/>
+              <mxPoint x="780" y="815"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 回滚 → 输出 -->
+        <mxCell id="e_c_rollback_out" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="c_rollback" target="output">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="1440"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 知识图谱外部标注 -->
+        <mxCell id="kg_note" value="知识图谱&#xa;(Neo4j)" style="shape=cylinder3;whiteSpace=wrap;html=1;fontSize=11;fontFamily=SimSun;strokeColor=#000000;fillColor=#F5F5F5;size=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="860" width="70" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_kg1" style="strokeColor=#000000;dashed=1;" edge="1" parent="1" source="kg_note" target="c_alt_l3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

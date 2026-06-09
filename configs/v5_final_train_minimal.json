@@ -1,0 +1,42 @@
+{
+  "entrypoint": "scripts/train_v5_final_minimal.py",
+  "data": "outputs_v2/pipeline/step8_quality_gate/labeled_workflows_l3_v4_quality_gate.json",
+  "splits": "outputs_v2/pipeline/step8_quality_gate/dataset_splits_v4_quality_gate.json",
+  "checkpoint_dir": "outputs_v2/v5_final_checkpoints",
+  "vocab_size": 98,
+  "special_tokens": {
+    "pad": 94,
+    "unk": 95,
+    "start": 96,
+    "end": 97
+  },
+  "model": {
+    "name": "v5_final",
+    "architecture": "memory_augmented_ar_planner",
+    "d_model": 256,
+    "d_key": 64,
+    "n_layers": 6,
+    "n_heads": 8,
+    "d_ff": 1024,
+    "max_seq_len": 16,
+    "bert_hidden_size": 768,
+    "gamma": 0.3,
+    "rho": 1.5,
+    "alpha_noise_p": 0.05,
+    "graph_threshold_tau": 0.15
+  },
+  "training": {
+    "loss": "L_op + 0.3 * L_end",
+    "batch_size": 8,
+    "lr": 0.0001,
+    "max_steps": 1,
+    "dry_run_command": "python scripts/train_v5_final_minimal.py --dry-run",
+    "smoke_train_command": "python scripts/train_v5_final_minimal.py --max-steps 1 --batch-size 2"
+  },
+  "runtime_boundary": {
+    "checkpoint_loading": "strict_v5_wrapped_payload_only",
+    "diagnostics_gate_execution": false,
+    "provenance_gates_training": false,
+    "metric_bundle_controls_runtime": false
+  }
+}

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="25.0.2">
+  <diagram name="图1-系统总体流程图">
+    <mxGraphModel dx="1800" dy="1200" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="2200" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="left_main" value="&lt;b&gt;模型构建与训练部分（CSG-Geo 模型）&lt;/b&gt;" style="swimlane;startSize=34;rounded=1;arcSize=12;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=2;fontStyle=1;fontSize=16;fontColor=#3f6fb5;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="960" height="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="left_top" value="" style="rounded=1;arcSize=10;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#8fb0df;strokeWidth=1.5;container=1;pointerEvents=0;" vertex="1" parent="left_main">
+          <mxGeometry x="12" y="38" width="920" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="left_top_train_label" value="&lt;b&gt;训练数据构建&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#4f78ba;fontStyle=1;" vertex="1" parent="left_top">
+          <mxGeometry x="65" y="8" width="110" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="left_top_kg_label" value="&lt;b&gt;知识图谱构建&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#4f78ba;fontStyle=1;" vertex="1" parent="left_top">
+          <mxGeometry x="625" y="8" width="110" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="meta_1" value="多源GIS平台算子数据获取&#xa;（QGIS、GEE、GRASS等）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_top">
+          <mxGeometry x="20" y="40" width="470" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="meta_2" value="实体与关系抽取&#xa;（算子、数据类型、输入输出、语义关联等）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_top">
+          <mxGeometry x="20" y="125" width="470" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="meta_3" value="图数据库存储与管理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_top">
+          <mxGeometry x="20" y="225" width="470" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="kg_db" value="知识图谱&#xa;（图数据库）" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#eef5ff;strokeColor=#6c8ebf;strokeWidth=2;fontSize=16;" vertex="1" parent="left_top">
+          <mxGeometry x="655" y="100" width="180" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="left_top_note" value="图谱初始化" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#808080;" vertex="1" parent="left_top">
+          <mxGeometry x="520" y="112" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="e_meta1_kg" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="left_top" source="meta_1" target="kg_db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_meta2_kg" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="left_top" source="meta_2" target="kg_db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_meta3_kg" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="left_top" source="meta_3" target="kg_db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="left_model" value="&lt;b&gt;CSG-Geo 条件化序列生成模型&lt;/b&gt;" style="swimlane;startSize=30;rounded=1;arcSize=10;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=1.8;fontStyle=1;fontSize=16;fontColor=#4f78ba;" vertex="1" parent="left_main">
+          <mxGeometry x="12" y="356" width="920" height="236" as="geometry" />
+        </mxCell>
+        <mxCell id="lm_text" value="文本编码模块&#xa;（任务文本编码）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_model">
+          <mxGeometry x="18" y="68" width="175" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="lm_fusion" value="条件融合模块&#xa;（任务类型 + 知识图谱约束&#xa;+ 文本语义融合）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_model">
+          <mxGeometry x="225" y="58" width="250" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="lm_decoder" value="条件化解码模块&#xa;（Transformer 解码器&#xa;+ 约束感知调制）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_model">
+          <mxGeometry x="520" y="58" width="230" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="lm_proj" value="输出投影模块&#xa;（操作原语概率分布输出）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_model">
+          <mxGeometry x="255" y="178" width="330" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lm_text_fusion" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="left_model" source="lm_text" target="lm_fusion">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lm_fusion_decoder" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="left_model" source="lm_fusion" target="lm_decoder">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lm_fusion_proj" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=0.45;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="left_model" source="lm_fusion" target="lm_proj">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lm_decoder_proj" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.78;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="left_model" source="lm_decoder" target="lm_proj">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="left_constraint" value="&lt;b&gt;约束建模与注入机制&lt;/b&gt;" style="swimlane;startSize=30;rounded=1;arcSize=10;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=1.8;fontStyle=1;fontSize=16;fontColor=#4f78ba;" vertex="1" parent="left_main">
+          <mxGeometry x="12" y="625" width="920" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="lc_1" value="操作原语转移合法性约束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_constraint">
+          <mxGeometry x="18" y="52" width="270" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="lc_2" value="层次归属约束&#xa;（大类-子类-原语）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_constraint">
+          <mxGeometry x="325" y="46" width="265" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="lc_3" value="输入输出数据类型约束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_constraint">
+          <mxGeometry x="630" y="52" width="270" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="left_train" value="&lt;b&gt;模型训练与优化&lt;/b&gt;" style="swimlane;startSize=30;rounded=1;arcSize=10;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=1.8;fontStyle=1;fontSize=16;fontColor=#4f78ba;" vertex="1" parent="left_main">
+          <mxGeometry x="12" y="780" width="920" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="lt_1" value="训练样本构建&#xa;（原语序列 + 约束标注）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_train">
+          <mxGeometry x="22" y="52" width="245" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="lt_2" value="损失函数设计&#xa;（生成概率 + 约束惩罚）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_train">
+          <mxGeometry x="337" y="52" width="245" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="lt_3" value="模型训练与评估&#xa;（一致性 + 合法性评估）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.5;fontSize=14;" vertex="1" parent="left_train">
+          <mxGeometry x="652" y="52" width="245" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="trained_model" value="&lt;b&gt;训练完成的模型&lt;/b&gt;&#xa;CSG-Geo 模型参数&#xa;（用于推理阶段候选原语生成）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7ea2d8;strokeWidth=1.8;fontSize=16;" vertex="1" parent="left_main">
+          <mxGeometry x="235" y="995" width="450" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lefttop_model" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=1.8;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="left_main" source="left_top" target="left_model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_kg_extract" value="约束规则抽取" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;fontColor=#7a7a7a;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.78;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="left_main" source="kg_db" target="left_model">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="748" y="355" />
+              <mxPoint x="748" y="388" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_model_constraint" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=1.8;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="left_main" source="left_model" target="left_constraint">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_constraint_train" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=1.8;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="left_main" source="left_constraint" target="left_train">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_train_model" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=1.8;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="left_main" source="left_train" target="trained_model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="right_main" value="&lt;b&gt;推理与自动构建流程部分&lt;/b&gt;" style="swimlane;startSize=34;rounded=1;arcSize=12;html=1;fillColor=#ffffff;strokeColor=#78a66f;strokeWidth=2;fontStyle=1;fontSize=16;fontColor=#3d7f3d;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="20" width="1140" height="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="infer_area" value="" style="rounded=1;arcSize=10;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#9fc79d;strokeWidth=1.5;container=1;pointerEvents=0;" vertex="1" parent="right_main">
+          <mxGeometry x="18" y="36" width="870" height="1045" as="geometry" />
+        </mxCell>
+        <mxCell id="infer_label" value="在线推理阶段" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#5c8758;fontStyle=1;" vertex="1" parent="infer_area">
+          <mxGeometry x="18" y="8" width="95" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="input_box" value="&lt;b&gt;自然语言任务描述&lt;/b&gt;&#xa;（用户输入）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#8a8a8a;strokeWidth=1.8;fontSize=16;" vertex="1" parent="infer_area">
+          <mxGeometry x="215" y="36" width="440" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="understand_box" value="&lt;b&gt;任务语义理解&lt;/b&gt;&#xa;（大语言模型提取结构化语义特征：&#xa;任务名称、类型、约束条件等）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#8a8a8a;strokeWidth=1.8;fontSize=14;" vertex="1" parent="infer_area">
+          <mxGeometry x="215" y="126" width="440" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="task_vec_label" value="任务条件向量" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#666666;" vertex="1" parent="infer_area">
+          <mxGeometry x="392" y="232" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="e_input_understand" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4f4f4f;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="infer_area" source="input_box" target="understand_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_group" value="&lt;b&gt;操作原语序列生成（基于 CSG-Geo 模型）&lt;/b&gt;" style="swimlane;startSize=28;rounded=1;arcSize=10;html=1;fillColor=#ffffff;strokeColor=#7fa77a;strokeWidth=1.8;fontStyle=1;fontSize=14;fontColor=#3f7d3f;" vertex="1" parent="infer_area">
+          <mxGeometry x="92" y="268" width="662" height="188" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_text_enc" value="文本编码器&#xa;（语义编码）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="seq_group">
+          <mxGeometry x="24" y="50" width="118" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_cond_inj" value="条件注入模块&#xa;（逐层调制）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="seq_group">
+          <mxGeometry x="223" y="50" width="145" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_decoder" value="序列生成解码器&#xa;（自回归生成）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="seq_group">
+          <mxGeometry x="500" y="50" width="138" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_candidates" value="多样性约束候选序列生成&#xa;（分组搜索 + 长度惩罚 + 多因子评分）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="seq_group">
+          <mxGeometry x="84" y="126" width="498" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="e_seq_text_inj" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7fa77a;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="seq_group" source="seq_text_enc" target="seq_cond_inj">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_seq_inj_decoder" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7fa77a;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="seq_group" source="seq_cond_inj" target="seq_decoder">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_seq_to_candidates" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7fa77a;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="seq_group" source="seq_cond_inj" target="seq_candidates">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_decoder_to_candidates" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7fa77a;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="seq_group" source="seq_decoder" target="seq_candidates">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_label" value="L3操作原语候选序列" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#666666;" vertex="1" parent="infer_area">
+          <mxGeometry x="360" y="465" width="145" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="map_group" value="&lt;b&gt;算子映射与候选链生成&lt;/b&gt;" style="swimlane;startSize=28;rounded=1;arcSize=10;html=1;fillColor=#ffffff;strokeColor=#7fa77a;strokeWidth=1.8;fontStyle=1;fontSize=14;fontColor=#3f7d3f;" vertex="1" parent="infer_area">
+          <mxGeometry x="132" y="500" width="586" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="map_1" value="语义相似度&#xa;融合评分" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="map_group">
+          <mxGeometry x="20" y="44" width="146" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="map_2" value="I/O类型归一化&#xa;与兼容性评估" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="map_group">
+          <mxGeometry x="218" y="44" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="map_3" value="带约束的&#xa;搜索扩展" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="map_group">
+          <mxGeometry x="420" y="44" width="146" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="map_label" value="候选算子链" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#666666;" vertex="1" parent="infer_area">
+          <mxGeometry x="394" y="626" width="85" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fusion_group" value="&lt;b&gt;多阶段融合推理与链修复&lt;/b&gt;" style="swimlane;startSize=28;rounded=1;arcSize=10;html=1;fillColor=#ffffff;strokeColor=#7fa77a;strokeWidth=1.8;fontStyle=1;fontSize=14;fontColor=#3f7d3f;" vertex="1" parent="infer_area">
+          <mxGeometry x="132" y="660" width="586" height="176" as="geometry" />
+        </mxCell>
+        <mxCell id="fusion_note" value="不改善则回滚" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#777777;" vertex="1" parent="fusion_group">
+          <mxGeometry x="212" y="28" width="90" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="fusion_graph" value="GraphRAG&#xa;结构化评分" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="fusion_group">
+          <mxGeometry x="18" y="52" width="145" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="fusion_repair" value="迭代修复&#xa;（替代搜索 + 回溯）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="fusion_group">
+          <mxGeometry x="406" y="52" width="140" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="fusion_sem" value="语义评分&#xa;（大语言模型）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="fusion_group">
+          <mxGeometry x="18" y="118" width="145" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="fusion_merge" value="融合评分&#xa;结构化评分 × alpha + 语义评分 × (1-alpha)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#90b58b;strokeWidth=1.5;fontSize=14;" vertex="1" parent="fusion_group">
+          <mxGeometry x="220" y="116" width="208" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e_graph_merge" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7fa77a;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="fusion_group" source="fusion_graph" target="fusion_merge">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_sem_merge" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7fa77a;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="fusion_group" source="fusion_sem" target="fusion_merge">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_merge_repair" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7fa77a;strokeWidth=1.5;endArrow=classic;endFill=1;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.65;entryDx=0;entryDy=0;" edge="1" parent="fusion_group" source="fusion_merge" target="fusion_repair">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="best_model" value="&lt;b&gt;最优地理处理模型&lt;/b&gt;&#xa;（可执行算子链 + 结构化描述）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7fa77a;strokeWidth=2;fontSize=16;fontStyle=1;" vertex="1" parent="right_main">
+          <mxGeometry x="314" y="1045" width="480" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="followup_label" value="用户追问" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#666666;" vertex="1" parent="right_main">
+          <mxGeometry x="498" y="1124" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="followup_box" value="交互式追问与解释&#xa;知识图谱检索上下文 + 大语言模型生成应答" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;fillColor=#ffffff;strokeColor=#b0b0b0;strokeWidth=1.5;fontSize=14;" vertex="1" parent="right_main">
+          <mxGeometry x="368" y="1142" width="366" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="llm_box" value="大语言模型&#xa;（LLM）" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#8dae81;strokeWidth=1.8;fontSize=16;" vertex="1" parent="right_main">
+          <mxGeometry x="900" y="470" width="146" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="answer_label" value="解释性应答" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=14;fontColor=#666666;" vertex="1" parent="right_main">
+          <mxGeometry x="975" y="1042" width="75" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="e_understand_seq" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4f4f4f;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="infer_area" source="understand_box" target="seq_group">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_seq_map" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4f4f4f;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="infer_area" source="seq_group" target="map_group">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_map_fusion" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4f4f4f;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="infer_area" source="map_group" target="fusion_group">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_fusion_best" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4f4f4f;strokeWidth=1.8;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="right_main" source="fusion_group" target="best_model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_best_followup" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="right_main" source="best_model" target="followup_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_model_to_seq" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=1;exitY=0.45;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" edge="1" parent="1" source="trained_model" target="seq_group">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_kg_to_seq" value="图谱约束注入" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;strokeWidth=1.6;fontColor=#7a7a7a;endArrow=classic;endFill=1;exitX=1;exitY=0.55;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="kg_db" target="seq_group">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_kg_to_map" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" edge="1" parent="1" source="kg_db" target="map_group">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="618" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_kg_to_followup" value="上下文检索" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;strokeWidth=1.6;fontColor=#7a7a7a;endArrow=classic;endFill=1;exitX=0.04;exitY=0.97;exitDx=0;exitDy=0;entryX=0.02;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="left_main" target="followup_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="65" y="1172" />
+              <mxPoint x="1362" y="1172" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_llm_understand" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=0;exitY=0.35;exitDx=0;exitDy=0;entryX=1;entryY=0.35;entryDx=0;entryDy=0;" edge="1" parent="right_main" source="llm_box" target="understand_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="915" y="495" />
+              <mxPoint x="915" y="228" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_llm_sem" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=0;exitY=0.62;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="right_main" source="llm_box" target="fusion_sem">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="915" y="545" />
+              <mxPoint x="915" y="760" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_llm_followup" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;strokeColor=#9a9a9a;strokeWidth=1.6;endArrow=classic;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="right_main" source="llm_box" target="followup_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="970" y="1170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

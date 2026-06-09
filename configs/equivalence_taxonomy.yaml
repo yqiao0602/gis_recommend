@@ -1,0 +1,137 @@
+schema_version: gis_recommend.workflow_equivalence_taxonomy.v1
+governance:
+  target_layer: GEE/workflow-level semantic equivalence
+  qgis_landing_role: auxiliary_transferability_signal
+  manual_review_required_before_training: true
+
+token_classes:
+  "25": clip
+  "28": select_bands
+  "29": mask
+  "31": reducer_or_statistics
+  "34": arithmetic
+  "35": threshold_or_logic
+  "39": projection
+  "40": mosaic_or_merge
+  "50": temporal_filter
+  "53": metadata_filter
+  "54": spatial_filter
+  "56": temporal_reducer
+  "83": smoothing_filter
+  "90": temporal_aggregation
+  "92": feature_stacking
+
+class_groups:
+  collection_filters:
+    - temporal_filter
+    - metadata_filter
+    - spatial_filter
+  selection:
+    - select_bands
+  spatial_subset:
+    - clip
+  pixelwise_compute:
+    - arithmetic
+    - threshold_or_logic
+  mask_or_threshold:
+    - mask
+    - threshold_or_logic
+  reducers_or_aggregation:
+    - reducer_or_statistics
+    - temporal_reducer
+    - temporal_aggregation
+  high_risk_sensitive:
+    - projection
+    - mask
+    - threshold_or_logic
+    - reducer_or_statistics
+    - temporal_reducer
+    - temporal_aggregation
+
+families:
+  filter_filter:
+    risk_level: low
+    constraints:
+      - independent_collection_filters
+      - same_collection_scope
+    hidden_dependencies: []
+    risk_drivers: []
+  select_filter:
+    risk_level: medium
+    constraints:
+      - select_does_not_drop_filter_property
+      - filter_applies_to_same_object_scope
+    hidden_dependencies:
+      - collection_image_boundary
+      - metadata_property_dependency
+    risk_drivers:
+      - band_or_metadata_scope
+  select_clip:
+    risk_level: medium
+    constraints:
+      - clip_geometry_independent_of_selected_bands
+      - selection_preserves_bands_used_downstream
+    hidden_dependencies:
+      - downstream_band_dependency
+    risk_drivers:
+      - band_availability
+  clip_arithmetic:
+    risk_level: medium_high
+    constraints:
+      - pixelwise_operation_extent_invariant
+      - no_region_dependent_reducer_between_steps
+    hidden_dependencies:
+      - spatial_extent_dependency
+      - raster_alignment_dependency
+    risk_drivers:
+      - extent_sensitive_compute
+  mask_threshold_or_logic:
+    risk_level: high
+    constraints:
+      - manually_verify_mask_threshold_order
+    hidden_dependencies:
+      - mask_semantics_dependency
+      - threshold_dependency
+    risk_drivers:
+      - mask_or_threshold_semantics
+  reducer_or_aggregation:
+    risk_level: high
+    constraints:
+      - manually_verify_reducer_domain
+    hidden_dependencies:
+      - reducer_domain_dependency
+      - temporal_window_dependency
+    risk_drivers:
+      - aggregation_semantics
+  high_risk_sensitive:
+    risk_level: high
+    constraints:
+      - manual_source_inspection_required
+    hidden_dependencies:
+      - crs_or_projection_dependency
+      - nodata_or_mask_dependency
+      - temporal_or_aggregation_dependency
+    risk_drivers:
+      - sensitive_operation
+  other:
+    risk_level: unknown
+    constraints:
+      - manual_review_required
+    hidden_dependencies:
+      - unclassified_operator_dependency
+    risk_drivers:
+      - taxonomy_gap
+
+rejection_taxonomy:
+  sensitive_swap: high_risk_family
+  logic_consistency_degraded: semantic_conflict
+  harmful_step_rate_increased: harmful_drift
+  redundancy_rate_increased: harmful_drift
+  missing_critical_step_rate_increased: hidden_dependency
+  length_changed: semantic_conflict
+  original_semantic_usable_failed: semantic_conflict
+  variant_semantic_usable_failed: semantic_conflict
+  qgis_chain_unusable: landing_only_failure
+  original_qgis_mapping_usable_failed: landing_only_failure
+  variant_qgis_mapping_usable_failed: landing_only_failure
+  qgis_unknown_count_increased: landing_only_failure
