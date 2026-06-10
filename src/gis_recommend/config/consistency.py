@@ -97,3 +97,11 @@ def check_runtime_consistency(
                 ))
 
     return ConsistencyReport(issues=issues)
+
+
+def consistency_report_lines(report: ConsistencyReport) -> list:
+    """Human-readable, warn-only log lines for a report (empty if no issues)."""
+    return [
+        f"[consistency:{issue.severity}] {issue.code}: {issue.message}"
+        for issue in report.issues
+    ]
