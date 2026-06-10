@@ -9,7 +9,12 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from gis_recommend.config.consistency import check_runtime_consistency
+from gis_recommend.config.consistency import (
+    check_runtime_consistency,
+    consistency_report_lines,
+    ConsistencyReport,
+    ConsistencyIssue,
+)
 
 
 def _write_json(path: Path, obj) -> None:
@@ -107,8 +112,21 @@ class RuntimeConsistencyTests(unittest.TestCase):
             )
 
             codes = [issue.code for issue in report.issues]
-            self.assertIn("transition_matrix_missing", codes)
-            self.assertTrue(report.ok)  # warning only -> still ok
+    def test_report_lines_empty_when_clean_and_formats_issues(self):
+        """consistency_report_lines yields [] for a clean report and one
+        human-readable line per issue (with severity + code) otherwise."""
+        self.assertEqual(consistency_report_lines(ConsistencyReport(issues=[])), [])
+
+        report = ConsistencyReport(issues=[
+            ConsistencyIssue(code="vocab_count_mismatch", severity="error",
+                             message="350 != 94", details={}),
+            ConsistencyIssue(code="transition_matrix_missing", severity="warning",
+                             message="no matrix", details={}),
+        ])
+        lines = consistency_report_lines(report)
+        self.assertEqual(len(lines), 2)
+        self.assertTrue(any("vocab_count_mismatch" in ln and "error" in ln for ln in lines))
+        self.assertTrue(any("transition_matrix_missing" in ln and "warning" in ln for ln in lines))
 
 
 if __name__ == "__main__":

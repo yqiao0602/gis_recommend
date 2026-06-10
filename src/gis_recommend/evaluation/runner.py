@@ -38,6 +38,7 @@ from tqdm import tqdm
 
 from gis_recommend.config.transformer_config import (
     OUTPUT_DIR, V4_LABELED_WORKFLOWS_PATH,
+    VOCAB_SIZE, TOTAL_VOCAB_SIZE,
     L3_EMBEDDINGS_PATH as CONFIG_L3_EMBEDDINGS_PATH,
     CLASSIFICATION_HIERARCHY,
     ID_MAPPINGS_PATH as CONFIG_ID_MAPPINGS_PATH,
@@ -68,6 +69,9 @@ from gis_recommend.evaluation.report import (
 )
 from gis_recommend.evaluation.run_contract import build_mainline_run_contract
 from gis_recommend.evaluation.shadow_phase import build_retrieval_shadow_pool
+from gis_recommend.config.consistency import (
+    check_runtime_consistency, consistency_report_lines,
+)
 
 SEED = 42
 L3_EMBEDDINGS_PATH = CONFIG_L3_EMBEDDINGS_PATH
@@ -171,6 +175,21 @@ def main():
         f"{run_contract.data_authority.qgis_io_types_path} "
         f"({run_contract.data_authority.qgis_io_types_status})"
     )
+
+    # ── Runtime consistency (advisory / warn-only; never blocks selection) ──
+    consistency_report = check_runtime_consistency(
+        vocab_size=VOCAB_SIZE,
+        total_vocab_size=TOTAL_VOCAB_SIZE,
+        id_mappings_path=run_contract.data_authority.id_mappings_path,
+        transition_matrix_path=OUTPUT_DIR / "transition_allowed_next.json",
+    )
+    _consistency_lines = consistency_report_lines(consistency_report)
+    if _consistency_lines:
+        print("  Runtime consistency: ISSUES (advisory, not blocking) —")
+        for _line in _consistency_lines:
+            print(f"    {_line}")
+    else:
+        print("  Runtime consistency: OK")
 
     # ── Load data ────────────────────────────────────────────────
     print("\n[1] Loading data ...")
@@ -624,6 +643,13 @@ def main():
         "mainline_eligible": run_contract.mainline_eligible,
         "report_out": args.report_out,
         "report_tag": args.report_tag,
+    }
+    report["experiment_meta"]["runtime_consistency"] = {
+        "ok": consistency_report.ok,
+        "issues": [
+            {"code": i.code, "severity": i.severity, "message": i.message}
+            for i in consistency_report.issues
+        ],
     }
     if oracle_results:
         report["oracle_analysis"] = oracle_results["by_k"]
