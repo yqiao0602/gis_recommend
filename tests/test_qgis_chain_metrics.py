@@ -11,6 +11,7 @@ from gis_recommend.evaluation.qgis_chain_metrics import (
     score_qgis_chain,
     infer_modality,
     aggregate_scores,
+    score_chain_records,
 )
 
 
@@ -89,6 +90,26 @@ class AggregateTests(unittest.TestCase):
         self.assertAlmostEqual(agg["by_modality"]["vector"]["operator_validity"], 0.75)
         self.assertAlmostEqual(agg["by_modality"]["vector"]["executable_rate"], 0.5)
         self.assertAlmostEqual(agg["by_modality"]["raster"]["operator_set_f1"], 1.0)
+
+
+class BatchRecordsTests(unittest.TestCase):
+    def test_score_chain_records_attaches_modality_and_metrics(self):
+        """Batch driver: ties score_qgis_chain + infer_modality per item, ready for aggregate_scores."""
+        items = [
+            {"task_id": "t1", "predicted_chain": ["native:buffer", "native:clip"]},
+            {"task_id": "t2", "predicted_chain": ["gdal:cliprasterbymasklayer"],
+             "reference": ["gdal:cliprasterbymasklayer"]},
+        ]
+        recs = score_chain_records(items, io_types=IO_TYPES)
+        self.assertEqual(recs[0]["task_id"], "t1")
+        self.assertEqual(recs[0]["modality"], "vector")
+        self.assertEqual(recs[1]["modality"], "raster")
+        self.assertEqual(recs[1]["operator_set_f1"], 1.0)
+
+        agg = aggregate_scores(recs)
+        self.assertEqual(agg["overall"]["n"], 2)
+        self.assertIn("vector", agg["by_modality"])
+        self.assertIn("raster", agg["by_modality"])
 
 
 if __name__ == "__main__":

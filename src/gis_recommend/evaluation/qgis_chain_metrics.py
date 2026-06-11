@@ -141,3 +141,21 @@ def aggregate_scores(records: Sequence[dict]) -> dict:
             for m in modalities
         },
     }
+
+
+def score_chain_records(items: Sequence[dict], io_types: dict) -> list:
+    """Score a batch of items, attaching task_id and modality to each result.
+
+    Each item: {task_id, predicted_chain: List[str], reference?: List[str],
+    modality?: str}. Returns a list of per-item score dicts ready for
+    ``aggregate_scores`` (which gives the overall + per-modality view).
+    """
+    records = []
+    for it in items:
+        chain = list(it.get("predicted_chain") or [])
+        ref = it.get("reference")
+        result = score_qgis_chain(chain, io_types=io_types, reference=ref)
+        result["task_id"] = it.get("task_id")
+        result["modality"] = it.get("modality") or infer_modality(chain, io_types)
+        records.append(result)
+    return records
