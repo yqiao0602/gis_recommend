@@ -79,3 +79,65 @@ def score_qgis_chain(
         "operator_set_recall": operator_set_recall,
         "n_steps": len(chain),
     }
+
+
+_VECTOR_TYPES = {"vector"}
+_RASTER_TYPES = {"raster"}
+
+
+def infer_modality(chain: Sequence[str], io_types: dict) -> str:
+    """Infer task modality from the I/O types the chain's operators touch.
+
+    Returns 'vector' | 'raster' | 'mixed' | 'unknown'. (Real io_types are
+    pre-normalized to vector/raster; unknown ops contribute nothing.)
+    """
+    types = set()
+    for op in chain:
+        info = (io_types or {}).get(op)
+        if not info:
+            continue
+        for t in list(info.get("inputs") or []) + list(info.get("outputs") or []):
+            types.add(t)
+    has_v = bool(types & _VECTOR_TYPES)
+    has_r = bool(types & _RASTER_TYPES)
+    if has_v and has_r:
+        return "mixed"
+    if has_v:
+        return "vector"
+    if has_r:
+        return "raster"
+    return "unknown"
+
+
+def aggregate_scores(records: Sequence[dict]) -> dict:
+    """Aggregate per-chain score dicts overall and broken down by modality.
+
+    Each record should carry: modality, operator_validity, io_executability,
+    executable, operator_set_f1 (may be None). This is the diagnostic view —
+    e.g. vector vs raster vs mixed — for spotting where a system is weak.
+    """
+    def _mean(rows, key):
+        vals = [r[key] for r in rows if r.get(key) is not None]
+        return sum(vals) / len(vals) if vals else None
+
+    def _agg(rows):
+        n = len(rows)
+        if not n:
+            return {"n": 0}
+        return {
+            "n": n,
+            "operator_validity": _mean(rows, "operator_validity"),
+            "io_executability": _mean(rows, "io_executability"),
+            "executable_rate": sum(1.0 for r in rows if r.get("executable")) / n,
+            "operator_set_f1": _mean(rows, "operator_set_f1"),
+        }
+
+    records = list(records)
+    modalities = sorted({r.get("modality", "unknown") for r in records})
+    return {
+        "overall": _agg(records),
+        "by_modality": {
+            m: _agg([r for r in records if r.get("modality", "unknown") == m])
+            for m in modalities
+        },
+    }

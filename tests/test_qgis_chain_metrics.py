@@ -7,7 +7,11 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from gis_recommend.evaluation.qgis_chain_metrics import score_qgis_chain
+from gis_recommend.evaluation.qgis_chain_metrics import (
+    score_qgis_chain,
+    infer_modality,
+    aggregate_scores,
+)
 
 
 # Minimal synthetic QGIS I/O metadata (keys = the set of REAL QGIS operators).
@@ -61,6 +65,30 @@ class OperatorSetF1Tests(unittest.TestCase):
     def test_set_f1_none_without_reference(self):
         r = score_qgis_chain(["native:buffer"], io_types=IO_TYPES)
         self.assertIsNone(r["operator_set_f1"])
+
+
+class ModalityTests(unittest.TestCase):
+    def test_infer_modality_from_io_types(self):
+        self.assertEqual(infer_modality(["native:buffer", "native:clip"], IO_TYPES), "vector")
+        self.assertEqual(infer_modality(["gdal:cliprasterbymasklayer"], IO_TYPES), "raster")
+        # rasterize: vector in -> raster out => touches both
+        self.assertEqual(infer_modality(["native:rasterize"], IO_TYPES), "mixed")
+        self.assertEqual(infer_modality(["foo:bar"], IO_TYPES), "unknown")
+
+
+class AggregateTests(unittest.TestCase):
+    def test_aggregate_overall_and_by_modality(self):
+        records = [
+            {"modality": "vector", "operator_validity": 1.0, "io_executability": 1.0, "executable": True, "operator_set_f1": 0.8},
+            {"modality": "vector", "operator_validity": 0.5, "io_executability": 0.5, "executable": False, "operator_set_f1": 0.4},
+            {"modality": "raster", "operator_validity": 1.0, "io_executability": 1.0, "executable": True, "operator_set_f1": 1.0},
+        ]
+        agg = aggregate_scores(records)
+        self.assertEqual(agg["overall"]["n"], 3)
+        self.assertEqual(agg["by_modality"]["vector"]["n"], 2)
+        self.assertAlmostEqual(agg["by_modality"]["vector"]["operator_validity"], 0.75)
+        self.assertAlmostEqual(agg["by_modality"]["vector"]["executable_rate"], 0.5)
+        self.assertAlmostEqual(agg["by_modality"]["raster"]["operator_set_f1"], 1.0)
 
 
 if __name__ == "__main__":
