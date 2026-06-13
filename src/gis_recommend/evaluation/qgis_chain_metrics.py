@@ -115,30 +115,45 @@ def aggregate_scores(records: Sequence[dict]) -> dict:
     Each record should carry: modality, operator_validity, io_executability,
     executable, operator_set_f1 (may be None). This is the diagnostic view —
     e.g. vector vs raster vs mixed — for spotting where a system is weak.
+    Thin wrapper over the generic ``aggregate_by``.
     """
-    def _mean(rows, key):
-        vals = [r[key] for r in rows if r.get(key) is not None]
-        return sum(vals) / len(vals) if vals else None
+    by = aggregate_by(records, "modality")
+    return {"overall": by["overall"], "by_modality": by["groups"]}
 
-    def _agg(rows):
-        n = len(rows)
-        if not n:
-            return {"n": 0}
-        return {
-            "n": n,
-            "operator_validity": _mean(rows, "operator_validity"),
-            "io_executability": _mean(rows, "io_executability"),
-            "executable_rate": sum(1.0 for r in rows if r.get("executable")) / n,
-            "operator_set_f1": _mean(rows, "operator_set_f1"),
-        }
 
+def _mean(rows, key):
+    vals = [r[key] for r in rows if r.get(key) is not None]
+    return sum(vals) / len(vals) if vals else None
+
+
+def _agg(rows):
+    n = len(rows)
+    if not n:
+        return {"n": 0}
+    return {
+        "n": n,
+        "operator_validity": _mean(rows, "operator_validity"),
+        "io_executability": _mean(rows, "io_executability"),
+        "executable_rate": sum(1.0 for r in rows if r.get("executable")) / n,
+        "operator_set_f1": _mean(rows, "operator_set_f1"),
+    }
+
+
+def aggregate_by(records: Sequence[dict], key: str) -> dict:
+    """Aggregate per-chain score dicts overall and grouped by an arbitrary key.
+
+    ``key`` selects the grouping field of each record (e.g. 'modality' or
+    'grade'). Returns ``{overall, groups: {value: agg}}``. This is the generic
+    engine behind both the modality view (where a system is weak) and the grade
+    view (which empirically shows ①② do NOT track human-judged correctness).
+    """
     records = list(records)
-    modalities = sorted({r.get("modality", "unknown") for r in records})
+    values = sorted({r.get(key, "unknown") for r in records})
     return {
         "overall": _agg(records),
-        "by_modality": {
-            m: _agg([r for r in records if r.get("modality", "unknown") == m])
-            for m in modalities
+        "groups": {
+            v: _agg([r for r in records if r.get(key, "unknown") == v])
+            for v in values
         },
     }
 
