@@ -22,6 +22,25 @@ from collections import Counter
 from typing import Optional, Sequence
 
 
+def set_overlap_prf(predicted: Sequence[str], reference: Optional[Sequence[str]]) -> dict:
+    """Order-invariant multiset precision/recall/F1 of predicted vs reference.
+
+    Token-agnostic: works on QGIS alg-ids OR L3 codes alike, so the same ③
+    metric serves both the QGIS-chain level and the L3-sequence level. Returns
+    ``{precision, recall, f1}``; all None when ``reference`` is None (no ground
+    truth to score against).
+    """
+    if reference is None:
+        return {"precision": None, "recall": None, "f1": None}
+    pred = list(predicted)
+    ref = list(reference)
+    overlap = sum((Counter(pred) & Counter(ref)).values())
+    precision = overlap / len(pred) if pred else 0.0
+    recall = overlap / len(ref) if ref else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
+    return {"precision": precision, "recall": recall, "f1": f1}
+
+
 def score_qgis_chain(
     chain: Sequence[str],
     *,
@@ -54,20 +73,10 @@ def score_qgis_chain(
     executable = (operator_validity == 1.0) and (io_executability == 1.0)
 
     # ── ③ operator set F1 (order-invariant multiset overlap) vs reference ──
-    operator_set_f1 = None
-    operator_set_precision = None
-    operator_set_recall = None
-    if reference is not None:
-        ref = list(reference)
-        overlap = sum((Counter(chain) & Counter(ref)).values())
-        precision = overlap / len(chain) if chain else 0.0
-        recall = overlap / len(ref) if ref else 0.0
-        operator_set_precision = precision
-        operator_set_recall = recall
-        operator_set_f1 = (
-            2 * precision * recall / (precision + recall)
-            if (precision + recall) else 0.0
-        )
+    prf = set_overlap_prf(chain, reference)
+    operator_set_f1 = prf["f1"]
+    operator_set_precision = prf["precision"]
+    operator_set_recall = prf["recall"]
 
     return {
         "operator_validity": operator_validity,

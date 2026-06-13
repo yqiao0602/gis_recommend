@@ -13,6 +13,7 @@ from gis_recommend.evaluation.qgis_chain_metrics import (
     aggregate_scores,
     aggregate_by,
     score_chain_records,
+    set_overlap_prf,
 )
 
 
@@ -23,6 +24,19 @@ IO_TYPES = {
     "native:rasterize": {"inputs": ["vector"], "outputs": ["raster"]},
     "gdal:cliprasterbymasklayer": {"inputs": ["raster"], "outputs": ["raster"]},
 }
+
+
+class SetOverlapPrfTests(unittest.TestCase):
+    def test_set_overlap_prf_is_token_agnostic_and_order_invariant(self):
+        """The extracted ③ helper works on L3 codes too (Phase B L3-level set_f1),
+        order-invariant, and returns all-None without a reference."""
+        # L3 codes, reordered, one extra predicted -> recall 1.0, precision 2/3
+        prf = set_overlap_prf(["L3_b", "L3_a", "L3_x"], ["L3_a", "L3_b"])
+        self.assertAlmostEqual(prf["recall"], 1.0)
+        self.assertAlmostEqual(prf["precision"], 2 / 3)
+        self.assertAlmostEqual(prf["f1"], 2 * (2 / 3) * 1.0 / ((2 / 3) + 1.0))
+        # no reference -> all None
+        self.assertEqual(set_overlap_prf(["L3_a"], None), {"precision": None, "recall": None, "f1": None})
 
 
 class OperatorValidityTests(unittest.TestCase):
