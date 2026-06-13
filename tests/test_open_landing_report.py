@@ -10,9 +10,12 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from gis_recommend.evaluation.open_landing_report import (
     parse_open_landing_csv,
+    parse_showcase_csv,
     chain_diversity,
     build_report,
     render_markdown,
+    compare_reports,
+    render_comparison_markdown,
 )
 
 
@@ -110,6 +113,75 @@ class RenderMarkdownTests(unittest.TestCase):
         self.assertIn("modality", low)
         self.assertIn("grade", low)
         self.assertIn("diversity", low)
+        self.assertIn("vec", md)
+
+
+class ShowcaseCsvTests(unittest.TestCase):
+    # Mimics scripts/run_end_to_end_showcase_eval.py _write_csv (utf-8-sig BOM,
+    # group carries the modality, qgis_chain is ' -> '-joined alg-ids).
+    SHOWCASE_CSV = (
+        "idx,group,task_type,task_name,l3_usable,l3_score,qgis_valid,qgis_quality,"
+        "combined_bridge,l3_bridge,native_bridge,l3_chain,qgis_chain,warnings,failures\n"
+        "1,vec,Unknown,Buffer roads,True,0.8,True,0.7,True,True,False,"
+        "L3_a -> L3_b,native:buffer -> native:clip,,\n"
+        "2,rast,Unknown,Clip raster,False,0.3,False,0.0,False,False,False,"
+        "L3_c,gdal:warpreproject,,no_candidates\n"
+        "3,mixed,Unknown,Nothing landed,False,0.0,False,0.0,False,False,False,"
+        ",,,no_candidates\n"
+    )
+
+    def test_parse_showcase_csv_reads_chain_modality_and_handles_empty(self):
+        """Showcase CSV -> items: qgis_chain split to predicted_chain, group is the
+        task-intent modality, empty qgis_chain -> empty chain, BOM tolerated."""
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "showcase.csv"
+            p.write_text(self.SHOWCASE_CSV, encoding="utf-8-sig")  # BOM, like the real writer
+            items = parse_showcase_csv(p)
+
+        self.assertEqual(len(items), 3)
+        self.assertEqual(items[0]["predicted_chain"], ["native:buffer", "native:clip"])
+        self.assertEqual(items[0]["modality"], "vec")
+        self.assertEqual(items[0]["task_id"], "1")
+        self.assertEqual(items[1]["predicted_chain"], ["gdal:warpreproject"])
+        self.assertEqual(items[1]["modality"], "rast")
+        # empty qgis_chain -> empty predicted_chain (no crash)
+        self.assertEqual(items[2]["predicted_chain"], [])
+        self.assertEqual(items[2]["modality"], "mixed")
+
+
+class CompareReportsTests(unittest.TestCase):
+    def test_compare_reports_pairs_baseline_and_model_per_modality(self):
+        """compare_reports lines up two build_report outputs per modality with deltas."""
+        base = build_report(
+            [{"task_id": "b1", "predicted_chain": ["gdal:warpreproject", "native:buffer"], "modality": "rast", "grade": ""}],
+            IO_TYPES,
+        )  # warp(raster)->buffer(vector): incompatible -> io_exec 0.0, not executable
+        model = build_report(
+            [{"task_id": "m1", "predicted_chain": ["gdal:warpreproject"], "modality": "rast", "grade": ""}],
+            IO_TYPES,
+        )  # single op -> io_exec 1.0, executable
+        cmp = compare_reports(base, model)
+
+        row = cmp["by_modality"]["rast"]
+        self.assertEqual(row["io_executability"]["baseline"], 0.0)
+        self.assertEqual(row["io_executability"]["model"], 1.0)
+        self.assertAlmostEqual(row["io_executability"]["delta"], 1.0)
+        self.assertEqual(row["executable_rate"]["baseline"], 0.0)
+        self.assertEqual(row["executable_rate"]["model"], 1.0)
+        # validity equal -> delta 0
+        self.assertAlmostEqual(row["operator_validity"]["delta"], 0.0)
+        # diversity carried through
+        self.assertIn("unique_ratio", row)
+        self.assertEqual(row["n"]["baseline"], 1)
+        self.assertEqual(row["n"]["model"], 1)
+
+    def test_render_comparison_markdown_shows_both_systems(self):
+        base = build_report([{"task_id": "b1", "predicted_chain": ["native:buffer"], "modality": "vec", "grade": ""}], IO_TYPES)
+        model = build_report([{"task_id": "m1", "predicted_chain": ["native:buffer", "native:clip"], "modality": "vec", "grade": ""}], IO_TYPES)
+        md = render_comparison_markdown(compare_reports(base, model, labels=("baseline", "v4.6")))
+        self.assertIsInstance(md, str)
+        self.assertIn("baseline", md)
+        self.assertIn("v4.6", md)
         self.assertIn("vec", md)
 
 

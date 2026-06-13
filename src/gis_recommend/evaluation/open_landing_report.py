@@ -191,3 +191,102 @@ def render_markdown(report: dict) -> str:
         L.append(f"| {m or '(none)'} | {d['n']} | {d['unique']} | {_fmt(d['unique_ratio'])} |")
     L.append("")
     return "\n".join(L)
+
+
+def parse_showcase_csv(path) -> list:
+    """Parse run_end_to_end_showcase_eval.py's CSV into scoring items.
+
+    That CSV is written utf-8-sig (BOM) with a ``qgis_chain`` column
+    (' -> '-joined alg-ids) and a ``group`` column that — for our open-landing
+    runs — carries the task-intent modality verbatim. There is no human grade
+    (the model's chains are freshly produced, not the graded baseline chains).
+    """
+    items = []
+    with open(path, "r", encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            raw = (row.get("qgis_chain") or "").strip()
+            chain = [op.strip() for op in raw.split("->") if op.strip()]
+            items.append({
+                "task_id": (row.get("idx") or "").strip(),
+                "task": (row.get("task_name") or "").strip(),
+                "predicted_chain": chain,
+                "modality": (row.get("group") or "").strip(),
+                "grade": "",
+            })
+    return items
+
+
+def _pair(b_block: dict, m_block: dict, key: str) -> dict:
+    bv = b_block.get(key)
+    mv = m_block.get(key)
+    delta = (mv - bv) if isinstance(bv, (int, float)) and isinstance(mv, (int, float)) else None
+    return {"baseline": bv, "model": mv, "delta": delta}
+
+
+def compare_reports(baseline: dict, model: dict, *, labels=("baseline", "model")) -> dict:
+    """Line up two :func:`build_report` outputs for a baseline-vs-model table.
+
+    Pairs ①②/executable + diversity per task-intent modality (and overall),
+    with model-minus-baseline deltas. Modalities present in either report are
+    included; a modality missing from one side has ``None`` metrics there.
+    """
+    b_mod, m_mod = baseline["by_modality"], model["by_modality"]
+    b_div, m_div = baseline["diversity_by_modality"], model["diversity_by_modality"]
+    mods = _ordered(set(b_mod) | set(m_mod), _MOD_ORDER)
+
+    by_modality = {}
+    for mm in mods:
+        b, m = b_mod.get(mm, {}), m_mod.get(mm, {})
+        by_modality[mm] = {
+            "n": {"baseline": b.get("n"), "model": m.get("n")},
+            "operator_validity": _pair(b, m, "operator_validity"),
+            "io_executability": _pair(b, m, "io_executability"),
+            "executable_rate": _pair(b, m, "executable_rate"),
+            "unique_ratio": _pair(b_div.get(mm, {}), m_div.get(mm, {}), "unique_ratio"),
+        }
+
+    bo, mo = baseline["overall"], model["overall"]
+    return {
+        "labels": {"baseline": labels[0], "model": labels[1]},
+        "overall": {
+            "n": {"baseline": bo.get("n"), "model": mo.get("n")},
+            "operator_validity": _pair(bo, mo, "operator_validity"),
+            "io_executability": _pair(bo, mo, "io_executability"),
+            "executable_rate": _pair(bo, mo, "executable_rate"),
+        },
+        "by_modality": by_modality,
+    }
+
+
+def _trip(pair: dict) -> str:
+    """Format a {baseline, model, delta} cell as 'b → m (Δ)'."""
+    b, m, d = pair.get("baseline"), pair.get("model"), pair.get("delta")
+    ds = f" ({d:+.3f})" if isinstance(d, (int, float)) else ""
+    return f"{_fmt(b)} → {_fmt(m)}{ds}"
+
+
+def render_comparison_markdown(cmp: dict) -> str:
+    """Render a baseline-vs-model comparison (per modality) as Markdown."""
+    bl, ml = cmp["labels"]["baseline"], cmp["labels"]["model"]
+    L = [
+        f"# QGIS chain comparison — {bl} vs {ml}",
+        "",
+        f"Same scorer, same tasks. Each cell: {bl} → {ml} (Δ = {ml} − {bl}).",
+        "",
+        f"| modality | n ({bl}/{ml}) | ① validity | ② io_exec | executable | unique_ratio |",
+        "|---|--:|--:|--:|--:|--:|",
+    ]
+
+    def _row(label, block, n_block):
+        nb, nm = n_block.get("baseline"), n_block.get("model")
+        return (
+            f"| {label} | {nb}/{nm} | {_trip(block['operator_validity'])} "
+            f"| {_trip(block['io_executability'])} | {_trip(block['executable_rate'])} "
+            f"| {_trip(block.get('unique_ratio', {}))} |"
+        )
+
+    L.append(_row("**overall**", cmp["overall"], cmp["overall"]["n"]))
+    for mm, block in cmp["by_modality"].items():
+        L.append(_row(mm or "(none)", block, block["n"]))
+    L.append("")
+    return "\n".join(L)
