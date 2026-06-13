@@ -11,6 +11,7 @@ from gis_recommend.evaluation.qgis_chain_metrics import (
     score_qgis_chain,
     infer_modality,
     aggregate_scores,
+    aggregate_by,
     score_chain_records,
 )
 
@@ -90,6 +91,25 @@ class AggregateTests(unittest.TestCase):
         self.assertAlmostEqual(agg["by_modality"]["vector"]["operator_validity"], 0.75)
         self.assertAlmostEqual(agg["by_modality"]["vector"]["executable_rate"], 0.5)
         self.assertAlmostEqual(agg["by_modality"]["raster"]["operator_set_f1"], 1.0)
+
+
+class AggregateByKeyTests(unittest.TestCase):
+    def test_aggregate_by_groups_by_arbitrary_key(self):
+        """Generic grouped aggregation: same agg shape, grouped by any record key
+        (here human grade A/B) — this is what powers the by-grade view that proves
+        ①② don't track correctness."""
+        records = [
+            {"grade": "A", "operator_validity": 1.0, "io_executability": 1.0, "executable": True, "operator_set_f1": None},
+            {"grade": "A", "operator_validity": 0.8, "io_executability": 1.0, "executable": False, "operator_set_f1": None},
+            {"grade": "B", "operator_validity": 1.0, "io_executability": 0.5, "executable": False, "operator_set_f1": None},
+        ]
+        agg = aggregate_by(records, "grade")
+        self.assertEqual(agg["overall"]["n"], 3)
+        self.assertEqual(agg["groups"]["A"]["n"], 2)
+        self.assertEqual(agg["groups"]["B"]["n"], 1)
+        self.assertAlmostEqual(agg["groups"]["A"]["operator_validity"], 0.9)
+        self.assertAlmostEqual(agg["groups"]["A"]["executable_rate"], 0.5)
+        self.assertAlmostEqual(agg["groups"]["B"]["io_executability"], 0.5)
 
 
 class BatchRecordsTests(unittest.TestCase):
