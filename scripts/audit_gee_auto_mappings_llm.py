@@ -25,9 +25,9 @@ GEE_OPS_JSON = ROOT.parent / "operators-json" / "gee_operators.json"
 OLD_WF = ROOT / "outputs" / "pipeline" / "step8" / "labeled_workflows_l3_v4_cleaned.json"
 OUT = ROOT / "outputs_v2" / "gee_auto_mapping_llm_proposals.json"
 
-API_KEY = os.environ.get("DASHSCOPE_API_KEY", "sk-6d6a3478844243979fd29431ce31a841")
-BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-MODEL = "qwen-plus"
+API_KEY = (os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("LLM_API_KEY") or os.environ.get("DASHSCOPE_API_KEY", ""))
+BASE_URL = os.environ.get("LLM_BASE_URL", "https://api.deepseek.com/v1")
+MODEL = os.environ.get("LLM_MODEL", "deepseek-v4-pro")
 
 TARGET_FREQ_LIMIT = 200  # only audit ops in top-N by training frequency
 

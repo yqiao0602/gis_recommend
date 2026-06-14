@@ -71,9 +71,9 @@ class QGISOperatorQA:
 
         # 初始化LLM
         self.llm_scorer = LLMScorer(
-            api_key=llm_api_key or "sk-6d6a3478844243979fd29431ce31a841",
-            model="qwen-plus",
-            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+            api_key=llm_api_key,  # None -> LLMScorer falls back to DEEPSEEK_API_KEY / LLM_API_KEY env
+            model="deepseek-v4-pro",
+            base_url="https://api.deepseek.com/v1",
             temperature=0.3,
             use_mock=use_mock
         )

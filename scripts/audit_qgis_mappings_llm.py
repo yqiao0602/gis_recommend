@@ -37,9 +37,9 @@ ID_MAP = ROOT / "outputs_v2" / "id_mappings_v2.json"
 QOPS_JSON = ROOT.parent / "operators-json" / "qgis_operators.json"
 OUT = ROOT / "outputs_v2" / "qgis_mapping_llm_proposals.json"
 
-API_KEY = os.environ.get("DASHSCOPE_API_KEY", "sk-6d6a3478844243979fd29431ce31a841")
-BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-MODEL = "qwen-plus"
+API_KEY = (os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("LLM_API_KEY") or os.environ.get("DASHSCOPE_API_KEY", ""))
+BASE_URL = os.environ.get("LLM_BASE_URL", "https://api.deepseek.com/v1")
+MODEL = os.environ.get("LLM_MODEL", "deepseek-v4-pro")
 
 
 def build_catalog_text(hier_path: Path) -> str:
