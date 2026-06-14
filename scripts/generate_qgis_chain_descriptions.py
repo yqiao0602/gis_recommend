@@ -226,13 +226,20 @@ Return ONLY valid JSON, no other text."""
     try:
         from openai import OpenAI
         response = client.chat.completions.create(
-            model=os.environ.get("LLM_MODEL", "qwen-plus"),
+            model=os.environ.get("LLM_MODEL", "deepseek-v4-pro"),
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.3, max_tokens=300,
+            temperature=0.3, max_tokens=4000,  # reasoning model: ample room for CoT + JSON
         )
-        content = response.choices[0].message.content.strip()
+        msg = response.choices[0].message
+        content = (msg.content or "").strip()
+        if not content:  # reasoning models can leave content empty under budget pressure
+            content = (getattr(msg, "reasoning_content", "") or "").strip()
         if content.startswith("```"):
             content = re.sub(r"^```\w*\n?|```$", "", content).strip()
+        if not content.startswith("{"):  # robust to surrounding prose: grab the JSON object
+            m = re.search(r"\{.*\}", content, re.DOTALL)
+            if m:
+                content = m.group(0)
         return json.loads(content)
     except Exception as e:
         print(f"  [LLM ERROR] {e}")
@@ -250,6 +257,8 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--llm-base-url", default=os.environ.get("LLM_BASE_URL", ""))
     parser.add_argument("--llm-api-key", default=os.environ.get("LLM_API_KEY", ""))
     parser.add_argument("--max-chains", type=int, default=0, help="Limit LLM generation to N chains")
+    parser.add_argument("--llm-vector-l3-only", action="store_true",
+                        help="LLM-describe only pure_vector chains that carry L3 (cuts call count)")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args(argv)
 
@@ -312,10 +321,11 @@ def main(argv: list[str] | None = None) -> None:
     if args.use_llm:
         from openai import OpenAI
         llm_client = OpenAI(
-            base_url=args.llm_base_url or "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            api_key=args.llm_api_key or os.environ.get("DASHSCOPE_API_KEY", ""),
+            base_url=args.llm_base_url or "https://api.deepseek.com/v1",
+            api_key=(args.llm_api_key or os.environ.get("LLM_API_KEY")
+                     or os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("DASHSCOPE_API_KEY", "")),
         )
-        print(f"\n[3] LLM mode enabled (base={args.llm_base_url or 'dashscope'})")
+        print(f"\n[3] LLM mode enabled (base={args.llm_base_url or 'deepseek'})")
     else:
         print(f"\n[3] Template mode (fast, deterministic)")
 
@@ -338,7 +348,8 @@ def main(argv: list[str] | None = None) -> None:
         desc = generate_descriptions(ops, names, catalog)
 
         # LLM enhancement (optional, limited)
-        if args.use_llm and (args.max_chains == 0 or llm_count < args.max_chains):
+        eligible = (not args.llm_vector_l3_only) or (desc["modality"] == "pure_vector" and has_l3)
+        if args.use_llm and eligible and (args.max_chains == 0 or llm_count < args.max_chains):
             llm_result = llm_generate_descriptions(ops, names, desc["modality"], llm_client)
             if llm_result:
                 desc["task_description_en"] = llm_result.get("task_description_en", desc["task_description_en"])

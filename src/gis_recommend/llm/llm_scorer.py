@@ -34,22 +34,23 @@ class LLMScorer:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model: str = "qwen-plus",
+        model: str = "deepseek-v4-pro",
         temperature: float = 0.1,
         use_mock: bool = False,  # 默认使用真实API
-        base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+        base_url: str = "https://api.deepseek.com/v1"
     ):
         """
         初始化LLM评分器
 
         参数:
-            api_key: API密钥（阿里云千问或OpenAI）
-            model: 使用的模型（默认qwen-plus）
+            api_key: API密钥（DeepSeek / 阿里云 / OpenAI 兼容）
+            model: 使用的模型（默认deepseek-v4-pro，推理模型）
             temperature: 温度参数（越低越确定）
             use_mock: 是否使用mock模式（用于测试）
-            base_url: API基础URL（阿里云千问或OpenAI）
+            base_url: API基础URL（默认 DeepSeek）
         """
-        self.api_key = api_key or os.getenv("DASHSCOPE_API_KEY") or os.getenv("OPENAI_API_KEY")
+        self.api_key = (api_key or os.getenv("DEEPSEEK_API_KEY") or os.getenv("LLM_API_KEY")
+                        or os.getenv("DASHSCOPE_API_KEY") or os.getenv("OPENAI_API_KEY"))
         self.model = model
         self.temperature = temperature
         self.use_mock = use_mock
@@ -187,7 +188,7 @@ Important:
                     {"role": "user", "content": prompt}
                 ],
                 temperature=self.temperature,
-                max_tokens=500
+                max_tokens=4000  # deepseek-v4-pro is a reasoning model: leave room for CoT
             )
 
             content = response.choices[0].message.content
