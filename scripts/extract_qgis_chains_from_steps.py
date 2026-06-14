@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import sys
 from collections import Counter, defaultdict
 
@@ -50,15 +51,17 @@ def _modality(chain):
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--input", required=True)
+    ap.add_argument("--input", help="a single merged_nodes_process.csv (has source_script column)")
+    ap.add_argument("--input-dir", help="a pool dir of per-script *_steps.csv files (no source_script col)")
     ap.add_argument("--out", required=True)
     ap.add_argument("--min-len", type=int, default=2, help="keep chains with >= this many ops")
     args = ap.parse_args()
 
     per_script = defaultdict(list)  # script -> [(stmt_idx, id, alg_id)]
     rows = 0
-    with open(args.input, "r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f)
+
+    def _ingest(reader, script_label):
+        nonlocal rows
         for row in reader:
             rows += 1
             if (row.get("api_source_type") or "").strip() != "qgis_processing_algorithm":
@@ -66,12 +69,30 @@ def main() -> None:
             alg = (row.get("normalized_api_name") or "").strip()
             if not alg or ":" not in alg:
                 continue
-            script = (row.get("source_script") or "").strip()
+            script = script_label or (row.get("source_script") or "").strip()
             try:
                 stmt = int(row.get("statement_index") or 0)
             except ValueError:
                 stmt = 0
             per_script[script].append((stmt, row.get("id", ""), alg))
+
+    if args.input_dir:
+        import glob as _glob
+        files = sorted(_glob.glob(os.path.join(args.input_dir, "*_steps.csv")))
+        for fp in files:
+            label = os.path.basename(fp).replace("_steps.csv", "")
+            try:
+                with open(fp, "r", encoding="utf-8-sig", newline="") as f:
+                    _ingest(csv.DictReader(f), label)
+            except Exception:
+                continue
+        n_scanned_scripts = len(files)
+    elif args.input:
+        with open(args.input, "r", encoding="utf-8-sig", newline="") as f:
+            _ingest(csv.DictReader(f), None)
+        n_scanned_scripts = None
+    else:
+        ap.error("need --input or --input-dir")
 
     chains = []
     for script, steps in per_script.items():
@@ -90,7 +111,8 @@ def main() -> None:
     mod = Counter(ch["modality"] for ch in chains)
     lens = [ch["n"] for ch in chains]
     uniq = len({tuple(ch["chain"]) for ch in chains})
-    print(f"rows_scanned={rows}  scripts_with_qgis_algs={len(per_script)}  chains(len>={args.min_len})={n}")
+    scanned = f"scripts_scanned={n_scanned_scripts}  " if n_scanned_scripts is not None else ""
+    print(f"{scanned}rows_scanned={rows}  scripts_with_qgis_algs={len(per_script)}  chains(len>={args.min_len})={n}")
     print(f"unique_chains={uniq}  mean_len={sum(lens)/n:.1f}" if n else "no chains")
     print(f"modality: vector={mod['vector']} raster={mod['raster']} mixed={mod['mixed']} unknown={mod['unknown']}")
     print(f"out -> {args.out}")
