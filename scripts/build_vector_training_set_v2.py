@@ -49,7 +49,7 @@ def main() -> None:
     args = ap.parse_args()
 
     catalog = load_official_qgis_operators(OFFICIAL_OPS_PATH)
-    crosswalk = load_alg_id_crosswalk(OUT_DIR / "qgis_alg_id_crosswalk.json")
+    crosswalk = load_alg_id_crosswalk(OUT_DIR / "qgis_alg_id_crosswalk_expanded.json")
     l3_lookup = build_l3_lookup(OUT_DIR / "id_mappings_v2.json")
     vocab = json.loads((OUT_DIR / "l3_vocab_v2.json").read_text(encoding="utf-8"))
     code_to_id, special = vocab["code_to_id"], vocab["special_tokens"]
