@@ -36,6 +36,30 @@ from build_qgis_chain_dataset import (  # noqa: E402  (authoritative mapping, re
 )
 from gis_recommend.data.vector_training_builder import to_training_sample  # noqa: E402
 
+
+def _single_op_l3(op, catalog_, crosswalk_, l3_lookup_):
+    """Map one alg-id to L3; None if unmappable."""
+    ol = op.lower()
+    l3c = crosswalk_.get(ol)
+    if l3c:
+        return l3c
+    cat = catalog_.get(ol, {})
+    nm = cat.get("name", "")
+    if nm and l3_lookup_.get(nm.lower().strip()):
+        return l3_lookup_[nm.lower().strip()]
+    return None
+
+
+def map_to_l3_relaxed(chain, catalog_, crosswalk_, l3_lookup_, min_len=2):
+    """Map chain to L3, dropping unmappable ops. None if result < min_len."""
+    result = []
+    for op in chain:
+        l3c = _single_op_l3(op, catalog_, crosswalk_, l3_lookup_)
+        if l3c:
+            result.append(l3c)
+    return result if len(result) >= min_len else None
+
+
 OUT_DIR = ROOT / "outputs_v2"
 STEP8 = OUT_DIR / "pipeline" / "step8_quality_gate"
 
@@ -50,6 +74,17 @@ def main() -> None:
 
     catalog = load_official_qgis_operators(OFFICIAL_OPS_PATH)
     crosswalk = load_alg_id_crosswalk(OUT_DIR / "qgis_alg_id_crosswalk_expanded.json")
+    # extra aliases + gaps (non-destructive to crosswalk file)
+    _extra = {
+        "qgis:deleteduplicategeometries": "L3_02_03_05", "qgis:extractbyexpression": "L3_02_06_02",
+        "qgis:selectbylocation": "L3_02_06_03", "qgis:joinattributesbylocation": "L3_02_04_01",
+        "qgis:zonalstatistics": "L3_03_02_01", "qgis:selectbyexpression": "L3_02_06_01",
+        "qgis:joinattributestable": "L3_02_04_01", "native:orderbyexpression": "L3_02_06_01",
+        "qgis:rastersampling": "L3_03_02_01",
+    }
+    for op, l3c in _extra.items():
+        if op not in crosswalk:
+            crosswalk[op] = l3c
     l3_lookup = build_l3_lookup(OUT_DIR / "id_mappings_v2.json")
     vocab = json.loads((OUT_DIR / "l3_vocab_v2.json").read_text(encoding="utf-8"))
     code_to_id, special = vocab["code_to_id"], vocab["special_tokens"]
@@ -71,10 +106,16 @@ def main() -> None:
             if not desc:
                 st["no_desc"] += 1
                 continue
-            l3_codes = map_to_l3(chain, catalog, l3_lookup, crosswalk)
+            l3_codes = map_to_l3_relaxed(chain, catalog, crosswalk, l3_lookup, min_len=args.min_len)
             if l3_codes is None:
                 st["unmappable"] += 1
                 continue
+            # strip consecutive dups from relaxed mapping
+            _dedup = []
+            for x in l3_codes:
+                if not _dedup or _dedup[-1] != x:
+                    _dedup.append(x)
+            l3_codes = _dedup
             if not (args.min_len <= len(l3_codes) <= args.max_len):
                 st["len_filtered"] += 1
                 continue

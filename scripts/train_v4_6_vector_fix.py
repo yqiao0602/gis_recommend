@@ -26,12 +26,15 @@ if str(SRC) not in sys.path:
 # ── override data paths BEFORE importing the trainer (config reads these) ──
 import gis_recommend.config.transformer_config as cfg
 
-cfg.DATA_PATH = str(ROOT / "outputs_v2" / "labeled_workflows_l3_v4_vector_rebalanced.json")
+cfg.DATA_PATH = str(ROOT / "outputs_v2" / "labeled_workflows_l3_v4_vector_fix_v2.json")
 cfg.V4_QG_LABELED_WORKFLOWS_PATH = Path(cfg.DATA_PATH)
-cfg.SPLITS_PATH = str(ROOT / "outputs_v2" / "dataset_splits_v4_vector_rebalanced.json")
+cfg.SPLITS_PATH = str(ROOT / "outputs_v2" / "dataset_splits_v4_vector_fix_v2.json")
 cfg.V4_QG_SPLITS_PATH = Path(cfg.SPLITS_PATH)
-# separate checkpoint dir (don't clobber V4.6 mainline ckpt)
-cfg.V4_6_QG_TRANSFORMER_CHECKPOINT_DIR = ROOT / "outputs_v2" / "transformer_checkpoints_v4_6_vector_fix"
+# separate checkpoint dir (phase 7)
+cfg.V4_6_QG_TRANSFORMER_CHECKPOINT_DIR = ROOT / "outputs_v2" / "transformer_checkpoints_v4_6_vector_fix_v2"
+
+# bump freq_weight alpha for stronger rare-token (L3_02 vector) upbalance
+cfg.V4_1_FREQ_WEIGHT_ALPHA = 0.8  # was 0.5 — push harder on rare L3_02 tokens
 
 from scripts.train_v4_6_quality_gate import main as train_main  # noqa: E402
 
