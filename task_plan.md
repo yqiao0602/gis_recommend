@@ -4,7 +4,7 @@
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因（数据缺口），补矢量训练数据并在 A10 上重平衡重训，验证矢量能力可修复。
 
 ## 当前阶段
-阶段 6 — 重训（V4.6-vector-fix 在 A10 后台跑，50 epoch，当前 epoch 18）
+阶段 7 — V4.6-vector-fix-v2 重训中（A10，1374 矢量训练集，freq_weight_alpha=0.8，cron 1846c88d 盯进度）
 
 ## 各阶段
 
@@ -47,16 +47,25 @@
 - [x] 实测验证：追问参数+数据流，LLM 基于 workflow context 回答
 - **状态：** complete
 
-### 阶段 6：重训（矢量修复）🔄
+### 阶段 6：重训（矢量修复 v1）✅
 - [x] 合并 1,097 矢量样本进 labeled_workflows（77,981 total）
 - [x] 重平衡通过 `compute_token_freq_weights`（L3_02 罕见码高 CE 权重）
 - [x] 推代码+数据到服务器（qy@10.191.2.38，A10 GPU，conda env transformer）
 - [x] 干训冒烟通过（cuda:0，数据加载 OK）
-- [x] 全量训练已启动（50 epoch，前 10 TF → 后 40 AR-SS）
-- [x] cron 监控（每 45 分钟查进程/log/错误）
-- [ ] 训练完成 → `score_v46_vector_fix.py` 三向对比（baseline vs V4.6 vs vecfix）
-- [ ] 核心问答：加了 1,097 矢量样本后，矢量能力是否恢复？
-- **状态：** in_progress（epoch ~18/50，A10 GPU，0 错误）
+- [x] 全量训练完成（50 epoch，composite=0.5972 best@epoch 41，0 错误）
+- [x] 三向对比评测完成：vec executable 0.35→**0.40**(+0.05), unique_ratio 0.20→0.25, io_exec 0.787→0.812
+- [x] **核心发现：L3 层没变** — vecfix 对 40 个矢量任务，0/40 是矢量主导 L3，98% 仍是栅格码
+- [x] **1,097 条矢量在 76,341 条栅格中被绝对淹没。freq_weights 不足够。需要 50x+ 上采样 + 大幅扩数据。**
+- **状态：** complete（git: `d0d4468`）
+
+### 阶段 7：大幅扩矢量 + 激进上采样 + ③ 真·L3 缺口补全 🔄
+- [ ] ③ 真·L3 词表缺口补全（~7 个核心矢量原语：Simplify/Heatmap/SplitLines/DeleteHoles 等→94→~101）
+- [ ] 放宽严格映射（含不可映算子则保留其余，不整链丢弃）→ mapped_rate 40%→~70%，得 ~1,500+
+- [ ] 合并本地 323 + v2 1,097 → 统一矢量训练集
+- [ ] 上采样 50x+（矢量占训练步 ~50%+，改 merge&train 配置）
+- [ ] 服务器重训 V4.6-base（epoch 匹配、early stop）
+- [ ] harness 重评矢量（Phase A 40 题 + 可能选有金标 L3 的链做 ③）
+- **状态：** in_progress
 
 ### 阶段 7：后续（待定）
 - [ ] 若重训有效 → 扩大量（放宽映射 / 扩 crosswalk ③ 真·L3 缺口 / 抽 data-QGIS 53k）
