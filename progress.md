@@ -1,5 +1,36 @@
 # 进度日志
 
+## 2026-06-19/20：LLM 描述→L3 大规模生成 + Phase 7 完成 + Phase 8 启动 + C++ API 路线
+
+### LLM 批量生成（突破）
+- `llm_generate_l3_from_facts.py`：deepseek-chat + 精简 25 码 prompt，20k 描述→L3
+- **产出：19,754 条训练样本**，矢量 token 占 78%
+- POC v3 验证：13/15 成功（87%），0 空返回
+
+### 统一训练集
+- 合并 LLM(19,754) + AST(1,374) + 种子(323) → 去重后 **10,768 条**
+- 94% 矢量相关，是 Phase 6/7 的 **7.8 倍**
+- 输出：`vector_training_samples_UNIFIED.jsonl`
+
+### Phase 7（AST 1,374 + relax + α=0.8）
+- 训练 32/50 epoch early stop（composite=0.2842, best epoch 20）
+- 评测结果 vs Phase 6 **基本持平**（vec exec 0.40→0.40）——1,374 条仍不足以克服 99.3% 栅格
+
+### Phase 8（统一训练集 10,768，已在跑）
+- 10,768 样本合并进 labeled_workflows（87,652 total, 72,263 train）
+- `train_v4_6_vector_unified.py` 在 A10 运行中（epoch ~14/50）
+- 目标：10,768 条 94% 矢量能否真改 L3 输出
+
+### C++ API 痕迹→LLM→L3 POC（新路线，2026-06-20）
+- 思路：把 C++ API 调用序列（semantic_role + description）喂给 LLM→反推 L3
+- script_03 验证：API_only=Reproject→Buffer→SpatialJoin→FieldCalc→Export **完全吻合**真实链
+- 10 脚本小规模：6/10 合法 L3（BAD 因 prompt 格式，好修）
+- 这是融合路线 1(地面真相约束) + 路线 2(LLM 理解) 的最优解
+
+### Git 提交
+- `10414ee` LLM L3 generation + QGIS ops converter
+- `8a3ea86` task plan update
+
 ## 2026-06-17：重训 + Demo
 
 ### 重训（阶段 6）

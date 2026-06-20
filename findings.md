@@ -1,5 +1,25 @@
 # 发现记录
 
+## 三条数据路线的对比（关键方法论进展 2026-06-20）
+
+**路线 1：AST 链抽取**（从 steps.csv 挖 `qgis_processing_algorithm` 行）
+- 天花板：~3k 脚本用 `processing.run()`，L3 映射去重后 **1,374 条**
+- Phase 6/7 证明不足以克服 99.3% 栅格偏置
+- 瓶颈：绝大多数 QGIS 脚本走 C++ API 而非 `processing.run()`
+
+**路线 2：LLM 描述→L3**（只给 deepseek-chat 看任务描述文本，不提供 API 细节）
+- 产出：20k 描述 → **19,754 条 LLM 生成的 L3 序列**（87% 合法性，78% 矢量 token）
+- 与 AST 合并去重 → **10,768 条统一训练集**（94% 矢量相关，Phase 8 在跑）
+- 可靠性：不如 AST 链精确——LLM 可能误解描述
+
+**路线 3（新 POC 2026-06-20）：C++ API 痕迹→LLM→L3**
+- 把 steps.csv 中的底层 C++ API 调用序列（semantic_role + description）喂给 LLM
+- POC 结果（script_03）：API_only 输出 `Reproject→Buffer→SpatialJoin→FieldCalc→Export`，与真实 AST 链**完全吻合**；desc_only 漏掉 Reproject
+- 小规模验证（10 脚本）：6/10 合法 L3，53% 矢量
+- **优势**：C++ API 痕迹是"地面真相"——LLM 从实际执行的操作反推高层步骤，而非凭描述猜测
+- **可规模化**：17k 个 C++ API 脚本都有 steps.csv，每个 feed→LLM→L3
+- BAD 原因可修（prompt 导致 L3 码带了描述文本后缀）
+
 ## 评测指标：executable ≠ correct（多测证实）
 - **open_landing 80 题（检索基线）**：C 档有效率(0.987) > A 档(0.928)，executable 三档几乎不变
 - **Phase A（V4.6 text-only）**：同上模式，①② 不随 human grade 单调变化
