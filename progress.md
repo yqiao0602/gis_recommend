@@ -1,5 +1,35 @@
 # 进度日志
 
+## 2026-06-20：C++ API 痕迹→LLM→L3 规模化生产
+
+### 全量 68k 批量生产（运行中）
+- A10 上 `nohup server_batch_api_to_l3.py --max-scripts 0` 全量跑 68,845 脚本
+- deepseek-chat + quality gates (前置 tool-name 筛 + conf≥0.60 + 自拒检测)
+- 当前进度：~800 已处理/400 条产出，产率 ~62%（加前置筛后略高）
+- 预计最终产出：~**20,000-30,000 条**
+
+### 3k 批次完成（40 码扩充验证）
+- 产出 1,011 条，产率 57%，置信度均值 0.70
+- 39/40 码被使用，14 个新码激活
+- 反复抽查质量稳定：高置信度(0.85+)几乎不犯错，低置信度(0.50-0.55)主要是纯参数定义脚本
+
+### 2k 批次完成
+- 产出 804 条，产率 62%，置信度均值 0.71
+- 2k+3k 合并去重：1,815→1,150 唯一链
+
+### 脚本
+- `llm_generate_l3_from_api_traces.py`：本地版 API 痕迹→L3（提取+LLM+质量门控）
+- `server_batch_api_to_l3.py`：服务器批量版（checkpoint 恢复+find 扫描）
+- 辅助脚本：`_analyze_poc_traces.py`, `_analyze_3k_quality.py`, `_audit_3k_final.py`, `_merge_dedup.py` 等
+
+### Key 管理
+- deepseek-chat 临时 key: sk-89eb3f39563c470180aedeb6da3db5c1（批量生产用）
+- 服务器端代码通过 env var DEEPSEEK_API_KEY 读取，不落盘
+
+### Git 提交（待提交）
+- 新增脚本 + task_plan/findings/progress 更新
+- 专利材料修改（`docs/patent/`，无关）
+
 ## 2026-06-19/20：LLM 描述→L3 大规模生成 + Phase 7 完成 + Phase 8 启动 + C++ API 路线
 
 ### LLM 批量生成（突破）
