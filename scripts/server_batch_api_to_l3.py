@@ -30,7 +30,7 @@ from openai import OpenAI
 YLL_QGIS_DIR = "/home/yll/GEE/数据抽取结果"
 DEFAULT_VOCAB = ROOT / "outputs_v2" / "l3_vocab_v2.json"
 DEFAULT_TASK_VOCAB = ROOT / "outputs_v2" / "pipeline" / "step8_quality_gate" / "task_type_vocabulary_v4_quality_gate.json"
-FACTS_CSV = ROOT / "爬取GithubQGIS" / "facts_summary1000.csv"
+FACTS_CSV = ROOT / "outputs_v2" / "qgis_facts_full.csv"
 
 L3_CODE_LIST = """L3_02_01_01:Buffer
 L3_02_02_01:Intersect
@@ -218,10 +218,12 @@ def _clean_llm_output(content):
 
 # ── Quality gates ──────────────────────────────────────────────────────
 _REASONING_REJECT = [
-    "no actual geoprocessing", "no spatial", "no geoprocessing",
+    "no actual geoprocessing", "no actual spatial",
+    "no geoprocessing", "no spatial",
     "cannot determine", "cannot infer", "unable to determine",
     "not enough information", "insufficient information",
     "purely ui", "only ui", "only rendering", "only symbology",
+    "only parameter definitions", "only parameter definition",
     "no meaningful",
 ]
 
@@ -231,6 +233,51 @@ _ATTR_OPS = {"L3_02_06_01", "L3_02_06_02", "L3_02_06_03"}
 _TRANSFORM_OPS = {"L3_01_02_03", "L3_02_07_01", "L3_02_05_11", "L3_02_05_12"}
 _RASTER_OPS = {"L3_03_01_01", "L3_03_02_01", "L3_03_04_01", "L3_03_03_A", "L3_04_01_01"}
 _EXPORT_OPS = {"L3_07_04_01", "L3_01_03_04", "L3_01_02_06", "L3_01_02_02"}
+
+
+_RENDERING_ROLES = {
+    "QGIS_SYMBOL_SET_COLOR", "QGIS_SYMBOL_SET_WIDTH",
+    "QGIS_RENDERER_CATEGORY_CREATE", "QGIS_SYMBOL_ACCESS",
+    "QGIS_SYMBOL_COLOR_ACCESS", "QGIS_COLOR_NAME",
+    "QGIS_LAYER_RENDERER_ACCESS",
+}
+_RENDERING_API_KEYWORDS = [
+    "colorRampShader", "pseudoColorRenderer", "Renderer", "renderer",
+    "setColor", "setWidth", "setSymbol", "QgsCategorizedSymbolRenderer",
+    "QgsGraduatedSymbolRenderer", "QgsSingleSymbolRenderer",
+    "QgsHeatmapRenderer", "QgsRuleBasedRenderer",
+]
+
+
+def _is_rendering_only(trace_text: str) -> bool:
+    """Return True if the trace shows only rendering/symbology operations.
+
+    These scripts style layers but don't perform geoprocessing — their
+    L3 chains are hallucinations."""
+    lines = trace_text.split("\n")
+    if len(lines) < 2:
+        return False
+    # Count rendering vs geoprocessing lines
+    rendering = 0
+    geoproc = 0
+    for line in lines:
+        is_rendering = False
+        for role in _RENDERING_ROLES:
+            if f"[{role}]" in line:
+                rendering += 1
+                is_rendering = True
+                break
+        for kw in _RENDERING_API_KEYWORDS:
+            if kw in line:
+                rendering += 1
+                is_rendering = True
+                break
+        if not is_rendering:
+            geoproc += 1
+    # Reject if >50% of lines are rendering and geoproc <= 2
+    if rendering > 0 and geoproc <= 2 and rendering >= geoproc:
+        return True
+    return False
 
 
 def quality_gate(llm_obj):
@@ -250,10 +297,8 @@ def quality_gate(llm_obj):
     except (TypeError, ValueError):
         conf = 0.5
 
-    # Full batch: stronger confidence floor
-    if conf < 0.60:
-        return False, f"confidence below floor ({conf:.2f})"
-
+    # Per-case confidence thresholds (NOT a blanket floor):
+    # single-code chains need stronger evidence, multi-code lower is ok
     if len(l3_codes) == 1:
         if conf < 0.60:
             return False, f"single-code confidence ({conf:.2f})"
@@ -384,14 +429,6 @@ def main():
             processed.add(fname)
             continue
 
-        # Pre-filter: require at least one explicit processing tool name
-        # (native:*, gdal:*, qgis:*, saga:*, grass7:*)
-        # This eliminates parameter-definition-only scripts that produce low-confidence guesses
-        if not re.search(r'\b(native|gdal|qgis|saga|grass7):\w+', trace):
-            st["skip_no_tool"] += 1
-            processed.add(fname)
-            continue
-
         # Build prompt
         facts = facts_map.get(script_name)
         desc_hint = ""
@@ -440,6 +477,12 @@ def main():
             continue
         if not all(c in all_codes for c in l3_codes):
             st["bad_l3"] += 1
+            processed.add(fname)
+            continue
+
+        # Rendering/symbology check — reject scripts that only do styling
+        if _is_rendering_only(trace):
+            st["skip_rendering"] += 1
             processed.add(fname)
             continue
 
@@ -503,7 +546,7 @@ def main():
             checkpoint_path.write_text(json.dumps(ck, ensure_ascii=False, indent=2))
             print(f"  [{i+1}/{len(pending)}] kept={st['kept']}  "
                   f"skip_no_trace={st['skip_no_trace']}  skip_too_short={st['skip_too_short']}  "
-                  f"skip_no_tool={st['skip_no_tool']}  "
+                  f"skip_rendering={st['skip_rendering']}  "
                   f"llm_ok={st['llm_ok']}  llm_fail={st['llm_fail']}  "
                   f"parse_fail={st['parse_fail']}  empty_l3={st['empty_l3']}  "
                   f"bad_l3={st['bad_l3']}  quality_reject={st['quality_reject']}")
@@ -527,7 +570,7 @@ def main():
     print(f"  llm_ok={st['llm_ok']}  llm_fail={st['llm_fail']}")
     print(f"  parse_fail={st['parse_fail']}  empty_l3={st['empty_l3']}  bad_l3={st['bad_l3']}")
     print(f"  quality_reject={st['quality_reject']}  builder_drop={st['builder_drop']}")
-    print(f"  skip_no_trace={st['skip_no_trace']}  skip_too_short={st['skip_too_short']}  skip_no_tool={st['skip_no_tool']}")
+    print(f"  skip_no_trace={st['skip_no_trace']}  skip_too_short={st['skip_too_short']}  skip_rendering={st['skip_rendering']}")
     if st_q_reason:
         print(f"  reject reasons: {dict(st_q_reason)}")
     print(f"  → {out_path}")
