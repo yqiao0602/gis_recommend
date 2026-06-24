@@ -62,12 +62,13 @@ def load_token_sets():
         print(f"  [INFO] {len(missing)} STRICT_VECTOR_L3 codes not in 94-L3 vocab: {sorted(missing)}")
     return l3_to_token, strict_vec
 
-def build_inferencer(ckpt_path, vocab_path, length_stats_path):
+def build_inferencer(ckpt_path, vocab_path, length_stats_path, *, prompt_style="legacy"):
     return L3SequenceInferencerV4(
         checkpoint_path=ckpt_path,
         device=DEVICE,
         task_vocab_path=vocab_path,
         length_stats_path=length_stats_path,
+        prompt_style=prompt_style,
     )
 
 def require_path(path, label):
@@ -108,6 +109,8 @@ def parse_args(argv=None):
     parser.add_argument("--dpo-task-vocab", type=Path, default=V4_QG_TASK_TYPE_VOCAB_PATH)
     parser.add_argument("--sft-length-stats", type=Path, default=SFT_LENGTH_STATS)
     parser.add_argument("--dpo-length-stats", type=Path, default=DPO_LENGTH_STATS)
+    parser.add_argument("--sft-prompt-style", choices=["legacy", "structured"], default="legacy")
+    parser.add_argument("--dpo-prompt-style", choices=["legacy", "structured"], default="legacy")
     parser.add_argument("--report-path", type=Path, default=REPORT_PATH)
     return parser.parse_args(argv)
 
@@ -144,9 +147,19 @@ def main(argv=None):
     sft_length_stats = require_path(args.sft_length_stats, "48-task SFT length stats")
     dpo_length_stats = require_path(args.dpo_length_stats, "47-task DPO length stats")
     print(f"\nLoading SFT model ({sft_ckpt}) ...")
-    inf_sft = build_inferencer(sft_ckpt, vocab_sft, sft_length_stats)
+    inf_sft = build_inferencer(
+        sft_ckpt,
+        vocab_sft,
+        sft_length_stats,
+        prompt_style=args.sft_prompt_style,
+    )
     print(f"Loading DPO v2 model ({dpo_ckpt}) ...")
-    inf_dpo = build_inferencer(dpo_ckpt, vocab_dpo, dpo_length_stats)
+    inf_dpo = build_inferencer(
+        dpo_ckpt,
+        vocab_dpo,
+        dpo_length_stats,
+        prompt_style=args.dpo_prompt_style,
+    )
 
     # Run
     print("\nRunning GEE tasks ...")
@@ -196,6 +209,8 @@ def main(argv=None):
             "dpo_task_vocab": str(vocab_dpo),
             "sft_length_stats": str(sft_length_stats),
             "dpo_length_stats": str(dpo_length_stats),
+            "sft_prompt_style": args.sft_prompt_style,
+            "dpo_prompt_style": args.dpo_prompt_style,
         },
         "gee": {"sft_rate": sft_gee_rate, "dpo_rate": dpo_gee_rate, "delta": delta_gee, "n": len(gee_tasks)},
         "qgis_seed": {"sft_rate": sft_vec_rate, "dpo_rate": dpo_vec_rate, "delta": delta_vec, "n": len(vec_tasks)},

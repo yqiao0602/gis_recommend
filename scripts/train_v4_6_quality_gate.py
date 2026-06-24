@@ -24,8 +24,10 @@ V4.6 的 3 个结构性修复：
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import sys
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -47,6 +49,8 @@ from gis_recommend.config.transformer_config import (  # noqa: E402
     L3_EMBEDDINGS_PATH,
     RANDOM_SEED,
     TOTAL_VOCAB_SIZE,
+    CLASSIFICATION_HIERARCHY,
+    ID_MAPPINGS_PATH,
     V4_1_FREQ_WEIGHT_ALPHA,
     V4_2_NUM_WORKERS,
     V4_BERT_UNFREEZE_LAYERS,
@@ -84,9 +88,12 @@ from gis_recommend.models.transformer_model_v4 import (  # noqa: E402
 from gis_recommend.training.splits import validate_split_indices  # noqa: E402
 from gis_recommend.training.train_v4_2 import (  # noqa: E402
     TaskConditionedL3DatasetV4,
+    build_task_prompt,
     compute_token_freq_weights,
     set_seed,
+    workflow_sample_weight,
 )
+from gis_recommend.training.train_v4_5 import compute_training_sample_weights  # noqa: E402
 from gis_recommend.training.train_v4_4 import load_warmstart_checkpoint  # noqa: E402
 from gis_recommend.training.train_v4_6 import ScheduledSamplingTrainerV4_6  # noqa: E402
 
@@ -98,6 +105,52 @@ SCRATCH_NUM_EPOCHS = 50            # 总 epoch 数
 # Warm-start 训练 schedule（跳过 TF 阶段）
 WARMSTART_TF_PHASE_EPOCHS = 0
 WARMSTART_NUM_EPOCHS = 30
+
+DEFAULT_VECTOR_FAMILY_TARGETS = (
+    "intersection",
+    "union",
+    "difference",
+    "spatial_overlay",
+    "spatial_clip",
+    "spatial_aggregation",
+    "geometry_repair",
+    "attribute_filter",
+    "field_calculation",
+    "crs_transform",
+    "centroid",
+    "grid_generation",
+    "nearest_neighbor",
+)
+
+GENERATED_EVAL_SOURCE_MARKERS = (
+    "qgis_vector_augment",
+    "llm_source_code_to_l3",
+    "llm_api_trace_to_l3",
+    "api_trace_to_l3",
+    "api_trace",
+)
+
+CODE_FAMILY_OVERRIDES = {
+    "L3_01_02_03": "crs_transform",
+    "L3_01_02_06": "field_calculation",
+    "L3_02_01_01": "buffer_analysis",
+    "L3_02_02_01": "intersection",
+    "L3_02_02_02": "union",
+    "L3_02_02_04": "difference",
+    "L3_02_02_05": "difference",
+    "L3_02_02_06": "spatial_clip",
+    "L3_02_03_05": "spatial_aggregation",
+    "L3_02_04_01": "spatial_join",
+    "L3_02_05_11": "centroid",
+    "L3_02_05_12": "grid_generation",
+    "L3_02_06_01": "attribute_filter",
+    "L3_02_06_02": "attribute_filter",
+    "L3_02_06_03": "spatial_filter",
+    "L3_02_06_05": "geometry_filter",
+    "L3_02_07_01": "geometry_repair",
+    "L3_03_02_01": "zonal_statistics",
+    "L3_07_04_01": "data_export",
+}
 
 
 @dataclass(frozen=True)
@@ -215,6 +268,246 @@ def _summarize_mr_registry(
 def _task_type_for_workflow(wf: dict) -> str:
     meta = wf.get("task_metadata", {}) or {}
     return meta.get("task_type", "Unknown") or "Unknown"
+
+
+def _workflow_source(wf: dict) -> str:
+    return str(wf.get("source") or wf.get("source_original") or "unknown")
+
+
+def _is_generated_eval_source(source: str) -> bool:
+    normalized = source.strip().lower()
+    return any(marker in normalized for marker in GENERATED_EVAL_SOURCE_MARKERS)
+
+
+def _summarize_eval_source_guard(
+    *,
+    val_workflows: list[dict],
+    test_workflows: list[dict],
+    allow_generated_eval_sources: bool,
+) -> dict:
+    split_counts: Counter[str] = Counter()
+    source_counts: Counter[str] = Counter()
+    examples: list[dict] = []
+    for split_name, workflows in (("val", val_workflows), ("test", test_workflows)):
+        for local_index, wf in enumerate(workflows):
+            source = _workflow_source(wf)
+            if not _is_generated_eval_source(source):
+                continue
+            split_counts[split_name] += 1
+            source_counts[source] += 1
+            if len(examples) < 5:
+                meta = wf.get("task_metadata", {}) or {}
+                examples.append(
+                    {
+                        "split": split_name,
+                        "local_index": local_index,
+                        "source": source,
+                        "task_name": meta.get("task_name", ""),
+                    }
+                )
+    total = sum(split_counts.values())
+    if total and not allow_generated_eval_sources:
+        raise ValueError(
+            "generated sources found in val/test splits; keep LLM/API/QGIS generated "
+            "samples train-only or pass --allow-generated-eval-sources for legacy diagnostics"
+        )
+    return {
+        "status": "allowed_by_override" if total and allow_generated_eval_sources else "clean",
+        "generated_eval_rows": int(total),
+        "split_counts": dict(split_counts),
+        "source_counts": dict(source_counts),
+        "examples": examples,
+        "allow_generated_eval_sources": bool(allow_generated_eval_sources),
+        "blocked_source_markers": list(GENERATED_EVAL_SOURCE_MARKERS),
+    }
+
+
+def _same_path(left: Path, right: Path) -> bool:
+    try:
+        return left.resolve() == right.resolve()
+    except OSError:
+        return left == right
+
+
+def _resolve_cli_length_stats(args: argparse.Namespace) -> Optional[Path]:
+    """Resolve CLI length stats without silently mixing training-package stats."""
+    if args.length_stats is not None:
+        if not str(args.length_stats).strip():
+            print("\n  INFO: --length-stats 为空，length bucket auxiliary training 将被禁用。")
+            return None
+        return Path(args.length_stats)
+
+    data_path = Path(args.data)
+    if _same_path(data_path, V4_QG_LABELED_WORKFLOWS_PATH):
+        default_path = default_length_stats_path(ROOT)
+        print(f"\n  INFO: 未显式传 --length-stats，默认 quality-gate 包使用: {default_path}")
+        return default_path
+
+    package_stats = data_path.parent / "task_type_length_stats.json"
+    if package_stats.exists():
+        print(f"\n  INFO: 未显式传 --length-stats，使用训练包同目录 stats: {package_stats}")
+        return package_stats
+
+    print(
+        "\n  ERROR: 当前 --data 不是默认 quality-gate 包，且同目录没有 "
+        "task_type_length_stats.json。"
+    )
+    print("  为避免 mixed/vector 训练误用默认 length stats，请显式传 --length-stats <path>。")
+    raise SystemExit(1)
+
+
+def _content_length(wf: dict) -> int:
+    return sum(1 for token in wf.get("l3_sequence", []) if isinstance(token, int) and token >= 0)
+
+
+def _percentile(values: list[int], q: float) -> float:
+    if not values:
+        return 0.0
+    ordered = sorted(values)
+    idx = min(len(ordered) - 1, max(0, round((len(ordered) - 1) * q)))
+    return float(ordered[idx])
+
+
+def _summarize_text_encoding(workflows: list[dict], *, max_text_length: int) -> dict:
+    lengths: list[int] = []
+    for wf in workflows:
+        meta = wf.get("task_metadata", {}) or {}
+        text = build_task_prompt(
+            meta.get("task_type", ""),
+            meta.get("task_name", ""),
+            meta.get("task_description", ""),
+        )
+        lengths.append(len(text.split()))
+    return {
+        "template": "Task type / Task name / Goal",
+        "max_text_length": int(max_text_length),
+        "length_unit": "whitespace_tokens_approximation",
+        "samples": len(workflows),
+        "long_prompt_count_over_max": sum(1 for length in lengths if length > max_text_length),
+        "max_prompt_length": max(lengths) if lengths else 0,
+        "p90_prompt_length": _percentile(lengths, 0.90),
+        "p99_prompt_length": _percentile(lengths, 0.99),
+    }
+
+
+def _summarize_sequence_horizon(workflows: list[dict], *, ar_max_steps: int, max_seq_length: int) -> dict:
+    lengths = [_content_length(wf) for wf in workflows]
+    truncated = sum(1 for wf in workflows if len(wf.get("l3_sequence", [])) > max_seq_length)
+    return {
+        "max_seq_length": int(max_seq_length),
+        "ar_max_steps": int(ar_max_steps),
+        "samples": len(workflows),
+        "truncated_sequence_count": truncated,
+        "train_sequences_over_ar_max_steps": sum(1 for length in lengths if length > ar_max_steps),
+        "max_content_length": max(lengths) if lengths else 0,
+        "p90_content_length": _percentile(lengths, 0.90),
+        "p99_content_length": _percentile(lengths, 0.99),
+    }
+
+
+def _summarize_sample_weights(workflows: list[dict]) -> dict:
+    weights = [workflow_sample_weight(wf) for wf in workflows]
+    tiers = Counter((wf.get("_training_quality") or {}).get("tier", "unmarked") for wf in workflows)
+    sources = Counter(str(wf.get("source") or wf.get("source_original") or "unknown") for wf in workflows)
+    return {
+        "samples": len(workflows),
+        "tier_counts": dict(tiers),
+        "source_counts": dict(sources),
+        "weight_min": min(weights) if weights else 0.0,
+        "weight_max": max(weights) if weights else 0.0,
+        "weight_mean": sum(weights) / len(weights) if weights else 0.0,
+        "non_unit_weight_count": sum(1 for weight in weights if abs(weight - 1.0) > 1e-9),
+    }
+
+
+def _family_from_hierarchy_row(row: dict) -> str | None:
+    code = (row.get("l3_code") or "").strip()
+    if code in CODE_FAMILY_OVERRIDES:
+        return CODE_FAMILY_OVERRIDES[code]
+    l1 = (row.get("l1_name") or "").lower()
+    l2 = (row.get("l2_name") or "").lower()
+    name = (row.get("l3_name") or "").lower()
+    if "vector" not in l1 and code not in CODE_FAMILY_OVERRIDES:
+        return None
+    if "overlay" in l2:
+        return "spatial_overlay"
+    if "proximity" in l2 or "buffer" in name:
+        return "buffer_analysis"
+    if "feature aggregation" in l2:
+        return "spatial_aggregation"
+    if "spatial relationship" in l2:
+        return "spatial_join"
+    if "feature extraction" in l2:
+        return "attribute_filter"
+    if "geometry" in l2:
+        return "geometry_modification"
+    if "topology" in l2:
+        return "geometry_repair"
+    return None
+
+
+def _load_token_to_family(
+    *,
+    id_mappings_path: Path = ID_MAPPINGS_PATH,
+    hierarchy_path: Path = CLASSIFICATION_HIERARCHY,
+) -> dict[int, str]:
+    if not id_mappings_path.exists() or not hierarchy_path.exists():
+        return {}
+    with id_mappings_path.open(encoding="utf-8") as f:
+        id_mappings = json.load(f)
+    code_to_token = {
+        str(code): int(token) for code, token in (id_mappings.get("l3") or {}).items()
+    }
+    token_to_family: dict[int, str] = {}
+    with hierarchy_path.open(encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            code = (row.get("l3_code") or "").strip()
+            family = _family_from_hierarchy_row(row)
+            if family and code in code_to_token:
+                token_to_family[code_to_token[code]] = family
+    return token_to_family
+
+
+def _family_targets(values: Optional[list[str]]) -> list[str]:
+    if values:
+        result = []
+        for value in values:
+            for part in str(value).split(","):
+                part = part.strip()
+                if part:
+                    result.append(part)
+        return sorted(set(result))
+    return list(DEFAULT_VECTOR_FAMILY_TARGETS)
+
+
+def _summarize_family_sampler(
+    workflows: list[dict],
+    *,
+    enabled: bool,
+    family_weight_targets: Optional[list[str]],
+    use_source_quality: bool,
+) -> tuple[dict[int, str], dict]:
+    targets = _family_targets(family_weight_targets)
+    if not enabled:
+        return {}, {
+            "status": "disabled",
+            "target_families": targets,
+            "source_quality_weighting": False,
+        }
+    token_to_family = _load_token_to_family()
+    _weights, report = compute_training_sample_weights(
+        workflows,
+        token_to_family=token_to_family,
+        target_families=targets,
+        use_source_quality=use_source_quality,
+    )
+    return token_to_family, {
+        "status": "enabled",
+        "target_families": targets,
+        "source_quality_weighting": bool(use_source_quality),
+        "token_family_entries": len(token_to_family),
+        **report,
+    }
 
 
 def _bucket_counts(workflows: list[dict], predictor: LengthBucketPredictor) -> dict:
@@ -380,15 +673,22 @@ def train_quality_gate_v4_6(
     qgis_unmappable_penalty: float = 0.0,
     mrv_ablation_dir: Optional[Path] = None,
     mrv_ablation_version: Optional[str] = None,
+    max_text_length: int = 256,
+    enable_family_sampler: bool = False,
+    family_weight_targets: Optional[list[str]] = None,
+    sampler_use_source_quality: bool = True,
+    ar_max_steps: int = V4_6_AR_MAX_STEPS,
+    allow_generated_eval_sources: bool = False,
 ) -> dict:
     set_seed(RANDOM_SEED)
-    unmappable_token_ids: set[int] = set()
+    ar_max_steps = max(1, int(ar_max_steps))
     if qgis_unmappable_penalty > 0.0:
-        from gis_recommend.config.transformer_config import ID_MAPPINGS_PATH as _CFG_ID
-        from gis_recommend.config.transformer_config import SPECIAL_TOKENS as _CFG_SP
-        from gis_recommend.config.transformer_config import VOCAB_SIZE as _CFG_VS
-        SPECIAL_TOKEN_IDS = {_CFG_VS + abs(v) - 1 for v in _CFG_SP.values()} if _CFG_SP else set()
-        unmappable_token_ids = _load_unmappable_token_ids(Path(str(_CFG_ID)), SPECIAL_TOKEN_IDS)
+        raise ValueError(
+            "qgis_unmappable_penalty is disabled because the old implementation "
+            "up-weighted target CE for unmappable tokens. Use bridge-aware decode/rerank "
+            "or a proper probability-mass penalty instead."
+        )
+    unmappable_token_ids: set[int] = set()
     mrv_dataset = resolve_mrv_training_dataset(
         base_data_path=data_path,
         base_splits_path=splits_path,
@@ -403,6 +703,11 @@ def train_quality_gate_v4_6(
         data_path=data_path,
         splits_path=splits_path,
         task_vocab_path=task_vocab_path,
+    )
+    eval_source_guard = _summarize_eval_source_guard(
+        val_workflows=inputs.val_workflows,
+        test_workflows=inputs.test_workflows,
+        allow_generated_eval_sources=allow_generated_eval_sources,
     )
     from_scratch = warmstart_path is None
     mr_registry, mr_summary = _summarize_mr_registry(
@@ -419,14 +724,33 @@ def train_quality_gate_v4_6(
         test_workflows=inputs.test_workflows,
     )
     if length_bucket_summary is not None:
+        length_bucket_summary["loss_weight"] = float(length_bucket_loss_weight)
         length_bucket_summary["mse_loss_weight"] = float(length_bucket_loss_weight)
         length_bucket_summary["cls_loss_weight"] = float(bucket_cls_loss_weight)
+    sampler_token_to_family, family_sampler_summary = _summarize_family_sampler(
+        inputs.train_workflows,
+        enabled=enable_family_sampler,
+        family_weight_targets=family_weight_targets,
+        use_source_quality=sampler_use_source_quality,
+    )
     summary = {
         "trainer": "V4.6",
         "mode": "from_scratch" if from_scratch else "warmstart",
         "mr_registry": mr_summary,
         "mrv_training_dataset": mrv_dataset.summary,
         "length_bucket_training": length_bucket_summary,
+        "text_encoding": _summarize_text_encoding(
+            inputs.train_workflows,
+            max_text_length=max_text_length,
+        ),
+        "sequence_horizon": _summarize_sequence_horizon(
+            inputs.train_workflows,
+            ar_max_steps=ar_max_steps,
+            max_seq_length=V4_MAX_SEQ_LENGTH,
+        ),
+        "eval_source_guard": eval_source_guard,
+        "sample_weighting": _summarize_sample_weights(inputs.train_workflows),
+        "family_sampler": family_sampler_summary,
         "training_contract": _training_contract_summary(),
         "metric_contract": _metric_contract_summary(),
         "checkpoint_policy": _checkpoint_policy_summary(),
@@ -458,6 +782,7 @@ def train_quality_gate_v4_6(
         inputs.task_vocab_builder,
         tokenizer,
         max_seq_length=V4_MAX_SEQ_LENGTH,
+        max_text_length=max_text_length,
         mr_registry=mr_registry,
         mr_prob=mr_ratio,
     )
@@ -466,12 +791,14 @@ def train_quality_gate_v4_6(
         inputs.task_vocab_builder,
         tokenizer,
         max_seq_length=V4_MAX_SEQ_LENGTH,
+        max_text_length=max_text_length,
     )
     test_dataset = TaskConditionedL3DatasetV4(
         inputs.test_workflows,
         inputs.task_vocab_builder,
         tokenizer,
         max_seq_length=V4_MAX_SEQ_LENGTH,
+        max_text_length=max_text_length,
     )
     val_loader = DataLoader(
         val_dataset,
@@ -550,6 +877,10 @@ def train_quality_gate_v4_6(
         curriculum_p2_end=-1, curriculum_p2_max=999,
         # Stronger task signal
         task_cls_loss_weight=V4_6_TASK_CLS_LOSS_WEIGHT,
+        sampler_token_to_family=sampler_token_to_family if enable_family_sampler else None,
+        sampler_target_families=_family_targets(family_weight_targets) if enable_family_sampler else None,
+        sampler_use_source_quality=bool(sampler_use_source_quality) if enable_family_sampler else False,
+        ar_max_steps=ar_max_steps,
         # QGIS mapping constraint
         qgis_unmappable_token_ids=unmappable_token_ids,
         qgis_unmappable_penalty=qgis_unmappable_penalty,
@@ -583,6 +914,21 @@ def main(argv: list[str] | None = None) -> dict:
                              f"{WARMSTART_NUM_EPOCHS} with --warmstart)")
     parser.add_argument("--num-workers", type=int, default=V4_2_NUM_WORKERS)
     parser.add_argument("--generation-eval-batches", type=int, default=8)
+    parser.add_argument(
+        "--max-text-length",
+        type=int,
+        default=256,
+        help="BERT tokenizer max length for structured task prompt (default: 256).",
+    )
+    parser.add_argument(
+        "--ar-max-steps",
+        type=int,
+        default=V4_6_AR_MAX_STEPS,
+        help=(
+            "Maximum AR scheduled-sampling steps per sequence "
+            f"(default: {V4_6_AR_MAX_STEPS}; raise for long vector chains)."
+        ),
+    )
     parser.add_argument("--bert-model", default="bert-base-uncased")
     parser.add_argument(
         "--allow-bert-download",
@@ -608,8 +954,16 @@ def main(argv: list[str] | None = None) -> dict:
         help="Probability of swapping to a variant reference per matched sample (0.0-1.0, default: 0.0).",
     )
     parser.add_argument(
-        "--length-stats", type=str, default=str(default_length_stats_path(ROOT)),
+        "--length-stats", type=str, default=None,
         help="Path to task_type_length_stats.json for task-type length bucket auxiliary training.",
+    )
+    parser.add_argument(
+        "--allow-tf-only-smoke",
+        action="store_true",
+        help=(
+            "Allow from-scratch runs where --num-epochs does not exceed the "
+            "teacher-forcing phase. Intended only for explicit smoke tests."
+        ),
     )
     parser.add_argument(
         "--length-bucket-loss-weight", type=float, default=0.1,
@@ -621,7 +975,34 @@ def main(argv: list[str] | None = None) -> dict:
     )
     parser.add_argument(
         "--qgis-unmappable-penalty", type=float, default=0.0,
-        help="Extra CE penalty multiplier for tokens with no QGIS mapping (default: 0.0 = disabled).",
+        help="Deprecated unsafe option. Values >0 are rejected.",
+    )
+    parser.add_argument(
+        "--enable-family-sampler",
+        action="store_true",
+        help="Use task-type * vector-family * source-quality sampler weights.",
+    )
+    parser.add_argument(
+        "--family-weight-target",
+        action="append",
+        default=None,
+        help=(
+            "Vector family to upweight; can be repeated or comma-separated. "
+            "Defaults to the project vector family target set when family sampler is enabled."
+        ),
+    )
+    parser.add_argument(
+        "--disable-source-quality-weighting",
+        action="store_true",
+        help="Disable source/confidence/sample_weight factors inside the family sampler.",
+    )
+    parser.add_argument(
+        "--allow-generated-eval-sources",
+        action="store_true",
+        help=(
+            "Allow generated/LLM/API-trace sources in val/test for legacy diagnostics. "
+            "Default is fail-fast to keep final vector metrics clean."
+        ),
     )
     parser.add_argument(
         "--mrv-ablation-dir",
@@ -650,6 +1031,24 @@ def main(argv: list[str] | None = None) -> dict:
         num_epochs = WARMSTART_NUM_EPOCHS
         tf_phase_epochs = WARMSTART_TF_PHASE_EPOCHS
 
+    # ── 高优先级守卫：from-scratch 短 epoch 全是 TF ──
+    if from_scratch and num_epochs <= tf_phase_epochs:
+        print(f"\n{'='*70}")
+        print(f"  WARNING: from-scratch training with --num-epochs {num_epochs}")
+        print(f"  but tf_phase_epochs={tf_phase_epochs}.")
+        print(f"  所有 {num_epochs} epoch 将仅做 Teacher Forcing，无 AR scheduled sampling。")
+        print('  结果会被误解为 "V4.6 完整训练效果"，实际只是 TF smoke。')
+        print(f"  建议：from-scratch 至少 {tf_phase_epochs + 1} epoch 才进入 AR-SS。")
+        print(f"  或加 --warmstart <ckpt> 跳过 TF 阶段直接 AR-SS。")
+        print(f"{'='*70}\n")
+        if not args.allow_tf_only_smoke:
+            print("  已停止。若这是明确的 smoke test，请加 --allow-tf-only-smoke。")
+            sys.exit(1)
+        print("  --allow-tf-only-smoke 已提供，继续执行显式 TF-only smoke。")
+
+    # ── length-stats 校验：非默认训练包不能静默复用默认 quality-gate stats ──
+    length_stats_path = _resolve_cli_length_stats(args)
+
     checkpoint_dir = Path(args.checkpoint_dir)
     if args.mrv_ablation_version:
         checkpoint_dir = checkpoint_dir / args.mrv_ablation_version
@@ -670,12 +1069,18 @@ def main(argv: list[str] | None = None) -> dict:
         dry_run=args.dry_run,
         mr_registry_path=Path(args.mr_registry) if args.mr_registry else None,
         mr_ratio=args.mr_ratio,
-        length_stats_path=Path(args.length_stats) if args.length_stats else None,
+        length_stats_path=length_stats_path,
         length_bucket_loss_weight=args.length_bucket_loss_weight,
         bucket_cls_loss_weight=args.bucket_cls_loss_weight,
         qgis_unmappable_penalty=args.qgis_unmappable_penalty,
         mrv_ablation_dir=Path(args.mrv_ablation_dir) if args.mrv_ablation_dir else None,
         mrv_ablation_version=args.mrv_ablation_version,
+        max_text_length=args.max_text_length,
+        enable_family_sampler=args.enable_family_sampler,
+        family_weight_targets=args.family_weight_target,
+        sampler_use_source_quality=not args.disable_source_quality_weighting,
+        ar_max_steps=args.ar_max_steps,
+        allow_generated_eval_sources=args.allow_generated_eval_sources,
     )
     print("\nV4.6 Quality-Gate training summary:")
     for key, value in result.items():

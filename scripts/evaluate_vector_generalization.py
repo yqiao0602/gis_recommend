@@ -213,12 +213,19 @@ def task_type_for(task: dict[str, Any]) -> str:
     return VECTOR_TASK_TYPE
 
 
-def build_inferencer(ckpt: Path, vocab: Path, length_stats: Path) -> L3SequenceInferencerV4:
+def build_inferencer(
+    ckpt: Path,
+    vocab: Path,
+    length_stats: Path,
+    *,
+    prompt_style: str = "legacy",
+) -> L3SequenceInferencerV4:
     return L3SequenceInferencerV4(
         checkpoint_path=ckpt,
         device=DEVICE,
         task_vocab_path=vocab,
         length_stats_path=length_stats,
+        prompt_style=prompt_style,
     )
 
 
@@ -381,6 +388,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--dpo-task-vocab", type=Path, default=DPO_VOCAB)
     parser.add_argument("--sft-length-stats", type=Path, default=SFT_LENGTH_STATS)
     parser.add_argument("--dpo-length-stats", type=Path, default=DPO_LENGTH_STATS)
+    parser.add_argument("--sft-prompt-style", choices=["legacy", "structured"], default="legacy")
+    parser.add_argument("--dpo-prompt-style", choices=["legacy", "structured"], default="legacy")
     parser.add_argument("--report-path", type=Path, default=REPORT_PATH)
     return parser.parse_args(argv)
 
@@ -435,9 +444,19 @@ def main(argv: list[str] | None = None) -> None:
     print(f"Raster-ish leakage tokens: {len(token_sets['rasterish'])}")
 
     print(f"\nLoading SFT model ({SFT_CKPT}) ...")
-    inf_sft = build_inferencer(SFT_CKPT, SFT_VOCAB, SFT_LENGTH_STATS)
+    inf_sft = build_inferencer(
+        SFT_CKPT,
+        SFT_VOCAB,
+        SFT_LENGTH_STATS,
+        prompt_style=args.sft_prompt_style,
+    )
     print(f"Loading DPO v2 model ({DPO_CKPT}) ...")
-    inf_dpo = build_inferencer(DPO_CKPT, DPO_VOCAB, DPO_LENGTH_STATS)
+    inf_dpo = build_inferencer(
+        DPO_CKPT,
+        DPO_VOCAB,
+        DPO_LENGTH_STATS,
+        prompt_style=args.dpo_prompt_style,
+    )
 
     results: list[dict[str, Any]] = []
     print("\nRunning unseen prompts ...")
@@ -512,6 +531,8 @@ def main(argv: list[str] | None = None) -> None:
                     "dpo_task_vocab": str(DPO_VOCAB),
                     "sft_length_stats": str(SFT_LENGTH_STATS),
                     "dpo_length_stats": str(DPO_LENGTH_STATS),
+                    "sft_prompt_style": args.sft_prompt_style,
+                    "dpo_prompt_style": args.dpo_prompt_style,
                     "id_mappings": str(ID_MAPPINGS),
                     "hierarchy": str(HIERARCHY),
                 },

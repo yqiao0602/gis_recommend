@@ -93,6 +93,7 @@ from gis_recommend.config.transformer_config import (
 )
 from gis_recommend.models.transformer_model_v4 import TaskConditionedL3TransformerModelV4
 from gis_recommend.models.task_text_processor import TaskVocabularyBuilder
+from gis_recommend.training.loss_utils import weighted_sequence_cross_entropy
 from gis_recommend.training.splits import load_or_create_valid_splits
 
 # ===================== Constants =====================
@@ -191,6 +192,34 @@ def _make_task_key(task_type: str = "", task_name: str = "", task_description: s
     )
 
 
+def build_task_prompt(task_type: str = "", task_name: str = "", task_description: str = "") -> str:
+    """Build the model-facing task text used by training and inference."""
+    task_type = (task_type or "").strip()
+    task_name = (task_name or "").strip()
+    task_description = (task_description or "").strip()
+    parts = []
+    if task_type and task_type != "Unknown":
+        parts.append(f"Task type: {task_type}")
+    if task_name:
+        parts.append(f"Task name: {task_name}")
+    if task_description:
+        parts.append(f"Goal: {task_description}")
+    return "\n".join(parts) or "unknown task"
+
+
+def workflow_sample_weight(wf: dict) -> float:
+    """Return conservative per-row training weight from quality metadata."""
+    quality = wf.get("_training_quality") or {}
+    raw = quality.get("sample_weight", wf.get("sample_weight", 1.0))
+    try:
+        weight = float(raw)
+    except (TypeError, ValueError):
+        return 1.0
+    if not math.isfinite(weight):
+        return 1.0
+    return max(0.0, min(weight, 5.0))
+
+
 # ===================== Dataset (same as V4) =====================
 class TaskConditionedL3DatasetV4(Dataset):
     """V4 Dataset with BERT tokenization and curriculum support."""
@@ -263,7 +292,7 @@ class TaskConditionedL3DatasetV4(Dataset):
         task_name = meta.get("task_name", "") or ""
         task_desc = meta.get("task_description", "") or ""
         task_type_id = self.task_vocab_builder.encode(task_type)
-        text = f"{task_name} {task_desc}".strip() or "unknown task"
+        text = build_task_prompt(task_type, task_name, task_desc)
         text_ids, text_mask = self._encode_text(text)
         return {
             "input_ids": torch.tensor(input_ids, dtype=torch.long),
@@ -273,6 +302,7 @@ class TaskConditionedL3DatasetV4(Dataset):
             "text_attention_mask": text_mask,
             "attention_mask": torch.tensor(attention_mask, dtype=torch.long),
             "seq_len": seq_len,
+            "sample_weight": torch.tensor(workflow_sample_weight(wf), dtype=torch.float),
         }
 
 
@@ -375,6 +405,8 @@ class ScheduledSamplingTrainerV4_2:
             self.criterion = nn.CrossEntropyLoss(
                 ignore_index=PAD_INDEX, label_smoothing=label_smoothing
             )
+        self.ce_weight = token_freq_weights.to(device) if token_freq_weights is not None else None
+        self.label_smoothing = label_smoothing
 
         # Task classification head (replaces contrastive loss)
         self.task_classifier = nn.Linear(V4_D_MODEL // 2, num_task_types).to(device)
@@ -510,6 +542,9 @@ class ScheduledSamplingTrainerV4_2:
         text_attention_mask = batch['text_attention_mask'].to(self.device)
         attention_mask = batch['attention_mask'].to(self.device)
         seq_lens = batch['seq_len']
+        sample_weights = batch.get('sample_weight')
+        if sample_weights is not None:
+            sample_weights = sample_weights.to(self.device)
 
         with autocast('cuda', enabled=self.use_amp):
             logits, aux = self.model(
@@ -518,8 +553,13 @@ class ScheduledSamplingTrainerV4_2:
                 attention_mask=attention_mask, return_aux=True,
             )
             # Frequency-weighted main CE loss (with label smoothing via criterion)
-            main_loss = self.criterion(
-                logits.view(-1, logits.size(-1)), target_ids.view(-1)
+            main_loss = weighted_sequence_cross_entropy(
+                logits,
+                target_ids,
+                sample_weights,
+                weight=self.ce_weight,
+                ignore_index=PAD_INDEX,
+                label_smoothing=self.label_smoothing,
             )
             # Log-scale length loss
             length_loss = self._length_loss(aux['length_pred'], seq_lens)

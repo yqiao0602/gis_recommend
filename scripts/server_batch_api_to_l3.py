@@ -78,12 +78,12 @@ SYSTEM_PROMPT = """You are a GIS workflow analyst. Given the C++ API calls actua
 Rules:
 1. Only use L3 codes from the provided list — do NOT invent new codes
 2. Output 2-8 codes in logical execution order
-3. Always try to infer a workflow chain even with limited signal — prefer reasonable guesses over empty output
+3. Do not guess. If the trace does not show executable GIS operations, return empty l3_codes and confidence 0.0 rather than inventing a chain.
 4. "confidence" = how sure you are the inferred chain is correct. Be honest on a 0.0-1.0 scale:
    - 0.8-1.0: clear spatial operations visible (buffer, clip, intersect, reproject, zonal stats, raster calc, coordinate transform, etc.)
    - 0.6-0.7: strong but indirect signal (field manipulation + feature iteration, CRS creation + export, etc.)
    - 0.4-0.5: weak signal — best-guess only, an expert might reasonably disagree
-   - 0.0-0.3: the trace shows no GIS operations (only layer create, project save, UI, styles). Still produce a guess but set confidence low.
+   - 0.0-0.3: the trace shows no GIS operations (only layer create, project save, UI, styles). Return empty l3_codes.
 5. Do NOT modify L3 code strings — exact matches only"""
 
 USER_PROMPT = """C++ API trace from a QGIS script:
@@ -216,6 +216,17 @@ def _clean_llm_output(content):
     return obj
 
 
+def _looks_placeholder_task(task_name, task_desc):
+    combined = f"{(task_name or '').strip()} {(task_desc or '').strip()}".strip().lower()
+    if not combined:
+        return True
+    if re.fullmatch(r"qgis script:\s*script_\d+", combined):
+        return True
+    if re.search(r"\bscript_\d+\b", combined) and len(combined.split()) <= 4:
+        return True
+    return False
+
+
 # ── Quality gates ──────────────────────────────────────────────────────
 _REASONING_REJECT = [
     "no actual geoprocessing", "no actual spatial",
@@ -293,17 +304,17 @@ def quality_gate(llm_obj):
         return False, "empty l3_codes"
 
     try:
-        conf = float(confidence) if confidence is not None else 0.5
+        conf = float(confidence) if confidence is not None else 0.0
     except (TypeError, ValueError):
-        conf = 0.5
+        return False, "invalid confidence"
 
     # Per-case confidence thresholds (NOT a blanket floor):
     # single-code chains need stronger evidence, multi-code lower is ok
     if len(l3_codes) == 1:
-        if conf < 0.60:
+        if conf < 0.70:
             return False, f"single-code confidence ({conf:.2f})"
     else:
-        if conf < 0.50:
+        if conf < 0.65:
             return False, f"confidence ({conf:.2f})"
 
     code_set = set(l3_codes)
@@ -435,6 +446,12 @@ def main():
         if facts:
             task_desc = (facts.get("Task Description") or "").strip()
             task_type = (facts.get("Task Type") or "").strip()
+            task_name = (facts.get("Task Name") or script_name).strip()
+            if _looks_placeholder_task(task_name, task_desc):
+                st["quality_reject"] += 1
+                st_q_reason["placeholder_prompt"] += 1
+                processed.add(fname)
+                continue
             if task_desc:
                 desc_hint = f"Task description: {task_desc[:300]}\nTask type: {task_type}\n\n"
 
@@ -503,6 +520,11 @@ def main():
             task_type = (facts.get("Task Type") or "Unknown").strip()
             task_name = (facts.get("Task Name") or script_name).strip()
             task_desc = (facts.get("Task Description") or "").strip()
+        if _looks_placeholder_task(task_name, task_desc):
+            st["quality_reject"] += 1
+            st_q_reason["placeholder_prompt"] += 1
+            processed.add(fname)
+            continue
         if task_type not in tt2id:
             task_type = "Other / Sparse"
 

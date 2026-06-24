@@ -4,8 +4,52 @@
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因（数据缺口），补矢量训练数据并在 A10 上重平衡重训，验证矢量能力可修复。
 
 ## 当前阶段
-阶段 8 完成 → 阶段 9：C++ API 痕迹→LLM→L3 规模化。POC 通过(10脚本6/10合法) → 2k验证(804条) → 3k+40码(1011条) → 全量68k生产中。
-Phase 8 突破：矢量 L3 从 0/40→16/40(40%) 矢量主导，exec 0.35→0.95。
+**2026-06-24 — 训练入口高优先级修复 + API-trace 数据门禁已验证。**
+
+全面静态审查发现 20 个问题（12 个高优先级 + 8 个中优先级）。核心结论：
+
+1. **训练数据混用问题严重**：vector_v2/API_trace_to_L3_TRAINING_FINAL 含弱 prompt、LLM 标签噪声、val/test 污染、同 prompt 多 label 冲突。
+2. **训练入口参数不一致**：`_push_and_train.py` 的 `--workflows`/`--epochs` 与 `train_v4_6_quality_gate.py` 的 `--data`/`--num-epochs` 不匹配。
+3. **from-scratch 短 epoch 全 TF**：传 `--num-epochs 5` 没有 `--warmstart` 时，5 个 epoch 全是 Teacher Forcing 无 AR-SS。
+4. **推荐主线**：使用 `step8_quality_gate_qgis_vector_oversampled` 包（train-only QGIS 注入、干净 split）。
+
+已修复并本地验证的高优先级项：
+- [x] `train_v4_6_quality_gate.py`：修复语法错误；`--length-stats` 默认改为可检测的 None；from-scratch TF-only 短训默认退出，只有显式 `--allow-tf-only-smoke` 才允许继续。
+- [x] `_push_and_train.py`：默认直接退出，不再执行 SSH/SFTP/远程训练；如复现旧行为必须显式 `--force-deprecated`；移除自动 pkill 风险。
+- [x] `train_v4_6_vector_unified.py`：修正 docstring；不再错误归因 val/test 污染；缺少 `task_type_length_stats_vector_unified.json` 时默认退出，要求显式 stats 或改用 oversampled 主线。
+- [x] `_upsample_splits.py`：默认直接退出，不再生成 duplicate-index split；如复现旧输出必须显式 `--force-deprecated`。
+- [x] `clean_api_trace_l3_training_data.py`：新增 API-trace 训练数据门禁，把 raw 6,031 行切成 clean/weak/rejected/conflicts；拒绝 placeholder prompt、同 prompt 多 label、task/code 错配、task/L3 模态错配、低/缺失置信度和“只靠描述强猜”的样本。
+- [x] `server_batch_api_to_l3.py` / `server_batch_source_to_l3.py` / `llm_generate_l3_from_api_traces.py`：prompt 改为无证据时拒绝/空链，不再鼓励猜测；置信度门槛收紧，missing/invalid confidence 直接拒绝。
+
+训练机制改造已完成（用于真正提升矢量规划能力，而非只提升 QGIS landing）：
+- [x] `TaskConditionedL3DatasetV4` 返回 `_training_quality.sample_weight`；TF 和 AR scheduled-sampling loss 都改为 per-sample weighted CE。
+- [x] 训练 prompt 统一为结构化 `Task type / Task name / Goal`，训练入口默认 `--max-text-length 256` 并在 dry-run 报告截断风险。
+- [x] sampler 支持 task type、vector operation family、source quality、confidence、sample weight 组合加权，重点补 intersection/union/difference/geometry_repair/CRS 等目标族。
+- [x] 非默认 mixed/vector 包必须使用同目录或显式 `--length-stats`，避免误用旧 quality-gate 长度先验。
+- [x] `qgis_unmappable_penalty > 0` 被禁止，避免按错误方向强化 unmappable target。
+- [x] `--ar-max-steps` 可配置，避免复杂矢量长链后半段完全没有 AR scheduled-sampling 训练信号。
+- [x] 推理/评估增加 `legacy|structured` prompt style；旧 DPO/SFT 默认保持 legacy，新结构化 prompt 模型评估时显式传 structured。
+- [x] QG parent inferencer 保持 legacy 128-token prompt，避免主线 checkpoint 输入分布被意外改变。
+
+验证：
+- `python -m py_compile scripts\train_v4_6_quality_gate.py scripts\train_v4_6_vector_unified.py scripts\_push_and_train.py scripts\_upsample_splits.py` 通过。
+- `python scripts\train_v4_6_quality_gate.py --dry-run --num-epochs 5` 会阻止 TF-only from-scratch 误跑。
+- 加 `--allow-tf-only-smoke` 后可执行显式 TF-only dry-run。
+- oversampled 主线包 dry-run 通过：81,137 workflows，train/val/test=65,748/7,694/7,695，48 task types，tf_phase_epochs=0。
+- `python -m unittest tests.test_api_trace_l3_training_cleaning -v` -> 21 tests OK。
+- `python -m unittest tests.test_v4_6_vector_training_mechanisms tests.test_v4_6_training_readiness tests.test_v4_6_training_stability tests.test_v4_training_entry_smoke -v` -> 26 tests OK。
+- `python -m unittest tests.test_v4_qg_planner tests.test_runtime_consistency tests.test_v4_6_vector_training_mechanisms -v` -> 21 tests OK。
+- `python -m py_compile src\gis_recommend\training\loss_utils.py src\gis_recommend\training\train_v4_2.py src\gis_recommend\training\train_v4_5.py src\gis_recommend\training\train_v4_6.py src\gis_recommend\inference\infer_l3_candidates_v4.py src\gis_recommend\inference\infer_l3_candidates_v4_qg.py scripts\train_v4_6_quality_gate.py scripts\train_v4_6_vector_unified.py scripts\evaluate_vector_generalization.py scripts\evaluate_sft_vector_impact.py` -> OK。
+- oversampled warmstart dry-run（显式 vocab/stats + `--enable-family-sampler` + `--max-text-length 256`）通过：65,748 train rows，prompt max 189/p99 128，无 prompt 截断；sequence max 64/p99 31，无 max_seq=100 截断；`tf_phase_epochs=0`；family sampler 覆盖 intersection 1,038、union 785、difference 688、geometry_repair 1,580、crs_transform 11,567。
+- oversampled warmstart dry-run 加 `--ar-max-steps 32` 通过：超过 AR horizon 的 train sequences 从默认 3,219 降到 545。
+- `python -m py_compile scripts\clean_api_trace_l3_training_data.py scripts\server_batch_api_to_l3.py scripts\server_batch_source_to_l3.py scripts\llm_generate_l3_from_api_traces.py` -> OK。
+- `python scripts\clean_api_trace_l3_training_data.py --input outputs_v2\API_trace_to_L3_TRAINING_FINAL.jsonl --out-dir outputs_v2\diagnostics\api_trace_l3_cleaning` -> clean=1,112 / weak=1,384 / rejected=3,535 / conflicts=1,367。
+
+当前未完成：
+- [ ] 尚未跑新的 GPU 全量训练；不能声称矢量规划能力已经提升。
+- [ ] clean API-trace rows 还未封装成 train-only Step8 兼容包；下一步应只从 CLEAN 或人工审核后的 weak 构建包。
+- [ ] `vector_v2` val/test 污染问题仍不应作为最终指标来源；继续使用 held-out 手写 vector prompts / family recall 评估。
+- [ ] `--ar-max-steps 32` 已可用但未训练验证；长链完整性仍需在服务器结果里单独看。
 
 ## 各阶段
 
@@ -91,8 +135,21 @@ Phase 8 突破：矢量 L3 从 0/40→16/40(40%) 矢量主导，exec 0.35→0.95
 - [x] 路线 4 源码→L3：4,605 条，产率 67%
 - [x] 人工审计 90 条：高/中层 100%，修复后 0 错误
 - [x] 全量合并：16,800 条训练数据（94% 有真实描述）
+- [x] API-trace 数据门禁：6,031 raw -> 1,112 clean / 1,384 weak / 3,535 rejected / 1,367 conflicts
 - [ ] Phase 10 重训：3 次尝试（scratch/warmstart×2）均因栅格稀释失败
 - [ ] 待决：缩小训练集至 Phase 8 配方（排除 67k 纯栅格）
+
+### 阶段 10：V4.6 矢量规划训练机制修复 🔄
+- [x] 训练入口守卫：from-scratch 小 epoch 默认阻断 TF-only 误读，显式 `--allow-tf-only-smoke` 才允许 smoke。
+- [x] length stats 守卫：非默认 mixed/vector 包必须使用同目录或显式 `--length-stats`，不再静默复用旧 quality-gate stats。
+- [x] 数据门禁：API-trace raw 6,031 -> clean 1,112 / weak 1,384 / rejected 3,535 / conflicts 1,367；低置信和 placeholder 不再等权进入 SFT。
+- [x] 训练机制：sample_weight 进入 TF/AR loss；prompt 结构化；family/source-aware sampler 可启用；AR max steps 可配置；unsafe `qgis_unmappable_penalty>0` 禁用。
+- [x] 评估门禁：`eval_source_guard` 默认拒绝 val/test 中的 generated/LLM/API-trace source，旧污染包只能显式 `--allow-generated-eval-sources` 诊断复现。
+- [x] 兼容性：推理/eval 支持 `legacy|structured` prompt；旧 DPO/QG checkpoint 默认 legacy，避免破坏基线。
+- [x] 本地验证：64 条相关 unittest OK；关键训练/清洗/推理/评估文件 py_compile OK；真实 oversampled warmstart dry-run OK，eval generated rows=0。
+- [ ] 服务器训练：用 oversampled 主线包 + warmstart checkpoint + `--enable-family-sampler --max-text-length 256 --ar-max-steps 32` 跑 GPU SFT。
+- [ ] 训练后评估：held-out vector-family recall、raster contamination、QGIS seed absorption、人工 A/B/C。只有这些指标改善后，才能声明矢量规划能力提升。
+- **状态：** mechanism_fixed_local_verified；capability_not_yet_proven
 
 ## 已做关键决策
 | 决策 | 理由 |
