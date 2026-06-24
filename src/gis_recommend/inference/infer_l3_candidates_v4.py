@@ -40,6 +40,7 @@ from gis_recommend.config.transformer_config import (
     SET_PREDICTOR_CHECKPOINT_DIR, SET_PREDICTOR_CONFIDENCE_THRESHOLD,
     SET_PREDICTOR_MIN_SET_SIZE, SET_PREDICTOR_SOFT_PRIOR_THRESHOLD,
 )
+from gis_recommend.training.train_v4_2 import build_task_prompt
 from gis_recommend.models.transformer_model_v4 import TaskConditionedL3TransformerModelV4
 from gis_recommend.models.task_text_processor import TaskVocabularyBuilder
 from gis_recommend.data.length_bucket_predictor import LengthBucketPredictor, default_length_stats_path
@@ -114,6 +115,8 @@ class L3SequenceInferencerV4:
         set_predictor_path: Optional[Path] = None,
         task_vocab_path: Optional[Path] = None,
         length_stats_path: Optional[Path] = None,
+        max_text_length: int = 128,
+        prompt_style: str = "legacy",
     ):
         self.device = device
         self.num_beam_groups = num_beam_groups
@@ -127,6 +130,10 @@ class L3SequenceInferencerV4:
         self.min_length = min_length
         self.repetition_penalty = repetition_penalty
         self.no_repeat_ngram = no_repeat_ngram
+        self.max_text_length = max_text_length
+        if prompt_style not in {"legacy", "structured"}:
+            raise ValueError("prompt_style must be 'legacy' or 'structured'")
+        self.prompt_style = prompt_style
 
         self.allowed_next: Dict[int, Set[int]] = {}
         self.id_to_l3_code: Dict[int, str] = {}
@@ -324,9 +331,12 @@ class L3SequenceInferencerV4:
     def _prepare_input(self, task_name: str, task_description: str, task_type: str):
         """Prepare model input tensors from task text."""
         task_type_id = self.task_vocab_builder.task_type_to_id.get(task_type, 0)
-        text = f"{task_name} {task_description}".strip() or "unknown task"
+        if getattr(self, "prompt_style", "legacy") == "structured":
+            text = build_task_prompt(task_type, task_name, task_description)
+        else:
+            text = f"{task_name} {task_description}".strip() or "unknown task"
         enc = self.bert_tokenizer(
-            text, max_length=128, padding='max_length',
+            text, max_length=self.max_text_length, padding='max_length',
             truncation=True, return_tensors='pt',
         )
         return {

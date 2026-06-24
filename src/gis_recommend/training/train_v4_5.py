@@ -15,6 +15,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import math
 import sys
 from collections import Counter
 from pathlib import Path
@@ -61,6 +62,7 @@ from gis_recommend.training.train_v4_2 import (
     compute_token_freq_weights,
     load_or_create_splits,
     set_seed,
+    workflow_sample_weight,
     PAD_INDEX, START_INDEX, END_INDEX,
 )
 from gis_recommend.training.train_v4_4 import (
@@ -69,16 +71,127 @@ from gis_recommend.training.train_v4_4 import (
 )
 
 
-def build_task_type_sampler(dataset: TaskConditionedL3DatasetV4) -> WeightedRandomSampler:
-    """Build a WeightedRandomSampler that equalizes task type frequency.
+def _workflow_task_type(wf: dict) -> str:
+    meta = wf.get("task_metadata", {}) or {}
+    return meta.get("task_type", "Unknown") or "Unknown"
 
-    Each task type gets weight = 1 / count(task_type), so rare types
-    are sampled as often as common ones within each epoch.
-    """
-    task_type_ids = [dataset[i]['task_type_id'].item() for i in range(len(dataset))]
-    counts = Counter(task_type_ids)
-    # weight per sample = inverse of its task type count
-    weights = [1.0 / counts[t] for t in task_type_ids]
+
+def _workflow_source(wf: dict) -> str:
+    return str(wf.get("source") or wf.get("source_original") or "unknown")
+
+
+def _workflow_confidence(wf: dict) -> float | None:
+    for key in ("confidence", "_llm_confidence"):
+        if key not in wf:
+            continue
+        try:
+            value = float(wf[key])
+        except (TypeError, ValueError):
+            continue
+        if math.isfinite(value):
+            return value
+    quality = wf.get("_training_quality") or {}
+    try:
+        value = float(quality.get("confidence"))
+    except (TypeError, ValueError):
+        return None
+    return value if math.isfinite(value) else None
+
+
+def _source_quality_weight(wf: dict) -> float:
+    base = workflow_sample_weight(wf)
+    source = _workflow_source(wf).lower()
+    if "llm" in source or "api_trace" in source:
+        base *= 0.7
+    if "weak" in source:
+        base *= 0.5
+    confidence = _workflow_confidence(wf)
+    if confidence is not None:
+        if confidence < 0.65:
+            base *= 0.4
+        elif confidence < 0.75:
+            base *= 0.7
+    return max(0.0, min(base, 5.0))
+
+
+def _workflow_families(wf: dict, token_to_family: dict[int, str] | None) -> set[str]:
+    families = set()
+    for family in wf.get("required_step_families") or []:
+        if family:
+            families.add(str(family))
+    meta = wf.get("task_metadata", {}) or {}
+    for family in meta.get("required_step_families") or []:
+        if family:
+            families.add(str(family))
+    if token_to_family:
+        for token in wf.get("l3_sequence") or []:
+            if isinstance(token, int) and token >= 0 and token in token_to_family:
+                families.add(token_to_family[token])
+    return families
+
+
+def compute_training_sample_weights(
+    workflows: list[dict],
+    *,
+    token_to_family: dict[int, str] | None = None,
+    target_families: set[str] | list[str] | tuple[str, ...] | None = None,
+    use_source_quality: bool = True,
+) -> tuple[list[float], dict]:
+    """Compute task/family/source-aware sampler weights for SFT rows."""
+    task_ids = [_workflow_task_type(wf) for wf in workflows]
+    task_counts = Counter(task_ids)
+    family_sets = [_workflow_families(wf, token_to_family) for wf in workflows]
+    family_counts = Counter(family for families in family_sets for family in families)
+    target_set = {str(f) for f in (target_families or []) if str(f)}
+
+    weights = []
+    target_family_counts = Counter()
+    source_counts = Counter(_workflow_source(wf) for wf in workflows)
+    for wf, task_type, families in zip(workflows, task_ids, family_sets):
+        task_weight = 1.0 / max(task_counts[task_type], 1)
+        family_weight = 1.0
+        matched_targets = families & target_set
+        if matched_targets:
+            rarest = min(family_counts.get(f, 1) for f in matched_targets)
+            family_weight = math.sqrt(max(len(workflows), 1) / max(rarest, 1))
+            for family in matched_targets:
+                target_family_counts[family] += 1
+        quality_weight = _source_quality_weight(wf) if use_source_quality else 1.0
+        weights.append(task_weight * family_weight * quality_weight)
+
+    report = {
+        "samples": len(workflows),
+        "task_type_counts": dict(task_counts),
+        "family_counts": dict(family_counts),
+        "target_family_counts": dict(target_family_counts),
+        "target_families": sorted(target_set),
+        "source_counts": dict(source_counts),
+        "weight_min": min(weights) if weights else 0.0,
+        "weight_max": max(weights) if weights else 0.0,
+        "weight_mean": sum(weights) / len(weights) if weights else 0.0,
+    }
+    return weights, report
+
+
+def build_task_type_sampler(
+    dataset: TaskConditionedL3DatasetV4,
+    *,
+    token_to_family: dict[int, str] | None = None,
+    target_families: set[str] | list[str] | tuple[str, ...] | None = None,
+    use_source_quality: bool = False,
+) -> WeightedRandomSampler:
+    """Build a sampler that can balance task type, operation family, and source quality."""
+    if token_to_family or target_families or use_source_quality:
+        weights, _report = compute_training_sample_weights(
+            dataset.workflows,
+            token_to_family=token_to_family,
+            target_families=target_families,
+            use_source_quality=use_source_quality,
+        )
+    else:
+        task_type_ids = [dataset[i]['task_type_id'].item() for i in range(len(dataset))]
+        counts = Counter(task_type_ids)
+        weights = [1.0 / counts[t] for t in task_type_ids]
     sampler = WeightedRandomSampler(
         weights=weights,
         num_samples=len(weights),
@@ -95,15 +208,31 @@ class ScheduledSamplingTrainerV4_5(ScheduledSamplingTrainerV4_4):
     - task_cls_loss_weight: 0.1 -> 0.3
     """
 
-    def __init__(self, *args, task_cls_loss_weight=V4_5_TASK_CLS_LOSS_WEIGHT, **kwargs):
+    def __init__(
+        self,
+        *args,
+        task_cls_loss_weight=V4_5_TASK_CLS_LOSS_WEIGHT,
+        sampler_token_to_family=None,
+        sampler_target_families=None,
+        sampler_use_source_quality=False,
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
         # Override the inherited weight
         self.task_cls_loss_weight = task_cls_loss_weight
+        self.sampler_token_to_family = sampler_token_to_family
+        self.sampler_target_families = sampler_target_families
+        self.sampler_use_source_quality = bool(sampler_use_source_quality)
         print(f"  [V4.5] task_cls_loss_weight overridden to {self.task_cls_loss_weight}")
 
     def _build_train_loader(self, epoch):
         """Balanced sampling: each task type equally represented per epoch."""
-        sampler = build_task_type_sampler(self.train_dataset)
+        sampler = build_task_type_sampler(
+            self.train_dataset,
+            token_to_family=self.sampler_token_to_family,
+            target_families=self.sampler_target_families,
+            use_source_quality=self.sampler_use_source_quality,
+        )
         loader = DataLoader(
             self.train_dataset,
             batch_size=self.batch_size,

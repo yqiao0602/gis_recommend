@@ -82,7 +82,7 @@ SYSTEM_PROMPT = """You are a GIS workflow analyst. Given the Python source code 
 Rules:
 1. Only use L3 codes from the provided list — do NOT invent new codes
 2. Output 2-8 codes in logical execution order
-3. Always try to infer a workflow chain even with limited signal
+3. Do not guess. If the code and description do not show executable GIS operations, return empty l3_codes and confidence 0.0 rather than inventing a chain.
 4. "confidence" = how sure you are the inferred chain is correct. Be honest.
 5. Do NOT modify L3 code strings — exact matches only"""
 
@@ -141,6 +141,17 @@ def _clean_llm_output(content):
     return obj
 
 
+def _looks_placeholder_task(task_name, task_desc):
+    combined = f"{(task_name or '').strip()} {(task_desc or '').strip()}".strip().lower()
+    if not combined:
+        return True
+    if re.fullmatch(r"qgis script:\s*script_\d+", combined):
+        return True
+    if re.search(r"\bscript_\d+\b", combined) and len(combined.split()) <= 4:
+        return True
+    return False
+
+
 def quality_gate(llm_obj):
     l3_codes = llm_obj.get("l3_codes", [])
     confidence = llm_obj.get("confidence", None)
@@ -154,15 +165,15 @@ def quality_gate(llm_obj):
         return False, "empty l3_codes"
 
     try:
-        conf = float(confidence) if confidence is not None else 0.5
+        conf = float(confidence) if confidence is not None else 0.0
     except (TypeError, ValueError):
-        conf = 0.5
+        return False, "invalid confidence"
 
     if len(l3_codes) == 1:
-        if conf < 0.60:
+        if conf < 0.70:
             return False, f"single-code low conf ({conf:.2f})"
     else:
-        if conf < 0.50:
+        if conf < 0.65:
             return False, f"low conf ({conf:.2f})"
 
     code_set = set(l3_codes)
@@ -302,6 +313,11 @@ def main():
         task_desc = fact_row.get("Task Description", "")[:400]
         task_type = fact_row.get("Task Type", "").strip()
         task_name = fact_row.get("Task Name", "").strip()
+        if _looks_placeholder_task(task_name, task_desc):
+            st["quality_reject"] += 1
+            st_q_reason["placeholder_prompt"] += 1
+            processed_set.add(name)
+            continue
 
         prompt = USER_PROMPT.format(
             task_desc=task_desc,

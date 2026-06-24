@@ -240,6 +240,162 @@ class V46TrainingReadinessTests(unittest.TestCase):
                     length_bucket_loss_weight=0.2,
                 )
 
+    def test_non_default_package_requires_local_or_explicit_length_stats(self) -> None:
+        import importlib
+
+        launcher = importlib.import_module("scripts.train_v4_6_quality_gate")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_path = (
+                root
+                / "outputs_v2"
+                / "pipeline"
+                / "step8_quality_gate_qgis_vector_oversampled"
+                / "labeled_workflows_l3_v4_quality_gate_qgis_vector_oversampled.json"
+            )
+            splits_path = data_path.parent / "dataset_splits_v4_quality_gate_qgis_vector_oversampled.json"
+            task_vocab_path = data_path.parent / "task_type_vocabulary_v4_quality_gate_qgis_vector_oversampled.json"
+            data_path.parent.mkdir(parents=True)
+            data_path.write_text(json.dumps({"labeled_workflows": [_workflow("A", [1], "Task A")]}), encoding="utf-8")
+            splits_path.write_text(
+                json.dumps({"train_indices": [0], "val_indices": [], "test_indices": []}),
+                encoding="utf-8",
+            )
+            task_vocab_path.write_text(json.dumps(_task_vocab()), encoding="utf-8")
+
+            with self.assertRaises(SystemExit) as raised:
+                launcher.main(
+                    [
+                        "--data",
+                        str(data_path),
+                        "--splits",
+                        str(splits_path),
+                        "--task-vocab",
+                        str(task_vocab_path),
+                        "--dry-run",
+                        "--num-epochs",
+                        "5",
+                        "--allow-tf-only-smoke",
+                    ]
+                )
+
+        self.assertEqual(raised.exception.code, 1)
+
+    def test_non_default_package_uses_neighbor_length_stats_when_available(self) -> None:
+        import importlib
+
+        launcher = importlib.import_module("scripts.train_v4_6_quality_gate")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_dir = (
+                root
+                / "outputs_v2"
+                / "pipeline"
+                / "step8_quality_gate_qgis_vector_oversampled"
+            )
+            data_dir.mkdir(parents=True)
+            data_path = data_dir / "labeled_workflows_l3_v4_quality_gate_qgis_vector_oversampled.json"
+            splits_path = data_dir / "dataset_splits_v4_quality_gate_qgis_vector_oversampled.json"
+            task_vocab_path = data_dir / "task_type_vocabulary_v4_quality_gate_qgis_vector_oversampled.json"
+            length_stats_path = data_dir / "task_type_length_stats.json"
+            data_path.write_text(json.dumps({"labeled_workflows": [_workflow("A", [1], "Task A")]}), encoding="utf-8")
+            splits_path.write_text(
+                json.dumps({"train_indices": [0], "val_indices": [], "test_indices": []}),
+                encoding="utf-8",
+            )
+            task_vocab_path.write_text(json.dumps(_task_vocab()), encoding="utf-8")
+            length_stats_path.write_text(json.dumps(_length_stats_payload()), encoding="utf-8")
+
+            result = launcher.main(
+                [
+                    "--data",
+                    str(data_path),
+                    "--splits",
+                    str(splits_path),
+                    "--task-vocab",
+                    str(task_vocab_path),
+                    "--dry-run",
+                    "--num-epochs",
+                    "5",
+                    "--allow-tf-only-smoke",
+                ]
+            )
+
+        self.assertEqual(result["length_bucket_training"]["status"], "enabled")
+        self.assertEqual(Path(result["length_bucket_training"]["path"]), length_stats_path)
+
+    def test_generated_sources_in_val_or_test_fail_by_default(self) -> None:
+        import importlib
+
+        launcher = importlib.import_module("scripts.train_v4_6_quality_gate")
+        clean = _workflow("A", [1, 2], "Clean train row")
+        generated_val = _workflow("A", [2, 3], "Generated validation row")
+        generated_val["source"] = "llm_source_code_to_l3"
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_path = root / "data.json"
+            splits_path = root / "splits.json"
+            task_vocab_path = root / "task_vocab.json"
+            data_path.write_text(
+                json.dumps({"labeled_workflows": [clean, generated_val]}),
+                encoding="utf-8",
+            )
+            splits_path.write_text(
+                json.dumps({"train_indices": [0], "val_indices": [1], "test_indices": []}),
+                encoding="utf-8",
+            )
+            task_vocab_path.write_text(json.dumps(_task_vocab()), encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "generated.*val/test"):
+                launcher.train_quality_gate_v4_6(
+                    data_path=data_path,
+                    splits_path=splits_path,
+                    task_vocab_path=task_vocab_path,
+                    l3_embeddings_path=root / "emb.pt",
+                    checkpoint_dir=root / "ckpt",
+                    dry_run=True,
+                )
+
+    def test_generated_eval_sources_can_be_explicitly_allowed_for_legacy_diagnostics(self) -> None:
+        import importlib
+
+        launcher = importlib.import_module("scripts.train_v4_6_quality_gate")
+        clean = _workflow("A", [1, 2], "Clean train row")
+        generated_val = _workflow("A", [2, 3], "Generated validation row")
+        generated_val["source"] = "qgis_vector_augment"
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_path = root / "data.json"
+            splits_path = root / "splits.json"
+            task_vocab_path = root / "task_vocab.json"
+            data_path.write_text(
+                json.dumps({"labeled_workflows": [clean, generated_val]}),
+                encoding="utf-8",
+            )
+            splits_path.write_text(
+                json.dumps({"train_indices": [0], "val_indices": [1], "test_indices": []}),
+                encoding="utf-8",
+            )
+            task_vocab_path.write_text(json.dumps(_task_vocab()), encoding="utf-8")
+
+            result = launcher.train_quality_gate_v4_6(
+                data_path=data_path,
+                splits_path=splits_path,
+                task_vocab_path=task_vocab_path,
+                l3_embeddings_path=root / "emb.pt",
+                checkpoint_dir=root / "ckpt",
+                dry_run=True,
+                allow_generated_eval_sources=True,
+            )
+
+        self.assertEqual(result["eval_source_guard"]["status"], "allowed_by_override")
+        self.assertEqual(result["eval_source_guard"]["generated_eval_rows"], 1)
+        self.assertEqual(result["eval_source_guard"]["split_counts"], {"val": 1})
+
     def test_explicit_missing_mr_registry_fails_instead_of_silent_disable(self) -> None:
         import importlib
 

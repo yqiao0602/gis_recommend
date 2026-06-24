@@ -64,6 +64,7 @@ from gis_recommend.config.transformer_config import (
 )
 from gis_recommend.models.transformer_model_v4 import TaskConditionedL3TransformerModelV4
 from gis_recommend.models.task_text_processor import TaskVocabularyBuilder
+from gis_recommend.training.loss_utils import weighted_sequence_cross_entropy
 from gis_recommend.training.train_v4_2 import (
     TaskConditionedL3DatasetV4,
     compute_token_freq_weights,
@@ -76,6 +77,12 @@ from gis_recommend.training.train_v4_5 import (
     ScheduledSamplingTrainerV4_5,
     build_task_type_sampler,
 )
+
+__all__ = [
+    "ScheduledSamplingTrainerV4_6",
+    "split_ar_logits_for_loss_and_sampling",
+    "weighted_sequence_cross_entropy",
+]
 
 
 def _add_to_other_param_group(optimizer, params: list):
@@ -222,6 +229,7 @@ class ScheduledSamplingTrainerV4_6(ScheduledSamplingTrainerV4_5):
         bucket_cls_loss_weight: float = 0.0,
         qgis_unmappable_token_ids=None,
         qgis_unmappable_penalty: float = 0.0,
+        ar_max_steps: int = V4_6_AR_MAX_STEPS,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -232,6 +240,7 @@ class ScheduledSamplingTrainerV4_6(ScheduledSamplingTrainerV4_5):
         self.bucket_classifier = None
         self.qgis_unmappable_token_ids = set(qgis_unmappable_token_ids) if qgis_unmappable_token_ids else set()
         self.qgis_unmappable_penalty = float(qgis_unmappable_penalty)
+        self.ar_max_steps = max(1, int(ar_max_steps))
         self.final_generation_eval_batches = max(16, int(getattr(self, "generation_eval_batches", 8) or 8))
         if self.qgis_unmappable_penalty > 0.0 and self.qgis_unmappable_token_ids:
             print(
@@ -301,9 +310,12 @@ class ScheduledSamplingTrainerV4_6(ScheduledSamplingTrainerV4_5):
         text_attention_mask = batch['text_attention_mask'].to(self.device)
         attention_mask = batch['attention_mask'].to(self.device)
         seq_lens = batch['seq_len']
+        sample_weights = batch.get('sample_weight')
+        if sample_weights is not None:
+            sample_weights = sample_weights.to(self.device)
 
         B, T = target_ids.shape
-        ar_max_steps = min(T, V4_6_AR_MAX_STEPS)
+        ar_max_steps = min(T, self.ar_max_steps)
 
         # Convert seq_lens to tensor
         if isinstance(seq_lens, torch.Tensor):
@@ -379,18 +391,14 @@ class ScheduledSamplingTrainerV4_6(ScheduledSamplingTrainerV4_5):
                 )
 
                 # CE loss
-                loss_t = self.criterion(loss_logits, target_ids[:, t])
-                # QGIS unmappable token auxiliary penalty (disabled by default)
-                # TODO: correct direction is to penalise probability mass on unmappable
-                # tokens in the output distribution, not to up-weight target CE.
-                # Keep penalty=0.0 until a proper auxiliary head or distribution penalty
-                # is implemented.
-                if self.qgis_unmappable_penalty > 0.0 and self.qgis_unmappable_token_ids:
-                    unmappable_mask = torch.tensor(
-                        [tid.item() in self.qgis_unmappable_token_ids for tid in target_ids[:, t]],
-                        device=self.device, dtype=torch.float,
-                    )
-                    loss_t = loss_t * (1.0 + self.qgis_unmappable_penalty * unmappable_mask).mean()
+                loss_t = weighted_sequence_cross_entropy(
+                    loss_logits,
+                    target_ids[:, t],
+                    sample_weights,
+                    weight=self.ce_weight,
+                    ignore_index=PAD_INDEX,
+                    label_smoothing=self.label_smoothing,
+                )
                 total_loss = total_loss + loss_t
                 valid_steps += 1
 
@@ -522,7 +530,7 @@ class ScheduledSamplingTrainerV4_6(ScheduledSamplingTrainerV4_5):
               f"{self.batch_size * self.gradient_accum_steps} effective")
         print(f"  LR: BERT={self.optimizer.param_groups[0]['lr']:.1e}, "
               f"Other={self.optimizer.param_groups[-1]['lr']:.1e}")
-        print(f"  AR max steps: {V4_6_AR_MAX_STEPS}")
+        print(f"  AR max steps: {self.ar_max_steps}")
         print(f"  Gen eval batches: {self.generation_eval_batches}")
         print(f"  Early stopping: patience={patience} on composite (0.5*SetF1+0.3*LCS+0.2*(1-earlyEOS))")
         print(f"{'='*80}\n")

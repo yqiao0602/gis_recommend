@@ -1,5 +1,66 @@
 # 发现记录
 
+## 训练数据审查：API-trace 弱监督不能等权进入 SFT（2026-06-24）
+
+### 核心发现
+- `API_trace_to_L3_TRAINING_FINAL.jsonl` 的 raw 6,031 行不是干净训练集，而是混合候选池。
+- 保守清洗后只有 1,112 行进入 clean，1,384 行只能作为 weak，3,535 行应 rejected。
+- 最大问题不是 schema，而是监督信号错配：
+  - 同一个 prompt 对应多个不同 L3 label。
+  - task text 明确是 vector/raster，但 L3 label 模态相反。
+  - LLM reasoning 明说代码片段不完整、来自不同脚本/工具、或实际代码和任务描述不匹配，却仍按描述生成 L3。
+  - placeholder prompt 如 `QGIS script: script_xxx` 没有任务语义。
+
+### 数量事实
+| 分层 | 数量 |
+|------|------|
+| Raw | 6,031 |
+| Clean | 1,112 |
+| Weak | 1,384 |
+| Rejected | 3,535 |
+| Conflict rows | 1,367 |
+| Conflict prompts | 513 |
+
+主要 reject reason：
+| Reason | Count |
+|--------|-------|
+| same_prompt_multi_label_conflict | 1,109 |
+| task_l3_modality_mismatch | 915 |
+| task_code_mismatch | 874 |
+| placeholder_prompt | 279 |
+| low_confidence | 174 |
+| missing_confidence | 165 |
+
+### 方法论结论
+- API-trace + LLM 可以继续作为候选生成/弱监督来源，但必须先过数据门禁。
+- Clean rows 可考虑进入 train-only augmentation 包；weak rows 需要人工审核、降权 loss 或后续 preference/rerank 方式使用；rejected rows 不能训练。
+- `_training_quality.sample_weight` 现在已接入 V4.6 训练 loss：Teacher Forcing 和 AR scheduled-sampling 都使用 per-sample weighted CE。新的边界是：机制接入不等于模型能力提升，仍需服务器重训和 held-out vector family recall 验证。
+- LLM 生成 prompt 不能鼓励“合理猜测”。无明确可执行 GIS 操作时，正确输出是空链或 reject。
+- 训练 prompt 改为结构化后必须区分 checkpoint 输入分布：旧 DPO/SFT/QG checkpoint 评估默认 legacy，新结构化 prompt SFT checkpoint 才显式用 `--sft-prompt-style structured`。
+
+## 训练机制审查：矢量规划能力需要 family/source-aware 学习信号（2026-06-24）
+
+### 核心发现
+- 单纯让 retriever/QGIS landing 更准，不能证明 L3 模型学会矢量处理规划。
+- 旧训练机制主要是单 reference CE + task type 采样，不能确保 intersection / union / difference / repair / CRS / field calculation 等细粒度矢量 family 被有效学习。
+- `vector_v2` / API-trace 弱数据混进 val/test 会让指标偏乐观；训练机制应只把生成/弱监督作为 train-only 且可降权的信号。
+
+### 已完成机制修复
+- 数据集返回 `sample_weight`，训练 loss 真正消费该权重。
+- 结构化训练 prompt 保留 task type/name/goal 三个稳定字段，降低长 facts 文本截断导致的任务意图丢失。
+- family/source-aware sampler 把稀有矢量 family、source quality、confidence/sample-weight 纳入采样权重。
+- mixed/vector 包 length stats 不再静默回退旧 quality-gate stats。
+- 评估脚本支持 prompt style 显式选择，避免旧 checkpoint 和新 structured checkpoint 混口径。
+
+### 仍未证明
+- 尚未完成新的 GPU 训练，因此还不能说“矢量规划能力已提升”。
+- oversampled dry-run 显示默认 20 步时有 3,219 条 train sequence 超过 AR horizon；`--ar-max-steps 32` 已把该数降到 545，但需要服务器训练验证显存和效果。
+- API-trace clean rows 还不是最终训练包；需要构建 train-only Step8 兼容包或经过人工审核后再纳入。
+
+### 额外工程发现
+- Python 单元素 tuple 容易踩坑：`("text")` 是字符串，不是 tuple；在 pattern list 中会变成逐字符匹配，造成大面积误拒。已加 `test_task_code_mismatch_patterns_are_tuples` 防回归。
+- `llm_generate_l3_from_api_traces.py` 之前在后续 pure-attr/export gate 中使用原始 `confidence` 字段比较，LLM 返回字符串 confidence 时会 TypeError；已统一使用解析后的 `conf`。
+
 ## 路线 3 规模化验证（2026-06-20—22）
 
 ### 批量生产流水线
@@ -130,3 +191,10 @@
 - `/home/qy/system_redesign`：项目副本 + `outputs_v2`（contract + 自己的诊断输出）
 - conda env `transformer`：torch 2.2.2+cu121, transformers 4.57.5, sentence-transformers 5.4.1
 - `server_bootstrap.sh`：幂等同步代码+数据清单+建 venv 脚本（备用）
+
+## V4.6 矢量训练机制审查修复（2026-06-24）
+- 结论：当前修复的是训练机制和评估可信度，不是已经证明模型矢量规划能力提升。
+- 已修：per-sample weighted CE、结构化 prompt、family/source-aware sampler、显式 length stats、TF-only smoke 守卫、AR horizon 可配置、unsafe qgis_unmappable_penalty 禁用、API-trace 清洗、旧 checkpoint legacy prompt 兼容。
+- 新增关键发现：只靠文档约束不足以防止 `vector_v2` 式污染；训练入口必须默认拒绝 val/test 中的生成/LLM/API-trace source。现在 `eval_source_guard` 已实现，oversampled 主线包验证为 clean。
+- 剩余风险：clean API-trace rows 尚未构造成 train-only Step8 包；weak/rejected rows 不能等权 SFT；structured-prompt 新模型必须用 `--sft-prompt-style structured` 评估。
+- 下一步证据：服务器 warmstart SFT 后，用 held-out vector prompts 按 family recall、raster contamination、QGIS seed absorption、人工 A/B/C 共同判断，不能只看 landing validity 或 train-source absorption。

@@ -111,6 +111,8 @@ class QGInferencer:
         self.min_length = min_length
         self.repetition_penalty = repetition_penalty
         self.no_repeat_ngram = no_repeat_ngram
+        self.max_text_length = 128
+        self.prompt_style = "legacy"
 
         # 路径解析
         self.checkpoint_path = (
@@ -330,6 +332,8 @@ class QGInferencer:
             inf.eos_suppress_until = self.eos_suppress_until
             inf.repetition_penalty = self.repetition_penalty
             inf.no_repeat_ngram = self.no_repeat_ngram
+            inf.max_text_length = getattr(self, "max_text_length", 128)
+            inf.prompt_style = getattr(self, "prompt_style", "legacy")
             inf.allowed_next = self.allowed_next
             inf.id_to_l3_code = self.id_to_l3_code
             inf.l3_code_to_name = self.l3_code_to_name

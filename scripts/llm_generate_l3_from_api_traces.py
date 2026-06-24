@@ -81,12 +81,12 @@ SYSTEM_PROMPT = """You are a GIS workflow analyst. Given the C++ API calls actua
 Rules:
 1. Only use L3 codes from the provided list — do NOT invent new codes
 2. Output 2-8 codes in logical execution order
-3. Always try to infer a workflow chain even with limited signal — prefer reasonable guesses over empty output
+3. Do not guess. If the trace does not show executable GIS operations, return empty l3_codes and confidence 0.0 rather than inventing a chain.
 4. "confidence" = how sure you are the inferred chain is correct. Be honest on a 0.0-1.0 scale:
    - 0.8-1.0: clear spatial operations visible (buffer, clip, intersect, reproject, zonal stats, raster calc, coordinate transform, etc.)
    - 0.6-0.7: strong but indirect signal (field manipulation + feature iteration, CRS creation + export, etc.)
    - 0.4-0.5: weak signal — best-guess only, an expert might reasonably disagree
-   - 0.0-0.3: the trace shows no GIS operations (only layer create, project save, UI, styles). Still produce a guess but set confidence low.
+   - 0.0-0.3: the trace shows no GIS operations (only layer create, project save, UI, styles). Return empty l3_codes.
 5. Do NOT modify L3 code strings — exact matches only"""
 
 USER_PROMPT = """C++ API trace from a QGIS script:
@@ -292,17 +292,16 @@ def quality_gate(llm_obj: dict) -> tuple[bool, str]:
         try:
             conf = float(confidence)
         except (TypeError, ValueError):
-            conf = 0.5
+            return False, "invalid confidence"
         # Single-code chains need moderate confidence
         if len(l3_codes) == 1:
-            if conf < 0.60:
+            if conf < 0.70:
                 return False, f"single-code confidence too low ({conf:.2f})"
         else:
-            if conf < 0.50:
+            if conf < 0.65:
                 return False, f"confidence too low ({conf:.2f})"
     else:
-        # No confidence reported — old prompt format, keep but flag
-        pass
+        return False, "missing confidence"
 
     # Gate 4: structural diversity check
     code_set = set(l3_codes)
@@ -313,15 +312,15 @@ def quality_gate(llm_obj: dict) -> tuple[bool, str]:
 
     # Pure attribute-only chains (Select/Extract only) — most common hallucination
     if code_set <= _ATTR_OPS:
-        if confidence is not None and confidence < 0.70:
-            return False, f"pure-attr chain with low confidence ({confidence})"
+        if conf < 0.70:
+            return False, f"pure-attr chain with low confidence ({conf})"
         if len(l3_codes) <= 2 and not (has_spatial or has_raster or has_transform):
             return False, "suspicious pure-attr chain, no spatial/transform/raster ops"
 
     # Single op that is just export/merge/field calc — too generic
     if code_set <= _EXPORT_OPS and len(l3_codes) <= 2:
-        if confidence is not None and confidence < 0.65:
-            return False, f"generic export/field chain, low confidence ({confidence})"
+        if conf < 0.65:
+            return False, f"generic export/field chain, low confidence ({conf})"
 
     return True, "ok"
 
