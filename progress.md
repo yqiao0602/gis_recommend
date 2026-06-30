@@ -1,5 +1,56 @@
 # 进度日志
 
+## 2026-06-30：全面状态审查 + 文档更新
+
+### 审查内容
+- 服务器训练数据现状：84,078 样本，矢量 9,167 (10.9%)，栅格 77,760 (92.5%)
+- 已挖掘未合并：11,277 条矢量样本在 `targeted_vector_mining_v2/`
+- 训练对比：Phase6 (set_f1=0.5796) vs ScratchGentle (set_f1=0.5367, val_loss=2.94)
+- **task_type 分类突破**：矢量 L3 token 0%→55.8%
+
+### 关键数字
+| 指标 | 旧值 | 新值 |
+|------|------|------|
+| 训练样本 | 77,981 | 84,078 |
+| 矢量占比 | 10.9% | 10.9% (未合并新样本) |
+| 矢量 L3 token 输出比 | ~0% (Phase A) | 55.8% (typed) |
+| vec usable | 35% | 78% |
+| 已挖矢量样本 | 0 | 11,277 |
+
+### 未完成
+- [ ] 11,277 矢量样本未合并进训练包
+- [ ] task_type 分类未集成进推理管线
+- [ ] 大量脚本文件未提交 git
+
+## 2026-06-27—28：ScratchGentle 从零训练
+
+### 训练
+- 50 epoch from-scratch on 84,078 样本，A10 GPU
+- checkpoint: `outputs_v2/transformer_checkpoints_v4_6_scratch_gentle/`
+- best set_f1=0.5367 @epoch 42
+- val_loss: 3.37→2.94, rep_rate: 0.863→0.433, early_eos: 0.188→0.117
+- 0 错误完成
+
+### 评测
+- `open_landing_gentle_typed/`：80 题带 task_type 分类
+- 矢量 L3 55.8%，栅格 30.3% — 首次矢量主导
+- `open_landing_gentle/`：无 task_type 对比
+- 矢量 L3 26.5%，栅格 50.8%
+
+## 2026-06-25—26：矢量样本大规模挖掘
+
+### PY 脚本扫描
+- 398K+ QGIS .py 脚本全量扫描 (yll GEE 池)
+- 45K+ 含 processing.run()，31,838 矢量脚本
+- `mine_vector_samples.py` + `_final_mine_vec.py` + `_deep_search_3codes.py`
+- 修复：alg_id 命名空间对齐 + OP_PATCH 补丁
+- 最终产出 **11,277 条**（per-code 上限截断）
+
+### 辅助脚本
+- `_scan_all_py.py`：统计 53,847 脚本含 processing.run
+- `_vec_gap_targets.py`：计算矢量样本缺口目标
+- `_compare_typed.py`：对比 typed vs untyped L3 eval
+
 ## 2026-06-24：代码审查修复
 
 ### API-trace 训练数据门禁（P1 数据质量修复）

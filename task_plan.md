@@ -4,6 +4,56 @@
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因（数据缺口），补矢量训练数据并在 A10 上重平衡重训，验证矢量能力可修复。
 
 ## 当前阶段
+**2026-06-30 — 大规模矢量样本挖掘完成 + ScratchGentle 从零训练 + task_type 分类突破。**
+
+### 🔑 关键突破：task_type 分类修复矢量 L3 输出 (2026-06-30)
+- [x] `scripts/classify_task_type.py`：LLM (deepseek-chat) 对 80 open_landing 任务分类→48 task types
+- [x] 分类后跑 L3 推理 + QGIS landing → `open_landing_gentle_typed/` 评测
+- [x] **矢量 L3 token 占比从 ~0%（Phase A）→ 26.5%（无 task_type）→ 55.8%（有 task_type）**
+- [x] 模型不再把矢量任务塌成栅格码 —— **task_type 条件化是正确路径**
+- [x] vec L3 usable: 31/40 (78%), rast: 24/25 (96%), mixed: 14/15 (93%)
+- [ ] 仍有 `missing_critical_steps` 警告，链质量待提升
+
+### 大规模矢量样本挖掘 (2026-06-25—30)
+- [x] `scripts/mine_vector_samples.py`：398K+ QGIS .py 脚本池全量扫描
+- [x] **45,000+ 脚本含 processing.run() 调用，31,838 个矢量脚本**
+- [x] QGIS alg_id → L3 语义映射 + OP_PATCH 手动补丁表
+- [x] **产出 11,277 条精选矢量训练样本**（17/17 矢量 L3 码全覆盖）
+- [x] 每码上限 2,000 截断，偏少码全保留
+- [x] 输出：`outputs_v2/targeted_vector_mining_v2/vector_py_samples_selected.jsonl`
+- [ ] **尚未合并进训练包**：合并后矢量占比 10.9%→21.4%
+
+### 11,277 矢量样本明细
+| 状态 | 数量 | 码 |
+|------|------|-----|
+| ✅ 截断(2000) | 3 | Buffer(4,667), Clip(5,040), Intersect(2,798) |
+| ✅ 充足(1000-2000) | 4 | Erase(2,081), Feature to Point(2,075), Multipart(2,476), Union(1,335) |
+| ✅ 达标(300-1000) | 6 | Select by Attribute(1,154), Extract by Location(609), Min Bounding(491), Spatial Join(450), Split Line(409), Sym Diff(309) |
+| ⚠️ 偏少(<300) | 4 | Filter Geometry(276), Collect(211), Extract by Attr(164), Update(74) |
+
+### V4.6 ScratchGentle 从零训练 (2026-06-27—28)
+- [x] 50 epoch from-scratch，使用含 gap 修复的 84,078 训练包
+- [x] 训练完成 0 错误，checkpoint: `outputs_v2/transformer_checkpoints_v4_6_scratch_gentle/`
+- [x] 指标：best set_f1=0.5367 @ep42, best lcs=0.3858, val_loss 3.37→2.94
+- [x] val_top1_acc=0.2865, val_top5_acc=0.6766, val_top10_acc=0.7969
+- [x] rep_rate 0.863→0.433 (改善), early_eos 0.188→0.117 (改善)
+- [ ] 与 Phase6 VectorFix (set_f1=0.5796) 对比，泛化指标略低，但 val_loss 更低(2.94 vs 3.28)
+
+### 训练历程总对比 (截至 2026-06-30)
+| 训练 | Ep | Best set_f1 | Best lcs | val_loss final | 数据量 |
+|------|-----|------------|----------|---------------|--------|
+| Phase6-VectorFix warmstart | 50 | **0.5796** | 0.4341 | 3.2766 | 77,981 |
+| GapFix-12ep smoke | 12 | 0.4534 | 0.3315 | 3.0191 | 84,078 |
+| ScratchGentle from-scratch | 50 | 0.5367 | 0.3858 | **2.9385** | 84,078 |
+
+### 缺口分析 + 定向挖掘成果 (2026-06-25)
+- [x] `scripts/analyze_l3_coverage_gaps.py`：94 L3 码 × 训练数据 × 语义映射 → 排序风险矩阵
+- [x] **发现 47/94 (50%) L3 码零训练样本**，其中 12 个矢量码全部有 QGIS 算子可挖
+- [x] `scripts/targeted_vector_mining.py`：搜索 52k QGIS 脚本池 → 6,336 匹配 → LLM 定向生成
+- [x] **产出 1,009 条高质量训练样本**（平均置信度 0.836），12 个矢量 DATA_GAP 码全部覆盖
+- [x] 矢量 L3_02 码从 5/17 覆盖 → **17/17 全覆盖**
+
+## 历史阶段
 **2026-06-24 — 训练入口高优先级修复 + API-trace 数据门禁已验证。**
 
 全面静态审查发现 20 个问题（12 个高优先级 + 8 个中优先级）。核心结论：
@@ -138,6 +188,22 @@
 - [x] API-trace 数据门禁：6,031 raw -> 1,112 clean / 1,384 weak / 3,535 rejected / 1,367 conflicts
 - [ ] Phase 10 重训：3 次尝试（scratch/warmstart×2）均因栅格稀释失败
 - [ ] 待决：缩小训练集至 Phase 8 配方（排除 67k 纯栅格）
+
+### 阶段 12：task_type 分类修复 L3 输出 ✅ (2026-06-30)
+- [x] 发现模型推理时 task_type="Unknown" 导致无法利用 task_type embedding 条件化
+- [x] `scripts/classify_task_type.py`：LLM 分类 80 open_landing→48 task types
+- [x] 评测：**矢量 L3 token 占比 ~0%→55.8%**，任务不再塌成栅格码
+- [x] 验证 task_type 条件化是关键杠杆（非更多数据）
+- **状态：** complete
+
+### 阶段 11：大规模 PY 脚本矢量挖掘 ✅ (2026-06-25—30)
+- [x] 398K+ QGIS .py 脚本全量扫描 → 45K+ 含 processing.run()
+- [x] QGIS alg_id → L3 语义映射 + OP_PATCH 补丁 → 识别矢量操作
+- [x] **11,277 条精选训练样本**，17/17 矢量码全覆盖
+- [x] Per-code 上限截断 + 偏少码全保留策略
+- [x] 矢量占比预估 10.9%→21.4%（合并后）
+- [ ] **未合并进训练包、未重训验证**
+- **状态：** data_ready（待合并重训）
 
 ### 阶段 10：V4.6 矢量规划训练机制修复 🔄
 - [x] 训练入口守卫：from-scratch 小 epoch 默认阻断 TF-only 误读，显式 `--allow-tf-only-smoke` 才允许 smoke。

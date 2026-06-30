@@ -678,6 +678,9 @@ def train_quality_gate_v4_6(
     family_weight_targets: Optional[list[str]] = None,
     sampler_use_source_quality: bool = True,
     ar_max_steps: int = V4_6_AR_MAX_STEPS,
+    ar_ratio_start: float = V4_6_AR_RATIO_START,
+    ar_ratio_end: float = V4_6_AR_RATIO_END,
+    early_end_penalty: float = V4_6_EARLY_END_PENALTY,
     allow_generated_eval_sources: bool = False,
 ) -> dict:
     set_seed(RANDOM_SEED)
@@ -853,8 +856,8 @@ def train_quality_gate_v4_6(
         tf_phase_epochs=tf_phase_epochs,
         ss_tf_start=V4_6_SS_TF_START,
         ss_tf_end=V4_6_SS_TF_END,
-        ar_ratio_start=V4_6_AR_RATIO_START,
-        ar_ratio_end=V4_6_AR_RATIO_END,
+        ar_ratio_start=ar_ratio_start,
+        ar_ratio_end=ar_ratio_end,
         num_epochs=num_epochs,
         warmup_epochs=V4_6_WARMUP_EPOCHS,
         early_stopping_patience=V4_6_EARLY_STOPPING_PATIENCE,
@@ -869,7 +872,7 @@ def train_quality_gate_v4_6(
         id_to_task_type=inputs.task_vocab_builder.id_to_task_type,
         length_bucket_loss_weight=length_bucket_loss_weight,
         bucket_cls_loss_weight=bucket_cls_loss_weight,
-        early_end_penalty=V4_6_EARLY_END_PENALTY,
+        early_end_penalty=early_end_penalty,
         early_end_threshold=V4_6_EARLY_END_THRESHOLD,
         ar_dynamic_min_ratio=V4_6_AR_DYNAMIC_MIN_RATIO,
         # No curriculum (V4.5/V4.6 不使用 curriculum)
@@ -927,6 +930,32 @@ def main(argv: list[str] | None = None) -> dict:
         help=(
             "Maximum AR scheduled-sampling steps per sequence "
             f"(default: {V4_6_AR_MAX_STEPS}; raise for long vector chains)."
+        ),
+    )
+    parser.add_argument(
+        "--ar-ratio-start",
+        type=float,
+        default=V4_6_AR_RATIO_START,
+        help=(
+            "Initial AR sampling ratio (0=all TF, 1=all AR). "
+            f"Lower values ease into AR-SS gradually. (default: {V4_6_AR_RATIO_START})"
+        ),
+    )
+    parser.add_argument(
+        "--ar-ratio-end",
+        type=float,
+        default=V4_6_AR_RATIO_END,
+        help=(
+            "Final AR sampling ratio. (default: {V4_6_AR_RATIO_END})"
+        ),
+    )
+    parser.add_argument(
+        "--early-end-penalty",
+        type=float,
+        default=V4_6_EARLY_END_PENALTY,
+        help=(
+            "Penalty weight for predicting END before threshold of reference length. "
+            f"Lower values stop punishing END. (default: {V4_6_EARLY_END_PENALTY})"
         ),
     )
     parser.add_argument("--bert-model", default="bert-base-uncased")
@@ -1073,6 +1102,9 @@ def main(argv: list[str] | None = None) -> dict:
         length_bucket_loss_weight=args.length_bucket_loss_weight,
         bucket_cls_loss_weight=args.bucket_cls_loss_weight,
         qgis_unmappable_penalty=args.qgis_unmappable_penalty,
+        ar_ratio_start=args.ar_ratio_start,
+        ar_ratio_end=args.ar_ratio_end,
+        early_end_penalty=args.early_end_penalty,
         mrv_ablation_dir=Path(args.mrv_ablation_dir) if args.mrv_ablation_dir else None,
         mrv_ablation_version=args.mrv_ablation_version,
         max_text_length=args.max_text_length,

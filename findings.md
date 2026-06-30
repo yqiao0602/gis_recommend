@@ -1,5 +1,41 @@
 # 发现记录
 
+## 🔑 关键突破：task_type 分类修复矢量 L3 输出（2026-06-30）
+
+### 核心发现
+- V4.6 模型训练时用 task_type embedding 条件化，但推理时一直传 `task_type="Unknown"` → embedding 索引 0（无效类别）
+- 加 task_type 分类后，**矢量 L3 token 占比从 ~0% → 55.8%**（同一套 80 题 open_landing）
+- **不是更多数据的问题，是推理时模型不知道自己该输出什么模态**
+- task_type embedding 是模型选择矢量/栅格的关键信号
+
+### 三次评测对比（同 80 题）
+| 评测 | task_type | 矢量 L3% | 栅格 L3% | vec usable |
+|------|-----------|---------|---------|------------|
+| Phase A (V4.6 原始) | "Unknown" | ~0% | ~98% | 35% |
+| open_landing_gentle | "Unknown" | 26.5% | 50.8% | 85% |
+| open_landing_gentle_typed | **LLM 分类** | **55.8%** | 30.3% | 78% |
+
+### 方法论结论
+- task_type 分类是必须的前置步骤，不能跳过
+- LLM 分类准确度够用（deepseek-chat, 整数输出, 48 类）
+- vec usable 轻微下降 (85%→78%) 因为 QGIS landing 语料仍偏栅格
+- 下一步应该：1) 把 task_type 分类集成进推理管线；2) 扩充 QGIS landing 语料的矢量覆盖
+
+## 大规模 PY 脚本矢量挖掘（2026-06-25—30）
+
+### 核心发现
+- 398K+ QGIS .py 脚本中，45,000+ 含 processing.run() 调用，31,838 个有矢量操作
+- 通过 QGIS alg_id → L3 语义映射 + OP_PATCH 手动补丁，能识别绝大多数矢量操作
+- **11,277 条精选样本**，17/17 矢量 L3 码全覆盖
+- 4 个偏少码（Update 74, Collect Features 211, Extract by Attribute 164, Filter by Geometry 276）是 QGIS 脚本中真的罕见操作
+
+### 技术细节
+- QGIS alg_id 无空格（"joinattributesbylocation"）但语义映射 key 有空格（"Join attributes by location"）
+- 修复：`_normalize()` 函数 strip 所有空格/下划线/特殊字符
+- OP_PATCH 表覆盖 12 个常用但语义映射缺失的算子
+- regex 需同时匹配单引号和双引号：`processing\.(?:runalg|run)\s*\(\s*['"]([^'"]+)['"]`
+- 合并策略：每码上限 2,000，偏少码全保留 → 11,277 条
+
 ## 训练数据审查：API-trace 弱监督不能等权进入 SFT（2026-06-24）
 
 ### 核心发现

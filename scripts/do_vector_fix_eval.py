@@ -18,7 +18,7 @@ subprocess.run([
     sys.executable, str(ROOT / "scripts" / "run_end_to_end_showcase_eval.py"),
     "--task-file", str(DIAG / "open_landing_v46" / "open_landing_tasks.jsonl"),
     "--output-dir", str(OUT / "showcase_vf"),
-    "--checkpoint", str(ROOT / "outputs_v2" / "transformer_checkpoints_v4_6_vector_fix" / "best_model.pth"),
+    "--checkpoint", str(ROOT / "outputs_v2" / "transformer_checkpoints_v4_6_vector_unified" / "best_model.pth"),
     "--max-tasks", "80",
 ], check=True, env=env)
 

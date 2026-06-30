@@ -146,7 +146,7 @@ RANDOM_SEED = 42  # 可复现性
 # ===================== V4 Configuration =====================
 # V4 Paths — 当前生产路径。权威登记表见 outputs/README.md。
 V4_LABELED_WORKFLOWS_PATH = OUTPUT_DIR / "pipeline" / "step8" / "labeled_workflows_l3_v4_cleaned.json"
-V4_TASK_TYPE_VOCAB_PATH = OUTPUT_DIR / "pipeline" / "step7" / "task_type_vocabulary_v4.json"
+V4_TASK_TYPE_VOCAB_PATH = OUTPUT_DIR / "pipeline" / "step8_quality_gate" / "task_type_vocabulary_v4_quality_gate.json"
 V4_TRANSFORMER_MODEL_PATH = OUTPUT_DIR / "task_conditioned_transformer_model_v4.pth"
 # ⚠️ ARCHIVED 2026-04-16 — V4.0 checkpoint 已删除（V4.1 未训成，无下游依赖）。
 # 保留常量仅为兼容 import，实际路径不再有 best_model.pth。
