@@ -4,6 +4,9 @@ Provides LLM-based task type classification that maps natural-language GIS
 queries to one of 48 pre-defined task types.  This is the canonical integration
 point for intent recognition — every inference entry point that receives a raw
 user query should route through this module before calling the L3 inferencer.
+
+Environment: loads ``.env`` automatically on first import so that API keys
+are available from the project root without manual exporting.
 """
 
 from __future__ import annotations
@@ -11,7 +14,13 @@ from __future__ import annotations
 import os
 import re
 import time
-from typing import Optional
+
+# Auto-load .env so DEEPSEEK_API_KEY / LLM_API_KEY are available.
+try:
+    from ..config.env import load_env as _load_env
+    _load_env()
+except Exception:
+    pass
 
 TASK_TYPES: dict[int, str] = {
     0: "Unknown",
