@@ -376,6 +376,7 @@ def run(args: argparse.Namespace) -> dict:
             task_description=task.task_description,
             task_type=task.task_type,
             mode="beam",
+            auto_classify=args.auto_classify,
         )
         selected, candidate_details = _pick_best_candidate(
             candidates=candidates,
@@ -480,6 +481,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--task-vocab",
         default=str(OUTPUT_DIR / "pipeline" / "step8_quality_gate" / "task_type_vocabulary_v4_quality_gate.json"),
+    )
+    parser.add_argument(
+        "--auto-classify",
+        action="store_true",
+        help="Auto-detect task_type via LLM when task_type is Unknown in the task file.",
     )
     return parser.parse_args()
 

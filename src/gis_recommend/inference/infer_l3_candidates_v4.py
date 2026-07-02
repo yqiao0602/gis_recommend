@@ -852,6 +852,7 @@ class L3SequenceInferencerV4:
         task_description: str = "",
         task_type: str = "Unknown",
         mode: str = "both",
+        auto_classify: bool = False,
     ) -> List[L3Candidate]:
         """
         Main inference API.
@@ -859,12 +860,19 @@ class L3SequenceInferencerV4:
         Args:
             task_name: Task name
             task_description: Task description
-            task_type: Task type string
+            task_type: Task type string.  If ``\"Unknown\"`` and
+                ``auto_classify=True``, the task will be classified via
+                LLM before inference.
             mode: 'beam', 'sample', or 'both'
+            auto_classify: If True, auto-detect task_type when it is
+                ``\"Unknown\"`` using the LLM-based task type classifier.
 
         Returns:
             Ranked list of L3Candidate objects
         """
+        if auto_classify and task_type == "Unknown":
+            from .task_type_classifier import maybe_classify
+            task_type = maybe_classify(task_name, task_description, task_type)
         inputs = self._prepare_input(task_name, task_description, task_type)
         self.last_token_prior = None
         candidates = []
