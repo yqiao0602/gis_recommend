@@ -928,6 +928,20 @@ class L3SequenceInferencerV4:
             c.tokens = self._postprocess_sequence(c.tokens)
             c.length = len(c.tokens)
 
+        # FP05 fix: for Vector Analysis tasks, ensure chains have a data source.
+        # If a candidate has compute ops but no data-loading step, prepend the
+        # most generic vector data source (Select by Attribute = L3_02_06_01).
+        _VEC_DEFAULT_SOURCE_CODE = "L3_02_06_01"
+        _l3_code_to_id = {v: k for k, v in self.id_to_l3_code.items()}
+        _vec_source_tid = _l3_code_to_id.get(_VEC_DEFAULT_SOURCE_CODE)
+        if task_type == "Vector Analysis" and _vec_source_tid is not None:
+            for c in candidates:
+                has_compute = any(self._token_is_compute(t) for t in c.tokens)
+                has_source = any(self._token_is_data_source(t) for t in c.tokens)
+                if has_compute and not has_source and len(c.tokens) >= 1:
+                    c.tokens = [_vec_source_tid] + c.tokens
+                    c.length = len(c.tokens)
+
         return self._score_and_rank(candidates)
 
     def infer_and_print(
