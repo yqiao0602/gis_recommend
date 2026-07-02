@@ -743,6 +743,38 @@ class L3SequenceInferencerV4:
 
         return deduped
 
+    def _token_is_data_source(self, token_id: int) -> bool:
+        """Check if a token represents a data-loading or data-selection step.
+
+        Data sources are L3 codes under L2_01_* (load/merge/field) or
+        L2_02_06_* (Clip/Select/Extract — filter-as-source pattern).
+        """
+        code = self.id_to_l3_code.get(token_id, "")
+        if not code:
+            return False
+        parts = code.split("_")
+        if len(parts) < 4:
+            return False
+        l2 = f"L2_{parts[1]}_{parts[2]}"
+        return l2.startswith("L2_01_") or l2.startswith("L2_02_06")
+
+    def _token_is_compute(self, token_id: int) -> bool:
+        """Check if a token is a compute/processing operation."""
+        code = self.id_to_l3_code.get(token_id, "")
+        if not code:
+            return False
+        parts = code.split("_")
+        if len(parts) < 4:
+            return False
+        l2 = f"L2_{parts[1]}_{parts[2]}"
+        return l2 in ("L2_02_01", "L2_02_02", "L2_02_04", "L2_02_05",
+                      "L2_03_01", "L2_03_02", "L2_03_03", "L2_03_04",
+                      "L2_03_05", "L2_03_06", "L2_03_07", "L2_03_08",
+                      "L2_03_09", "L2_04_01", "L2_05_01",
+                      "L2_05_06", "L2_05_11", "L2_05_12",
+                      "L2_06_01", "L2_06_02", "L2_06_03", "L2_06_05",
+                      "L2_07_01")
+
     def _score_and_rank(self, candidates: List[L3Candidate]) -> List[L3Candidate]:
         """Multi-factor scoring and ranking."""
         if not candidates:
@@ -770,6 +802,12 @@ class L3SequenceInferencerV4:
             # Penalize incomplete sequences (did not generate END)
             if not c.is_complete:
                 c.final_score *= 0.8
+
+            # FP05 fix: penalize chains that have compute ops but no data source
+            has_any_compute = any(self._token_is_compute(t) for t in c.tokens)
+            has_data_source = any(self._token_is_data_source(t) for t in c.tokens)
+            if has_any_compute and not has_data_source and len(c.tokens) >= 2:
+                c.final_score *= 0.85  # 15% penalty for missing data source
 
         candidates.sort(key=lambda c: c.final_score, reverse=True)
 
