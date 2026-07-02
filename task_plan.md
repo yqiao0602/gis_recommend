@@ -4,7 +4,28 @@
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因（数据缺口），补矢量训练数据并在 A10 上重平衡重训，验证矢量能力可修复。
 
 ## 当前阶段
-**2026-06-30 — 大规模矢量样本挖掘完成 + ScratchGentle 从零训练 + task_type 分类突破。**
+**2026-07-02 — 矢量质量评估：从"能生成"到"生成得对"。L3链多维度质量评测 + 意图识别集成 + 端到端质量门控。**
+
+### 新阶段目标
+1. **L3链质量多维度评估**：不只统计 usable/executable，要建立 correctness、完整性、效率等多轴指标
+2. **意图识别集成**：task_type 分类从外挂脚本→推理管线前置步骤，解决用户 NL 任务→模型推理的模态信号缺失
+3. **端到端质量门控**：L3 输出→可用性检查→QGIS landing→workflow JSON，全程质量可追踪
+
+### L3 链质量评估维度（待设计）
+- ① 可用性（rule-usable）：现有，L3 序列满足 I/O 约束
+- ② 可执行性（executable）：现有，能 land 到 QGIS 算子
+- ③ 正确性（correctness）：现有 SetF1 vs 金标，需扩充矢量金标
+- 🆕 ④ 完整性（completeness）：是否缺少关键步骤（missing_critical_steps）
+- 🆕 ⑤ 简洁性（conciseness）：是否有多余/冗余步骤
+- 🆕 ⑥ 模态一致性（modality consistency）：矢量任务生成矢量链，栅格任务生成栅格链
+
+### 意图识别（task_type classification）
+- [ ] 集成进推理管线：`NL query → classify_task_type() → infer_l3(task_type=X) → beam → QGIS`
+- [ ] 不依赖 LLM API 的可选方案：训练轻量文本分类器（fastText/BERT-small）
+- [ ] 评估分类准确率对下游 L3 质量的影响
+
+## 已完成（截至 2026-07-02）
+**2026-06-30—07-02 — 矢量样本合并 + L3/Set Predictor 重训 + 两步评测。**
 
 ### 🔑 关键突破：task_type 分类修复矢量 L3 输出 (2026-06-30)
 - [x] `scripts/classify_task_type.py`：LLM (deepseek-chat) 对 80 open_landing 任务分类→48 task types
@@ -45,6 +66,29 @@
 | Phase6-VectorFix warmstart | 50 | **0.5796** | 0.4341 | 3.2766 | 77,981 |
 | GapFix-12ep smoke | 12 | 0.4534 | 0.3315 | 3.0191 | 84,078 |
 | ScratchGentle from-scratch | 50 | 0.5367 | 0.3858 | **2.9385** | 84,078 |
+
+### L3 模型重训 (2026-07-01) ✅
+- [x] 11,277 矢量样本合并进训练包：84,078→**95,355** (矢量 10.9%→21.4%)
+- [x] 30 epoch warmstart (ScratchGentle)，A10 GPU，~24h
+- [x] 最佳 epoch 23: Composite=**0.5990** (+11.6%), SetF1=**0.563**, LCS=**0.413**
+- [x] TokenAcc 16.1%→19.2%, train_loss 1.50→0.97
+- [x] checkpoint: `outputs_v2/transformer_checkpoints_v4_6_vec11277_warmstart/best_model.pth`
+
+### Set Predictor V3 重训 (2026-07-01) ✅
+- [x] 同训练包，30 epoch，~3h
+- [x] 最佳 epoch 19: F1@0.70=**0.675**, top10R=**0.892**, over% 80%→43%
+- [x] checkpoint: `outputs_v2/set_predictor_checkpoints_v3_vec11277/best_model.pth`
+
+### 两步评测 (2026-07-02) ✅
+- [x] **open_landing 80 题**：vec usable 78%→**88%** (+10pp), mixed 93%→**100%**
+- [x] **held-out 104 题 (③ correctness)**：overall SetF1=0.518（仅 2 矢量样本，参考价值有限）
+- [x] 矢量 L3 token 占比稳定在 55.3%
+
+### 关键发现
+- **生成能力已修复**（vec usable 88%），下一步重点是**链质量**
+- 评测中有大量 `missing_critical_steps` 警告——模型输出不够完整
+- QGIS landing 语料仍偏栅格（native_bridge 占 78% 在 held-out 中）
+- task_type 分类是关键杠杆，但还作为外挂脚本，未集成进推理管线
 
 ### 缺口分析 + 定向挖掘成果 (2026-06-25)
 - [x] `scripts/analyze_l3_coverage_gaps.py`：94 L3 码 × 训练数据 × 语义映射 → 排序风险矩阵

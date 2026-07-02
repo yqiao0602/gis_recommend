@@ -1,5 +1,33 @@
 # 发现记录
 
+## 新阶段方向：从"能生成"到"生成得对"（2026-07-02）
+
+### 核心判断
+- **生成能力已修复**（vec usable 88%），但**链质量才是真正的瓶颈**
+- 评测中频繁出现 `missing_critical_steps` 警告——模型输出操作步骤不完整
+- 现有评测体系缺少对链质量的细粒度判断（缺少哪步？多了哪步？为什么？）
+
+### L3 链质量评估维度设计
+1. **完整性（completeness）**：金标链的关键步骤是否都被覆盖？→ 需要定义"关键步骤"标准
+2. **简洁性（conciseness）**：是否有冗余步骤（如连续两个 Clip、不必要的 Collect）？
+3. **模态一致性**：矢量任务不应包含栅格专属操作（如 Select Bands）
+4. **可落地性**：L3→QGIS mapping 成功率（现有），但需要反推 L3 质量 vs landing 语料质量的归因
+
+### 意图识别（task_type classification）
+- 当前是外挂脚本（`classify_task_type.py`），每次评测前手动跑
+- 应集成进推理管线：用户 NL 输入 → BERT/LLM 分类 task_type → L3 推理
+- 可选方案：
+  - 方案 A：保持 LLM (deepseek-chat) 分类，简单可靠但依赖 API
+  - 方案 B：训练轻量 BERT 文本分类器（48类），离线可用
+  - 方案 C：规则匹配（不推荐，覆盖不全）
+
+### 端到端质量门控
+- 应在 pipeline 的每个环节设置质量检查点：
+  1. 输入：task_type 分类置信度 > 阈值
+  2. L3 输出：SetF1 估计 / rule-usable 检查
+  3. QGIS landing：mapping 成功率 / I/O 兼容性
+  4. Workflow JSON：参数完整性 / 数据流连通性
+
 ## 🔑 关键突破：task_type 分类修复矢量 L3 输出（2026-06-30）
 
 ### 核心发现
