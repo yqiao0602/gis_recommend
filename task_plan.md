@@ -3,6 +3,47 @@
 ## 目标
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因（数据缺口），补矢量训练数据并在 A10 上重平衡重训，验证矢量能力可修复。
 
+**更新 (2026-07-03)：发现核心瓶颈——50%矢量任务无对应 L3 码（词汇缺口），模型生成质量在有码任务上 SetF1=0.399。下一步需要 (1) 补齐 L3 词汇缺口 (2) 优化 QGIS landing 从 native→规范算子。**
+
+## 当前阶段
+**2026-07-03 — 人工金标标注完成。发现 L3 词汇缺口是比模型质量更大的瓶颈。**
+
+### 🔑 金标标注发现 (2026-07-03)
+- [x] 40 道矢量 open_landing 题目人工标注金标 L3 链
+- [x] **50% (20/40) 任务在现有 17 个矢量 L3 码中无对应码** — 词汇缺口是首要问题
+- [x] 可评分 20 题：Grade A=0%, B=35%, C=50%, D=15%
+- [x] **SetF1=0.399**（可评分任务）— 低于 Phase B 的 0.531
+- [x] 标注表: `outputs_v2/diagnostics/quality_gate/vector_gold_annotated.csv`
+
+### L3 词汇缺口清单（20 个任务无 L3 码）
+| 缺失操作 | 影响任务 |
+|---------|---------|
+| Reproject | 11, 33 |
+| Simplify | 13 |
+| Fix Geometries | 12 |
+| Voronoi / Delaunay / Thiessen | 15, 27, 28 |
+| Grid Generation | 14 |
+| Concave Hull | 26 |
+| Heatmap / Density | 16 |
+| Nearest Facility (Network) | 17 |
+| Smooth | 25 |
+| Delete Holes | 24 |
+| Snap | 35 |
+| Delete Duplicate | 36 |
+| Polygon→Polyline | 21 |
+| Singlepart→Multipart | 38 |
+| Extract Vertices | 39 |
+| Export | 32 |
+| Table Join (attribute) | 37 |
+| Update/Add Field | 31 |
+
+### 已完成工作 (2026-07-02—03)
+- [x] FP05 修复: 数据源自动注入，矢量完整性 80%→95%
+- [x] 端到端质量门控: `quality_gate.py` — L3→QGIS→Workflow 3 阶段检查
+- [x] 意图识别集成: `task_type_classifier.py` + `auto_classify` 参数
+- [x] `.env` 配置系统: 统一管理 API key/服务器/路径
+- [x] L3 链 6 维质量诊断: `diagnose_l3_quality.py`
+
 ## 当前阶段
 **2026-07-02 — 矢量质量评估：从"能生成"到"生成得对"。L3链多维度质量评测 + 意图识别集成 + 端到端质量门控。**
 

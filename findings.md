@@ -1,5 +1,31 @@
 # 发现记录
 
+## L3 词汇缺口：50% 矢量任务无对应 L3 码（2026-07-03）
+
+### 核心发现
+- 40 道 open_landing 矢量任务人工标注金标 L3 链
+- **20/40 (50%) 任务在现有 17 个矢量 L3 码中找不到对应操作**
+- 可评分 20 题 SetF1=0.399，低于 Phase B 的 0.531
+- **词汇缺口比模型质量问题更大** —— 模型不是做错了，是根本没有对应的"语言"来表达
+
+### 缺失的 L3 码（17+ 种）
+| 操作 | 常见程度 | 影响 |
+|------|---------|------|
+| Reproject | 极高 | 几乎所有项目都需要 |
+| Simplify | 高 | 制图/发布常用 |
+| Fix Geometries | 高 | 数据预处理必备 |
+| Voronoi / Delaunay / Thiessen | 中 | 空间分析核心 |
+| Grid Generation | 中 | 采样/制图 |
+| Snap | 中 | 拓扑修复 |
+| Delete Duplicate | 中 | 数据清理 |
+| Export | 极高 | 任何流程结尾 |
+| Smooth / Concave Hull / Delete Holes | 低 | 专项需求 |
+
+### 方法论结论
+- 17 个矢量码远不够覆盖真实 GIS 工作流
+- 需要至少扩充到 **30+ 个矢量 L3 码**
+- 优先级: Reproject → Simplify → Fix Geometries → Grid → Voronoi/Delaunay/Thiessen
+
 ## 新阶段方向：从"能生成"到"生成得对"（2026-07-02）
 
 ### 核心判断

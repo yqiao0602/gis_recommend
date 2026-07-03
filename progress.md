@@ -1,5 +1,23 @@
 # 进度日志
 
+## 2026-07-03：金标标注 + L3 词汇缺口发现
+
+### 标注结果
+- 40 道矢量题金标 L3 标注完成
+- **50% (20/40) 任务无对应 L3 码** — 词汇缺口
+- 可评分 20 题: SetF1=0.399, A=0%, B=35%, C=50%, D=15%
+- 缺失 17+ 种矢量操作（Reproject/Simplify/Voronoi/Grid/Snap 等）
+
+### 已完成的修复
+- FP05: 数据源注入 (20%→5%)
+- 质量门控: 3 阶段检查 (L3/QGIS/Workflow)
+- 意图识别: auto_classify 集成
+- .env 配置: 统一环境管理
+
+### Git 提交
+- 更新 task_plan.md, progress.md, findings.md
+- 标注表: vector_gold_annotated.csv
+
 ## 2026-07-02：新阶段规划 + 上下文更新
 
 ### 新阶段目标
