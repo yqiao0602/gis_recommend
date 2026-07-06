@@ -1,5 +1,23 @@
 # 进度日志
 
+## 2026-07-06：L3 词汇扩充 + from-scratch 训练启动
+
+### 词汇扩充
+- 三维评估（QGIS算子库 + PY脚本直接扫描 + 训练数据）确认 13 新码
+- 绕过 L3 映射偏差：直接扫 398K PY 脚本 → Reproject 9,622 个脚本，FixGeom 5,000 等
+- 18,111 条新样本，审计通过（Reproject 误匹配 0.19%）
+- 合并训练包：113,466 样本，矢量 34.0%
+- 词表 94→107, VOCAB_SIZE 更新
+
+### from-scratch 训练
+- 98,077 train / 7,694 val / 7,695 test
+- 50 epoch, --enable-family-sampler, --ar-max-steps 32
+- A10 GPU, ~12 it/s TF phase, 预计 ~7h
+- Checkpoint: `transformer_checkpoints_v4_6_vocab107_scratch/`
+
+### 备份
+- `backups/20260706_vocab_expansion/`
+
 ## 2026-07-03：金标标注 + L3 词汇缺口发现
 
 ### 标注结果

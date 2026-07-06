@@ -52,7 +52,7 @@ TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v3_l3emb"
 
 # ===================== Model Architecture =====================
 # Vocabulary — 94 L3 primitives (v2). The legacy 350-L3 vocabulary is retired.
-VOCAB_SIZE = 94
+VOCAB_SIZE = 107  # expanded from 94: +13 vector codes (Reproject, FixGeom, Grid, etc. 2026-07-06)
 SPECIAL_TOKENS = {
     '<PAD>': -1,
     '<UNK>': -2,

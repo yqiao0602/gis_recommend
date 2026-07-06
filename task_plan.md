@@ -6,7 +6,25 @@
 **更新 (2026-07-03)：发现核心瓶颈——50%矢量任务无对应 L3 码（词汇缺口），模型生成质量在有码任务上 SetF1=0.399。下一步需要 (1) 补齐 L3 词汇缺口 (2) 优化 QGIS landing 从 native→规范算子。**
 
 ## 当前阶段
-**2026-07-03 — 人工金标标注完成。发现 L3 词汇缺口是比模型质量更大的瓶颈。**
+**2026-07-06 — L3 词汇扩充 v1：13 个新矢量码 + 18K 新样本 + from-scratch 训练中。**
+
+### 词汇扩充 (2026-07-04—06)
+- [x] 三维评估确认 13 个新 L3 码必须补充（绕过 L3 映射偏差，直接扫描 398K PY 脚本）
+- [x] 定义 13 个新码: Reproject, Fix Geometries, Grid, Simplify, Voronoi, Delaunay, Delete Duplicate, Snap, Delete Holes, Smooth, Concave Hull, Polygons→Lines, Extract Vertices
+- [x] 挖掘 18,111 条训练样本，13/13 码全覆盖
+- [x] 质量审计: Reproject 误匹配率 0.19%
+- [x] 合并训练包: 95,355 → **113,466**，矢量占比 21.4% → **34.0%**
+- [x] 词表: 94 → **107** (+13)
+- [x] VOCAB_SIZE 更新: 94 → 107 (transformer_config.py)
+- [x] ID mappings 更新: id_mappings_v2.json → 含 107 码
+
+### from-scratch 训练 🔄 (2026-07-06)
+- [x] 已启动: 98,077 train, 50 epoch, A10 GPU
+- [ ] 预计完成: ~7h
+- [x] 备份: `backups/20260706_vocab_expansion/`
+
+### 之前完成
+**金标标注发现: 50% 矢量任务无对应 L3 码 (2026-07-03)，词汇缺口比模型质量更关键。**
 
 ### 🔑 金标标注发现 (2026-07-03)
 - [x] 40 道矢量 open_landing 题目人工标注金标 L3 链
