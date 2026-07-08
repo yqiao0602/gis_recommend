@@ -64,7 +64,6 @@ SPECIAL_TOKENS = {
     '<END>': -4
 }
 NUM_SPECIAL_TOKENS = len(SPECIAL_TOKENS)
-TOTAL_VOCAB_SIZE = VOCAB_SIZE + NUM_SPECIAL_TOKENS
 
 # ── Vocab profile system ──────────────────────────────────────────
 # Two explicit profiles:
@@ -77,6 +76,9 @@ TOTAL_VOCAB_SIZE = VOCAB_SIZE + NUM_SPECIAL_TOKENS
 _vocab_profile = os.environ.get("GIS_VOCAB_PROFILE", "v2_94_stable")
 if _vocab_profile == "v3_107_experimental":
     VOCAB_SIZE = 107
+
+# MUST be computed AFTER VOCAB_SIZE is final (profile may have changed it).
+TOTAL_VOCAB_SIZE = VOCAB_SIZE + NUM_SPECIAL_TOKENS
 
 # Transformer architecture
 D_MODEL = 256  # 匹配L3嵌入维度（图嵌入训练输出256维）

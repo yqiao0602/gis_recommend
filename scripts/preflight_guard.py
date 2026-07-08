@@ -95,15 +95,23 @@ def check_checkpoint(ckpt_path: str) -> list[str]:
     import torch  # noqa: E402
     ck = torch.load(str(ckpt_path), map_location="cpu", weights_only=True)
     sd = ck.get("model_state_dict", {})
-    # Check L3 output projection head
-    for key in ["l3_head.weight", "output_proj.weight", "lm_head.weight"]:
+    # Check token embedding and output projection (V4.6 checkpoint keys)
+    # Both must have shape[0] == TOTAL_VOCAB_SIZE
+    found = False
+    for key in ["token_embedding.weight", "output_projection.weight"]:
         w = sd.get(key)
         if w is not None:
-            if w.shape[0] != cfg.VOCAB_SIZE:
+            found = True
+            if w.shape[0] != cfg.TOTAL_VOCAB_SIZE:
                 errors.append(
-                    f"Checkpoint {key} shape[0]={w.shape[0]} != VOCAB_SIZE={cfg.VOCAB_SIZE}"
+                    f"Checkpoint {key} shape[0]={w.shape[0]} != "
+                    f"TOTAL_VOCAB_SIZE={cfg.TOTAL_VOCAB_SIZE} "
+                    f"(VOCAB_SIZE={cfg.VOCAB_SIZE} + {cfg.NUM_SPECIAL_TOKENS} special)"
                 )
-            break
+    if not found:
+        errors.append(
+            "Checkpoint has neither token_embedding.weight nor output_projection.weight"
+        )
     return errors
 
 

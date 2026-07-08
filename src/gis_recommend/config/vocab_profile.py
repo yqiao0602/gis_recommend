@@ -102,29 +102,26 @@ def apply_profile(name: str) -> str:
 
     profile = _PROFILES[name]
 
-    # ── 1. Patch VOCAB_SIZE ───────────────────────────────────
+    # ── 1. Patch VOCAB_SIZE + TOTAL_VOCAB_SIZE ────────────────
     import gis_recommend.config.transformer_config as _cfg
-    if _cfg.VOCAB_SIZE != profile["vocab_size"]:
-        _cfg.VOCAB_SIZE = profile["vocab_size"]
-        _cfg.TOTAL_VOCAB_SIZE = _cfg.VOCAB_SIZE + _cfg.NUM_SPECIAL_TOKENS
+    _cfg.VOCAB_SIZE = profile["vocab_size"]
+    _cfg.TOTAL_VOCAB_SIZE = _cfg.VOCAB_SIZE + _cfg.NUM_SPECIAL_TOKENS  # always recompute
 
     # ── 2. Check ID mappings consistency ──────────────────────
     root = _find_project_root()
     mapping_path = root / profile["id_mappings_default"]
-    if mapping_path.exists():
-        mappings = _load_id_mappings(str(mapping_path))
-        l3_count = len(mappings.get("l3", {}))
-        if l3_count != profile["l3_code_count"]:
-            raise VocabProfileError(
-                f"ID mappings at {mapping_path} have {l3_count} L3 codes, "
-                f"but profile '{name}' expects {profile['l3_code_count']}"
-            )
-    else:
-        # Non-fatal warning: mapping may be generated at runtime
-        import warnings
-        warnings.warn(
-            f"ID mappings not found at {mapping_path} — skipping count check. "
-            f"Ensure the correct mapping is used at training/eval time."
+    if not mapping_path.exists():
+        raise VocabProfileError(
+            f"Required ID mappings not found: {mapping_path}. "
+            f"Profile '{name}' cannot be activated without its matching "
+            f"id_mappings file. Generate it first via expand_l3_vocabulary.py."
+        )
+    mappings = _load_id_mappings(str(mapping_path))
+    l3_count = len(mappings.get("l3", {}))
+    if l3_count != profile["l3_code_count"]:
+        raise VocabProfileError(
+            f"ID mappings at {mapping_path} have {l3_count} L3 codes, "
+            f"but profile '{name}' expects {profile['l3_code_count']}"
         )
 
     # ── 3. Check training data token range ────────────────────
@@ -149,3 +146,83 @@ def apply_profile(name: str) -> str:
     _ACTIVE_PROFILE = name
     os.environ["GIS_VOCAB_PROFILE"] = name
     return name
+
+
+def training_preflight(
+    *,
+    data_path: str | None = None,
+    checkpoint_path: str | None = None,
+    set_predictor_dir: str | None = None,
+    require_mappings: bool = True,
+) -> list[str]:
+    """Run pre-flight checks suitable for training/eval entry points.
+
+    Call this early in training or showcase eval.  Returns a list of error
+    strings (empty = all clear).  Does NOT raise — the caller decides whether
+    to abort or warn.
+    """
+    import gis_recommend.config.transformer_config as _cfg  # noqa: F811
+    import torch  # noqa: F401
+
+    errors: list[str] = []
+
+    # 1. Check that TOTAL_VOCAB_SIZE is self-consistent
+    expected = _cfg.VOCAB_SIZE + _cfg.NUM_SPECIAL_TOKENS
+    if _cfg.TOTAL_VOCAB_SIZE != expected:
+        errors.append(
+            f"TOTAL_VOCAB_SIZE={_cfg.TOTAL_VOCAB_SIZE} != "
+            f"VOCAB_SIZE({_cfg.VOCAB_SIZE}) + NUM_SPECIAL_TOKENS({_cfg.NUM_SPECIAL_TOKENS}) = {expected}"
+        )
+
+    # 2. Check training data token range
+    if data_path:
+        dp = Path(data_path)
+        if dp.exists():
+            data = json.load(open(str(dp), "r", encoding="utf-8"))
+            wfs = data.get("labeled_workflows", data) if isinstance(data, dict) else data
+            if isinstance(wfs, list):
+                max_tok = -1
+                for wf in wfs:
+                    if isinstance(wf, dict):
+                        for t in wf.get("l3_sequence", []):
+                            if isinstance(t, int) and t > max_tok:
+                                max_tok = t
+                if max_tok >= _cfg.VOCAB_SIZE:
+                    errors.append(
+                        f"Training data max token {max_tok} >= VOCAB_SIZE {_cfg.VOCAB_SIZE}"
+                    )
+
+    # 3. Check warmstart checkpoint embedding shape
+    if checkpoint_path:
+        cp = Path(checkpoint_path)
+        if cp.exists():
+            try:
+                ck = torch.load(str(cp), map_location="cpu", weights_only=True)
+                sd = ck.get("model_state_dict", {})
+                for key in ["token_embedding.weight", "output_projection.weight"]:
+                    w = sd.get(key)
+                    if w is not None and w.shape[0] != _cfg.TOTAL_VOCAB_SIZE:
+                        errors.append(
+                            f"Checkpoint {cp.name}: {key} shape[0]={w.shape[0]} "
+                            f"!= TOTAL_VOCAB_SIZE={_cfg.TOTAL_VOCAB_SIZE}"
+                        )
+            except Exception as e:
+                errors.append(f"Failed to inspect checkpoint {cp}: {e}")
+
+    # 4. Check Set Predictor active tokens
+    if set_predictor_dir:
+        sp = Path(set_predictor_dir) / "best_model.pth"
+        if sp.exists():
+            try:
+                ck = torch.load(str(sp), map_location="cpu", weights_only=True)
+                active = ck.get("active_token_ids", [])
+                if active:
+                    max_active = max(active)
+                    if max_active >= _cfg.VOCAB_SIZE:
+                        errors.append(
+                            f"Set Predictor active token {max_active} >= VOCAB_SIZE {_cfg.VOCAB_SIZE}"
+                        )
+            except Exception as e:
+                errors.append(f"Failed to inspect Set Predictor {sp}: {e}")
+
+    return errors

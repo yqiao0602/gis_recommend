@@ -773,6 +773,20 @@ def train_quality_gate_v4_6(
         "device": str(DEVICE),
         "dry_run": dry_run,
     }
+
+    # ── Preflight guard: MUST run even on dry-run ──
+    from gis_recommend.config.vocab_profile import training_preflight  # noqa: E402
+    preflight_errors = training_preflight(
+        data_path=str(data_path),
+        checkpoint_path=str(warmstart_path) if warmstart_path else None,
+    )
+    if preflight_errors:
+        print("\n  [PREFLIGHT] FAIL — aborting:")
+        for e in preflight_errors:
+            print(f"    - {e}")
+        print("  Fix the inconsistency before launching training.\n")
+        sys.exit(1)
+
     if dry_run:
         return summary
 
