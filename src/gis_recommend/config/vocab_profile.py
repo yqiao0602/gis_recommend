@@ -58,8 +58,16 @@ _PROFILES: dict[str, dict] = {
 
 
 def current_profile() -> str:
-    """Return the currently-active vocab profile name."""
-    return _ACTIVE_PROFILE or V2_94_STABLE
+    """Return the currently-active vocab profile name.
+
+    Priority: explicit apply_profile() > GIS_VOCAB_PROFILE env var > default v2_94_stable.
+    """
+    if _ACTIVE_PROFILE:
+        return _ACTIVE_PROFILE
+    env = os.environ.get("GIS_VOCAB_PROFILE", "")
+    if env in VALID_PROFILES:
+        return env
+    return V2_94_STABLE
 
 
 def _find_project_root() -> Path:
@@ -153,18 +161,51 @@ def training_preflight(
     data_path: str | None = None,
     checkpoint_path: str | None = None,
     set_predictor_dir: str | None = None,
-    require_mappings: bool = True,
 ) -> list[str]:
     """Run pre-flight checks suitable for training/eval entry points.
 
     Call this early in training or showcase eval.  Returns a list of error
     strings (empty = all clear).  Does NOT raise — the caller decides whether
     to abort or warn.
+
+    This is profile-aware: it validates that the current profile's required
+    artifacts (id_mappings, training data token range) are consistent with
+    VOCAB_SIZE.
     """
     import gis_recommend.config.transformer_config as _cfg  # noqa: F811
     import torch  # noqa: F401
 
     errors: list[str] = []
+    profile_name = current_profile()
+
+    # 0. Validate that the active profile's artifacts exist and that
+    #    the training data matches the profile's expectations.
+    #    Without this, from-scratch training on old 94 data under
+    #    the 107 experimental profile would silently pass.
+    if profile_name != V2_94_STABLE:
+        prof = _PROFILES.get(profile_name)
+        if prof:
+            root = _find_project_root()
+            mapping_path = root / prof["id_mappings_default"]
+            if not mapping_path.exists():
+                errors.append(
+                    f"Profile '{profile_name}' requires id_mappings at "
+                    f"{mapping_path} — file not found. "
+                    f"Generate it first or switch back to v2_94_stable."
+                )
+            # Check that the training data path looks compatible with
+            # this profile (avoid using old 94-token data under 107).
+            if data_path:
+                expected_dir = str(root / prof["training_data_dir"])
+                actual = str(Path(data_path).resolve())
+                if expected_dir not in actual:
+                    expected_file = prof["training_data_file"]
+                    errors.append(
+                        f"Profile '{profile_name}' expects training data at "
+                        f"{expected_dir}/{expected_file}, but received "
+                        f"{data_path}. Either fix --data or switch to "
+                        f"v2_94_stable."
+                    )
 
     # 1. Check that TOTAL_VOCAB_SIZE is self-consistent
     expected = _cfg.VOCAB_SIZE + _cfg.NUM_SPECIAL_TOKENS
@@ -174,7 +215,7 @@ def training_preflight(
             f"VOCAB_SIZE({_cfg.VOCAB_SIZE}) + NUM_SPECIAL_TOKENS({_cfg.NUM_SPECIAL_TOKENS}) = {expected}"
         )
 
-    # 2. Check training data token range
+    # 2. Check training data token range vs VOCAB_SIZE
     if data_path:
         dp = Path(data_path)
         if dp.exists():
@@ -189,7 +230,18 @@ def training_preflight(
                                 max_tok = t
                 if max_tok >= _cfg.VOCAB_SIZE:
                     errors.append(
-                        f"Training data max token {max_tok} >= VOCAB_SIZE {_cfg.VOCAB_SIZE}"
+                        f"Training data max token {max_tok} >= VOCAB_SIZE {_cfg.VOCAB_SIZE} "
+                        f"(profile: {profile_name}). Data was built for a larger vocabulary — "
+                        f"use the matching profile or a different training package."
+                    )
+                # Also detect the reverse: data with expanded tokens
+                # used under the stable 94 profile
+                if max_tok >= 94 and _cfg.VOCAB_SIZE == 94:
+                    errors.append(
+                        f"Training data contains expanded-vocab tokens (max={max_tok} >= 94) "
+                        f"but VOCAB_SIZE=94 (profile: {profile_name}). "
+                        f"Either use the v3_107_experimental profile or switch to a "
+                        f"94-code training package."
                     )
 
     # 3. Check warmstart checkpoint embedding shape
@@ -204,7 +256,8 @@ def training_preflight(
                     if w is not None and w.shape[0] != _cfg.TOTAL_VOCAB_SIZE:
                         errors.append(
                             f"Checkpoint {cp.name}: {key} shape[0]={w.shape[0]} "
-                            f"!= TOTAL_VOCAB_SIZE={_cfg.TOTAL_VOCAB_SIZE}"
+                            f"!= TOTAL_VOCAB_SIZE={_cfg.TOTAL_VOCAB_SIZE} "
+                            f"(profile: {profile_name})"
                         )
             except Exception as e:
                 errors.append(f"Failed to inspect checkpoint {cp}: {e}")

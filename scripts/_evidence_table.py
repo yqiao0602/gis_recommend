@@ -1,175 +1,163 @@
 #!/usr/bin/env python3
 """Per-class evidence table for 13 new L3 codes.
 
-For each new code, checks:
-1. Real frequency in raw PY scripts (not via L3 mapping bias)
-2. Can it be reasonably expressed by existing 94 codes?
-3. Has clean training samples (single-code purity)?
-4. Appears in open_landing gold annotation needs?
-5. Has a clear QGIS landing bridge (L2 classification unambiguous)?
-6. Semantic boundary — overlaps with existing codes?
-
-Outputs Markdown table.
+Reads real sample data and gold annotation, outputs JSON + Markdown artifacts.
+Usage:
+    python scripts/_evidence_table.py \
+        --samples outputs_v2/vocab_expansion_v1/vocab_expansion_raw_samples.jsonl \
+        --gold outputs_v2/diagnostics/quality_gate/vector_gold_annotated.csv \
+        --output-dir outputs_v2/diagnostics/evidence_table/
 """
 
-import json, csv, re, os
+import argparse, csv, json, os, sys
 from collections import Counter
+from pathlib import Path
 
-PROJECT_ROOT = '/home/qy/system_redesign'
+ROOT = Path(__file__).resolve().parents[1]
 
 # ── 13 new codes ──
 NEW_CODES = {
-    'L3_02_01_02': {'name': 'Reproject', 'l2': 'L2_02_01',
-                    'qgis_ops': ['reprojectlayer', 'assignprojection', 'warpreproject'],
-                    'existing_alt': 'No L3 code for coordinate transformation',
-                    'semantic_boundary': 'Distinct from L2_01_* data mgmt; distinct from raster reproject (L3_03_04_01)'},
-    'L3_02_01_03': {'name': 'Fix Geometries', 'l2': 'L2_02_01',
-                    'qgis_ops': ['fixgeometries', 'checkvalidity', 'repairgeometries'],
-                    'existing_alt': 'No L3 code for geometry repair',
-                    'semantic_boundary': 'Distinct from geometry conversion (L2_02_05, L2_02_07); repair ≠ convert'},
-    'L3_02_03_01': {'name': 'Grid', 'l2': 'L2_02_03',
-                    'qgis_ops': ['creategrid', 'fishnet', 'regularpoints'],
-                    'existing_alt': 'Could be confused with raster grid (L3_03_*); this is VECTOR grid',
-                    'semantic_boundary': 'Vector grid vs raster grid — needs L1_02 prefix to distinguish'},
-    'L3_02_03_02': {'name': 'Simplify', 'l2': 'L2_02_03',
-                    'qgis_ops': ['simplifygeometries'],
-                    'existing_alt': 'No L3 code, but Smooth might be similar',
-                    'semantic_boundary': 'Simplify (topological generalisation) ≠ Smooth (cartographic smoothing)'},
-    'L3_02_03_03': {'name': 'Voronoi', 'l2': 'L2_02_03',
-                    'qgis_ops': ['voronoipolygons'],
-                    'existing_alt': 'No L3 code',
-                    'semantic_boundary': 'Unique operation, no overlap'},
-    'L3_02_03_04': {'name': 'Delaunay Triangulation', 'l2': 'L2_02_03',
-                    'qgis_ops': ['delaunaytriangulation'],
-                    'existing_alt': 'No L3 code; dual of Voronoi',
-                    'semantic_boundary': 'Pairs with Voronoi, but distinct operation'},
-    'L3_02_05_01': {'name': 'Delete Duplicate', 'l2': 'L2_02_05',
-                    'qgis_ops': ['deleteduplicategeometries', 'deleteidenticalgeometries'],
-                    'existing_alt': 'Could be approximated by Union+Dissolve combination',
-                    'semantic_boundary': 'Data cleanup, not spatial analysis — but still a distinct operation'},
-    'L3_02_05_02': {'name': 'Snap', 'l2': 'L2_02_05',
-                    'qgis_ops': ['snapgeometries', 'snapgeometrytolayer'],
-                    'existing_alt': 'No L3 code for topological snapping',
-                    'semantic_boundary': 'Distinct from Buffer (L3_02_01_01) — snapping is topological, not geometric'},
-    'L3_02_05_03': {'name': 'Delete Holes', 'l2': 'L2_02_05',
-                    'qgis_ops': ['deleteholes'],
-                    'existing_alt': 'Could be expressed as Select+Erase combination',
-                    'semantic_boundary': 'Boundary overlaps with L3_02_02_04 (Erase) + L3_02_06_* (selection)'},
-    'L3_02_05_04': {'name': 'Smooth', 'l2': 'L2_02_05',
-                    'qgis_ops': ['smoothgeometry'],
-                    'existing_alt': 'No L3 code; Simplify operates on topology, Smooth on vertex placement',
-                    'semantic_boundary': 'Similar to Simplify in concept but different algorithm'},
-    'L3_02_05_05': {'name': 'Concave Hull', 'l2': 'L2_02_05',
-                    'qgis_ops': ['concavehull'],
-                    'existing_alt': 'L3_02_05_12 (Min Bounding Geometry) = convex hull; concave hull is distinct',
-                    'semantic_boundary': 'Different from Min Bounding Geometry (convex vs concave)'},
-    'L3_02_07_02': {'name': 'Polygons to Lines', 'l2': 'L2_02_07',
-                    'qgis_ops': ['polygonstolines'],
-                    'existing_alt': 'L3_02_07_01 (Multipart→Singlepart) handles geometry set conversion, not type conversion',
-                    'semantic_boundary': 'Geometry type conversion, distinct from set operations in L2_02_07'},
-    'L3_02_07_03': {'name': 'Extract Vertices', 'l2': 'L2_02_07',
-                    'qgis_ops': ['extractvertices'],
-                    'existing_alt': 'L3_02_05_11 (Feature to Point) = centroid; vertices ≠ centroid',
-                    'semantic_boundary': 'Distinct from Feature to Point — vertices preserve boundary, centroid is center'},
+    'L3_02_01_02': {'name': 'Reproject', 'existing_alt': 'No L3 for CRS transform'},
+    'L3_02_01_03': {'name': 'Fix Geometries', 'existing_alt': 'No L3 for geometry repair'},
+    'L3_02_03_01': {'name': 'Grid', 'existing_alt': 'Vector grid (not raster L3_03_*)'},
+    'L3_02_03_02': {'name': 'Simplify', 'existing_alt': 'No L3; similar to Smooth'},
+    'L3_02_03_03': {'name': 'Voronoi', 'existing_alt': 'No L3'},
+    'L3_02_03_04': {'name': 'Delaunay', 'existing_alt': 'No L3; dual of Voronoi'},
+    'L3_02_05_01': {'name': 'Delete Duplicate', 'existing_alt': 'Union+Dissolve combo possible'},
+    'L3_02_05_02': {'name': 'Snap', 'existing_alt': 'No L3 for topological snap'},
+    'L3_02_05_03': {'name': 'Delete Holes', 'existing_alt': 'Select+Erase combo possible'},
+    'L3_02_05_04': {'name': 'Smooth', 'existing_alt': 'No L3; distinct from Simplify'},
+    'L3_02_05_05': {'name': 'Concave Hull', 'existing_alt': 'MinBoundingGeom = convex only'},
+    'L3_02_07_02': {'name': 'Polygons to Lines', 'existing_alt': 'Geometry type conversion'},
+    'L3_02_07_03': {'name': 'Extract Vertices', 'existing_alt': 'FeatureToPoint = centroid only'},
 }
 
 
-def main():
-    # ── 1. Raw PY script frequency ──
-    print("Loading raw scan data...")
-    raw_counts = {}
-    # Use the already-scanned data from _scan_raw_ops.py output
-    # We'll read from the log or re-scan quickly
-    scan_path = f'{PROJECT_ROOT}/outputs_v2/vocab_expansion_v1/vocab_expansion_raw_samples.jsonl'
+def load_samples(path: str) -> list[dict]:
+    samples = []
+    with open(path, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                samples.append(json.loads(line))
+    return samples
 
-    # 2. Training sample quality
-    train_counts = Counter()
-    single_code_rate = {}
-    if os.path.exists(scan_path):
-        with open(scan_path) as f:
-            for line in f:
-                if line.strip():
-                    s = json.loads(line)
-                    for c in s['l3_codes']:
-                        train_counts[c] += 1
-        for code in NEW_CODES:
-            total = train_counts.get(code, 0)
-            single = sum(1 for line in open(scan_path) if code in json.loads(line)['l3_codes'] and len(json.loads(line)['l3_codes']) == 1)
-            single_code_rate[code] = single / max(total / len(open(scan_path).readlines()), 1) if total > 0 else 0
 
-    # 3. open_landing gold need
-    gold_csv = f'{PROJECT_ROOT}/outputs_v2/diagnostics/quality_gate/vector_gold_annotated.csv'
-    gold_needed = set()
-    if os.path.exists(gold_csv):
-        with open(gold_csv, encoding='utf-8-sig') as f:
-            reader = csv.DictReader(f)
-            for r in reader:
-                gc = r.get('gold_codes', '')
-                if gc:
-                    for c in gc.split(','):
-                        c = c.strip()
-                        if c in NEW_CODES:
-                            gold_needed.add(c)
+def load_gold(path: str) -> set[str]:
+    """Return set of L3 codes that appear in gold annotations."""
+    needed = set()
+    with open(path, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            gc = r.get('gold_codes', '')
+            if gc:
+                for c in gc.split(','):
+                    c = c.strip()
+                    if c in NEW_CODES:
+                        needed.add(c)
+    return needed
 
-    # 4. Build table
-    print()
-    print("## Per-Class Evidence Table")
-    print()
-    print("| Code | Name | PY Scripts | Samples | Single-code% | Gold Need | QGIS Bridge | Boundary OK | **VERDICT** |")
-    print("|------|------|-----------|---------|-------------|-----------|-------------|------------|-------------|")
 
-    verdicts = []
-    for code, info in sorted(NEW_CODES.items(), key=lambda x: train_counts.get(x[0], 0), reverse=True):
-        name = info['name']
-        samples = train_counts.get(code, 0)
-        sc_rate = single_code_rate.get(code, 0)
-        in_gold = "YES" if code in gold_needed else "no"
-        qgis_ok = "YES" if info['qgis_ops'] else "?"
-        boundary_ok = "YES" if "Distinct" in info.get('semantic_boundary', '') else "⚠ fuzzy"
+def build_table(samples: list[dict], gold_needed: set[str]) -> list[dict]:
+    # Per-code stats
+    total_counts = Counter()
+    single_counts = Counter()
+    for s in samples:
+        codes = s.get('l3_codes', [])
+        for c in codes:
+            if c in NEW_CODES:
+                total_counts[c] += 1
+                if len(codes) == 1:
+                    single_counts[c] += 1
 
-        # Verdict logic
-        if samples >= 500 and in_gold == "YES" and boundary_ok == "YES":
-            verdict = "**KEEP** ✅"
-        elif samples >= 200 and boundary_ok == "YES":
-            verdict = "**KEEP** (conditional)"
-            verdicts.append(f"{code}: conditional")
-        elif samples < 100:
-            verdict = "**DROP** ❌"
+    rows = []
+    for code in sorted(NEW_CODES, key=lambda c: total_counts.get(c, 0), reverse=True):
+        info = NEW_CODES[code]
+        total = total_counts.get(code, 0)
+        single = single_counts.get(code, 0)
+        sc_rate = single / total if total > 0 else 0.0
+        in_gold = 'yes' if code in gold_needed else 'no'
+
+        # Verdict
+        if total >= 500 and sc_rate >= 0.10:
+            verdict = 'KEEP'
+        elif total >= 200:
+            verdict = 'REVIEW'
         else:
-            verdict = "**REVIEW** ⚠"
+            verdict = 'DROP'
 
-        # For display, py_scripts count from the raw scan
-        py_scripts = "?"  # placeholder — would need scan result
+        rows.append({
+            'code': code,
+            'name': info['name'],
+            'samples': total,
+            'single_code_pct': round(sc_rate * 100, 1),
+            'gold_need': in_gold,
+            'existing_alt': info['existing_alt'],
+            'verdict': verdict,
+        })
+    return rows
 
-        print(f"| {code} | {name} | {py_scripts} | {samples} | {sc_rate:.0%} | {in_gold} | {qgis_ok} | {boundary_ok} | {verdict} |")
 
-    # ── Summary recommendation ──
-    print()
-    print("## Recommendation")
-    print()
-    print("### KEEP (P0 — activate in next training cycle)")
-    keep = [code for code, info in NEW_CODES.items() if train_counts.get(code, 0) >= 500]
-    for code in keep:
-        print(f"- {code} ({NEW_CODES[code]['name']}): {train_counts.get(code,0)} samples")
+def write_artifacts(rows: list[dict], output_dir: str) -> None:
+    out = Path(output_dir)
+    out.mkdir(parents=True, exist_ok=True)
 
-    print()
-    print("### CONDITIONAL (P1 — activate only after boundary clarification)")
-    cond = [code for code, info in NEW_CODES.items() if 200 <= train_counts.get(code, 0) < 500]
-    for code in cond:
-        print(f"- {code} ({NEW_CODES[code]['name']}): {train_counts.get(code,0)} samples")
+    # JSON
+    with (out / 'evidence_table.json').open('w', encoding='utf-8') as f:
+        json.dump(rows, f, ensure_ascii=False, indent=2)
 
-    print()
-    print("### DROP (P3 — insufficient evidence or overlap)")
-    drop = [code for code, info in NEW_CODES.items() if train_counts.get(code, 0) < 200]
-    for code in drop:
-        print(f"- {code} ({NEW_CODES[code]['name']}): {train_counts.get(code,0)} samples — {info.get('existing_alt', '')[:80]}")
+    # Markdown
+    lines = ['# 13 New L3 Codes — Evidence Table', '']
+    lines.append('| Code | Name | Samples | Single% | Gold Need | Verdict |')
+    lines.append('|------|------|---------|---------|-----------|---------|')
+    for r in rows:
+        lines.append(
+            f'| {r["code"]} | {r["name"]} | {r["samples"]} | '
+            f'{r["single_code_pct"]}% | {r["gold_need"]} | **{r["verdict"]}** |'
+        )
 
-    print()
-    print("### Activation Experiment (3-5 codes)")
-    print("Select the top 3-5 KEEP codes, construct an oversampling training package")
-    print("(family_sampler weight for new token families = 5-10x), train a small")
-    print("warmstart cycle (10-20 epochs on the 94→107 head only), and verify that")
-    print("the model actually outputs these new tokens in open_landing evaluation.")
+    # Summary by verdict
+    lines.append('')
+    lines.append('## Summary')
+    keep = [r for r in rows if r['verdict'] == 'KEEP']
+    review = [r for r in rows if r['verdict'] == 'REVIEW']
+    drop = [r for r in rows if r['verdict'] == 'DROP']
+    lines.append(f'- KEEP: {len(keep)} codes')
+    for r in keep:
+        lines.append(f'  - {r["code"]} ({r["name"]}): {r["samples"]} samples, {r["single_code_pct"]}% single-code')
+    lines.append(f'- REVIEW: {len(review)} codes')
+    for r in review:
+        lines.append(f'  - {r["code"]} ({r["name"]}): {r["samples"]} samples')
+    lines.append(f'- DROP: {len(drop)} codes')
+    for r in drop:
+        lines.append(f'  - {r["code"]} ({r["name"]}): {r["samples"]} samples — {r["existing_alt"]}')
+
+    lines.append('')
+    lines.append('## Recommended Activation Candidates (top 3-5 KEEP codes)')
+    top = keep[:5]
+    for r in top:
+        lines.append(f'- {r["code"]} ({r["name"]}): {r["samples"]} samples, {r["single_code_pct"]}% pure')
+
+    with (out / 'evidence_table.md').open('w', encoding='utf-8') as f:
+        f.write('\n'.join(lines))
+
+    print('\n'.join(lines))
+    print(f'\nArtifacts written to {out}')
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--samples', required=True,
+                        help='Path to vocab_expansion_raw_samples.jsonl')
+    parser.add_argument('--gold', default=None,
+                        help='Path to vector_gold_annotated.csv')
+    parser.add_argument('--output-dir', default='outputs_v2/diagnostics/evidence_table')
+    args = parser.parse_args()
+
+    samples = load_samples(args.samples)
+    gold = load_gold(args.gold) if args.gold else set()
+    rows = build_table(samples, gold)
+    write_artifacts(rows, args.output_dir)
 
 
 if __name__ == '__main__':
