@@ -1,5 +1,22 @@
 # 进度日志
 
+## 2026-07-08：vocab107 训练完成 + 评测 + 状态总览
+
+### vocab107 训练结果
+- 50 epoch from-scratch，epoch 31 最佳，早停 @epoch 43
+- Best composite=0.564 (epoch 31), SetF1=0.513, LCS=0.369
+- Test: Loss=2.998, SetF1=0.468, TokenAcc=15.4%
+
+### open_landing 评测 (80题)
+- vec usable=98%, vec complete=100%, vec L3%→84%
+- rast usable=96%, rast L3%→78% (栅格能力保持)
+- 13 新 L3 码 0/13 被模型使用 — 罕见 token 淹没
+
+### 当前阻塞
+- 新码未激活：18K 样本在 113K 总量中占比低，需上采样
+- Set Predictor 未更新：仍基于旧 94 词表
+- QGIS landing 未优化：native: 主导
+
 ## 2026-07-06：L3 词汇扩充 + from-scratch 训练启动
 
 ### 词汇扩充
