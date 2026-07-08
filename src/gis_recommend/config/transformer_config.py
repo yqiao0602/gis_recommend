@@ -52,7 +52,11 @@ TRANSFORMER_CHECKPOINT_DIR = OUTPUT_DIR / "transformer_checkpoints_v3_l3emb"
 
 # ===================== Model Architecture =====================
 # Vocabulary — 94 L3 primitives (v2). The legacy 350-L3 vocabulary is retired.
-VOCAB_SIZE = 107  # expanded from 94: +13 vector codes (Reproject, FixGeom, Grid, etc. 2026-07-06)
+# NOTE: VOCAB_SIZE is the *stable* default for the 94-code v2 stable profile.
+# The 107-code experimental profile overrides this via environment variable
+# GIS_VOCAB_SIZE=107 or by importing the vocab_profile module.
+
+VOCAB_SIZE = 94
 SPECIAL_TOKENS = {
     '<PAD>': -1,
     '<UNK>': -2,
@@ -61,6 +65,18 @@ SPECIAL_TOKENS = {
 }
 NUM_SPECIAL_TOKENS = len(SPECIAL_TOKENS)
 TOTAL_VOCAB_SIZE = VOCAB_SIZE + NUM_SPECIAL_TOKENS
+
+# ── Vocab profile system ──────────────────────────────────────────
+# Two explicit profiles:
+#   v2_94_stable        — current stable mainline (94 codes, 17 vector)
+#   v3_107_experimental — 13 new vector codes (Reproject, FixGeom, etc.)
+# Select profile by setting GIS_VOCAB_PROFILE env var, or import
+#   from gis_recommend.config.vocab_profile import apply_profile
+# and call apply_profile("v3_107_experimental") before any model init.
+
+_vocab_profile = os.environ.get("GIS_VOCAB_PROFILE", "v2_94_stable")
+if _vocab_profile == "v3_107_experimental":
+    VOCAB_SIZE = 107
 
 # Transformer architecture
 D_MODEL = 256  # 匹配L3嵌入维度（图嵌入训练输出256维）
