@@ -1783,3 +1783,13 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 验证：本机 16 项 QGIS pilot/taxonomy 测试、服务器 6 项 taxonomy 测试通过。未训练、未调用 DeepSeek、未切生产默认、未写 `/home/yll`。
 - 下一步：用 114 alias index 重建 path/hash-qualified 有序 QGIS 证据，保留 unresolved/degraded evidence，再形成约 300 条互斥审核抽样提案；在此之前不转换、不训练。
 
+### 2026-07-14：首轮 114-aware 有序证据全量扫描
+
+- expanded stable-94 crosswalk 与 49 条审核新增 alias 已合并为 325 个审计条目、228 条 exact L3 alias。10 条已知旧语义错映射使用显式 allowlist 重分配，其他不同 L3 目标仍 fail-closed。
+- 服务器流式扫描 15,942,213 行，保留 1,683,292 条 QGIS/direct/custom API 相关行，形成 21,085 条 path-qualified records；保留 extraction group 与 AST/steps hash，未解决碰撞继续为 T0。
+- Provenance：resolved 16,936，unresolved collision 4,149。Ordering：deterministic 2,578，degraded 18,507。Mapping：complete exact 24，partial exact 2,450，unmapped 18,611。
+- 20 个新增类全部有 exact-alias 真实证据，每类 12-599 records；因此当前没有“新增类完全无数据”的问题，但这些记录仍不具备直接训练资格。
+- 未映射量主要来自 `QgsProcessingAlgorithm.addParameter`、`QgsProject.instance`、`QgsField`、`QgsVectorLayer` 等底层基础设施调用；逐调用映射到 L3 会重现之前的过度碎片化错误。
+- 1.6GB ordered JSONL 只保留在服务器作为诊断数据；本机仅同步 `docs/reports/qgis_pilot/phase2_ordered_114/` 下的 bounded summary/crosswalk/ledger。
+- 下一门禁：先完成 direct API bounded compaction、semantic aggregation 和 statement-index 修复，再提出约 300 条人工审核子集；尚未授权抽样、DeepSeek 转换或训练。
+

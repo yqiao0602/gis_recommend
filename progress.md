@@ -471,3 +471,15 @@
 1. 用 114 `alias_to_code` 对 path/hash-qualified evidence 重建有序 processing.run / low-level API / custom algorithm 链。
 2. 保留 unresolved fragments 和 degraded ordering，不使用 set、不强制猜标签。
 3. 形成约 300 条 estimation-reference / coverage-diagnostic 分层抽样提案，再进入人工审核门禁。
+
+## 2026-07-14：114-aware ordered evidence 全量结果
+
+- 完整 crosswalk：325 entries，228 exact L3 aliases，10 条显式 semantic reassignment。
+- 扫描：15,942,213 rows，1,683,292 relevant API rows，21,085 path-qualified records。
+- Provenance：resolved 16,936；unresolved collision 4,149（T0，禁止训练）。
+- Ordering：deterministic 2,578；degraded 18,507。
+- Mapping：complete_exact 24；partial_exact 2,450；unmapped 18,611。
+- 20 个新增类全部有证据：records 范围 12-599；说明 taxonomy 类别不是“无数据”，但完整链仍受 stable crosswalk 覆盖和底层 API 聚合限制。
+- top unmapped 主要是 `QgsProcessingAlgorithm.addParameter`、`QgsProject.instance`、`QgsField`、`QgsVectorLayer` 等实现基础设施调用，不能逐个当 L3。
+- 结论：先做 bounded direct-API compaction、semantic aggregation 和 statement-index 修复，再生成约 300 条审核提案；当前 1.6GB JSONL 仅为服务器诊断产物，不进入训练、不回传 Git。
+- 本机只同步 summary、observed crosswalk 和 write ledger：`docs/reports/qgis_pilot/phase2_ordered_114/`。

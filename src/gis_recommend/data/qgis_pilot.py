@@ -295,6 +295,73 @@ def build_ordered_evidence(rows: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
     return result
 
 
+def normalize_qgis_operation(operation: Any) -> str:
+    normalized = str(operation or "").strip().lower()
+    while normalized.startswith("processing.run:"):
+        normalized = normalized[len("processing.run:") :]
+    return normalized
+
+
+def map_ordered_evidence_to_taxonomy(
+    evidence: Mapping[str, Any],
+    taxonomy: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Map exact QGIS aliases while preserving every ordered source step."""
+    aliases = {
+        normalize_qgis_operation(alias): code
+        for alias, code in taxonomy.get("alias_to_code", {}).items()
+    }
+    code_to_id = taxonomy.get("code_to_token_id", {})
+    mapped_steps = []
+    mapped_chain = []
+    unmapped = []
+    for step in evidence.get("ordered_steps", []):
+        mapped = dict(step)
+        operation = normalize_qgis_operation(step.get("operation"))
+        code = aliases.get(operation)
+        if code is not None:
+            mapped.update(
+                {
+                    "normalized_operation": operation,
+                    "mapping_status": "exact_alias",
+                    "l3_code": code,
+                    "l3_token_id": code_to_id[code],
+                }
+            )
+            mapped_chain.append(code)
+        else:
+            mapped.update(
+                {
+                    "normalized_operation": operation,
+                    "mapping_status": "unmapped",
+                    "l3_code": None,
+                    "l3_token_id": None,
+                }
+            )
+            unmapped.append(mapped)
+        mapped_steps.append(mapped)
+
+    has_steps = bool(mapped_steps)
+    completeness = (
+        "complete_exact"
+        if has_steps and not unmapped
+        else "partial_exact"
+        if mapped_chain
+        else "unmapped"
+    )
+    return {
+        **evidence,
+        "taxonomy_profile": taxonomy.get("profile"),
+        "ordered_steps": mapped_steps,
+        "mapped_l3_chain": mapped_chain,
+        "mapped_l3_token_ids": [code_to_id[code] for code in mapped_chain],
+        "unmapped_steps": unmapped,
+        "chain_completeness": completeness,
+        "exact_mapped_step_count": len(mapped_chain),
+        "unmapped_step_count": len(unmapped),
+    }
+
+
 def assign_evidence_tier(record: Mapping[str, Any]) -> EvidenceTier:
     if record.get("collision_state") in {"unresolved_collision", "missing_artifact"}:
         return EvidenceTier.T0

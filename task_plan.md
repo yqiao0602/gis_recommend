@@ -440,3 +440,11 @@
 - `configs/taxonomy/qgis_l3_v1_114_added_classes.csv`
 - `scripts/build_qgis_taxonomy_v1.py`
 - `tests/test_qgis_taxonomy_v1.py`
+
+## 2026-07-14：114-aware 有序证据首轮全量扫描 ✅
+
+- [x] 合并 expanded stable-94 crosswalk 与 49 条新增 alias，得到 325 个审计条目 / 228 条 exact L3 alias。
+- [x] 显式记录 10 条旧错映射的语义重分配；未审核的不同目标仍 fail-fast。
+- [x] 流式扫描 15,942,213 行，按 extraction group + script 保留路径身份和 AST/steps hash，不使用 set。
+- [x] 20 个新增类全部有真实调用证据，最低 Concave Hull 12 records，最高 Reproject 599 records。
+- [ ] 暂不进入 300 条抽样：21,085 records 中 complete_exact 仅 24，ordering degraded 18,507，T0 collision 4,149；先完成 direct API compact/semantic aggregation 和顺序修复。

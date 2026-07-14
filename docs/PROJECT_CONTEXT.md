@@ -1775,3 +1775,13 @@ Follow-up artifact:
 - Verification: 16 local QGIS pilot/taxonomy tests and 6 server taxonomy tests passed. No training, DeepSeek call, production switch, or `/home/yll` write occurred.
 - Next: rebuild ordered, path/hash-qualified QGIS evidence against the 114 alias index, preserve unresolved/degraded evidence, then produce the approximately 300-record disjoint review-sampling proposal before any conversion or training.
 
+### 2026-07-14 - First Full 114-Aware Ordered-Evidence Scan
+
+- The stable-94 expanded crosswalk and 49 reviewed addition aliases were merged into 325 audited entries and 228 exact L3 aliases. Ten known old semantic misassignments are explicit allowlisted reassignments; every other conflicting L3 target still fails closed.
+- The server streamed 15,942,213 process rows and retained 1,683,292 relevant QGIS/direct/custom API rows across 21,085 path-qualified records. AST/steps hashes and extraction-group identity are preserved; unresolved collisions remain T0.
+- Provenance: 16,936 resolved and 4,149 unresolved-collision records. Ordering: 2,578 deterministic and 18,507 degraded. Mapping: 24 complete-exact, 2,450 partial-exact, and 18,611 unmapped records.
+- All 20 added classes have real exact-alias evidence (12-599 records per class), so no added class is currently evidence-empty. This does not make the records training-ready.
+- Most unmapped volume is low-level infrastructure such as `QgsProcessingAlgorithm.addParameter`, `QgsProject.instance`, `QgsField`, and `QgsVectorLayer`; treating each call as an L3 operation would recreate the prior over-fragmentation error.
+- The 1.6 GB ordered JSONL remains server-side diagnostic data only. Local bounded reports are under `docs/reports/qgis_pilot/phase2_ordered_114/`.
+- Next gate: bounded direct-API compaction, semantic aggregation, and statement-index repair before proposing the approximately 300-record human-review subsets. No sampling, DeepSeek conversion, or training is authorized yet.
+
