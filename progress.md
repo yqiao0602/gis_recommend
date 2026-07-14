@@ -320,8 +320,8 @@
 - 辅助脚本：`_analyze_poc_traces.py`, `_analyze_3k_quality.py`, `_audit_3k_final.py`, `_merge_dedup.py` 等
 
 ### Key 管理
-- deepseek-chat 临时 key: sk-89eb3f39563c470180aedeb6da3db5c1（批量生产用）
-- 服务器端代码通过 env var DEEPSEEK_API_KEY 读取，不落盘
+- deepseek-chat 临时 key 仅通过 `DEEPSEEK_API_KEY` 环境变量提供，文档中不记录明文
+- 服务器端代码通过 env var `DEEPSEEK_API_KEY` 读取，不落盘
 
 ### Git 提交（待提交）
 - 新增脚本 + task_plan/findings/progress 更新
@@ -444,3 +444,30 @@
 - `python -m unittest tests.test_v4_6_vector_training_mechanisms tests.test_v4_6_training_readiness tests.test_v4_6_training_stability tests.test_v4_training_entry_smoke tests.test_api_trace_l3_training_cleaning tests.test_v4_qg_planner tests.test_runtime_consistency -v` -> 64 tests OK。
 - `python -m py_compile ...` 覆盖训练、清洗、推理和评估关键文件 -> exit 0。
 - oversampled warmstart dry-run with `--enable-family-sampler --max-text-length 256 --ar-max-steps 32` -> exit 0；train/val/test=65,748/7,694/7,695，prompt truncation=0，sequence truncation=0，AR horizon overrun=545，eval generated rows=0。
+
+## 2026-07-14：114 类 QGIS taxonomy freeze 完成
+
+### 结果
+- 114 类实验 taxonomy 已固定：stable-94 ID `0..93` 原样保留，20 个新增类使用 ID `94..113`，生产默认仍为 94。
+- 三项用户决策已固化：保留 Spatial Index；Concave Hull 独立；Rasterize 与 Polygonize 分离。
+- 旧 `v3_107_experimental` 被标记为 `invalid_code_reuse`；13 个旧 token 只能按 source-profile 语义迁移，禁止按复用 code string 替换。
+- 新增 49 条规范化 QGIS alias，builder 会阻断大小写归一后的 alias 冲突、新 code 与 legacy 350 冲突、base ID 变化和迁移目标不闭合。
+- legacy registry 的 `L1_06` 名称原本全空；sidecar 显式补为 `3D and TIN Analysis`，同时记录 Delaunay 会重新引入 stable-94 已删除父级，但不修改生产 L1/L2 配置。
+
+### 可复现输入与产物
+- base mapping SHA256：`005699dfd438e966cda28db8891795a07b9867856951de022cd8704c6e6a4558`
+- legacy hierarchy SHA256：`babbc6ea3135d479a4d8cafd46073fb5b7242204adc1b972da80d525e0559bcb`
+- taxonomy SHA256：`c23b91566e672fa9b2701bb411cad7acfbd636c1219b93d454d07f644eccc739`
+- migration SHA256：`5d285d2573198598d9d89cbed96491156fe0dd43dac814f59d291fab2adf278c`
+- added CSV SHA256：`70baf9c251a6d93176c407fabda34eebb5efe751f84248512956a26c2fcf5970`
+- 服务器 sidecar：`/home/qy/system_redesign/configs/taxonomy/`；冻结输入位于其 `inputs/` 子目录。
+
+### 发现与边界
+- 服务器 `outputs_v2/id_mappings_v2.json` metadata 声称 94，但实际有 107 个 L3 ID；本轮未覆盖该文件，服务器验证使用 taxonomy 专属冻结 94 输入。
+- 本机 16 项 QGIS pilot/taxonomy 测试通过；服务器 6 项 taxonomy 测试通过；三份生成产物跨 Windows/Linux 字节级一致。
+- 未训练、未调用 DeepSeek、未读取或写入 `/home/yll`、未切换生产默认。
+
+### 下一步
+1. 用 114 `alias_to_code` 对 path/hash-qualified evidence 重建有序 processing.run / low-level API / custom algorithm 链。
+2. 保留 unresolved fragments 和 degraded ordering，不使用 set、不强制猜标签。
+3. 形成约 300 条 estimation-reference / coverage-diagnostic 分层抽样提案，再进入人工审核门禁。

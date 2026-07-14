@@ -1770,3 +1770,16 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 用户决定暂缓 stable-94 备份，将 QGIS 数据重建设为主线。Phase 1 只读 inventory 匹配 20,413/20,428 条 facts，得到 18,526 条唯一 extraction-group 关联和 1,887 条多 group basename 碰撞，并索引 262,110 个 artifacts。补充文本证据包括 2,009 个 plugin metadata、2,054 个 README、851 个 model/tutorial metadata 和 2 个精评 CSV；48,011 个源码只是 code/docstring 候选，不能自动视为合格描述。source root 前后元数据未变化，所有写入均登记在 `/home/qy`。实验性 107 mapping 虽有 107 个 ID，但 464 条 QGIS 映射没有任何一条指向新增 13 类，因此 Stage 2 必须从有序证据构建经审核的 107 专属 crosswalk。
 - Taxonomy 审计扫描 15,942,213 行 merged process，确认当前 13 个新增 code 复用了 legacy 350 中不同语义的 code，当前 107 草案禁止冻结。真实脚本支持大部分目标能力，但必须补充分离 Define CRS、Geometry Validation、Rasterize、Polygonize、Table Join 和 Feature-to-Polygon 等边界。当前建议范围为 112-114 类，默认草案 113 类，等待 Spatial Index、Concave Hull 和栅格/矢量转换方向三项明确决策。
 
+### 2026-07-14：实验性 114 类 Taxonomy 冻结
+
+- QGIS 审核 sidecar 已固定为 `qgis_l3_v1_114_experimental`：stable-94 的 token ID `0..93` 完全保留，20 个审核新增类固定为 `94..113`；生产默认仍为 94。
+- 用户三项决策已固化：保留 Add Spatial Index、Concave Hull 独立、Rasterize Vector 与 Polygonize Raster 分为两个方向类。
+- 旧 `v3_107_experimental` 标记为 `invalid_code_reuse`。其 13 个新增 token 必须按 source profile 语义迁移；由于多个 code string 在 legacy registry 中含义不同，禁止直接按 code 字符串替换。
+- 生成产物位于 `configs/taxonomy/`：114 taxonomy JSON、invalid-107 migration JSON 和新增类 CSV；builder 为 `scripts/build_qgis_taxonomy_v1.py`，测试为 `tests/test_qgis_taxonomy_v1.py`。
+- 校验覆盖：114 个唯一 ID `0..113`、stable-94 ID 不变、与完整 350 registry 无冲突、49 条规范化 alias 唯一、迁移目标闭合、父级 metadata 完整、JSON 固定 UTF-8/LF 可复现。
+- legacy `L3_06_01_02` Delaunay 会重新引入 stable-94 已删除的 `L1_06/L2_06_01`。sidecar 显式记录该风险，并补充 `L1_06 = 3D and TIN Analysis`；生产 L1/L2 vocab 未修改。
+- 本机和服务器产物字节级一致。SHA256：taxonomy `c23b91566e672fa9b2701bb411cad7acfbd636c1219b93d454d07f644eccc739`；migration `5d285d2573198598d9d89cbed96491156fe0dd43dac814f59d291fab2adf278c`；CSV `70baf9c251a6d93176c407fabda34eebb5efe751f84248512956a26c2fcf5970`。
+- 服务器警告：`/home/qy/system_redesign/outputs_v2/id_mappings_v2.json` 的 metadata 声称 94，但实际包含 107 个 ID；本轮未修改该文件。服务器校验使用 `/home/qy/system_redesign/configs/taxonomy/inputs/` 下的冻结 94 输入。
+- 验证：本机 16 项 QGIS pilot/taxonomy 测试、服务器 6 项 taxonomy 测试通过。未训练、未调用 DeepSeek、未切生产默认、未写 `/home/yll`。
+- 下一步：用 114 alias index 重建 path/hash-qualified 有序 QGIS 证据，保留 unresolved/degraded evidence，再形成约 300 条互斥审核抽样提案；在此之前不转换、不训练。
+

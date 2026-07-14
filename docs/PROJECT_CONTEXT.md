@@ -1,6 +1,6 @@
 # Project Context Handoff
 
-Last updated: 2026-06-24
+Last updated: 2026-07-14
 
 This document is the durable project memory for `system_redesign`. New Codex sessions should read this file before continuing work. Update it after each completed phase with concise changes to `Completed`, `Open Work`, `Known Pitfalls`, and `Verification`.
 
@@ -1761,4 +1761,17 @@ Follow-up artifact:
 - The corrected authority report also separates `phase11_vector_sft_94`: oversampled workflows/splits/task vocabulary/length stats, the quality-gate transition matrix, the epoch-4 best-composite checkpoint, and Phase 11 logs. The generic quality-gate checkpoint directory had been reused by Phase 11, so pairing that checkpoint with base quality-gate data is not reproducible. The existing quality-gate evaluation JSON is a 500-row all-zero smoke with conflicting configured/effective checkpoint paths and is not accepted as the stable GEE metric authority.
 - The user deferred stable-94 backup work and made QGIS data reconstruction the mainline. Phase 1 read-only inventory matched 20,413/20,428 facts rows, found 18,526 unique extraction-group joins and 1,887 multi-group basename collisions, and indexed 262,110 artifacts. Additional text evidence includes 2,009 plugin metadata files, 2,054 READMEs, 851 model/tutorial metadata files, and two fine-evaluation CSVs; 48,011 source scripts are code/docstring candidates, not automatically valid descriptions. Source-root metadata remained unchanged and all writes are ledgered under `/home/qy`. The experimental 107 ID mapping has 107 IDs but zero of its 464 QGIS mappings target the 13 added codes, so Stage 2 requires a reviewed 107-specific crosswalk built from ordered evidence.
 - Taxonomy audit scanned 15,942,213 merged-process rows and found that the current 13 additions reuse legacy 350-taxonomy codes with incompatible meanings. The current 107 draft must not be frozen. Real-script evidence supports most intended capabilities but requires separate Define CRS, Geometry Validation, Rasterize, Polygonize, Table Join, and Feature-to-Polygon decisions. The working recommendation is 112-114 classes, default draft 113, pending explicit decisions on Spatial Index, Concave Hull, and direction-specific raster/vector conversion.
+
+### 2026-07-14 - Experimental 114-Class Taxonomy Freeze
+
+- The reviewed QGIS sidecar is now `qgis_l3_v1_114_experimental`. It preserves all stable-94 token IDs `0..93` and assigns 20 reviewed additions to `94..113`. Production remains on 94.
+- User decisions are frozen: keep Add Spatial Index, keep Concave Hull independent, and model Rasterize Vector versus Polygonize Raster as separate directional classes.
+- The invalid `v3_107_experimental` profile is marked `invalid_code_reuse`. Its 13 added tokens require source-profile-aware semantic migration; code-string replacement is forbidden because several strings had legacy meanings.
+- Generated artifacts live in `configs/taxonomy/`: `qgis_l3_v1_114.json`, migration JSON, and added-class CSV. The builder is `scripts/build_qgis_taxonomy_v1.py`; coverage is in `tests/test_qgis_taxonomy_v1.py`.
+- Validation proves exactly 114 unique IDs `0..113`, unchanged stable-94 IDs, no collision with the 350-class registry, 49 unique normalized aliases, closed migration targets, complete parent metadata, and deterministic UTF-8/LF JSON.
+- Legacy `L3_06_01_02` Delaunay reactivates parents `L1_06/L2_06_01`, which are absent from the stable-94 vocab. The sidecar records this explicitly and supplies `L1_06 = 3D and TIN Analysis`; production L1/L2 vocab is unchanged.
+- Local and server artifacts are byte-identical. SHA256: taxonomy `c23b91566e672fa9b2701bb411cad7acfbd636c1219b93d454d07f644eccc739`; migration `5d285d2573198598d9d89cbed96491156fe0dd43dac814f59d291fab2adf278c`; CSV `70baf9c251a6d93176c407fabda34eebb5efe751f84248512956a26c2fcf5970`.
+- Server warning: `/home/qy/system_redesign/outputs_v2/id_mappings_v2.json` claims 94 in metadata but contains 107 IDs. It was not modified. Server validation uses the frozen 94 input under `/home/qy/system_redesign/configs/taxonomy/inputs/`.
+- Verification: 16 local QGIS pilot/taxonomy tests and 6 server taxonomy tests passed. No training, DeepSeek call, production switch, or `/home/yll` write occurred.
+- Next: rebuild ordered, path/hash-qualified QGIS evidence against the 114 alias index, preserve unresolved/degraded evidence, then produce the approximately 300-record disjoint review-sampling proposal before any conversion or training.
 

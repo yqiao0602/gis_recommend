@@ -422,3 +422,21 @@
 - 服务器 `/home/yll/GEE` 只读 / `/home/qy/system_redesign` 为工作区
 - git-workflow 使用 feat 分支、Conventional Commits、`--no-ff` 合并
 - 详细发现见 `docs/server_data_inventory.md` + `memory/v46-eval-findings-2026-06.md`
+
+## 2026-07-14：QGIS 114 类 taxonomy 冻结门禁 ✅
+
+- [x] 否决旧 107 草案：13 个新增 code 与 legacy 350 registry 发生语义复用，禁止按 code string 直接迁移。
+- [x] 冻结实验 sidecar `qgis_l3_v1_114_experimental`：保留 stable-94 的 ID `0..93`，20 个审核新增类固定为 `94..113`。
+- [x] 用户确认三项边界：保留 Add Spatial Index；Concave Hull 独立；Rasterize / Polygonize 分为两个方向类。
+- [x] 生成 taxonomy、invalid-107 source-profile-aware migration、49 条 QGIS alias index 和 20 类 CSV。
+- [x] 完整 legacy 350 collision、alias collision、迁移闭合、父级 metadata、跨平台可复现哈希校验通过。
+- [x] Delaunay 使用 legacy `L3_06_01_02`，并显式记录实验 sidecar 重新引入 stable-94 已删除的 `L1_06/L2_06_01`；不修改生产 L1/L2 vocab。
+- [x] 本机与服务器三份产物 SHA256 完全一致；服务器 taxonomy 数据产物仅写入 `/home/qy/system_redesign/configs/taxonomy/`，同步代码位于同一 `/home/qy` 工作区。
+- [ ] 下一步：以 114 alias/crosswalk 重建 path/hash-qualified 有序 QGIS 算子证据，随后提出约 300 条分层人工审核样本；本阶段不训练、不调用 DeepSeek、不切生产默认。
+
+关键产物：
+- `configs/taxonomy/qgis_l3_v1_114.json`
+- `configs/taxonomy/qgis_l3_v1_114_migration_from_invalid_107.json`
+- `configs/taxonomy/qgis_l3_v1_114_added_classes.csv`
+- `scripts/build_qgis_taxonomy_v1.py`
+- `tests/test_qgis_taxonomy_v1.py`
