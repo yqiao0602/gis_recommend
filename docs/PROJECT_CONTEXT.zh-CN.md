@@ -1748,3 +1748,21 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 
 - 新增 docs/qgis_vector_resolution_and_benchmark_plan_zh.md，作为短期待办：优先解决传统矢量 / QGIS-native 流程能力不足，并设计同一批任务上的横向对比实验，对比 LLM-only、LLM+RAG、当前系统和改进系统。
 
+## 2026-07-13 新词表激活数据审计
+
+- 服务器只读核查确认：107 词表包共有 113,466 行，包括 76,884 条原 quality-gate、18,111 条 `vocab_expansion_mining`、11,277 条 `py_script_vector_mining`、4,253 条 canonical 重复样本及少量 targeted 来源。五码激活包把其中 15,410 条目标行重复 5 次，形成 77,050 条激活行，总计 172,405 行。
+- 18,111 条扩词数据不是自然语言监督，仅有 179 种 L3 编码链 prompt；五个激活码覆盖其中相互重叠的 150 种编码链。挖掘脚本使用无序 `set` 收集 QGIS 算子，只保留新增码、丢弃旧 L3 步骤，并使用 `grid`、`warp` 等宽泛匹配。该批数据不能只补描述后继续使用，必须从原脚本重新抽取有序链并重新标注。
+- 之前所称“约 2 万条矢量数据”不是同一批数据。`vector_unified` 包含 4,091 条有自然语言的 QGIS augmentation 和 3,037 条 LLM source-code 样本，但存在 placeholder、冲突和弱标签风险；11,277 条 PY 挖掘样本同样是编码链 prompt。Phase 11 较干净的 81,137 行包实际使用 685 条 canonical 自然语言任务，重复后为 4,253 行。
+- 已有自然语言候选并不少：`qgis_complete_ALL.jsonl` 共 2,754 行，其中 1,152 行的 QGIS 链至少包含 Reproject/FixGeom/Grid/Simplify/Snap 之一，各码分别为 732/466/135/74/76（允许重叠）。但按 `script_xxx` basename 关联会在不同来源目录发生碰撞，已观察到同 ID 任务变化，因此训练前必须恢复路径级 provenance，并做描述与算子链一致性门禁。
+- 685 条 clean canonical seed 中有 299 个唯一任务的真实 `qgis_ops` 至少包含一个激活目标：Reproject 178、FixGeom 120、Grid 40、Simplify 20、Snap 19（各码允许重叠）。685 条文本均非空且唯一，但 Phase 11 包装后的副本缺少显式 START/END，299 条目标任务仍使用旧 94 词表映射。应先在实验性 107 profile 下重建标签和序列边界，再考虑较弱来源。
+- 激活评测还必须改用 107 专属 transition matrix、107 hierarchy，关闭或重训旧 Set Predictor，并加入包含新码的 held-out 自然语言任务。当前旧 transition matrix 属于 94 词表，val/test 对五个目标码计数均为 0。
+- `/home/yll/GEE/工作流抽取结果/QGIS` 原始来源盘点表明，该目录主要是工作流抽取产物，并非完整的 398,483 个 PY 语料：共 262,901 个文件、约 30.1GB，包括 52,422 个 AST JSON、52,422 个 steps CSV，只有 721 个 `.py`。合并 process 表中有 52,329 个路径级 script 记录、49,997 个唯一 basename，其中 8,080 个明确包含 `processing.run`。
+- 严格算子匹配在该目录找到 5,907 个路径级、4,684 个 basename 唯一的五码候选。路径级单码为 Reproject 4,956、FixGeom 1,107、Grid 356、Simplify 188、Snap 181；各码允许重叠，且 L1 output 目录存在一份重复副本。
+- AST 文本数量充足但噪声较大：28,906 个 AST 有 module docstring，27,507 个至少包含 5 个英文词，但大量内容是许可证、Plugin Builder banner 或通用 exported-model 文本。首轮应优先处理去重后的 L1、strict-multistep、processing-chained、model/tutorial 和 RouteB；这些目录共有 1,771 个目标路径记录，822 个带 module docstring，严格任务文本启发式过滤后约 162 个，尚未做跨目录去重。
+- 当前抽取产物中的 `source_script` 通常只有 basename，没有权威原始路径。下一版数据构建必须恢复上游路径 provenance，按 `statement_index`/scope 保留执行顺序而不是使用 set，对脚本和链做内容 hash 去重，阻断栅格/矢量模式误匹配，并只通过路径级键关联 facts、docstring 和 README 文本。
+- `outputs_v2/_yll_update/facts_summary1000.csv` 适合作为完整 107 重构的主要输入：共 20,428 行，task name/description 全部非空，20,394 条描述唯一，20,413/20,428 能同时匹配 AST 和 steps。文本长度中位数 111 词、p90 154、p99 198、最大 307。它属于代码约束的自然语言摘要，不等同于人工编写金标。
+- facts 关联仍需门禁：1,887 个匹配 basename 出现在多个抽取目录，原始 Task Type 有 3,073 种字符串。文本启发式发现 798 条测试相关、2,047 条 UI 相关、2,841 条渲染/样式相关记录，各集合有重叠；若 AST 同时含真实数据处理步骤，出现渲染词不能直接判 reject。
+- 当前精确链漏斗只得到 `qgis_complete_v4.jsonl` 的 2,934 行（vector 1,520、mixed 1,013、raster 333、unknown 68），虽然 facts-to-AST 关联率接近 100%；其中仅 2,149 条唯一链，且存在最长 607 步的异常链。要利用预计约 15,700 条高质量描述，必须同时从 `processing.run` 算法和有证据的直接 QGIS/GDAL API 重建有序完整 107 标签；不能只用文本训练，也不能在代码证据不足时强制猜标签。
+- 首轮真实数据 pilot 的共识规划已完成，批准版为 `.omx/plans/full-107-qgis-pilot.md`。计划保持 94/GEE 稳定，把 107 视为实验起点，构建 path/hash provenance 和 T0-T4 证据等级，提出约 300 条且不可合并指标的 estimation-reference / coverage-diagnostic 双子集，并在批量转换前暂停，等待用户明确确认子集数量和审核规则。该计划不授权训练、taxonomy 变更、扩量或生产默认切换。
+- 本机同步现为 Phase 收口硬要求：服务器关键脚本、配置、prompt、schema、测试必须同步回本机仓库；taxonomy、authority、质量门禁、审核、训练准入和迁移决策必须更新 `task_plan.md`、`progress.md` 及中英文 context。大型数据保留服务器，仅同步 manifest、hash、统计、可复现构建脚本和小型审核 fixture；禁止同步任何密钥或密码。
+

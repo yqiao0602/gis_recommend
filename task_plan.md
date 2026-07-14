@@ -4,7 +4,46 @@
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因，通过数据扩充+词汇扩展+模型重训，持续提升矢量规划能力。
 
 ## 当前阶段
-**2026-07-08 — L3 词汇扩充 v1 训练完成，新码未被模型使用，下一步需要稀有 token 上采样。**
+**2026-07-14 — 停止继续复制/上采样无自然语言语义的激活数据，按已批准的 evidence-first 计划重构约 300 条 QGIS 真实数据 pilot。当前只授权推进到 Phase 4 人工确认门禁，不训练、不扩量、不切换默认词表。**
+
+## 2026-07-14：真实 QGIS 数据 Pilot 批准计划
+
+正式计划：`.omx/plans/full-107-qgis-pilot.md`（本机 `.omx/` 当前被 Git 忽略，关键结论同时维护在本文件、`progress.md` 和中英文 `PROJECT_CONTEXT`）。
+
+### 已确认目标
+
+- 当前 107 类只是实验 taxonomy 起点，最终类别数可根据真实证据增删、合并或调整。
+- 最终目标是用证据充分的新 taxonomy 替换 94 默认系统，但在迁移前必须保留并验证 94/GEE 稳定基线。
+- 现有 GEE 标签不全量重构，只修复空文本、重复和冲突，并作为 replay 与 held-out 回归 authority。
+- 任何未来模型的核心 GEE held-out 指标相对稳定基线最多允许下降 5%；理想目标是不下降。
+- QGIS/facts 数据必须从有序代码证据重建完整链，不能只提取新增码，也不能使用无序 set 或纯描述强猜。
+
+### Pilot 范围与门禁
+
+- [ ] Phase 0：确认 `vocab_profile.py` 与 `run_contract.py` 的稳定 94 authority 差异，生成备份 manifest 并完成隔离 restore smoke。
+- [ ] Phase 1：证明 `/home/yll` 严格只读；只把必要 facts、AST、steps 和索引复制到 `/home/qy`。
+- [ ] Phase 2：构建 path/hash provenance、碰撞处理和 T0-T4 证据等级；basename 冲突不自动选择。
+- [ ] Phase 3：按 `statement_index`、scope、调用嵌套和 process relation 恢复有序 API/QGIS 操作证据。
+- [ ] Phase 4：提出约 300 条、互不混合指标的 `estimation_reference_subset` 和 `coverage_diagnostic_subset`。
+- [ ] **人工确认门禁：** Phase 4 后停止，等待确认两个子集的具体数量、审核人数、裁决人和分歧处理规则。
+- [ ] Phase 5/6 仅在门禁批准后执行 DeepSeek 单条 smoke 和 pilot batch；扩量、训练和 taxonomy 修改仍需再次批准。
+
+### 硬性安全边界
+
+- `/home/yll` 只读，禁止创建、修改、删除文件；所有写操作限定在 `/home/qy` 和本机仓库工作区。
+- 禁止删除服务器任何数据。
+- 临时 DeepSeek key 仅通过 `DEEPSEEK_API_KEY` 进程环境变量传递，不写入代码、日志、报告或 Git；pilot 后必须轮换/撤销。
+- 只持久化 `brief_rationale`，禁止保存 `reasoning_content`、思维链、provider thinking trace 或原始 prompt/completion dump。
+- 只有人工审核后的 T4 样本可以进入准确率分母；estimation、coverage、collision diagnostic 指标禁止合并。
+- Pilot 结束后的扩量仍需明确批准数值质量阈值和允许进入语料/SFT 的 provenance/label 等级。
+
+### 本机同步协议
+
+- 服务器上新增或修改的关键脚本、配置、schema、prompt、测试和报告生成代码，必须在阶段收口前同步回本机仓库；不得只留服务器临时版本。
+- taxonomy、ID 映射、stable authority、数据门禁、抽样策略、审核协议、质量阈值、训练准入和生产切换等关键决策，必须同步更新本机 `task_plan.md`、`progress.md`、`docs/PROJECT_CONTEXT.md` 和 `docs/PROJECT_CONTEXT.zh-CN.md`。
+- 每个 Phase 完成后更新：完成项、实际产物路径、输入/输出 hash、验证命令、失败项、阻塞和下一门禁。
+- 大型数据不直接同步到 Git；同步 manifest、schema、统计报告、可复现脚本和小型审核样本。服务器正式产物必须有本机可追溯路径记录。
+- 禁止在任何本机同步文件中写入服务器密码或 API key。
 
 ## 📊 全面状态总览 (2026-07-08)
 

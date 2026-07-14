@@ -1,5 +1,52 @@
 # 进度日志
 
+## 2026-07-14：真实数据审计、需求澄清与 Pilot 共识规划完成
+
+### 根因修正
+
+- 107 激活包共 172,405 行，其中 77,050 行是 15,410 条目标行重复 5 次。
+- 18,111 条 `vocab_expansion_mining` 不是自然语言监督，只包含 L3 编码链 prompt；挖掘使用无序 set，只保留新增码并丢失完整旧 L3 步骤。
+- 当前激活失败不能简单归因于上采样不足；旧 94 transition matrix、目标码不在 val/test、Set Predictor 不兼容和 hierarchy 不完整也使 0/5 评测无效。
+- 决定停止继续复制这批激活数据，转向真实 facts + AST/steps 的完整 taxonomy 重构。
+
+### 服务器真实数据核查
+
+- `facts_summary1000.csv`：20,428 行，描述全部非空，20,394 条唯一描述，20,413/20,428 能匹配 AST 和 steps。
+- `/home/yll/GEE/工作流抽取结果/QGIS`：52,422 组 AST/steps，52,329 个路径级 script 记录，49,997 个唯一 basename，8,080 个路径记录明确包含 `processing.run`。
+- 五类严格算子候选：路径级并集 5,907，basename 去重并集 4,684；说明原始证据数量足够，瓶颈是 provenance、顺序恢复、语义聚合和质量评估。
+- 当前 `qgis_complete_v4.jsonl` 只有 2,934 条，说明大量底层 QGIS/C++ API 尚未可靠聚合为 QGIS 算子和 L3 链。
+
+### 最终需求决策
+
+- 107 是当前实验 taxonomy，不保证最终仍为 107 类；真实证据可支持增删、合并和边界调整。
+- GEE 76,884 条保留标签，只修空文本、重复和冲突；稳定 replay 和 held-out split 不变。
+- GEE 核心指标未来相对下降硬上限为 5%。
+- 首轮约 300 条 pilot 按证据来源、vector/raster/mixed 模态和 operation family 分层。
+- `/home/yll` 严格只读；所有中间产物写入 `/home/qy`。
+- Pilot 前不训练、不扩量、不冻结 taxonomy、不修改生产默认。
+
+### RALPLAN 共识结果
+
+- 批准计划：`.omx/plans/full-107-qgis-pilot.md`。
+- Planner 选择 path/hash evidence table 路线，拒绝 basename 修补和纯文本 LLM 直接标注。
+- Architect 要求加入 reference protocol、稳定 94 restore、强只读证明、双样本拆分、禁止保存原始推理和 T0-T4 证据等级。
+- Critic 首轮拒绝后完成修订；最终 Architect 与 Critic 均 `APPROVE`。
+- Phase 4 后设置人工门禁：必须确认 estimation/coverage 子集数量、审核人数、裁决人和分歧处理规则，才允许批量 LLM。
+- Pilot 后扩量还需再次批准数值质量阈值和允许进入语料/SFT 的证据等级。
+
+### 本机同步要求
+
+- 已确认：关键决策和关键代码不能只保留在服务器，必须同步回本机仓库。
+- 后续每个 Phase 收口时同步更新 `task_plan.md`、`progress.md` 和中英文 `PROJECT_CONTEXT`。
+- 服务器关键脚本、配置、prompt、schema、测试和报告生成代码必须同步本机；大型数据只同步 manifest、hash、统计、可复现脚本和审核样本。
+- 密码和 API key 永不写入同步文件。
+
+### 当前状态
+
+- **状态：** planning_complete；execution_not_started。
+- 未复制 `/home/yll` 数据，未安装 SDK，未调用 DeepSeek，未启动训练。
+- 下一执行入口：按 `.omx/plans/full-107-qgis-pilot.md` 推进 Phase 0-4，并在人工门禁处停止。
+
 ## 2026-07-08：vocab107 训练完成 + 评测 + 状态总览
 
 ### vocab107 训练结果
