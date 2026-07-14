@@ -531,6 +531,49 @@ def compact_api_trace(
     }
 
 
+def build_coverage_diagnostic_sample(
+    records: Iterable[Mapping[str, Any]],
+    *,
+    size: int,
+    seed: int,
+) -> list[dict[str, Any]]:
+    if size < 0:
+        raise ValueError("sample size must be non-negative")
+    strata: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
+    for raw_record in records:
+        record = dict(raw_record)
+        if record.get("evidence_tier") not in {"T2", "T3", "T4"}:
+            continue
+        if record.get("eligible_for_llm") is not True:
+            continue
+        key = (
+            str(record.get("extraction_group") or "unknown"),
+            str(record.get("primary_semantic_family") or "unknown"),
+            str(record.get("ordering_quality") or "unknown"),
+        )
+        strata[key].append(record)
+    queues: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+    for key, values in sorted(strata.items()):
+        queue = sorted(values, key=lambda row: str(row.get("record_id") or ""))
+        key_seed = int.from_bytes(hashlib.sha256(repr(key).encode("utf-8")).digest()[:8], "big")
+        random.Random(seed ^ key_seed).shuffle(queue)
+        queues[key] = queue
+    selected = []
+    active = list(sorted(queues))
+    while active and len(selected) < size:
+        next_active = []
+        for key in active:
+            queue = queues[key]
+            if queue and len(selected) < size:
+                row = dict(queue.pop())
+                row["subset_type"] = "coverage_diagnostic"
+                selected.append(row)
+            if queue:
+                next_active.append(key)
+        active = next_active
+    return selected
+
+
 def assign_evidence_tier(record: Mapping[str, Any]) -> EvidenceTier:
     if record.get("collision_state") in {"unresolved_collision", "missing_artifact"}:
         return EvidenceTier.T0

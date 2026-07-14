@@ -1,13 +1,51 @@
 import unittest
+import json
+import tempfile
+from pathlib import Path
 
 from gis_recommend.data.qgis_pilot import (
+    build_coverage_diagnostic_sample,
     classify_qgis_api_call,
     compact_api_trace,
     repair_evidence_order,
 )
+from scripts.build_qgis_api_aggregation_pilot import build_pilot
 
 
 class QgisApiAggregationTests(unittest.TestCase):
+    def test_coverage_sample_is_reproducible_balanced_and_excludes_t0(self):
+        records = []
+        for index in range(360):
+            records.append(
+                {
+                    "record_id": f"r{index:03d}",
+                    "evidence_tier": "T2" if index % 2 else "T3",
+                    "eligible_for_llm": True,
+                    "extraction_group": f"source_{index % 3}",
+                    "primary_semantic_family": ["buffer", "difference", "crs_transform"][index % 3],
+                    "ordering_quality": ["deterministic_statement_index", "fallback_extraction_order"][index % 2],
+                }
+            )
+        records.append(
+            {
+                "record_id": "blocked",
+                "evidence_tier": "T0",
+                "eligible_for_llm": True,
+                "extraction_group": "source_0",
+                "primary_semantic_family": "buffer",
+                "ordering_quality": "fallback_extraction_order",
+            }
+        )
+
+        first = build_coverage_diagnostic_sample(records, size=300, seed=42)
+        second = build_coverage_diagnostic_sample(records, size=300, seed=42)
+
+        self.assertEqual(first, second)
+        self.assertEqual(len(first), 300)
+        self.assertEqual(len({row["record_id"] for row in first}), 300)
+        self.assertNotIn("blocked", {row["record_id"] for row in first})
+        self.assertTrue(all(row["subset_type"] == "coverage_diagnostic" for row in first))
+
     def test_classifies_infrastructure_data_access_and_semantic_anchors(self):
         cases = {
             "qgsprocessingalgorithm.addparameter": ("infrastructure", None),
@@ -82,6 +120,66 @@ class QgisApiAggregationTests(unittest.TestCase):
 
         self.assertFalse(compact["eligible_for_llm"])
         self.assertEqual(compact["compact_steps"], [])
+
+    def test_pilot_builder_streams_compacts_and_writes_bounded_outputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "readonly" / "ordered.jsonl"
+            output = root / "writable" / "pilot"
+            source.parent.mkdir(parents=True)
+            rows = [
+                {
+                    "record_id": "eligible",
+                    "evidence_tier": "T2",
+                    "collision_state": "resolved",
+                    "extraction_group": "source_a",
+                    "task_name": "Buffer roads",
+                    "task_description": "Create buffers",
+                    "mapped_l3_chain": [],
+                    "ordered_steps": [
+                        {"step_id": "1", "statement_index": None, "normalized_operation": "qgsproject.instance"},
+                        {"step_id": "2", "statement_index": None, "normalized_operation": "qgsgeometry.buffer"},
+                    ],
+                },
+                {
+                    "record_id": "infrastructure",
+                    "evidence_tier": "T2",
+                    "collision_state": "resolved",
+                    "extraction_group": "source_b",
+                    "task_name": "Plugin setup",
+                    "task_description": "Register parameters",
+                    "mapped_l3_chain": [],
+                    "ordered_steps": [
+                        {"step_id": "1", "statement_index": None, "normalized_operation": "qgsprocessingalgorithm.addparameter"}
+                    ],
+                },
+                {
+                    "record_id": "collision",
+                    "evidence_tier": "T0",
+                    "collision_state": "unresolved_collision",
+                    "extraction_group": "source_c",
+                    "ordered_steps": [
+                        {"step_id": "1", "statement_index": None, "normalized_operation": "qgsgeometry.difference"}
+                    ],
+                },
+            ]
+            source.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+
+            summary = build_pilot(
+                ordered_evidence=source,
+                output_dir=output,
+                allowed_write_roots=[root / "writable"],
+                sample_size=300,
+                seed=42,
+            )
+            pilot_rows = [json.loads(line) for line in (output / "pilot_coverage_300.jsonl").read_text().splitlines()]
+
+        self.assertEqual(summary["source_records"], 3)
+        self.assertEqual(summary["eligible_records"], 1)
+        self.assertEqual(summary["pilot_records"], 1)
+        self.assertEqual(summary["shortfall"], 299)
+        self.assertEqual(pilot_rows[0]["record_id"], "eligible")
+        self.assertEqual(pilot_rows[0]["primary_semantic_family"], "buffer")
 
 
 if __name__ == "__main__":
