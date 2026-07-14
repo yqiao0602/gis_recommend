@@ -58,6 +58,23 @@ def authority_surfaces(project_root: Path) -> dict[str, dict[str, Path]]:
             "set_predictor": out / "set_predictor_checkpoints_v3_quality_gate_v4_6/best_model.pth",
             "set_predictor_active_tokens": out / "set_predictor_active_tokens_quality_gate.json",
         },
+        "phase11_vector_sft_94": {
+            "id_mappings": out / "id_mappings_v2.json",
+            "l3_vocab": out / "l3_vocab_v2.json",
+            "l3_embeddings": out / "l3_embeddings_v2.pt",
+            "workflow": out / "pipeline/step8_quality_gate_qgis_vector_oversampled/labeled_workflows_l3_v4_quality_gate_qgis_vector_oversampled.json",
+            "splits": out / "pipeline/step8_quality_gate_qgis_vector_oversampled/dataset_splits_v4_quality_gate_qgis_vector_oversampled.json",
+            "task_vocab": out / "pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_vocabulary_v4_quality_gate_qgis_vector_oversampled.json",
+            "length_stats": out / "pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_length_stats.json",
+            "transition_matrix": out / "pipeline/step8_quality_gate/transition_allowed_next.json",
+            "qgis_io_types": out / "qgis_operator_io_types.json",
+            "base_checkpoint": out / "transformer_checkpoints_v4_6_dpo_v2_48task/best_preference_model.pth",
+            "transformer_checkpoint": out / "transformer_checkpoints_v4_6_quality_gate/best_gen_composite_model.pth",
+            "checkpoint_selection_manifest": out / "transformer_checkpoints_v4_6_quality_gate/checkpoint_selection_manifest_v4_6.json",
+            "training_history": out / "transformer_checkpoints_v4_6_quality_gate/training_history_v4_6.json",
+            "training_log": out / "train_v46_oversampled_phase11.log",
+            "vector_evaluation_log": out / "eval_phase11_v2.log",
+        },
     }
 
 
@@ -91,6 +108,12 @@ def build_report(project_root: Path) -> dict:
         "project_root": str(project_root.resolve()),
         "status": "authority_decision_required" if divergent else "authorities_match",
         "default_changed": False,
+        "observations": [
+            "step8_v4_6_run_contract has missing default Transformer and Set Predictor checkpoints",
+            "quality_gate_v4_6_entrypoints currently points at a checkpoint directory overwritten by Phase 11",
+            "phase11_vector_sft_94 records the actual oversampled data and best composite checkpoint; Set Predictor was disabled in its reported vector evaluation",
+            "the existing v4_quality_gate_evaluation report is a 500-row smoke with zero metrics and conflicting configured/effective checkpoint paths, so it is not a stable GEE metric authority",
+        ],
         "surfaces": inventory,
         "comparisons": comparisons,
     }

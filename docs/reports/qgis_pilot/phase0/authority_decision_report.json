@@ -4,6 +4,12 @@
   "project_root": "/home/qy/system_redesign",
   "status": "authority_decision_required",
   "default_changed": false,
+  "observations": [
+    "step8_v4_6_run_contract has missing default Transformer and Set Predictor checkpoints",
+    "quality_gate_v4_6_entrypoints currently points at a checkpoint directory overwritten by Phase 11",
+    "phase11_vector_sft_94 records the actual oversampled data and best composite checkpoint; Set Predictor was disabled in its reported vector evaluation",
+    "the existing v4_quality_gate_evaluation report is a 500-row smoke with zero metrics and conflicting configured/effective checkpoint paths, so it is not a stable GEE metric authority"
+  ],
   "surfaces": {
     "vocab_profile_v2_94_stable": {
       "id_mappings": {
@@ -154,6 +160,83 @@
         "path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/labeled_workflows_l3_v4_quality_gate.json",
         "exists": true,
         "size": 206501387
+      }
+    },
+    "phase11_vector_sft_94": {
+      "base_checkpoint": {
+        "path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_dpo_v2_48task/best_preference_model.pth",
+        "exists": true,
+        "size": 470003198
+      },
+      "checkpoint_selection_manifest": {
+        "path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/checkpoint_selection_manifest_v4_6.json",
+        "exists": true,
+        "size": 588
+      },
+      "id_mappings": {
+        "path": "/home/qy/system_redesign/outputs_v2/id_mappings_v2.json",
+        "exists": true,
+        "size": 7844270
+      },
+      "l3_embeddings": {
+        "path": "/home/qy/system_redesign/outputs_v2/l3_embeddings_v2.pt",
+        "exists": true,
+        "size": 102440
+      },
+      "l3_vocab": {
+        "path": "/home/qy/system_redesign/outputs_v2/l3_vocab_v2.json",
+        "exists": true,
+        "size": 4319
+      },
+      "length_stats": {
+        "path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_length_stats.json",
+        "exists": true,
+        "size": 7672
+      },
+      "qgis_io_types": {
+        "path": "/home/qy/system_redesign/outputs_v2/qgis_operator_io_types.json",
+        "exists": true,
+        "size": 178455
+      },
+      "splits": {
+        "path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/dataset_splits_v4_quality_gate_qgis_vector_oversampled.json",
+        "exists": true,
+        "size": 962615
+      },
+      "task_vocab": {
+        "path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_vocabulary_v4_quality_gate_qgis_vector_oversampled.json",
+        "exists": true,
+        "size": 3141
+      },
+      "training_history": {
+        "path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/training_history_v4_6.json",
+        "exists": true,
+        "size": 8701
+      },
+      "training_log": {
+        "path": "/home/qy/system_redesign/outputs_v2/train_v46_oversampled_phase11.log",
+        "exists": true,
+        "size": 4953140
+      },
+      "transformer_checkpoint": {
+        "path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/best_gen_composite_model.pth",
+        "exists": true,
+        "size": 470008639
+      },
+      "transition_matrix": {
+        "path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/transition_allowed_next.json",
+        "exists": true,
+        "size": 26272
+      },
+      "vector_evaluation_log": {
+        "path": "/home/qy/system_redesign/outputs_v2/eval_phase11_v2.log",
+        "exists": true,
+        "size": 8872
+      },
+      "workflow": {
+        "path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/labeled_workflows_l3_v4_quality_gate_qgis_vector_oversampled.json",
+        "exists": true,
+        "size": 210751965
       }
     }
   },
@@ -316,6 +399,127 @@
         "decision": "requires_review"
       }
     ],
+    "vocab_profile_v2_94_stable__vs__phase11_vector_sft_94": [
+      {
+        "role": "base_checkpoint",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_dpo_v2_48task/best_preference_model.pth",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "checkpoint_selection_manifest",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/checkpoint_selection_manifest_v4_6.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "id_mappings",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/id_mappings_v2.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/id_mappings_v2.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "l3_embeddings",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/l3_embeddings_v2.pt",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "l3_vocab",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/l3_vocab_v2.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/l3_vocab_v2.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "length_stats",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_v2_vec11277_augmented/task_type_length_stats.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_length_stats.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "qgis_io_types",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/qgis_operator_io_types.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "set_predictor",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/set_predictor_checkpoints_v3_vec11277/best_model.pth",
+        "mainline_path": null,
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "set_predictor_active_tokens",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/set_predictor_active_tokens_vec11277.json",
+        "mainline_path": null,
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "splits",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_v2_vec11277_augmented/dataset_splits_vec_augmented_11277.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/dataset_splits_v4_quality_gate_qgis_vector_oversampled.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "task_vocab",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_v2_vec11277_augmented/task_type_vocabulary_v4_quality_gate_qgis_vector_v2.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_vocabulary_v4_quality_gate_qgis_vector_oversampled.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "training_history",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/training_history_v4_6.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "training_log",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/train_v46_oversampled_phase11.log",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "transformer_checkpoint",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/best_gen_composite_model.pth",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "transition_matrix",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/transition_allowed_next.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/transition_allowed_next.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "vector_evaluation_log",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/eval_phase11_v2.log",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "workflow",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_v2_vec11277_augmented/labeled_workflows_l3_v4_vec_augmented_11277.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/labeled_workflows_l3_v4_quality_gate_qgis_vector_oversampled.json",
+        "matches": false,
+        "decision": "requires_review"
+      }
+    ],
     "step8_v4_6_run_contract__vs__quality_gate_v4_6_entrypoints": [
       {
         "role": "id_mappings",
@@ -391,6 +595,241 @@
         "role": "workflow",
         "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8/labeled_workflows_l3_v4_cleaned.json",
         "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/labeled_workflows_l3_v4_quality_gate.json",
+        "matches": false,
+        "decision": "requires_review"
+      }
+    ],
+    "step8_v4_6_run_contract__vs__phase11_vector_sft_94": [
+      {
+        "role": "base_checkpoint",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_dpo_v2_48task/best_preference_model.pth",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "checkpoint_selection_manifest",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/checkpoint_selection_manifest_v4_6.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "id_mappings",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/id_mappings_v2.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/id_mappings_v2.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "l3_embeddings",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/l3_embeddings_v2.pt",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "l3_vocab",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/l3_vocab_v2.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/l3_vocab_v2.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "length_stats",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_length_stats.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "qgis_io_types",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/qgis_operator_io_types.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/qgis_operator_io_types.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "set_predictor",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/set_predictor_checkpoints_v3/best_model.pth",
+        "mainline_path": null,
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "splits",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/dataset_splits_v4.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/dataset_splits_v4_quality_gate_qgis_vector_oversampled.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "task_vocab",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/task_type_vocabulary_v4_quality_gate.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_vocabulary_v4_quality_gate_qgis_vector_oversampled.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "training_history",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/training_history_v4_6.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "training_log",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/train_v46_oversampled_phase11.log",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "transformer_checkpoint",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6/best_model.pth",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/best_gen_composite_model.pth",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "transition_matrix",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/transition_allowed_next.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/transition_allowed_next.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "vector_evaluation_log",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/eval_phase11_v2.log",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "workflow",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8/labeled_workflows_l3_v4_cleaned.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/labeled_workflows_l3_v4_quality_gate_qgis_vector_oversampled.json",
+        "matches": false,
+        "decision": "requires_review"
+      }
+    ],
+    "quality_gate_v4_6_entrypoints__vs__phase11_vector_sft_94": [
+      {
+        "role": "base_checkpoint",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_dpo_v2_48task/best_preference_model.pth",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "checkpoint_selection_manifest",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/checkpoint_selection_manifest_v4_6.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "id_mappings",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/id_mappings_v2.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/id_mappings_v2.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "l3_embeddings",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/l3_embeddings_v2.pt",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "l3_vocab",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/l3_vocab_v2.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/l3_vocab_v2.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "length_stats",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/task_type_length_stats.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_length_stats.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "qgis_io_types",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/qgis_operator_io_types.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/qgis_operator_io_types.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "set_predictor",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/set_predictor_checkpoints_v3_quality_gate_v4_6/best_model.pth",
+        "mainline_path": null,
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "set_predictor_active_tokens",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/set_predictor_active_tokens_quality_gate.json",
+        "mainline_path": null,
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "splits",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/dataset_splits_v4_quality_gate.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/dataset_splits_v4_quality_gate_qgis_vector_oversampled.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "task_vocab",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/task_type_vocabulary_v4_quality_gate.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_vocabulary_v4_quality_gate_qgis_vector_oversampled.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "training_history",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/training_history_v4_6.json",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "training_log",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/train_v46_oversampled_phase11.log",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "transformer_checkpoint",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/best_model.pth",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/best_gen_composite_model.pth",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "transition_matrix",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/transition_allowed_next.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/transition_allowed_next.json",
+        "matches": true,
+        "decision": "matched"
+      },
+      {
+        "role": "vector_evaluation_log",
+        "profile_path": null,
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/eval_phase11_v2.log",
+        "matches": false,
+        "decision": "requires_review"
+      },
+      {
+        "role": "workflow",
+        "profile_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/labeled_workflows_l3_v4_quality_gate.json",
+        "mainline_path": "/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/labeled_workflows_l3_v4_quality_gate_qgis_vector_oversampled.json",
         "matches": false,
         "decision": "requires_review"
       }

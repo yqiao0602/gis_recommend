@@ -48,6 +48,26 @@ No default configuration was changed.
 | transition_matrix | True | 26272 | `/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/transition_allowed_next.json` |
 | workflow | True | 206501387 | `/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/labeled_workflows_l3_v4_quality_gate.json` |
 
+## phase11_vector_sft_94
+
+| Role | Exists | Size | Path |
+|---|---:|---:|---|
+| base_checkpoint | True | 470003198 | `/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_dpo_v2_48task/best_preference_model.pth` |
+| checkpoint_selection_manifest | True | 588 | `/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/checkpoint_selection_manifest_v4_6.json` |
+| id_mappings | True | 7844270 | `/home/qy/system_redesign/outputs_v2/id_mappings_v2.json` |
+| l3_embeddings | True | 102440 | `/home/qy/system_redesign/outputs_v2/l3_embeddings_v2.pt` |
+| l3_vocab | True | 4319 | `/home/qy/system_redesign/outputs_v2/l3_vocab_v2.json` |
+| length_stats | True | 7672 | `/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_length_stats.json` |
+| qgis_io_types | True | 178455 | `/home/qy/system_redesign/outputs_v2/qgis_operator_io_types.json` |
+| splits | True | 962615 | `/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/dataset_splits_v4_quality_gate_qgis_vector_oversampled.json` |
+| task_vocab | True | 3141 | `/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/task_type_vocabulary_v4_quality_gate_qgis_vector_oversampled.json` |
+| training_history | True | 8701 | `/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/training_history_v4_6.json` |
+| training_log | True | 4953140 | `/home/qy/system_redesign/outputs_v2/train_v46_oversampled_phase11.log` |
+| transformer_checkpoint | True | 470008639 | `/home/qy/system_redesign/outputs_v2/transformer_checkpoints_v4_6_quality_gate/best_gen_composite_model.pth` |
+| transition_matrix | True | 26272 | `/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate/transition_allowed_next.json` |
+| vector_evaluation_log | True | 8872 | `/home/qy/system_redesign/outputs_v2/eval_phase11_v2.log` |
+| workflow | True | 210751965 | `/home/qy/system_redesign/outputs_v2/pipeline/step8_quality_gate_qgis_vector_oversampled/labeled_workflows_l3_v4_quality_gate_qgis_vector_oversampled.json` |
+
 ## Required Decision
 
 Select one reviewed stable-94 restore authority before hashing/copying large checkpoints or running the restore smoke.

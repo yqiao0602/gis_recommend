@@ -6,6 +6,7 @@
 - 本机 20 项相关测试通过；服务器同步后的 6 项 pilot 测试通过。
 - Phase 0 报告确认三套 authority 不一致。run-contract 默认指向的 `transformer_checkpoints_v4_6/best_model.pth` 与 `set_predictor_checkpoints_v3/best_model.pth` 在服务器不存在。
 - vec11277 profile 的数据/Set Predictor 资产完整；quality-gate V4.6 的数据、transition、Transformer 与 Set Predictor 资产完整。
+- 追加审计确认 generic quality-gate checkpoint 目录已被 Phase 11 写入；修正版报告单列 `phase11_vector_sft_94`，绑定 oversampled 数据和 epoch 4 最佳 composite checkpoint。现有 evaluation JSON 是全 0 smoke 且 checkpoint 元数据矛盾，不能证明稳定 GEE 基线。
 - 按批准计划在人工选择 restore authority 前停止。尚未 hash/copy 大 checkpoint、运行 restore smoke、进入 `/home/yll` inventory、调用 DeepSeek 或训练。
 - 服务器产物：`/home/qy/system_redesign/outputs_v2/qgis_pilot/pilot_v1/phase0/authority_decision_report.{json,md}`；本机镜像位于 `docs/reports/qgis_pilot/phase0/`。
 

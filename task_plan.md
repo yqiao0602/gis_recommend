@@ -50,6 +50,8 @@
 - 报告确认存在三套不一致口径：`vocab_profile_v2_94_stable`、`step8_v4_6_run_contract`、`quality_gate_v4_6_entrypoints`。
 - `step8_v4_6_run_contract` 在服务器缺少默认 Transformer 和 Set Predictor checkpoint，不能直接作为可恢复 authority。
 - vec11277 profile 资产完整，但不是当前主要训练/评测入口；quality-gate V4.6 入口资产完整。
+- 修正版报告新增 `phase11_vector_sft_94`：将 oversampled 数据包、epoch 4 `best_gen_composite_model.pth`、训练/评测日志绑定为一套可复现实验口径；其公开评测关闭 Set Predictor。
+- 现有 quality-gate evaluation JSON 只是 500 条 smoke，指标全 0，且配置 checkpoint 与实际 inference checkpoint 冲突，不能作为 GEE 基线 authority。
 - 当前状态：`authority_decision_required`。未 hash/copy 大 checkpoint，未运行 restore smoke，未进入 Phase 1。
 - 服务器报告：`/home/qy/system_redesign/outputs_v2/qgis_pilot/pilot_v1/phase0/authority_decision_report.{json,md}`。
 - 本机镜像：`docs/reports/qgis_pilot/phase0/authority_decision_report.{json,md}`。

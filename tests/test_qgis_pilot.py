@@ -25,6 +25,8 @@ class QgisPilotTests(unittest.TestCase):
         run_contract = report["surfaces"]["step8_v4_6_run_contract"]
         self.assertFalse(run_contract["transformer_checkpoint"]["exists"])
         self.assertIn("quality_gate_v4_6_entrypoints", report["surfaces"])
+        self.assertIn("phase11_vector_sft_94", report["surfaces"])
+        self.assertIn("best_gen_composite_model.pth", report["surfaces"]["phase11_vector_sft_94"]["transformer_checkpoint"]["path"])
 
     def test_authority_diff_keeps_each_divergent_role_explicit(self):
         profile = {
