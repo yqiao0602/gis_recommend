@@ -193,6 +193,13 @@ def build_pilot(
             "existing_mapped_l3_chain",
             "semantic_anchor_families",
             "compact_step_count",
+            "review_status",
+            "reviewer_decision",
+            "corrected_operator_sequence",
+            "corrected_l3_chain",
+            "failure_tags",
+            "reviewer_notes",
+            "training_admission",
         ]
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
@@ -203,6 +210,13 @@ def build_pilot(
                     "existing_mapped_l3_chain": json.dumps(row.get("existing_mapped_l3_chain", [])),
                     "semantic_anchor_families": json.dumps(row.get("semantic_anchor_families", [])),
                     "compact_step_count": len(row.get("compact_steps", [])),
+                    "review_status": "pending",
+                    "reviewer_decision": "",
+                    "corrected_operator_sequence": "",
+                    "corrected_l3_chain": "",
+                    "failure_tags": "",
+                    "reviewer_notes": "",
+                    "training_admission": "forbidden_until_reviewed",
                 }
             )
     stratum_counts = Counter(coverage_diagnostic_stratum(row) for row in pilot)

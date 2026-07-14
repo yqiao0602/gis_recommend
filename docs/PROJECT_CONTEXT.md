@@ -1785,3 +1785,13 @@ Follow-up artifact:
 - The 1.6 GB ordered JSONL remains server-side diagnostic data only. Local bounded reports are under `docs/reports/qgis_pilot/phase2_ordered_114/`.
 - Next gate: bounded direct-API compaction, semantic aggregation, and statement-index repair before proposing the approximately 300-record human-review subsets. No sampling, DeepSeek conversion, or training is authorized yet.
 
+### 2026-07-14: Direct-API Aggregation Coverage Pilot
+
+- Low-level QGIS calls are compacted into processing operators, semantic anchors, data access, infrastructure, and unknown evidence. Duplicate runs are encoded and missing statement indices remain fallback ordered.
+- The server build reduced 21,085 records to 4,506 eligible records and selected 300 unique coverage-diagnostic rows. It excluded 4,149 T0/collision rows and 12,430 rows with no processing or semantic anchor.
+- Sampling covers extraction group, evidence source mode, deterministic modality hint, trace length, semantic family, and ordering quality. The pilot has 166 direct-API-only, 90 processing-only, 39 processing+custom, and 5 custom-only rows; modality hints are 121 vector, 36 raster, 125 mixed, and 18 unknown.
+- `scripts/run_qgis_api_aggregation_pilot.py` enforces a fail-closed `gpt-5.6-luna` contract: bounded 114-crosswalk operators only, record evidence citations, exact L3 mapping, confidence >=0.70, no raw response or hidden reasoning persistence, and fingerprint-based resume.
+- Offline preflight found 228 taxonomy-mapped operators and bounded candidates for 292/300 rows. Eight custom or pending operators are rejected before any provider call.
+- OpenAI SDK 2.45.0 is installed on the server, but `GGUUAI_API_KEY` is not set in the process environment. No live request was attempted. Do not recover keys from chat or fall back to another provider; run one `--max-records 1` smoke only after external environment setup.
+- Reports are under `docs/reports/qgis_pilot/phase3_api_aggregation/`. The 51.7MB pool and 3.34MB full pilot JSONL remain server-side. The pilot is not training data until provider proposals and human adjudication are complete.
+

@@ -483,3 +483,20 @@
 - top unmapped 主要是 `QgsProcessingAlgorithm.addParameter`、`QgsProject.instance`、`QgsField`、`QgsVectorLayer` 等实现基础设施调用，不能逐个当 L3。
 - 结论：先做 bounded direct-API compaction、semantic aggregation 和 statement-index 修复，再生成约 300 条审核提案；当前 1.6GB JSONL 仅为服务器诊断产物，不进入训练、不回传 Git。
 - 本机只同步 summary、observed crosswalk 和 write ledger：`docs/reports/qgis_pilot/phase2_ordered_114/`。
+
+## 2026-07-14：Direct API Aggregation Pilot 已构建，Live Smoke 待环境变量
+
+### 已完成
+- `1133a0a`：确定性 compact pool 和 300 条 coverage pilot builder。
+- `dec86f2`：`gpt-5.6-luna` 严格 prompt/response contract、bounded candidate selection、fingerprint resume 和 sanitized retry；只读取 `GGUUAI_API_KEY`。
+- `8b019ff`：补齐 evidence source / modality hint / trace length 分层，并修正 `infrastructure_only` 的误导统计名。
+- 服务器结果：21,085 source、4,506 eligible、300 pilot、300 unique IDs、T0=0、ineligible=0。
+- 分层：ordering deterministic/fallback=134/166；source custom/direct/processing+custom/processing=5/166/39/90；modality mixed/raster/unknown/vector=125/36/18/121；long/medium/short=159/98/43。
+- Provider preflight：228 个 operator 可映射到冻结 114；292/300 有 bounded candidates，8 条无候选并 fail closed。
+- OpenAI SDK `2.45.0` 已安装；本机 41 项相关回归、服务器 21 项 aggregation tests 通过。
+- 本机同步 300 条审查 CSV、pilot summary、ledger、validation summary、live smoke status；51.7MB pool 和 3.34MB full pilot JSONL 只留服务器。
+
+### 当前阻塞 / 下一步
+- 服务器 `GGUUAI_API_KEY` 未设置，live request=0；状态见 `docs/reports/qgis_pilot/phase3_api_aggregation/live_smoke_status.json`。
+- 外部设置环境变量后先运行 `--max-records 1` compatibility smoke；strict JSON、evidence references、hash 和无 reasoning 落盘全部通过后，才允许 proposal batch。
+- Proposal batch 后进入 300 条人工审核。当前 pilot 是 coverage diagnostic，不是 accuracy reference，也不是训练数据。

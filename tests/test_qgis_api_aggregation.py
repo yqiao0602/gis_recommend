@@ -1,4 +1,5 @@
 import unittest
+import csv
 import json
 import tempfile
 from pathlib import Path
@@ -528,6 +529,8 @@ class QgisApiAggregationTests(unittest.TestCase):
                 seed=42,
             )
             pilot_rows = [json.loads(line) for line in (output / "pilot_coverage_300.jsonl").read_text().splitlines()]
+            with (output / "pilot_coverage_300.csv").open(encoding="utf-8-sig", newline="") as handle:
+                review_rows = list(csv.DictReader(handle))
 
         self.assertEqual(summary["source_records"], 3)
         self.assertEqual(summary["eligible_records"], 1)
@@ -540,6 +543,13 @@ class QgisApiAggregationTests(unittest.TestCase):
         self.assertEqual(pilot_rows[0]["evidence_source_mode"], "direct_api_only")
         self.assertEqual(pilot_rows[0]["modality_hint"], "vector")
         self.assertEqual(pilot_rows[0]["trace_length_bucket"], "short")
+        self.assertEqual(review_rows[0]["review_status"], "pending")
+        self.assertEqual(review_rows[0]["training_admission"], "forbidden_until_reviewed")
+        self.assertIn("reviewer_decision", review_rows[0])
+        self.assertIn("corrected_operator_sequence", review_rows[0])
+        self.assertIn("corrected_l3_chain", review_rows[0])
+        self.assertIn("failure_tags", review_rows[0])
+        self.assertIn("reviewer_notes", review_rows[0])
 
 
 if __name__ == "__main__":

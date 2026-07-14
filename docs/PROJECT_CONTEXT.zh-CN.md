@@ -1793,3 +1793,13 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 1.6GB ordered JSONL 只保留在服务器作为诊断数据；本机仅同步 `docs/reports/qgis_pilot/phase2_ordered_114/` 下的 bounded summary/crosswalk/ledger。
 - 下一门禁：先完成 direct API bounded compaction、semantic aggregation 和 statement-index 修复，再提出约 300 条人工审核子集；尚未授权抽样、DeepSeek 转换或训练。
 
+### 2026-07-14：Direct API 语义聚合 Coverage Pilot
+
+- 底层 QGIS 调用现按 processing operator、semantic anchor、data access、infrastructure、unknown 压缩；重复调用做 run-length encoding，缺失 statement index 仍标记为 fallback ordering。
+- 服务器构建将 21,085 条记录收敛为 4,506 条 eligible，并确定性选出 300 条唯一 coverage-diagnostic；排除 4,149 条 T0/碰撞和 12,430 条无 processing/semantic anchor 记录。
+- 抽样覆盖 extraction group、证据来源模式、确定性 modality hint、trace 长度、semantic family 和 ordering quality。Pilot 中 direct-API-only 166、processing-only 90、processing+custom 39、custom-only 5；modality hint 为 vector 121、raster 36、mixed 125、unknown 18。
+- `scripts/run_qgis_api_aggregation_pilot.py` 对 `gpt-5.6-luna` 实施 fail-closed 合约：仅允许 bounded 114 crosswalk operator，必须引用本记录 evidence ID、L3 映射一致且 confidence >=0.70；禁止持久化原始响应和 hidden reasoning，恢复只使用 request fingerprint。
+- 离线 preflight 确认 228 个 operator 可映射到 114 taxonomy，292/300 条有 bounded candidates；其余 8 条自定义/待审核算子在 provider 调用前 reject。
+- 服务器已安装 OpenAI SDK 2.45.0，但进程环境未设置 `GGUUAI_API_KEY`，因此 live request=0。禁止从聊天记录恢复 key 或回退其他 provider；外部设置环境变量后才运行一次 `--max-records 1` smoke。
+- 报告位于 `docs/reports/qgis_pilot/phase3_api_aggregation/`；51.7MB pool 和 3.34MB full pilot JSONL 只留服务器。当前 pilot 不是训练数据，必须先完成 provider proposal 和人工 adjudication。
+
