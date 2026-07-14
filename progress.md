@@ -8,6 +8,8 @@
 - 补充描述来源：2,009 plugin metadata、2,054 README、851 model/tutorial metadata、2 个 fine-eval CSV；48,011 个源码只视为潜在 docstring/code 来源。
 - source root 前后元数据一致；4 个生成文件全部位于 `/home/qy/.../pilot_v1/phase1`，write ledger 已同步本机。
 - 新阻塞：107 mapping 虽有 107 个 code，但 464 条 QGIS 映射对新增 13 类覆盖为 0；下一步必须从真实有序证据构建 107 专属 crosswalk。
+- Taxonomy evidence scan 已完成：扫描 15,942,213 行，识别 44,776 次 processing 调用、1,095 个 processing 算子和 21,255 个 direct API。
+- 当前 13 个新增 code 与 legacy 350 code 发生语义冲突，不能冻结。基于真实证据的建议范围为 112-114 类，默认草案 113 类，等待 3 项边界决策。
 
 ## 2026-07-14：Pilot Phase 0 authority 报告完成，等待人工选择
 

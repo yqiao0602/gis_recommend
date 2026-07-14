@@ -1,0 +1,3578 @@
+{
+  "schema": "gis_recommend.qgis_pilot.v1",
+  "kind": "taxonomy_evidence_matrix",
+  "inputs": {
+    "facts_candidates": "/home/qy/system_redesign/outputs_v2/qgis_pilot/pilot_v1/phase1/facts_artifact_candidates.jsonl",
+    "facts_candidates_sha256": "58afa0787daef74b251462bccd53af90ebdcfdf3fb71568529bc82d6b19ebf89",
+    "crosswalk": "/home/qy/system_redesign/outputs_v2/qgis_alg_id_crosswalk_expanded.json",
+    "crosswalk_sha256": "40b073f31a0926f9b0c9b39e62749cf9c168031844600383c1416c14a1cec811"
+  },
+  "scan": {
+    "merged_tables": [
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutput L1_near_strict_spatial_workflow_candidates/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutput L2_general_qgis_processing_workflows_part1/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutput L2_general_qgis_processing_workflows_part2/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutput qgis_L3_support_modules/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutput qgis_strict_multistep_spatial_workflows/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/WorkflowoutputPWCQGIS/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/WorkflowoutputQGIS_ArcGIS_RouteB_Gitee_GitLab/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/WorkflowoutputQGIS_Model_Tutorial_Workflows/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutputdata1/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutputqgis_processing_chained_workflows/merged_nodes_process.csv",
+      "/home/yll/GEE/工作流抽取结果/QGIS/Workflowoutput爬取Zenodo网站QGIS/merged_nodes_process.csv"
+    ],
+    "rows_scanned": 15942213,
+    "facts_rows_scanned": 9270200,
+    "api_source_type_counts": {
+      "unknown": 8507075,
+      "synthetic_expression": 235519,
+      "PYTHON_BUILTIN": 90541,
+      "qgis_runtime_object_method": 78357,
+      "qgis_processing_algorithm": 44776,
+      "qgis_processing_runtime": 27480,
+      "IO": 26441,
+      "qgis_feature_runtime": 24261,
+      "qgis_runtime": 22774,
+      "PATH_OP": 20398,
+      "qgis_field_runtime": 19963,
+      "qgis_layer_runtime": 19412,
+      "qgis_geometry": 18574,
+      "qgis_plugin_helper": 18480,
+      "PYTHON_COLLECTION": 16080,
+      "pyqt_ui": 14470,
+      "qgis_processing_feedback": 13184,
+      "TEXT_OP": 10843,
+      "qgis_processing_parameter": 9085,
+      "qgis_crs_runtime": 7772,
+      "python_subscript_access": 7557,
+      "python_gis_stack": 6189,
+      "qgis_processing_result_unpack": 4289,
+      "FILESYSTEM": 3188,
+      "qgis_renderer": 2504,
+      "qgis_expression_runtime": 2139,
+      "python_env": 1972,
+      "qgis_ui": 1762,
+      "qgis_vector_io": 1613,
+      "geoai_pack": 1565,
+      "plugin_utility": 1423,
+      "TIME_OP": 1407,
+      "python_array": 1374,
+      "custom_processing_algorithm": 1309,
+      "gee_ui_runtime": 984,
+      "python_builtin": 885,
+      "qgis_gui": 721,
+      "QgsColorRampShader.ColorRampItem": 622,
+      "python_data_stack": 554,
+      "RUNTIME_SETUP": 546,
+      "qgis_feature_sink": 504,
+      "qgis_vector_export": 445,
+      "LAYER_IO": 444,
+      "geopandas_runtime_object_method": 364,
+      "qgis_raster_runtime": 256,
+      "arcgis_tool": 230,
+      "user_workflow": 220,
+      "qgis_plugin_method": 217,
+      "networkx_graph_api": 174,
+      "qgis_database_runtime": 87,
+      "python_collection": 74,
+      "python_graph_stack": 56,
+      "http_osm": 55,
+      "qgis_processing_definition": 54,
+      "python_geometry_stack": 52,
+      "official_gee": 46,
+      "platform_guard": 27,
+      "SCHEMA_OP": 26,
+      "gee_runtime_method": 14,
+      "IMPORT": 14,
+      "GIS_TOOL": 13,
+      "osmnx_runtime": 13,
+      "COLLECTION_OP": 11,
+      "python_numeric_stack": 11,
+      "qgis_plugin_utility": 10,
+      "synthetic_expression_repaired": 4
+    },
+    "unique_processing_operations": 1095,
+    "unique_direct_apis": 21255
+  },
+  "candidate_additions": [
+    {
+      "code": "L3_02_01_02",
+      "name": "Reproject",
+      "accepted_patterns": [
+        "reprojectlayer",
+        "warpreproject",
+        "reproject"
+      ],
+      "boundary_patterns": [
+        "assignprojection"
+      ],
+      "unique_scripts": 503,
+      "boundary_scripts": 46,
+      "matching_processing_operations": [
+        {
+          "operation": "native:reprojectlayer",
+          "scripts": 445,
+          "calls": 1826,
+          "old_crosswalk": {
+            "alg_id": "native:reprojectlayer",
+            "official_name": "Reproject layer",
+            "l3_code": "qgis_native:vector_crs_transform",
+            "bridge_type": "native_bridge",
+            "status": "accepted",
+            "source": "manual_review",
+            "frequency": 888
+          }
+        },
+        {
+          "operation": "qgis:reprojectlayer",
+          "scripts": 31,
+          "calls": 115,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "scp_8:reproject_raster_bands",
+          "scripts": 1,
+          "calls": 1,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_31510",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "gdal.ReprojectImage",
+          "task_name": "Align and sigmoid-normalize raster data",
+          "task_description": "The script aligns input rasters to a reference raster (resampling to match its geotransform, projection, dimensions, and pixel size) and converts each aligned raster into a NumPy array where valid pixels are transformed via a sigmoid function (1/(1+exp(-x))) and masked using configurable nan thresholds and a fixed no-data value (-999.9). It logs processing steps, writes output paths to a text file, and computes basic raster statistics. No explicit study area, time range, satellite data, or classification is present — it is a generic preprocessing utility for local GeoTIFF files using GDAL and QGIS raster calculator functionality."
+        },
+        {
+          "script_id": "script_31510",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "gdal.ReprojectImage",
+          "task_name": "Align and sigmoid-normalize raster data",
+          "task_description": "The script aligns input rasters to a reference raster (resampling to match its geotransform, projection, dimensions, and pixel size) and converts each aligned raster into a NumPy array where valid pixels are transformed via a sigmoid function (1/(1+exp(-x))) and masked using configurable nan thresholds and a fixed no-data value (-999.9). It logs processing steps, writes output paths to a text file, and computes basic raster statistics. No explicit study area, time range, satellite data, or classification is present — it is a generic preprocessing utility for local GeoTIFF files using GDAL and QGIS raster calculator functionality."
+        },
+        {
+          "script_id": "script_22000",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "gdal.ReprojectImage",
+          "task_name": "Extract cut path centerline",
+          "task_description": "The script processes two binary raster masks (e.g., agricultural field boundaries or cut-path masks) to compute a geometrically optimized centerline path connecting entrance/exit intersection points between overlapping regions. It performs polygonization of masks using GDAL, computes intersections of polygon exteriors via Shapely, identifies furthest entrance/exit point pairs per overlap component, downsamples masks for efficient pathfinding, applies skeletonization and graph simplification on the filled mask, selects optimal graph nodes near intersections using multi-criteria cost (angle alignment, degree, distance), computes shortest path in the skeleton graph, and finally draws connecting lines from path endpoints to the nearest intersection points. Outputs include a refined binary centerline mask (uint8), lists of intersection point pairs (Shapely Point geometries), and optionally saves them as shapefile/KML. Input data paths (e.g., '4,1mr_10_gsd_cut_path_mask_input_frame.tiff') suggest agricultural machinery guidance or precision farming applications involving sub-meter resolution orthomosaics — not satellite-derived; no GEE Image/ImageCollection usage is present — all operations are local raster/vector processing with GDAL, rasterio, scikit-image, and Shapely. Study area and time range are not specified."
+        },
+        {
+          "script_id": "script_22000",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "gdal.ReprojectImage",
+          "task_name": "Extract cut path centerline",
+          "task_description": "The script processes two binary raster masks (e.g., agricultural field boundaries or cut-path masks) to compute a geometrically optimized centerline path connecting entrance/exit intersection points between overlapping regions. It performs polygonization of masks using GDAL, computes intersections of polygon exteriors via Shapely, identifies furthest entrance/exit point pairs per overlap component, downsamples masks for efficient pathfinding, applies skeletonization and graph simplification on the filled mask, selects optimal graph nodes near intersections using multi-criteria cost (angle alignment, degree, distance), computes shortest path in the skeleton graph, and finally draws connecting lines from path endpoints to the nearest intersection points. Outputs include a refined binary centerline mask (uint8), lists of intersection point pairs (Shapely Point geometries), and optionally saves them as shapefile/KML. Input data paths (e.g., '4,1mr_10_gsd_cut_path_mask_input_frame.tiff') suggest agricultural machinery guidance or precision farming applications involving sub-meter resolution orthomosaics — not satellite-derived; no GEE Image/ImageCollection usage is present — all operations are local raster/vector processing with GDAL, rasterio, scikit-image, and Shapely. Study area and time range are not specified."
+        },
+        {
+          "script_id": "script_20689",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "qgsTreatments.applyWarpReproject",
+          "task_name": "Manage geospatial normalization parameters",
+          "task_description": "The script implements a PyQt5/QGIS-based MVC architecture for managing geospatial normalization parameters (workspace, extent layer, resolution, CRS) and applying them to raster/vector layers via clipping, warping, and reprojection operations. It supports XML/CSV serialization, GUI table editing with drag-and-drop connectors, field validation, coordinate transformation, bounding box extraction, and layer-specific processing (e.g., clipRasterFromVector, applyWarpReproject, applyVectorClip). No Earth Engine (GEE) code is present — this is a QGIS plugin utility library for desktop GIS parameter modeling and workflow orchestration, not a Google Earth Engine script."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_01_03",
+      "name": "Fix Geometries",
+      "accepted_patterns": [
+        "fixgeometries",
+        "repairgeometr"
+      ],
+      "boundary_patterns": [
+        "checkvalidity",
+        "checkvalid"
+      ],
+      "unique_scripts": 433,
+      "boundary_scripts": 20,
+      "matching_processing_operations": [
+        {
+          "operation": "native:fixgeometries",
+          "scripts": 400,
+          "calls": 1459,
+          "old_crosswalk": {
+            "alg_id": "native:fixgeometries",
+            "official_name": "Fix geometries",
+            "l3_code": "qgis_native:geometry_repair",
+            "bridge_type": "native_bridge",
+            "status": "accepted",
+            "source": "manual_review",
+            "frequency": 530
+          }
+        },
+        {
+          "operation": "qgis:fixgeometries",
+          "scripts": 21,
+          "calls": 92,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "pzp_utils:fix_geometries",
+          "scripts": 1,
+          "calls": 2,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_5362",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.fixGeometries",
+          "task_name": "Compute light flux surfacic density",
+          "task_description": "The script computes light flux surfacic density (DSFL) by aggregating light flux values from point lighting layers within reporting units (e.g., road sections, roads), optionally clipped to illuminated surface layers (e.g., roads, sidewalks, parking areas). It supports advanced filtering (skip empty features, minimum area, minimum lamp count), spatial reprojection, geometry fixing, buffering, clipping, voronoi tessellation, and attribute-based joining. Outputs include a polygon or line layer with fields for number of lamps, total flux, illuminated surface area, and computed flux density (flux/area), plus optional symbology application."
+        },
+        {
+          "script_id": "script_5362",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.fixGeometries",
+          "task_name": "Compute light flux surfacic density",
+          "task_description": "The script computes light flux surfacic density (DSFL) by aggregating light flux values from point lighting layers within reporting units (e.g., road sections, roads), optionally clipped to illuminated surface layers (e.g., roads, sidewalks, parking areas). It supports advanced filtering (skip empty features, minimum area, minimum lamp count), spatial reprojection, geometry fixing, buffering, clipping, voronoi tessellation, and attribute-based joining. Outputs include a polygon or line layer with fields for number of lamps, total flux, illuminated surface area, and computed flux density (flux/area), plus optional symbology application."
+        },
+        {
+          "script_id": "script_5364",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.fixGeometries",
+          "task_name": "Merge geometries for light pollution analysis",
+          "task_description": "The script implements three QGIS processing algorithms to merge vector geometries: (1) basic merge of multiple layers with optional CRS reprojection; (2) merge followed by geometry fixing and dissolve; (3) merge of Layer A with the difference between Layer A and Layer B (i.e., non-overlapping union). All algorithms output multi-polygon vector layers, targeting public lighting infrastructure analysis as indicated by plugin name 'LightPollutionToolbox' and group label 'Utils DSFLI'. The core operations include coordinate transformation, geometry conversion to multi-type, geometry validation/fixing, and spatial dissolve."
+        },
+        {
+          "script_id": "script_5364",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.fixGeometries",
+          "task_name": "Merge geometries for light pollution analysis",
+          "task_description": "The script implements three QGIS processing algorithms to merge vector geometries: (1) basic merge of multiple layers with optional CRS reprojection; (2) merge followed by geometry fixing and dissolve; (3) merge of Layer A with the difference between Layer A and Layer B (i.e., non-overlapping union). All algorithms output multi-polygon vector layers, targeting public lighting infrastructure analysis as indicated by plugin name 'LightPollutionToolbox' and group label 'Utils DSFLI'. The core operations include coordinate transformation, geometry conversion to multi-type, geometry validation/fixing, and spatial dissolve."
+        },
+        {
+          "script_id": "script_5372",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.fixGeometries",
+          "task_name": "Analyze radiance per grid cell",
+          "task_description": "The script computes total radiance from a satellite image (using red, green, and blue bands weighted by luminance coefficients: 0.2989, 0.5870, 0.1140) and aggregates statistics per grid cell (user-provided or generated rectangle/diamond/hexagon grid). It identifies illuminated cells via majority pixel thresholding, segments lit areas via raster calculation, polygonizes them, extracts intersecting grid cells, and computes zonal statistics (mean, sum, etc.) for total radiance and individual RGB bands. Outputs include a vector layer with radiance statistics per grid cell, an indicator field ('indice_pol') classifying cells into 5 quantile-based radiance levels, and an optional output raster of total radiance."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_03_01",
+      "name": "Grid",
+      "accepted_patterns": [
+        "creategrid",
+        "fishnet",
+        "regularpoints",
+        "creategraticule"
+      ],
+      "boundary_patterns": [
+        "rastergrid"
+      ],
+      "unique_scripts": 117,
+      "boundary_scripts": 0,
+      "matching_processing_operations": [
+        {
+          "operation": "native:creategrid",
+          "scripts": 84,
+          "calls": 214,
+          "old_crosswalk": {
+            "alg_id": "native:creategrid",
+            "official_name": "Create grid",
+            "l3_code": "",
+            "bridge_type": "rejected",
+            "status": "rejected",
+            "source": "manual_review",
+            "frequency": 102
+          }
+        },
+        {
+          "operation": "qgis:creategrid",
+          "scripts": 17,
+          "calls": 39,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "qgis:regularpoints",
+          "scripts": 12,
+          "calls": 31,
+          "old_crosswalk": {
+            "alg_id": "qgis:regularpoints",
+            "official_name": "Regular points",
+            "l3_code": "",
+            "bridge_type": "pending",
+            "status": "pending_review",
+            "source": "",
+            "frequency": 20
+          }
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_151",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "qgsTreatments.createGridLayer",
+          "task_name": "Quantify blue light emission intensity",
+          "task_description": "The script computes a normalized blue-to-red light ratio (B_mean/R_mean) from RGB satellite imagery within user-defined or automatically generated grid cells (rectangle, diamond, or hexagon), then classifies each grid cell into 5 ordinal classes (1–5, highest to lowest blue emission intensity) based on quantile thresholds of the ratio; outputs a vector layer of grids with attribute 'indice_pol' representing the blue emission intensity class and applies a categorical color scheme for visualization."
+        },
+        {
+          "script_id": "script_151",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "qgsTreatments.createGridLayer",
+          "task_name": "Quantify blue light emission intensity",
+          "task_description": "The script computes a normalized blue-to-red light ratio (B_mean/R_mean) from RGB satellite imagery within user-defined or automatically generated grid cells (rectangle, diamond, or hexagon), then classifies each grid cell into 5 ordinal classes (1–5, highest to lowest blue emission intensity) based on quantile thresholds of the ratio; outputs a vector layer of grids with attribute 'indice_pol' representing the blue emission intensity class and applies a categorical color scheme for visualization."
+        },
+        {
+          "script_id": "script_5372",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.createGridLayer",
+          "task_name": "Analyze radiance per grid cell",
+          "task_description": "The script computes total radiance from a satellite image (using red, green, and blue bands weighted by luminance coefficients: 0.2989, 0.5870, 0.1140) and aggregates statistics per grid cell (user-provided or generated rectangle/diamond/hexagon grid). It identifies illuminated cells via majority pixel thresholding, segments lit areas via raster calculation, polygonizes them, extracts intersecting grid cells, and computes zonal statistics (mean, sum, etc.) for total radiance and individual RGB bands. Outputs include a vector layer with radiance statistics per grid cell, an indicator field ('indice_pol') classifying cells into 5 quantile-based radiance levels, and an optional output raster of total radiance."
+        },
+        {
+          "script_id": "script_5372",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.createGridLayer",
+          "task_name": "Analyze radiance per grid cell",
+          "task_description": "The script computes total radiance from a satellite image (using red, green, and blue bands weighted by luminance coefficients: 0.2989, 0.5870, 0.1140) and aggregates statistics per grid cell (user-provided or generated rectangle/diamond/hexagon grid). It identifies illuminated cells via majority pixel thresholding, segments lit areas via raster calculation, polygonizes them, extracts intersecting grid cells, and computes zonal statistics (mean, sum, etc.) for total radiance and individual RGB bands. Outputs include a vector layer with radiance statistics per grid cell, an indicator field ('indice_pol') classifying cells into 5 quantile-based radiance levels, and an optional output raster of total radiance."
+        },
+        {
+          "script_id": "script_5365",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.createGridLayer",
+          "task_name": "Report roads by name and buffer",
+          "task_description": "The script computes buffered polygons around road features based on a dynamic expression involving road width ('LARGEUR') and type ('NATURE'), optionally dissolves buffers by road name field (e.g., 'NOM_1_G'), and supports joining only selected roads using an expression (e.g., 'NOM_1_G is not NULL'). It outputs a dissolved polygon layer and optionally a linear output layer with the same grouping logic. The workflow includes feature selection, variable-distance buffering, conditional extraction (join vs. non-join), dissolve by name field, and merging of join/non-join subsets."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_03_02",
+      "name": "Simplify",
+      "accepted_patterns": [
+        "simplifygeometr",
+        "v.generalize"
+      ],
+      "boundary_patterns": [
+        "smooth"
+      ],
+      "unique_scripts": 65,
+      "boundary_scripts": 47,
+      "matching_processing_operations": [
+        {
+          "operation": "native:simplifygeometries",
+          "scripts": 45,
+          "calls": 107,
+          "old_crosswalk": {
+            "alg_id": "native:simplifygeometries",
+            "official_name": "Simplify",
+            "l3_code": "L3_02_07_01",
+            "bridge_type": "l3_bridge",
+            "status": "accepted",
+            "source": "manual_review",
+            "frequency": 71,
+            "_expansion_source": "semantic_upgrade"
+          }
+        },
+        {
+          "operation": "grass7:v.generalize",
+          "scripts": 12,
+          "calls": 39,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "qgis:simplifygeometries",
+          "scripts": 8,
+          "calls": 30,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_41614",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "grass7:v.generalize",
+          "task_name": "Execute geospatial raster processing algorithms",
+          "task_description": "The script exposes a comprehensive set of QGIS Processing algorithms (via QGIS, GDAL, and GRASS GIS providers) as MCP tools, enabling remote execution of raster and vector analysis workflows including classification, terrain analysis, interpolation, filtering, reprojection, zonal statistics, morphometric modeling, hydrological simulation, LiDAR processing, and spectral transformations. Each tool accepts standardized parameters and returns structured output dictionaries with result paths and metadata."
+        },
+        {
+          "script_id": "script_924",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:simplifygeometries",
+          "task_name": "Quantify boundary simplification effects",
+          "task_description": "The script evaluates geometric and topological changes induced by Douglas-Peucker simplification (using 'Distance' method) on a provincial administrative boundary polygon (R8 in the Philippines). For each tolerance value (0.5–2.5 km), it computes: (1) vertex count reduction, (2) 2D area (km²) and perimeter (km) of original vs. simplified geometries, (3) derived ratios (vertices/area, perimeter/area), and (4) spatial agreement (%) as the intersection-over-union (IoU) of original and simplified polygons — all exported to a CSV with per-tolerance metrics."
+        },
+        {
+          "script_id": "script_20",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:simplifygeometries",
+          "task_name": "Vectorize raster threshold surface",
+          "task_description": "The script converts a single-band raster (e.g., DEM, water surface elevation, or classified surface) into a vector polygon layer representing all areas where pixel values satisfy a threshold condition (≤ or ≥ a user-specified raster_value). It applies raster algebra to binarize the input, polygonizes the binary raster, filters out non-target pixels (DN ≠ 1), computes area and max elevation attributes, buffers and simplifies geometries to reduce sliver polygons and digitization artifacts, smooths boundaries, splits multipart features, fixes invalid geometries, deletes small polygons below a minimum area (in meters²), and exports the cleaned single-part polygons to a GeoPackage with 'area_m' and 'surface_name' attributes."
+        },
+        {
+          "script_id": "script_20",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:simplifygeometries",
+          "task_name": "Vectorize raster threshold surface",
+          "task_description": "The script converts a single-band raster (e.g., DEM, water surface elevation, or classified surface) into a vector polygon layer representing all areas where pixel values satisfy a threshold condition (≤ or ≥ a user-specified raster_value). It applies raster algebra to binarize the input, polygonizes the binary raster, filters out non-target pixels (DN ≠ 1), computes area and max elevation attributes, buffers and simplifies geometries to reduce sliver polygons and digitization artifacts, smooths boundaries, splits multipart features, fixes invalid geometries, deletes small polygons below a minimum area (in meters²), and exports the cleaned single-part polygons to a GeoPackage with 'area_m' and 'surface_name' attributes."
+        },
+        {
+          "script_id": "script_20",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:simplifygeometries[OUTPUT]",
+          "task_name": "Vectorize raster threshold surface",
+          "task_description": "The script converts a single-band raster (e.g., DEM, water surface elevation, or classified surface) into a vector polygon layer representing all areas where pixel values satisfy a threshold condition (≤ or ≥ a user-specified raster_value). It applies raster algebra to binarize the input, polygonizes the binary raster, filters out non-target pixels (DN ≠ 1), computes area and max elevation attributes, buffers and simplifies geometries to reduce sliver polygons and digitization artifacts, smooths boundaries, splits multipart features, fixes invalid geometries, deletes small polygons below a minimum area (in meters²), and exports the cleaned single-part polygons to a GeoPackage with 'area_m' and 'surface_name' attributes."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_03_03",
+      "name": "Voronoi",
+      "accepted_patterns": [
+        "voronoi",
+        "thiessen"
+      ],
+      "boundary_patterns": [],
+      "unique_scripts": 52,
+      "boundary_scripts": 0,
+      "matching_processing_operations": [
+        {
+          "operation": "qgis:voronoipolygons",
+          "scripts": 34,
+          "calls": 96,
+          "old_crosswalk": {
+            "alg_id": "qgis:voronoipolygons",
+            "official_name": "Voronoi polygons",
+            "l3_code": "",
+            "bridge_type": "pending",
+            "status": "pending_review",
+            "source": "",
+            "frequency": 12
+          }
+        },
+        {
+          "operation": "native:voronoipolygons",
+          "scripts": 7,
+          "calls": 21,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "grass7:v.voronoi.skeleton",
+          "scripts": 6,
+          "calls": 10,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "grass7:v.voronoi",
+          "scripts": 5,
+          "calls": 7,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "saga:thiessenpolygons",
+          "scripts": 4,
+          "calls": 12,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "grass:v.voronoi.skeleton",
+          "scripts": 1,
+          "calls": 2,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_5362",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.applyVoronoi",
+          "task_name": "Compute light flux surfacic density",
+          "task_description": "The script computes light flux surfacic density (DSFL) by aggregating light flux values from point lighting layers within reporting units (e.g., road sections, roads), optionally clipped to illuminated surface layers (e.g., roads, sidewalks, parking areas). It supports advanced filtering (skip empty features, minimum area, minimum lamp count), spatial reprojection, geometry fixing, buffering, clipping, voronoi tessellation, and attribute-based joining. Outputs include a polygon or line layer with fields for number of lamps, total flux, illuminated surface area, and computed flux density (flux/area), plus optional symbology application."
+        },
+        {
+          "script_id": "script_5362",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "qgsTreatments.applyVoronoi",
+          "task_name": "Compute light flux surfacic density",
+          "task_description": "The script computes light flux surfacic density (DSFL) by aggregating light flux values from point lighting layers within reporting units (e.g., road sections, roads), optionally clipped to illuminated surface layers (e.g., roads, sidewalks, parking areas). It supports advanced filtering (skip empty features, minimum area, minimum lamp count), spatial reprojection, geometry fixing, buffering, clipping, voronoi tessellation, and attribute-based joining. Outputs include a polygon or line layer with fields for number of lamps, total flux, illuminated surface area, and computed flux density (flux/area), plus optional symbology application."
+        },
+        {
+          "script_id": "script_7126",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:voronoipolygons",
+          "task_name": "Generate cadastral boundaries from roads and buildings",
+          "task_description": "The script generates cadastral (erf) boundaries by applying Voronoi tessellation to building point locations, then subtracting road reserve buffers and intersecting with block polygons derived from the road network. It enforces area constraints (250–2000 m²), operates in a metric CRS (EPSG:32736), and outputs a GeoPackage layer of validated, non-overlapping, block-constrained cadastral polygons suitable for land administration in informal settlement contexts."
+        },
+        {
+          "script_id": "script_7126",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "voronoi.featureCount",
+          "task_name": "Generate cadastral boundaries from roads and buildings",
+          "task_description": "The script generates cadastral (erf) boundaries by applying Voronoi tessellation to building point locations, then subtracting road reserve buffers and intersecting with block polygons derived from the road network. It enforces area constraints (250–2000 m²), operates in a metric CRS (EPSG:32736), and outputs a GeoPackage layer of validated, non-overlapping, block-constrained cadastral polygons suitable for land administration in informal settlement contexts."
+        },
+        {
+          "script_id": "script_7126",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "voronoi.featureCount",
+          "task_name": "Generate cadastral boundaries from roads and buildings",
+          "task_description": "The script generates cadastral (erf) boundaries by applying Voronoi tessellation to building point locations, then subtracting road reserve buffers and intersecting with block polygons derived from the road network. It enforces area constraints (250–2000 m²), operates in a metric CRS (EPSG:32736), and outputs a GeoPackage layer of validated, non-overlapping, block-constrained cadastral polygons suitable for land administration in informal settlement contexts."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_03_04",
+      "name": "Delaunay Triangulation",
+      "accepted_patterns": [
+        "delaunay"
+      ],
+      "boundary_patterns": [
+        "triangulate"
+      ],
+      "unique_scripts": 19,
+      "boundary_scripts": 0,
+      "matching_processing_operations": [
+        {
+          "operation": "qgis:delaunaytriangulation",
+          "scripts": 17,
+          "calls": 40,
+          "old_crosswalk": {
+            "alg_id": "qgis:delaunaytriangulation",
+            "official_name": "Delaunay triangulation",
+            "l3_code": "",
+            "bridge_type": "pending",
+            "status": "pending_review",
+            "source": "",
+            "frequency": 15
+          }
+        },
+        {
+          "operation": "grass7:v.delaunay",
+          "scripts": 1,
+          "calls": 1,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_31465",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "QgsGeometry.fromMultiPointXY.delaunayTriangulation",
+          "task_name": "Generate concave hulls from points",
+          "task_description": "The script computes concave (α-shape) or convex hulls from an input point vector layer. It groups points by an optional key field (e.g., CLUSTER_ID), computes Delaunay triangulations for each group, filters triangles based on circumscribed radius threshold (alpha ∈ [0,1]), and dissolves the retained triangles into polygonal hulls. The output is a vector polygon layer where each feature represents a hull — either one per group (if key field provided) or a single hull (if no key). No raster data, satellite imagery, time series, or external geospatial datasets are used; input is purely a local QGIS vector layer. Study area, time range, satellite/sensor/bands, and external data sources are not specified."
+        },
+        {
+          "script_id": "script_31465",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part1",
+          "operation": "QgsGeometry.fromMultiPointXY.delaunayTriangulation",
+          "task_name": "Generate concave hulls from points",
+          "task_description": "The script computes concave (α-shape) or convex hulls from an input point vector layer. It groups points by an optional key field (e.g., CLUSTER_ID), computes Delaunay triangulations for each group, filters triangles based on circumscribed radius threshold (alpha ∈ [0,1]), and dissolves the retained triangles into polygonal hulls. The output is a vector polygon layer where each feature represents a hull — either one per group (if key field provided) or a single hull (if no key). No raster data, satellite imagery, time series, or external geospatial datasets are used; input is purely a local QGIS vector layer. Study area, time range, satellite/sensor/bands, and external data sources are not specified."
+        },
+        {
+          "script_id": "script_41614",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "grass7:v.delaunay",
+          "task_name": "Execute geospatial raster processing algorithms",
+          "task_description": "The script exposes a comprehensive set of QGIS Processing algorithms (via QGIS, GDAL, and GRASS GIS providers) as MCP tools, enabling remote execution of raster and vector analysis workflows including classification, terrain analysis, interpolation, filtering, reprojection, zonal statistics, morphometric modeling, hydrological simulation, LiDAR processing, and spectral transformations. Each tool accepts standardized parameters and returns structured output dictionaries with result paths and metadata."
+        },
+        {
+          "script_id": "script_50738",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:delaunaytriangulation",
+          "task_name": "Load vector tile basemaps",
+          "task_description": "The script loads and adds vector tile basemaps (e.g., ESRI, Carto, Versatiles, Vgrid) to QGIS by fetching remote Mapbox GL style JSON files and associating them with corresponding vector tile endpoints (e.g., ArcGIS VectorTileServer, Carto MVT, Versatiles, Sovereign Solutions PBF). It supports automatic CRS-aware styling and layer registration in QGIS XYZ connections. No raster or satellite-derived analysis is performed; the core functionality is cartographic basemap provisioning for Vietnam and global contexts, with explicit support for 'Vgrid Vietnam Islands'."
+        },
+        {
+          "script_id": "script_50738",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "delaunay_clean.dataProvider.addAttributes",
+          "task_name": "Load vector tile basemaps",
+          "task_description": "The script loads and adds vector tile basemaps (e.g., ESRI, Carto, Versatiles, Vgrid) to QGIS by fetching remote Mapbox GL style JSON files and associating them with corresponding vector tile endpoints (e.g., ArcGIS VectorTileServer, Carto MVT, Versatiles, Sovereign Solutions PBF). It supports automatic CRS-aware styling and layer registration in QGIS XYZ connections. No raster or satellite-derived analysis is performed; the core functionality is cartographic basemap provisioning for Vietnam and global contexts, with explicit support for 'Vgrid Vietnam Islands'."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_05_01",
+      "name": "Delete Duplicate",
+      "accepted_patterns": [
+        "deleteduplicategeometr",
+        "deleteidenticalgeometr"
+      ],
+      "boundary_patterns": [
+        "removeduplicatevertices"
+      ],
+      "unique_scripts": 79,
+      "boundary_scripts": 12,
+      "matching_processing_operations": [
+        {
+          "operation": "native:deleteduplicategeometries",
+          "scripts": 52,
+          "calls": 168,
+          "old_crosswalk": {
+            "alg_id": "native:deleteduplicategeometries",
+            "official_name": "Delete duplicate geometries",
+            "l3_code": "L3_02_03_05",
+            "bridge_type": "l3_bridge",
+            "status": "accepted",
+            "source": "manual_review",
+            "frequency": 56,
+            "_expansion_source": "semantic_upgrade"
+          }
+        },
+        {
+          "operation": "qgis:deleteduplicategeometries",
+          "scripts": 27,
+          "calls": 125,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_5005",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:deleteduplicategeometries",
+          "task_name": "Extract OSM building footprints",
+          "task_description": "The script processes OpenStreetMap (.osm) files to extract, classify, and georeference vector features—specifically points, lines, multilinestrings, multipolygons, and other_relations—then filters, fixes geometries, computes centroids, derives extents, and generates standardized GeoJSON outputs for areas, internals, origin point, measures (ellipsoidal distances), viewbox, and address-tagged buildings. It performs spatial joins (e.g., 'within' for address-to-building assignment), geometry cleaning (fixgeometries, delete duplicate geometries), attribute enrichment (area, centroid_x/y, ellipsoidal_distance, address ranking), and coordinate system transformations (WGS84 → Web Mercator for area calculation). All operations are executed via QGIS Processing algorithms in a headless PyQGIS environment; no Earth Engine (GEE) API calls, imagery, or remote sensing data are used. The workflow assumes local OSM extracts (e.g., ./map*.osm) and predefined GeoJSON inputs (e.g., ./src/data/areas.geojson), with outputs written to ./src/data/*.geojson. The study area is not defined by code logic but inferred from input file paths and naming conventions (e.g., 'areas', 'internals'), and no temporal filtering is applied."
+        },
+        {
+          "script_id": "script_5005",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "deleteDuplicateGeometries",
+          "task_name": "Extract OSM building footprints",
+          "task_description": "The script processes OpenStreetMap (.osm) files to extract, classify, and georeference vector features—specifically points, lines, multilinestrings, multipolygons, and other_relations—then filters, fixes geometries, computes centroids, derives extents, and generates standardized GeoJSON outputs for areas, internals, origin point, measures (ellipsoidal distances), viewbox, and address-tagged buildings. It performs spatial joins (e.g., 'within' for address-to-building assignment), geometry cleaning (fixgeometries, delete duplicate geometries), attribute enrichment (area, centroid_x/y, ellipsoidal_distance, address ranking), and coordinate system transformations (WGS84 → Web Mercator for area calculation). All operations are executed via QGIS Processing algorithms in a headless PyQGIS environment; no Earth Engine (GEE) API calls, imagery, or remote sensing data are used. The workflow assumes local OSM extracts (e.g., ./map*.osm) and predefined GeoJSON inputs (e.g., ./src/data/areas.geojson), with outputs written to ./src/data/*.geojson. The study area is not defined by code logic but inferred from input file paths and naming conventions (e.g., 'areas', 'internals'), and no temporal filtering is applied."
+        },
+        {
+          "script_id": "script_1428",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:deleteduplicategeometries",
+          "task_name": "Extract sub-watershed land use areas",
+          "task_description": "The script computes morphologically relevant sub-watershed polygons (one per river segment, identified by 'Id_UEA' or user-specified field) from a D8 flow direction raster and snapped stream network outlets; reclassifies a 10-m resolution land use raster (MELCCFP) into four thematic classes (forest, agriculture, anthropogenic, water); calculates area (m²) of each class within each sub-watershed; computes total watershed area and land area; and optionally aggregates dam drainage area (from CEHQ dam points) per sub-watershed. Outputs a vector polygon layer with attributes including 'Id_UEA', 'watershed_area', 'forest_area', 'agri_area', 'anthro_area', 'water_area', 'land_area', and 'dam_area_sum' — serving as the foundational input for IQM indices A1 (land use composition) and A2 (anthropogenic pressure)."
+        },
+        {
+          "script_id": "script_1428",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:deleteduplicategeometries",
+          "task_name": "Extract sub-watershed land use areas",
+          "task_description": "The script computes morphologically relevant sub-watershed polygons (one per river segment, identified by 'Id_UEA' or user-specified field) from a D8 flow direction raster and snapped stream network outlets; reclassifies a 10-m resolution land use raster (MELCCFP) into four thematic classes (forest, agriculture, anthropogenic, water); calculates area (m²) of each class within each sub-watershed; computes total watershed area and land area; and optionally aggregates dam drainage area (from CEHQ dam points) per sub-watershed. Outputs a vector polygon layer with attributes including 'Id_UEA', 'watershed_area', 'forest_area', 'agri_area', 'anthro_area', 'water_area', 'land_area', and 'dam_area_sum' — serving as the foundational input for IQM indices A1 (land use composition) and A2 (anthropogenic pressure)."
+        },
+        {
+          "script_id": "script_1428",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:deleteduplicategeometries[OUTPUT]",
+          "task_name": "Extract sub-watershed land use areas",
+          "task_description": "The script computes morphologically relevant sub-watershed polygons (one per river segment, identified by 'Id_UEA' or user-specified field) from a D8 flow direction raster and snapped stream network outlets; reclassifies a 10-m resolution land use raster (MELCCFP) into four thematic classes (forest, agriculture, anthropogenic, water); calculates area (m²) of each class within each sub-watershed; computes total watershed area and land area; and optionally aggregates dam drainage area (from CEHQ dam points) per sub-watershed. Outputs a vector polygon layer with attributes including 'Id_UEA', 'watershed_area', 'forest_area', 'agri_area', 'anthro_area', 'water_area', 'land_area', and 'dam_area_sum' — serving as the foundational input for IQM indices A1 (land use composition) and A2 (anthropogenic pressure)."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_05_02",
+      "name": "Snap",
+      "accepted_patterns": [
+        "snapgeometr",
+        "snapgeometrytolayer",
+        "snappointstogrid"
+      ],
+      "boundary_patterns": [],
+      "unique_scripts": 75,
+      "boundary_scripts": 0,
+      "matching_processing_operations": [
+        {
+          "operation": "native:snapgeometries",
+          "scripts": 53,
+          "calls": 203,
+          "old_crosswalk": {
+            "alg_id": "native:snapgeometries",
+            "official_name": "Snap geometries to layer",
+            "l3_code": "qgis_native:geometry_snap",
+            "bridge_type": "native_bridge",
+            "status": "accepted",
+            "source": "manual_review",
+            "frequency": 116
+          }
+        },
+        {
+          "operation": "native:snappointstogrid",
+          "scripts": 12,
+          "calls": 48,
+          "old_crosswalk": {
+            "alg_id": "native:snappointstogrid",
+            "official_name": "Snap points to grid",
+            "l3_code": "",
+            "bridge_type": "pending",
+            "status": "pending_review",
+            "source": "",
+            "frequency": 8
+          }
+        },
+        {
+          "operation": "qgis:snapgeometries",
+          "scripts": 10,
+          "calls": 23,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "qgis:snappointstogrid",
+          "scripts": 2,
+          "calls": 8,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_5258",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "QgsGeometrySnapper.snapGeometry",
+          "task_name": "Repair soil feature geometry",
+          "task_description": "The script repairs invalid or problematic geometries of soil vector features in QGIS, including snapping to reference layers, making geometries valid, splitting multipart features, buffering, and applying topological corrections. It supports attribute mapping, auto-snapping, area-based filtering, and intersection/difference operations with other layers. Key methods include repair_feature, snapFeature, getFeaturesIdByGeom, and cut_interserct_feature, all operating on QgsVectorLayer instances within the current QGIS project."
+        },
+        {
+          "script_id": "script_5258",
+          "extraction_group": "Workflowoutput L2_general_qgis_processing_workflows_part2",
+          "operation": "QgsGeometrySnapper.snapGeometry",
+          "task_name": "Repair soil feature geometry",
+          "task_description": "The script repairs invalid or problematic geometries of soil vector features in QGIS, including snapping to reference layers, making geometries valid, splitting multipart features, buffering, and applying topological corrections. It supports attribute mapping, auto-snapping, area-based filtering, and intersection/difference operations with other layers. Key methods include repair_feature, snapFeature, getFeaturesIdByGeom, and cut_interserct_feature, all operating on QgsVectorLayer instances within the current QGIS project."
+        },
+        {
+          "script_id": "script_39663",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:snappointstogrid",
+          "task_name": "Assign Natura 2000 site codes",
+          "task_description": "The script assigns Natura 2000 (PLH/PLC) and nature reserve (rp_*) protection status codes from spatially referenced geopackage layers (N2000_PL.gpkg, rezerwaty_PL.gpkg) to polygon features in a user-provided vector layer by geometric intersection, area-weighted selection (retaining only the largest overlapping protected area per feature), and database synchronization. It updates the SQLite database table `stanowisko_rok_forma_op` with new `forma_ochrony_przyrody_cd` entries (e.g., 'n2kh_PLH123', 'rp_007'), writes `kod_n2000`/`rez_przyr` attributes back to the source layer, generates diagnostic CSV reports for overlaps/duplicates, and produces intermediate GIS layers (e.g., 'w_N2000', 'bledy_zasiegu') for visual quality control."
+        },
+        {
+          "script_id": "script_39663",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:snappointstogrid",
+          "task_name": "Assign Natura 2000 site codes",
+          "task_description": "The script assigns Natura 2000 (PLH/PLC) and nature reserve (rp_*) protection status codes from spatially referenced geopackage layers (N2000_PL.gpkg, rezerwaty_PL.gpkg) to polygon features in a user-provided vector layer by geometric intersection, area-weighted selection (retaining only the largest overlapping protected area per feature), and database synchronization. It updates the SQLite database table `stanowisko_rok_forma_op` with new `forma_ochrony_przyrody_cd` entries (e.g., 'n2kh_PLH123', 'rp_007'), writes `kod_n2000`/`rez_przyr` attributes back to the source layer, generates diagnostic CSV reports for overlaps/duplicates, and produces intermediate GIS layers (e.g., 'w_N2000', 'bledy_zasiegu') for visual quality control."
+        },
+        {
+          "script_id": "script_39663",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:snappointstogrid[OUTPUT]",
+          "task_name": "Assign Natura 2000 site codes",
+          "task_description": "The script assigns Natura 2000 (PLH/PLC) and nature reserve (rp_*) protection status codes from spatially referenced geopackage layers (N2000_PL.gpkg, rezerwaty_PL.gpkg) to polygon features in a user-provided vector layer by geometric intersection, area-weighted selection (retaining only the largest overlapping protected area per feature), and database synchronization. It updates the SQLite database table `stanowisko_rok_forma_op` with new `forma_ochrony_przyrody_cd` entries (e.g., 'n2kh_PLH123', 'rp_007'), writes `kod_n2000`/`rez_przyr` attributes back to the source layer, generates diagnostic CSV reports for overlaps/duplicates, and produces intermediate GIS layers (e.g., 'w_N2000', 'bledy_zasiegu') for visual quality control."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_05_03",
+      "name": "Delete Holes",
+      "accepted_patterns": [
+        "deleteholes",
+        "removeholes"
+      ],
+      "boundary_patterns": [],
+      "unique_scripts": 66,
+      "boundary_scripts": 0,
+      "matching_processing_operations": [
+        {
+          "operation": "native:deleteholes",
+          "scripts": 52,
+          "calls": 133,
+          "old_crosswalk": {
+            "alg_id": "native:deleteholes",
+            "official_name": "Delete holes",
+            "l3_code": "L3_02_07_01",
+            "bridge_type": "l3_bridge",
+            "status": "accepted",
+            "source": "manual_review",
+            "frequency": 58,
+            "_expansion_source": "semantic_upgrade"
+          }
+        },
+        {
+          "operation": "qgis:deleteholes",
+          "scripts": 14,
+          "calls": 51,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_25203",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:deleteholes",
+          "task_name": "Analyze commuting flow patterns",
+          "task_description": "The script performs three distinct commuting analysis workflows: (A) identifies urban clusters and labor market areas (LMAs) by clustering origin-destination commuting data using SQLite spatial aggregation and network-based buffer analysis around key nodes; (B) computes actual road-network-constrained shortest paths between commuting origin and destination points using Dijkstra’s algorithm on a speed-weighted transport network, then aggregates and visualizes flow intensity on dissolved line segments; (C) performs grid-based origin-destination flow analysis (in/out-commuting) on polygonal administrative or census grids using SQL joins and virtual layers, generating graduated choropleth maps of total commuter flows per cell. Outputs include styled vector layers: clustered buffers (Primary/Secondary), flow-intensity dissolved lines, and classified grid cells with symbology based on commuter totals."
+        },
+        {
+          "script_id": "script_25203",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:deleteholes",
+          "task_name": "Analyze commuting flow patterns",
+          "task_description": "The script performs three distinct commuting analysis workflows: (A) identifies urban clusters and labor market areas (LMAs) by clustering origin-destination commuting data using SQLite spatial aggregation and network-based buffer analysis around key nodes; (B) computes actual road-network-constrained shortest paths between commuting origin and destination points using Dijkstra’s algorithm on a speed-weighted transport network, then aggregates and visualizes flow intensity on dissolved line segments; (C) performs grid-based origin-destination flow analysis (in/out-commuting) on polygonal administrative or census grids using SQL joins and virtual layers, generating graduated choropleth maps of total commuter flows per cell. Outputs include styled vector layers: clustered buffers (Primary/Secondary), flow-intensity dissolved lines, and classified grid cells with symbology based on commuter totals."
+        },
+        {
+          "script_id": "script_25203",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:deleteholes",
+          "task_name": "Analyze commuting flow patterns",
+          "task_description": "The script performs three distinct commuting analysis workflows: (A) identifies urban clusters and labor market areas (LMAs) by clustering origin-destination commuting data using SQLite spatial aggregation and network-based buffer analysis around key nodes; (B) computes actual road-network-constrained shortest paths between commuting origin and destination points using Dijkstra’s algorithm on a speed-weighted transport network, then aggregates and visualizes flow intensity on dissolved line segments; (C) performs grid-based origin-destination flow analysis (in/out-commuting) on polygonal administrative or census grids using SQL joins and virtual layers, generating graduated choropleth maps of total commuter flows per cell. Outputs include styled vector layers: clustered buffers (Primary/Secondary), flow-intensity dissolved lines, and classified grid cells with symbology based on commuter totals."
+        },
+        {
+          "script_id": "script_25203",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:deleteholes[OUTPUT]",
+          "task_name": "Analyze commuting flow patterns",
+          "task_description": "The script performs three distinct commuting analysis workflows: (A) identifies urban clusters and labor market areas (LMAs) by clustering origin-destination commuting data using SQLite spatial aggregation and network-based buffer analysis around key nodes; (B) computes actual road-network-constrained shortest paths between commuting origin and destination points using Dijkstra’s algorithm on a speed-weighted transport network, then aggregates and visualizes flow intensity on dissolved line segments; (C) performs grid-based origin-destination flow analysis (in/out-commuting) on polygonal administrative or census grids using SQL joins and virtual layers, generating graduated choropleth maps of total commuter flows per cell. Outputs include styled vector layers: clustered buffers (Primary/Secondary), flow-intensity dissolved lines, and classified grid cells with symbology based on commuter totals."
+        },
+        {
+          "script_id": "script_25203",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:deleteholes",
+          "task_name": "Analyze commuting flow patterns",
+          "task_description": "The script performs three distinct commuting analysis workflows: (A) identifies urban clusters and labor market areas (LMAs) by clustering origin-destination commuting data using SQLite spatial aggregation and network-based buffer analysis around key nodes; (B) computes actual road-network-constrained shortest paths between commuting origin and destination points using Dijkstra’s algorithm on a speed-weighted transport network, then aggregates and visualizes flow intensity on dissolved line segments; (C) performs grid-based origin-destination flow analysis (in/out-commuting) on polygonal administrative or census grids using SQL joins and virtual layers, generating graduated choropleth maps of total commuter flows per cell. Outputs include styled vector layers: clustered buffers (Primary/Secondary), flow-intensity dissolved lines, and classified grid cells with symbology based on commuter totals."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_05_04",
+      "name": "Smooth",
+      "accepted_patterns": [
+        "smoothgeometry",
+        "v.generalize.smooth"
+      ],
+      "boundary_patterns": [
+        "simplify"
+      ],
+      "unique_scripts": 38,
+      "boundary_scripts": 78,
+      "matching_processing_operations": [
+        {
+          "operation": "native:smoothgeometry",
+          "scripts": 36,
+          "calls": 94,
+          "old_crosswalk": {
+            "alg_id": "native:smoothgeometry",
+            "official_name": "Smooth",
+            "l3_code": "L3_02_07_01",
+            "bridge_type": "l3_bridge",
+            "status": "accepted",
+            "source": "manual_review",
+            "frequency": 59,
+            "_expansion_source": "semantic_upgrade"
+          }
+        },
+        {
+          "operation": "qgis:smoothgeometry",
+          "scripts": 1,
+          "calls": 4,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_20",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:smoothgeometry",
+          "task_name": "Vectorize raster threshold surface",
+          "task_description": "The script converts a single-band raster (e.g., DEM, water surface elevation, or classified surface) into a vector polygon layer representing all areas where pixel values satisfy a threshold condition (≤ or ≥ a user-specified raster_value). It applies raster algebra to binarize the input, polygonizes the binary raster, filters out non-target pixels (DN ≠ 1), computes area and max elevation attributes, buffers and simplifies geometries to reduce sliver polygons and digitization artifacts, smooths boundaries, splits multipart features, fixes invalid geometries, deletes small polygons below a minimum area (in meters²), and exports the cleaned single-part polygons to a GeoPackage with 'area_m' and 'surface_name' attributes."
+        },
+        {
+          "script_id": "script_20",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:smoothgeometry",
+          "task_name": "Vectorize raster threshold surface",
+          "task_description": "The script converts a single-band raster (e.g., DEM, water surface elevation, or classified surface) into a vector polygon layer representing all areas where pixel values satisfy a threshold condition (≤ or ≥ a user-specified raster_value). It applies raster algebra to binarize the input, polygonizes the binary raster, filters out non-target pixels (DN ≠ 1), computes area and max elevation attributes, buffers and simplifies geometries to reduce sliver polygons and digitization artifacts, smooths boundaries, splits multipart features, fixes invalid geometries, deletes small polygons below a minimum area (in meters²), and exports the cleaned single-part polygons to a GeoPackage with 'area_m' and 'surface_name' attributes."
+        },
+        {
+          "script_id": "script_20",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:smoothgeometry[OUTPUT]",
+          "task_name": "Vectorize raster threshold surface",
+          "task_description": "The script converts a single-band raster (e.g., DEM, water surface elevation, or classified surface) into a vector polygon layer representing all areas where pixel values satisfy a threshold condition (≤ or ≥ a user-specified raster_value). It applies raster algebra to binarize the input, polygonizes the binary raster, filters out non-target pixels (DN ≠ 1), computes area and max elevation attributes, buffers and simplifies geometries to reduce sliver polygons and digitization artifacts, smooths boundaries, splits multipart features, fixes invalid geometries, deletes small polygons below a minimum area (in meters²), and exports the cleaned single-part polygons to a GeoPackage with 'area_m' and 'surface_name' attributes."
+        },
+        {
+          "script_id": "script_7011",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:smoothgeometry",
+          "task_name": "Calculate retention basin volume",
+          "task_description": "The script calculates the volumetric capacity (in m³) of a retention basin by generating a 3D artificial surface from an input query line (abfragelinie), based on user-defined barrier height and sedimentation slope (Verlandungsgefälle). It clips a high-resolution ALS-derived DGM (1 m), samples elevation along the line and perpendicular profiles, constructs a 3D polygon representing the theoretical water surface, interpolates it into a raster (TIN), computes the difference raster against the clipped DTM, sums negative differences (i.e., volume below the artificial surface), and outputs both the total retention volume and a smoothed, simplified polygon layer ('stauraum.shp') representing the inundated area. The result is added to QGIS with labeling showing the volume in m³ and semi-transparent blue fill."
+        },
+        {
+          "script_id": "script_7011",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:smoothgeometry",
+          "task_name": "Calculate retention basin volume",
+          "task_description": "The script calculates the volumetric capacity (in m³) of a retention basin by generating a 3D artificial surface from an input query line (abfragelinie), based on user-defined barrier height and sedimentation slope (Verlandungsgefälle). It clips a high-resolution ALS-derived DGM (1 m), samples elevation along the line and perpendicular profiles, constructs a 3D polygon representing the theoretical water surface, interpolates it into a raster (TIN), computes the difference raster against the clipped DTM, sums negative differences (i.e., volume below the artificial surface), and outputs both the total retention volume and a smoothed, simplified polygon layer ('stauraum.shp') representing the inundated area. The result is added to QGIS with labeling showing the volume in m³ and semi-transparent blue fill."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_05_05",
+      "name": "Concave Hull",
+      "accepted_patterns": [
+        "concavehull",
+        "knearestconcavehull",
+        "alphashape"
+      ],
+      "boundary_patterns": [],
+      "unique_scripts": 10,
+      "boundary_scripts": 0,
+      "matching_processing_operations": [
+        {
+          "operation": "native:concavehull",
+          "scripts": 5,
+          "calls": 10,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "qgis:knearestconcavehull",
+          "scripts": 4,
+          "calls": 7,
+          "old_crosswalk": {
+            "alg_id": "qgis:knearestconcavehull",
+            "official_name": "Concave hull",
+            "l3_code": "",
+            "bridge_type": "pending",
+            "status": "pending_review",
+            "source": "",
+            "frequency": 5
+          }
+        },
+        {
+          "operation": "qgis:concavehull",
+          "scripts": 1,
+          "calls": 2,
+          "old_crosswalk": {
+            "alg_id": "qgis:concavehull",
+            "official_name": "Concave hull",
+            "l3_code": "",
+            "bridge_type": "pending",
+            "status": "pending_review",
+            "source": "",
+            "frequency": 6
+          }
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_41614",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:knearestconcavehull",
+          "task_name": "Execute geospatial raster processing algorithms",
+          "task_description": "The script exposes a comprehensive set of QGIS Processing algorithms (via QGIS, GDAL, and GRASS GIS providers) as MCP tools, enabling remote execution of raster and vector analysis workflows including classification, terrain analysis, interpolation, filtering, reprojection, zonal statistics, morphometric modeling, hydrological simulation, LiDAR processing, and spectral transformations. Each tool accepts standardized parameters and returns structured output dictionaries with result paths and metadata."
+        },
+        {
+          "script_id": "script_886",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:knearestconcavehull",
+          "task_name": "Split polygon into spatially balanced parts",
+          "task_description": "The script splits a user-provided input polygon feature into a specified number of spatially contiguous, approximately equal-area sub-polygons using a geometric clustering and partitioning workflow: (1) generates random points uniformly distributed inside the input polygon; (2) applies k-means clustering to group those points into the requested number of clusters; (3) computes a concave hull (k-nearest neighbor method) for each cluster to approximate its spatial extent; (4) computes centroids of those concave hulls; (5) generates Voronoi polygons around those centroids to define tessellated influence zones; and (6) intersects the Voronoi polygons with the original input polygon to produce the final set of non-overlapping, topologically valid, spatially balanced sub-polygons. The output is a vector feature class (polygon geometry) containing the splitted parts."
+        },
+        {
+          "script_id": "script_886",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:knearestconcavehull",
+          "task_name": "Split polygon into spatially balanced parts",
+          "task_description": "The script splits a user-provided input polygon feature into a specified number of spatially contiguous, approximately equal-area sub-polygons using a geometric clustering and partitioning workflow: (1) generates random points uniformly distributed inside the input polygon; (2) applies k-means clustering to group those points into the requested number of clusters; (3) computes a concave hull (k-nearest neighbor method) for each cluster to approximate its spatial extent; (4) computes centroids of those concave hulls; (5) generates Voronoi polygons around those centroids to define tessellated influence zones; and (6) intersects the Voronoi polygons with the original input polygon to produce the final set of non-overlapping, topologically valid, spatially balanced sub-polygons. The output is a vector feature class (polygon geometry) containing the splitted parts."
+        },
+        {
+          "script_id": "script_4029",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:concavehull",
+          "task_name": "Transform vector layers with geoprocessing operations",
+          "task_description": "The script provides a comprehensive set of QGIS-native vector geoprocessing methods encapsulated in the Worker.Vector subclass, enabling attribute indexing, geometry transformation (buffer, convex/concave hull, simplification, reprojection, centroid generation), spatial joins (by location/attribute), feature extraction (by expression/location, random selection), topological operations (clip, difference, symmetrical difference, dissolve), geometry repair (fix geometries, force RHR), and database/file I/O utilities — all returning new QgsVectorLayer objects in memory or performing side effects like SQL execution or file system operations."
+        },
+        {
+          "script_id": "script_4029",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:concavehull[OUTPUT]",
+          "task_name": "Transform vector layers with geoprocessing operations",
+          "task_description": "The script provides a comprehensive set of QGIS-native vector geoprocessing methods encapsulated in the Worker.Vector subclass, enabling attribute indexing, geometry transformation (buffer, convex/concave hull, simplification, reprojection, centroid generation), spatial joins (by location/attribute), feature extraction (by expression/location, random selection), topological operations (clip, difference, symmetrical difference, dissolve), geometry repair (fix geometries, force RHR), and database/file I/O utilities — all returning new QgsVectorLayer objects in memory or performing side effects like SQL execution or file system operations."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_07_02",
+      "name": "Polygons to Lines",
+      "accepted_patterns": [
+        "polygonstolines",
+        "polygonstoline"
+      ],
+      "boundary_patterns": [
+        "extractboundary"
+      ],
+      "unique_scripts": 108,
+      "boundary_scripts": 0,
+      "matching_processing_operations": [
+        {
+          "operation": "native:polygonstolines",
+          "scripts": 83,
+          "calls": 247,
+          "old_crosswalk": {
+            "alg_id": "native:polygonstolines",
+            "official_name": "Polygons to lines",
+            "l3_code": "qgis_native:polygon_to_line",
+            "bridge_type": "native_bridge",
+            "status": "accepted",
+            "source": "manual_review",
+            "frequency": 97
+          }
+        },
+        {
+          "operation": "qgis:polygonstolines",
+          "scripts": 21,
+          "calls": 70,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "saga:convertpolygonstolines",
+          "scripts": 3,
+          "calls": 5,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "ladm_col:polygonstolines",
+          "scripts": 2,
+          "calls": 6,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_36293",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:polygonstolines",
+          "task_name": "Calculate intersection kilometerage for infrastructure projects",
+          "task_description": "The script computes the kilometerage range (e.g., '12+345 - 15+678') along a linear reference layer ('km', interpreted as a kilometer-marked linear infrastructure such as a road or rail alignment) that intersects with clipped and decomposed polygons representing investment areas ('inw'), buffered by a polygonal corridor ('pas'). It derives this by extracting vertices of clipped investment geometries, computing nearest-point distances to 'km' points (assumed to be chainage-marked nodes), aggregating min/max chainage IDs per investment segment, formatting them into human-readable kilometerage strings, joining results back to original investment features, and optionally computing distance-to-nearest-km-line. Output is a vector layer ('WYNIK') enriched with 'wynik_km' (formatted kilometerage range or fallback 'km' field) and 'wynik_dist_pas' (distance from investment centroid to nearest km line)."
+        },
+        {
+          "script_id": "script_36293",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:polygonstolines",
+          "task_name": "Calculate intersection kilometerage for infrastructure projects",
+          "task_description": "The script computes the kilometerage range (e.g., '12+345 - 15+678') along a linear reference layer ('km', interpreted as a kilometer-marked linear infrastructure such as a road or rail alignment) that intersects with clipped and decomposed polygons representing investment areas ('inw'), buffered by a polygonal corridor ('pas'). It derives this by extracting vertices of clipped investment geometries, computing nearest-point distances to 'km' points (assumed to be chainage-marked nodes), aggregating min/max chainage IDs per investment segment, formatting them into human-readable kilometerage strings, joining results back to original investment features, and optionally computing distance-to-nearest-km-line. Output is a vector layer ('WYNIK') enriched with 'wynik_km' (formatted kilometerage range or fallback 'km' field) and 'wynik_dist_pas' (distance from investment centroid to nearest km line)."
+        },
+        {
+          "script_id": "script_543",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:polygonstolines",
+          "task_name": "Snap points to lines and split lines",
+          "task_description": "The script loads point and line vector layers from local Shapefiles, snaps the points to the nearest line within a 10-unit tolerance using 'snapgeometries' (behavior=3: prefer closest vertex/segment), buffers the snapped points by 0.00001 decimal degrees to create small polygons, converts those buffers to closed linestrings, then uses those linestrings to split the original line layer via 'splitwithlines'. The final output is a new loaded vector layer named 'Split_Lines', containing the original line segments cut at the snapped point locations — enabling topological editing for network analysis or feature alignment tasks."
+        },
+        {
+          "script_id": "script_543",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:polygonstolines[OUTPUT]",
+          "task_name": "Snap points to lines and split lines",
+          "task_description": "The script loads point and line vector layers from local Shapefiles, snaps the points to the nearest line within a 10-unit tolerance using 'snapgeometries' (behavior=3: prefer closest vertex/segment), buffers the snapped points by 0.00001 decimal degrees to create small polygons, converts those buffers to closed linestrings, then uses those linestrings to split the original line layer via 'splitwithlines'. The final output is a new loaded vector layer named 'Split_Lines', containing the original line segments cut at the snapped point locations — enabling topological editing for network analysis or feature alignment tasks."
+        },
+        {
+          "script_id": "script_5435",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "qgis:polygonstolines",
+          "task_name": "Calculate urban environmental indicators",
+          "task_description": "The script computes three urban environmental indicators—cooling (rafraichissement), runoff (ruissellement), and biodiversity (biodiversité)—by aggregating classified land cover pixels (10-class EVA or 8-class legacy system) within user-defined calculation zones (parcels or automatically generated 'ilots'). It performs zonal histogram analysis on a classification raster (either input directly or vector-rasterized), computes class-wise percentages and surface areas, then applies fixed per-class coefficients to derive weighted indicator scores per zone. Outputs are a vector layer with attributes 'coef_raf', 'coef_bio', and 'coef_rui' attached to each parcel/ilot polygon, named according to input configuration (e.g., 'Indi_En_V2.2_vec_10_ilot')."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    },
+    {
+      "code": "L3_02_07_03",
+      "name": "Extract Vertices",
+      "accepted_patterns": [
+        "extractvertices",
+        "extractspecificvertices"
+      ],
+      "boundary_patterns": [
+        "vertices"
+      ],
+      "unique_scripts": 121,
+      "boundary_scripts": 169,
+      "matching_processing_operations": [
+        {
+          "operation": "native:extractvertices",
+          "scripts": 69,
+          "calls": 191,
+          "old_crosswalk": {
+            "alg_id": "native:extractvertices",
+            "official_name": "Extract vertices",
+            "l3_code": "L3_02_05_11",
+            "bridge_type": "l3_bridge",
+            "status": "pending_review",
+            "source": "",
+            "frequency": 46,
+            "_expansion_source": "semantic_upgrade"
+          }
+        },
+        {
+          "operation": "native:extractspecificvertices",
+          "scripts": 41,
+          "calls": 176,
+          "old_crosswalk": {
+            "alg_id": "native:extractspecificvertices",
+            "official_name": "Extract specific vertices",
+            "l3_code": "L3_02_05_11",
+            "bridge_type": "l3_bridge",
+            "status": "pending_review",
+            "source": "",
+            "frequency": 38,
+            "_expansion_source": "semantic_upgrade"
+          }
+        },
+        {
+          "operation": "qgis:extractvertices",
+          "scripts": 14,
+          "calls": 48,
+          "old_crosswalk": null
+        },
+        {
+          "operation": "qgis:extractspecificvertices",
+          "scripts": 4,
+          "calls": 4,
+          "old_crosswalk": null
+        }
+      ],
+      "task_examples": [
+        {
+          "script_id": "script_36293",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:extractvertices",
+          "task_name": "Calculate intersection kilometerage for infrastructure projects",
+          "task_description": "The script computes the kilometerage range (e.g., '12+345 - 15+678') along a linear reference layer ('km', interpreted as a kilometer-marked linear infrastructure such as a road or rail alignment) that intersects with clipped and decomposed polygons representing investment areas ('inw'), buffered by a polygonal corridor ('pas'). It derives this by extracting vertices of clipped investment geometries, computing nearest-point distances to 'km' points (assumed to be chainage-marked nodes), aggregating min/max chainage IDs per investment segment, formatting them into human-readable kilometerage strings, joining results back to original investment features, and optionally computing distance-to-nearest-km-line. Output is a vector layer ('WYNIK') enriched with 'wynik_km' (formatted kilometerage range or fallback 'km' field) and 'wynik_dist_pas' (distance from investment centroid to nearest km line)."
+        },
+        {
+          "script_id": "script_36293",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:extractvertices",
+          "task_name": "Calculate intersection kilometerage for infrastructure projects",
+          "task_description": "The script computes the kilometerage range (e.g., '12+345 - 15+678') along a linear reference layer ('km', interpreted as a kilometer-marked linear infrastructure such as a road or rail alignment) that intersects with clipped and decomposed polygons representing investment areas ('inw'), buffered by a polygonal corridor ('pas'). It derives this by extracting vertices of clipped investment geometries, computing nearest-point distances to 'km' points (assumed to be chainage-marked nodes), aggregating min/max chainage IDs per investment segment, formatting them into human-readable kilometerage strings, joining results back to original investment features, and optionally computing distance-to-nearest-km-line. Output is a vector layer ('WYNIK') enriched with 'wynik_km' (formatted kilometerage range or fallback 'km' field) and 'wynik_dist_pas' (distance from investment centroid to nearest km line)."
+        },
+        {
+          "script_id": "script_924",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:extractvertices[OUTPUT]",
+          "task_name": "Quantify boundary simplification effects",
+          "task_description": "The script evaluates geometric and topological changes induced by Douglas-Peucker simplification (using 'Distance' method) on a provincial administrative boundary polygon (R8 in the Philippines). For each tolerance value (0.5–2.5 km), it computes: (1) vertex count reduction, (2) 2D area (km²) and perimeter (km) of original vs. simplified geometries, (3) derived ratios (vertices/area, perimeter/area), and (4) spatial agreement (%) as the intersection-over-union (IoU) of original and simplified polygons — all exported to a CSV with per-tolerance metrics."
+        },
+        {
+          "script_id": "script_924",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:extractvertices",
+          "task_name": "Quantify boundary simplification effects",
+          "task_description": "The script evaluates geometric and topological changes induced by Douglas-Peucker simplification (using 'Distance' method) on a provincial administrative boundary polygon (R8 in the Philippines). For each tolerance value (0.5–2.5 km), it computes: (1) vertex count reduction, (2) 2D area (km²) and perimeter (km) of original vs. simplified geometries, (3) derived ratios (vertices/area, perimeter/area), and (4) spatial agreement (%) as the intersection-over-union (IoU) of original and simplified polygons — all exported to a CSV with per-tolerance metrics."
+        },
+        {
+          "script_id": "script_924",
+          "extraction_group": "Workflowoutput qgis_L1_near_strict_spatial_workflow_candidates",
+          "operation": "native:extractvertices[OUTPUT]",
+          "task_name": "Quantify boundary simplification effects",
+          "task_description": "The script evaluates geometric and topological changes induced by Douglas-Peucker simplification (using 'Distance' method) on a provincial administrative boundary polygon (R8 in the Philippines). For each tolerance value (0.5–2.5 km), it computes: (1) vertex count reduction, (2) 2D area (km²) and perimeter (km) of original vs. simplified geometries, (3) derived ratios (vertices/area, perimeter/area), and (4) spatial agreement (%) as the intersection-over-union (IoU) of original and simplified polygons — all exported to a CSV with per-tolerance metrics."
+        }
+      ],
+      "verdict": "PENDING_USER_REVIEW"
+    }
+  ],
+  "top_unmapped_processing_operations": [
+    {
+      "operation": "native:reprojectlayer",
+      "scripts": 445,
+      "calls": 1826,
+      "existing_bridge_type": "native_bridge",
+      "existing_target": "qgis_native:vector_crs_transform"
+    },
+    {
+      "operation": "native:fixgeometries",
+      "scripts": 400,
+      "calls": 1459,
+      "existing_bridge_type": "native_bridge",
+      "existing_target": "qgis_native:geometry_repair"
+    },
+    {
+      "operation": "gdal:rasterize",
+      "scripts": 198,
+      "calls": 680,
+      "existing_bridge_type": "rejected",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:polygonize",
+      "scripts": 197,
+      "calls": 475,
+      "existing_bridge_type": "rejected",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:joinattributestable",
+      "scripts": 180,
+      "calls": 1205,
+      "existing_bridge_type": "rejected",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:createspatialindex",
+      "scripts": 143,
+      "calls": 843,
+      "existing_bridge_type": "rejected",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:creategrid",
+      "scripts": 84,
+      "calls": 214,
+      "existing_bridge_type": "rejected",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:polygonstolines",
+      "scripts": 83,
+      "calls": 247,
+      "existing_bridge_type": "native_bridge",
+      "existing_target": "qgis_native:polygon_to_line"
+    },
+    {
+      "operation": "native:snapgeometries",
+      "scripts": 53,
+      "calls": 203,
+      "existing_bridge_type": "native_bridge",
+      "existing_target": "qgis_native:geometry_snap"
+    },
+    {
+      "operation": "grass7:r.watershed",
+      "scripts": 40,
+      "calls": 106,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "processing.run",
+      "scripts": 38,
+      "calls": 113,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:contour",
+      "scripts": 35,
+      "calls": 92,
+      "existing_bridge_type": "native_bridge",
+      "existing_target": "qgis_native:contour_generation"
+    },
+    {
+      "operation": "gdal:proximity",
+      "scripts": 34,
+      "calls": 70,
+      "existing_bridge_type": "native_bridge",
+      "existing_target": "qgis_native:raster_proximity"
+    },
+    {
+      "operation": "grass7:r.to.vect",
+      "scripts": 34,
+      "calls": 83,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:filedownloader",
+      "scripts": 34,
+      "calls": 108,
+      "existing_bridge_type": "native_bridge",
+      "existing_target": "qgis_native:file_download"
+    },
+    {
+      "operation": "native:orderbyexpression",
+      "scripts": 34,
+      "calls": 95,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:voronoipolygons",
+      "scripts": 34,
+      "calls": 96,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:polygonize",
+      "scripts": 31,
+      "calls": 69,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:reprojectlayer",
+      "scripts": 31,
+      "calls": 115,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "quickosm:buildqueryextent",
+      "scripts": 28,
+      "calls": 77,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:geometrybyexpression",
+      "scripts": 27,
+      "calls": 63,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:removeduplicatesbyattribute",
+      "scripts": 27,
+      "calls": 62,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:deleteduplicategeometries",
+      "scripts": 27,
+      "calls": 125,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:pixelstopolygons",
+      "scripts": 25,
+      "calls": 59,
+      "existing_bridge_type": "rejected",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.fill.dir",
+      "scripts": 23,
+      "calls": 62,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:rastercalc",
+      "scripts": 23,
+      "calls": 87,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:stringconcatenation",
+      "scripts": 22,
+      "calls": 80,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:linestopolygons",
+      "scripts": 22,
+      "calls": 57,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:fixgeometries",
+      "scripts": 21,
+      "calls": 92,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:polygonstolines",
+      "scripts": 21,
+      "calls": 70,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.water.outlet",
+      "scripts": 20,
+      "calls": 47,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.clean",
+      "scripts": 20,
+      "calls": 53,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:boundary",
+      "scripts": 19,
+      "calls": 59,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:extendlines",
+      "scripts": 19,
+      "calls": 59,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:checkvalidity",
+      "scripts": 19,
+      "calls": 64,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:joinattributestable",
+      "scripts": 19,
+      "calls": 70,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:randompointsinsidepolygons",
+      "scripts": 19,
+      "calls": 64,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:saveselectedfeatures",
+      "scripts": 19,
+      "calls": 73,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.stream.extract",
+      "scripts": 18,
+      "calls": 38,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:rasterlayerstatistics",
+      "scripts": 18,
+      "calls": 70,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:splitlinesbylength",
+      "scripts": 18,
+      "calls": 34,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:eliminateselectedpolygons",
+      "scripts": 18,
+      "calls": 40,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:exporttospreadsheet",
+      "scripts": 17,
+      "calls": 29,
+      "existing_bridge_type": "native_bridge",
+      "existing_target": "qgis_native:export_spreadsheet"
+    },
+    {
+      "operation": "native:pointstopath",
+      "scripts": 17,
+      "calls": 42,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:creategrid",
+      "scripts": 17,
+      "calls": 39,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:delaunaytriangulation",
+      "scripts": 17,
+      "calls": 40,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:tininterpolation",
+      "scripts": 17,
+      "calls": 31,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:extractwithindistance",
+      "scripts": 15,
+      "calls": 30,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:splitvectorlayer",
+      "scripts": 15,
+      "calls": 36,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:distancematrix",
+      "scripts": 15,
+      "calls": 29,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:convertformat",
+      "scripts": 14,
+      "calls": 46,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.neighbors",
+      "scripts": 14,
+      "calls": 31,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:orientedminimumboundingbox",
+      "scripts": 14,
+      "calls": 24,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:shortestline",
+      "scripts": 14,
+      "calls": 41,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:deleteholes",
+      "scripts": 14,
+      "calls": 51,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:extractvertices",
+      "scripts": 14,
+      "calls": 48,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.mapcalc.simple",
+      "scripts": 13,
+      "calls": 54,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:calculatevectoroverlaps",
+      "scripts": 13,
+      "calls": 25,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:extenttolayer",
+      "scripts": 13,
+      "calls": 27,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:reverselinedirection",
+      "scripts": 13,
+      "calls": 31,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:distancetonearesthubpoints",
+      "scripts": 13,
+      "calls": 30,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:polygonize",
+      "scripts": 13,
+      "calls": 27,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:rasterize_over",
+      "scripts": 12,
+      "calls": 28,
+      "existing_bridge_type": "rejected",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.null",
+      "scripts": 12,
+      "calls": 22,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.generalize",
+      "scripts": 12,
+      "calls": 39,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:hublines",
+      "scripts": 12,
+      "calls": 33,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:removeduplicatevertices",
+      "scripts": 12,
+      "calls": 31,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:snappointstogrid",
+      "scripts": 12,
+      "calls": 48,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:aggregate",
+      "scripts": 12,
+      "calls": 36,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:executesql",
+      "scripts": 12,
+      "calls": 38,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:regularpoints",
+      "scripts": 12,
+      "calls": 31,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:contour_polygon",
+      "scripts": 11,
+      "calls": 32,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:convexhull",
+      "scripts": 11,
+      "calls": 20,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:dropgeometries",
+      "scripts": 11,
+      "calls": 28,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:dropmzvalues",
+      "scripts": 11,
+      "calls": 20,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:loadlayer",
+      "scripts": 11,
+      "calls": 37,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:pointonsurface",
+      "scripts": 11,
+      "calls": 35,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:explodelines",
+      "scripts": 11,
+      "calls": 72,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:pointsalonglines",
+      "scripts": 11,
+      "calls": 24,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:importvectorintopostgisdatabaseavailableconnections",
+      "scripts": 10,
+      "calls": 27,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:rasterize_over_fixed_value",
+      "scripts": 10,
+      "calls": 27,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:mergelines",
+      "scripts": 10,
+      "calls": 18,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:package",
+      "scripts": 10,
+      "calls": 46,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:renamelayer",
+      "scripts": 10,
+      "calls": 24,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:shortestpathpointtopoint",
+      "scripts": 10,
+      "calls": 36,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:snapgeometries",
+      "scripts": 10,
+      "calls": 23,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:dissolve",
+      "scripts": 9,
+      "calls": 20,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "geodyntools:retainfields",
+      "scripts": 9,
+      "calls": 28,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.reclass",
+      "scripts": 9,
+      "calls": 27,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.thin",
+      "scripts": 9,
+      "calls": 17,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.distance",
+      "scripts": 9,
+      "calls": 14,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:collect",
+      "scripts": 9,
+      "calls": 20,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:modelerrastercalc",
+      "scripts": 9,
+      "calls": 20,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:idwinterpolation",
+      "scripts": 9,
+      "calls": 13,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:pointstopath",
+      "scripts": 9,
+      "calls": 21,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:polygonfromlayerextent",
+      "scripts": 9,
+      "calls": 14,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:randomselection",
+      "scripts": 9,
+      "calls": 26,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:splitwithlines",
+      "scripts": 9,
+      "calls": 13,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.overlay",
+      "scripts": 8,
+      "calls": 19,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:createpointslayerfromtable",
+      "scripts": 8,
+      "calls": 15,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:forcerhr",
+      "scripts": 8,
+      "calls": 30,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:raiseexception",
+      "scripts": 8,
+      "calls": 32,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:rectanglesovalsdiamonds",
+      "scripts": 8,
+      "calls": 13,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:simplifygeometries",
+      "scripts": 8,
+      "calls": 30,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "saga:flowaccumulationtopdown",
+      "scripts": 8,
+      "calls": 18,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "sagang:fillsinkswangliu",
+      "scripts": 8,
+      "calls": 28,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "script:copernicusrastercalculator",
+      "scripts": 8,
+      "calls": 20,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.cost",
+      "scripts": 7,
+      "calls": 14,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:condition",
+      "scripts": 7,
+      "calls": 28,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:randompointsinpolygons",
+      "scripts": 7,
+      "calls": 16,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:setzfromraster",
+      "scripts": 7,
+      "calls": 15,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:transect",
+      "scripts": 7,
+      "calls": 18,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:voronoipolygons",
+      "scripts": 7,
+      "calls": 21,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:rasterize",
+      "scripts": 7,
+      "calls": 12,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:splitvectorlayer",
+      "scripts": 7,
+      "calls": 18,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:clipvectorbyextent",
+      "scripts": 6,
+      "calls": 13,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.drain",
+      "scripts": 6,
+      "calls": 19,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.slope.aspect",
+      "scripts": 6,
+      "calls": 13,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.voronoi.skeleton",
+      "scripts": 6,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:linesubstring",
+      "scripts": 6,
+      "calls": 18,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:meancoordinates",
+      "scripts": 6,
+      "calls": 13,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:multiunion",
+      "scripts": 6,
+      "calls": 15,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:offsetline",
+      "scripts": 6,
+      "calls": 48,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:rastersurfacevolume",
+      "scripts": 6,
+      "calls": 34,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:serviceareafromlayer",
+      "scripts": 6,
+      "calls": 40,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:setzvalue",
+      "scripts": 6,
+      "calls": 22,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:hypsometriccurves",
+      "scripts": 6,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:rasterlayerstatistics",
+      "scripts": 6,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "saga:rastermasking",
+      "scripts": 6,
+      "calls": 12,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "etl_load:appendfeaturestolayer",
+      "scripts": 5,
+      "calls": 22,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.grow.distance",
+      "scripts": 5,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.stats.zonal",
+      "scripts": 5,
+      "calls": 9,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.to.rast",
+      "scripts": 5,
+      "calls": 13,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.voronoi",
+      "scripts": 5,
+      "calls": 7,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass:r.watershed",
+      "scripts": 5,
+      "calls": 9,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:concavehull",
+      "scripts": 5,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:selectwithindistance",
+      "scripts": 5,
+      "calls": 10,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "pcraster:converttopcrasterformat",
+      "scripts": 5,
+      "calls": 16,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "pdal:exportraster",
+      "scripts": 5,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:createspatialindex",
+      "scripts": 5,
+      "calls": 20,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:definecurrentprojection",
+      "scripts": 5,
+      "calls": 11,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:randompointsinpolygons",
+      "scripts": 5,
+      "calls": 9,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:ruggednessindex",
+      "scripts": 5,
+      "calls": 12,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:serviceareafromlayer",
+      "scripts": 5,
+      "calls": 12,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "quickosm:downloadosmdataextentquery",
+      "scripts": 5,
+      "calls": 9,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "sagang:channelnetwork",
+      "scripts": 5,
+      "calls": 12,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "becagis:directionalmerge",
+      "scripts": 4,
+      "calls": 6,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "continuous_network_analysis:identify dangles",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:buildvirtualvector",
+      "scripts": 4,
+      "calls": 7,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:gdalinfo",
+      "scripts": 4,
+      "calls": 6,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:gridnearestneighbor",
+      "scripts": 4,
+      "calls": 9,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:roughness",
+      "scripts": 4,
+      "calls": 20,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.fill.stats",
+      "scripts": 4,
+      "calls": 7,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.resample",
+      "scripts": 4,
+      "calls": 15,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.rgb",
+      "scripts": 4,
+      "calls": 7,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.stream.basins",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.to.3d",
+      "scripts": 4,
+      "calls": 7,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass:r.fill.dir",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass:r.stream.extract",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass:r.to.vect",
+      "scripts": 4,
+      "calls": 22,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass:r.water.outlet",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass:v.clean",
+      "scripts": 4,
+      "calls": 12,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:affinetransform",
+      "scripts": 4,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:arrayoffsetlines",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:densifygeometriesgivenaninterval",
+      "scripts": 4,
+      "calls": 10,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:dxfexport",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:interpolatepoint",
+      "scripts": 4,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:pointtolayer",
+      "scripts": 4,
+      "calls": 14,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:postgisexecutesql",
+      "scripts": 4,
+      "calls": 11,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:randomextract",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:shortestpathlayertopoint",
+      "scripts": 4,
+      "calls": 9,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:shortestpathpointtolayer",
+      "scripts": 4,
+      "calls": 10,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "native:sumlinelengths",
+      "scripts": 4,
+      "calls": 7,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "precision agriculture:r - classification",
+      "scripts": 4,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "precision agriculture:v - convex hull creation",
+      "scripts": 4,
+      "calls": 12,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:convertgeometrytype",
+      "scripts": 4,
+      "calls": 5,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:distancetonearesthublinetohub",
+      "scripts": 4,
+      "calls": 16,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:extractspecificvertices",
+      "scripts": 4,
+      "calls": 4,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:generatepointspixelcentroidsinsidepolygons",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:knearestconcavehull",
+      "scripts": 4,
+      "calls": 7,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "qgis:postgisexecuteandloadsql",
+      "scripts": 4,
+      "calls": 15,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "saga:addrastervaluestopoints",
+      "scripts": 4,
+      "calls": 6,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "saga:fillsinks",
+      "scripts": 4,
+      "calls": 11,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "saga:fillsinkswangliu",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "saga:thiessenpolygons",
+      "scripts": 4,
+      "calls": 12,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "sagang:upslopearea",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "wbt:jensonsnappourpoints",
+      "scripts": 4,
+      "calls": 8,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "wbt:longestflowpath",
+      "scripts": 4,
+      "calls": 10,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "becagistools:directionalmerge",
+      "scripts": 3,
+      "calls": 6,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:gdal2tiles",
+      "scripts": 3,
+      "calls": 3,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "gdal:viewshed",
+      "scripts": 3,
+      "calls": 10,
+      "existing_bridge_type": "pending",
+      "existing_target": ""
+    },
+    {
+      "operation": "geodyntools:lis2graph",
+      "scripts": 3,
+      "calls": 6,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.buffer",
+      "scripts": 3,
+      "calls": 7,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.geomorphon",
+      "scripts": 3,
+      "calls": 9,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.resamp.stats",
+      "scripts": 3,
+      "calls": 3,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.terraflow",
+      "scripts": 3,
+      "calls": 5,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:r.walk.coords",
+      "scripts": 3,
+      "calls": 7,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.dissolve",
+      "scripts": 3,
+      "calls": 9,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.net.alloc",
+      "scripts": 3,
+      "calls": 5,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    },
+    {
+      "operation": "grass7:v.net.steiner",
+      "scripts": 3,
+      "calls": 5,
+      "existing_bridge_type": "absent",
+      "existing_target": ""
+    }
+  ],
+  "top_direct_apis": [
+    {
+      "operation": "QgsProcessingAlgorithm.addParameter",
+      "scripts": 6022,
+      "calls": 82663
+    },
+    {
+      "operation": "QgsProject.instance",
+      "scripts": 8168,
+      "calls": 79229
+    },
+    {
+      "operation": "QgsField",
+      "scripts": 4546,
+      "calls": 52361
+    },
+    {
+      "operation": "QgsVectorLayer",
+      "scripts": 7995,
+      "calls": 52293
+    },
+    {
+      "operation": "QgsFeature.geometry",
+      "scripts": 5324,
+      "calls": 41676
+    },
+    {
+      "operation": "QgsMapLayer.dataProvider",
+      "scripts": 5573,
+      "calls": 32689
+    },
+    {
+      "operation": "QgsVectorLayer.getFeatures",
+      "scripts": 4170,
+      "calls": 31932
+    },
+    {
+      "operation": "QgsVectorLayer.fields",
+      "scripts": 3530,
+      "calls": 29531
+    },
+    {
+      "operation": "QgsPointXY",
+      "scripts": 2463,
+      "calls": 25966
+    },
+    {
+      "operation": "QgsFeature",
+      "scripts": 5176,
+      "calls": 24980
+    },
+    {
+      "operation": "QgsFeature.setGeometry",
+      "scripts": 5211,
+      "calls": 24524
+    },
+    {
+      "operation": "QgsMessageLog.logMessage",
+      "scripts": 1507,
+      "calls": 21774
+    },
+    {
+      "operation": "QgsProcessingException",
+      "scripts": 2883,
+      "calls": 21645
+    },
+    {
+      "operation": "QgsMapLayer.name",
+      "scripts": 2901,
+      "calls": 19533
+    },
+    {
+      "operation": "QgsFields.append",
+      "scripts": 2345,
+      "calls": 19454
+    },
+    {
+      "operation": "QgsFeature.id",
+      "scripts": 2469,
+      "calls": 18229
+    },
+    {
+      "operation": "self.tr",
+      "scripts": 628,
+      "calls": 18176
+    },
+    {
+      "operation": "QgsProject.instance.addMapLayer",
+      "scripts": 3473,
+      "calls": 17070
+    },
+    {
+      "operation": "QgsCoordinateReferenceSystem",
+      "scripts": 3292,
+      "calls": 16628
+    },
+    {
+      "operation": "QgsCoordinateReferenceSystem.authid",
+      "scripts": 2816,
+      "calls": 15595
+    },
+    {
+      "operation": "QgsRasterLayer",
+      "scripts": 3277,
+      "calls": 15477
+    },
+    {
+      "operation": "QgsFeature.setAttributes",
+      "scripts": 3330,
+      "calls": 15013
+    },
+    {
+      "operation": "QgsVectorLayer.isValid",
+      "scripts": 3100,
+      "calls": 14824
+    },
+    {
+      "operation": "QgsField.name",
+      "scripts": 2197,
+      "calls": 14211
+    },
+    {
+      "operation": "QgsMapLayer.crs",
+      "scripts": 3173,
+      "calls": 13526
+    },
+    {
+      "operation": "QgsProcessingParameterNumber",
+      "scripts": 2429,
+      "calls": 13380
+    },
+    {
+      "operation": "QgsPointXY.y",
+      "scripts": 1877,
+      "calls": 12200
+    },
+    {
+      "operation": "QgsPointXY.x",
+      "scripts": 1872,
+      "calls": 12085
+    },
+    {
+      "operation": "QgsFeatureRequest",
+      "scripts": 1762,
+      "calls": 11590
+    },
+    {
+      "operation": "feedback.pushInfo",
+      "scripts": 395,
+      "calls": 10729
+    },
+    {
+      "operation": "QgsFields.indexFromName",
+      "scripts": 1060,
+      "calls": 10591
+    },
+    {
+      "operation": "QgsGeometry.fromWkt",
+      "scripts": 872,
+      "calls": 10127
+    },
+    {
+      "operation": "QgsVectorLayer.updateFields",
+      "scripts": 2839,
+      "calls": 9848
+    },
+    {
+      "operation": "QgsVectorLayer.startEditing",
+      "scripts": 1832,
+      "calls": 8966
+    },
+    {
+      "operation": "QgsFeature.attributes",
+      "scripts": 1579,
+      "calls": 8708
+    },
+    {
+      "operation": "QgsVectorLayer.commitChanges",
+      "scripts": 1733,
+      "calls": 8221
+    },
+    {
+      "operation": "QgsProcessingParameterFeatureSink",
+      "scripts": 2205,
+      "calls": 7935
+    },
+    {
+      "operation": "QgsPoint",
+      "scripts": 860,
+      "calls": 7441
+    },
+    {
+      "operation": "QgsProcessingParameterBoolean",
+      "scripts": 1642,
+      "calls": 7388
+    },
+    {
+      "operation": "QgsGeometry.isEmpty",
+      "scripts": 1206,
+      "calls": 7307
+    },
+    {
+      "operation": "QgsProject.instance.mapLayers",
+      "scripts": 1411,
+      "calls": 7303
+    },
+    {
+      "operation": "QgsProject.instance.mapLayersByName",
+      "scripts": 992,
+      "calls": 7127
+    },
+    {
+      "operation": "QgsGeometry.fromPointXY",
+      "scripts": 1634,
+      "calls": 7035
+    },
+    {
+      "operation": "QgsProject.addMapLayer",
+      "scripts": 1770,
+      "calls": 6978
+    },
+    {
+      "operation": "QgsMapLayer.extent",
+      "scripts": 1874,
+      "calls": 6873
+    },
+    {
+      "operation": "QgsGeometry.asPoint",
+      "scripts": 1380,
+      "calls": 6827
+    },
+    {
+      "operation": "QgsProcessingParameterFeatureSource",
+      "scripts": 2058,
+      "calls": 6745
+    },
+    {
+      "operation": "QgsProcessingParameterVectorLayer",
+      "scripts": 1454,
+      "calls": 6714
+    },
+    {
+      "operation": "QgsProcessingParameterString",
+      "scripts": 1498,
+      "calls": 6661
+    },
+    {
+      "operation": "QgsGeometry",
+      "scripts": 1243,
+      "calls": 6419
+    },
+    {
+      "operation": "QgsFields",
+      "scripts": 1997,
+      "calls": 6361
+    },
+    {
+      "operation": "QgsProcessingParameterEnum",
+      "scripts": 1783,
+      "calls": 6249
+    },
+    {
+      "operation": "QgsProject.instance.mapLayers.values",
+      "scripts": 1213,
+      "calls": 6200
+    },
+    {
+      "operation": "feedback.isCanceled",
+      "scripts": 374,
+      "calls": 6122
+    },
+    {
+      "operation": "feedback.setCurrentStep",
+      "scripts": 379,
+      "calls": 6113
+    },
+    {
+      "operation": "QgsCoordinateTransform",
+      "scripts": 1818,
+      "calls": 6060
+    },
+    {
+      "operation": "QgsProcessingParameterField",
+      "scripts": 1388,
+      "calls": 5978
+    },
+    {
+      "operation": "QgsFeature.attribute",
+      "scripts": 721,
+      "calls": 5978
+    },
+    {
+      "operation": "QgsRectangle",
+      "scripts": 1267,
+      "calls": 5809
+    },
+    {
+      "operation": "gdal.Open",
+      "scripts": 1181,
+      "calls": 5791
+    },
+    {
+      "operation": "QgsProcessingParameterRasterLayer",
+      "scripts": 1671,
+      "calls": 5717
+    },
+    {
+      "operation": "QgsProcessingAlgorithm.parameterAsVectorLayer",
+      "scripts": 1382,
+      "calls": 5648
+    },
+    {
+      "operation": "QgsVectorLayer.featureCount",
+      "scripts": 1454,
+      "calls": 5508
+    },
+    {
+      "operation": "QgsProject.instance.layerTreeRoot",
+      "scripts": 1086,
+      "calls": 5480
+    },
+    {
+      "operation": "QgsGeometry.boundingBox",
+      "scripts": 1284,
+      "calls": 5118
+    },
+    {
+      "operation": "QgsMapLayer.renderer",
+      "scripts": 986,
+      "calls": 4869
+    },
+    {
+      "operation": "QgsVectorLayer.geometryType",
+      "scripts": 1253,
+      "calls": 4642
+    },
+    {
+      "operation": "QgsProcessingAlgorithm.parameterAsSource",
+      "scripts": 1515,
+      "calls": 4513
+    },
+    {
+      "operation": "QgsFeatureSink.addFeature",
+      "scripts": 1380,
+      "calls": 4370
+    },
+    {
+      "operation": "QgsVectorLayer.updateExtents",
+      "scripts": 1593,
+      "calls": 4262
+    },
+    {
+      "operation": "QgsMapLayerRegistry.instance",
+      "scripts": 823,
+      "calls": 4181
+    },
+    {
+      "operation": "QgsRasterLayer.isValid",
+      "scripts": 1515,
+      "calls": 4106
+    },
+    {
+      "operation": "QgsVectorFileWriter.writeAsVectorFormat",
+      "scripts": 1064,
+      "calls": 4103
+    },
+    {
+      "operation": "QgsExpression",
+      "scripts": 669,
+      "calls": 4065
+    },
+    {
+      "operation": "QgsVectorLayer.source",
+      "scripts": 991,
+      "calls": 4012
+    },
+    {
+      "operation": "QgsProcessingAlgorithm.parameterAsOutputLayer",
+      "scripts": 1283,
+      "calls": 3751
+    },
+    {
+      "operation": "QgsFields.lookupField",
+      "scripts": 520,
+      "calls": 3699
+    },
+    {
+      "operation": "QgsVectorLayer.wkbType",
+      "scripts": 933,
+      "calls": 3699
+    },
+    {
+      "operation": "QgsProcessingAlgorithm.invalidSourceError",
+      "scripts": 943,
+      "calls": 3696
+    },
+    {
+      "operation": "QgsGeometry.area",
+      "scripts": 717,
+      "calls": 3606
+    },
+    {
+      "operation": "QgsMapCanvas.refresh",
+      "scripts": 869,
+      "calls": 3481
+    },
+    {
+      "operation": "QgsMapLayer.type",
+      "scripts": 803,
+      "calls": 3474
+    },
+    {
+      "operation": "QgsProcessingMultiStepFeedback",
+      "scripts": 1088,
+      "calls": 3443
+    },
+    {
+      "operation": "QgsProject.instance.removeMapLayer",
+      "scripts": 671,
+      "calls": 3405
+    },
+    {
+      "operation": "QgsProcessingParameterRasterDestination",
+      "scripts": 1145,
+      "calls": 3345
+    },
+    {
+      "operation": "QgsColorRampShader.ColorRampItem",
+      "scripts": 323,
+      "calls": 3226
+    },
+    {
+      "operation": "QgsFields.names",
+      "scripts": 610,
+      "calls": 3161
+    },
+    {
+      "operation": "QgsGeometry.fromPolylineXY",
+      "scripts": 712,
+      "calls": 3138
+    },
+    {
+      "operation": "QgsProject",
+      "scripts": 432,
+      "calls": 3125
+    },
+    {
+      "operation": "QgsProject.instance.mapLayer",
+      "scripts": 442,
+      "calls": 3121
+    },
+    {
+      "operation": "QgsVectorLayer.changeAttributeValue",
+      "scripts": 316,
+      "calls": 2990
+    },
+    {
+      "operation": "QgsProject.layerTreeRoot",
+      "scripts": 804,
+      "calls": 2943
+    },
+    {
+      "operation": "QgsGeometry.buffer",
+      "scripts": 694,
+      "calls": 2917
+    },
+    {
+      "operation": "QgsProviderRegistry.instance",
+      "scripts": 339,
+      "calls": 2893
+    },
+    {
+      "operation": "QgsGeometry.isMultipart",
+      "scripts": 795,
+      "calls": 2859
+    },
+    {
+      "operation": "QgsProject.mapLayersByName",
+      "scripts": 626,
+      "calls": 2841
+    },
+    {
+      "operation": "QgsGeometry.asPolyline",
+      "scripts": 718,
+      "calls": 2833
+    },
+    {
+      "operation": "QgsLayoutPoint",
+      "scripts": 239,
+      "calls": 2825
+    },
+    {
+      "operation": "QgsProcessingFeedback",
+      "scripts": 567,
+      "calls": 2794
+    },
+    {
+      "operation": "QgsCoordinateTransform.transform",
+      "scripts": 780,
+      "calls": 2769
+    },
+    {
+      "operation": "QgsRectangle.xMinimum",
+      "scripts": 1130,
+      "calls": 2752
+    },
+    {
+      "operation": "QgsRendererCategory",
+      "scripts": 460,
+      "calls": 2746
+    },
+    {
+      "operation": "QgsProcessingUtils.mapLayerFromString",
+      "scripts": 490,
+      "calls": 2743
+    },
+    {
+      "operation": "QgsVectorFileWriter.SaveVectorOptions",
+      "scripts": 983,
+      "calls": 2738
+    },
+    {
+      "operation": "QgsGeometry.intersects",
+      "scripts": 684,
+      "calls": 2719
+    },
+    {
+      "operation": "QgsProcessingParameterFile",
+      "scripts": 811,
+      "calls": 2642
+    },
+    {
+      "operation": "QgsMapCanvas.mapSettings",
+      "scripts": 748,
+      "calls": 2623
+    },
+    {
+      "operation": "QgsProject.instance.transformContext",
+      "scripts": 704,
+      "calls": 2621
+    },
+    {
+      "operation": "QgsFillSymbol.createSimple",
+      "scripts": 547,
+      "calls": 2618
+    },
+    {
+      "operation": "QgsRectangle.yMinimum",
+      "scripts": 1077,
+      "calls": 2545
+    },
+    {
+      "operation": "QgsMapSettings.destinationCrs",
+      "scripts": 703,
+      "calls": 2524
+    },
+    {
+      "operation": "QgsGeometry.fromPolygonXY",
+      "scripts": 674,
+      "calls": 2505
+    },
+    {
+      "operation": "QgsRectangle.yMaximum",
+      "scripts": 1078,
+      "calls": 2501
+    },
+    {
+      "operation": "QgsVectorLayer.triggerRepaint",
+      "scripts": 871,
+      "calls": 2415
+    },
+    {
+      "operation": "QgsVectorLayer.selectedFeatures",
+      "scripts": 488,
+      "calls": 2411
+    },
+    {
+      "operation": "QgsGeometry.length",
+      "scripts": 579,
+      "calls": 2396
+    },
+    {
+      "operation": "QgsGeometry.centroid",
+      "scripts": 574,
+      "calls": 2381
+    },
+    {
+      "operation": "QgsRectangle.xMaximum",
+      "scripts": 1045,
+      "calls": 2337
+    },
+    {
+      "operation": "QgsApplication.processingRegistry",
+      "scripts": 670,
+      "calls": 2295
+    },
+    {
+      "operation": "QgsGeometry.transform",
+      "scripts": 724,
+      "calls": 2292
+    },
+    {
+      "operation": "QgsLayoutSize",
+      "scripts": 249,
+      "calls": 2204
+    },
+    {
+      "operation": "gdal.GetDriverByName",
+      "scripts": 696,
+      "calls": 2182
+    },
+    {
+      "operation": "QgsVectorLayer.setRenderer",
+      "scripts": 733,
+      "calls": 2108
+    },
+    {
+      "operation": "QColor",
+      "scripts": 183,
+      "calls": 2096
+    },
+    {
+      "operation": "ogr.FieldDefn",
+      "scripts": 204,
+      "calls": 2074
+    },
+    {
+      "operation": "QgsSingleSymbolRenderer",
+      "scripts": 470,
+      "calls": 2071
+    },
+    {
+      "operation": "QgsSymbol.defaultSymbol",
+      "scripts": 525,
+      "calls": 2051
+    },
+    {
+      "operation": "QgsFeatureRequest.setFilterExpression",
+      "scripts": 332,
+      "calls": 2043
+    },
+    {
+      "operation": "QgsVectorFileWriter.writeAsVectorFormatV3",
+      "scripts": 487,
+      "calls": 2039
+    },
+    {
+      "operation": "QgsVectorLayer.setName",
+      "scripts": 511,
+      "calls": 2023
+    },
+    {
+      "operation": "QgsSpatialIndex",
+      "scripts": 632,
+      "calls": 2015
+    },
+    {
+      "operation": "QgsGeometry.type",
+      "scripts": 455,
+      "calls": 2002
+    },
+    {
+      "operation": "QgsProcessingParameterFileDestination",
+      "scripts": 733,
+      "calls": 1986
+    },
+    {
+      "operation": "QgsDataSourceUri",
+      "scripts": 520,
+      "calls": 1949
+    },
+    {
+      "operation": "QCoreApplication.translate",
+      "scripts": 617,
+      "calls": 1944
+    },
+    {
+      "operation": "QgsWkbTypes.zmType",
+      "scripts": 5,
+      "calls": 1920
+    },
+    {
+      "operation": "QgsCoordinateTransformContext",
+      "scripts": 470,
+      "calls": 1911
+    },
+    {
+      "operation": "QgsSettings",
+      "scripts": 435,
+      "calls": 1898
+    },
+    {
+      "operation": "QgsProcessingContext",
+      "scripts": 352,
+      "calls": 1897
+    },
+    {
+      "operation": "QgsProperty.fromExpression",
+      "scripts": 251,
+      "calls": 1880
+    },
+    {
+      "operation": "QgsMapLayerRegistry.instance.addMapLayer",
+      "scripts": 545,
+      "calls": 1880
+    },
+    {
+      "operation": "QgsGeometry.asMultiPolyline",
+      "scripts": 567,
+      "calls": 1855
+    },
+    {
+      "operation": "QgsProject.instance.crs",
+      "scripts": 490,
+      "calls": 1781
+    },
+    {
+      "operation": "QgsWkbTypes.displayString",
+      "scripts": 374,
+      "calls": 1737
+    },
+    {
+      "operation": "QgsMapCanvas.extent",
+      "scripts": 514,
+      "calls": 1731
+    },
+    {
+      "operation": "ogr.GetDriverByName",
+      "scripts": 350,
+      "calls": 1704
+    },
+    {
+      "operation": "QgsExpression.evaluate",
+      "scripts": 342,
+      "calls": 1692
+    },
+    {
+      "operation": "QMessageBox.information",
+      "scripts": 106,
+      "calls": 1635
+    },
+    {
+      "operation": "QgsLineString",
+      "scripts": 170,
+      "calls": 1630
+    },
+    {
+      "operation": "QgsVectorLayer.width",
+      "scripts": 466,
+      "calls": 1611
+    },
+    {
+      "operation": "QgsVectorLayer.height",
+      "scripts": 452,
+      "calls": 1594
+    },
+    {
+      "operation": "QgsApplication.getThemeIcon",
+      "scripts": 380,
+      "calls": 1585
+    },
+    {
+      "operation": "QgsGeometry.intersection",
+      "scripts": 441,
+      "calls": 1545
+    },
+    {
+      "operation": "QgsFeatureRequest.setSubsetOfAttributes",
+      "scripts": 304,
+      "calls": 1531
+    },
+    {
+      "operation": "QgsMarkerSymbol.createSimple",
+      "scripts": 361,
+      "calls": 1527
+    },
+    {
+      "operation": "QgsVectorLayer.sourceCrs",
+      "scripts": 437,
+      "calls": 1494
+    },
+    {
+      "operation": "ogr.Feature",
+      "scripts": 212,
+      "calls": 1490
+    },
+    {
+      "operation": "QgsProject.instance.addMapLayers",
+      "scripts": 286,
+      "calls": 1476
+    },
+    {
+      "operation": "QgsVectorLayer.loadNamedStyle",
+      "scripts": 467,
+      "calls": 1467
+    },
+    {
+      "operation": "QgsProject.removeMapLayer",
+      "scripts": 464,
+      "calls": 1466
+    },
+    {
+      "operation": "QgsPalLayerSettings",
+      "scripts": 460,
+      "calls": 1458
+    },
+    {
+      "operation": "QgsWkbTypes.geometryType",
+      "scripts": 225,
+      "calls": 1454
+    },
+    {
+      "operation": "QgsProcessingUtils.generateTempFilename",
+      "scripts": 167,
+      "calls": 1431
+    },
+    {
+      "operation": "QgsProcessingAlgorithm.invalidSinkError",
+      "scripts": 580,
+      "calls": 1427
+    },
+    {
+      "operation": "QgsApplication.taskManager",
+      "scripts": 379,
+      "calls": 1417
+    },
+    {
+      "operation": "feedback.reportError",
+      "scripts": 116,
+      "calls": 1411
+    },
+    {
+      "operation": "QgsVectorLayerSimpleLabeling",
+      "scripts": 421,
+      "calls": 1398
+    },
+    {
+      "operation": "QgsProcessingParameterVectorDestination",
+      "scripts": 430,
+      "calls": 1395
+    },
+    {
+      "operation": "QgsField.type",
+      "scripts": 374,
+      "calls": 1383
+    },
+    {
+      "operation": "QgsCategorizedSymbolRenderer",
+      "scripts": 460,
+      "calls": 1376
+    },
+    {
+      "operation": "iface.mapCanvas",
+      "scripts": 174,
+      "calls": 1369
+    },
+    {
+      "operation": "QgsDataSourceUri.uri",
+      "scripts": 360,
+      "calls": 1368
+    },
+    {
+      "operation": "QgsRasterCalculatorEntry",
+      "scripts": 207,
+      "calls": 1352
+    },
+    {
+      "operation": "self.parameterAsString",
+      "scripts": 218,
+      "calls": 1339
+    },
+    {
+      "operation": "QgsLayerTreeLayer",
+      "scripts": 223,
+      "calls": 1337
+    },
+    {
+      "operation": "QgsMapLayerComboBox",
+      "scripts": 174,
+      "calls": 1317
+    },
+    {
+      "operation": "QgsDistanceArea",
+      "scripts": 488,
+      "calls": 1315
+    },
+    {
+      "operation": "QgsLayoutItemLabel",
+      "scripts": 195,
+      "calls": 1302
+    },
+    {
+      "operation": "QgsFields.field",
+      "scripts": 211,
+      "calls": 1297
+    },
+    {
+      "operation": "QgsTextFormat",
+      "scripts": 368,
+      "calls": 1295
+    },
+    {
+      "operation": "f.addRow",
+      "scripts": 7,
+      "calls": 1290
+    },
+    {
+      "operation": "QgsLineSymbol.createSimple",
+      "scripts": 270,
+      "calls": 1270
+    },
+    {
+      "operation": "QgsProcessingFeatureSourceDefinition",
+      "scripts": 210,
+      "calls": 1265
+    },
+    {
+      "operation": "QgsRasterLayer.source",
+      "scripts": 580,
+      "calls": 1262
+    },
+    {
+      "operation": "QgsMapSettings",
+      "scripts": 335,
+      "calls": 1248
+    },
+    {
+      "operation": "QgsExpressionContext",
+      "scripts": 280,
+      "calls": 1244
+    },
+    {
+      "operation": "QgsGeometry.fromPolyline",
+      "scripts": 390,
+      "calls": 1220
+    },
+    {
+      "operation": "QgsGeometry.fromRect",
+      "scripts": 402,
+      "calls": 1219
+    },
+    {
+      "operation": "QgsReadWriteContext",
+      "scripts": 218,
+      "calls": 1204
+    },
+    {
+      "operation": "QgsProcessingParameterFolderDestination",
+      "scripts": 480,
+      "calls": 1188
+    },
+    {
+      "operation": "tools_qt.tr",
+      "scripts": 12,
+      "calls": 1171
+    },
+    {
+      "operation": "ogr.Open",
+      "scripts": 308,
+      "calls": 1166
+    },
+    {
+      "operation": "QgsGeometry.contains",
+      "scripts": 298,
+      "calls": 1151
+    },
+    {
+      "operation": "QgsBufferServerRequest",
+      "scripts": 16,
+      "calls": 1148
+    },
+    {
+      "operation": "QgsProviderRegistry.instance.providerMetadata",
+      "scripts": 204,
+      "calls": 1137
+    },
+    {
+      "operation": "ogr.CreateGeometryFromWkt",
+      "scripts": 123,
+      "calls": 1119
+    },
+    {
+      "operation": "QgsDataSourceUri.setDataSource",
+      "scripts": 292,
+      "calls": 1117
+    },
+    {
+      "operation": "self.parameterAsDouble",
+      "scripts": 209,
+      "calls": 1105
+    },
+    {
+      "operation": "self.parameterAsSink",
+      "scripts": 196,
+      "calls": 1100
+    },
+    {
+      "operation": "QgsCoordinateTransform.transformBoundingBox",
+      "scripts": 417,
+      "calls": 1099
+    }
+  ]
+}

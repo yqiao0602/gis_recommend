@@ -14,9 +14,26 @@ from gis_recommend.data.qgis_pilot import (
 )
 from scripts.build_qgis_pilot_phase0 import build_report
 from scripts.build_qgis_pilot_inventory import build_inventory
+from scripts.build_qgis_taxonomy_evidence import candidate_matches, normalize_processing_operation
 
 
 class QgisPilotTests(unittest.TestCase):
+    def test_taxonomy_matcher_separates_operations_from_boundary_conflicts(self):
+        self.assertEqual(
+            normalize_processing_operation("processing.run:gdal:warpreproject"),
+            "gdal:warpreproject",
+        )
+        self.assertNotIn("L3_02_01_02", candidate_matches("gdal:warpreproject")[0])
+        direct, boundary = candidate_matches("native:reprojectlayer")
+        self.assertIn("L3_02_01_02", direct)
+        self.assertNotIn("L3_02_01_02", boundary)
+        direct, boundary = candidate_matches("native:assignprojection")
+        self.assertNotIn("L3_02_01_02", direct)
+        self.assertIn("L3_02_01_02", boundary)
+        direct, boundary = candidate_matches("qgis:checkvalidity")
+        self.assertNotIn("L3_02_01_03", direct)
+        self.assertIn("L3_02_01_03", boundary)
+
     def test_inventory_joins_facts_and_writes_only_to_allowed_output(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

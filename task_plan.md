@@ -63,6 +63,8 @@
 - Phase 1 inventory 已完成：20,413/20,428 facts 匹配 artifact；1,887 条多目录碰撞必须 path/hash 消歧。
 - 可补充描述来源：2,009 plugin metadata、2,054 README、851 model/tutorial metadata、2 个精评 CSV，以及可进一步抽 docstring 的 48,011 个源码文件。
 - 当前 107 id mapping 的 464 条 `qgis_to_l3` 映射没有任何一条指向新增 13 类，必须重建 107 专属 QGIS crosswalk。
+- Taxonomy 证据扫描确认当前 13 个新增 code 复用了 legacy 350 中不同语义的 code，禁止直接冻结当前 107。
+- 工作草案改为 112-114 类，默认建议 113 类；待确认 Spatial Index、Concave Hull、Rasterize/Polygonize 三项边界后分配无冲突 ID。
 
 ## 📊 全面状态总览 (2026-07-08)
 
