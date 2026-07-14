@@ -20,8 +20,8 @@
 
 ### Pilot 范围与门禁
 
-- [ ] Phase 0：authority 差异报告已生成；当前阻塞在人工选择 stable-94 restore authority。选择后再生成 hash manifest 并完成隔离 restore smoke。
-- [ ] Phase 1：证明 `/home/yll` 严格只读；只把必要 facts、AST、steps 和索引复制到 `/home/qy`。
+- [ ] Phase 0：authority 差异报告已生成；用户决定暂缓旧 94 备份，不再阻塞 QGIS 数据重建主线。
+- [x] Phase 1：完成 `/home/yll` 只读 inventory，索引 facts、AST/steps 和补充描述来源，所有产物写入 `/home/qy`。
 - [ ] Phase 2：构建 path/hash provenance、碰撞处理和 T0-T4 证据等级；basename 冲突不自动选择。
 - [ ] Phase 3：按 `statement_index`、scope、调用嵌套和 process relation 恢复有序 API/QGIS 操作证据。
 - [ ] Phase 4：提出约 300 条、互不混合指标的 `estimation_reference_subset` 和 `coverage_diagnostic_subset`。
@@ -55,6 +55,14 @@
 - 当前状态：`authority_decision_required`。未 hash/copy 大 checkpoint，未运行 restore smoke，未进入 Phase 1。
 - 服务器报告：`/home/qy/system_redesign/outputs_v2/qgis_pilot/pilot_v1/phase0/authority_decision_report.{json,md}`。
 - 本机镜像：`docs/reports/qgis_pilot/phase0/authority_decision_report.{json,md}`。
+
+### QGIS 数据重建主线（2026-07-14 调整）
+
+- Stage 1：从 merged process、AST、steps 和 relations 恢复有序 QGIS processing、底层 API 与 custom algorithm 证据，并绑定真实任务描述。
+- Stage 2：将完整有序操作链映射到实验性 107 taxonomy；先生成可审核 crosswalk，不使用旧的宽泛字符串猜测。
+- Phase 1 inventory 已完成：20,413/20,428 facts 匹配 artifact；1,887 条多目录碰撞必须 path/hash 消歧。
+- 可补充描述来源：2,009 plugin metadata、2,054 README、851 model/tutorial metadata、2 个精评 CSV，以及可进一步抽 docstring 的 48,011 个源码文件。
+- 当前 107 id mapping 的 464 条 `qgis_to_l3` 映射没有任何一条指向新增 13 类，必须重建 107 专属 QGIS crosswalk。
 
 ## 📊 全面状态总览 (2026-07-08)
 

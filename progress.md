@@ -1,5 +1,14 @@
 # 进度日志
 
+## 2026-07-14：QGIS 数据重建 Phase 1 inventory 完成
+
+- 用户决定暂缓旧 94 restore authority，不再阻塞 QGIS 数据主线。
+- 只读扫描 `/home/yll`：20,428 facts 中 20,413 条匹配 extraction artifact；15 条缺失；18,526 条唯一 group；1,887 条有 2-3 个同 basename group。
+- 索引 262,110 个 extraction artifacts；AST、steps、data、edges、process relations 各 52,422 个。
+- 补充描述来源：2,009 plugin metadata、2,054 README、851 model/tutorial metadata、2 个 fine-eval CSV；48,011 个源码只视为潜在 docstring/code 来源。
+- source root 前后元数据一致；4 个生成文件全部位于 `/home/qy/.../pilot_v1/phase1`，write ledger 已同步本机。
+- 新阻塞：107 mapping 虽有 107 个 code，但 464 条 QGIS 映射对新增 13 类覆盖为 0；下一步必须从真实有序证据构建 107 专属 crosswalk。
+
 ## 2026-07-14：Pilot Phase 0 authority 报告完成，等待人工选择
 
 - 在隔离分支 `feature/qgis-evidence-pilot` 新增纯 sidecar 模块 `src/gis_recommend/data/qgis_pilot.py`、Phase 0 CLI 和离线测试，不修改 94/107 默认配置。

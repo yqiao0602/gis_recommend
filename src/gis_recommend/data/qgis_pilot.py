@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import random
+import re
 from collections import defaultdict
 from enum import Enum
 from pathlib import Path
@@ -24,6 +25,49 @@ class EvidenceTier(str, Enum):
     T2 = "T2"
     T3 = "T3"
     T4 = "T4"
+
+
+_ARTIFACT_PATTERN = re.compile(
+    r"^(?P<script_id>.+)_(?P<kind>ast|steps|process_relations|data|edges)\.(?P<suffix>json|csv)$",
+    re.IGNORECASE,
+)
+
+
+def classify_description_source(path: str | Path) -> str:
+    path = Path(path)
+    name = path.name.lower()
+    parts = {part.lower() for part in path.parts}
+    if name.startswith("facts_summary") and path.suffix.lower() == ".csv":
+        return "facts_summary"
+    if name == "metadata.txt":
+        return "plugin_metadata"
+    if name.startswith("readme"):
+        return "readme"
+    if "qgis_model_tutorial_metadata" in parts and path.suffix.lower() == ".json":
+        return "model_tutorial_metadata"
+    if "qgis_fine_eval_10" in parts and path.suffix.lower() == ".csv":
+        return "fine_eval_review"
+    if path.suffix.lower() == ".py":
+        return "source_script"
+    return "other"
+
+
+def parse_qgis_artifact_path(path: str | Path, extraction_root: str | Path) -> dict[str, str] | None:
+    path = Path(path)
+    root = Path(extraction_root)
+    match = _ARTIFACT_PATTERN.match(path.name)
+    if not match:
+        return None
+    try:
+        relative = path.relative_to(root)
+    except ValueError:
+        return None
+    return {
+        "script_id": match.group("script_id"),
+        "artifact_kind": match.group("kind").lower(),
+        "extraction_group": relative.parts[0] if len(relative.parts) > 1 else ".",
+        "source_path": str(path),
+    }
 
 
 def file_sha256(path: str | Path) -> str:
@@ -345,4 +389,3 @@ def build_sampling_proposal(
         },
         "metric_policy": "subsets_must_not_be_merged",
     }
-

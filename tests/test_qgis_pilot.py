@@ -8,12 +8,70 @@ from gis_recommend.data.qgis_pilot import (
     build_authority_diff,
     build_ordered_evidence,
     build_sampling_proposal,
+    classify_description_source,
+    parse_qgis_artifact_path,
     resolve_provenance_clusters,
 )
 from scripts.build_qgis_pilot_phase0 import build_report
+from scripts.build_qgis_pilot_inventory import build_inventory
 
 
 class QgisPilotTests(unittest.TestCase):
+    def test_inventory_joins_facts_and_writes_only_to_allowed_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            facts_dir = root / "readonly" / "facts"
+            extraction = root / "readonly" / "QGIS"
+            descriptions = root / "readonly" / "descriptions"
+            output = root / "writable" / "pilot"
+            for path in [facts_dir, extraction / "group_a", descriptions / "plugin"]:
+                path.mkdir(parents=True)
+            facts = facts_dir / "facts_summary1000.csv"
+            facts.write_text(
+                "File Name,Task Type,Task Name,DataSource,Geospatial Values,Time Ranges,Task Description\n"
+                "script_1.py,Vector,Clip roads,[],[],None,Clip roads to the boundary\n",
+                encoding="utf-8",
+            )
+            (extraction / "group_a" / "script_1_steps.csv").write_text("id,name\n1,clip\n", encoding="utf-8")
+            (extraction / "group_a" / "script_1_ast.json").write_text("{}", encoding="utf-8")
+            (descriptions / "plugin" / "metadata.txt").write_text("description=Clip roads", encoding="utf-8")
+
+            report = build_inventory(
+                facts_path=facts,
+                extraction_root=extraction,
+                description_roots=[descriptions],
+                output_dir=output,
+                allowed_write_roots=[root / "writable"],
+            )
+
+            self.assertEqual(report["facts_artifact_join"]["unique_group_rows"], 1)
+            self.assertEqual(report["description_sources"]["by_type"]["plugin_metadata"], 1)
+            self.assertTrue(report["source_root_metadata_unchanged"])
+            self.assertTrue((output / "write_ledger.json").is_file())
+
+    def test_description_sources_are_typed_without_promoting_them_to_truth(self):
+        cases = {
+            "/x/facts_summary1000.csv": "facts_summary",
+            "/plugins/demo/metadata.txt": "plugin_metadata",
+            "/plugins/demo/README.md": "readme",
+            "/qgis_model_tutorial_metadata/qgis_model_tutorial_000001.json": "model_tutorial_metadata",
+            "/QGIS_fine_eval_10/qgis_fine_eval_selected.csv": "fine_eval_review",
+            "/selected_scripts/script_1.py": "source_script",
+        }
+        for path, expected in cases.items():
+            with self.subTest(path=path):
+                self.assertEqual(classify_description_source(Path(path)), expected)
+
+    def test_qgis_artifact_parser_preserves_directory_and_script_identity(self):
+        root = Path("/readonly/QGIS")
+        parsed = parse_qgis_artifact_path(
+            root / "WorkflowoutputA" / "script_42_steps.csv", root
+        )
+        self.assertEqual(parsed["script_id"], "script_42")
+        self.assertEqual(parsed["artifact_kind"], "steps")
+        self.assertEqual(parsed["extraction_group"], "WorkflowoutputA")
+        self.assertIsNone(parse_qgis_artifact_path(root / "WorkflowoutputA" / "notes.csv", root))
+
     def test_phase0_report_surfaces_missing_run_contract_authority(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
