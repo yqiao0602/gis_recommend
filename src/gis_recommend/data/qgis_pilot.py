@@ -10,7 +10,7 @@ import hashlib
 import json
 import random
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from enum import Enum
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
@@ -359,6 +359,175 @@ def map_ordered_evidence_to_taxonomy(
         "chain_completeness": completeness,
         "exact_mapped_step_count": len(mapped_chain),
         "unmapped_step_count": len(unmapped),
+    }
+
+
+_INFRASTRUCTURE_API_PATTERNS = (
+    "qgsprocessingalgorithm.addparameter",
+    "qgsprocessingparameter",
+    "qgsprocessingalgorithm.parameteras",
+    "qgsproject.instance",
+    "qgsproject.addmaplayer",
+    "qgsmessagelog",
+    "qgsprocessingfeedback",
+    "qgsprocessingexception",
+    "self.tr",
+)
+
+_SEMANTIC_API_FAMILIES = (
+    (("qgsgeometry.buffer",), "buffer"),
+    (("qgsgeometry.intersection",), "intersection"),
+    (("qgsgeometry.difference",), "difference"),
+    (("qgsgeometry.combine", "qgsgeometry.unaryunion"), "union"),
+    (("qgsgeometry.simplify",), "simplify"),
+    (("qgsgeometry.makevalid", "qgsgeometry.isgeosvalid"), "geometry_validation"),
+    (("qgscoordinatetransform", "qgsgeometry.transform"), "crs_transform"),
+    (("qgsspatialindex",), "spatial_index"),
+    (("qgsrastercalculator",), "raster_calculation"),
+    (("qgsvectorfilewriter", "writeasvectorformat"), "vector_export"),
+)
+
+_DATA_ACCESS_API_PATTERNS = (
+    "qgsvectorlayer",
+    "qgsrasterlayer",
+    "qgsfeature",
+    "qgsfield",
+    "qgsmaplayer.dataprovider",
+    "getfeatures",
+    "setgeometry",
+    "setattributes",
+    "changeattributevalue",
+)
+
+
+def classify_qgis_api_call(step: Mapping[str, Any]) -> dict[str, Any]:
+    operation = normalize_qgis_operation(
+        step.get("normalized_operation") or step.get("operation")
+    )
+    channel = str(step.get("channel") or "")
+    mapping_status = str(step.get("mapping_status") or "")
+    if mapping_status == "exact_alias" or channel in {
+        "processing_algorithms",
+        "custom_algorithms",
+    } or operation.startswith(("native:", "qgis:", "gdal:", "grass7:", "saga:")):
+        return {
+            "operation": operation,
+            "category": "processing_operator",
+            "semantic_family": step.get("l3_code") or "explicit_processing",
+        }
+    if any(pattern in operation for pattern in _INFRASTRUCTURE_API_PATTERNS):
+        return {"operation": operation, "category": "infrastructure", "semantic_family": None}
+    for patterns, family in _SEMANTIC_API_FAMILIES:
+        if any(pattern in operation for pattern in patterns):
+            return {"operation": operation, "category": "semantic_anchor", "semantic_family": family}
+    if any(pattern in operation for pattern in _DATA_ACCESS_API_PATTERNS):
+        return {"operation": operation, "category": "data_access", "semantic_family": None}
+    return {"operation": operation, "category": "unknown", "semantic_family": None}
+
+
+def repair_evidence_order(steps: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
+    rows = [dict(step) for step in steps]
+    parsed = []
+    for ordinal, row in enumerate(rows):
+        try:
+            statement_index = int(row.get("statement_index"))
+            valid = True
+        except (TypeError, ValueError):
+            statement_index = None
+            valid = False
+        parsed.append((row, ordinal, statement_index, valid))
+    if parsed and all(valid for _row, _ordinal, _index, valid in parsed):
+        parsed.sort(key=lambda item: (item[2], str(item[0].get("step_id") or ""), item[1]))
+        quality = "deterministic_statement_index"
+    elif any(valid for _row, _ordinal, _index, valid in parsed):
+        quality = "mixed_fallback_order"
+    else:
+        quality = "fallback_extraction_order"
+    ordered = []
+    for evidence_order, (row, _ordinal, statement_index, valid) in enumerate(parsed):
+        row["statement_index"] = statement_index
+        row["evidence_order"] = evidence_order
+        row["ordering_source"] = "statement_index" if valid else "extraction_order"
+        ordered.append(row)
+    return {"ordering_quality": quality, "ordered_steps": ordered}
+
+
+def compact_api_trace(
+    steps: Iterable[Mapping[str, Any]],
+    *,
+    max_processing_steps: int = 80,
+    max_semantic_steps: int = 80,
+    max_data_access_steps: int = 40,
+    max_unknown_steps: int = 20,
+) -> dict[str, Any]:
+    repaired = repair_evidence_order(steps)
+    infrastructure = Counter()
+    category_counts = Counter()
+    runs: list[dict[str, Any]] = []
+    for step in repaired["ordered_steps"]:
+        classification = classify_qgis_api_call(step)
+        operation = classification["operation"]
+        category = classification["category"]
+        category_counts[category] += 1
+        if category == "infrastructure":
+            infrastructure[operation] += 1
+            continue
+        evidence_id = str(step.get("step_id") or step["evidence_order"])
+        key = (operation, category, classification["semantic_family"])
+        if runs and runs[-1]["_key"] == key:
+            runs[-1]["run_count"] += 1
+            runs[-1]["evidence_ids"].append(evidence_id)
+            continue
+        runs.append(
+            {
+                "_key": key,
+                "operation": operation,
+                "category": category,
+                "semantic_family": classification["semantic_family"],
+                "run_count": 1,
+                "evidence_ids": [evidence_id],
+                "first_evidence_order": step["evidence_order"],
+                "statement_index": step.get("statement_index"),
+                "ordering_source": step["ordering_source"],
+                "l3_code": step.get("l3_code"),
+            }
+        )
+    limits = {
+        "processing_operator": max_processing_steps,
+        "semantic_anchor": max_semantic_steps,
+        "data_access": max_data_access_steps,
+        "unknown": max_unknown_steps,
+    }
+    retained_counts = Counter()
+    omitted_counts = Counter()
+    compact_steps = []
+    for run in runs:
+        category = run["category"]
+        if retained_counts[category] >= limits[category]:
+            omitted_counts[category] += run["run_count"]
+            continue
+        retained_counts[category] += 1
+        compact_steps.append({key: value for key, value in run.items() if key != "_key"})
+    families = sorted(
+        {
+            step["semantic_family"]
+            for step in compact_steps
+            if step["category"] == "semantic_anchor" and step["semantic_family"]
+        }
+    )
+    eligible = any(
+        step["category"] in {"processing_operator", "semantic_anchor"}
+        for step in compact_steps
+    )
+    return {
+        "ordering_quality": repaired["ordering_quality"],
+        "source_step_count": len(repaired["ordered_steps"]),
+        "compact_steps": compact_steps,
+        "infrastructure_counts": dict(sorted(infrastructure.items())),
+        "category_counts": dict(sorted(category_counts.items())),
+        "omitted_counts": dict(sorted(omitted_counts.items())),
+        "semantic_anchor_families": families,
+        "eligible_for_llm": eligible,
     }
 
 
