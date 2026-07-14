@@ -20,7 +20,7 @@
 
 ### Pilot 范围与门禁
 
-- [ ] Phase 0：确认 `vocab_profile.py` 与 `run_contract.py` 的稳定 94 authority 差异，生成备份 manifest 并完成隔离 restore smoke。
+- [ ] Phase 0：authority 差异报告已生成；当前阻塞在人工选择 stable-94 restore authority。选择后再生成 hash manifest 并完成隔离 restore smoke。
 - [ ] Phase 1：证明 `/home/yll` 严格只读；只把必要 facts、AST、steps 和索引复制到 `/home/qy`。
 - [ ] Phase 2：构建 path/hash provenance、碰撞处理和 T0-T4 证据等级；basename 冲突不自动选择。
 - [ ] Phase 3：按 `statement_index`、scope、调用嵌套和 process relation 恢复有序 API/QGIS 操作证据。
@@ -44,6 +44,15 @@
 - 每个 Phase 完成后更新：完成项、实际产物路径、输入/输出 hash、验证命令、失败项、阻塞和下一门禁。
 - 大型数据不直接同步到 Git；同步 manifest、schema、统计报告、可复现脚本和小型审核样本。服务器正式产物必须有本机可追溯路径记录。
 - 禁止在任何本机同步文件中写入服务器密码或 API key。
+
+### Phase 0 执行门禁（2026-07-14）
+
+- 报告确认存在三套不一致口径：`vocab_profile_v2_94_stable`、`step8_v4_6_run_contract`、`quality_gate_v4_6_entrypoints`。
+- `step8_v4_6_run_contract` 在服务器缺少默认 Transformer 和 Set Predictor checkpoint，不能直接作为可恢复 authority。
+- vec11277 profile 资产完整，但不是当前主要训练/评测入口；quality-gate V4.6 入口资产完整。
+- 当前状态：`authority_decision_required`。未 hash/copy 大 checkpoint，未运行 restore smoke，未进入 Phase 1。
+- 服务器报告：`/home/qy/system_redesign/outputs_v2/qgis_pilot/pilot_v1/phase0/authority_decision_report.{json,md}`。
+- 本机镜像：`docs/reports/qgis_pilot/phase0/authority_decision_report.{json,md}`。
 
 ## 📊 全面状态总览 (2026-07-08)
 
