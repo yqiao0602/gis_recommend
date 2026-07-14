@@ -22,6 +22,7 @@ from gis_recommend.data.qgis_pilot import (  # noqa: E402
     assert_write_allowed,
     build_coverage_diagnostic_sample,
     compact_api_trace,
+    coverage_diagnostic_stratum,
     file_sha256,
 )
 
@@ -34,6 +35,69 @@ def _write_jsonl(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
     with path.open("w", encoding="utf-8", newline="\n") as handle:
         for row in rows:
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+
+
+def _evidence_source_mode(row: Mapping[str, Any], compact: Mapping[str, Any]) -> str:
+    channels = []
+    if row.get("processing_algorithms"):
+        channels.append("processing")
+    if row.get("direct_api"):
+        channels.append("direct_api")
+    if row.get("custom_algorithms"):
+        channels.append("custom")
+    if not channels:
+        categories = {step.get("category") for step in compact.get("compact_steps", [])}
+        if "processing_operator" in categories:
+            channels.append("processing")
+        if categories.intersection({"semantic_anchor", "data_access", "unknown"}):
+            channels.append("direct_api")
+    return "+".join(channels) + "_only" if len(channels) == 1 else "+".join(channels) or "unknown"
+
+
+def _modality_hint(compact: Mapping[str, Any]) -> str:
+    vector = False
+    raster = False
+    vector_families = {
+        "buffer",
+        "difference",
+        "geometry_validation",
+        "intersection",
+        "simplify",
+        "spatial_index",
+        "union",
+        "vector_export",
+    }
+    raster_families = {"raster_calculation"}
+    for step in compact.get("compact_steps", []):
+        operation = str(step.get("operation") or "").lower()
+        family = str(step.get("semantic_family") or "")
+        l3_code = str(step.get("l3_code") or family)
+        vector = vector or family in vector_families or any(
+            marker in operation for marker in ("qgsfeature", "qgsgeometry", "qgsvector", "vector")
+        )
+        raster = raster or family in raster_families or "qgsraster" in operation or "raster" in operation
+        if l3_code.startswith("L3_02_"):
+            vector = True
+        if l3_code.startswith(("L3_03_", "L3_04_")):
+            raster = True
+        if l3_code in {"L3_01_09_06", "L3_01_09_07"}:
+            vector = True
+            raster = True
+    if vector and raster:
+        return "mixed"
+    if vector:
+        return "vector"
+    if raster:
+        return "raster"
+    return "unknown"
+
+
+def _trace_length_bucket(source_step_count: int) -> str:
+    if source_step_count <= 10:
+        return "short"
+    if source_step_count <= 50:
+        return "medium"
+    return "long"
 
 
 def _compact_record(row: Mapping[str, Any]) -> dict[str, Any] | None:
@@ -51,6 +115,7 @@ def _compact_record(row: Mapping[str, Any]) -> dict[str, Any] | None:
         if existing_chain
         else "explicit_processing"
     )
+    source_step_count = int(compact.get("source_step_count") or 0)
     return {
         "schema": PILOT_SCHEMA,
         "kind": "qgis_api_aggregation_candidate_v1",
@@ -68,6 +133,9 @@ def _compact_record(row: Mapping[str, Any]) -> dict[str, Any] | None:
         "task_description": row.get("task_description"),
         "existing_mapped_l3_chain": existing_chain,
         "primary_semantic_family": primary_family,
+        "evidence_source_mode": _evidence_source_mode(row, compact),
+        "modality_hint": _modality_hint(compact),
+        "trace_length_bucket": _trace_length_bucket(source_step_count),
         **compact,
     }
 
@@ -84,7 +152,7 @@ def build_pilot(
     output_dir.mkdir(parents=True, exist_ok=True)
     source_records = 0
     excluded_t0 = 0
-    excluded_infrastructure_only = 0
+    excluded_no_semantic_anchor = 0
     eligible = []
     source_digest = hashlib.sha256()
     with ordered_evidence.open("rb") as handle:
@@ -99,7 +167,7 @@ def build_pilot(
                 continue
             compact = _compact_record(row)
             if compact is None:
-                excluded_infrastructure_only += 1
+                excluded_no_semantic_anchor += 1
                 continue
             eligible.append(compact)
     pilot = build_coverage_diagnostic_sample(eligible, size=sample_size, seed=seed)
@@ -114,6 +182,9 @@ def build_pilot(
         fields = [
             "record_id",
             "extraction_group",
+            "evidence_source_mode",
+            "modality_hint",
+            "trace_length_bucket",
             "evidence_tier",
             "ordering_quality",
             "primary_semantic_family",
@@ -134,14 +205,7 @@ def build_pilot(
                     "compact_step_count": len(row.get("compact_steps", [])),
                 }
             )
-    stratum_counts = Counter(
-        (
-            row.get("extraction_group"),
-            row.get("primary_semantic_family"),
-            row.get("ordering_quality"),
-        )
-        for row in pilot
-    )
+    stratum_counts = Counter(coverage_diagnostic_stratum(row) for row in pilot)
     summary = {
         "schema": PILOT_SCHEMA,
         "kind": "qgis_api_aggregation_pilot_summary_v1",
@@ -157,15 +221,25 @@ def build_pilot(
         "shortfall": max(0, sample_size - len(pilot)),
         "excluded": {
             "t0_or_collision": excluded_t0,
-            "infrastructure_only": excluded_infrastructure_only,
+            "no_processing_or_semantic_anchor": excluded_no_semantic_anchor,
         },
         "ordering_quality": dict(sorted(Counter(row["ordering_quality"] for row in pilot).items())),
+        "evidence_source_modes": dict(
+            sorted(Counter(row["evidence_source_mode"] for row in pilot).items())
+        ),
+        "modality_hints": dict(sorted(Counter(row["modality_hint"] for row in pilot).items())),
+        "trace_length_buckets": dict(
+            sorted(Counter(row["trace_length_bucket"] for row in pilot).items())
+        ),
         "semantic_families": dict(sorted(Counter(row["primary_semantic_family"] for row in pilot).items())),
         "strata": [
             {
                 "extraction_group": key[0],
-                "primary_semantic_family": key[1],
-                "ordering_quality": key[2],
+                "evidence_source_mode": key[1],
+                "modality_hint": key[2],
+                "trace_length_bucket": key[3],
+                "primary_semantic_family": key[4],
+                "ordering_quality": key[5],
                 "records": count,
             }
             for key, count in sorted(stratum_counts.items())

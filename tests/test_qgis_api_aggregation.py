@@ -8,6 +8,7 @@ from gis_recommend.data.qgis_pilot import (
     build_coverage_diagnostic_sample,
     classify_qgis_api_call,
     compact_api_trace,
+    coverage_diagnostic_stratum,
     repair_evidence_order,
 )
 from scripts.build_qgis_api_aggregation_pilot import build_pilot
@@ -378,6 +379,28 @@ class QgisApiAggregationTests(unittest.TestCase):
         self.assertNotIn("blocked", {row["record_id"] for row in first})
         self.assertTrue(all(row["subset_type"] == "coverage_diagnostic" for row in first))
 
+    def test_coverage_stratum_includes_source_modality_length_family_and_order(self):
+        record = {
+            "extraction_group": "tutorials",
+            "evidence_source_mode": "direct_api_only",
+            "modality_hint": "vector",
+            "trace_length_bucket": "long",
+            "primary_semantic_family": "difference",
+            "ordering_quality": "fallback_extraction_order",
+        }
+
+        self.assertEqual(
+            coverage_diagnostic_stratum(record),
+            (
+                "tutorials",
+                "direct_api_only",
+                "vector",
+                "long",
+                "difference",
+                "fallback_extraction_order",
+            ),
+        )
+
     def test_classifies_infrastructure_data_access_and_semantic_anchors(self):
         cases = {
             "qgsprocessingalgorithm.addparameter": ("infrastructure", None),
@@ -510,8 +533,13 @@ class QgisApiAggregationTests(unittest.TestCase):
         self.assertEqual(summary["eligible_records"], 1)
         self.assertEqual(summary["pilot_records"], 1)
         self.assertEqual(summary["shortfall"], 299)
+        self.assertEqual(summary["excluded"]["no_processing_or_semantic_anchor"], 1)
+        self.assertNotIn("infrastructure_only", summary["excluded"])
         self.assertEqual(pilot_rows[0]["record_id"], "eligible")
         self.assertEqual(pilot_rows[0]["primary_semantic_family"], "buffer")
+        self.assertEqual(pilot_rows[0]["evidence_source_mode"], "direct_api_only")
+        self.assertEqual(pilot_rows[0]["modality_hint"], "vector")
+        self.assertEqual(pilot_rows[0]["trace_length_bucket"], "short")
 
 
 if __name__ == "__main__":

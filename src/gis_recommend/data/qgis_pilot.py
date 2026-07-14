@@ -531,6 +531,17 @@ def compact_api_trace(
     }
 
 
+def coverage_diagnostic_stratum(record: Mapping[str, Any]) -> tuple[str, ...]:
+    return (
+        str(record.get("extraction_group") or "unknown"),
+        str(record.get("evidence_source_mode") or "unknown"),
+        str(record.get("modality_hint") or "unknown"),
+        str(record.get("trace_length_bucket") or "unknown"),
+        str(record.get("primary_semantic_family") or "unknown"),
+        str(record.get("ordering_quality") or "unknown"),
+    )
+
+
 def build_coverage_diagnostic_sample(
     records: Iterable[Mapping[str, Any]],
     *,
@@ -539,20 +550,16 @@ def build_coverage_diagnostic_sample(
 ) -> list[dict[str, Any]]:
     if size < 0:
         raise ValueError("sample size must be non-negative")
-    strata: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
+    strata: dict[tuple[str, ...], list[dict[str, Any]]] = defaultdict(list)
     for raw_record in records:
         record = dict(raw_record)
         if record.get("evidence_tier") not in {"T2", "T3", "T4"}:
             continue
         if record.get("eligible_for_llm") is not True:
             continue
-        key = (
-            str(record.get("extraction_group") or "unknown"),
-            str(record.get("primary_semantic_family") or "unknown"),
-            str(record.get("ordering_quality") or "unknown"),
-        )
+        key = coverage_diagnostic_stratum(record)
         strata[key].append(record)
-    queues: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+    queues: dict[tuple[str, ...], list[dict[str, Any]]] = {}
     for key, values in sorted(strata.items()):
         queue = sorted(values, key=lambda row: str(row.get("record_id") or ""))
         key_seed = int.from_bytes(hashlib.sha256(repr(key).encode("utf-8")).digest()[:8], "big")
