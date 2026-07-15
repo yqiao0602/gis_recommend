@@ -575,3 +575,5 @@
 - Batch 06 用户确认 10 条 QGIS 精确签名，累计 accepted=60、remaining=61。Histogram、Scatterplot 等报告算子继续保持 anchor-only；training rows 仍为 0，完整审核前禁止导出。
 - Batch 07 用户确认混合裁决：`Buffer`、两种 mask clip、`Datasources2Vrt`、3D scatter 共 5 条接受；GDAL base/dialog/panel/provider 共 4 条拒绝为 non-anchor。累计 decisions=69、accepted=65、reject_non_anchor=4、remaining=52。
 - 源码核对确认 `CreateCloudOptimizedGeoTIFF.name()=createcog`、`DatasetIdentify.name()=dataset_identify`，两者是真实算法，但 v2 catalog 没有正确 bounded candidate；本批保持 pending，不写错误拒绝或永久 unresolved。
+- Batch 08 用户确认混合裁决：7 条 GDAL 历史类名由源码 `name()`、provider 和参数 schema 恢复到现行 bounded operator；`GdalConnectionDetails`、`GdalUtils` 拒绝为非算子。累计 decisions=78、accepted=72、reject_non_anchor=6、remaining=43。
+- `ogrinfojson` 源码证明是独立真实算法，不能并入已接受的 `gdal:ogrinfo`；因 v2 缺少 `gdal:ogrinfojson` candidate，继续保持 pending。
