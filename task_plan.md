@@ -494,5 +494,6 @@
 - [x] 服务器完整 15MB JSONL 保留 `/home/qy`；本机同步 579KB 审核表、歧义队列、summary、hash ledger 和初审报告。
 - [ ] 人工完成全部 121 行 adjudication；自动提议不能直接成为 anchor。
 - [x] 联合审核 Batch 01：10 条 GDAL 精确签名全部人工接受；独立 decision log 校验通过，剩余 111 行。
+- [x] 联合审核 Batch 02：再接受 10 条 GDAL 精确签名；`contour`/`contour_polygon` 只作为独立 anchor，累计 20/121，剩余 101 行。
 - [ ] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 测迁移准确率。
-- **状态：** review_in_progress（10/121）；anchor_export_blocked；training_forbidden
+- **状态：** review_in_progress（20/121）；anchor_export_blocked；training_forbidden

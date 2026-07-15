@@ -1850,4 +1850,5 @@ Follow-up artifact:
 - The user explicitly accepted the first 10 exact GDAL signatures after joint review. Decisions cover AssignProjection, raster/vector extent clipping, ColorRelief, GDAL Dissolve/ExecuteSql, and four GDAL gridding variants.
 - The immutable proposal workbook remains unchanged. Decisions are stored in `adjudication_decisions.jsonl` and validated against record/class keys, trace hashes, bounded candidate IDs, and the source review SHA256 by `scripts/validate_qgis_core_signature_adjudications.py`.
 - Current cumulative status: 10 accepted anchor candidates, 111 review rows remaining, zero training rows. Anchor export remains blocked until all review rows are adjudicated.
+- Batch 02 added 10 more user-confirmed GDAL anchors, bringing the cumulative count to 20 accepted and 101 remaining. `contour` and `contour_polygon` share a source file but remain separate operator anchors, not a generated workflow chain.
 

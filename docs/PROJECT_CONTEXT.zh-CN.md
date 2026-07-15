@@ -1858,4 +1858,5 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 用户在联合审核后明确接受首批 10 条 GDAL 精确签名，覆盖 AssignProjection、栅格/矢量 extent clip、ColorRelief、GDAL Dissolve/ExecuteSql 和 4 个 GDAL gridding 算子。
 - 原始 proposal workbook 保持不可变。决策写入 `adjudication_decisions.jsonl`，并由 `scripts/validate_qgis_core_signature_adjudications.py` 校验 record/class key、trace hash、bounded candidate ID 和 source review SHA256。
 - 当前累计：accepted anchor candidates 10、剩余审核行 111、training rows 0；全部审核完成前 anchor export 继续阻断。
+- Batch 02 再增加 10 条用户确认的 GDAL anchor，累计 accepted=20、remaining=101。`contour` 与 `contour_polygon` 虽共享源文件，但只作为两个独立算子 anchor，不生成工作流链。
 

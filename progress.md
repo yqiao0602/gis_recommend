@@ -566,3 +566,4 @@
 - 原始 `signature_review.csv` 保持不可变；决策写入独立 `adjudication_decisions.jsonl`，包含 record/class/trace hash、accepted operator、review basis 和源 review hash。
 - 新增 `scripts/validate_qgis_core_signature_adjudications.py`，阻断 stale review hash、trace hash 不一致、重复决策、未知记录和非候选 operator；3 项 TDD 回归通过。
 - 累计状态：accepted anchor candidates 10、remaining 111、training rows 0；完整审核前 `anchor_export_admission=blocked_until_review_complete`。
+- Batch 02 用户再确认 10 条 GDAL 签名，累计 accepted=20、remaining=101。`contour` 与 `contour_polygon` 虽同属 `script_56326`，只登记为两个独立算子 anchor，不构造两步 workflow。

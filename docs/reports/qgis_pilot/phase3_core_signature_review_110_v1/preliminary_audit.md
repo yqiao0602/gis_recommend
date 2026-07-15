@@ -94,10 +94,12 @@ Training admission remains `forbidden_until_human_review`.
 
 ## Adjudication Progress
 
-- Batch 01 was jointly reviewed and explicitly accepted by the user.
-- Accepted: 10 exact GDAL operator signatures.
-- Remaining: 111 of 121 review rows.
+- Batches 01-02 were jointly reviewed and explicitly accepted by the user.
+- Accepted: 20 exact GDAL operator signatures.
+- Remaining: 101 of 121 review rows.
 - Decisions are stored separately in `adjudication_decisions.jsonl`; the
   immutable proposal workbook is unchanged.
 - Anchor export remains blocked until the full review is complete. Training rows
   emitted remain zero.
+- `contour` and `contour_polygon` are accepted as separate operator anchors from
+  one source file; they are not treated as a two-step workflow.
