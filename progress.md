@@ -559,3 +559,10 @@
 - Unresolved 为 no-exact 54、provider-evidence ambiguity 1（RasterCalculator）、provider conflict 1、no class scope 4。修复 provider token 边界后，`setProgress`/`Histogram` 不再因内部 `ogr` 子串被误判为 GDAL。初步 triage 估计 no-exact 中约 30 条是历史/别名算子，约 24 条是 framework/UI/helper；该分类不是人工 adjudication。
 - 完整 `signature_records.jsonl` 为 15MB，仅留服务器，SHA256=`011973f7a835a9bf7d99d782900ec991e6588ec93a690ab8ca2e5766e8111698`。本机已同步 review CSV、ambiguity JSON/Markdown、summary、ledger 和初审报告到 `docs/reports/qgis_pilot/phase3_core_signature_review_110_v1/`。
 - 下一步：人工审核全部 121 行；仅 accepted 行可导出 anchor library。随后在独立 50 条普通 direct-API workflow 上测 anchor 迁移效果。本阶段未调用 LLM、未训练、未修改生产 94、未写 `/home/yll`。
+
+## 2026-07-15：Signature 人工审核 Batch 01
+
+- 用户明确接受首批 10 条 GDAL 精确签名：AssignProjection、ClipRasterByExtent、ClipVectorByExtent、ColorRelief、Dissolve、ExecuteSql、GridAverage、GridDataMetrics、GridInverseDistance、GridInverseDistanceNearestNeighbor。
+- 原始 `signature_review.csv` 保持不可变；决策写入独立 `adjudication_decisions.jsonl`，包含 record/class/trace hash、accepted operator、review basis 和源 review hash。
+- 新增 `scripts/validate_qgis_core_signature_adjudications.py`，阻断 stale review hash、trace hash 不一致、重复决策、未知记录和非候选 operator；3 项 TDD 回归通过。
+- 累计状态：accepted anchor candidates 10、remaining 111、training rows 0；完整审核前 `anchor_export_admission=blocked_until_review_complete`。

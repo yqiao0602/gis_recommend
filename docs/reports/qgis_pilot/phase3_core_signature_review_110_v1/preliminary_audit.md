@@ -91,3 +91,13 @@ Training admission remains `forbidden_until_human_review`.
   `011973f7a835a9bf7d99d782900ec991e6588ec93a690ab8ca2e5766e8111698`.
 - The ledger covers 221 inputs (catalog plus 110 traces and 110 AST files).
 - All five synchronized bounded outputs match their ledger hashes.
+
+## Adjudication Progress
+
+- Batch 01 was jointly reviewed and explicitly accepted by the user.
+- Accepted: 10 exact GDAL operator signatures.
+- Remaining: 111 of 121 review rows.
+- Decisions are stored separately in `adjudication_decisions.jsonl`; the
+  immutable proposal workbook is unchanged.
+- Anchor export remains blocked until the full review is complete. Training rows
+  emitted remain zero.

@@ -1845,3 +1845,9 @@ Follow-up artifact:
 - The full 15MB record stays on the server at `outputs_v2/qgis_pilot/pilot_v1/phase3_core_signature_review_110_v1/`; bounded review artifacts are synchronized under `docs/reports/qgis_pilot/phase3_core_signature_review_110_v1/`. Full JSONL SHA256 is `011973f7a835a9bf7d99d782900ec991e6588ec93a690ab8ca2e5766e8111698`.
 - Next gate: human-adjudicate all 121 rows, export only accepted anchors, then measure transfer on a separate 50-record ordinary direct-API workflow sample. Do not train or count operator definitions as workflows.
 
+### 2026-07-15: Signature Adjudication Batch 01
+
+- The user explicitly accepted the first 10 exact GDAL signatures after joint review. Decisions cover AssignProjection, raster/vector extent clipping, ColorRelief, GDAL Dissolve/ExecuteSql, and four GDAL gridding variants.
+- The immutable proposal workbook remains unchanged. Decisions are stored in `adjudication_decisions.jsonl` and validated against record/class keys, trace hashes, bounded candidate IDs, and the source review SHA256 by `scripts/validate_qgis_core_signature_adjudications.py`.
+- Current cumulative status: 10 accepted anchor candidates, 111 review rows remaining, zero training rows. Anchor export remains blocked until all review rows are adjudicated.
+

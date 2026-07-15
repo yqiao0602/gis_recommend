@@ -1853,3 +1853,9 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 完整 15MB JSONL 仅留服务器 `outputs_v2/qgis_pilot/pilot_v1/phase3_core_signature_review_110_v1/`；本机同步审核表、歧义队列、summary、ledger 和初审报告到 `docs/reports/qgis_pilot/phase3_core_signature_review_110_v1/`。完整 JSONL SHA256 为 `011973f7a835a9bf7d99d782900ec991e6588ec93a690ab8ca2e5766e8111698`。
 - 下一门禁：人工审核全部 121 行，只导出 accepted anchor；随后用独立 50 条普通 direct-API workflow 测试迁移准确率。当前禁止训练，也禁止把算子定义计为 workflow 数量。
 
+### 2026-07-15：Signature 人工审核 Batch 01
+
+- 用户在联合审核后明确接受首批 10 条 GDAL 精确签名，覆盖 AssignProjection、栅格/矢量 extent clip、ColorRelief、GDAL Dissolve/ExecuteSql 和 4 个 GDAL gridding 算子。
+- 原始 proposal workbook 保持不可变。决策写入 `adjudication_decisions.jsonl`，并由 `scripts/validate_qgis_core_signature_adjudications.py` 校验 record/class key、trace hash、bounded candidate ID 和 source review SHA256。
+- 当前累计：accepted anchor candidates 10、剩余审核行 111、training rows 0；全部审核完成前 anchor export 继续阻断。
+
