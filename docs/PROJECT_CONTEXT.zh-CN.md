@@ -1866,4 +1866,5 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - Batch 06 增加 10 条用户确认的 QGIS 精确 anchor，累计 accepted=60、remaining=61。Histogram、Scatterplot 等报告 signature 继续保持 anchor-only；training rows 仍为 0，导出仍被阻断。
 - Batch 07 记录用户确认的混合裁决：5 条 provider/schema alias 接受，4 条 GDAL framework/UI 类拒绝为 non-anchor。累计 decisions=69、accepted=65、rejected=4、remaining=52。源码确认 `createcog`、`dataset_identify` 是真实算法，但 review v2 缺少正确 bounded candidate，因此两条保持 pending，未被误分类。
 - Batch 08 记录 7 条由源码 name/provider/schema 支持的 GDAL alias，并拒绝 2 条 utility/data class。累计 decisions=78、accepted=72、rejected=6、remaining=43。`ogrinfojson` 是独立真实算法，但 review v2 缺少对应 bounded candidate，因此继续 pending，禁止并入 `gdal:ogrinfo`。
+- Batch 09 接受 8 条 GDAL/QGIS 参数 alias，并将空 class trace 与 `ParameterExecuteSql` 拒绝为 non-anchor。空 class 使用原始 `(script_56361, "")` 键登记。累计 decisions=88、accepted=80、rejected=8、remaining=33。
 
