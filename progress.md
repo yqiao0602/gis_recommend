@@ -584,3 +584,5 @@
 - v2 普通人工审核至此结束；剩余仅为 `gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson` 三条已由源码证明的真实算法。由于它们不在 v2 bounded candidates 中，必须迁移 review authority 后再接受，不能绕过 validator。
 - 新增受控 v2→v3 authority migrator、5 项 TDD 回归和三条审计 manifest。真实 v3 SHA256=`af39d5cbc43f92e35ca8ecd28605f015f64a68d8236234fa66e2e8857a942f98`；结构化 diff 证明 121 行中只有三条目标记录变化，且仅限 exact/ranked candidate、auto proposal、resolution status、ambiguity reason 五字段。
 - 118 条既有 decisions 全部迁移到 v3 review hash，并追加 immediate-source migration history；当前仍为 accepted=90、rejected=28、remaining=3、training rows=0。迁移本身没有替用户接受三条新 proposal。
+- Batch 13 用户明确接受 v3 最后三条 source-confirmed GDAL signature：`gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson`。最终 validator 为 decisions=121、accepted=93、reject_non_anchor=28、remaining=0、human_review_complete=true、anchor_export_admission=ready、training rows=0。
+- 121 行 operator-signature 人工审核现已完成。下一阶段只允许从 93 条 accepted 行导出 anchor library，并在独立 50 条普通 direct-API workflow 上验证迁移准确率；不自动进入 114 taxonomy 或训练。

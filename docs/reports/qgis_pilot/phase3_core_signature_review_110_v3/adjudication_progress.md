@@ -13,14 +13,14 @@ Authority migration:
 Current status:
 
 - Review rows: 121
-- Decisions validated: 118
-- Accepted anchor candidates: 90
+- Decisions validated: 121
+- Accepted anchor candidates: 93
 - Rejected non-anchors: 28
-- Remaining: 3
+- Remaining: 0
 - Training rows emitted: 0
-- Anchor export: blocked until final human decisions
+- Anchor export: ready
 
-Final pending candidates:
+Final v3 candidates:
 
 | Record | Class | Candidate | Evidence |
 | --- | --- | --- | --- |
@@ -28,5 +28,6 @@ Final pending candidates:
 | script_56306 | DatasetIdentify | `gdal:dataset_identify` | source `name()=dataset_identify`, GDAL provider, folder-recursion/details schema |
 | script_56340 | ogrinfojson | `gdal:ogrinfojson` | distinct source class and JSON Processing ID; not merged with `gdal:ogrinfo` |
 
-No candidate is accepted by migration. Explicit human adjudication is still
-required before review completion or anchor export.
+The user explicitly accepted all three candidates in Batch 13. Review is now
+complete and accepted anchors may be exported. Signature acceptance still does
+not grant taxonomy or training admission, and no training row has been emitted.

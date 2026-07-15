@@ -510,6 +510,6 @@
 - [x] 联合审核 Batch 12：最后 10 条 script action/provider/editor/example/no-class 记录全部拒绝为 non-anchor；累计 decisions=118、accepted=90、rejected=28、remaining=3。
 - [x] v2 普通审核已结束；仅剩 `createcog`、`dataset_identify`、`ogrinfojson` 三条真实算法。
 - [x] 受控 review v3 authority 已生成：只修改三行的 candidate/proposal 五字段，其他 118 行逐字段不变；118 条 decision 带 provenance 迁移。
-- [ ] 联合确认 v3 最后三条 proposal，完成 121/121 adjudication 后再导出 anchor library。
+- [x] 联合确认 v3 最后三条 proposal：`gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson` 全部接受；121/121 adjudication 完成。
 - [ ] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 测迁移准确率。
-- **状态：** review_v3_final_human_gate（118/121 decisions；90 accepted）；anchor_export_blocked；training_forbidden
+- **状态：** review_v3_complete（121/121 decisions；93 accepted；28 rejected）；anchor_export_ready；training_forbidden

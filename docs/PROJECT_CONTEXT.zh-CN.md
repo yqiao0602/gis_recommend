@@ -1871,4 +1871,5 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - Batch 11 只接受 3 条实际 Processing operator，拒绝 7 条 parameter、graph helper、framework 或 config 类。累计 decisions=108、accepted=90、rejected=18、remaining=13；剩余为 3 条已知 catalog candidate 缺口和最后 10 条审核记录。
 - Batch 12 将最后 10 条普通记录全部拒绝，覆盖 script action/provider/editor/example 和 no-class trace。累计 decisions=118、accepted=90、rejected=28、remaining=3。v2 普通审核已完成，仅剩源码确认的 `gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson`，必须通过受控 candidate-authority migration 后才能接受。
 - 受控 review v3 已由新增的 TDD migrator 和三条审计 manifest 生成，目标 SHA256=`af39d5cbc43f92e35ca8ecd28605f015f64a68d8236234fa66e2e8857a942f98`。121 行结构化 diff 证明只有三条目标行变化，且只涉及五个 candidate/proposal 字段；118 条既有 decision 带 immediate-source provenance 迁移。当前仍为 accepted=90、rejected=28、remaining=3、training rows=0；迁移本身没有替用户接受新候选，仍需显式人工裁决。
+- Batch 13 用户明确接受 v3 最后三条 `gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson`。121 行审核现已完成：accepted anchors=93、rejected non-anchors=28、remaining=0、training rows=0、`anchor_export_admission=ready`。下一门禁是只导出 93 条 accepted anchor，并在独立 50 条普通 direct-API workflow 上测试迁移准确率；taxonomy 与训练准入仍独立。
 
