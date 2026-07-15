@@ -1860,4 +1860,5 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 当前累计：accepted anchor candidates 10、剩余审核行 111、training rows 0；全部审核完成前 anchor export 继续阻断。
 - Batch 02 再增加 10 条用户确认的 GDAL anchor，累计 accepted=20、remaining=101。`contour` 与 `contour_polygon` 虽共享源文件，但只作为两个独立算子 anchor，不生成工作流链。
 - Batch 03 前发现 review v1 将标量控制参数 `merge.NODATA_OUTPUT`、`Heatmap.OUTPUT_VALUE` 误判为 output。Builder 已改为按 QGIS parameter class 判断方向并生成 `qgis_core_signature_review_v2`。全量 121 行对比确认 key、trace、candidate、proposal、status 均不变，仅这 2 行参数 schema 修正；20 条已确认决策带 provenance 迁移。Review v2 SHA256=`d5eee5da32c092c594a63feea4a3cc7cd2b9708dd9ceaa0418f6a1960a57e6f4`，现为审核 authority。
+- Batch 03 增加 10 条用户确认的 GDAL 精确 anchor，累计 accepted=30、remaining=91。`gdalinfo`、`ogrinfo` 仅作为 Processing operator signature 接受，taxonomy 和训练准入仍需独立决策。
 
