@@ -14,14 +14,15 @@ Active review authority: `qgis_core_signature_review_v2`
 | 08 GDAL alias and framework | 7 accept / 2 reject | 9 | 72 |
 | 09 alias and non-anchor | 8 accept / 2 reject | 10 | 80 |
 | 10 QGIS alias and framework | 7 accept / 3 reject | 10 | 87 |
+| 11 operator and support | 3 accept / 7 reject | 10 | 90 |
 
 Current status:
 
 - Review rows: 121
-- Decisions validated: 98
-- Accepted anchor candidates: 87
-- Rejected non-anchors: 11
-- Remaining: 23
+- Decisions validated: 108
+- Accepted anchor candidates: 90
+- Rejected non-anchors: 18
+- Remaining: 13
 - Training rows emitted: 0
 - Anchor export: blocked until review completion
 

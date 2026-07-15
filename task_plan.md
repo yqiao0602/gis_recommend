@@ -506,5 +506,6 @@
 - [ ] `ogrinfojson` 是独立真实算法，不得错误并入 `gdal:ogrinfo`；等待受控 bounded candidate 扩展。
 - [x] 联合审核 Batch 09：8 条 GDAL/QGIS 参数 alias 接受，空 class 与 `ParameterExecuteSql` 拒绝为 non-anchor；累计 decisions=88、accepted=80、rejected=8、remaining=33。
 - [x] 联合审核 Batch 10：7 条 QGIS alias 接受，3 条 QGIS framework/provider 类拒绝；`PointsFromLines`、`RasterCalculator` 以源码继承和 `name()` 消解 provider 歧义；累计 decisions=98、accepted=87、rejected=11、remaining=23。
+- [x] 联合审核 Batch 11：只接受 3 条实际 Processing operator，拒绝 7 条 parameter/graph/framework/config support 类；累计 decisions=108、accepted=90、rejected=18、remaining=13。
 - [ ] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 测迁移准确率。
-- **状态：** review_v2_in_progress（98/121 decisions；87 accepted）；anchor_export_blocked；training_forbidden
+- **状态：** review_v2_in_progress（108/121 decisions；90 accepted）；anchor_export_blocked；training_forbidden
