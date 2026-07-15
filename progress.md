@@ -586,3 +586,14 @@
 - 118 条既有 decisions 全部迁移到 v3 review hash，并追加 immediate-source migration history；当前仍为 accepted=90、rejected=28、remaining=3、training rows=0。迁移本身没有替用户接受三条新 proposal。
 - Batch 13 用户明确接受 v3 最后三条 source-confirmed GDAL signature：`gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson`。最终 validator 为 decisions=121、accepted=93、reject_non_anchor=28、remaining=0、human_review_complete=true、anchor_export_admission=ready、training rows=0。
 - 121 行 operator-signature 人工审核现已完成。下一阶段只允许从 93 条 accepted 行导出 anchor library，并在独立 50 条普通 direct-API workflow 上验证迁移准确率；不自动进入 114 taxonomy 或训练。
+
+## 2026-07-15：93 条 Anchor 已导出，50 条独立 Transfer 审核包已生成
+
+- 新增 deterministic anchor exporter 与 transfer evaluator，并以 7 项专项测试覆盖完整审核门禁、唯一 operator、dual-IDF 排名、独立排除、30/20 分层和禁止训练字段。
+- 服务器 anchor library：93 anchors、93 unique operators、GDAL 59 / QGIS 34、0 条无 transfer operation、0 training rows；权威 source review SHA256=`af39d5cb...f98`。
+- 独立 transfer pool：5,107 eligible 中 4,847 为 direct API；排除既有 pilot/canary 后为 4,673 条且 source script 全唯一。
+- 正式基线复现 3,388 candidate / 1,285 abstain，candidate coverage=72.50%；50 条审核集为 30/20，record/source 均唯一，human accuracy 仍为 null。
+- 初检已证明覆盖率偏乐观：`gdal.open`、geometry/WKB helper 等 shared calls 造成明显错误 top-1。semantic-only 消融仍不能消除全部共享调用错误，因此 signature exact transfer 暂不能自动标注。
+- 权威审核包同步到 `docs/reports/qgis_pilot/phase3_signature_transfer_evaluation_50_v2/`；48MB 全量 predictions 只留服务器，ledger 保留 SHA256=`43ba8405...7a76`。
+- 验证：本机 stable-94 QGIS tests 88/88；服务器专项 7/7、其余非-taxonomy 测试通过。服务器现有 107 映射使 2 个固定要求 94 的旧 taxonomy 测试失败，未覆盖或修改服务器配置。
+- 下一步：人工审核 50 条并计算 top-1 precision / abstention accuracy；在此之前 taxonomy/training admission 均保持 not granted。

@@ -1873,3 +1873,13 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 受控 review v3 已由新增的 TDD migrator 和三条审计 manifest 生成，目标 SHA256=`af39d5cbc43f92e35ca8ecd28605f015f64a68d8236234fa66e2e8857a942f98`。121 行结构化 diff 证明只有三条目标行变化，且只涉及五个 candidate/proposal 字段；118 条既有 decision 带 immediate-source provenance 迁移。当前仍为 accepted=90、rejected=28、remaining=3、training rows=0；迁移本身没有替用户接受新候选，仍需显式人工裁决。
 - Batch 13 用户明确接受 v3 最后三条 `gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson`。121 行审核现已完成：accepted anchors=93、rejected non-anchors=28、remaining=0、training rows=0、`anchor_export_admission=ready`。下一门禁是只导出 93 条 accepted anchor，并在独立 50 条普通 direct-API workflow 上测试迁移准确率；taxonomy 与训练准入仍独立。
 
+### 2026-07-15：Signature Anchor 导出与独立迁移诊断
+
+- 已导出 93 条唯一的人工 accepted signature anchors（GDAL 59、QGIS 34），taxonomy/training admission 均明确为 not granted；本机 anchor JSONL SHA256=`0a3e1ebf1113bf8aa6da5b0823e3daf282083d0b934f8a9cbad43e7e6bdf40e2`。
+- 新增确定性 exact-operation dual-IDF 评估器，排除既有 300 pilot 与 24 canary，只使用 4,673 条 source 唯一的 `direct_api_only` workflow，LLM calls=0。
+- 精确复现实验基线：candidate 3,388（72.50%）、abstain 1,285。该结果只是候选覆盖率，不是准确率。
+- 已生成 50 条人工审核包：30 candidate + 20 abstain，record/source 唯一，并覆盖 modality/family/length/ordering；人工 precision 和 abstention accuracy 仍为 null，training rows=0。
+- 初检发现 shared implementation call 导致系统性假阳性：`gdal.open` 在 439 条 workflow 中出现（9.39%），刚好通过 10% 门槛，使 30 个 candidate 中 12 个 top-1 为 `gdal:extractprojection`。semantic-anchor-only 消融把覆盖降到 1,127，但仍有共享调用错误。因此 exact signature transfer 只能用于评估，禁止自动标注 workflow。
+- 本机 stable-94 QGIS 回归 88/88；服务器 transfer/export 专项 7/7。服务器数据镜像当前暴露 107 IDs，导致两个固定要求 94 的既有 taxonomy 测试失败；本阶段未覆盖服务器配置。
+- 当前权威产物：`docs/reports/qgis_pilot/phase3_signature_anchor_library_v1/` 和 `docs/reports/qgis_pilot/phase3_signature_transfer_evaluation_50_v2/`。下一步是联合人工审核 50 条，再决定是否设计 family/text-aware reranker。
+

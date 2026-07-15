@@ -511,5 +511,17 @@
 - [x] v2 普通审核已结束；仅剩 `createcog`、`dataset_identify`、`ogrinfojson` 三条真实算法。
 - [x] 受控 review v3 authority 已生成：只修改三行的 candidate/proposal 五字段，其他 118 行逐字段不变；118 条 decision 带 provenance 迁移。
 - [x] 联合确认 v3 最后三条 proposal：`gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson` 全部接受；121/121 adjudication 完成。
-- [ ] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 测迁移准确率。
-- **状态：** review_v3_complete（121/121 decisions；93 accepted；28 rejected）；anchor_export_ready；training_forbidden
+- [x] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 构建迁移诊断包。
+- **状态：** review_v3_complete（121/121 decisions；93 accepted；28 rejected）；anchor_export_ready；transfer_human_review_pending；training_forbidden
+
+## 2026-07-15：Signature Anchor 导出与 50 条独立迁移诊断
+
+- [x] 从完整 v3 人工裁决中确定性导出 93 条 accepted signature anchors；operator ID 唯一，GDAL 59 / QGIS 34，taxonomy admission=`not_granted`，training rows=0。
+- [x] 将服务器 anchor library 同步到 `docs/reports/qgis_pilot/phase3_signature_anchor_library_v1/` 并逐文件核对 SHA256；anchor JSONL=`0a3e1ebf...40e2`。
+- [x] TDD 实现 `scripts/evaluate_qgis_signature_anchor_transfer.py`：排除既有 300 pilot 和 24 canary，仅使用 source/record 均唯一的普通 `direct_api_only` workflow。
+- [x] 复现预声明 dual-IDF 基线：独立集 4,673 条，candidate=3,388（72.50%），abstain=1,285；此指标只表示候选覆盖，不能表示准确率。
+- [x] 确定性抽取 50 条人工诊断集：30 candidate + 20 abstain，覆盖 modality、primary family、trace length 和 ordering quality；人工字段保持空白，training admission=`not_a_training_artifact`。
+- [x] 初检定位系统性假阳性：`gdal.open` 以 439/4,673=9.39% 刚好通过 10% 门槛，导致 30 个 candidate 中 12 个 top-1 为 `gdal:extractprojection`；底层 shared calls 不能直接代表 operator identity。
+- [x] `semantic_anchor`-only 消融把覆盖降至 1,127/4,673，但仍有共享调用假阳性，证明问题不是单一阈值。
+- [ ] 联合人工审核 `phase3_signature_transfer_evaluation_50_v2/diagnostic_review.csv` 的 50 条记录，分别计算 candidate top-1 precision、abstention accuracy 和 overall diagnostic accuracy。
+- [ ] 只有人工结果证明 anchor 有增益后，才设计 family/text-aware rerank；当前禁止用 signature transfer 自动生成 operator/L3 标签或训练行。
