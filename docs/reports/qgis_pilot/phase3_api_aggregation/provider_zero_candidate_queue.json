@@ -1,0 +1,1886 @@
+[
+  {
+    "schema": "gis_recommend.qgis_pilot.v1",
+    "kind": "qgis_api_provider_preflight_row_v1",
+    "record_id": "817f4c6e4a9dc5b192053f40",
+    "status": "no_bounded_candidates",
+    "reason": "no_taxonomy_mapped_bounded_operator",
+    "request_fingerprint": null,
+    "model": "gpt-5.6-luna",
+    "extraction_group": "Workflowoutput qgis_L3_support_modules",
+    "evidence_source_mode": "custom_only",
+    "modality_hint": "mixed",
+    "trace_length_bucket": "medium",
+    "ordering_quality": "deterministic_statement_index",
+    "primary_semantic_family": "explicit_processing",
+    "task_name": "Compute descriptive statistics",
+    "task_description": "The script computes general and descriptive statistics for vector or raster layers in QGIS, including total count, null count, mean, standard deviation, variance, skewness, min, max, median, and quartiles (25%, 75%). It dynamically adapts to layer type (vector/raster), selects appropriate fields or bands, applies user-specified decimal precision, and populates a UI form with results. Outputs are displayed in QLineEdit widgets (e.g., mean, std dev, quantiles) and not exported as files or layers.",
+    "compact_evidence": [
+      {
+        "operation": "qgsmaplayer.type",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_type_1",
+          "micro_layer_type_2",
+          "micro_layer_type_3",
+          "micro_layer_type_4",
+          "micro_layer_type_5",
+          "micro_layer_type_6",
+          "micro_layer_type_7",
+          "micro_layer_type_8",
+          "micro_layer_type_9",
+          "micro_layer_type_10"
+        ],
+        "run_count": 10
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_getFeatures_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.attribute",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_feature_attribute_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_getFeatures_1",
+          "macro_layer_getFeatures_2"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "qgsfeature.attribute",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_feature_attribute_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_getFeatures_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsmaplayer.dataprovider",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_dataProvider_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsmaplayer.extent",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_extent_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.height",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_height_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.width",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_width_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsmaplayer.dataprovider",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_dataProvider_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.width",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_width_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.height",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_height_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "data_provider.block",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_data_provider_block_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsmaplayer.extent",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_extent_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsmaplayer.type",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_type_11"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "eis:descriptive_statistics_vector",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "eis:descriptive_statistics_raster",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsmaplayer.type",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_type_12"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "eis:descriptive_statistics_vector",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "macro_processing_run_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "eis:descriptive_statistics_raster",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "macro_processing_run_2"
+        ],
+        "run_count": 1
+      }
+    ],
+    "evidence_operations": [
+      "qgsmaplayer.type",
+      "qgsvectorlayer.getfeatures",
+      "qgsfeature.attribute",
+      "qgsvectorlayer.getfeatures",
+      "qgsfeature.attribute",
+      "qgsvectorlayer.getfeatures",
+      "qgsmaplayer.dataprovider",
+      "qgsmaplayer.extent",
+      "qgsvectorlayer.height",
+      "qgsvectorlayer.width",
+      "qgsmaplayer.dataprovider",
+      "qgsvectorlayer.width",
+      "qgsvectorlayer.height",
+      "data_provider.block",
+      "qgsmaplayer.extent",
+      "qgsmaplayer.type",
+      "eis:descriptive_statistics_vector",
+      "eis:descriptive_statistics_raster",
+      "qgsmaplayer.type",
+      "eis:descriptive_statistics_vector",
+      "eis:descriptive_statistics_raster"
+    ],
+    "bounded_candidates": [],
+    "candidate_count": 0,
+    "prompt_chars": 0,
+    "review_status": "pending",
+    "reviewer_decision": null,
+    "corrected_operator_sequence": null,
+    "corrected_l3_chain": null,
+    "failure_tags": [],
+    "reviewer_notes": null,
+    "training_admission": "forbidden_until_reviewed"
+  },
+  {
+    "schema": "gis_recommend.qgis_pilot.v1",
+    "kind": "qgis_api_provider_preflight_row_v1",
+    "record_id": "9014e66f2bfb809701f36a58",
+    "status": "no_bounded_candidates",
+    "reason": "no_taxonomy_mapped_bounded_operator",
+    "request_fingerprint": null,
+    "model": "gpt-5.6-luna",
+    "extraction_group": "Workflowoutput qgis_L3_support_modules",
+    "evidence_source_mode": "custom_only",
+    "modality_hint": "unknown",
+    "trace_length_bucket": "medium",
+    "ordering_quality": "deterministic_statement_index",
+    "primary_semantic_family": "explicit_processing",
+    "task_name": "Download OSM bench features",
+    "task_description": "The script tests QGIS Processing algorithms that download OpenStreetMap (OSM) data via the Overpass API for specific geographic queries (raw, spatial area, 'in', 'around', and extent-based), returning vector layers split by geometry type (points, lines, multiline strings, multipolygons) representing OSM elements matching the query criteria (e.g., amenity=bench). Each test mocks HTTP responses to validate correct algorithm behavior, input parameter handling (e.g., timeout, server URL, CRS-aware extent reprojection), and output layer instantiation.",
+    "compact_evidence": [
+      {
+        "operation": "quickosm:downloadosmdatarawquery",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "quickosm:downloadosmdatanotspatialquery",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "quickosm:downloadosmdatainareaquery",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_3"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "quickosm:downloadosmdataaroundareaquery",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_4"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "quickosm:downloadosmdataextentquery",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_5"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgscoordinatereferencesystem",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsCoordinateReferenceSystem_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsprocessingcontext",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsProcessingContext_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsproject",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsProject_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "context.setproject",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_context_setProject_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "quickosm:downloadosmdataextentquery",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_6"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsproject.setcrs",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_project_setCrs_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsproject",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_QgsProject_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsproject.setcrs",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_project_setCrs_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgscoordinatereferencesystem",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsCoordinateReferenceSystem_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsprocessingcontext",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_QgsProcessingContext_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "context.setproject",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_context_setProject_1"
+        ],
+        "run_count": 1
+      }
+    ],
+    "evidence_operations": [
+      "quickosm:downloadosmdatarawquery",
+      "quickosm:downloadosmdatanotspatialquery",
+      "quickosm:downloadosmdatainareaquery",
+      "quickosm:downloadosmdataaroundareaquery",
+      "quickosm:downloadosmdataextentquery",
+      "qgscoordinatereferencesystem",
+      "qgsprocessingcontext",
+      "qgsproject",
+      "context.setproject",
+      "quickosm:downloadosmdataextentquery",
+      "qgsproject.setcrs",
+      "qgsproject",
+      "qgsproject.setcrs",
+      "qgscoordinatereferencesystem",
+      "qgsprocessingcontext",
+      "context.setproject"
+    ],
+    "bounded_candidates": [],
+    "candidate_count": 0,
+    "prompt_chars": 0,
+    "review_status": "pending",
+    "reviewer_decision": null,
+    "corrected_operator_sequence": null,
+    "corrected_l3_chain": null,
+    "failure_tags": [],
+    "reviewer_notes": null,
+    "training_admission": "forbidden_until_reviewed"
+  },
+  {
+    "schema": "gis_recommend.qgis_pilot.v1",
+    "kind": "qgis_api_provider_preflight_row_v1",
+    "record_id": "502a2085212e953e21d97960",
+    "status": "no_bounded_candidates",
+    "reason": "no_taxonomy_mapped_bounded_operator",
+    "request_fingerprint": null,
+    "model": "gpt-5.6-luna",
+    "extraction_group": "Workflowoutput qgis_L3_support_modules",
+    "evidence_source_mode": "custom_only",
+    "modality_hint": "unknown",
+    "trace_length_bucket": "short",
+    "ordering_quality": "deterministic_statement_index",
+    "primary_semantic_family": "explicit_processing",
+    "task_name": "Count vehicle trajectories at traffic gates",
+    "task_description": "The script tests the 'export_to_json' algorithm of the Traffic Trajectory Toolkit (TTT) in QGIS Processing. It first runs 'count_trajectories_gate' to compute per-gate traffic metrics (vehicle count, average speed, average acceleration) from point-based trajectory data and line-based gate geometries, then exports the resulting gate-layer attributes—including channel, traveler class, time interval bounds, vehicle_count, speed_avg, acceleration_avg—into a JSON array with one object per gate. The test validates that exactly 3 gates are exported, each with 7 specific fields and correct keys.",
+    "compact_evidence": [
+      {
+        "operation": "traffic_trajectory_toolkit:count_trajectories_gate",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "macro_processing_run_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "traffic_trajectory_toolkit:export_to_json",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "macro_processing_run_2"
+        ],
+        "run_count": 1
+      }
+    ],
+    "evidence_operations": [
+      "traffic_trajectory_toolkit:count_trajectories_gate",
+      "traffic_trajectory_toolkit:export_to_json"
+    ],
+    "bounded_candidates": [],
+    "candidate_count": 0,
+    "prompt_chars": 0,
+    "review_status": "pending",
+    "reviewer_decision": null,
+    "corrected_operator_sequence": null,
+    "corrected_l3_chain": null,
+    "failure_tags": [],
+    "reviewer_notes": null,
+    "training_admission": "forbidden_until_reviewed"
+  },
+  {
+    "schema": "gis_recommend.qgis_pilot.v1",
+    "kind": "qgis_api_provider_preflight_row_v1",
+    "record_id": "06c0c5ad005b13d63ddc05de",
+    "status": "no_bounded_candidates",
+    "reason": "no_taxonomy_mapped_bounded_operator",
+    "request_fingerprint": null,
+    "model": "gpt-5.6-luna",
+    "extraction_group": "Workflowoutput qgis_L3_support_modules",
+    "evidence_source_mode": "custom_only",
+    "modality_hint": "vector",
+    "trace_length_bucket": "long",
+    "ordering_quality": "deterministic_statement_index",
+    "primary_semantic_family": "explicit_processing",
+    "task_name": "Update features without modifying geometry",
+    "task_description": "The script tests the behavior of a QGIS plugin ('AppendFeaturesToLayer') when updating spatial target layers using non-spatial source layers (e.g., database tables without geometry). It verifies that attribute updates occur correctly for matching features (by key field 'name'), appended features receive NULL geometries, and existing geometries in the target layer remain completely unchanged — confirming geometry preservation during attribute-only updates.",
+    "compact_evidence": [
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_getFeatures_1",
+          "macro_layer_getFeatures_2"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "qgsgeometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsGeometry_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsGeometry_asWkt_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsVectorLayer_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_1",
+          "micro_f_geometry_2"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "f.geometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_asWkt_1",
+          "micro_f_geometry_asWkt_2"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_getFeatures_1",
+          "micro_layer_getFeatures_2"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "qgsvectorlayer.source",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_source_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "etl_load:appendfeaturestolayer",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "updated_geoms.count",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_updated_geoms_count_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_getFeatures_3"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_3"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "f.geometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_asWkt_3"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_getFeatures_3"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.source",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_source_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_QgsVectorLayer_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "etl_load:appendfeaturestolayer",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "macro_processing_run_1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_getFeatures_4"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_4"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "f.geometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_asWkt_4"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_getFeatures_4"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsGeometry_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsGeometry_asWkt_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "updated_geoms.count",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_updated_geoms_count_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_getFeatures_5",
+          "macro_layer_getFeatures_6"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "qgsgeometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsGeometry_3"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsGeometry_asWkt_3"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_5",
+          "micro_f_geometry_6"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "f.geometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_asWkt_5",
+          "micro_f_geometry_asWkt_6"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_getFeatures_5",
+          "micro_layer_getFeatures_6"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "etl_load:appendfeaturestolayer",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "updated_geoms.count",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_updated_geoms_count_3"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_getFeatures_7"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_7"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "f.geometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_asWkt_7"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_getFeatures_7"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "etl_load:appendfeaturestolayer",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "macro_processing_run_2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_getFeatures_8"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_8"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "f.geometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_f_geometry_asWkt_8"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_getFeatures_8"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsGeometry_4"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.aswkt",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_QgsGeometry_asWkt_4"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "updated_geoms.count",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_updated_geoms_count_4"
+        ],
+        "run_count": 1
+      }
+    ],
+    "evidence_operations": [
+      "qgsvectorlayer.getfeatures",
+      "qgsgeometry",
+      "qgsgeometry.aswkt",
+      "qgsvectorlayer",
+      "qgsfeature.geometry",
+      "f.geometry.aswkt",
+      "qgsvectorlayer.getfeatures",
+      "qgsvectorlayer.source",
+      "etl_load:appendfeaturestolayer",
+      "updated_geoms.count",
+      "qgsvectorlayer.getfeatures",
+      "qgsfeature.geometry",
+      "f.geometry.aswkt",
+      "qgsvectorlayer.getfeatures",
+      "qgsvectorlayer.source",
+      "qgsvectorlayer",
+      "etl_load:appendfeaturestolayer",
+      "qgsvectorlayer.getfeatures",
+      "qgsfeature.geometry",
+      "f.geometry.aswkt",
+      "qgsvectorlayer.getfeatures",
+      "qgsgeometry",
+      "qgsgeometry.aswkt",
+      "updated_geoms.count",
+      "qgsvectorlayer.getfeatures",
+      "qgsgeometry",
+      "qgsgeometry.aswkt",
+      "qgsfeature.geometry",
+      "f.geometry.aswkt",
+      "qgsvectorlayer.getfeatures",
+      "etl_load:appendfeaturestolayer",
+      "updated_geoms.count",
+      "qgsvectorlayer.getfeatures",
+      "qgsfeature.geometry",
+      "f.geometry.aswkt",
+      "qgsvectorlayer.getfeatures",
+      "etl_load:appendfeaturestolayer",
+      "qgsvectorlayer.getfeatures",
+      "qgsfeature.geometry",
+      "f.geometry.aswkt",
+      "qgsvectorlayer.getfeatures",
+      "qgsgeometry",
+      "qgsgeometry.aswkt",
+      "updated_geoms.count"
+    ],
+    "bounded_candidates": [],
+    "candidate_count": 0,
+    "prompt_chars": 0,
+    "review_status": "pending",
+    "reviewer_decision": null,
+    "corrected_operator_sequence": null,
+    "corrected_l3_chain": null,
+    "failure_tags": [],
+    "reviewer_notes": null,
+    "training_admission": "forbidden_until_reviewed"
+  },
+  {
+    "schema": "gis_recommend.qgis_pilot.v1",
+    "kind": "qgis_api_provider_preflight_row_v1",
+    "record_id": "32d7150ba25e4002e12da232",
+    "status": "no_bounded_candidates",
+    "reason": "no_taxonomy_mapped_bounded_operator",
+    "request_fingerprint": null,
+    "model": "gpt-5.6-luna",
+    "extraction_group": "Workflowoutput qgis_L3_support_modules",
+    "evidence_source_mode": "custom_only",
+    "modality_hint": "vector",
+    "trace_length_bucket": "medium",
+    "ordering_quality": "deterministic_statement_index",
+    "primary_semantic_family": "explicit_processing",
+    "task_name": "Calculate deposition layer differences",
+    "task_description": "The script performs spatial arithmetic operations (difference, sum, maximum) on user-selected GIS vector layers representing atmospheric deposition (e.g., NH3, NOX), validating input layers for mandatory fields ('fid', 'dep_NH3', 'dep_NOX'). It executes QGIS Processing algorithms ('imaer:relate_difference', 'imaer:relate_sum', 'imaer:relate_maximum') to generate a new output vector layer with computed deposition values, applies IMAER-specific styling, and adds the result to the QGIS project. The workflow is interactive via a dialog with configurable layer inputs and operation type selection.",
+    "compact_evidence": [
+      {
+        "operation": "qgsvectorlayer.fields",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "macro_layer_fields_1",
+          "micro_layer_fields_1",
+          "macro_layer_fields_2",
+          "micro_layer_fields_2"
+        ],
+        "run_count": 4
+      },
+      {
+        "operation": "layer.setname",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "micro_layer_setName_1",
+          "macro_layer_setName_1"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "imaer:relate_difference",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_1",
+          "macro_processing_run_1"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "imaer:relate_sum",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_2",
+          "macro_processing_run_2"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "imaer:relate_maximum",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "micro_processing_run_3",
+          "macro_processing_run_3"
+        ],
+        "run_count": 2
+      }
+    ],
+    "evidence_operations": [
+      "qgsvectorlayer.fields",
+      "layer.setname",
+      "imaer:relate_difference",
+      "imaer:relate_sum",
+      "imaer:relate_maximum"
+    ],
+    "bounded_candidates": [],
+    "candidate_count": 0,
+    "prompt_chars": 0,
+    "review_status": "pending",
+    "reviewer_decision": null,
+    "corrected_operator_sequence": null,
+    "corrected_l3_chain": null,
+    "failure_tags": [],
+    "reviewer_notes": null,
+    "training_admission": "forbidden_until_reviewed"
+  },
+  {
+    "schema": "gis_recommend.qgis_pilot.v1",
+    "kind": "qgis_api_provider_preflight_row_v1",
+    "record_id": "1378cb058ac4a073b994c970",
+    "status": "no_bounded_candidates",
+    "reason": "no_taxonomy_mapped_bounded_operator",
+    "request_fingerprint": null,
+    "model": "gpt-5.6-luna",
+    "extraction_group": "WorkflowoutputQGIS_Model_Tutorial_Workflows",
+    "evidence_source_mode": "processing+custom",
+    "modality_hint": "raster",
+    "trace_length_bucket": "medium",
+    "ordering_quality": "deterministic_statement_index",
+    "primary_semantic_family": "explicit_processing",
+    "task_name": "Extract and snap stream outlets",
+    "task_description": "The script extracts outlet points along a stream network by interpolating points near the downstream ends of stream lines (using a dynamic distance based on line length), rasterizes the stream network using a DEM as base, and then snaps the interpolated points to the nearest stream pixel within a 40-unit distance using the Jenson Snap Pour Points algorithm. The output is a vector point layer of snapped outlets.",
+    "compact_evidence": [
+      {
+        "operation": "qgsproperty.fromexpression",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "14"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "native:interpolatepoint",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "15"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "wbt:rasterizestreams",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "17"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "wbt:jensonsnappourpoints",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "18"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsproperty.fromexpression",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "21"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "native:interpolatepoint",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "22"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "wbt:rasterizestreams",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "26"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "wbt:jensonsnappourpoints",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "29"
+        ],
+        "run_count": 1
+      }
+    ],
+    "evidence_operations": [
+      "qgsproperty.fromexpression",
+      "native:interpolatepoint",
+      "wbt:rasterizestreams",
+      "wbt:jensonsnappourpoints",
+      "qgsproperty.fromexpression",
+      "native:interpolatepoint",
+      "wbt:rasterizestreams",
+      "wbt:jensonsnappourpoints"
+    ],
+    "bounded_candidates": [],
+    "candidate_count": 0,
+    "prompt_chars": 0,
+    "review_status": "pending",
+    "reviewer_decision": null,
+    "corrected_operator_sequence": null,
+    "corrected_l3_chain": null,
+    "failure_tags": [],
+    "reviewer_notes": null,
+    "training_admission": "forbidden_until_reviewed"
+  },
+  {
+    "schema": "gis_recommend.qgis_pilot.v1",
+    "kind": "qgis_api_provider_preflight_row_v1",
+    "record_id": "2465575d31356b57b8d4730f",
+    "status": "no_bounded_candidates",
+    "reason": "no_taxonomy_mapped_bounded_operator",
+    "request_fingerprint": null,
+    "model": "gpt-5.6-luna",
+    "extraction_group": "WorkflowoutputQGIS_Model_Tutorial_Workflows",
+    "evidence_source_mode": "processing_only",
+    "modality_hint": "unknown",
+    "trace_length_bucket": "short",
+    "ordering_quality": "deterministic_statement_index",
+    "primary_semantic_family": "explicit_processing",
+    "task_name": "Interpolate elevation from DEM",
+    "task_description": "The script interpolates elevation values from a digital elevation model (DEM) raster layer onto a pixel-center-aligned vector grid, then reprojects the grid and generates a new raster using TIN interpolation with linear method. The output is a resampled elevation raster at a specified pixel size, aligned to the input extent and CRS.",
+    "compact_evidence": [
+      {
+        "operation": "context.getmaplayer.source",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "1"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "context.getmaplayer",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "2"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgis:tininterpolation",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "4"
+        ],
+        "run_count": 1
+      }
+    ],
+    "evidence_operations": [
+      "context.getmaplayer.source",
+      "context.getmaplayer",
+      "qgis:tininterpolation"
+    ],
+    "bounded_candidates": [],
+    "candidate_count": 0,
+    "prompt_chars": 0,
+    "review_status": "pending",
+    "reviewer_decision": null,
+    "corrected_operator_sequence": null,
+    "corrected_l3_chain": null,
+    "failure_tags": [],
+    "reviewer_notes": null,
+    "training_admission": "forbidden_until_reviewed"
+  },
+  {
+    "schema": "gis_recommend.qgis_pilot.v1",
+    "kind": "qgis_api_provider_preflight_row_v1",
+    "record_id": "48f70c3e15030919858bea9a",
+    "status": "no_bounded_candidates",
+    "reason": "no_taxonomy_mapped_bounded_operator",
+    "request_fingerprint": null,
+    "model": "gpt-5.6-luna",
+    "extraction_group": "WorkflowoutputQGIS_Model_Tutorial_Workflows",
+    "evidence_source_mode": "processing_only",
+    "modality_hint": "vector",
+    "trace_length_bucket": "long",
+    "ordering_quality": "deterministic_statement_index",
+    "primary_semantic_family": "explicit_processing",
+    "task_name": "Place master contour labels",
+    "task_description": "The script places master contour line labels for Brazilian topographic mapping by identifying contour lines whose elevation values are multiples of a scale-dependent index (e.g., 50 m at 1:25,000), extracting QGIS-rendered label bounding polygons from map layers within geographic boundaries, clipping master contours against those label polygons, splitting and buffering interpolated midpoints to isolate candidate label placement segments, and populating a dedicated symbol layer (edicao_simb_cota_mestra_l) with geometry and elevation values while clearing the 'texto_edicao' attribute on original contour lines. Outputs include updated contour layer attributes and new features in the contour symbol layer.",
+    "compact_evidence": [
+      {
+        "operation": "i.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "43"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "cachecontourlyr.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "45"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeaturerequest",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "47"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "request.setfilterexpression",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "48"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "inputsource.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "49"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsmaplayer.name",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "57"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "i.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "58"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "cachecontourlyr.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "61"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "inputlyr.updatefeature",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "68",
+          "69"
+        ],
+        "run_count": 2
+      },
+      {
+        "operation": "qgsfeaturerequest",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "70"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "request.setfilterexpression",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "71"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.startediting",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "72"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "inputlyr.begineditcommand",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "73"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "inputsource.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "74"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "inputlyr.endeditcommand",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "75"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "geographicboundarylyr.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "76"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "geographicboundarylyr.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "78"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "80"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.boundingbox",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "81"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "native:extractlabels",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "85"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "outputlabellyr.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "89"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "selectedlabelslyr.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "90"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "mergedwithfieldid.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "95"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "geographicboundarylyr.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "98"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "geographicboundarylyr.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "100"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "102"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.boundingbox",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "103"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "native:extractlabels",
+        "category": "processing_operator",
+        "semantic_family": "explicit_processing",
+        "evidence_ids": [
+          "107"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "outputlabellyr.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "111"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "selectedlabelslyr.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "112"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "mergedwithfieldid.featurecount",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "117"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "lyr.fields",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "120"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "lyr.crs",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "121"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgscoordinatereferencesystem.authid",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "122"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "123"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "lyr.crs",
+        "category": "unknown",
+        "semantic_family": null,
+        "evidence_ids": [
+          "124"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfields.tolist",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "126"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "lyr.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "128"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "129"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgspointxy.x",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "131"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgspointxy.y",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "132"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgspointxy",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "133"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsrectangle.fromcenterandsize",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "134"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.fromrect",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "135"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "136"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.setgeometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "139"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "141"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgscoordinatereferencesystem.authid",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "143"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.startediting",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "145"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsmaplayer.dataprovider",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "146"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfields.tolist",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "148"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsvectorlayer.updatefields",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "149"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "lyr.getfeatures",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "152"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.geometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "153"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.aspoint",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "154"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsgeometry.fromrect",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "155"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgspointxy.x",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "156"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgspointxy.y",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "157"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgspointxy",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "158"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsrectangle.fromcenterandsize",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "159"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "160"
+        ],
+        "run_count": 1
+      },
+      {
+        "operation": "qgsfeature.setgeometry",
+        "category": "data_access",
+        "semantic_family": null,
+        "evidence_ids": [
+          "163"
+        ],
+        "run_count": 1
+      }
+    ],
+    "evidence_operations": [
+      "i.featurecount",
+      "cachecontourlyr.featurecount",
+      "qgsfeaturerequest",
+      "request.setfilterexpression",
+      "inputsource.getfeatures",
+      "qgsmaplayer.name",
+      "i.featurecount",
+      "cachecontourlyr.featurecount",
+      "inputlyr.updatefeature",
+      "qgsfeaturerequest",
+      "request.setfilterexpression",
+      "qgsvectorlayer.startediting",
+      "inputlyr.begineditcommand",
+      "inputsource.getfeatures",
+      "inputlyr.endeditcommand",
+      "geographicboundarylyr.featurecount",
+      "geographicboundarylyr.getfeatures",
+      "qgsfeature.geometry",
+      "qgsgeometry.boundingbox",
+      "native:extractlabels",
+      "outputlabellyr.featurecount",
+      "selectedlabelslyr.featurecount",
+      "mergedwithfieldid.featurecount",
+      "geographicboundarylyr.featurecount",
+      "geographicboundarylyr.getfeatures",
+      "qgsfeature.geometry",
+      "qgsgeometry.boundingbox",
+      "native:extractlabels",
+      "outputlabellyr.featurecount",
+      "selectedlabelslyr.featurecount",
+      "mergedwithfieldid.featurecount",
+      "lyr.fields",
+      "lyr.crs",
+      "qgscoordinatereferencesystem.authid",
+      "qgsvectorlayer",
+      "lyr.crs",
+      "qgsfields.tolist",
+      "lyr.getfeatures",
+      "qgsfeature.geometry",
+      "qgspointxy.x",
+      "qgspointxy.y",
+      "qgspointxy",
+      "qgsrectangle.fromcenterandsize",
+      "qgsgeometry.fromrect",
+      "qgsfeature",
+      "qgsfeature.setgeometry",
+      "qgsvectorlayer",
+      "qgscoordinatereferencesystem.authid",
+      "qgsvectorlayer.startediting",
+      "qgsmaplayer.dataprovider",
+      "qgsfields.tolist",
+      "qgsvectorlayer.updatefields",
+      "lyr.getfeatures",
+      "qgsfeature.geometry",
+      "qgsgeometry.aspoint",
+      "qgsgeometry.fromrect",
+      "qgspointxy.x",
+      "qgspointxy.y",
+      "qgspointxy",
+      "qgsrectangle.fromcenterandsize",
+      "qgsfeature",
+      "qgsfeature.setgeometry"
+    ],
+    "bounded_candidates": [],
+    "candidate_count": 0,
+    "prompt_chars": 0,
+    "review_status": "pending",
+    "reviewer_decision": null,
+    "corrected_operator_sequence": null,
+    "corrected_l3_chain": null,
+    "failure_tags": [],
+    "reviewer_notes": null,
+    "training_admission": "forbidden_until_reviewed"
+  }
+]

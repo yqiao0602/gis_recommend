@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import os
+import statistics
 import sys
 from collections import Counter
 from pathlib import Path
@@ -316,12 +318,22 @@ def load_operator_catalog(
 
 _FAMILY_HINTS = {
     "buffer": ("buffer",),
+    "centroid": ("centroid",),
+    "data_export": ("translate", "savefeatures", "convertformat", "export"),
     "crs_transform": ("reproject", "warp", "projection"),
     "difference": ("difference",),
     "field_calculation": ("fieldcalculator", "calculatefield"),
     "geometry_repair": ("fixgeometr", "checkvalid"),
     "geometry_validation": ("fixgeometr", "checkvalid"),
     "raster_calculation": ("rastercalculator", "rastercalc"),
+    "raster_merge": ("buildvirtualraster", "merge"),
+    "rasterize": ("rasterize",),
+    "spatial_predicate": (
+        "selectbylocation",
+        "extractbylocation",
+        "joinattributesbylocation",
+        "joinbylocation",
+    ),
     "spatial_index": ("spatialindex",),
     "vector_export": ("savefeatures", "export", "convertformat"),
 }
@@ -358,6 +370,196 @@ def select_bounded_operator_catalog(
             scored.append((-score, operator_id, dict(entry)))
     scored.sort(key=lambda row: (row[0], row[1]))
     return {operator_id: entry for _, operator_id, entry in scored[:limit]}
+
+
+def build_provider_preflight(
+    records: Sequence[Mapping[str, Any]],
+    *,
+    full_catalog: Mapping[str, Mapping[str, Any]],
+    model: str,
+    candidate_limit: int,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    rows = []
+    candidate_counts = []
+    prompt_lengths = []
+    statuses: Counter[str] = Counter()
+    for record in records:
+        bounded = select_bounded_operator_catalog(record, full_catalog, limit=candidate_limit)
+        compact_evidence = [
+            {
+                "operation": step.get("operation"),
+                "category": step.get("category"),
+                "semantic_family": step.get("semantic_family"),
+                "evidence_ids": [str(item) for item in step.get("evidence_ids", [])],
+                "run_count": step.get("run_count", 1),
+            }
+            for step in record.get("compact_steps", [])
+        ]
+        candidates = [
+            {
+                "operator_id": operator_id,
+                "l3_code": entry.get("l3_code"),
+                "official_name": entry.get("official_name"),
+            }
+            for operator_id, entry in bounded.items()
+        ]
+        status = "ready_for_provider" if bounded else "no_bounded_candidates"
+        statuses[status] += 1
+        prompt = build_aggregation_prompt(record, operator_catalog=bounded)
+        fingerprint = (
+            build_request_fingerprint(
+                record_id=str(record.get("record_id") or ""),
+                prompt=prompt,
+                model=model,
+            )
+            if bounded
+            else None
+        )
+        candidate_counts.append(len(candidates))
+        if bounded:
+            prompt_lengths.append(len(prompt))
+        rows.append(
+            {
+                "schema": PILOT_SCHEMA,
+                "kind": "qgis_api_provider_preflight_row_v1",
+                "record_id": record.get("record_id"),
+                "status": status,
+                "reason": None if bounded else "no_taxonomy_mapped_bounded_operator",
+                "request_fingerprint": fingerprint,
+                "model": model,
+                "extraction_group": record.get("extraction_group"),
+                "evidence_source_mode": record.get("evidence_source_mode"),
+                "modality_hint": record.get("modality_hint"),
+                "trace_length_bucket": record.get("trace_length_bucket"),
+                "ordering_quality": record.get("ordering_quality"),
+                "primary_semantic_family": record.get("primary_semantic_family"),
+                "task_name": record.get("task_name"),
+                "task_description": record.get("task_description"),
+                "compact_evidence": compact_evidence,
+                "evidence_operations": [
+                    str(step.get("operation"))
+                    for step in compact_evidence
+                    if step.get("operation")
+                ],
+                "bounded_candidates": candidates,
+                "candidate_count": len(candidates),
+                "prompt_chars": len(prompt) if bounded else 0,
+                "review_status": "pending",
+                "reviewer_decision": None,
+                "corrected_operator_sequence": None,
+                "corrected_l3_chain": None,
+                "failure_tags": [],
+                "reviewer_notes": None,
+                "training_admission": "forbidden_until_reviewed",
+            }
+        )
+    summary = {
+        "schema": PILOT_SCHEMA,
+        "kind": "qgis_api_provider_preflight_summary_v1",
+        "model": model,
+        "candidate_limit": candidate_limit,
+        "catalog_size": len(full_catalog),
+        "records": len(rows),
+        "ready_for_provider": statuses["ready_for_provider"],
+        "no_bounded_candidates": statuses["no_bounded_candidates"],
+        "candidate_count": {
+            "min": min(candidate_counts, default=0),
+            "median": statistics.median(candidate_counts) if candidate_counts else 0,
+            "max": max(candidate_counts, default=0),
+        },
+        "prompt_chars_ready_rows": {
+            "median": statistics.median(prompt_lengths) if prompt_lengths else 0,
+            "max": max(prompt_lengths, default=0),
+        },
+        "live_requests_attempted": 0,
+        "human_review_required": True,
+        "training_admission": "forbidden_until_reviewed",
+    }
+    return rows, summary
+
+
+def write_provider_preflight(
+    output_dir: Path,
+    *,
+    rows: Sequence[Mapping[str, Any]],
+    summary: Mapping[str, Any],
+) -> dict[str, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    jsonl_path = output_dir / "provider_preflight.jsonl"
+    csv_path = output_dir / "provider_preflight.csv"
+    summary_path = output_dir / "provider_preflight_summary.json"
+    zero_candidates_path = output_dir / "provider_zero_candidate_queue.json"
+    ledger_path = output_dir / "provider_preflight_write_ledger.json"
+    with jsonl_path.open("w", encoding="utf-8", newline="\n") as handle:
+        for row in rows:
+            handle.write(_canonical_json(row) + "\n")
+    fields = [
+        "record_id",
+        "status",
+        "reason",
+        "request_fingerprint",
+        "extraction_group",
+        "evidence_source_mode",
+        "modality_hint",
+        "trace_length_bucket",
+        "ordering_quality",
+        "primary_semantic_family",
+        "task_name",
+        "task_description",
+        "compact_evidence_json",
+        "bounded_candidates_json",
+        "candidate_count",
+        "review_status",
+        "reviewer_decision",
+        "corrected_operator_sequence",
+        "corrected_l3_chain",
+        "failure_tags",
+        "reviewer_notes",
+        "training_admission",
+    ]
+    with csv_path.open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(
+                {
+                    **{field: row.get(field) for field in fields},
+                    "compact_evidence_json": _canonical_json(row.get("compact_evidence", [])),
+                    "bounded_candidates_json": _canonical_json(row.get("bounded_candidates", [])),
+                    "failure_tags": _canonical_json(row.get("failure_tags", [])),
+                }
+            )
+    summary_path.write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    zero_candidates_path.write_text(
+        json.dumps(
+            [row for row in rows if row.get("status") == "no_bounded_candidates"],
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    ledger = {
+        "schema": PILOT_SCHEMA,
+        "created_or_replaced": [
+            {"path": str(path), "sha256": file_sha256(path), "size": path.stat().st_size}
+            for path in (jsonl_path, csv_path, summary_path, zero_candidates_path)
+        ],
+    }
+    ledger_path.write_text(
+        json.dumps(ledger, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        "jsonl": jsonl_path,
+        "csv": csv_path,
+        "summary": summary_path,
+        "zero_candidates": zero_candidates_path,
+        "ledger": ledger_path,
+    }
 
 
 def _load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -470,12 +672,23 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-records", type=int)
     parser.add_argument("--max-attempts", type=int, default=2)
     parser.add_argument("--timeout", type=float, default=120.0)
+    parser.add_argument("--preflight-only", action="store_true")
     args = parser.parse_args(argv)
 
     output_dir = assert_write_allowed(args.output_dir, args.allowed_write_root)
     output_dir.mkdir(parents=True, exist_ok=True)
     records = _load_jsonl(args.pilot_jsonl)
     catalog, taxonomy_codes = load_operator_catalog(args.crosswalk, args.taxonomy)
+    if args.preflight_only:
+        rows, summary = build_provider_preflight(
+            records,
+            full_catalog=catalog,
+            model=args.model,
+            candidate_limit=args.candidate_limit,
+        )
+        write_provider_preflight(output_dir, rows=rows, summary=summary)
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        return 0
     api_key = require_api_key()
     try:
         from openai import OpenAI

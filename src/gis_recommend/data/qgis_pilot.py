@@ -366,11 +366,43 @@ _INFRASTRUCTURE_API_PATTERNS = (
     "qgsprocessingalgorithm.addparameter",
     "qgsprocessingparameter",
     "qgsprocessingalgorithm.parameteras",
+    "qgsprocessingalgorithm.invalidsourceerror",
+    "self.parameteras",
     "qgsproject.instance",
     "qgsproject.addmaplayer",
+    "qgsproject.layertreeroot",
     "qgsmessagelog",
     "qgsprocessingfeedback",
+    "qgsprocessingmultistepfeedback",
     "qgsprocessingexception",
+    "qgsprocessingutils.generatetempfilename",
+    "qgsapplication.processingregistry",
+    "qgsapplication.getthemeicon",
+    "qgsapplication",
+    "qcoreapplication.translate",
+    "qgsmapcanvas.",
+    "qgscolorrampshader",
+    "qgsrastershader",
+    "qgssinglebandpseudocolorrenderer",
+    "qgssettings",
+    "gdal.useexceptions",
+    "qgslayertreeroot.",
+    "qgsnativealgorithms",
+    "context.setlayerstoloadoncompletion",
+    "qgsrubberband",
+    "qgslinesymbol.",
+    "qgsmarkersymbol.",
+    "qgs.initqgis",
+    "layout.addwidget",
+    "qgsmaplayerregistry.",
+    "qgssinglesymbolrenderer",
+    "qgsprocessingcontext.addlayertoloadoncompletion",
+    "multistepfeedback.",
+    "feedback.",
+    "param.setflags",
+    "param.flags",
+    "widget.",
+    "qicon",
     "self.tr",
 )
 
@@ -379,11 +411,18 @@ _SEMANTIC_API_FAMILIES = (
     (("qgsgeometry.intersection",), "intersection"),
     (("qgsgeometry.difference",), "difference"),
     (("qgsgeometry.combine", "qgsgeometry.unaryunion"), "union"),
+    (("qgsgeometry.intersects", "qgsgeometry.contains", "qgsgeometry.within"), "spatial_predicate"),
     (("qgsgeometry.simplify",), "simplify"),
     (("qgsgeometry.makevalid", "qgsgeometry.isgeosvalid"), "geometry_validation"),
     (("qgscoordinatetransform", "qgsgeometry.transform"), "crs_transform"),
+    (("gdal.warp",), "crs_transform"),
     (("qgsspatialindex",), "spatial_index"),
     (("qgsrastercalculator",), "raster_calculation"),
+    (("gdal.rasterizelayer", "gdal.rasterize"), "rasterize"),
+    (("gdal.polygonize",), "polygonize"),
+    (("gdal.translate",), "data_export"),
+    (("gdal.buildvrt",), "raster_merge"),
+    (("qgsgeometry.centroid",), "centroid"),
     (("qgsvectorfilewriter", "writeasvectorformat"), "vector_export"),
 )
 
@@ -397,7 +436,38 @@ _DATA_ACCESS_API_PATTERNS = (
     "setgeometry",
     "setattributes",
     "changeattributevalue",
+    "qgsmaplayer.",
+    "qgscoordinatereferencesystem",
+    "qgsgeometry.boundingbox",
+    "qgsgeometry.aspoint",
+    "qgsgeometry.area",
+    "qgsgeometry.length",
+    "qgsgeometry.isempty",
+    "qgspoint",
+    "qgsrectangle",
+    "gdal.open",
+    "gdal.getdriverbyname",
+    "qgsprocessingutils.maplayerfromstring",
+    "qgsdatasourceuri",
+    "ogr.open",
+    "ogr.getdriverbyname",
+    "ogr.feature",
+    "ogr.creategeometryfromwkt",
+    "qgsgeometry.frompointxy",
+    "qgsgeometry.fromwkt",
+    "qgsgeometry.fromrect",
+    "qgsgeometry.frompolygonxy",
+    "qgsexpression",
+    "qgsmapsettings.destinationcrs",
+    "qgsproject.maplayersbyname",
+    "connection.execsql",
+    "ogr.fielddefn",
+    "qgsprocessingfeaturesourcedefinition",
+    "qgsproperty.fromexpression",
+    "gdal.info",
 )
+
+_DATA_ACCESS_API_EXACT = {"qgsgeometry"}
 
 
 def classify_qgis_api_call(step: Mapping[str, Any]) -> dict[str, Any]:
@@ -420,7 +490,9 @@ def classify_qgis_api_call(step: Mapping[str, Any]) -> dict[str, Any]:
     for patterns, family in _SEMANTIC_API_FAMILIES:
         if any(pattern in operation for pattern in patterns):
             return {"operation": operation, "category": "semantic_anchor", "semantic_family": family}
-    if any(pattern in operation for pattern in _DATA_ACCESS_API_PATTERNS):
+    if operation in _DATA_ACCESS_API_EXACT or any(
+        pattern in operation for pattern in _DATA_ACCESS_API_PATTERNS
+    ):
         return {"operation": operation, "category": "data_access", "semantic_family": None}
     return {"operation": operation, "category": "unknown", "semantic_family": None}
 

@@ -1796,10 +1796,17 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 ### 2026-07-14：Direct API 语义聚合 Coverage Pilot
 
 - 底层 QGIS 调用现按 processing operator、semantic anchor、data access、infrastructure、unknown 压缩；重复调用做 run-length encoding，缺失 statement index 仍标记为 fallback ordering。
-- 服务器构建将 21,085 条记录收敛为 4,506 条 eligible，并确定性选出 300 条唯一 coverage-diagnostic；排除 4,149 条 T0/碰撞和 12,430 条无 processing/semantic anchor 记录。
-- 抽样覆盖 extraction group、证据来源模式、确定性 modality hint、trace 长度、semantic family 和 ordering quality。Pilot 中 direct-API-only 166、processing-only 90、processing+custom 39、custom-only 5；modality hint 为 vector 121、raster 36、mixed 125、unknown 18。
+- 服务器最终构建将 21,085 条记录收敛为 5,107 条 eligible，并确定性选出 300 条唯一 coverage-diagnostic；排除 4,149 条 T0/碰撞和 11,829 条无 processing/semantic anchor 记录。
+- 抽样覆盖 extraction group、证据来源模式、确定性 modality hint、trace 长度、semantic family 和 ordering quality。最终 pilot 中 direct-API-only 174、processing-only 83、processing+custom 38、custom-only 5；modality hint 为 vector 108、raster 44、mixed 124、unknown 24。
 - `scripts/run_qgis_api_aggregation_pilot.py` 对 `gpt-5.6-luna` 实施 fail-closed 合约：仅允许 bounded 114 crosswalk operator，必须引用本记录 evidence ID、L3 映射一致且 confidence >=0.70；禁止持久化原始响应和 hidden reasoning，恢复只使用 request fingerprint。
 - 离线 preflight 确认 228 个 operator 可映射到 114 taxonomy，292/300 条有 bounded candidates；其余 8 条自定义/待审核算子在 provider 调用前 reject。
 - 服务器已安装 OpenAI SDK 2.45.0，但进程环境未设置 `GGUUAI_API_KEY`，因此 live request=0。禁止从聊天记录恢复 key 或回退其他 provider；外部设置环境变量后才运行一次 `--max-records 1` smoke。
-- 报告位于 `docs/reports/qgis_pilot/phase3_api_aggregation/`；51.7MB pool 和 3.34MB full pilot JSONL 只留服务器。当前 pilot 不是训练数据，必须先完成 provider proposal 和人工 adjudication。
+- 报告位于 `docs/reports/qgis_pilot/phase3_api_aggregation/`；56.2MB pool、3.07MB full pilot JSONL 和 2.15MB preflight JSONL 只留服务器。当前 pilot 不是训练数据，必须先完成 provider proposal 和人工 adjudication。
+
+### 2026-07-15：Pilot 反馈驱动的压缩修正
+
+- 对 300 条 pilot 做三轮 bounded audit 后，以回归测试固定高置信规则：feedback/parameter/renderer/registry/project UI 归 infrastructure；metadata/geometry/OGR 读取归 data access；spatial predicate、rasterize/polygonize、GDAL warp/translate、raster merge、centroid 归 semantic anchor。
+- Eligible records 从 4,506 增至 5,107；选中 pilot 的 unknown calls 从 3,477 降至 1,328，下降 61.81%。剩余 unknown 保留人工审核，不强制映射。
+- 新增明确 family 覆盖：centroid 14、data export 20、polygonize 16、raster merge 14、rasterize 10、spatial predicate 11。
+- 可复现离线 provider preflight 为 292 ready / 8 zero-candidate，候选中位数 4，prompt 中位数 5,293.5 字符；输出正式审核 workbook、summary、ledger 和独立缺口队列，且不读取 key、不发 live request。
 

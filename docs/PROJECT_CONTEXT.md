@@ -1788,10 +1788,17 @@ Follow-up artifact:
 ### 2026-07-14: Direct-API Aggregation Coverage Pilot
 
 - Low-level QGIS calls are compacted into processing operators, semantic anchors, data access, infrastructure, and unknown evidence. Duplicate runs are encoded and missing statement indices remain fallback ordered.
-- The server build reduced 21,085 records to 4,506 eligible records and selected 300 unique coverage-diagnostic rows. It excluded 4,149 T0/collision rows and 12,430 rows with no processing or semantic anchor.
-- Sampling covers extraction group, evidence source mode, deterministic modality hint, trace length, semantic family, and ordering quality. The pilot has 166 direct-API-only, 90 processing-only, 39 processing+custom, and 5 custom-only rows; modality hints are 121 vector, 36 raster, 125 mixed, and 18 unknown.
+- The final server build reduced 21,085 records to 5,107 eligible records and selected 300 unique coverage-diagnostic rows. It excluded 4,149 T0/collision rows and 11,829 rows with no processing or semantic anchor.
+- Sampling covers extraction group, evidence source mode, deterministic modality hint, trace length, semantic family, and ordering quality. The final pilot has 174 direct-API-only, 83 processing-only, 38 processing+custom, and 5 custom-only rows; modality hints are 108 vector, 44 raster, 124 mixed, and 24 unknown.
 - `scripts/run_qgis_api_aggregation_pilot.py` enforces a fail-closed `gpt-5.6-luna` contract: bounded 114-crosswalk operators only, record evidence citations, exact L3 mapping, confidence >=0.70, no raw response or hidden reasoning persistence, and fingerprint-based resume.
 - Offline preflight found 228 taxonomy-mapped operators and bounded candidates for 292/300 rows. Eight custom or pending operators are rejected before any provider call.
 - OpenAI SDK 2.45.0 is installed on the server, but `GGUUAI_API_KEY` is not set in the process environment. No live request was attempted. Do not recover keys from chat or fall back to another provider; run one `--max-records 1` smoke only after external environment setup.
-- Reports are under `docs/reports/qgis_pilot/phase3_api_aggregation/`. The 51.7MB pool and 3.34MB full pilot JSONL remain server-side. The pilot is not training data until provider proposals and human adjudication are complete.
+- Reports are under `docs/reports/qgis_pilot/phase3_api_aggregation/`. The 56.2MB pool, 3.07MB full pilot JSONL, and 2.15MB preflight JSONL remain server-side. The pilot is not training data until provider proposals and human adjudication are complete.
+
+### 2026-07-15: Pilot-Guided Compaction Revision
+
+- Three bounded audits of the 300-record pilot identified deterministic UI/framework noise and missed semantic direct APIs. Regression-tested rules now classify feedback, parameters, renderers, registries, and project UI as infrastructure; metadata/geometry/OGR reads as data access; and spatial predicates, rasterize/polygonize, GDAL warp/translate, raster merge, and centroid as semantic anchors.
+- Eligible records increased from 4,506 to 5,107. Unknown calls in the selected pilot fell from 3,477 to 1,328 (61.81% reduction). Remaining unknown calls are preserved for human review rather than force-mapped.
+- Newly explicit pilot families include centroid 14, data export 20, polygonize 16, raster merge 14, rasterize 10, and spatial predicate 11.
+- The reproducible offline provider preflight yields 292 ready rows and 8 zero-candidate rows, with median 4 candidates and median prompt length 5,293.5 characters. It writes a review workbook, summary, ledger, and a separate zero-candidate queue without reading an API key or making live calls.
 

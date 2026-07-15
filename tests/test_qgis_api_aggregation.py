@@ -16,12 +16,14 @@ from scripts.build_qgis_api_aggregation_pilot import build_pilot
 from scripts.run_qgis_api_aggregation_pilot import (
     AggregationContractError,
     aggregate_record,
+    build_provider_preflight,
     build_aggregation_prompt,
     build_request_fingerprint,
     require_api_key,
     run_batch,
     select_bounded_operator_catalog,
     validate_aggregation_response,
+    write_provider_preflight,
 )
 
 
@@ -200,10 +202,46 @@ class QgisApiAggregationTests(unittest.TestCase):
                 "official_name": "Save vector features",
                 "l3_code": "L3_EXPORT",
             },
+            "native:selectbylocation": {
+                "operator_id": "native:selectbylocation",
+                "official_name": "Select by location",
+                "l3_code": "L3_SPATIAL_FILTER",
+            },
+            "gdal:rasterize": {
+                "operator_id": "gdal:rasterize",
+                "official_name": "Rasterize vector",
+                "l3_code": "L3_RASTERIZE",
+            },
+            "gdal:translate": {
+                "operator_id": "gdal:translate",
+                "official_name": "Translate raster",
+                "l3_code": "L3_EXPORT",
+            },
+            "gdal:buildvirtualraster": {
+                "operator_id": "gdal:buildvirtualraster",
+                "official_name": "Build virtual raster",
+                "l3_code": "L3_MERGE_RASTER",
+            },
+            "gdal:polygonize": {
+                "operator_id": "gdal:polygonize",
+                "official_name": "Polygonize raster",
+                "l3_code": "L3_POLYGONIZE",
+            },
+            "native:centroids": {
+                "operator_id": "native:centroids",
+                "official_name": "Centroids",
+                "l3_code": "L3_CENTROID",
+            },
         }
         cases = {
+            "centroid": "native:centroids",
+            "data_export": "gdal:translate",
             "geometry_validation": "native:fixgeometries",
             "raster_calculation": "qgis:rastercalculator",
+            "rasterize": "gdal:rasterize",
+            "raster_merge": "gdal:buildvirtualraster",
+            "spatial_predicate": "native:selectbylocation",
+            "polygonize": "gdal:polygonize",
             "vector_export": "native:savefeatures",
         }
 
@@ -225,6 +263,62 @@ class QgisApiAggregationTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             require_api_key({"DEEPSEEK_API_KEY": "wrong", "OPENROUTER_API_KEY": "wrong"})
         self.assertEqual(require_api_key({"GGUUAI_API_KEY": "expected"}), "expected")
+
+    def test_provider_preflight_separates_ready_and_zero_candidate_rows(self):
+        unsupported = {
+            **self.compact_record,
+            "record_id": "pilot-unsupported",
+            "primary_semantic_family": "explicit_processing",
+            "compact_steps": [
+                {
+                    "operation": "custom:unknown_algorithm",
+                    "category": "processing_operator",
+                    "semantic_family": "explicit_processing",
+                    "evidence_ids": ["custom-1"],
+                    "run_count": 1,
+                }
+            ],
+        }
+
+        rows, summary = build_provider_preflight(
+            [self.compact_record, unsupported],
+            full_catalog=self.operator_catalog,
+            model="gpt-5.6-luna",
+            candidate_limit=30,
+        )
+
+        self.assertEqual(summary["records"], 2)
+        self.assertEqual(summary["ready_for_provider"], 1)
+        self.assertEqual(summary["no_bounded_candidates"], 1)
+        self.assertEqual(rows[0]["status"], "ready_for_provider")
+        self.assertEqual(rows[0]["bounded_candidates"][0]["operator_id"], "native:buffer")
+        self.assertEqual(len(rows[0]["request_fingerprint"]), 64)
+        self.assertEqual(rows[1]["status"], "no_bounded_candidates")
+        self.assertEqual(rows[1]["evidence_operations"], ["custom:unknown_algorithm"])
+
+    def test_provider_preflight_writes_reviewable_bounded_artifacts(self):
+        rows, summary = build_provider_preflight(
+            [self.compact_record],
+            full_catalog=self.operator_catalog,
+            model="gpt-5.6-luna",
+            candidate_limit=30,
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            artifacts = write_provider_preflight(output_dir, rows=rows, summary=summary)
+            persisted = [json.loads(line) for line in artifacts["jsonl"].read_text(encoding="utf-8").splitlines()]
+            with artifacts["csv"].open(encoding="utf-8-sig", newline="") as handle:
+                review_rows = list(csv.DictReader(handle))
+            persisted_summary = json.loads(artifacts["summary"].read_text(encoding="utf-8"))
+            zero_candidates = json.loads(artifacts["zero_candidates"].read_text(encoding="utf-8"))
+
+        self.assertEqual(persisted[0]["record_id"], "pilot-1")
+        self.assertEqual(persisted_summary["ready_for_provider"], 1)
+        self.assertEqual(zero_candidates, [])
+        self.assertIn("compact_evidence_json", review_rows[0])
+        self.assertIn("bounded_candidates_json", review_rows[0])
+        self.assertEqual(review_rows[0]["review_status"], "pending")
+        self.assertEqual(review_rows[0]["training_admission"], "forbidden_until_reviewed")
 
     def test_aggregate_record_persists_only_validated_contract_and_hashes(self):
         message = SimpleNamespace(content=json.dumps(self._accepted_payload()), refusal=None)
@@ -407,12 +501,57 @@ class QgisApiAggregationTests(unittest.TestCase):
             "qgsprocessingalgorithm.addparameter": ("infrastructure", None),
             "qgsproject.instance": ("infrastructure", None),
             "qgsmessagelog.logmessage": ("infrastructure", None),
+            "feedback.setcurrentstep": ("infrastructure", None),
+            "feedback.iscanceled": ("infrastructure", None),
+            "qgsprocessingmultistepfeedback": ("infrastructure", None),
+            "self.parameterasstring": ("infrastructure", None),
+            "qgsprocessingutils.generatetempfilename": ("infrastructure", None),
+            "qcoreapplication.translate": ("infrastructure", None),
+            "qicon": ("infrastructure", None),
+            "widget.settext": ("infrastructure", None),
+            "qgsprocessingalgorithm.invalidsourceerror": ("infrastructure", None),
+            "qgsproject.layertreeroot": ("infrastructure", None),
+            "qgsmapcanvas.refresh": ("infrastructure", None),
+            "qgscolorrampshader": ("infrastructure", None),
+            "qgssettings": ("infrastructure", None),
+            "gdal.useexceptions": ("infrastructure", None),
+            "qgslayertreeroot.findlayers": ("infrastructure", None),
+            "qgsnativealgorithms": ("infrastructure", None),
+            "context.setlayerstoloadoncompletion": ("infrastructure", None),
+            "qgsrubberband": ("infrastructure", None),
+            "qgslinesymbol.createsimple": ("infrastructure", None),
+            "qgs.initqgis": ("infrastructure", None),
+            "layout.addwidget": ("infrastructure", None),
+            "qgsmaplayerregistry.instance.addmaplayer": ("infrastructure", None),
+            "qgssinglesymbolrenderer": ("infrastructure", None),
+            "qgsprocessingcontext.addlayertoloadoncompletion": ("infrastructure", None),
             "qgsvectorlayer.getfeatures": ("data_access", None),
             "qgsfeature.setgeometry": ("data_access", None),
+            "qgsmaplayer.extent": ("data_access", None),
+            "qgscoordinatereferencesystem.authid": ("data_access", None),
+            "qgsgeometry.boundingbox": ("data_access", None),
+            "gdal.open": ("data_access", None),
+            "ogr.open": ("data_access", None),
+            "qgsgeometry.fromwkt": ("data_access", None),
+            "qgsexpression.evaluate": ("data_access", None),
+            "qgsproject.maplayersbyname": ("data_access", None),
+            "qgsgeometry": ("data_access", None),
+            "ogr.fielddefn": ("data_access", None),
+            "qgsprocessingfeaturesourcedefinition": ("data_access", None),
+            "qgsproperty.fromexpression": ("data_access", None),
+            "gdal.info": ("data_access", None),
             "qgsgeometry.buffer": ("semantic_anchor", "buffer"),
             "qgsgeometry.difference": ("semantic_anchor", "difference"),
+            "qgsgeometry.intersects": ("semantic_anchor", "spatial_predicate"),
             "qgscoordinatetransform.transform": ("semantic_anchor", "crs_transform"),
             "qgsspatialindex": ("semantic_anchor", "spatial_index"),
+            "gdal.rasterizelayer": ("semantic_anchor", "rasterize"),
+            "gdal.rasterize": ("semantic_anchor", "rasterize"),
+            "gdal.polygonize": ("semantic_anchor", "polygonize"),
+            "gdal.warp": ("semantic_anchor", "crs_transform"),
+            "gdal.translate": ("semantic_anchor", "data_export"),
+            "gdal.buildvrt": ("semantic_anchor", "raster_merge"),
+            "qgsgeometry.centroid": ("semantic_anchor", "centroid"),
         }
         for operation, expected in cases.items():
             with self.subTest(operation=operation):

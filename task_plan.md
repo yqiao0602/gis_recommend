@@ -453,11 +453,12 @@
 
 - [x] 底层 API 分类和压缩：processing operator、semantic anchor、data access、infrastructure、unknown；重复调用做 run-length encoding，缺失 statement index 保持 fallback 标记。
 - [x] 300 条 coverage-diagnostic 按 extraction group、证据来源模式、modality hint、trace 长度、operation family、ordering quality 分层。
-- [x] 服务器全量构建：21,085 source -> 4,506 eligible -> 300 pilot；排除 T0/碰撞 4,149 条、无 processing/semantic anchor 12,430 条。
-- [x] Pilot 分布：direct API 166、processing 90、processing+custom 39、custom 5；vector 121、raster 36、mixed 125、unknown 18；short/medium/long 43/98/159。
+- [x] 服务器最终构建：21,085 source -> 5,107 eligible -> 300 pilot；排除 T0/碰撞 4,149 条、无 processing/semantic anchor 11,829 条。
+- [x] Pilot 分布：direct API 174、processing 83、processing+custom 38、custom 5；vector 108、raster 44、mixed 124、unknown 24；short/medium/long 50/93/157。
 - [x] 严格 provider contract：仅允许 bounded 114 crosswalk operator；候选必须引用 evidence ID、L3 一致、confidence >= 0.70；refusal、未知字段、hidden reasoning、unsupported positive 全部 fail closed。
 - [x] 离线 preflight：228 个 taxonomy-mapped operators；292/300 条有候选，8 条无候选并在 provider 调用前 reject。
-- [x] 服务器已安装 OpenAI SDK `2.45.0`；本机 41 项相关回归和服务器 21 项 aggregation tests 通过。
+- [x] 生成正式 provider preflight workbook、summary、ledger 和 8 条 zero-candidate queue；live request=0。
+- [x] 服务器已安装 OpenAI SDK `2.45.0`；本机 43 项相关回归和服务器 23 项 aggregation tests 通过。
 - [ ] Live compatibility smoke：服务器进程未设置 `GGUUAI_API_KEY`，因此 live request=0；禁止从聊天记录或其他 provider key 回退。
 - [ ] 外部设置环境变量后先运行一次 `--max-records 1`；通过后只处理 292 条有候选记录。
 - [ ] 人工审核 300 条 CSV；未经人工 adjudication 不得进入 SFT。
