@@ -497,5 +497,6 @@
 - [x] 联合审核 Batch 02：再接受 10 条 GDAL 精确签名；`contour`/`contour_polygon` 只作为独立 anchor，累计 20/121，剩余 101 行。
 - [x] Review v2 修复参数方向：`merge.NODATA_OUTPUT`、`Heatmap.OUTPUT_VALUE` 从误判 output 改为 input；121 个 key/trace/candidate/status 不变，20 条已确认决策带 provenance 迁移。
 - [x] 联合审核 Batch 03：接受 10 条 GDAL 精确签名；`gdalinfo/ogrinfo` 仅获得 anchor 身份，不自动进入 taxonomy/训练；累计 30/121，剩余 91 行。
+- [x] 联合审核 Batch 04：接受 10 条 GDAL 精确签名；`rasterize/translate` 由 GDAL provider 与参数 schema 消歧；累计 40/121，剩余 81 行。
 - [ ] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 测迁移准确率。
-- **状态：** review_v2_in_progress（30/121）；anchor_export_blocked；training_forbidden
+- **状态：** review_v2_in_progress（40/121）；anchor_export_blocked；training_forbidden
