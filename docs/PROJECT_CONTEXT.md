@@ -1802,3 +1802,11 @@ Follow-up artifact:
 - Newly explicit pilot families include centroid 14, data export 20, polygonize 16, raster merge 14, rasterize 10, and spatial predicate 11.
 - The reproducible offline provider preflight yields 292 ready rows and 8 zero-candidate rows, with median 4 candidates and median prompt length 5,293.5 characters. It writes a review workbook, summary, ledger, and a separate zero-candidate queue without reading an API key or making live calls.
 
+### 2026-07-15: Code-Constrained Description Admission Policy
+
+- The user approved generating a natural-language task description for a real, path/hash-qualified script when its ordered QGIS operator chain and 114-L3 chain are evidence-bound and human-reviewed but no reliable original task text exists.
+- These records are explicitly `silver`, never original gold. The generated text may only verbalize verified evidence: it must not add, remove, or reorder operations and must preserve visible modality, input roles, parameters, CRS, overlay direction, and output type. Insufficient evidence requires rejection.
+- Every silver row must retain source path/hash, evidence IDs, operator and L3 chains, generator version, review status, and parent record ID. It is train-only and must be split as a source-script group so no derivative reaches validation or test.
+- `facts_summary1000.csv` remains code-grounded/silver candidate material unless human-authored provenance is demonstrated. Controlled paraphrase counts, training weights, and a 20K row quota are not yet approved; decide them only after measuring stratified pilot acceptance and error rates.
+- A server recheck found the `qgis-pilot-api` tmux environment still has no `GGUUAI_API_KEY`; preflight artifacts exist and no proposal file exists. Live requests therefore remain zero.
+

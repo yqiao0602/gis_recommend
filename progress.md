@@ -510,3 +510,12 @@
 - 最终 family 覆盖新增：centroid 14、data_export 20、polygonize 16、raster_merge 14、rasterize 10、spatial_predicate 11。
 - 正式离线 preflight：292 ready / 8 zero-candidate，candidate median=4，prompt median=5,293.5 chars；0 live calls。
 - 新产物：`provider_preflight.csv`、`provider_preflight_summary.json`、`provider_preflight_write_ledger.json`、`provider_zero_candidate_queue.json`。
+
+## 2026-07-15：确认代码约束描述可作为 Silver 数据
+
+- 用户确认：真实脚本已形成可审核的有序 QGIS 算子链和 114-L3 链、但缺少可靠原始任务描述时，可以让 LLM 根据代码证据生成任务描述。
+- 生成文本只负责把已验证工作流表达成自然语言，不负责猜测或补全标签；不得增加、删除或重排操作，必须保留明确参数、CRS、输入输出和 overlay 方向，无法确定时拒绝。
+- 这类样本标为 `silver`，必须关联 source path/hash、evidence IDs、operator/L3 chain、生成器版本和审核结论；仅可进入 train，并按源脚本分组防止泄漏。
+- 原始人工文本且链经审核的记录才可作为 gold；无法证明人工 provenance 的 `facts_summary1000.csv` 继续按 code-grounded/silver 候选管理。
+- 当前 5,107 是 eligible evidence records，不是已验收训练样本。20K 规模仍需由 300 条 pilot 的分层接受率和更广脚本漏斗实测决定，禁止再次通过少量 prompt 重复扩行。
+- 服务器复查：`qgis-pilot-api` tmux 会话仍未设置 `GGUUAI_API_KEY`，provider preflight 存在，proposal 文件尚未生成；live request 仍为 0。

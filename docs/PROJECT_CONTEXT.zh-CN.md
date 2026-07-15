@@ -1810,3 +1810,11 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 新增明确 family 覆盖：centroid 14、data export 20、polygonize 16、raster merge 14、rasterize 10、spatial predicate 11。
 - 可复现离线 provider preflight 为 292 ready / 8 zero-candidate，候选中位数 4，prompt 中位数 5,293.5 字符；输出正式审核 workbook、summary、ledger 和独立缺口队列，且不读取 key、不发 live request。
 
+### 2026-07-15：代码约束任务描述准入政策
+
+- 用户已确认：对 path/hash-qualified 的真实脚本，如果其有序 QGIS 算子链和 114-L3 链有证据约束并经过人工审核，但缺少可靠原始任务文本，可以由 LLM 生成对应的自然语言任务描述。
+- 该类记录必须明确标为 `silver`，不能称为原始 gold。生成文本只能表达已验证证据：不得增加、删除或重排操作，必须保留可见的 modality、输入角色、参数、CRS、overlay 方向和输出类型；证据不足时拒绝。
+- 每条 silver 必须保留 source path/hash、evidence IDs、operator/L3 chain、生成器版本、审核状态和父记录 ID；仅允许进入 train，并按源脚本整体分组，任何衍生文本都不得进入 val/test。
+- `facts_summary1000.csv` 在无法证明人工原始 provenance 时继续作为 code-grounded/silver 候选。受控同义变体数量、训练权重和 20K 行配额尚未批准，必须等分层 pilot 的接受率和错误率实测后决定。
+- 服务器复查确认 `qgis-pilot-api` tmux 环境仍未设置 `GGUUAI_API_KEY`；preflight 产物存在，proposal 文件不存在，因此 live request 仍为 0。
+

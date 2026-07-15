@@ -463,6 +463,15 @@
 - [ ] 外部设置环境变量后先运行一次 `--max-records 1`；通过后只处理 292 条有候选记录。
 - [ ] 人工审核 300 条 CSV；未经人工 adjudication 不得进入 SFT。
 
+### 2026-07-15：代码约束任务描述政策已确认
+
+- [x] 对 path/hash-qualified 的真实脚本，若有序 QGIS 算子链和 114-L3 链通过证据校验及人工审核，但没有可靠原始任务文本，允许由 LLM 生成代码约束任务描述。
+- [x] 该类记录必须标为 `silver`，不得伪装成原始人工金标；`facts_summary1000.csv` 在无法证明人工原始 provenance 时也按 code-grounded/silver 候选处理。
+- [x] 描述只能表达已验证证据：不得新增、删除或重排操作，必须保留可见的 modality、输入角色、关键参数、CRS、overlay 方向和输出类型；证据不足时 reject。
+- [x] `silver` 记录保留 source path/hash、evidence IDs、operator chain、L3 chain、生成器版本、审核状态和父记录 ID；按 source/script group 划分且只允许进入 train，禁止进入 val/test。
+- [ ] 先在 300 条 pilot 中测量 operator/L3 proposal 和描述生成的分层准确率、拒绝率及错误类型，再决定是否扩大到 5,107 eligible 和更广的原始脚本漏斗。
+- [ ] 受控同义变体数量、样本权重和 20K 训练行配额尚未批准；不得在 pilot 结果前物理复制 prompt 或构造大规模训练包。
+
 关键产物：
 - `scripts/build_qgis_api_aggregation_pilot.py`
 - `scripts/run_qgis_api_aggregation_pilot.py`
