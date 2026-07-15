@@ -1855,4 +1855,5 @@ Follow-up artifact:
 - Batch 03 added 10 user-confirmed exact GDAL anchors. Cumulative status is 30 accepted and 91 remaining. `gdalinfo` and `ogrinfo` are accepted as Processing operator signatures only; taxonomy and training admission remain separate decisions.
 - Batch 04 added 10 user-confirmed exact GDAL anchors. Cumulative status is 40 accepted and 81 remaining. GDAL provider evidence and parameter schemas disambiguate `rasterize` and `translate` from native namesakes. Training rows remain zero and anchor export remains blocked.
 - Batch 05 added 10 user-confirmed exact GDAL/QGIS provider anchors. Cumulative status is 50 accepted and 71 remaining. Plot and other Processing signatures remain anchors only and gain no automatic taxonomy or training admission; training rows remain zero.
+- Batch 06 added 10 user-confirmed exact QGIS anchors. Cumulative status is 60 accepted and 61 remaining. Histogram, scatterplot, and other reporting signatures remain anchor-only; training rows remain zero and export stays blocked.
 
