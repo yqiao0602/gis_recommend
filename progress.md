@@ -582,3 +582,5 @@
 - Batch 11 用户确认只接受 `SetRasterStyle`、`SetVectorStyle`、`TopoColor` 三个实际算子；`ParameterReliefColors`、内部 graph-color helper 和 Processing config/framework 共 7 条拒绝为 non-anchor。累计 decisions=108、accepted=90、reject_non_anchor=18、remaining=13。
 - Batch 12 用户确认最后 10 条普通记录全部拒绝为 non-anchor，覆盖 script action/provider/editor/example 和 3 条 no-class trace。累计 decisions=118、accepted=90、reject_non_anchor=28、remaining=3。
 - v2 普通人工审核至此结束；剩余仅为 `gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson` 三条已由源码证明的真实算法。由于它们不在 v2 bounded candidates 中，必须迁移 review authority 后再接受，不能绕过 validator。
+- 新增受控 v2→v3 authority migrator、5 项 TDD 回归和三条审计 manifest。真实 v3 SHA256=`af39d5cbc43f92e35ca8ecd28605f015f64a68d8236234fa66e2e8857a942f98`；结构化 diff 证明 121 行中只有三条目标记录变化，且仅限 exact/ranked candidate、auto proposal、resolution status、ambiguity reason 五字段。
+- 118 条既有 decisions 全部迁移到 v3 review hash，并追加 immediate-source migration history；当前仍为 accepted=90、rejected=28、remaining=3、training rows=0。迁移本身没有替用户接受三条新 proposal。

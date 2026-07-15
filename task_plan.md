@@ -508,6 +508,8 @@
 - [x] 联合审核 Batch 10：7 条 QGIS alias 接受，3 条 QGIS framework/provider 类拒绝；`PointsFromLines`、`RasterCalculator` 以源码继承和 `name()` 消解 provider 歧义；累计 decisions=98、accepted=87、rejected=11、remaining=23。
 - [x] 联合审核 Batch 11：只接受 3 条实际 Processing operator，拒绝 7 条 parameter/graph/framework/config support 类；累计 decisions=108、accepted=90、rejected=18、remaining=13。
 - [x] 联合审核 Batch 12：最后 10 条 script action/provider/editor/example/no-class 记录全部拒绝为 non-anchor；累计 decisions=118、accepted=90、rejected=28、remaining=3。
-- [ ] v2 普通审核已结束；仅剩 `createcog`、`dataset_identify`、`ogrinfojson` 三条真实算法，必须通过受控 candidate-authority migration 后裁决。
+- [x] v2 普通审核已结束；仅剩 `createcog`、`dataset_identify`、`ogrinfojson` 三条真实算法。
+- [x] 受控 review v3 authority 已生成：只修改三行的 candidate/proposal 五字段，其他 118 行逐字段不变；118 条 decision 带 provenance 迁移。
+- [ ] 联合确认 v3 最后三条 proposal，完成 121/121 adjudication 后再导出 anchor library。
 - [ ] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 测迁移准确率。
-- **状态：** review_v2_candidate_gap_only（118/121 decisions；90 accepted）；anchor_export_blocked；training_forbidden
+- **状态：** review_v3_final_human_gate（118/121 decisions；90 accepted）；anchor_export_blocked；training_forbidden
