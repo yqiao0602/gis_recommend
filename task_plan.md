@@ -500,5 +500,7 @@
 - [x] 联合审核 Batch 04：接受 10 条 GDAL 精确签名；`rasterize/translate` 由 GDAL provider 与参数 schema 消歧；累计 40/121，剩余 81 行。
 - [x] 联合审核 Batch 05：接受 10 条 GDAL/QGIS provider 精确签名；Plot 等算子仅获得 anchor 身份，不自动进入 taxonomy/训练；累计 50/121，剩余 71 行。
 - [x] 联合审核 Batch 06：接受 10 条 QGIS 精确签名；Histogram/Scatterplot 等报告算子保持 anchor-only；累计 60/121，剩余 61 行。
+- [x] 联合审核 Batch 07：5 条 provider/参数 alias 接受，4 条 GDAL framework/UI 类拒绝为 non-anchor；累计 decisions=69、accepted=65、remaining=52。
+- [ ] `CreateCloudOptimizedGeoTIFF(createcog)`、`DatasetIdentify(dataset_identify)` 是真实算法，但 v2 无正确 bounded candidate；暂不写最终 decision，后续受控扩展候选。
 - [ ] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 测迁移准确率。
-- **状态：** review_v2_in_progress（60/121）；anchor_export_blocked；training_forbidden
+- **状态：** review_v2_in_progress（69/121 decisions；65 accepted）；anchor_export_blocked；training_forbidden

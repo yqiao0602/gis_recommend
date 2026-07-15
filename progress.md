@@ -573,3 +573,5 @@
 - Batch 04 用户确认 10 条 GDAL 精确签名，累计 accepted=40、remaining=81。`rasterize`、`translate` 的同名 native 候选由 GDAL provider 与参数 schema 明确排除；training rows 仍为 0，完整审核前禁止导出 anchor。
 - Batch 05 用户确认 10 条 GDAL/QGIS provider 精确签名，累计 accepted=50、remaining=71。`BarPlot`、`BoxPlot`、`PolarPlot` 等仅登记 operator signature，不自动进入 114 taxonomy 或训练；training rows 仍为 0。
 - Batch 06 用户确认 10 条 QGIS 精确签名，累计 accepted=60、remaining=61。Histogram、Scatterplot 等报告算子继续保持 anchor-only；training rows 仍为 0，完整审核前禁止导出。
+- Batch 07 用户确认混合裁决：`Buffer`、两种 mask clip、`Datasources2Vrt`、3D scatter 共 5 条接受；GDAL base/dialog/panel/provider 共 4 条拒绝为 non-anchor。累计 decisions=69、accepted=65、reject_non_anchor=4、remaining=52。
+- 源码核对确认 `CreateCloudOptimizedGeoTIFF.name()=createcog`、`DatasetIdentify.name()=dataset_identify`，两者是真实算法，但 v2 catalog 没有正确 bounded candidate；本批保持 pending，不写错误拒绝或永久 unresolved。
