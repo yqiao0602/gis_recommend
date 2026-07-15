@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 
-SCHEMA_VERSION = "qgis_core_signature_review_v1"
+SCHEMA_VERSION = "qgis_core_signature_review_v2"
 CLASS_SCOPE_RE = re.compile(r"(?:^|/)class_(?P<name>[A-Za-z0-9_]+)_\d+(?:/|$)")
 PARAMETER_RE = re.compile(r"(?:QgsProcessing)?Parameter(?P<kind>[A-Za-z0-9_]+)$")
 OUTPUT_PARAMETER_MARKERS = ("destination", "sink", "output")
@@ -251,8 +251,6 @@ def _statement_index(value: str) -> int | None:
 def _parameter_direction(parameter_type: str, identifier: str) -> str:
     text = parameter_type.lower()
     if any(marker in text for marker in OUTPUT_PARAMETER_MARKERS):
-        return "output"
-    if identifier.upper() in OUTPUT_IDENTIFIERS or "OUTPUT" in identifier.upper():
         return "output"
     return "input"
 

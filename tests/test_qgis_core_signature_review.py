@@ -116,6 +116,7 @@ class QgisCoreSignatureReviewTests(unittest.TestCase):
         class_name="AssignProjection",
         provider_call=True,
         neutral_operation="self.processAlgorithm",
+        scalar_output_identifiers=(),
     ):
         fieldnames = [
             "id",
@@ -176,6 +177,22 @@ class QgisCoreSignatureReviewTests(unittest.TestCase):
                 "statement_index": "44",
             },
         ]
+        for offset, identifier in enumerate(scalar_output_identifiers, start=50):
+            rows.append(
+                {
+                    "id": f"scalar_{identifier.lower()}",
+                    "name": "QgsProcessingParameterNumber",
+                    "normalized_api_name": "QgsProcessingParameterNumber",
+                    "args": json.dumps(_parameter_args(identifier, "Output value setting")),
+                    "api_source_type": "qgis_processing_parameter",
+                    "semantic_role": "QGIS_PARAMETER_NUMBER_DEFINE",
+                    "input_type": "name,description,default,optional",
+                    "output_type": "QgsProcessingParameterNumber",
+                    "description": "Defines a numeric control parameter.",
+                    "scope": scope,
+                    "statement_index": str(offset),
+                }
+            )
         with path.open("w", encoding="utf-8-sig", newline="") as handle:
             writer = csv.DictWriter(handle, fieldnames=fieldnames)
             writer.writeheader()
@@ -313,6 +330,24 @@ class QgisCoreSignatureReviewTests(unittest.TestCase):
             providers = record["class_signatures"][0]["provider_evidence"]["providers"]
             self.assertEqual(providers, [])
 
+    def test_scalar_parameters_with_output_in_identifier_remain_inputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            trace = root / "script_1_steps.csv"
+            self._write_trace(
+                trace,
+                scalar_output_identifiers=("NODATA_OUTPUT", "OUTPUT_VALUE"),
+            )
+
+            record = extract_trace_record(trace, source_root=root)
+
+        parameters = {
+            item["identifier"]: item
+            for item in record["class_signatures"][0]["parameters"]
+        }
+        self.assertEqual(parameters["NODATA_OUTPUT"]["direction"], "input")
+        self.assertEqual(parameters["OUTPUT_VALUE"]["direction"], "input")
+
     def test_review_package_rejects_an_output_directory_inside_the_read_only_source(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -353,6 +388,7 @@ class QgisCoreSignatureReviewTests(unittest.TestCase):
             ambiguity_report = (first_dir / "ambiguity_report.md").read_text(encoding="utf-8")
 
         self.assertEqual(first_records, second_records)
+        self.assertEqual(first["schema_version"], "qgis_core_signature_review_v2")
         self.assertEqual(first["source_files"], 2)
         self.assertEqual(first["training_admission"], "forbidden_until_human_review")
         self.assertEqual([row["record_id"] for row in review_rows], ["script_1", "script_2"])

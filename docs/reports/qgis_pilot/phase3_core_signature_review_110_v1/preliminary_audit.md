@@ -2,6 +2,10 @@
 
 Date: 2026-07-15
 
+Status: superseded for active adjudication by
+`phase3_core_signature_review_110_v2`. This v1 package remains immutable
+historical evidence.
+
 ## Scope
 
 This package covers all 110 `_steps.csv` files in the read-only

@@ -567,3 +567,5 @@
 - 新增 `scripts/validate_qgis_core_signature_adjudications.py`，阻断 stale review hash、trace hash 不一致、重复决策、未知记录和非候选 operator；3 项 TDD 回归通过。
 - 累计状态：accepted anchor candidates 10、remaining 111、training rows 0；完整审核前 `anchor_export_admission=blocked_until_review_complete`。
 - Batch 02 用户再确认 10 条 GDAL 签名，累计 accepted=20、remaining=101。`contour` 与 `contour_polygon` 虽同属 `script_56326`，只登记为两个独立算子 anchor，不构造两步 workflow。
+- 准备 Batch 03 时发现 v1 把 `merge.NODATA_OUTPUT`（Number）和 `Heatmap.OUTPUT_VALUE`（Enum）误判为 output。Builder 改为按 QGIS parameter class 判断方向，并生成 active review v2；v1 保持不可变。
+- v1/v2 结构化 diff：121 keys、trace hashes、exact/ranked candidates、auto proposals、resolution statuses 全部不变，仅上述 2 行 parameter schema 改变。20 条已确认 operator 决策迁移到 v2 并保留原 review hash；v2 review SHA256=`d5eee5da32c092c594a63feea4a3cc7cd2b9708dd9ceaa0418f6a1960a57e6f4`。
