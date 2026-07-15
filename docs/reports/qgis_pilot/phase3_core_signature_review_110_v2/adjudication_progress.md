@@ -8,13 +8,14 @@ Active review authority: `qgis_core_signature_review_v2`
 | 02 exact GDAL | accept | 10 | 20 |
 | 03 exact GDAL | accept | 10 | 30 |
 | 04 exact GDAL | accept | 10 | 40 |
+| 05 exact provider | accept | 10 | 50 |
 
 Current status:
 
 - Review rows: 121
-- Decisions validated: 40
-- Accepted anchor candidates: 40
-- Remaining: 81
+- Decisions validated: 50
+- Accepted anchor candidates: 50
+- Remaining: 71
 - Training rows emitted: 0
 - Anchor export: blocked until review completion
 
@@ -25,5 +26,7 @@ Important boundaries:
   does not automatically grant taxonomy or training admission.
 - GDAL provider evidence and parameter schemas disambiguate `rasterize` and
   `translate` from their native QGIS namesakes.
+- Plot and other QGIS Processing signatures in Batch 05 remain anchors only;
+  acceptance does not automatically grant taxonomy or training admission.
 - Decisions are validated against review SHA256
   `d5eee5da32c092c594a63feea4a3cc7cd2b9708dd9ceaa0418f6a1960a57e6f4`.

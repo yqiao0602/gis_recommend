@@ -1862,4 +1862,5 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - Batch 03 前发现 review v1 将标量控制参数 `merge.NODATA_OUTPUT`、`Heatmap.OUTPUT_VALUE` 误判为 output。Builder 已改为按 QGIS parameter class 判断方向并生成 `qgis_core_signature_review_v2`。全量 121 行对比确认 key、trace、candidate、proposal、status 均不变，仅这 2 行参数 schema 修正；20 条已确认决策带 provenance 迁移。Review v2 SHA256=`d5eee5da32c092c594a63feea4a3cc7cd2b9708dd9ceaa0418f6a1960a57e6f4`，现为审核 authority。
 - Batch 03 增加 10 条用户确认的 GDAL 精确 anchor，累计 accepted=30、remaining=91。`gdalinfo`、`ogrinfo` 仅作为 Processing operator signature 接受，taxonomy 和训练准入仍需独立决策。
 - Batch 04 增加 10 条用户确认的 GDAL 精确 anchor，累计 accepted=40、remaining=81。`rasterize`、`translate` 的同名 native 候选由 GDAL provider 与参数 schema 明确排除；training rows 仍为 0，完整审核前禁止导出 anchor。
+- Batch 05 增加 10 条用户确认的 GDAL/QGIS provider 精确 anchor，累计 accepted=50、remaining=71。Plot 等 Processing signature 仍仅是 anchor，不自动进入 taxonomy 或训练；training rows 仍为 0。
 

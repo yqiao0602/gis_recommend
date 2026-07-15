@@ -571,3 +571,4 @@
 - v1/v2 结构化 diff：121 keys、trace hashes、exact/ranked candidates、auto proposals、resolution statuses 全部不变，仅上述 2 行 parameter schema 改变。20 条已确认 operator 决策迁移到 v2 并保留原 review hash；v2 review SHA256=`d5eee5da32c092c594a63feea4a3cc7cd2b9708dd9ceaa0418f6a1960a57e6f4`。
 - Batch 03 用户确认 10 条 GDAL 精确签名，累计 accepted=30、remaining=91。`gdalinfo`、`ogrinfo` 接受为 Processing operator anchor，但不因此自动获得 114 taxonomy 或训练准入。
 - Batch 04 用户确认 10 条 GDAL 精确签名，累计 accepted=40、remaining=81。`rasterize`、`translate` 的同名 native 候选由 GDAL provider 与参数 schema 明确排除；training rows 仍为 0，完整审核前禁止导出 anchor。
+- Batch 05 用户确认 10 条 GDAL/QGIS provider 精确签名，累计 accepted=50、remaining=71。`BarPlot`、`BoxPlot`、`PolarPlot` 等仅登记 operator signature，不自动进入 114 taxonomy 或训练；training rows 仍为 0。
