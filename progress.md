@@ -550,3 +550,12 @@
 - 独立的 `WorkflowoutputQGIS_QGIS_Core_Processing` 有 110 个 `_steps.csv`：106 有 class、97 有 parameter args、61 个文件可直接 class/catalog 命中、13 个 class 存在多 provider 歧义。
 - 结论：class+parameter 方法适合构建约百条高质量 operator anchor 和 signature library，但不能直接生成 20K workflows。下一步应完整审核这 110 条，再把 anchor 用于普通 direct-API workflow 的语义聚合。
 - 详细报告：`docs/reports/qgis_pilot/phase3_api_aggregation/canary_24/evidence_source_and_class_signature_analysis.md`。
+
+## 2026-07-15：110 条 Core Processing Signature 审核包完成
+
+- 新增 `scripts/build_qgis_core_signature_review.py` 和 5 项 TDD 回归，结构化解析 catalog 多行 CSV 与 trace；保留 trace/AST hash、imports、class bases、ordered structured args、参数/输出 schema 和 provider 证据。
+- 自动提议规则为 fail-closed：只允许唯一、class 精确、provider 一致的候选；不再使用旧原型的 top-1 fallback。`Output data type` 等 LiteralData 控制参数不会误判为输出。
+- 真实服务器构建：110 source files、117 class signatures、121 review rows、61 `auto_proposed_pending_review`、60 unresolved；accepted=0、training rows=0。
+- Unresolved 为 no-exact 54、provider-evidence ambiguity 1（RasterCalculator）、provider conflict 1、no class scope 4。修复 provider token 边界后，`setProgress`/`Histogram` 不再因内部 `ogr` 子串被误判为 GDAL。初步 triage 估计 no-exact 中约 30 条是历史/别名算子，约 24 条是 framework/UI/helper；该分类不是人工 adjudication。
+- 完整 `signature_records.jsonl` 为 15MB，仅留服务器，SHA256=`011973f7a835a9bf7d99d782900ec991e6588ec93a690ab8ca2e5766e8111698`。本机已同步 review CSV、ambiguity JSON/Markdown、summary、ledger 和初审报告到 `docs/reports/qgis_pilot/phase3_core_signature_review_110_v1/`。
+- 下一步：人工审核全部 121 行；仅 accepted 行可导出 anchor library。随后在独立 50 条普通 direct-API workflow 上测 anchor 迁移效果。本阶段未调用 LLM、未训练、未修改生产 94、未写 `/home/yll`。

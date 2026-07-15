@@ -465,7 +465,7 @@
 - [x] 24 条分层 canary 已完成：source 8/8/8、24 个 primary family、record/source 全唯一；15/24 通过 contract，8 条返回 reasoning，1 条 unknown operator。
 - [x] 停止门禁已触发：contract pass=62.5% <70%，单一 reasoning failure=33.3% >30%；scaling admission=`blocked`，未处理剩余 268 条。
 - [ ] 下一步不是继续调用：先解决 reasoning 路由不稳定、custom operator 缺口和 direct-API 语义链不完整，再做新的小 canary。
-- [ ] Class-signature 修复先走独立 110 条 Core Processing 门禁：保留 `scope + args + provider/path + parameter/output schema`，唯一且 provider 一致的候选才可确定性接纳，13 类歧义必须审核。
+- [x] 独立 110 条 Core Processing signature 审核包已构建：保留 `scope + args + provider/path + parameter/output schema`；61 条唯一且 provider 一致的候选仅作 pending proposal，60 条保持 unresolved。
 - [ ] 110 条审核通过后只作为 operator signature anchor；另抽普通 direct-API workflow 验证迁移效果，禁止把 110 个算子定义重复扩行为训练规模。
 - [ ] 人工审核 300 条 CSV；未经人工 adjudication 不得进入 SFT。
 
@@ -483,3 +483,15 @@
 - `scripts/run_qgis_api_aggregation_pilot.py`
 - `docs/reports/qgis_pilot/phase3_api_aggregation/`
 - 服务器 `/home/qy/system_redesign/outputs_v2/qgis_pilot/pilot_v1/phase3_api_aggregation/`
+
+## 2026-07-15：Core Processing 110 条签名审核包 ✅
+
+- [x] 使用结构化 CSV parser 读取 110 个 trace 和 1,292 条 catalog；不再按文本行或 `split(',')` 解析多行描述。
+- [x] 保留 source/AST hash、imports、class bases、完整有序 structured args、参数/输出 label/type 和 provider evidence。
+- [x] 候选门禁：只有 class 精确匹配且 provider 一致、过滤后唯一时生成 `auto_proposed_pending_review`；歧义/冲突/无匹配全部 fail closed。
+- [x] 真实结果：110 files、117 class signatures、121 review rows；61 pending auto proposals、60 unresolved、0 accepted、0 training rows。
+- [x] 未解析细分：54 no exact、1 provider-evidence ambiguity（RasterCalculator）、1 provider conflict（GDAL Buffer）、4 no class scope。
+- [x] 服务器完整 15MB JSONL 保留 `/home/qy`；本机同步 579KB 审核表、歧义队列、summary、hash ledger 和初审报告。
+- [ ] 人工完成全部 121 行 adjudication；自动提议不能直接成为 anchor。
+- [ ] 仅从人工 accepted 行导出 signature anchor library，并用独立 50 条普通 direct-API workflow 测迁移准确率。
+- **状态：** review_package_ready；human_review_pending；training_forbidden

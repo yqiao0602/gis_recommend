@@ -1836,3 +1836,12 @@ Follow-up artifact:
 - The separate QGIS Core Processing source has 110 `_steps.csv` files: 106 contain class scopes, 97 retain parameter args, 61 files have an exact normalized catalog match, and 13 classes are provider-ambiguous. Class and parameter signatures are valuable here but do not approach 20K workflows.
 - Use this source to build a fully reviewed operator-signature anchor library. Preserve provider/path, class, parameter and output schemas; disambiguate GDAL/native/QGIS collisions before mapping. Then evaluate the anchors on separate ordinary direct-API workflows.
 
+### 2026-07-15: Core Processing Signature Review Package
+
+- `scripts/build_qgis_core_signature_review.py` now builds a review-only package from all 110 Core Processing traces and the 1,292-record catalog using structured CSV parsing. It retains source/AST hashes, imports, class bases, ordered structured arguments, parameter/output schemas, and provider evidence.
+- Matching is fail-closed. Only a unique provider-consistent exact class match becomes `auto_proposed_pending_review`; ambiguous, conflicting, non-exact, and no-class rows remain unresolved. There is no top-1 fallback and no LLM call.
+- Server result: 110 source files, 117 class signatures, 121 review rows, 61 pending exact proposals, and 60 unresolved rows. The unresolved split is 54 no exact match, 1 provider-evidence ambiguity (`RasterCalculator`), 1 provider conflict (GDAL `Buffer`), and 4 no-class rows. Accepted anchors=0 and training rows=0.
+- The 13-provider-ambiguity figure from the earlier scan was pre-evidence. AST imports, class bases, and trace provider calls reduce the final ambiguity queue to one while preserving a separate conflict row. Provider detection now uses token boundaries so `setProgress` and `Histogram` do not create false OGR/GDAL evidence.
+- The full 15MB record stays on the server at `outputs_v2/qgis_pilot/pilot_v1/phase3_core_signature_review_110_v1/`; bounded review artifacts are synchronized under `docs/reports/qgis_pilot/phase3_core_signature_review_110_v1/`. Full JSONL SHA256 is `011973f7a835a9bf7d99d782900ec991e6588ec93a690ab8ca2e5766e8111698`.
+- Next gate: human-adjudicate all 121 rows, export only accepted anchors, then measure transfer on a separate 50-record ordinary direct-API workflow sample. Do not train or count operator definitions as workflows.
+

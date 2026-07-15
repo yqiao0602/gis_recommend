@@ -1844,3 +1844,12 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 独立 QGIS Core Processing 源有 110 个 `_steps.csv`：106 有 class scope、97 保留 parameter args、61 个文件可 class/catalog 精确命中、13 个 class 存在 provider 歧义。该方法适合构建约百条审核 operator signature anchor，但不能直接提供 20K workflows。
 - 下一步应完整保留 provider/path、class、parameter/output schema，人工审核 110 条并解决 GDAL/native/QGIS 同名冲突，再把 anchor 独立评测到普通 direct-API workflows。
 
+### 2026-07-15：Core Processing Signature 审核包
+
+- 新增 `scripts/build_qgis_core_signature_review.py`，使用结构化 CSV parser 读取全部 110 个 Core Processing trace 和 1,292 条 catalog，保留 source/AST hash、imports、class bases、有序 structured args、参数/输出 schema 和 provider evidence。
+- 匹配严格 fail-closed：只有唯一、provider 一致的 class 精确匹配才标为 `auto_proposed_pending_review`；歧义、冲突、非精确匹配和无 class 行全部保持 unresolved，不允许 top-1 fallback，也未调用 LLM。
+- 服务器结果：110 个源文件、117 个 class signature、121 个审核行、61 条待审核精确提议、60 条 unresolved。未解析细分为 no-exact 54、provider-evidence ambiguity 1（`RasterCalculator`）、provider conflict 1（GDAL `Buffer`）、no-class 4。人工 accepted=0，training rows=0。
+- 早期扫描的 13 个 provider 歧义是未使用完整证据前的统计；AST imports、class bases 和 trace provider call 将最终歧义队列收敛为 1 条，同时单独保留 1 条 provider conflict。Provider 检测已改为 token 边界，`setProgress` 和 `Histogram` 不会再产生错误 OGR/GDAL 证据。
+- 完整 15MB JSONL 仅留服务器 `outputs_v2/qgis_pilot/pilot_v1/phase3_core_signature_review_110_v1/`；本机同步审核表、歧义队列、summary、ledger 和初审报告到 `docs/reports/qgis_pilot/phase3_core_signature_review_110_v1/`。完整 JSONL SHA256 为 `011973f7a835a9bf7d99d782900ec991e6588ec93a690ab8ca2e5766e8111698`。
+- 下一门禁：人工审核全部 121 行，只导出 accepted anchor；随后用独立 50 条普通 direct-API workflow 测试迁移准确率。当前禁止训练，也禁止把算子定义计为 workflow 数量。
+
