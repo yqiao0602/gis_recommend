@@ -1819,3 +1819,12 @@ Follow-up artifact:
 - Final server smoke: one attempted record, one validated proposal, no raw response or reasoning persisted. The four bounded candidates are `gdal:polygonize`, `qgis:buffer`, `gdal:rasterize`, and `qgis:rastercalculator`; the row remains `pending_human_review` and forbidden for training. Local and server aggregation test suites each pass 24 tests.
 - Next gate: a stratified 20-30 record canary followed by human semantic audit. Do not run all 292 ready rows yet.
 
+### 2026-07-15: Stratified 24-Record Canary Stopped Scaling
+
+- A deterministic canary selector excluded the completed smoke and chose 24 unique records/source scripts. Source modes are exactly 8 direct API, 8 processing-only, and 8 processing+custom; the set covers all four modalities, three trace lengths, both ordering qualities, four extraction groups, and 24 distinct primary families.
+- Results: 24 attempted, 15 validator-approved proposals, contract pass rate 62.5%. Failures are 8 `provider_returned_reasoning` and 1 `unknown_operator`. The <70% pass-rate threshold and >30% repeated-failure threshold both fired, so scaling is blocked and the remaining 268 ready records were not called.
+- Reasoning was detected in memory and rejected; no raw response or reasoning was persisted. The server route does not honor `thinking.type=disabled` consistently across records/channels.
+- AI-assisted preliminary semantic review of the 15 contract-valid proposals produced A=8, B=4, C=3. This is not human adjudication. C-level examples expose missing direct-API semantic compaction (dissolve/buffer/simplify), an unmapped custom `identify dangles` operator, and severe compression of a complex fragmentation workflow.
+- Artifacts are synchronized under `docs/reports/qgis_pilot/phase3_api_aggregation/canary_24/`. The review workbook remains pending and every row remains forbidden for training.
+- Next work is diagnostic, not scaling: stabilize no-reasoning provider behavior, close reviewed custom/direct-API semantic gaps, then run a new bounded canary.
+

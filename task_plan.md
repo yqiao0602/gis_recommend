@@ -462,7 +462,9 @@
 - [x] Live compatibility smoke：官方文档确认 OpenAI SDK 兼容；实测网关误封 SDK 默认 `User-Agent: OpenAI/Python 2.41.0/2.45.0`，覆盖为 pilot 专用 User-Agent 后恢复调用。
 - [x] `reasoning_effort=none` 对当前渠道无效；正式请求增加 `thinking.type=disabled`，服务器返回无 reasoning 的 JSON，并通过现有 strict validator。
 - [x] 最终服务器 smoke：attempted=1、validated=1、proposal=1 行；review=`pending_human_review`、training=`forbidden_until_reviewed`，无 raw/reasoning 落盘。
-- [ ] 下一门禁：运行 20-30 条分层 canary，人工检查 operator/L3 语义与错误类型；通过前不能直接处理全部 292 条。
+- [x] 24 条分层 canary 已完成：source 8/8/8、24 个 primary family、record/source 全唯一；15/24 通过 contract，8 条返回 reasoning，1 条 unknown operator。
+- [x] 停止门禁已触发：contract pass=62.5% <70%，单一 reasoning failure=33.3% >30%；scaling admission=`blocked`，未处理剩余 268 条。
+- [ ] 下一步不是继续调用：先解决 reasoning 路由不稳定、custom operator 缺口和 direct-API 语义链不完整，再做新的小 canary。
 - [ ] 人工审核 300 条 CSV；未经人工 adjudication 不得进入 SFT。
 
 ### 2026-07-15：代码约束任务描述政策已确认

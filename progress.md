@@ -497,9 +497,9 @@
 - 本机同步 300 条审查 CSV、provider preflight workbook、zero-candidate queue、summary、ledger 和 live smoke status；56.2MB pool、3.07MB full pilot JSONL、2.15MB preflight JSONL 只留服务器。
 
 ### 当前阻塞 / 下一步
-- 服务器 `GGUUAI_API_KEY` 未设置，live request=0；状态见 `docs/reports/qgis_pilot/phase3_api_aggregation/live_smoke_status.json`。
-- 外部设置环境变量后先运行 `--max-records 1` compatibility smoke；strict JSON、evidence references、hash 和无 reasoning 落盘全部通过后，才允许 proposal batch。
-- Proposal batch 后进入 300 条人工审核。当前 pilot 是 coverage diagnostic，不是 accuracy reference，也不是训练数据。
+- GGUUAI live smoke 已通过，但 24 条 canary 仅 15 条通过 contract；8 条 reasoning 和 1 条 unknown operator 触发停止条件。
+- 剩余 268 条 ready records 未调用。先修复 provider reasoning 路由稳定性和语义覆盖缺口，再运行新的小 canary。
+- 当前 pilot/canary 都不是训练数据；review workbook 仍为 pending，training admission 保持 forbidden。
 
 ## 2026-07-15：300 条小样本反馈驱动的 API 压缩修正
 
@@ -530,3 +530,13 @@
 - 服务器渠道会默认返回 `reasoning_content`，且 `reasoning_effort=none` 无效；`extra_body={"thinking":{"type":"disabled"}}` 可关闭，正式请求已采用。
 - 最终服务器 smoke：300 输入中仅 attempted=1，validated=1；候选为 `gdal:polygonize`、`qgis:buffer`、`gdal:rasterize`、`qgis:rastercalculator`。proposal 保持 `pending_human_review`，training admission 仍 forbidden。
 - 验证：本机和服务器各 24 项 aggregation tests 通过；proposal/summary/ledger 已同步到 `docs/reports/qgis_pilot/phase3_api_aggregation/`，proposal SHA256 为 `91b930702cf7a8d43b319264193eb7ac43963f52b2ee7641ba5439a35f3c2cf5`。
+
+## 2026-07-15：24 条分层 Canary 触发停止门禁
+
+- 新增 `scripts/build_qgis_api_aggregation_canary.py`：从 292 条 ready 中排除已完成 smoke，确定性选择 24 条；source mode 固定 8/8/8，同时覆盖 4 modality、3 trace length、2 ordering quality、4 extraction group 和 24 个不同 primary family。
+- Canary 实际结果：24 attempted，15 validated，contract pass rate=62.5%；失败为 `provider_returned_reasoning` 8 条（33.3%）和 `unknown_operator` 1 条（4.2%）。
+- 停止条件全部按设计执行：pass rate <70%、重复 reasoning failure >30%、reasoning returned。`raw_provider_responses_persisted=false`，reasoning 仅被检测并拒绝，没有落盘。
+- 失败集中在 processing/raster/long-chain：reasoning 按 source 为 direct 1、processing+custom 3、processing-only 4；按 modality 为 raster 4、mixed 2、vector 1、unknown 1；按长度为 long 5、medium 2、short 1。
+- 15 条 contract-valid proposal 的 AI 初审为 A=8、B=4、C=3。主要 C 类问题是 direct-API compactor 漏掉 dissolve/buffer/simplify、自定义 `identify dangles` 无 bounded mapping、复杂 fragmentation workflow 被压缩成少数步骤。该初审不是人工 adjudication。
+- 结论：contract-valid 不等于训练可用。剩余 268 条未调用，scaling admission=`blocked`；先修 reasoning 路由和语义覆盖，再做新 canary。
+- 产物同步到 `docs/reports/qgis_pilot/phase3_api_aggregation/canary_24/`：selection、outcomes、15 proposals、review CSV、summary、ledger 和 preliminary semantic audit。

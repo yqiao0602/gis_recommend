@@ -1827,3 +1827,12 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 最终服务器 smoke：attempted=1、validated=1，无 raw response/reasoning 落盘。候选为 `gdal:polygonize`、`qgis:buffer`、`gdal:rasterize`、`qgis:rastercalculator`；记录仍为 `pending_human_review` 且禁止训练。本机和服务器各 24 项 aggregation tests 通过。
 - 下一门禁是 20-30 条分层 canary 与人工语义审核，尚未授权直接处理全部 292 条。
 
+### 2026-07-15：24 条分层 Canary 触发停止门禁
+
+- 确定性选择器排除已完成 smoke，选出 24 条 record/source 均唯一的 canary：direct API、processing-only、processing+custom 各 8 条，并覆盖 4 modality、3 trace length、2 ordering quality、4 extraction group 和 24 个不同 primary family。
+- 实际结果为 attempted=24、validated=15、contract pass rate=62.5%；失败包括 8 条 `provider_returned_reasoning` 和 1 条 `unknown_operator`。通过率 <70% 且单一失败占比 >30%，因此 scaling 被阻断，剩余 268 条 ready records 未调用。
+- Reasoning 只在内存中被检测并拒绝，未持久化 raw response 或 reasoning；当前服务器渠道对 `thinking.type=disabled` 的执行并不稳定。
+- 对 15 条 contract-valid proposal 的 AI 初审为 A=8、B=4、C=3，但这不是人工 adjudication。C 类暴露 direct-API compactor 漏掉 dissolve/buffer/simplify、自定义 `identify dangles` 缺少 bounded mapping，以及复杂 fragmentation workflow 被严重压缩。
+- 产物已同步至 `docs/reports/qgis_pilot/phase3_api_aggregation/canary_24/`，审核表仍为 pending，所有记录继续禁止训练。
+- 下一步应先诊断并稳定关闭 reasoning、补齐经审核的 custom/direct-API 语义缺口，再运行新的小 canary，而不是扩大调用。
+
