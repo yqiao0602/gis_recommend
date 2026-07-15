@@ -4,6 +4,7 @@ import json
 import tempfile
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from gis_recommend.data.qgis_pilot import (
     build_coverage_diagnostic_sample,
@@ -13,6 +14,7 @@ from gis_recommend.data.qgis_pilot import (
     repair_evidence_order,
 )
 from scripts.build_qgis_api_aggregation_pilot import build_pilot
+from scripts import run_qgis_api_aggregation_pilot as aggregation_runner
 from scripts.run_qgis_api_aggregation_pilot import (
     AggregationContractError,
     aggregate_record,
@@ -89,6 +91,31 @@ class QgisApiAggregationTests(unittest.TestCase):
         self.assertIn('"evidence_ids":["e2"]', prompt)
         self.assertIn("native:buffer", prompt)
         self.assertIn("Return reject instead of guessing", prompt)
+        self.assertIn(
+            '"allowed_rejected_infrastructure":["qgsproject.instance"]',
+            prompt,
+        )
+        self.assertIn(
+            "rejected_infrastructure must contain only exact values from allowed_rejected_infrastructure",
+            prompt,
+        )
+
+    @patch("openai.OpenAI")
+    def test_provider_client_overrides_gateway_blocked_sdk_user_agent(self, openai_client):
+        create_provider_client = getattr(aggregation_runner, "create_provider_client", None)
+        self.assertIsNotNone(create_provider_client)
+        create_provider_client(
+            api_key="test-key",
+            base_url="https://gguuai.com/v1",
+            timeout=30.0,
+        )
+
+        openai_client.assert_called_once_with(
+            api_key="test-key",
+            base_url="https://gguuai.com/v1",
+            timeout=30.0,
+            default_headers={"User-Agent": "GGUU-QGIS-Pilot/1.0"},
+        )
 
     def test_validates_evidence_grounded_accepted_response(self):
         result = validate_aggregation_response(
@@ -323,9 +350,15 @@ class QgisApiAggregationTests(unittest.TestCase):
     def test_aggregate_record_persists_only_validated_contract_and_hashes(self):
         message = SimpleNamespace(content=json.dumps(self._accepted_payload()), refusal=None)
         response = SimpleNamespace(choices=[SimpleNamespace(message=message)])
+        calls = []
+
+        def create(**kwargs):
+            calls.append(kwargs)
+            return response
+
         client = SimpleNamespace(
             chat=SimpleNamespace(
-                completions=SimpleNamespace(create=lambda **kwargs: response)
+                completions=SimpleNamespace(create=create)
             )
         )
 
@@ -342,6 +375,8 @@ class QgisApiAggregationTests(unittest.TestCase):
         self.assertEqual(len(result["response_sha256"]), 64)
         self.assertNotIn("raw_response", result)
         self.assertNotIn("reasoning_content", json.dumps(result))
+        self.assertIn("extra_body", calls[0])
+        self.assertEqual(calls[0]["extra_body"], {"thinking": {"type": "disabled"}})
 
     def test_aggregate_record_rejects_refusal_malformed_json_and_reasoning_field(self):
         messages = [

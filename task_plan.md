@@ -459,8 +459,10 @@
 - [x] 离线 preflight：228 个 taxonomy-mapped operators；292/300 条有候选，8 条无候选并在 provider 调用前 reject。
 - [x] 生成正式 provider preflight workbook、summary、ledger 和 8 条 zero-candidate queue；live request=0。
 - [x] 服务器已安装 OpenAI SDK `2.45.0`；本机 43 项相关回归和服务器 23 项 aggregation tests 通过。
-- [ ] Live compatibility smoke：服务器进程未设置 `GGUUAI_API_KEY`，因此 live request=0；禁止从聊天记录或其他 provider key 回退。
-- [ ] 外部设置环境变量后先运行一次 `--max-records 1`；通过后只处理 292 条有候选记录。
+- [x] Live compatibility smoke：官方文档确认 OpenAI SDK 兼容；实测网关误封 SDK 默认 `User-Agent: OpenAI/Python 2.41.0/2.45.0`，覆盖为 pilot 专用 User-Agent 后恢复调用。
+- [x] `reasoning_effort=none` 对当前渠道无效；正式请求增加 `thinking.type=disabled`，服务器返回无 reasoning 的 JSON，并通过现有 strict validator。
+- [x] 最终服务器 smoke：attempted=1、validated=1、proposal=1 行；review=`pending_human_review`、training=`forbidden_until_reviewed`，无 raw/reasoning 落盘。
+- [ ] 下一门禁：运行 20-30 条分层 canary，人工检查 operator/L3 语义与错误类型；通过前不能直接处理全部 292 条。
 - [ ] 人工审核 300 条 CSV；未经人工 adjudication 不得进入 SFT。
 
 ### 2026-07-15：代码约束任务描述政策已确认

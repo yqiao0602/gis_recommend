@@ -518,4 +518,15 @@
 - 这类样本标为 `silver`，必须关联 source path/hash、evidence IDs、operator/L3 chain、生成器版本和审核结论；仅可进入 train，并按源脚本分组防止泄漏。
 - 原始人工文本且链经审核的记录才可作为 gold；无法证明人工 provenance 的 `facts_summary1000.csv` 继续按 code-grounded/silver 候选管理。
 - 当前 5,107 是 eligible evidence records，不是已验收训练样本。20K 规模仍需由 300 条 pilot 的分层接受率和更广脚本漏斗实测决定，禁止再次通过少量 prompt 重复扩行。
-- 服务器复查：`qgis-pilot-api` tmux 会话仍未设置 `GGUUAI_API_KEY`，provider preflight 存在，proposal 文件尚未生成；live request 仍为 0。
+- 首次 live smoke attempted=1，返回 HTTP 403。根因不是 prompt/模型参数：tmux 中注入值长度仅 2 且为外层空白，不符合 `sk-...` 形态；无效变量已清除。
+- 门禁结果正确：validated proposals=0，`aggregation_proposals.jsonl` 为 0 行/0 bytes，raw provider response 和 reasoning 均未持久化，训练准入仍 forbidden。
+- 已同步 `aggregation_summary.json`、`aggregation_write_ledger.json` 和更新后的 `live_smoke_status.json`；下一步是安全重注入完整 key 后仅重跑一条 smoke。
+
+## 2026-07-15：GGUUAI Live Smoke 通过
+
+- 官方文档说明 `https://gguuai.com/v1` 和 `https://api.minimax.love/v1` 均为 OpenAI-compatible endpoint，OpenAI SDK 属于支持客户端；因此不是“不支持对话/API”。
+- 实测根因：原生 HTTP 请求返回 200，而仅增加 `User-Agent: OpenAI/Python 2.41.0` 即返回 403；`x-stainless-*` 头不触发。正式 client 现覆盖为 `GGUU-QGIS-Pilot/1.0`。
+- 首次有效响应暴露 contract 歧义：provider 把 data-access/unknown operation 名写入 `rejected_infrastructure`。Prompt 现提供 `allowed_rejected_infrastructure` 精确列表，并要求其他未支持证据进入 `unsupported_evidence_ids`；validator 未放宽。
+- 服务器渠道会默认返回 `reasoning_content`，且 `reasoning_effort=none` 无效；`extra_body={"thinking":{"type":"disabled"}}` 可关闭，正式请求已采用。
+- 最终服务器 smoke：300 输入中仅 attempted=1，validated=1；候选为 `gdal:polygonize`、`qgis:buffer`、`gdal:rasterize`、`qgis:rastercalculator`。proposal 保持 `pending_human_review`，training admission 仍 forbidden。
+- 验证：本机和服务器各 24 项 aggregation tests 通过；proposal/summary/ledger 已同步到 `docs/reports/qgis_pilot/phase3_api_aggregation/`，proposal SHA256 为 `91b930702cf7a8d43b319264193eb7ac43963f52b2ee7641ba5439a35f3c2cf5`。

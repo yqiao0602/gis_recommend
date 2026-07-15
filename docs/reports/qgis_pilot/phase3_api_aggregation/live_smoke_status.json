@@ -1,13 +1,24 @@
 {
   "schema": "gis_recommend.qgis_pilot.v1",
   "kind": "qgis_api_aggregation_live_smoke_status_v1",
-  "status": "blocked",
-  "reason": "GGUUAI_API_KEY_not_set_in_server_process_environment",
+  "status": "passed",
+  "execution_host": "10.191.2.38",
   "base_url": "https://gguuai.com/v1",
   "model": "gpt-5.6-luna",
   "openai_sdk": "2.45.0",
-  "live_requests_attempted": 0,
+  "official_smoke_records_attempted": 1,
+  "validated_proposals": 1,
+  "provider_outcome": "validated_proposal",
+  "proposal_rows_written": 1,
+  "provider_compatibility": {
+    "sdk_user_agent_overridden": true,
+    "thinking_disabled": true,
+    "reasoning_returned": false
+  },
+  "proposal_sha256": "91b930702cf7a8d43b319264193eb7ac43963f52b2ee7641ba5439a35f3c2cf5",
   "fallback_key_sources_used": [],
   "raw_provider_responses_persisted": false,
-  "next_action": "Set GGUUAI_API_KEY externally in the server process environment, then run exactly one max-records=1 smoke before any batch."
+  "human_review_required": true,
+  "training_admission": "forbidden_until_reviewed",
+  "next_action": "Run a bounded 20-30 record stratified canary, audit contract failures and semantic errors, and do not run the remaining provider batch until the canary is accepted."
 }

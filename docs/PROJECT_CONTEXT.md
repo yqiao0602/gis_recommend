@@ -1808,5 +1808,14 @@ Follow-up artifact:
 - These records are explicitly `silver`, never original gold. The generated text may only verbalize verified evidence: it must not add, remove, or reorder operations and must preserve visible modality, input roles, parameters, CRS, overlay direction, and output type. Insufficient evidence requires rejection.
 - Every silver row must retain source path/hash, evidence IDs, operator and L3 chains, generator version, review status, and parent record ID. It is train-only and must be split as a source-script group so no derivative reaches validation or test.
 - `facts_summary1000.csv` remains code-grounded/silver candidate material unless human-authored provenance is demonstrated. Controlled paraphrase counts, training weights, and a 20K row quota are not yet approved; decide them only after measuring stratified pilot acceptance and error rates.
-- A server recheck found the `qgis-pilot-api` tmux environment still has no `GGUUAI_API_KEY`; preflight artifacts exist and no proposal file exists. Live requests therefore remain zero.
+- The first live smoke attempted one record and returned HTTP 403 because the value injected into the tmux environment was only two whitespace characters and failed the expected key shape. The invalid value was removed. The gate admitted zero proposals, wrote an empty proposal JSONL, and persisted no raw provider response or reasoning. Re-inject a complete key interactively, validate only shape/length without printing it, and rerun one `--max-records 1 --max-attempts 1` smoke before any canary.
+
+### 2026-07-15: GGUUAI Compatibility and Live Smoke
+
+- GGUUAI documentation explicitly lists `https://gguuai.com/v1` and `https://api.minimax.love/v1` as OpenAI-compatible endpoints and names the OpenAI SDK as supported. The API and `gpt-5.6-luna` are usable; the failure was compatibility behavior, not lack of chat/API support.
+- Differential tests proved the gateway returns 403 only when the SDK default `User-Agent: OpenAI/Python 2.41.0/2.45.0` is present. The Stainless headers are accepted. The provider client now uses `GGUU-QGIS-Pilot/1.0`, preserving the SDK and strict response parsing.
+- The prompt now includes an exact `allowed_rejected_infrastructure` list and directs data-access/unknown evidence to `unsupported_evidence_ids`. This resolves a real provider-contract mismatch without relaxing validation.
+- The server route can return `reasoning_content` by default. `reasoning_effort=none` was ignored, while `extra_body={"thinking":{"type":"disabled"}}` suppressed reasoning and produced validator-compatible JSON.
+- Final server smoke: one attempted record, one validated proposal, no raw response or reasoning persisted. The four bounded candidates are `gdal:polygonize`, `qgis:buffer`, `gdal:rasterize`, and `qgis:rastercalculator`; the row remains `pending_human_review` and forbidden for training. Local and server aggregation test suites each pass 24 tests.
+- Next gate: a stratified 20-30 record canary followed by human semantic audit. Do not run all 292 ready rows yet.
 

@@ -28,6 +28,7 @@ from gis_recommend.data.qgis_pilot import (  # noqa: E402
 
 DEFAULT_BASE_URL = "https://gguuai.com/v1"
 DEFAULT_MODEL = "gpt-5.6-luna"
+PROVIDER_USER_AGENT = "GGUU-QGIS-Pilot/1.0"
 CONTRACT_VERSION = "qgis_api_aggregation_contract_v1"
 MIN_ACCEPT_CONFIDENCE = 0.7
 
@@ -123,6 +124,9 @@ def build_aggregation_prompt(
         },
         "ordered_evidence": evidence,
         "infrastructure_counts": record.get("infrastructure_counts", {}),
+        "allowed_rejected_infrastructure": sorted(
+            str(key) for key in record.get("infrastructure_counts", {})
+        ),
         "bounded_operator_candidates": candidates,
     }
     return (
@@ -133,6 +137,8 @@ def build_aggregation_prompt(
         "Return reject instead of guessing. Do not output reasoning, thinking, scratchpad, or extra fields.\n"
         "Return one JSON object with exactly: decision, candidate_operators, rejected_infrastructure, "
         "unsupported_evidence_ids, conflict_flags, rationale.\n"
+        "rejected_infrastructure must contain only exact values from allowed_rejected_infrastructure; "
+        "put unselected data-access or unknown evidence IDs in unsupported_evidence_ids.\n"
         "Each candidate operator must have exactly: operator_id, l3_code, evidence_ids, confidence.\n"
         f"INPUT={_canonical_json(context)}"
     )
@@ -253,6 +259,7 @@ def aggregate_record(
         response_format={"type": "json_object"},
         temperature=0,
         max_tokens=1200,
+        extra_body={"thinking": {"type": "disabled"}},
     )
     choices = getattr(response, "choices", None)
     if not choices:
@@ -593,6 +600,19 @@ def require_api_key(environ: Mapping[str, str] | None = None) -> str:
     return key
 
 
+def create_provider_client(*, api_key: str, base_url: str, timeout: float) -> Any:
+    try:
+        from openai import OpenAI
+    except ImportError as exc:
+        raise RuntimeError("openai SDK is required for live aggregation") from exc
+    return OpenAI(
+        api_key=api_key,
+        base_url=base_url,
+        timeout=timeout,
+        default_headers={"User-Agent": PROVIDER_USER_AGENT},
+    )
+
+
 def run_batch(
     *,
     client: Any,
@@ -690,11 +710,11 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(summary, ensure_ascii=False, indent=2))
         return 0
     api_key = require_api_key()
-    try:
-        from openai import OpenAI
-    except ImportError as exc:
-        raise RuntimeError("openai SDK is required for live aggregation") from exc
-    client = OpenAI(api_key=api_key, base_url=args.base_url, timeout=args.timeout)
+    client = create_provider_client(
+        api_key=api_key,
+        base_url=args.base_url,
+        timeout=args.timeout,
+    )
     output_path = output_dir / "aggregation_proposals.jsonl"
     result = run_batch(
         client=client,

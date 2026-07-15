@@ -1816,5 +1816,14 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 该类记录必须明确标为 `silver`，不能称为原始 gold。生成文本只能表达已验证证据：不得增加、删除或重排操作，必须保留可见的 modality、输入角色、参数、CRS、overlay 方向和输出类型；证据不足时拒绝。
 - 每条 silver 必须保留 source path/hash、evidence IDs、operator/L3 chain、生成器版本、审核状态和父记录 ID；仅允许进入 train，并按源脚本整体分组，任何衍生文本都不得进入 val/test。
 - `facts_summary1000.csv` 在无法证明人工原始 provenance 时继续作为 code-grounded/silver 候选。受控同义变体数量、训练权重和 20K 行配额尚未批准，必须等分层 pilot 的接受率和错误率实测后决定。
-- 服务器复查确认 `qgis-pilot-api` tmux 环境仍未设置 `GGUUAI_API_KEY`；preflight 产物存在，proposal 文件不存在，因此 live request 仍为 0。
+- 首次 live smoke 对 1 条记录发起调用并返回 HTTP 403；根因是 tmux 环境中注入值只有两个空白字符，不符合 key 形态，现已清除。门禁接纳 0 条 proposal，proposal JSONL 为 0 bytes，未持久化 raw provider response 或 reasoning。下一步需交互式重注入完整 key，只校验形态/长度而不打印内容，再执行一次 `--max-records 1 --max-attempts 1`，通过前禁止 canary/batch。
+
+### 2026-07-15：GGUUAI 兼容修复与 Live Smoke 通过
+
+- GGUUAI 文档明确列出 `https://gguuai.com/v1`、`https://api.minimax.love/v1` 为 OpenAI-compatible endpoint，并声明支持 OpenAI SDK。因此 API 与 `gpt-5.6-luna` 可以使用，之前不是“不支持对话/API”。
+- 差分实验证明：原生 HTTP 返回 200，仅加入 SDK 默认 `User-Agent: OpenAI/Python 2.41.0/2.45.0` 就返回 403，而 `x-stainless-*` 头可通过。正式 provider client 已覆盖为 `GGUU-QGIS-Pilot/1.0`。
+- Prompt 新增精确的 `allowed_rejected_infrastructure`，要求 data-access/unknown 证据进入 `unsupported_evidence_ids`，修复真实 provider 输出与 strict contract 的歧义，validator 没有放宽。
+- 服务器渠道默认可能返回 `reasoning_content`；`reasoning_effort=none` 无效，`extra_body={"thinking":{"type":"disabled"}}` 可以关闭 reasoning，正式请求已采用。
+- 最终服务器 smoke：attempted=1、validated=1，无 raw response/reasoning 落盘。候选为 `gdal:polygonize`、`qgis:buffer`、`gdal:rasterize`、`qgis:rastercalculator`；记录仍为 `pending_human_review` 且禁止训练。本机和服务器各 24 项 aggregation tests 通过。
+- 下一门禁是 20-30 条分层 canary 与人工语义审核，尚未授权直接处理全部 292 条。
 
