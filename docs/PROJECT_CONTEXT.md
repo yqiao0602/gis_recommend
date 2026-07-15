@@ -1828,3 +1828,11 @@ Follow-up artifact:
 - Artifacts are synchronized under `docs/reports/qgis_pilot/phase3_api_aggregation/canary_24/`. The review workbook remains pending and every row remains forbidden for training.
 - Next work is diagnostic, not scaling: stabilize no-reasoning provider behavior, close reviewed custom/direct-API semantic gaps, then run a new bounded canary.
 
+### 2026-07-15: Evidence-Route and Class-Signature Audit
+
+- The canary contains 8 direct-API-only, 8 processing-only, and 8 processing+custom records. Provider reasoning failures are unrelated to source completeness; the unknown custom operator is a crosswalk gap, while missing direct-API steps are extraction/semantic-compaction gaps.
+- Ordered evidence retains `scope` but not `_steps.csv.args`; compaction then drops `scope`. Class names and parameter labels therefore do not reach the current provider mapping at all.
+- In the current 5,107 eligible pool, 260 records have scope, 224 have class scope, and none have an exact class/catalog match. Across all 21,085 Phase 2 records, only 14 records and 9 unique classes match exactly. This facts-linked corpus is not primarily official algorithm implementation traces.
+- The separate QGIS Core Processing source has 110 `_steps.csv` files: 106 contain class scopes, 97 retain parameter args, 61 files have an exact normalized catalog match, and 13 classes are provider-ambiguous. Class and parameter signatures are valuable here but do not approach 20K workflows.
+- Use this source to build a fully reviewed operator-signature anchor library. Preserve provider/path, class, parameter and output schemas; disambiguate GDAL/native/QGIS collisions before mapping. Then evaluate the anchors on separate ordinary direct-API workflows.
+

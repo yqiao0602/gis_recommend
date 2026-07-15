@@ -540,3 +540,13 @@
 - 15 条 contract-valid proposal 的 AI 初审为 A=8、B=4、C=3。主要 C 类问题是 direct-API compactor 漏掉 dissolve/buffer/simplify、自定义 `identify dangles` 无 bounded mapping、复杂 fragmentation workflow 被压缩成少数步骤。该初审不是人工 adjudication。
 - 结论：contract-valid 不等于训练可用。剩余 268 条未调用，scaling admission=`blocked`；先修 reasoning 路由和语义覆盖，再做新 canary。
 - 产物同步到 `docs/reports/qgis_pilot/phase3_api_aggregation/canary_24/`：selection、outcomes、15 proposals、review CSV、summary、ledger 和 preliminary semantic audit。
+
+## 2026-07-15：证据来源与 Class-Signature 路线复核
+
+- Canary 同时包含 direct API、processing-only、processing+custom 各 8 条；不是只用底层 API，也不是只用 `processing.run`。
+- 8 条 reasoning failure 属于 provider/channel 行为，与原始脚本缺失无关；unknown custom operator 属于 crosswalk 缺口；direct API 的缺步骤属于抽取/语义压缩完整性问题。
+- 当前 ordered evidence 保留 `scope` 但不保留 `_steps.csv.args`；`compact_api_trace()` 又丢弃 `scope`。因此 class name 和参数标签目前都没有进入 provider mapping。
+- 5,107 eligible 中仅 260 条有 scope、224 条有 class scope、0 条 class 名直接命中 catalog；全 21,085 条中也只有 14 records / 9 unique classes 直接命中，说明当前 facts-linked corpus 主要不是官方算法实现 trace。
+- 独立的 `WorkflowoutputQGIS_QGIS_Core_Processing` 有 110 个 `_steps.csv`：106 有 class、97 有 parameter args、61 个文件可直接 class/catalog 命中、13 个 class 存在多 provider 歧义。
+- 结论：class+parameter 方法适合构建约百条高质量 operator anchor 和 signature library，但不能直接生成 20K workflows。下一步应完整审核这 110 条，再把 anchor 用于普通 direct-API workflow 的语义聚合。
+- 详细报告：`docs/reports/qgis_pilot/phase3_api_aggregation/canary_24/evidence_source_and_class_signature_analysis.md`。

@@ -465,6 +465,8 @@
 - [x] 24 条分层 canary 已完成：source 8/8/8、24 个 primary family、record/source 全唯一；15/24 通过 contract，8 条返回 reasoning，1 条 unknown operator。
 - [x] 停止门禁已触发：contract pass=62.5% <70%，单一 reasoning failure=33.3% >30%；scaling admission=`blocked`，未处理剩余 268 条。
 - [ ] 下一步不是继续调用：先解决 reasoning 路由不稳定、custom operator 缺口和 direct-API 语义链不完整，再做新的小 canary。
+- [ ] Class-signature 修复先走独立 110 条 Core Processing 门禁：保留 `scope + args + provider/path + parameter/output schema`，唯一且 provider 一致的候选才可确定性接纳，13 类歧义必须审核。
+- [ ] 110 条审核通过后只作为 operator signature anchor；另抽普通 direct-API workflow 验证迁移效果，禁止把 110 个算子定义重复扩行为训练规模。
 - [ ] 人工审核 300 条 CSV；未经人工 adjudication 不得进入 SFT。
 
 ### 2026-07-15：代码约束任务描述政策已确认

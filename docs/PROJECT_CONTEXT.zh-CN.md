@@ -1836,3 +1836,11 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 产物已同步至 `docs/reports/qgis_pilot/phase3_api_aggregation/canary_24/`，审核表仍为 pending，所有记录继续禁止训练。
 - 下一步应先诊断并稳定关闭 reasoning、补齐经审核的 custom/direct-API 语义缺口，再运行新的小 canary，而不是扩大调用。
 
+### 2026-07-15：证据路线与 Class-Signature 审计
+
+- Canary 包含 direct-API-only、processing-only、processing+custom 各 8 条。Reasoning failure 与源数据完整性无关；unknown custom operator 是 crosswalk 缺口；direct API 缺步骤属于抽取/语义压缩问题。
+- Ordered evidence 保留 `scope` 但未保留 `_steps.csv.args`，随后 compaction 又丢弃 `scope`，所以当前 provider mapping 完全没有使用类名和参数标签。
+- 当前 5,107 eligible 中 260 条有 scope、224 条有 class scope、0 条 class/catalog 精确命中；全 21,085 Phase 2 中也只有 14 records、9 个唯一 class 可精确命中。当前 facts-linked corpus 并不是官方算法实现 trace 主体。
+- 独立 QGIS Core Processing 源有 110 个 `_steps.csv`：106 有 class scope、97 保留 parameter args、61 个文件可 class/catalog 精确命中、13 个 class 存在 provider 歧义。该方法适合构建约百条审核 operator signature anchor，但不能直接提供 20K workflows。
+- 下一步应完整保留 provider/path、class、parameter/output schema，人工审核 110 条并解决 GDAL/native/QGIS 同名冲突，再把 anchor 独立评测到普通 direct-API workflows。
+
