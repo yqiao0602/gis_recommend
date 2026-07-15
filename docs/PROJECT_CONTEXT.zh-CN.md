@@ -1869,4 +1869,5 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - Batch 09 接受 8 条 GDAL/QGIS 参数 alias，并将空 class trace 与 `ParameterExecuteSql` 拒绝为 non-anchor。空 class 使用原始 `(script_56361, "")` 键登记。累计 decisions=88、accepted=80、rejected=8、remaining=33。
 - Batch 10 接受 7 条 QGIS alias，拒绝 3 条 QGIS framework/provider 类。`PointsFromLines`、`RasterCalculator` 虽含 GDAL 调用，但继承 `QgisAlgorithm` 且 `name()` 返回 QGIS operator ID，因此在不放宽候选边界的情况下消除 provider 歧义。累计 decisions=98、accepted=87、rejected=11、remaining=23。
 - Batch 11 只接受 3 条实际 Processing operator，拒绝 7 条 parameter、graph helper、framework 或 config 类。累计 decisions=108、accepted=90、rejected=18、remaining=13；剩余为 3 条已知 catalog candidate 缺口和最后 10 条审核记录。
+- Batch 12 将最后 10 条普通记录全部拒绝，覆盖 script action/provider/editor/example 和 no-class trace。累计 decisions=118、accepted=90、rejected=28、remaining=3。v2 普通审核已完成，仅剩源码确认的 `gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson`，必须通过受控 candidate-authority migration 后才能接受。
 

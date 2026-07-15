@@ -15,14 +15,15 @@ Active review authority: `qgis_core_signature_review_v2`
 | 09 alias and non-anchor | 8 accept / 2 reject | 10 | 80 |
 | 10 QGIS alias and framework | 7 accept / 3 reject | 10 | 87 |
 | 11 operator and support | 3 accept / 7 reject | 10 | 90 |
+| 12 script framework | 0 accept / 10 reject | 10 | 90 |
 
 Current status:
 
 - Review rows: 121
-- Decisions validated: 108
+- Decisions validated: 118
 - Accepted anchor candidates: 90
-- Rejected non-anchors: 18
-- Remaining: 13
+- Rejected non-anchors: 28
+- Remaining: 3
 - Training rows emitted: 0
 - Anchor export: blocked until review completion
 
@@ -42,5 +43,7 @@ Important boundaries:
   has no correct bounded candidates for them.
 - `ogrinfojson` is also a distinct real algorithm and remains pending because
   review v2 lacks `gdal:ogrinfojson` as a bounded candidate.
+- All ordinary v2 rows are now adjudicated. The only remaining rows are the
+  three real algorithms requiring a controlled candidate-authority migration.
 - Decisions are validated against review SHA256
   `d5eee5da32c092c594a63feea4a3cc7cd2b9708dd9ceaa0418f6a1960a57e6f4`.

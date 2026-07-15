@@ -580,3 +580,5 @@
 - Batch 09 用户确认 8 条 GDAL/QGIS alias 接受、2 条 non-anchor 拒绝。空 class 记录使用原始 `(script_56361, "")` 键登记，未伪造类名；累计 decisions=88、accepted=80、reject_non_anchor=8、remaining=33。
 - Batch 10 用户确认 7 条 QGIS alias 接受、3 条 framework/provider 类拒绝。`PointsFromLines` 与 `RasterCalculator` 虽含 GDAL 调用，但源码均继承 `QgisAlgorithm` 且 `name()` 对应 QGIS operator，因此按 QGIS anchor 接受。累计 decisions=98、accepted=87、reject_non_anchor=11、remaining=23。
 - Batch 11 用户确认只接受 `SetRasterStyle`、`SetVectorStyle`、`TopoColor` 三个实际算子；`ParameterReliefColors`、内部 graph-color helper 和 Processing config/framework 共 7 条拒绝为 non-anchor。累计 decisions=108、accepted=90、reject_non_anchor=18、remaining=13。
+- Batch 12 用户确认最后 10 条普通记录全部拒绝为 non-anchor，覆盖 script action/provider/editor/example 和 3 条 no-class trace。累计 decisions=118、accepted=90、reject_non_anchor=28、remaining=3。
+- v2 普通人工审核至此结束；剩余仅为 `gdal:createcog`、`gdal:dataset_identify`、`gdal:ogrinfojson` 三条已由源码证明的真实算法。由于它们不在 v2 bounded candidates 中，必须迁移 review authority 后再接受，不能绕过 validator。
