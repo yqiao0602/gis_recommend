@@ -531,3 +531,18 @@
 - [x] 新增 `qgis_training_data_mainline.drawio`，固化真实脚本 -> extractor -> 回归/pilot 门禁 -> train-only package -> 模型评估的主线关系。
 - [ ] 完成 50 条审核后，以这些 regression cases 构建约 300 条分层 source-grounded extractor pilot；当前不生成训练行。
 - [ ] 只有人工结果证明 anchor 有增益后，才设计 family/text-aware rerank；当前禁止用 signature transfer 自动生成 operator/L3 标签或训练行。
+
+## 2026-07-16：Source-Grounded Extractor v1 与盲测门禁 🔄
+
+- [x] 实现确定性 extractor 与 fail-closed CLI；全流程不调用 LLM/API，不输出训练行。
+- [x] 落地 E0/E1/E2/E3 四级证据，并阻断 generic GDAL open、metadata、UI、infrastructure 假算子。
+- [x] 修复 distinct repeated operation、macro/micro 合并和 AST/steps 不可比较顺序问题；保留 input/output role 与 dependency。
+- [x] 冻结 strict exact-ID Run6 开发回归：12/14=85.714%；correct old top1 2/2、incorrect old top1 avoided 13/13、custom 4/4。
+- [x] 否决 provider suffix 聚合指标；`qgis:rastercalculator`、`qgis:simplifygeometries` 保持 exact miss，等待人工 alternative-set 裁决。
+- [x] 用同一冻结代码生成 review order 16-50 的 35 条 blind holdout；`labels_read=false`、training rows=0、taxonomy/training admission=`not_granted`。
+- [x] 核对 Run6 与 holdout 的同步输出哈希、extractor/CLI 代码哈希；权威产物仅为 `regression_15_run6_exact/` 与 `holdout_35_v1/`。
+- [x] 用 scoped `.gitattributes` 固定 Phase 4 产物为 LF，防止 Windows 自动换行导致 ledger SHA256 失效。
+- [ ] 人工审核 `holdout_35_v1/review_workbook.csv`，不得在审核前查看/回填历史标签或修改 extractor。
+- [ ] 审核后计算 overall exact-ID precision、E0/E1/E2/E3 分层 precision、漏检/错检/顺序/依赖错误分布。
+- [ ] 只有盲测门禁通过后，才构建约 300 条分层 source-grounded pilot；当前不生成 QGIS 训练包。
+- **状态：** extractor_v1_frozen；blind_human_review_pending；training_forbidden

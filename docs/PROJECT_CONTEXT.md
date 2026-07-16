@@ -1,6 +1,6 @@
 # Project Context Handoff
 
-Last updated: 2026-07-14
+Last updated: 2026-07-16
 
 This document is the durable project memory for `system_redesign`. New Codex sessions should read this file before continuing work. Update it after each completed phase with concise changes to `Completed`, `Open Work`, `Known Pitfalls`, and `Verification`.
 
@@ -1893,4 +1893,16 @@ Follow-up artifact:
 - Ground truth again separates multi-step `RasterProcessor` DSM construction, custom `UrbanSummaryWorker` and FLO-2D infiltration workflows, and the standard `native:simplifygeometries` equivalent for direct `QgsGeometry.simplify()`.
 - Documented a replacement source-grounded extractor with four evidence tiers: explicit Processing IDs, self-describing algorithm classes, ordered/data-dependent direct-API semantic chains, and custom/unbounded workflows. Exact signature overlap remains evaluation-only. Complete the 50-row regression set before a roughly 300-row stratified extractor pilot; no training admission is granted.
 - Added editable `docs/reports/qgis_pilot/qgis_training_data_mainline.drawio` to show the end-to-end path from source evidence through extractor/regression/pilot gates to train-only data and held-out model evaluation. XML validation passed; no local draw.io CLI was available for bitmap export.
+
+### 2026-07-16: Source-Grounded QGIS Extractor v1 Frozen
+
+- Implemented the deterministic, fail-closed extractor in `src/gis_recommend/data/qgis_source_grounded_extractor.py` with CLI `scripts/run_qgis_source_grounded_extractor.py`. It makes no LLM/API calls and emits no training rows.
+- Evidence tiers are now executable: E0 explicit Processing IDs, bounded legacy wrappers and `gdal_calc.py` data flow; E1 self-describing algorithm classes; E2 reviewed direct-API rules with exact catalog constraints; E3 custom/unbounded preservation.
+- Generic GDAL opens, metadata reads, UI and infrastructure calls cannot become operators. Repeated real operations are retained, macro/micro duplicates merge only with a shared semantic step identity, and cross-source order is not invented when AST/steps coordinates are incomparable.
+- The authoritative development regression is `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/regression_15_run6_exact/`. Strict exact-ID recovery is 12/14 (85.714%); the two exact misses are `qgis:rastercalculator` and `qgis:simplifygeometries`. Old correct top-1 recovery is 2/2, old incorrect top-1 avoidance is 13/13, and custom recovery is 4/4.
+- Provider-suffix grouping was rejected because it inflated recovery. Alternative provider IDs remain exact misses unless human adjudication defines an explicit accepted-alternative set.
+- Frozen-code blind predictions for review orders 16-50 are in `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_v1/`: 35 records, `mode=blind`, `labels_read=false`, taxonomy/training admission `not_granted`, training rows 0. Prediction content has not been adjudicated.
+- Local ledger verification confirms all synchronized Run6 and holdout output hashes and the extractor/CLI code hashes. Verification baseline: 36 focused extractor tests and 127 stable-94 `test_qgis*.py` tests pass locally; the focused server suite passes with one Windows-only path test skipped.
+- A scoped `.gitattributes` rule pins Phase 4 report artifacts to LF so Windows `core.autocrlf` cannot invalidate the recorded SHA256 values after checkout.
+- Next action: human-review the locked 35-row workbook without changing extractor code, compute exact-ID and evidence-tier precision/error rates, then decide whether the extractor is ready for a roughly 300-row stratified pilot. Do not admit rows to taxonomy or training before that gate.
 

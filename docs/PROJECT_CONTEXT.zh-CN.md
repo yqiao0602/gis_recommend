@@ -1,6 +1,6 @@
 # 项目上下文交接文档
 
-最后更新：2026-06-24
+最后更新：2026-07-16
 
 这是 `system_redesign` 的长期项目记忆。新会话接手前应先读本文和 `docs/PROJECT_CONTEXT.md`，不要只依赖聊天记录。每完成一个阶段，都要把“已完成 / 未完成 / 当前阻塞 / 下一步动作 / 验证结果”补回本文。
 
@@ -1901,4 +1901,16 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - Ground truth 再次区分了 `RasterProcessor` 多步 DSM 构造、custom `UrbanSummaryWorker` 与 FLO-2D 入渗工作流，以及直接 `QgsGeometry.simplify()` 对应的标准 `native:simplifygeometries`。
 - 已记录四级 source-grounded extractor 路线：显式 Processing ID、自描述算法类、有序且带数据依赖的 direct-API semantic chain、custom/unbounded workflow。exact signature overlap 继续只用于评估；完成 50 条 regression set 后再做约 300 条分层 extractor pilot，训练准入仍为 not granted。
 - 新增可编辑 `docs/reports/qgis_pilot/qgis_training_data_mainline.drawio`，展示从源码证据、extractor、regression/pilot 门禁到 train-only 数据和 held-out 模型评估的完整主线。XML 校验通过；本机没有 draw.io CLI，因此未导出位图。
+
+### 2026-07-16：Source-Grounded QGIS Extractor v1 冻结
+
+- 已实现确定性、fail-closed extractor：`src/gis_recommend/data/qgis_source_grounded_extractor.py`，入口为 `scripts/run_qgis_source_grounded_extractor.py`。该阶段不调用 LLM/API，不生成训练行。
+- 四级证据已落地：E0 显式 Processing ID、受控 legacy wrapper 与 `gdal_calc.py` 数据流；E1 自描述算法类；E2 带 exact catalog 约束的已审核 direct-API 规则；E3 custom/unbounded 原样保留。
+- generic GDAL open、metadata、UI 和 infrastructure 调用不能升级为算子；不同的重复操作会保留，macro/micro 只有共享 semantic step identity 才合并；AST/steps 坐标不可比较时不伪造跨源顺序。
+- 权威开发回归为 `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/regression_15_run6_exact/`。strict exact-ID 恢复 12/14（85.714%）；两个 exact miss 为 `qgis:rastercalculator`、`qgis:simplifygeometries`。旧正确 top-1 恢复 2/2，旧错误 top-1 避免 13/13，custom recovery 4/4。
+- 已否决 provider suffix 分组指标，因为它会夸大恢复率。除非人工裁决显式定义 accepted alternatives，不同 provider ID 继续按 exact miss 统计。
+- 冻结代码对 review order 16-50 的盲测产物位于 `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_v1/`：35 条、`mode=blind`、`labels_read=false`、taxonomy/training admission=`not_granted`、training rows=0；预测内容尚未人工裁决。
+- 本机 ledger 已验证 Run6/holdout 所有同步输出哈希及 extractor/CLI 代码哈希。验证基线：focused extractor 36 项、本机 stable-94 `test_qgis*.py` 127 项通过；服务器 focused suite 仅跳过 1 项 Windows-only path test，其余通过。
+- 新增 scoped `.gitattributes`，将 Phase 4 报告产物固定为 LF，避免 Windows `core.autocrlf` 在检出后破坏 ledger SHA256。
+- 下一步：保持 extractor 代码冻结，人工审核 35 条 blind workbook，计算 exact-ID 与 evidence-tier precision/错误分布，再决定是否进入约 300 条分层 pilot。通过该门禁前禁止 taxonomy/training admission。
 

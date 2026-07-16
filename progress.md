@@ -621,3 +621,15 @@
 - 新增 `source_grounded_operator_chain_extraction_design.md`：后续自动化应按 explicit Processing ID、self-describing class、ordered direct-API semantic chain、custom/unbounded 四级证据抽取，禁止继续使用单纯 exact-call overlap 自动标注。
 - 新增可编辑 `qgis_training_data_mainline.drawio`，把 extractor、15 条 regression set、约 300 条 pilot、训练准入和 GEE/vector 评估串成一条主线；本机未发现 draw.io CLI，因此本阶段只生成并验证 XML 源文件。
 - 下一阶段仍先完成 50 条人工回归集，再构建约 300 条分层 extractor pilot；训练准入保持 not granted。
+
+## 2026-07-16：Source-Grounded QGIS Extractor v1 冻结并生成 Blind Holdout
+
+- 已实现 `qgis_source_grounded_extractor.py` 与 fail-closed CLI；没有调用 LLM/API，没有运行训练，没有生成训练行。
+- Extractor 按 E0 explicit Processing、E1 self-describing class、E2 reviewed direct API、E3 custom/unbounded 组织证据；generic GDAL open、metadata、UI、infrastructure 不得成为 operator。
+- Run6 strict exact-ID 回归：expected 12/14=85.714%；旧正确 top-1 恢复 2/2，旧错误 top-1 避免 13/13，custom 恢复 4/4。两个 exact miss 是 `qgis:rastercalculator` 与 `qgis:simplifygeometries`。
+- provider suffix 聚合会夸大指标，已从权威口径中移除；不同 provider 只有经人工定义 alternative set 后才能视为等价。
+- 冻结代码生成 35 条 blind holdout（review order 16-50）：`mode=blind`、`labels_read=false`、training rows=0、taxonomy/training admission=`not_granted`；预测尚未审核。
+- 权威本机产物：`docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/regression_15_run6_exact/` 与 `holdout_35_v1/`。ledger 输出哈希和 extractor/CLI 代码哈希均已核对一致。
+- 新增 scoped `.gitattributes` 将 Phase 4 产物固定为 LF，避免 Windows `core.autocrlf` 在后续检出时破坏 ledger SHA256。
+- 验证基线：本机 focused extractor 36 项、stable-94 QGIS 127 项通过；服务器 focused suite 除 1 项 Windows-only path test skip 外通过。
+- 下一步是人工审核锁定的 35 条 blind workbook，按 overall exact-ID 与 E0/E1/E2/E3 分层计算 precision 和错误类型；在此之前不进入约 300 条 pilot，也不允许 taxonomy/training admission。
