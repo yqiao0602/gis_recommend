@@ -542,7 +542,18 @@
 - [x] 用同一冻结代码生成 review order 16-50 的 35 条 blind holdout；`labels_read=false`、training rows=0、taxonomy/training admission=`not_granted`。
 - [x] 核对 Run6 与 holdout 的同步输出哈希、extractor/CLI 代码哈希；权威产物仅为 `regression_15_run6_exact/` 与 `holdout_35_v1/`。
 - [x] 用 scoped `.gitattributes` 固定 Phase 4 产物为 LF，防止 Windows 自动换行导致 ledger SHA256 失效。
-- [ ] 人工审核 `holdout_35_v1/review_workbook.csv`，不得在审核前查看/回填历史标签或修改 extractor。
-- [ ] 审核后计算 overall exact-ID precision、E0/E1/E2/E3 分层 precision、漏检/错检/顺序/依赖错误分布。
-- [ ] 只有盲测门禁通过后，才构建约 300 条分层 source-grounded pilot；当前不生成 QGIS 训练包。
-- **状态：** extractor_v1_frozen；blind_human_review_pending；training_forbidden
+- [x] 人工审核 `holdout_35_v1/review_workbook.csv`；35 条 review order 16-50 全部由 joint user/Codex 分批确认，未修改冻结预测。
+- [x] 计算 E0-E3 item precision、overall precision、workflow 完整率和错误分布；裁决、summary、报告和 hash ledger 已生成。
+- [ ] 约 300 条分层 source-grounded pilot 被盲测门禁阻断；当前不生成 QGIS 训练包。
+- **状态：** extractor_v1_reviewed；pilot_blocked_pending_extractor_v2；training_forbidden
+
+### Extractor v2 修复门禁
+
+- [ ] 数据源预过滤：test/mock/example/provider/UI-only 文件在 operator extraction 前拒绝。
+- [ ] E3 role classifier：区分 algorithm/orchestrator 与 helper/data container/provider/mock/test/GUI shell。
+- [ ] constructor suppression：`QgsCoordinateTransform(...)` 等配置对象不再产生 operator，只保留真实 execution call。
+- [ ] bounded identity 优先：legacy/self-describing class 先解析为高层算子，避免内部 E2 substep 泄漏。
+- [ ] 支持 module-level custom function/workflow 及 dependency 保留。
+- [ ] 补齐已确认 identity gap：`gdal:proximity`、`gdal:merge`、`qgis:rastersampling`、`qgis:eliminateselectedpolygons`、extract/save 和 `native:polygonize`。
+- [ ] 合并 same-input/same-output semantic duplicate，并区分 parallel evidence 与真实重复步骤。
+- [ ] 用同一 35 条 locked regression 验证 v2；通过后才允许重新抽取新 blind pilot。

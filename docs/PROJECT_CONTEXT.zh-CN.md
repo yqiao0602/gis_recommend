@@ -1909,8 +1909,18 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - generic GDAL open、metadata、UI 和 infrastructure 调用不能升级为算子；不同的重复操作会保留，macro/micro 只有共享 semantic step identity 才合并；AST/steps 坐标不可比较时不伪造跨源顺序。
 - 权威开发回归为 `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/regression_15_run6_exact/`。strict exact-ID 恢复 12/14（85.714%）；两个 exact miss 为 `qgis:rastercalculator`、`qgis:simplifygeometries`。旧正确 top-1 恢复 2/2，旧错误 top-1 避免 13/13，custom recovery 4/4。
 - 已否决 provider suffix 分组指标，因为它会夸大恢复率。除非人工裁决显式定义 accepted alternatives，不同 provider ID 继续按 exact miss 统计。
-- 冻结代码对 review order 16-50 的盲测产物位于 `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_v1/`：35 条、`mode=blind`、`labels_read=false`、taxonomy/training admission=`not_granted`、training rows=0；预测内容尚未人工裁决。
+- 冻结代码对 review order 16-50 的盲测产物位于 `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_v1/`：35 条、`mode=blind`、`labels_read=false`、taxonomy/training admission=`not_granted`、training rows=0。后续审核未修改该目录，裁决保存在同级 `holdout_35_adjudication_v1/`。
 - 本机 ledger 已验证 Run6/holdout 所有同步输出哈希及 extractor/CLI 代码哈希。验证基线：focused extractor 36 项、本机 stable-94 `test_qgis*.py` 127 项通过；服务器 focused suite 仅跳过 1 项 Windows-only path test，其余通过。
 - 新增 scoped `.gitattributes`，将 Phase 4 报告产物固定为 LF，避免 Windows `core.autocrlf` 在检出后破坏 ledger SHA256。
-- 下一步：保持 extractor 代码冻结，人工审核 35 条 blind workbook，计算 exact-ID 与 evidence-tier precision/错误分布，再决定是否进入约 300 条分层 pilot。通过该门禁前禁止 taxonomy/training admission。
+- Blind 门禁已完成并阻断扩量。Extractor v2 必须先修复 source filtering、E3 role classification、constructor suppression、bounded identity、custom function 保留、identity gap 和 same-step duplicate，再重跑锁定回归集。
+
+### 2026-07-16：Blind Holdout 人工审核完成
+
+- joint user/Codex 分 7 批完成 35 条冻结记录审核；原 blind artifact 未修改，append-only decisions、summary、报告与 hash ledger 位于 `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_adjudication_v1/`。
+- Item precision：E0 4/5（80.0%）；E1 无预测、不可测；E2 46/60（76.7%）；E3 12/39（30.8%）；overall 62/104（59.6%）。
+- 仅 9/35 workflow（25.7%）完整且无 emitted-item 错误；记录分级为 correct 9、partial 13、incomplete 4、incorrect 9。
+- 主要失败为 test source 未过滤 6 条、unit-test class 假阳性 5 条、custom function 漏失 4 条、空链漏工作流 4 条、CoordinateTransform constructor 假阳性 3 条。
+- 已确认 identity gap：`gdal:proximity`、`gdal:merge`、`qgis:rastersampling`、`qgis:eliminateselectedpolygons`、extract/save；Shapely 线构面应为 `native:polygonize`，不能映射为 `gdal:polygonize`。
+- 决策：`pilot_admission=blocked_pending_extractor_v2`。taxonomy/training admission 继续 `not_granted`，v1 禁止进入约 300 条 pilot 或训练包。
+- 35 个 order、record ID、source workbook 绑定、summary 指标和输出 hash 全部验证；裁决 SHA256=`bcc3eb4a357980abb262487959606df641d020295c72ee5f78976289a2e0aac9`。
 

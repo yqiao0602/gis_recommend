@@ -1901,8 +1901,18 @@ Follow-up artifact:
 - Generic GDAL opens, metadata reads, UI and infrastructure calls cannot become operators. Repeated real operations are retained, macro/micro duplicates merge only with a shared semantic step identity, and cross-source order is not invented when AST/steps coordinates are incomparable.
 - The authoritative development regression is `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/regression_15_run6_exact/`. Strict exact-ID recovery is 12/14 (85.714%); the two exact misses are `qgis:rastercalculator` and `qgis:simplifygeometries`. Old correct top-1 recovery is 2/2, old incorrect top-1 avoidance is 13/13, and custom recovery is 4/4.
 - Provider-suffix grouping was rejected because it inflated recovery. Alternative provider IDs remain exact misses unless human adjudication defines an explicit accepted-alternative set.
-- Frozen-code blind predictions for review orders 16-50 are in `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_v1/`: 35 records, `mode=blind`, `labels_read=false`, taxonomy/training admission `not_granted`, training rows 0. Prediction content has not been adjudicated.
+- Frozen-code blind predictions for review orders 16-50 are in `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_v1/`: 35 records, `mode=blind`, `labels_read=false`, taxonomy/training admission `not_granted`, training rows 0. They were later adjudicated without modifying this directory; decisions live in the sibling `holdout_35_adjudication_v1/` artifact.
 - Local ledger verification confirms all synchronized Run6 and holdout output hashes and the extractor/CLI code hashes. Verification baseline: 36 focused extractor tests and 127 stable-94 `test_qgis*.py` tests pass locally; the focused server suite passes with one Windows-only path test skipped.
 - A scoped `.gitattributes` rule pins Phase 4 report artifacts to LF so Windows `core.autocrlf` cannot invalidate the recorded SHA256 values after checkout.
-- Next action: human-review the locked 35-row workbook without changing extractor code, compute exact-ID and evidence-tier precision/error rates, then decide whether the extractor is ready for a roughly 300-row stratified pilot. Do not admit rows to taxonomy or training before that gate.
+- The blind gate is complete and blocks scaling. Extractor v2 must address source filtering, E3 role classification, constructor suppression, bounded identity resolution, custom-function preservation, identity gaps, and same-step duplicate merging before re-running the locked regression set.
+
+### 2026-07-16: Blind Holdout Review Completed
+
+- Joint user/Codex review adjudicated all 35 frozen records in seven batches. The original blind artifact was not edited; append-only decisions, summary, report, and hash ledger are under `docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_adjudication_v1/`.
+- Item precision is E0 4/5 (80.0%), E1 unmeasured (0 predictions), E2 46/60 (76.7%), E3 12/39 (30.8%), and overall 62/104 (59.6%).
+- Only 9/35 workflows (25.7%) are complete and free of emitted-item errors. Grades are 9 correct, 13 partial, 4 incomplete abstentions, and 9 incorrect.
+- The main failures are six unfiltered test sources, five unit-test-class false positives, four missing custom functions, four incomplete empty predictions, and three coordinate-transform constructor false positives.
+- Confirmed identity gaps include `gdal:proximity`, `gdal:merge`, `qgis:rastersampling`, `qgis:eliminateselectedpolygons`, extract/save operators, and Shapely line polygonization requiring `native:polygonize` rather than `gdal:polygonize`.
+- Decision: `pilot_admission=blocked_pending_extractor_v2`. Taxonomy and training admission remain `not_granted`; no roughly 300-row pilot or training package may be generated from v1.
+- All 35 orders, record IDs, source-workbook binding, summary metrics, and output hashes were verified. Adjudication SHA256 is `bcc3eb4a357980abb262487959606df641d020295c72ee5f78976289a2e0aac9`.
 

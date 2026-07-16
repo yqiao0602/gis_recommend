@@ -633,3 +633,14 @@
 - 新增 scoped `.gitattributes` 将 Phase 4 产物固定为 LF，避免 Windows `core.autocrlf` 在后续检出时破坏 ledger SHA256。
 - 验证基线：本机 focused extractor 36 项、stable-94 QGIS 127 项通过；服务器 focused suite 除 1 项 Windows-only path test skip 外通过。
 - 下一步是人工审核锁定的 35 条 blind workbook，按 overall exact-ID 与 E0/E1/E2/E3 分层计算 precision 和错误类型；在此之前不进入约 300 条 pilot，也不允许 taxonomy/training admission。
+
+## 2026-07-16：35 条 Blind Holdout 人工审核完成
+
+- review order 16-50 全部由 joint user/Codex 分 7 批确认；原始 `holdout_35_v1/` 保持不变，裁决写入独立 `holdout_35_adjudication_v1/`。
+- Item precision：E0 4/5=80.0%；E1 无预测、不可测；E2 46/60=76.7%；E3 12/39=30.8%；overall 62/104=59.6%。
+- Workflow 完整率仅 9/35=25.7%；记录分级为 correct 9、partial 13、incomplete 4、incorrect 9。
+- 主要失败：test source 未过滤 6 条、unit-test class 假阳性 5 条、custom function 未保留 4 条、空链漏工作流 4 条、CoordinateTransform constructor 假阳性 3 条。
+- E2 identity 有一定价值，但长链经常只剩 buffer/centroid/Translate/BuildVRT 片段；E3 是主要 precision 瓶颈，helper/data container/provider/mock/test/GUI shell 被误当 custom operator。
+- 已确认 identity gap：`gdal:proximity`、`gdal:merge`、`qgis:rastersampling`、`qgis:eliminateselectedpolygons`、extract-by-expression/save-features；Shapely line polygonize 应为 `native:polygonize` 而非 `gdal:polygonize`。
+- 决策：`pilot_admission=blocked_pending_extractor_v2`；禁止进入约 300 条 pilot、taxonomy 或训练数据。
+- 权威产物：`docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_adjudication_v1/`；裁决 SHA256=`bcc3eb4a...e0aac9`，所有 summary/report/input hashes 已验证。
