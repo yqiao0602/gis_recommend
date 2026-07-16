@@ -1925,3 +1925,10 @@ Follow-up artifact:
 - Hard gates: v2.1 overall precision >=80%, E2 >=85%, E3 >=70%, zero test/constructor false positives; v2.2 complete workflows >=60% with no tier precision drop greater than 5pp.
 - Approved specification: `docs/superpowers/specs/2026-07-16-qgis-source-grounded-extractor-v2-design.md`. Implementation has not started.
 
+### 2026-07-16: Extractor v2.1 Implementation Plan Completed
+
+- The executable TDD plan and test specification is `docs/superpowers/plans/2026-07-16-qgis-source-grounded-extractor-v2-1.md`.
+- v2.1 will keep the v1 compiler frozen and apply an explicit-profile deterministic precision pass in focused modules for source quality, class roles, identity/suppression/deduplication, and locked-gate evaluation.
+- The locked evaluator uses operator/custom multisets. A class retained as E3 only because bounded identity was previously missed, such as legacy Eliminate, is upgraded to bounded E1 and is not also required as an E3 fallback.
+- v2.2 remains blocked until every v2.1 hard gate passes. No implementation, taxonomy admission, training data generation, or model training has started from this plan.
+

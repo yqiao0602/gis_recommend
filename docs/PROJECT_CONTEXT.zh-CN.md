@@ -1933,3 +1933,10 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 硬门槛：v2.1 overall precision >=80%、E2>=85%、E3>=70%、test/constructor false positive=0；v2.2 complete workflow >=60%，各 tier precision 相比 v2.1 下降不得超过 5pp。
 - 已批准规格：`docs/superpowers/specs/2026-07-16-qgis-source-grounded-extractor-v2-design.md`；实现尚未开始。
 
+### 2026-07-16：Extractor v2.1 实施计划完成
+
+- 可执行 TDD 计划与测试规格位于 `docs/superpowers/plans/2026-07-16-qgis-source-grounded-extractor-v2-1.md`。
+- v2.1 冻结 v1 compiler，通过显式 profile 在独立模块中完成 source quality、class role、identity/suppression/dedup 和 locked-gate precision 后处理。
+- 锁定评估按 operator/custom multiset 计算。像 legacy Eliminate 这种仅因 bounded identity 漏失而暂列 E3 的类，v2 中升级为 bounded E1，不再同时要求旧 E3 fallback。
+- v2.1 全部硬门槛通过前，v2.2 继续阻断；本计划尚未开始代码实现，也未授予 taxonomy/training 准入。
+

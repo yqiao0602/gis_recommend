@@ -551,6 +551,10 @@
 
 - [x] 用户确认两阶段设计：v2.1 precision gate，v2.2 completeness gate；全程 deterministic、无 LLM、无训练。
 - [x] 正式设计规格写入 `docs/superpowers/specs/2026-07-16-qgis-source-grounded-extractor-v2-design.md`。
+- [x] v2.1 Precision Gate 正式实施计划与测试规格写入 `docs/superpowers/plans/2026-07-16-qgis-source-grounded-extractor-v2-1.md`。
+- [x] 实施边界锁定：冻结 v1 核心，v2.1 采用显式 profile 的确定性后处理；新增 source-quality、class-role、identity/suppression/dedup 和 locked-gate 独立模块。
+- [x] 锁定裁决口径修正：旧 E3 仅因 bounded identity 漏失而保留的类，在 v2 金标中升级为 E1，不重复要求 E3 fallback。
+- [ ] 按计划执行 v2.1 TDD；实现开始前不得修改 extractor v1 规则或进入 v2.2。
 
 - [ ] 数据源预过滤：test/mock/example/provider/UI-only 文件在 operator extraction 前拒绝。
 - [ ] E3 role classifier：区分 algorithm/orchestrator 与 helper/data container/provider/mock/test/GUI shell。

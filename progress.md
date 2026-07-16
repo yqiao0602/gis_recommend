@@ -653,3 +653,11 @@
 - v2.2 增加 module-level custom function call graph 与 dependency-aware chain recovery。
 - 锁定门槛：v2.1 overall precision >=80%、E2>=85%、E3>=70%、test/constructor false positive=0；v2.2 complete workflow >=60%，tier precision 相对 v2.1 下降不超过 5pp。
 - 正式规格：`docs/superpowers/specs/2026-07-16-qgis-source-grounded-extractor-v2-design.md`；当前只完成设计，尚未实施。
+
+## 2026-07-16：Extractor v2.1 实施计划与测试规格完成
+
+- 已生成可直接执行的 TDD 计划：`docs/superpowers/plans/2026-07-16-qgis-source-grounded-extractor-v2-1.md`，共 9 个任务，覆盖 v1 隔离、source gate、class role、v2 compiler、constructor/identity、bounded precedence、semantic dedup、CLI profile 和 locked-35 gate。
+- 架构选择为冻结 v1 + 显式 `--extractor-profile v2` 后处理，不在稳定模块中原地修改错误规则；v2.1 输出独立 schema、审计字段和代码哈希。
+- locked gate 使用 operator/custom multiset 计算 E0/E1/E2/E3、overall precision、test/constructor false positive 和 completeness；`Eliminate` 等 bounded identity 升级不再重复要求旧 E3 fallback。
+- v2.2 仍不在本轮范围；只有 v2.1 七项硬门槛全部通过才可开始 completeness compiler。
+- 当前状态：计划完成，代码实现尚未开始，taxonomy/training admission 继续 `not_granted`。
