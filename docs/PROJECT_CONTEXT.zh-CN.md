@@ -1924,3 +1924,12 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 决策：`pilot_admission=blocked_pending_extractor_v2`。taxonomy/training admission 继续 `not_granted`，v1 禁止进入约 300 条 pilot 或训练包。
 - 35 个 order、record ID、source workbook 绑定、summary 指标和输出 hash 全部验证；裁决 SHA256=`bcc3eb4a357980abb262487959606df641d020295c72ee5f78976289a2e0aac9`。
 
+### 2026-07-16：Extractor v2 设计已确认
+
+- 用户确认 deterministic 两阶段设计：v2.1 先解决 precision，v2.2 再解决 workflow completeness；禁止 LLM、taxonomy 修改、训练数据和模型训练。
+- v1 继续为默认 profile；v2 必须显式启用，锁定回归与新 blind holdout 通过前不得切默认。
+- v2.1 增加 source-quality gate、E3 role classifier、constructor suppression、bounded identity precedence、已确认 identity gap 和 semantic-step deduplication。
+- v2.2 增加 module-level custom-function call graph 与 dependency-aware chain recovery。
+- 硬门槛：v2.1 overall precision >=80%、E2>=85%、E3>=70%、test/constructor false positive=0；v2.2 complete workflow >=60%，各 tier precision 相比 v2.1 下降不得超过 5pp。
+- 已批准规格：`docs/superpowers/specs/2026-07-16-qgis-source-grounded-extractor-v2-design.md`；实现尚未开始。
+

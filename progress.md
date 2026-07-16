@@ -644,3 +644,12 @@
 - 已确认 identity gap：`gdal:proximity`、`gdal:merge`、`qgis:rastersampling`、`qgis:eliminateselectedpolygons`、extract-by-expression/save-features；Shapely line polygonize 应为 `native:polygonize` 而非 `gdal:polygonize`。
 - 决策：`pilot_admission=blocked_pending_extractor_v2`；禁止进入约 300 条 pilot、taxonomy 或训练数据。
 - 权威产物：`docs/reports/qgis_pilot/phase4_source_grounded_extractor_v1/holdout_35_adjudication_v1/`；裁决 SHA256=`bcc3eb4a...e0aac9`，所有 summary/report/input hashes 已验证。
+
+## 2026-07-16：Extractor v2 两阶段设计确认
+
+- 用户确认采用 deterministic 两阶段路线：v2.1 先修 precision，v2.2 再修 completeness；不调用 LLM，不训练，不修改生产默认。
+- v1 继续作为默认 profile，v2 必须显式启用；v2 通过新 blind gate 前不得切默认。
+- v2.1 包含 source-quality gate、E3 role classifier、constructor suppression、bounded identity precedence、已确认 identity gap 和 semantic duplicate merge。
+- v2.2 增加 module-level custom function call graph 与 dependency-aware chain recovery。
+- 锁定门槛：v2.1 overall precision >=80%、E2>=85%、E3>=70%、test/constructor false positive=0；v2.2 complete workflow >=60%，tier precision 相对 v2.1 下降不超过 5pp。
+- 正式规格：`docs/superpowers/specs/2026-07-16-qgis-source-grounded-extractor-v2-design.md`；当前只完成设计，尚未实施。

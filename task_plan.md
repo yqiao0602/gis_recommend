@@ -549,6 +549,9 @@
 
 ### Extractor v2 修复门禁
 
+- [x] 用户确认两阶段设计：v2.1 precision gate，v2.2 completeness gate；全程 deterministic、无 LLM、无训练。
+- [x] 正式设计规格写入 `docs/superpowers/specs/2026-07-16-qgis-source-grounded-extractor-v2-design.md`。
+
 - [ ] 数据源预过滤：test/mock/example/provider/UI-only 文件在 operator extraction 前拒绝。
 - [ ] E3 role classifier：区分 algorithm/orchestrator 与 helper/data container/provider/mock/test/GUI shell。
 - [ ] constructor suppression：`QgsCoordinateTransform(...)` 等配置对象不再产生 operator，只保留真实 execution call。

@@ -1916,3 +1916,12 @@ Follow-up artifact:
 - Decision: `pilot_admission=blocked_pending_extractor_v2`. Taxonomy and training admission remain `not_granted`; no roughly 300-row pilot or training package may be generated from v1.
 - All 35 orders, record IDs, source-workbook binding, summary metrics, and output hashes were verified. Adjudication SHA256 is `bcc3eb4a357980abb262487959606df641d020295c72ee5f78976289a2e0aac9`.
 
+### 2026-07-16: Extractor v2 Design Approved
+
+- The user approved a deterministic two-stage design: v2.1 addresses precision first, then v2.2 addresses workflow completeness. No LLM, taxonomy change, training data, or model training is allowed.
+- v1 remains the default profile. v2 is explicit and cannot become default until it passes the locked regression and a new blind holdout.
+- v2.1 adds source-quality gating, E3 role classification, constructor suppression, bounded-identity precedence, confirmed identity gaps, and semantic-step deduplication.
+- v2.2 adds module-level custom-function call graphs and dependency-aware chain recovery.
+- Hard gates: v2.1 overall precision >=80%, E2 >=85%, E3 >=70%, zero test/constructor false positives; v2.2 complete workflows >=60% with no tier precision drop greater than 5pp.
+- Approved specification: `docs/superpowers/specs/2026-07-16-qgis-source-grounded-extractor-v2-design.md`. Implementation has not started.
+
