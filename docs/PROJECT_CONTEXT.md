@@ -1887,3 +1887,9 @@ Follow-up artifact:
 - Row 7 is a multi-step raster workflow using warp/reprojection, raster calculation, GRASS neighborhood smoothing, and translate/export. Row 8 is the custom EnMAP-Box `ImportEnmapL1CAlgorithm`; row 10 is the custom `HZAUSoilTextureDialog` workflow. Custom classes remain unbounded instead of receiving invented catalog IDs.
 - Cumulative partial result: 10/50 reviewed, 1 correct and 9 incorrect candidates, top-1 precision 10%, 40 remaining. Abstention accuracy is still null and no taxonomy/training admission is granted.
 
+### 2026-07-16: Transfer Review Batch 03 and Source-Grounded Replacement
+
+- The user confirmed rows 11-14 as incorrect and row 15 `qgis:rastercalculator` as correct. Cumulative partial precision is 2/15 = 13.33%, with 35 rows remaining.
+- Ground truth again separates multi-step `RasterProcessor` DSM construction, custom `UrbanSummaryWorker` and FLO-2D infiltration workflows, and the standard `native:simplifygeometries` equivalent for direct `QgsGeometry.simplify()`.
+- Documented a replacement source-grounded extractor with four evidence tiers: explicit Processing IDs, self-describing algorithm classes, ordered/data-dependent direct-API semantic chains, and custom/unbounded workflows. Exact signature overlap remains evaluation-only. Complete the 50-row regression set before a roughly 300-row stratified extractor pilot; no training admission is granted.
+

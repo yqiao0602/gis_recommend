@@ -612,3 +612,11 @@
 - 第 7 条是 `gdal:warpreproject`、raster calculation、`grass7:r.neighbors`、`gdal:translate` 等多步链，不能压成 `gdal:extractprojection`。
 - 第 8 条是 EnMAP-Box 自定义 `ImportEnmapL1CAlgorithm`；第 10 条是自定义 `HZAUSoilTextureDialog` 土壤分类工作流，二者没有标准 bounded catalog ID。
 - 累计 10/50 reviewed，candidate correct=1、incorrect=9、partial top-1 precision=10%，remaining=40；所有结果仍禁止 taxonomy/training admission。
+
+## 2026-07-16：Signature Transfer 人工审核 Batch 03 与替代路线
+
+- 用户确认第 11-14 条错误、第 15 条 `qgis:rastercalculator` 正确；累计 15/50 reviewed、correct=2、incorrect=13、partial precision=13.33%。
+- 第 11 条为 `RasterProcessor` 多步 DSM 链，AST 明确含 `gdal:warpreproject`、`gdal:buildvirtualraster`、`gdal:merge`；第 12 条为 custom `UrbanSummaryWorker`。
+- 第 13 条 `QgsGeometry.simplify()` 的标准等价算子是 `native:simplifygeometries`；第 14 条为 FLO-2D 自定义 Green-Ampt/SCS 工作流，intersection 只是子步骤。
+- 新增 `source_grounded_operator_chain_extraction_design.md`：后续自动化应按 explicit Processing ID、self-describing class、ordered direct-API semantic chain、custom/unbounded 四级证据抽取，禁止继续使用单纯 exact-call overlap 自动标注。
+- 下一阶段仍先完成 50 条人工回归集，再构建约 300 条分层 extractor pilot；训练准入保持 not granted。

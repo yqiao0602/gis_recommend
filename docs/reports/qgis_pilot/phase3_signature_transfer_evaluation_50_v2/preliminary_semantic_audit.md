@@ -50,3 +50,8 @@ Decisions are stored separately in `human_adjudications.jsonl` and bound to immu
 - Confirmed replacements/evidence: `qgis:hypsometriccurves` for row 6; a multi-step GDAL/QGIS/GRASS raster chain for row 7; custom `ImportEnmapL1CAlgorithm` for row 8; `qgis:convertgeometrytype` for row 9; custom `HZAUSoilTextureDialog` workflow for row 10.
 - Cumulative partial candidate top-1 precision: 1 / 10 = 10%.
 - Remaining: 40 rows; abstention accuracy remains unavailable.
+
+- Batch 03 (2026-07-16): review rows 11-15 jointly adjudicated; rows 11-14 are incorrect and row 15 `qgis:rastercalculator` is correct.
+- Ground truth distinguishes multi-step chains (`RasterProcessor`), custom workflows (`UrbanSummaryWorker`, FLO-2D infiltration classes), and the standard equivalent `native:simplifygeometries`.
+- Cumulative partial candidate top-1 precision: 2 / 15 = 13.33%.
+- Remaining: 35 rows; exact signature transfer remains evaluation-only.
