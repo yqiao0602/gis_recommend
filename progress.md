@@ -604,3 +604,11 @@
 - 新增 `validate_qgis_signature_transfer_adjudications.py`，绑定 immutable review SHA256、review order、record ID、candidate status 和 top-1 operator，并阻断重复/stale/status-field 冲突。
 - 原始 `diagnostic_review.csv` 保持不变；决策写入 append-only `human_adjudications.jsonl`，错误记录不猜测 expected operator。
 - Validator：5/50 reviewed，candidate correct=1、incorrect=4、partial top-1 precision=20%，remaining=45；abstention accuracy 仍为 null，taxonomy/training admission 继续 not granted。
+
+## 2026-07-16：Signature Transfer 人工审核 Batch 02
+
+- 用户接受第 6-10 条全部判错；只读核对 AST 与 catalog 后区分了正确答案类型。
+- 第 6 条明确为 `qgis:hypsometriccurves`；第 9 条源码 `GeometryConvert.name()=convertgeometrytype`，明确为 `qgis:convertgeometrytype`。
+- 第 7 条是 `gdal:warpreproject`、raster calculation、`grass7:r.neighbors`、`gdal:translate` 等多步链，不能压成 `gdal:extractprojection`。
+- 第 8 条是 EnMAP-Box 自定义 `ImportEnmapL1CAlgorithm`；第 10 条是自定义 `HZAUSoilTextureDialog` 土壤分类工作流，二者没有标准 bounded catalog ID。
+- 累计 10/50 reviewed，candidate correct=1、incorrect=9、partial top-1 precision=10%，remaining=40；所有结果仍禁止 taxonomy/training admission。

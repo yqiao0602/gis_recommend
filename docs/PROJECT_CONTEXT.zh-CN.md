@@ -1889,3 +1889,9 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 新增 TDD 覆盖的 append-only adjudication validator；决策绑定 immutable review SHA256、review order、record ID、candidate status 和 top-1 operator，错误项不伪造替代 operator。
 - 当前 partial 结果：已审 5/50，candidate 正确 1、错误 4，top-1 precision=20%，剩余 45；尚未审核 abstention，因此 abstention accuracy 仍为 null。taxonomy/training admission 继续 not granted。
 
+### 2026-07-16：Signature Transfer 人工审核 Batch 02
+
+- 用户接受第 6-10 条均为错误 top-1。只读核对 AST/catalog 后，第 6 条明确为 `qgis:hypsometriccurves`，第 9 条明确为 `qgis:convertgeometrytype`。
+- 第 7 条是 warp/reproject、raster calculation、GRASS neighborhood smoothing、translate/export 组成的多步栅格链；第 8 条是 EnMAP-Box 自定义 `ImportEnmapL1CAlgorithm`；第 10 条是自定义 `HZAUSoilTextureDialog` 工作流。自定义类保持 unbounded，不伪造 catalog ID。
+- 累计 partial 结果：已审 10/50，candidate 正确 1、错误 9，top-1 precision=10%，剩余 40；abstention accuracy 仍为 null，taxonomy/training admission 继续 not granted。
+

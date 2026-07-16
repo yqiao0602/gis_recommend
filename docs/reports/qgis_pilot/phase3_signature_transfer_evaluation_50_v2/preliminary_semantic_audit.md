@@ -45,3 +45,8 @@ The server directory `phase3_signature_transfer_evaluation_50_v1` is an intermed
 - Remaining: 45 rows; abstention accuracy is still unavailable.
 
 Decisions are stored separately in `human_adjudications.jsonl` and bound to immutable review SHA256 `6e7f92606a1e43562c98285fcaa3b6ff149c62aca051d67ce8c5136f74daa314`.
+
+- Batch 02 (2026-07-16): review rows 6-10 all adjudicated as incorrect top-1 transfers.
+- Confirmed replacements/evidence: `qgis:hypsometriccurves` for row 6; a multi-step GDAL/QGIS/GRASS raster chain for row 7; custom `ImportEnmapL1CAlgorithm` for row 8; `qgis:convertgeometrytype` for row 9; custom `HZAUSoilTextureDialog` workflow for row 10.
+- Cumulative partial candidate top-1 precision: 1 / 10 = 10%.
+- Remaining: 40 rows; abstention accuracy remains unavailable.

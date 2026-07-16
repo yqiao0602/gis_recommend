@@ -1881,3 +1881,9 @@ Follow-up artifact:
 - Added a TDD-covered append-only adjudication validator. Decisions bind the immutable review SHA256, review order, record ID, candidate status, and top-1 operator; incorrect rows do not invent replacement operators.
 - Current partial result is 5/50 reviewed, 1 correct and 4 incorrect candidate predictions, candidate top-1 precision 20%, 45 remaining. No abstentions have been reviewed, so abstention accuracy remains null. Taxonomy and training admission remain not granted.
 
+### 2026-07-16: Signature Transfer Human Review Batch 02
+
+- The user accepted rows 6-10 as incorrect top-1 transfers. Read-only AST/catalog verification identified `qgis:hypsometriccurves` for row 6 and `qgis:convertgeometrytype` for row 9.
+- Row 7 is a multi-step raster workflow using warp/reprojection, raster calculation, GRASS neighborhood smoothing, and translate/export. Row 8 is the custom EnMAP-Box `ImportEnmapL1CAlgorithm`; row 10 is the custom `HZAUSoilTextureDialog` workflow. Custom classes remain unbounded instead of receiving invented catalog IDs.
+- Cumulative partial result: 10/50 reviewed, 1 correct and 9 incorrect candidates, top-1 precision 10%, 40 remaining. Abstention accuracy is still null and no taxonomy/training admission is granted.
+
