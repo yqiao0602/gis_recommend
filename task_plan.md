@@ -523,5 +523,6 @@
 - [x] 确定性抽取 50 条人工诊断集：30 candidate + 20 abstain，覆盖 modality、primary family、trace length 和 ordering quality；人工字段保持空白，training admission=`not_a_training_artifact`。
 - [x] 初检定位系统性假阳性：`gdal.open` 以 439/4,673=9.39% 刚好通过 10% 门槛，导致 30 个 candidate 中 12 个 top-1 为 `gdal:extractprojection`；底层 shared calls 不能直接代表 operator identity。
 - [x] `semantic_anchor`-only 消融把覆盖降至 1,127/4,673，但仍有共享调用假阳性，证明问题不是单一阈值。
-- [ ] 联合人工审核 `phase3_signature_transfer_evaluation_50_v2/diagnostic_review.csv` 的 50 条记录，分别计算 candidate top-1 precision、abstention accuracy 和 overall diagnostic accuracy。
+- [ ] 联合人工审核 `phase3_signature_transfer_evaluation_50_v2/diagnostic_review.csv` 的 50 条记录，分别计算 candidate top-1 precision、abstention accuracy 和 overall diagnostic accuracy；当前完成 5/50，partial candidate precision=20%。
+- [x] Transfer review Batch 01：用户确认第 1、2、3、5 条 top-1 错误，第 4 条 `qgis:rastercalculator` 正确；append-only adjudication 与 validator summary 已生成。
 - [ ] 只有人工结果证明 anchor 有增益后，才设计 family/text-aware rerank；当前禁止用 signature transfer 自动生成 operator/L3 标签或训练行。

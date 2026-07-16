@@ -1883,3 +1883,9 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 本机 stable-94 QGIS 回归 88/88；服务器 transfer/export 专项 7/7。服务器数据镜像当前暴露 107 IDs，导致两个固定要求 94 的既有 taxonomy 测试失败；本阶段未覆盖服务器配置。
 - 当前权威产物：`docs/reports/qgis_pilot/phase3_signature_anchor_library_v1/` 和 `docs/reports/qgis_pilot/phase3_signature_transfer_evaluation_50_v2/`。下一步是联合人工审核 50 条，再决定是否设计 family/text-aware reranker。
 
+### 2026-07-16：Signature Transfer 人工审核 Batch 01
+
+- 用户确认第 1-5 条：第 1、2、3、5 条 top-1 迁移错误，第 4 条 raster boolean overlay -> `qgis:rastercalculator` 正确。
+- 新增 TDD 覆盖的 append-only adjudication validator；决策绑定 immutable review SHA256、review order、record ID、candidate status 和 top-1 operator，错误项不伪造替代 operator。
+- 当前 partial 结果：已审 5/50，candidate 正确 1、错误 4，top-1 precision=20%，剩余 45；尚未审核 abstention，因此 abstention accuracy 仍为 null。taxonomy/training admission 继续 not granted。
+

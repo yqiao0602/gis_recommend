@@ -1875,3 +1875,9 @@ Follow-up artifact:
 - Local stable-94 QGIS regression passed 88/88. Server transfer/export tests passed 7/7; two pre-existing taxonomy tests fail because the server data mirror now exposes 107 IDs while those tests require exactly 94. No server configuration was overwritten.
 - Active artifacts: `docs/reports/qgis_pilot/phase3_signature_anchor_library_v1/` and `docs/reports/qgis_pilot/phase3_signature_transfer_evaluation_50_v2/`. Next action is joint human review of all 50 rows before any family/text reranker design.
 
+### 2026-07-16: Signature Transfer Human Review Batch 01
+
+- The user confirmed rows 1-5: rows 1, 2, 3, and 5 are incorrect top-1 transfers; row 4 correctly maps raster boolean overlay to `qgis:rastercalculator`.
+- Added a TDD-covered append-only adjudication validator. Decisions bind the immutable review SHA256, review order, record ID, candidate status, and top-1 operator; incorrect rows do not invent replacement operators.
+- Current partial result is 5/50 reviewed, 1 correct and 4 incorrect candidate predictions, candidate top-1 precision 20%, 45 remaining. No abstentions have been reviewed, so abstention accuracy remains null. Taxonomy and training admission remain not granted.
+

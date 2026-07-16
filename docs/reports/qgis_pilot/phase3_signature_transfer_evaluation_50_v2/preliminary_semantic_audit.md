@@ -35,3 +35,13 @@ An unpersisted threshold diagnostic restricted workflow evidence to `semantic_an
 The signature library is useful as reviewed operator implementation evidence, but exact call transfer is not yet a reliable automatic workflow labeler. Keep all 50 rows `pending` and complete human review before considering family-aware/text-aware reranking. Do not emit QGIS operator chains, L3 labels, taxonomy changes, or training rows from this baseline.
 
 The server directory `phase3_signature_transfer_evaluation_50_v1` is an intermediate stricter-filter diagnostic (3,194 candidates) and is not the authority. The synchronized `phase3_signature_transfer_evaluation_50_v2` artifact reproduces the predeclared 3,388 baseline and is the active human-review package.
+
+## Human Review Progress
+
+- Batch 01 (2026-07-16): review rows 1-5 jointly adjudicated.
+- Correct top-1: 1 (`qgis:rastercalculator` for raster boolean overlay sum).
+- Incorrect top-1: 4 (shared geometry primitives, generic `gdal.open`, and layer metadata calls).
+- Partial candidate top-1 precision: 1 / 5 = 20%.
+- Remaining: 45 rows; abstention accuracy is still unavailable.
+
+Decisions are stored separately in `human_adjudications.jsonl` and bound to immutable review SHA256 `6e7f92606a1e43562c98285fcaa3b6ff149c62aca051d67ce8c5136f74daa314`.

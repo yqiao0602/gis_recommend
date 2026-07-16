@@ -597,3 +597,10 @@
 - 权威审核包同步到 `docs/reports/qgis_pilot/phase3_signature_transfer_evaluation_50_v2/`；48MB 全量 predictions 只留服务器，ledger 保留 SHA256=`43ba8405...7a76`。
 - 验证：本机 stable-94 QGIS tests 88/88；服务器专项 7/7、其余非-taxonomy 测试通过。服务器现有 107 映射使 2 个固定要求 94 的旧 taxonomy 测试失败，未覆盖或修改服务器配置。
 - 下一步：人工审核 50 条并计算 top-1 precision / abstention accuracy；在此之前 taxonomy/training admission 均保持 not granted。
+
+## 2026-07-16：Signature Transfer 人工审核 Batch 01
+
+- 用户确认前 5 条联合裁决：第 1、2、3、5 条 top-1 错误，第 4 条 raster boolean overlay -> `qgis:rastercalculator` 正确。
+- 新增 `validate_qgis_signature_transfer_adjudications.py`，绑定 immutable review SHA256、review order、record ID、candidate status 和 top-1 operator，并阻断重复/stale/status-field 冲突。
+- 原始 `diagnostic_review.csv` 保持不变；决策写入 append-only `human_adjudications.jsonl`，错误记录不猜测 expected operator。
+- Validator：5/50 reviewed，candidate correct=1、incorrect=4、partial top-1 precision=20%，remaining=45；abstention accuracy 仍为 null，taxonomy/training admission 继续 not granted。
