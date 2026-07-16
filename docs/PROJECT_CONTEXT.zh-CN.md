@@ -1900,4 +1900,5 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 用户确认第 11-14 条错误、第 15 条 `qgis:rastercalculator` 正确；累计 partial precision=2/15=13.33%，剩余 35 条。
 - Ground truth 再次区分了 `RasterProcessor` 多步 DSM 构造、custom `UrbanSummaryWorker` 与 FLO-2D 入渗工作流，以及直接 `QgsGeometry.simplify()` 对应的标准 `native:simplifygeometries`。
 - 已记录四级 source-grounded extractor 路线：显式 Processing ID、自描述算法类、有序且带数据依赖的 direct-API semantic chain、custom/unbounded workflow。exact signature overlap 继续只用于评估；完成 50 条 regression set 后再做约 300 条分层 extractor pilot，训练准入仍为 not granted。
+- 新增可编辑 `docs/reports/qgis_pilot/qgis_training_data_mainline.drawio`，展示从源码证据、extractor、regression/pilot 门禁到 train-only 数据和 held-out 模型评估的完整主线。XML 校验通过；本机没有 draw.io CLI，因此未导出位图。
 

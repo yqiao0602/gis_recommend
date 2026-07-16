@@ -528,5 +528,6 @@
 - [x] Transfer review Batch 02：第 6-10 条均为错误 top-1；核实明确 catalog operator、多步链和 custom-unbounded 三类正确答案，不把插件类伪造成标准 operator。
 - [x] Transfer review Batch 03：第 11-14 条错误、第 15 条正确；进一步确认 multi-step/custom workflow 不能压成单 anchor。
 - [x] 写出 source-grounded operator-chain extractor 设计：E0 explicit ID、E1 self-describing class、E2 ordered direct-API semantic chain、E3 custom/unbounded 四级证据路线。
+- [x] 新增 `qgis_training_data_mainline.drawio`，固化真实脚本 -> extractor -> 回归/pilot 门禁 -> train-only package -> 模型评估的主线关系。
 - [ ] 完成 50 条审核后，以这些 regression cases 构建约 300 条分层 source-grounded extractor pilot；当前不生成训练行。
 - [ ] 只有人工结果证明 anchor 有增益后，才设计 family/text-aware rerank；当前禁止用 signature transfer 自动生成 operator/L3 标签或训练行。

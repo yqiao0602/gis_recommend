@@ -1892,4 +1892,5 @@ Follow-up artifact:
 - The user confirmed rows 11-14 as incorrect and row 15 `qgis:rastercalculator` as correct. Cumulative partial precision is 2/15 = 13.33%, with 35 rows remaining.
 - Ground truth again separates multi-step `RasterProcessor` DSM construction, custom `UrbanSummaryWorker` and FLO-2D infiltration workflows, and the standard `native:simplifygeometries` equivalent for direct `QgsGeometry.simplify()`.
 - Documented a replacement source-grounded extractor with four evidence tiers: explicit Processing IDs, self-describing algorithm classes, ordered/data-dependent direct-API semantic chains, and custom/unbounded workflows. Exact signature overlap remains evaluation-only. Complete the 50-row regression set before a roughly 300-row stratified extractor pilot; no training admission is granted.
+- Added editable `docs/reports/qgis_pilot/qgis_training_data_mainline.drawio` to show the end-to-end path from source evidence through extractor/regression/pilot gates to train-only data and held-out model evaluation. XML validation passed; no local draw.io CLI was available for bitmap export.
 

@@ -619,4 +619,5 @@
 - 第 11 条为 `RasterProcessor` 多步 DSM 链，AST 明确含 `gdal:warpreproject`、`gdal:buildvirtualraster`、`gdal:merge`；第 12 条为 custom `UrbanSummaryWorker`。
 - 第 13 条 `QgsGeometry.simplify()` 的标准等价算子是 `native:simplifygeometries`；第 14 条为 FLO-2D 自定义 Green-Ampt/SCS 工作流，intersection 只是子步骤。
 - 新增 `source_grounded_operator_chain_extraction_design.md`：后续自动化应按 explicit Processing ID、self-describing class、ordered direct-API semantic chain、custom/unbounded 四级证据抽取，禁止继续使用单纯 exact-call overlap 自动标注。
+- 新增可编辑 `qgis_training_data_mainline.drawio`，把 extractor、15 条 regression set、约 300 条 pilot、训练准入和 GEE/vector 评估串成一条主线；本机未发现 draw.io CLI，因此本阶段只生成并验证 XML 源文件。
 - 下一阶段仍先完成 50 条人工回归集，再构建约 300 条分层 extractor pilot；训练准入保持 not granted。
