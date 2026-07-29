@@ -1,0 +1,744 @@
+#!/usr/bin/env python3
+"""Validate and emit review-only expert-authored QGIS graph proposals."""
+
+from __future__ import annotations
+
+import argparse
+from collections import Counter
+from copy import deepcopy
+import hashlib
+import json
+from pathlib import Path
+import re
+from typing import Any, Mapping
+
+from scripts import build_qgis_benchmark_exclusion_ledger as exclusion
+from scripts.build_qgis_benchmark_candidate_pool import (
+    _modality as _gate3_modality,
+    graph_profile as _gate3_graph_profile,
+)
+
+
+SCHEMA = "gis_recommend.qgis_benchmark_expert_proposal.v1"
+REVIEW_SCHEMA = "gis_recommend.qgis_benchmark_expert_proposal_review.v1"
+FORBIDDEN_FIELDS = {
+    "task_text",
+    "task_description",
+    "source_path",
+    "source_snippet",
+    "parameter_facts",
+    "dataset_id",
+    "field_name",
+    "threshold",
+}
+_REQUIRED_TOP_LEVEL = {
+    "schema",
+    "proposal_id",
+    "authoring_batch_id",
+    "provenance_class",
+    "parameters_included",
+    "processes",
+    "links",
+    "quota_anchor_l3",
+    "covered_l3",
+    "target_strata",
+}
+_PROCESS_FIELDS = {"process_id", "operator_id", "l3_code"}
+_LINK_FIELDS = {"source_process_id", "target_process_id"}
+_PROCESS_ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
+_REVIEW_REQUIRED_FIELDS = {
+    "schema",
+    "review_id",
+    "proposal_id",
+    "reviewer_id",
+    "reviewed_at",
+    "decision",
+    "checked_operator_ids",
+    "checked_links",
+    "strata_verdicts",
+    "exclusion_verdict",
+    "reason",
+}
+_STRATA_FIELDS = {"modality", "topology", "graph_size_stratum"}
+_COMPLEX_TOPOLOGIES = {"branch_or_multi_output", "multi_input_merge"}
+
+
+def _hash_json(value: Any) -> str:
+    return hashlib.sha256(
+        json.dumps(
+            value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+    ).hexdigest()
+
+
+def _refresh_admission(row: dict[str, Any]) -> None:
+    admitted = (
+        row.get("graph_review_status") == "independent_reviewed"
+        and row.get("gate1_status") == "passed"
+        and row.get("gate2_status") == "passed"
+        and row.get("dedup_status") == "canonical"
+    )
+    row["supply_admission"] = (
+        "gate3_candidate_admitted" if admitted else "proposal_only"
+    )
+
+
+def graph_profile(
+    node_count: int, edges: list[tuple[int, int]]
+) -> dict[str, str] | None:
+    """Expose the Gate 3 topology contract without redefining it."""
+
+    return _gate3_graph_profile(node_count, edges)
+
+
+def _forbidden_keys(value: Any) -> list[str]:
+    found: set[str] = set()
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if key in FORBIDDEN_FIELDS:
+                found.add(key)
+            found.update(_forbidden_keys(child))
+    elif isinstance(value, list):
+        for child in value:
+            found.update(_forbidden_keys(child))
+    return sorted(found)
+
+
+def _catalog_is_strict(entry: Mapping[str, Any]) -> bool:
+    if entry.get("strict_catalog") is False:
+        return False
+    tier = entry.get("admission_tier")
+    if tier is not None and tier != "headline_core":
+        return False
+    return True
+
+
+def validate_proposal(
+    row: dict[str, Any],
+    *,
+    mapping_by_operator: dict[str, dict[str, Any]],
+    catalog_by_operator: dict[str, dict[str, Any]],
+) -> list[str]:
+    """Return deterministic validation error codes for one proposal."""
+
+    if not isinstance(row, dict):
+        return ["row_not_object"]
+
+    errors: list[str] = []
+    errors.extend(f"forbidden_field:{key}" for key in _forbidden_keys(row))
+
+    missing = sorted(_REQUIRED_TOP_LEVEL.difference(row))
+    errors.extend(f"missing_field:{key}" for key in missing)
+    if row.get("schema") != SCHEMA:
+        errors.append("schema_invalid")
+    if row.get("provenance_class") != "expert_authored":
+        errors.append("provenance_not_expert_authored")
+    if row.get("parameters_included") is not False:
+        errors.append("parameters_included")
+
+    processes = row.get("processes")
+    process_ids: list[str] = []
+    declared_ids: set[str] = set()
+    if not isinstance(processes, list) or not processes:
+        errors.append("processes_empty")
+        processes = []
+    for process in processes:
+        if not isinstance(process, dict):
+            errors.append("process_not_object")
+            continue
+        errors.extend(
+            f"process_forbidden_field:{key}"
+            for key in sorted(set(process).difference(_PROCESS_FIELDS))
+        )
+        process_id = process.get("process_id")
+        if (
+            not isinstance(process_id, str)
+            or not process_id
+            or _PROCESS_ID_RE.fullmatch(process_id) is None
+        ):
+            errors.append(f"invalid_process_id:{process_id}")
+        elif process_id in declared_ids:
+            errors.append(f"process_id_duplicate:{process_id}")
+        else:
+            declared_ids.add(process_id)
+            process_ids.append(process_id)
+
+        operator_id = process.get("operator_id")
+        if not isinstance(operator_id, str) or not operator_id:
+            errors.append("operator_id_invalid")
+            continue
+        mapping = mapping_by_operator.get(operator_id)
+        catalog = catalog_by_operator.get(operator_id)
+        if mapping is None:
+            errors.append(f"mapping_missing:{operator_id}")
+        else:
+            if mapping.get("mapping_status") != "stable101_direct":
+                errors.append(f"mapping_not_stable101:{operator_id}")
+            if mapping.get("headline_eligible") is not True:
+                errors.append(f"operator_not_headline_eligible:{operator_id}")
+            if process.get("l3_code") != mapping.get("l3_code"):
+                errors.append(f"l3_mismatch:{operator_id}")
+        if catalog is None:
+            errors.append(f"catalog_missing:{operator_id}")
+        elif not _catalog_is_strict(catalog):
+            errors.append(f"catalog_not_strict:{operator_id}")
+
+    links = row.get("links")
+    if not isinstance(links, list):
+        errors.append("links_invalid")
+        links = []
+    for link in links:
+        if not isinstance(link, dict):
+            errors.append("link_not_object")
+            continue
+        errors.extend(
+            f"link_forbidden_field:{key}"
+            for key in sorted(set(link).difference(_LINK_FIELDS))
+        )
+        source = link.get("source_process_id")
+        target = link.get("target_process_id")
+        if not isinstance(source, str) or not isinstance(target, str):
+            errors.append("link_endpoint_invalid")
+            continue
+        if source not in declared_ids:
+            errors.append(f"link_unknown_source:{source}")
+        if target not in declared_ids:
+            errors.append(f"link_unknown_target:{target}")
+
+    valid_process_ids = len(process_ids) == len(processes)
+    valid_links = all(
+        isinstance(link, dict)
+        and isinstance(link.get("source_process_id"), str)
+        and isinstance(link.get("target_process_id"), str)
+        and link.get("source_process_id") in declared_ids
+        and link.get("target_process_id") in declared_ids
+        for link in links
+    )
+    if valid_process_ids and valid_links:
+        process_index = {process_id: index for index, process_id in enumerate(process_ids)}
+        profile = graph_profile(
+            len(process_ids),
+            [
+                (
+                    process_index[link["source_process_id"]],
+                    process_index[link["target_process_id"]],
+                )
+                for link in links
+            ],
+        )
+        if profile is None:
+            errors.append("graph_invalid")
+        else:
+            for field in ("topology", "graph_size_stratum"):
+                if row.get(field) != profile[field]:
+                    errors.append(f"{field}_mismatch:{profile[field]}")
+                target_strata = row.get("target_strata")
+                if isinstance(target_strata, dict) and target_strata.get(field) != profile[field]:
+                    errors.append(f"target_strata_{field}_mismatch:{profile[field]}")
+
+        operator_ids = [
+            process.get("operator_id")
+            for process in processes
+            if isinstance(process, dict) and isinstance(process.get("operator_id"), str)
+        ]
+        if len(operator_ids) == len(processes) and all(
+            operator_id in catalog_by_operator for operator_id in operator_ids
+        ):
+            modality = _gate3_modality(operator_ids, catalog_by_operator)
+            if row.get("modality") != modality:
+                errors.append(f"modality_mismatch:{modality}")
+            target_strata = row.get("target_strata")
+            if isinstance(target_strata, dict) and target_strata.get("modality") != modality:
+                errors.append(f"target_strata_modality_mismatch:{modality}")
+
+        expected_l3 = list(
+            dict.fromkeys(
+                process.get("l3_code")
+                for process in processes
+                if isinstance(process, dict) and isinstance(process.get("l3_code"), str)
+            )
+        )
+        if row.get("covered_l3") != expected_l3:
+            errors.append("covered_l3_mismatch")
+        if row.get("quota_anchor_l3") not in expected_l3:
+            errors.append("quota_anchor_l3_invalid")
+
+    # Preserve first occurrence order while making duplicate diagnostics stable.
+    return list(dict.fromkeys(errors))
+
+
+def emit_proposal(
+    row: dict[str, Any],
+    *,
+    mapping_by_operator: dict[str, dict[str, Any]],
+    catalog_by_operator: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    """Return a closed proposal row, refusing invalid authoring input."""
+
+    errors = validate_proposal(
+        row,
+        mapping_by_operator=mapping_by_operator,
+        catalog_by_operator=catalog_by_operator,
+    )
+    if errors:
+        raise ValueError("invalid proposal: " + ",".join(errors))
+    emitted = deepcopy(row)
+    emitted.update(
+        {
+            "schema": SCHEMA,
+            "provenance_class": "expert_authored",
+            "graph_review_status": "unreviewed",
+            "gate1_status": "passed",
+            "gate2_status": "pending",
+            "supply_admission": "proposal_only",
+            "training_admission": False,
+            "validation_eligible": False,
+            "test_eligible": False,
+            "production_merge": False,
+            "review_refs": [],
+            "graph_reviewer_ids": [],
+        }
+    )
+    return emitted
+
+
+def validate_review(
+    proposal: dict[str, Any], review: dict[str, Any]
+) -> list[str]:
+    """Return deterministic evidence errors for one independent graph review."""
+
+    if not isinstance(review, dict):
+        return ["review_not_object"]
+    errors = [
+        f"review_missing_field:{field}"
+        for field in sorted(_REVIEW_REQUIRED_FIELDS.difference(review))
+    ]
+    if review.get("schema") != REVIEW_SCHEMA:
+        errors.append("review_schema_invalid")
+    if review.get("proposal_id") != proposal.get("proposal_id"):
+        errors.append("review_proposal_id_mismatch")
+    if review.get("decision") not in {"accept", "revise", "reject"}:
+        errors.append("review_decision_invalid")
+    for field in ("review_id", "reviewer_id", "reviewed_at", "reason"):
+        if field in review and (
+            not isinstance(review.get(field), str) or not review.get(field)
+        ):
+            errors.append(f"review_{field}_invalid")
+
+    expected_operator_ids = [
+        process.get("operator_id")
+        for process in proposal.get("processes", [])
+        if isinstance(process, dict)
+    ]
+    if "checked_operator_ids" in review and review.get("checked_operator_ids") != expected_operator_ids:
+        errors.append("review_checked_operator_ids_mismatch")
+    if "checked_links" in review and review.get("checked_links") != proposal.get("links"):
+        errors.append("review_checked_links_mismatch")
+
+    strata = review.get("strata_verdicts")
+    if isinstance(strata, dict):
+        errors.extend(
+            f"review_strata_verdict_missing:{field}"
+            for field in sorted(_STRATA_FIELDS.difference(strata))
+        )
+        errors.extend(
+            f"review_strata_verdict_failed:{field}"
+            for field in sorted(_STRATA_FIELDS.intersection(strata))
+            if strata.get(field) is not True
+        )
+    elif "strata_verdicts" in review:
+        errors.append("review_strata_verdicts_invalid")
+
+    if "exclusion_verdict" in review and review.get("exclusion_verdict") not in {
+        "pending_gate2",
+        "no_observed_overlap",
+        "overlap_found",
+    }:
+        errors.append("review_exclusion_verdict_invalid")
+    if review.get("decision") == "accept" and review.get("exclusion_verdict") == "overlap_found":
+        errors.append("review_accept_with_overlap")
+    return list(dict.fromkeys(errors))
+
+
+def apply_review(
+    proposal: dict[str, Any], review: dict[str, Any]
+) -> dict[str, Any]:
+    """Apply a review without changing graph content or weakening prior rejection."""
+
+    errors = validate_review(proposal, review)
+    if errors:
+        raise ValueError("invalid review: " + ",".join(errors))
+
+    updated = deepcopy(proposal)
+    review_refs = list(updated.get("review_refs", []))
+    if review["review_id"] not in review_refs:
+        review_refs.append(review["review_id"])
+    updated["review_refs"] = review_refs
+
+    if updated.get("graph_review_status") == "rejected":
+        updated["supply_admission"] = "proposal_only"
+        return updated
+    if review["decision"] == "reject":
+        updated["graph_review_status"] = "rejected"
+        updated["supply_admission"] = "proposal_only"
+        return updated
+    if review["decision"] == "revise":
+        updated["graph_review_status"] = "unreviewed"
+        updated["supply_admission"] = "proposal_only"
+        return updated
+
+    reviewer_ids = list(updated.get("graph_reviewer_ids", []))
+    if review["reviewer_id"] not in reviewer_ids:
+        reviewer_ids.append(review["reviewer_id"])
+    updated["graph_reviewer_ids"] = reviewer_ids
+    required_reviews = 2 if updated.get("topology") in _COMPLEX_TOPOLOGIES else 1
+    updated["graph_review_status"] = (
+        "independent_reviewed"
+        if len(reviewer_ids) >= required_reviews
+        else "unreviewed"
+    )
+    _refresh_admission(updated)
+    return updated
+
+
+def graph_fingerprints(proposal: dict[str, Any]) -> dict[str, str]:
+    """Build only graph-derived members of the frozen nine-index contract."""
+
+    processes = proposal.get("processes", [])
+    process_index = {
+        process["process_id"]: index
+        for index, process in enumerate(processes)
+        if isinstance(process, dict) and isinstance(process.get("process_id"), str)
+    }
+    adapted = {
+        "operator_sequence": [process["operator_id"] for process in processes],
+        "l3_code_sequence": [process["l3_code"] for process in processes],
+        "dependency_edges": [
+            {
+                "producer_ordinal": process_index[link["source_process_id"]],
+                "consumer_ordinal": process_index[link["target_process_id"]],
+                "dependency_kind": "data",
+            }
+            for link in proposal.get("links", [])
+        ],
+    }
+    fingerprint = exclusion.fingerprint_record(
+        adapted,
+        artifact_id="expert_authored_graph",
+        record_index=0,
+        platform="qgis",
+        exposure_class="proposal_only",
+    )
+    return {field: str(fingerprint.get(field, "")) for field in exclusion.OVERLAP_FIELDS}
+
+
+def apply_gate2(
+    proposal: dict[str, Any], exclusion_rows: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Apply frozen overlap indexes while leaving absent source/text keys empty."""
+
+    updated = deepcopy(proposal)
+    fingerprints = graph_fingerprints(updated)
+    overlap_fields = []
+    for field in exclusion.OVERLAP_FIELDS:
+        value = fingerprints[field]
+        if value and any(
+            row.get("record_type") == "exclusion" and row.get(field) == value
+            for row in exclusion_rows
+        ):
+            overlap_fields.append(field)
+    updated.update(fingerprints)
+    updated["gate2_overlap_fields"] = overlap_fields
+    updated["gate2_status"] = "failed_overlap" if overlap_fields else "passed"
+    _refresh_admission(updated)
+    return updated
+
+
+def _dedup_keys(row: dict[str, Any]) -> list[tuple[str, str]]:
+    fingerprints = graph_fingerprints(row)
+    graph = {
+        "processes": row.get("processes", []),
+        "links": row.get("links", []),
+    }
+    return [
+        ("duplicate_exact_proposal_identity", _hash_json(row)),
+        ("duplicate_canonical_graph_identity", _hash_json(graph)),
+        ("duplicate_normalized_dag_identity", fingerprints["normalized_dag_key"]),
+        (
+            "duplicate_training_pair_identity",
+            _hash_json(
+                {
+                    "operator_l3": [
+                        (process.get("operator_id"), process.get("l3_code"))
+                        for process in row.get("processes", [])
+                    ],
+                    "links": row.get("links", []),
+                }
+            ),
+        ),
+    ]
+
+
+def deduplicate_proposals(
+    proposals: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, str]]]:
+    """Keep the first proposal by stable ID across four ordered identities."""
+
+    seen: list[dict[str, str]] = [dict() for _ in range(4)]
+    canonical: list[dict[str, Any]] = []
+    suppressions: list[dict[str, str]] = []
+    for proposal in sorted(proposals, key=lambda row: str(row.get("proposal_id", ""))):
+        keys = _dedup_keys(proposal)
+        duplicate: tuple[str, str] | None = None
+        for index, (reason, key) in enumerate(keys):
+            if key and key in seen[index]:
+                duplicate = (reason, seen[index][key])
+                break
+        if duplicate is not None:
+            suppressions.append(
+                {
+                    "proposal_id": str(proposal.get("proposal_id", "")),
+                    "canonical_proposal_id": duplicate[1],
+                    "reason_code": duplicate[0],
+                }
+            )
+            continue
+        updated = deepcopy(proposal)
+        updated["dedup_status"] = "canonical"
+        _refresh_admission(updated)
+        canonical.append(updated)
+        for index, (_, key) in enumerate(keys):
+            if key:
+                seen[index][key] = str(proposal.get("proposal_id", ""))
+    return canonical, suppressions
+
+
+def _read_jsonl(path: Path) -> list[dict[str, Any]]:
+    if not path.is_file():
+        return []
+    return [
+        json.loads(line)
+        for line in path.read_text(encoding="utf-8-sig").splitlines()
+        if line.strip()
+    ]
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _load_mapping(path: Path) -> dict[str, dict[str, Any]]:
+    artifact = json.loads(path.read_text(encoding="utf-8"))
+    result = {}
+    for entry in artifact.get("entries", []):
+        operator_id = entry["operator_id"]
+        normalized = dict(entry)
+        normalized["l3_code"] = entry.get("l3_code", entry.get("stable101_l3"))
+        result[operator_id] = normalized
+    return result
+
+
+def _load_catalog(path: Path) -> dict[str, dict[str, Any]]:
+    artifact = json.loads(path.read_text(encoding="utf-8"))
+    return {entry["operator_id"]: entry for entry in artifact.get("operators", [])}
+
+
+def build_expert_proposals(
+    *,
+    batch_path: Path,
+    mapping_path: Path,
+    catalog_path: Path,
+    review_path: Path,
+    exclusion_path: Path,
+) -> dict[str, Any]:
+    """Build a review-only expert ledger without creating benchmark splits."""
+
+    mapping = _load_mapping(mapping_path)
+    catalog = _load_catalog(catalog_path)
+    batch_rows = _read_jsonl(batch_path)
+    review_rows = [
+        row for row in _read_jsonl(review_path) if row.get("schema") == REVIEW_SCHEMA
+    ]
+    exclusion_rows = _read_jsonl(exclusion_path)
+    reviews_by_proposal: dict[str, list[dict[str, Any]]] = {}
+    for review in review_rows:
+        reviews_by_proposal.setdefault(str(review.get("proposal_id", "")), []).append(review)
+
+    valid_rows = []
+    gate1_failures: list[dict[str, Any]] = []
+    review_failures: list[dict[str, Any]] = []
+    for row in sorted(batch_rows, key=lambda value: str(value.get("proposal_id", ""))):
+        errors = validate_proposal(
+            row,
+            mapping_by_operator=mapping,
+            catalog_by_operator=catalog,
+        )
+        if errors:
+            gate1_failures.append(
+                {"proposal_id": str(row.get("proposal_id", "")), "error_codes": errors}
+            )
+            continue
+        proposal = emit_proposal(
+            row,
+            mapping_by_operator=mapping,
+            catalog_by_operator=catalog,
+        )
+        for review in sorted(
+            reviews_by_proposal.get(str(proposal["proposal_id"]), []),
+            key=lambda value: str(value.get("review_id", "")),
+        ):
+            review_errors = validate_review(proposal, review)
+            if review_errors:
+                review_failures.append(
+                    {
+                        "proposal_id": str(proposal["proposal_id"]),
+                        "review_id": str(review.get("review_id", "")),
+                        "error_codes": review_errors,
+                    }
+                )
+                continue
+            proposal = apply_review(proposal, review)
+        if proposal["graph_review_status"] == "independent_reviewed":
+            proposal = apply_gate2(proposal, exclusion_rows)
+        valid_rows.append(proposal)
+
+    rows, suppressions = deduplicate_proposals(valid_rows)
+    review_status_counts = dict(
+        sorted(Counter(row["graph_review_status"] for row in rows).items())
+    )
+    gate2_counts = dict(sorted(Counter(row["gate2_status"] for row in rows).items()))
+    overlap_counts = dict(
+        sorted(
+            Counter(
+                field
+                for row in rows
+                for field in row.get("gate2_overlap_fields", [])
+            ).items()
+        )
+    )
+    admitted = [
+        row for row in rows if row["supply_admission"] == "gate3_candidate_admitted"
+    ]
+    summary = {
+        "schema": "gis_recommend.qgis_benchmark_expert_proposal_summary.v1",
+        "proposal_count": len(rows),
+        "authored_input_count": len(batch_rows),
+        "review_record_count": len(review_rows),
+        "review_status_counts": review_status_counts,
+        "gate1_failure_count": len(gate1_failures),
+        "gate1_failures": gate1_failures,
+        "review_failure_count": len(review_failures),
+        "review_failures": review_failures,
+        "gate2_status_counts": gate2_counts,
+        "gate2_overlap_counts": overlap_counts,
+        "dedup_suppression_count": len(suppressions),
+        "dedup_suppressions": suppressions,
+        "admitted_expert_count": len(admitted),
+        "target_strata_counts": dict(
+            sorted(
+                Counter(
+                    "|".join(
+                        str(row.get("target_strata", {}).get(field, ""))
+                        for field in (
+                            "anchor_family",
+                            "modality",
+                            "topology",
+                            "graph_size_stratum",
+                        )
+                    )
+                    for row in rows
+                ).items()
+            )
+        ),
+        "admission_flags": {
+            "training_admission": False,
+            "validation_eligible": False,
+            "test_eligible": False,
+            "production_merge": False,
+        },
+        "gate4_created": False,
+        "input_hashes": {
+            "authoring_batch_sha256": _sha256(batch_path),
+            "mapping_sha256": _sha256(mapping_path),
+            "catalog_sha256": _sha256(catalog_path),
+            "review_ledger_sha256": _sha256(review_path),
+            "exclusion_ledger_sha256": _sha256(exclusion_path),
+        },
+    }
+    return {"rows": rows, "reviews": review_rows, "summary": summary}
+
+
+def _jsonl_bytes(rows: list[dict[str, Any]]) -> bytes:
+    return "".join(
+        json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + "\n"
+        for row in rows
+    ).encode("utf-8")
+
+
+def write_expert_outputs(result: dict[str, Any], output_dir: Path) -> dict[str, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    paths = {
+        "expert_proposals": output_dir / "expert_proposals_v1.jsonl",
+        "expert_proposal_reviews": output_dir / "expert_proposal_reviews_v1.jsonl",
+        "expert_proposal_summary": output_dir / "expert_proposal_summary_v1.json",
+        "expert_proposal_hash_ledger": output_dir / "expert_proposal_hash_ledger_v1.json",
+    }
+    proposal_bytes = _jsonl_bytes(result["rows"])
+    review_header = {
+        "schema": "gis_recommend.qgis_benchmark_expert_proposal_review_ledger.v1",
+        "record_type": "schema_header",
+        "review_count": len(result["reviews"]),
+    }
+    review_bytes = _jsonl_bytes([review_header, *result["reviews"]])
+    summary_bytes = (
+        json.dumps(result["summary"], ensure_ascii=False, indent=2, sort_keys=True)
+        + "\n"
+    ).encode("utf-8")
+    paths["expert_proposals"].write_bytes(proposal_bytes)
+    paths["expert_proposal_reviews"].write_bytes(review_bytes)
+    paths["expert_proposal_summary"].write_bytes(summary_bytes)
+    hash_ledger = {
+        "schema": "gis_recommend.qgis_benchmark_expert_proposal_hash_ledger.v1",
+        "artifacts": {
+            paths["expert_proposals"].name: hashlib.sha256(proposal_bytes).hexdigest(),
+            paths["expert_proposal_reviews"].name: hashlib.sha256(review_bytes).hexdigest(),
+            paths["expert_proposal_summary"].name: hashlib.sha256(summary_bytes).hexdigest(),
+        },
+    }
+    paths["expert_proposal_hash_ledger"].write_text(
+        json.dumps(hash_ledger, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return paths
+
+
+def main(argv: list[str] | None = None) -> int:
+    root = Path(__file__).resolve().parents[1]
+    authority = root / "benchmarks/qgis_planner_v1/authority"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--batch", type=Path, default=authority / "expert_authoring_batch_v1.jsonl")
+    parser.add_argument("--mapping", type=Path, default=authority / "qgis_operator_l3_mapping.json")
+    parser.add_argument("--catalog", type=Path, default=authority / "qgis_catalog.json")
+    parser.add_argument("--reviews", type=Path, default=authority / "expert_proposal_reviews_v1.jsonl")
+    parser.add_argument("--exclusions", type=Path, default=authority / "source_exclusion_ledger.jsonl")
+    parser.add_argument("--output-dir", type=Path, default=authority)
+    args = parser.parse_args(argv)
+    result = build_expert_proposals(
+        batch_path=args.batch,
+        mapping_path=args.mapping,
+        catalog_path=args.catalog,
+        review_path=args.reviews,
+        exclusion_path=args.exclusions,
+    )
+    write_expert_outputs(result, args.output_dir)
+    print(
+        f"proposals={len(result['rows'])} "
+        f"reviewed={result['summary']['review_status_counts'].get('independent_reviewed', 0)} "
+        f"admitted={result['summary']['admitted_expert_count']}"
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

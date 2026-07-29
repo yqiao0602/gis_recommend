@@ -17,11 +17,11 @@
 - Create: `scripts/build_qgis_benchmark_expert_proposals.py`
 - Test: `tests/test_build_qgis_benchmark_expert_proposals.py`
 
-- [ ] **Step 1: Write failing schema tests**
+- [x] **Step 1: Write failing schema tests**
 
 Add tests for one valid proposal, one proposal containing `task_text`, one proposal with a non-headline operator, and one proposal with invalid process IDs. Assert that failures are deterministic error codes rather than exceptions with free-form messages.
 
-- [ ] **Step 2: Run the focused test file and verify it fails**
+- [x] **Step 2: Run the focused test file and verify it fails**
 
 Run:
 
@@ -31,7 +31,7 @@ rtk pytest -q tests/test_build_qgis_benchmark_expert_proposals.py
 
 Expected: collection or assertion failures because the proposal builder and validator do not exist.
 
-- [ ] **Step 3: Implement the proposal loader and validator**
+- [x] **Step 3: Implement the proposal loader and validator**
 
 Implement these functions in `scripts/build_qgis_benchmark_expert_proposals.py`:
 
@@ -57,7 +57,7 @@ stable101 L3 matches, no forbidden fields, valid unique process IDs, and links
 that reference only declared process IDs. Preserve `proposal_only`, closed
 training flags, and blank review references in the emitted row.
 
-- [ ] **Step 4: Add a minimal declarative batch**
+- [x] **Step 4: Add a minimal declarative batch**
 
 Store a small, explicitly authored batch with no task text or parameters. Each
 row declares only an ordered operator/L3 graph, links, intended anchor family,
@@ -65,11 +65,11 @@ and target strata. Include at least one vector one-step graph, one raster graph,
 one merge graph, one branch graph, and one seven-plus graph so every validator
 path is exercised. The batch is proposal input, not Gate 3 supply.
 
-- [ ] **Step 5: Run the focused tests and verify they pass**
+- [x] **Step 5: Run the focused tests and verify they pass**
 
 Run the same `pytest` command. Expected: all schema and forbidden-field tests pass, with proposal rows still marked `proposal_only`.
 
-- [ ] **Step 6: Commit the isolated schema/batch change**
+- [x] **Step 6: Commit the isolated schema/batch change**
 
 ```powershell
 rtk git add benchmarks/qgis_planner_v1/authority/expert_authoring_batch_v1.jsonl scripts/build_qgis_benchmark_expert_proposals.py tests/test_build_qgis_benchmark_expert_proposals.py
@@ -82,19 +82,19 @@ rtk git commit -m "Add review-only expert benchmark proposal schema"
 - Modify: `scripts/build_qgis_benchmark_expert_proposals.py`
 - Test: `tests/test_build_qgis_benchmark_expert_proposals.py`
 
-- [ ] **Step 1: Add failing profile tests**
+- [x] **Step 1: Add failing profile tests**
 
 Cover disconnected graphs, cycles, invalid links, linear chains, multi-input merges, branches, and all four graph-size strata. Assert the profile matches the existing Gate 3 definitions exactly.
 
-- [ ] **Step 2: Reuse the existing graph contract**
+- [x] **Step 2: Reuse the existing graph contract**
 
 Import the existing `graph_profile` implementation from `scripts.build_qgis_benchmark_candidate_pool` rather than creating a second topology definition. Add a public wrapper only if the current private name prevents stable import. Compute modality from the strict catalog using the same input/output type rule as Gate 3.
 
-- [ ] **Step 3: Enforce Gate 1 and recomputed labels**
+- [x] **Step 3: Enforce Gate 1 and recomputed labels**
 
 Reject any operator whose mapping entry is absent, not `stable101_direct`, not strict-catalog present, or not `headline_eligible`. Recompute `quota_anchor_l3`, `covered_l3`, `modality`, `topology`, and `graph_size_stratum`; reject author-supplied values that differ from recomputation.
 
-- [ ] **Step 4: Run the profile tests**
+- [x] **Step 4: Run the profile tests**
 
 Run:
 
@@ -111,11 +111,11 @@ Expected: all valid/invalid graph profile cases pass and Gate 1 remains closed f
 - Modify: `scripts/build_qgis_benchmark_expert_proposals.py`
 - Test: `tests/test_build_qgis_benchmark_expert_proposals.py`
 
-- [ ] **Step 1: Write failing review transition tests**
+- [x] **Step 1: Write failing review transition tests**
 
 Test that an unreviewed proposal cannot become admitted, a rejected proposal cannot become admitted, a simple independent review can become reviewed, and a branch/merge proposal requires two distinct reviewer IDs. Test that review records require a decision, checked operator IDs, checked links, strata verdicts, exclusion verdict, reviewer ID, and timestamp.
 
-- [ ] **Step 2: Implement review validation**
+- [x] **Step 2: Implement review validation**
 
 Implement:
 
@@ -133,12 +133,12 @@ Allow only `accept`, `revise`, or `reject`. `accept` sets
 passes. `revise` and `reject` remain non-admitted. Never modify process/link
 content during review application.
 
-- [ ] **Step 3: Add an initially empty review artifact**
+- [x] **Step 3: Add an initially empty review artifact**
 
 Write an empty JSONL review ledger with a schema header only through the builder,
 so the first proposal build cannot accidentally imply human approval.
 
-- [ ] **Step 4: Run review tests**
+- [x] **Step 4: Run review tests**
 
 Run:
 
@@ -154,19 +154,19 @@ Expected: all review-state tests pass and zero rows are admitted with an empty r
 - Modify: `scripts/build_qgis_benchmark_expert_proposals.py`
 - Test: `tests/test_build_qgis_benchmark_expert_proposals.py`
 
-- [ ] **Step 1: Write failing overlap tests**
+- [x] **Step 1: Write failing overlap tests**
 
 Create fixtures where an expert graph has the same normalized DAG or semantic DAG as an existing exclusion row, and a control graph with no collision. Assert collisions are recorded by index name and prevent admission.
 
-- [ ] **Step 2: Implement graph-only Gate 2 fingerprints**
+- [x] **Step 2: Implement graph-only Gate 2 fingerprints**
 
 Reuse the nine-index logic from `scripts.build_qgis_benchmark_exclusion_ledger.py`. Build deterministic normalized DAG, forbidden-near-DAG, and semantic-DAG keys from the proposal `processes + links`; leave source/body/AST/call-graph/task-text identities empty rather than inventing them. Set `gate2_status=pending` until the adapter receives the frozen exclusion indexes.
 
-- [ ] **Step 3: Implement four-layer proposal deduplication**
+- [x] **Step 3: Implement four-layer proposal deduplication**
 
 Deduplicate in order: exact proposal identity, canonical graph identity, normalized DAG identity, and training-pair-style process/link identity. Keep the first deterministic canonical row and record suppressed IDs/reason codes in the summary. Deduplication must not alter source-backed artifacts.
 
-- [ ] **Step 4: Run overlap and dedup tests**
+- [x] **Step 4: Run overlap and dedup tests**
 
 Run the focused test file. Expected: collisions and duplicates remain non-admitted; clean reviewed proposals retain empty overlap fields.
 
@@ -180,19 +180,19 @@ Run the focused test file. Expected: collisions and duplicates remain non-admitt
 - Test: `tests/test_build_qgis_benchmark_expert_proposals.py`
 - Test: `tests/test_build_qgis_benchmark_candidate_pool.py`
 
-- [ ] **Step 1: Add deterministic CLI build test**
+- [x] **Step 1: Add deterministic CLI build test**
 
 Build the same authoring batch twice into isolated directories and assert byte-identical proposal JSONL, review JSONL, summary, and hash ledger. Assert the existing candidate pool summary remains exactly 146 source-backed rows when no admitted expert proposals are supplied.
 
-- [ ] **Step 2: Implement the CLI and summary**
+- [x] **Step 2: Implement the CLI and summary**
 
 Add required inputs for batch, stable101 mapping, strict catalog, capability matrix, and Gate 2 exclusion ledger. Emit proposal/review/summary/hash artifacts. Summary must report proposal count, review status counts, Gate 1 failures, Gate 2 overlap counts, dedup suppressions, admitted expert count, target-stratum counts, and all closed admission flags.
 
-- [ ] **Step 3: Add optional admitted-expert input to Gate 3**
+- [x] **Step 3: Add optional admitted-expert input to Gate 3**
 
 Add an optional `expert_proposals` input to the existing candidate-pool builder. The default path remains unchanged. When supplied, include only rows satisfying `independent_reviewed`, Gate 1 passed, Gate 2 passed, dedup canonical, and `gate3_candidate_admitted`; classify them as `expert_authored` and never as `qgis_source_backed`.
 
-- [ ] **Step 4: Run Gate 3 regression tests**
+- [x] **Step 4: Run Gate 3 regression tests**
 
 Run:
 
@@ -202,7 +202,7 @@ rtk pytest -q tests/test_build_qgis_benchmark_expert_proposals.py tests/test_bui
 
 Expected: the existing 146-row source-only summary is unchanged, proposal-only rows contribute zero, and a fully admitted fixture contributes exactly one expert-authored row with no source-backed count increase.
 
-- [ ] **Step 5: Commit the implementation batch**
+- [x] **Step 5: Commit the implementation batch**
 
 ```powershell
 rtk git add scripts/build_qgis_benchmark_expert_proposals.py scripts/build_qgis_benchmark_candidate_pool.py tests/test_build_qgis_benchmark_expert_proposals.py tests/test_build_qgis_benchmark_candidate_pool.py benchmarks/qgis_planner_v1/authority/expert_authoring_batch_v1.jsonl benchmarks/qgis_planner_v1/authority/expert_proposals_v1.jsonl benchmarks/qgis_planner_v1/authority/expert_proposal_reviews_v1.jsonl benchmarks/qgis_planner_v1/authority/expert_proposal_summary_v1.json
@@ -217,15 +217,15 @@ rtk git commit -m "Add review-gated expert supply to benchmark Gate 3"
 - Modify: `docs/CURRENT_STATE.md:Benchmark`
 - Modify: `progress.md`
 
-- [ ] **Step 1: Record the proposal-only gate status**
+- [x] **Step 1: Record the proposal-only gate status**
 
 State the number of proposals, reviewed rows, admitted rows, and remaining strata gaps. Keep Gate 3 failed unless the combined pool actually satisfies all joint quotas.
 
-- [ ] **Step 2: Verify scope boundaries**
+- [x] **Step 2: Verify scope boundaries**
 
 Confirm the documentation does not claim any change to GEE/QGIS training data, stable101/stable110 mapping, production vocabulary, model training, or final benchmark splits.
 
-- [ ] **Step 3: Run final checks**
+- [x] **Step 3: Run final checks**
 
 ```powershell
 rtk git diff --check
