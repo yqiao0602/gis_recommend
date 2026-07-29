@@ -33,13 +33,15 @@ proposal revision. The record binds to the immutable proposal graph hash and
 contains human-readable audit evidence only:
 
 - `proposal_id` and `proposal_graph_sha256`;
-- a bounded `task_intent` stating the intended analytical outcome;
-- a bounded `output_constraint` naming the required output geometry/type and
+- `task_intent`, stating the intended analytical outcome when evidence exists;
+- `output_constraint`, naming the required output geometry/type and
   aggregation semantics without datasets, fields, thresholds, paths, or
-  execution parameters;
-- `process_necessity`, one record per process ID explaining the process's role
-  in achieving the stated outcome;
+  execution parameters when evidence exists;
+- `process_necessity`, explaining each process's role in achieving the stated
+  outcome when evidence exists;
 - `semantic_closure_decision`: `closed`, `return_for_revision`, or `rejected`;
+- `reason_codes`, a deterministic list that is empty for `closed` and identifies
+  missing or contradictory evidence for non-closed decisions;
 - reviewer ID, reviewer kind, timestamp, conflict declaration, expertise
   attestation, and rationale;
 - a SHA-256 of the canonical sidecar record.
@@ -59,18 +61,23 @@ Required review constraints:
 
 1. The graph hash must exactly match the current proposal revision. A graph
    edit invalidates prior semantic review.
-2. Every `process_necessity.process_id` must appear exactly once and explain a
-   role that is consistent with the declared task intent and output constraint.
-3. `task_intent`, `output_constraint`, and every necessity statement must be
-   non-empty but must not contain dataset IDs, file paths, source snippets,
-   field names, numeric values, CRS values, or execution parameters.
-4. Only a `closed` review may be used when seeking human approval.
+2. A `closed` decision requires non-empty `task_intent`, `output_constraint`,
+   and exactly one `process_necessity` entry for every graph process. Each entry
+   must explain a role consistent with the declared intent and output.
+3. A `return_for_revision` or `rejected` decision may leave missing evidence as
+   null or an empty list, but must include at least one stable `reason_code` and
+   a non-empty rationale. Missing evidence must never be represented by filler
+   text such as `not provided`.
+4. Any supplied intent, output, or necessity text must not contain dataset IDs,
+   file paths, source snippets, field names, numeric values, CRS values, or
+   execution parameters.
+5. Only a `closed` review may be used when seeking human approval.
    `return_for_revision` and `rejected` fail closed and cannot count for supply.
-5. The semantic reviewer must be an independent human QGIS expert, distinct
+6. The semantic reviewer must be an independent human QGIS expert, distinct
    from the technical graph reviewers. The existing approval reviewer may also
    perform this review only when independence from technical review remains
    true.
-6. The sidecar does not substitute for technical graph review, Gate 2
+7. The sidecar does not substitute for technical graph review, Gate 2
    zero-overlap, proposal deduplication, or human approval.
 
 The v1 semantic review has one authoritative record per proposal revision.
