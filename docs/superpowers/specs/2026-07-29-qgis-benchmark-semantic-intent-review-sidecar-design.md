@@ -42,6 +42,8 @@ contains human-readable audit evidence only:
 - `semantic_closure_decision`: `closed`, `return_for_revision`, or `rejected`;
 - `reason_codes`, a deterministic list that is empty for `closed` and identifies
   missing or contradictory evidence for non-closed decisions;
+- `concrete_data_facts_included=false` and
+  `execution_parameters_included=false` as machine-checked attestations;
 - reviewer ID, reviewer kind, timestamp, conflict declaration, expertise
   attestation, and rationale;
 - a SHA-256 of the canonical sidecar record.
@@ -70,7 +72,8 @@ Required review constraints:
    text such as `not provided`.
 4. Any supplied intent, output, or necessity text must not contain dataset IDs,
    file paths, source snippets, field names, numeric values, CRS values, or
-   execution parameters.
+   execution parameters. Both structured inclusion flags must be exactly false;
+   nested forbidden fact keys also fail validation.
 5. Only a `closed` review may be used when seeking human approval.
    `return_for_revision` and `rejected` fail closed and cannot count for supply.
 6. The semantic reviewer must be an independent human QGIS expert, distinct
