@@ -363,6 +363,7 @@ def build(
                 and proposal.get("gate2_status") == "passed"
                 and proposal.get("dedup_status") == "canonical"
                 and proposal.get("human_approval_status") == "approved"
+                and proposal.get("semantic_review_status") in {"closed", "not_required"}
                 and proposal.get("supply_admission") == "gate3_candidate_admitted"
             )
             processes = proposal.get("processes", [])
