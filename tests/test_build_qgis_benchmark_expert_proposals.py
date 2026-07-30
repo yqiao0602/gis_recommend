@@ -79,6 +79,25 @@ def _valid_row() -> dict[str, object]:
     }
 
 
+def _four_step_row() -> dict[str, object]:
+    row = _valid_row()
+    row["processes"] = [
+        {
+            "process_id": f"p{index}",
+            "operator_id": "native:buffer",
+            "l3_code": "L3_02_01_01",
+        }
+        for index in range(4)
+    ]
+    row["links"] = [
+        {"source_process_id": f"p{index}", "target_process_id": f"p{index + 1}"}
+        for index in range(3)
+    ]
+    row["graph_size_stratum"] = "four_to_six"
+    row["target_strata"]["graph_size_stratum"] = "four_to_six"
+    return row
+
+
 def test_valid_parameter_free_proposal_emits_closed_review_only_row() -> None:
     mapping, catalog = _authorities()
     row = _valid_row()
@@ -95,12 +114,26 @@ def test_valid_parameter_free_proposal_emits_closed_review_only_row() -> None:
     assert emitted["parameters_included"] is False
     assert emitted["graph_review_status"] == "unreviewed"
     assert emitted["gate2_status"] == "pending"
+    assert emitted["semantic_review_required"] is False
+    assert emitted["semantic_review_status"] == "not_required"
     assert emitted["supply_admission"] == "proposal_only"
     assert emitted["review_refs"] == []
     assert emitted["training_admission"] is False
     assert emitted["validation_eligible"] is False
     assert emitted["test_eligible"] is False
     assert emitted["production_merge"] is False
+
+
+def test_four_step_proposal_requires_pending_semantic_review() -> None:
+    mapping, catalog = _authorities()
+
+    emitted = emit_proposal(
+        _four_step_row(), mapping_by_operator=mapping, catalog_by_operator=catalog
+    )
+
+    assert emitted["semantic_review_required"] is True
+    assert emitted["semantic_review_status"] == "pending"
+    assert emitted["supply_admission"] == "proposal_only"
 
 
 def test_task_text_is_rejected_with_stable_error_code() -> None:
@@ -328,6 +361,46 @@ def test_review_schema_reports_missing_evidence_with_stable_codes() -> None:
     ]
 
 
+def test_review_semantic_concern_requires_boolean_flag_and_nonempty_reason() -> None:
+    mapping, catalog = _authorities()
+    proposal = emit_proposal(
+        _valid_row(), mapping_by_operator=mapping, catalog_by_operator=catalog
+    )
+    invalid_shape = _valid_review(proposal)
+    invalid_shape["semantic_review_required"] = "yes"
+    missing_reason = _valid_review(proposal)
+    missing_reason["semantic_review_required"] = True
+
+    assert validate_review(proposal, invalid_shape) == [
+        "review_semantic_review_required_invalid"
+    ]
+    assert validate_review(proposal, missing_reason) == [
+        "review_semantic_concern_reason_required"
+    ]
+
+
+def test_reviewer_concern_for_smaller_graph_is_monotonic() -> None:
+    mapping, catalog = _authorities()
+    proposal = emit_proposal(
+        _valid_row(), mapping_by_operator=mapping, catalog_by_operator=catalog
+    )
+    concern = _valid_review(proposal, reviewer_id="reviewer-a")
+    concern["semantic_review_required"] = True
+    concern["semantic_concern_reason"] = "The output intent is ambiguous."
+
+    concerned = apply_review(proposal, concern)
+    accepted_later = apply_review(
+        concerned, _valid_review(concerned, reviewer_id="reviewer-b")
+    )
+
+    assert concerned["semantic_review_required"] is True
+    assert concerned["semantic_review_status"] == "pending"
+    assert concerned["supply_admission"] == "proposal_only"
+    assert accepted_later["semantic_review_required"] is True
+    assert accepted_later["semantic_review_status"] == "pending"
+    assert accepted_later["supply_admission"] == "proposal_only"
+
+
 def test_gate2_graph_collision_is_recorded_and_blocks_admission() -> None:
     mapping, catalog = _authorities()
     proposal = emit_proposal(
@@ -434,6 +507,49 @@ def test_human_approval_queue_contains_only_reviewed_zero_overlap_candidates() -
     assert queue[0]["decision"] is None
     assert queue[0]["decided_at"] is None
     assert queue[0]["rationale"] is None
+
+
+def test_semantic_pending_proposal_remains_in_human_approval_queue() -> None:
+    mapping, catalog = _authorities()
+    proposal = emit_proposal(
+        _four_step_row(), mapping_by_operator=mapping, catalog_by_operator=catalog
+    )
+    reviewed = apply_review(proposal, _valid_review(proposal))
+    screened = apply_gate2(reviewed, [])
+    canonical, _ = deduplicate_proposals([screened])
+
+    queue = expert_module.build_human_approval_queue(
+        canonical, gate2_exclusion_sha256="e" * 64
+    )
+
+    assert [row["proposal_id"] for row in queue] == ["proposal-001"]
+    assert queue[0]["semantic_review_required"] is True
+    assert queue[0]["semantic_review_status"] == "pending"
+
+
+def test_approve_is_blocked_until_semantic_review_closes_but_return_is_allowed() -> None:
+    mapping, catalog = _authorities()
+    proposal = emit_proposal(
+        _four_step_row(), mapping_by_operator=mapping, catalog_by_operator=catalog
+    )
+    reviewed = apply_review(proposal, _valid_review(proposal))
+    screened = apply_gate2(reviewed, [])
+    canonical, _ = deduplicate_proposals([screened])
+    proposal = canonical[0]
+    queue = expert_module.build_human_approval_queue(
+        [proposal], gate2_exclusion_sha256="e" * 64
+    )[0]
+    approval = _valid_human_approval(queue)
+    returned = dict(approval)
+    returned["decision"] = "return_for_revision"
+    rejected = dict(approval)
+    rejected["decision"] = "reject"
+
+    assert expert_module.validate_human_approval(proposal, queue, approval) == [
+        "approval_semantic_review_not_closed"
+    ]
+    assert expert_module.validate_human_approval(proposal, queue, returned) == []
+    assert expert_module.validate_human_approval(proposal, queue, rejected) == []
 
 
 def test_valid_human_approval_is_bound_to_queue_and_admits_candidate() -> None:

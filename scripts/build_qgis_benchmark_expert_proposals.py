@@ -17,6 +17,7 @@ from scripts.build_qgis_benchmark_candidate_pool import (
     _modality as _gate3_modality,
     graph_profile as _gate3_graph_profile,
 )
+from scripts.qgis_benchmark_semantic_intent import requires_semantic_review
 
 
 SCHEMA = "gis_recommend.qgis_benchmark_expert_proposal.v1"
@@ -99,6 +100,7 @@ def _refresh_admission(row: dict[str, Any]) -> None:
         and row.get("gate2_status") == "passed"
         and row.get("dedup_status") == "canonical"
         and row.get("human_approval_status") == "approved"
+        and row.get("semantic_review_status") in {"closed", "not_required"}
     )
     row["supply_admission"] = (
         "gate3_candidate_admitted" if admitted else "proposal_only"
@@ -149,6 +151,12 @@ def build_human_approval_queue(
             "technical_review_refs": sorted(proposal.get("review_refs", [])),
             "technical_reviewer_ids": sorted(
                 proposal.get("graph_reviewer_ids", [])
+            ),
+            "semantic_review_required": proposal.get(
+                "semantic_review_required", True
+            ),
+            "semantic_review_status": proposal.get(
+                "semantic_review_status", "pending"
             ),
             "gate1_status": "passed",
             "gate2_status": "passed",
@@ -205,6 +213,10 @@ def validate_human_approval(
         "return_for_revision",
     }:
         errors.append("approval_decision_invalid")
+    if approval.get("decision") == "approve" and proposal.get(
+        "semantic_review_status"
+    ) not in {"closed", "not_required"}:
+        errors.append("approval_semantic_review_not_closed")
     if approval.get("conflict_of_interest_declared") is not False:
         errors.append("approval_conflict_of_interest_invalid")
     if approval.get("qgis_expertise_attested") is not True:
@@ -441,6 +453,7 @@ def emit_proposal(
     if errors:
         raise ValueError("invalid proposal: " + ",".join(errors))
     emitted = deepcopy(row)
+    semantic_review_required = requires_semantic_review(emitted)
     emitted.update(
         {
             "schema": SCHEMA,
@@ -448,6 +461,10 @@ def emit_proposal(
             "graph_review_status": "unreviewed",
             "gate1_status": "passed",
             "gate2_status": "pending",
+            "semantic_review_required": semantic_review_required,
+            "semantic_review_status": (
+                "pending" if semantic_review_required else "not_required"
+            ),
             "supply_admission": "proposal_only",
             "training_admission": False,
             "validation_eligible": False,
@@ -531,6 +548,19 @@ def validate_review(
         errors.append("review_exclusion_verdict_invalid")
     if review.get("decision") == "accept" and review.get("exclusion_verdict") == "overlap_found":
         errors.append("review_accept_with_overlap")
+    if "semantic_review_required" in review and not isinstance(
+        review.get("semantic_review_required"), bool
+    ):
+        errors.append("review_semantic_review_required_invalid")
+    if review.get("semantic_review_required") is True:
+        concern_reason = review.get("semantic_concern_reason")
+        if not isinstance(concern_reason, str) or not concern_reason.strip():
+            errors.append("review_semantic_concern_reason_required")
+    elif "semantic_concern_reason" in review and (
+        not isinstance(review.get("semantic_concern_reason"), str)
+        or not review["semantic_concern_reason"].strip()
+    ):
+        errors.append("review_semantic_concern_reason_invalid")
     return list(dict.fromkeys(errors))
 
 
@@ -564,6 +594,10 @@ def apply_review(
     if review["reviewer_id"] not in decision_reviewer_ids:
         decision_reviewer_ids.append(review["reviewer_id"])
     updated[decision_field] = decision_reviewer_ids
+
+    if review.get("semantic_review_required") is True:
+        updated["semantic_review_required"] = True
+        updated["semantic_review_status"] = "pending"
 
     required_reviews = 2 if updated.get("topology") in _COMPLEX_TOPOLOGIES else 1
     if updated.get("graph_reject_reviewer_ids"):
