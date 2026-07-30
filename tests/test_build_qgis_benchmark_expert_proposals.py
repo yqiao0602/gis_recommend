@@ -79,7 +79,9 @@ def _valid_row() -> dict[str, object]:
     }
 
 
-def _four_step_row() -> dict[str, object]:
+def _linear_row(
+    process_count: int, *, graph_size_stratum: str
+) -> dict[str, object]:
     row = _valid_row()
     row["processes"] = [
         {
@@ -87,15 +89,19 @@ def _four_step_row() -> dict[str, object]:
             "operator_id": "native:buffer",
             "l3_code": "L3_02_01_01",
         }
-        for index in range(4)
+        for index in range(process_count)
     ]
     row["links"] = [
         {"source_process_id": f"p{index}", "target_process_id": f"p{index + 1}"}
-        for index in range(3)
+        for index in range(process_count - 1)
     ]
-    row["graph_size_stratum"] = "four_to_six"
-    row["target_strata"]["graph_size_stratum"] = "four_to_six"
+    row["graph_size_stratum"] = graph_size_stratum
+    row["target_strata"]["graph_size_stratum"] = graph_size_stratum
     return row
+
+
+def _four_step_row() -> dict[str, object]:
+    return _linear_row(4, graph_size_stratum="four_to_six")
 
 
 def test_valid_parameter_free_proposal_emits_closed_review_only_row() -> None:
@@ -129,6 +135,20 @@ def test_four_step_proposal_requires_pending_semantic_review() -> None:
 
     emitted = emit_proposal(
         _four_step_row(), mapping_by_operator=mapping, catalog_by_operator=catalog
+    )
+
+    assert emitted["semantic_review_required"] is True
+    assert emitted["semantic_review_status"] == "pending"
+    assert emitted["supply_admission"] == "proposal_only"
+
+
+def test_seven_step_proposal_also_requires_pending_semantic_review() -> None:
+    mapping, catalog = _authorities()
+
+    emitted = emit_proposal(
+        _linear_row(7, graph_size_stratum="seven_plus"),
+        mapping_by_operator=mapping,
+        catalog_by_operator=catalog,
     )
 
     assert emitted["semantic_review_required"] is True
@@ -550,6 +570,33 @@ def test_approve_is_blocked_until_semantic_review_closes_but_return_is_allowed()
     ]
     assert expert_module.validate_human_approval(proposal, queue, returned) == []
     assert expert_module.validate_human_approval(proposal, queue, rejected) == []
+
+
+def test_admission_refresh_requires_closed_semantics_after_human_approval() -> None:
+    mapping, catalog = _authorities()
+    proposal = emit_proposal(
+        _four_step_row(), mapping_by_operator=mapping, catalog_by_operator=catalog
+    )
+    proposal["semantic_review_status"] = "closed"
+    reviewed = apply_review(proposal, _valid_review(proposal))
+    screened = apply_gate2(reviewed, [])
+    canonical, _ = deduplicate_proposals([screened])
+    proposal = canonical[0]
+    queue = expert_module.build_human_approval_queue(
+        [proposal], gate2_exclusion_sha256="e" * 64
+    )[0]
+
+    approved = expert_module.apply_human_approval(
+        proposal, queue, _valid_human_approval(queue)
+    )
+    assert approved["supply_admission"] == "gate3_candidate_admitted"
+
+    pending = deepcopy(approved)
+    pending["semantic_review_status"] = "pending"
+    refreshed = apply_gate2(pending, [])
+
+    assert refreshed["human_approval_status"] == "approved"
+    assert refreshed["supply_admission"] == "proposal_only"
 
 
 def test_valid_human_approval_is_bound_to_queue_and_admits_candidate() -> None:
