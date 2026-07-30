@@ -21,6 +21,10 @@ from scripts.build_qgis_benchmark_candidate_pool import (
 
 SCHEMA = "gis_recommend.qgis_benchmark_expert_proposal.v1"
 REVIEW_SCHEMA = "gis_recommend.qgis_benchmark_expert_proposal_review.v1"
+HUMAN_APPROVAL_QUEUE_SCHEMA = (
+    "gis_recommend.qgis_benchmark_expert_human_approval_queue.v1"
+)
+HUMAN_APPROVAL_SCHEMA = "gis_recommend.qgis_benchmark_expert_human_approval.v1"
 FORBIDDEN_FIELDS = {
     "task_text",
     "task_description",
@@ -51,6 +55,8 @@ _REVIEW_REQUIRED_FIELDS = {
     "review_id",
     "proposal_id",
     "reviewer_id",
+    "reviewer_kind",
+    "approval_authority",
     "reviewed_at",
     "decision",
     "checked_operator_ids",
@@ -61,6 +67,21 @@ _REVIEW_REQUIRED_FIELDS = {
 }
 _STRATA_FIELDS = {"modality", "topology", "graph_size_stratum"}
 _COMPLEX_TOPOLOGIES = {"branch_or_multi_output", "multi_input_merge"}
+_HUMAN_APPROVAL_REQUIRED_FIELDS = {
+    "schema",
+    "approval_id",
+    "proposal_id",
+    "queue_record_sha256",
+    "proposal_graph_sha256",
+    "gate2_exclusion_sha256",
+    "approver_id",
+    "approver_kind",
+    "decided_at",
+    "decision",
+    "rationale",
+    "conflict_of_interest_declared",
+    "qgis_expertise_attested",
+}
 
 
 def _hash_json(value: Any) -> str:
@@ -77,10 +98,147 @@ def _refresh_admission(row: dict[str, Any]) -> None:
         and row.get("gate1_status") == "passed"
         and row.get("gate2_status") == "passed"
         and row.get("dedup_status") == "canonical"
+        and row.get("human_approval_status") == "approved"
     )
     row["supply_admission"] = (
         "gate3_candidate_admitted" if admitted else "proposal_only"
     )
+
+
+def proposal_graph_sha256(proposal: dict[str, Any]) -> str:
+    """Bind approval to the exact parameter-free graph, not mutable metadata."""
+
+    return _hash_json(
+        {
+            "processes": proposal.get("processes", []),
+            "links": proposal.get("links", []),
+        }
+    )
+
+
+def build_human_approval_queue(
+    proposals: list[dict[str, Any]], *, gate2_exclusion_sha256: str
+) -> list[dict[str, Any]]:
+    """Emit blank human-review records only for technically eligible proposals."""
+
+    queue = []
+    for proposal in sorted(proposals, key=lambda row: str(row.get("proposal_id", ""))):
+        eligible = (
+            proposal.get("graph_review_status") == "independent_reviewed"
+            and proposal.get("gate1_status") == "passed"
+            and proposal.get("gate2_status") == "passed"
+            and not proposal.get("gate2_overlap_fields", [])
+            and proposal.get("dedup_status") == "canonical"
+            and proposal.get("human_approval_status") == "pending"
+        )
+        if not eligible:
+            continue
+        row = {
+            "schema": HUMAN_APPROVAL_QUEUE_SCHEMA,
+            "record_id": f"human-approval-queue-{proposal['proposal_id']}",
+            "proposal_id": proposal["proposal_id"],
+            "proposal_graph_sha256": proposal_graph_sha256(proposal),
+            "processes": deepcopy(proposal.get("processes", [])),
+            "links": deepcopy(proposal.get("links", [])),
+            "modality": proposal.get("modality"),
+            "topology": proposal.get("topology"),
+            "graph_size_stratum": proposal.get("graph_size_stratum"),
+            "quota_anchor_l3": proposal.get("quota_anchor_l3"),
+            "quota_credit_eligible": proposal.get("quota_credit_eligible", True),
+            "gate2_exclusion_sha256": gate2_exclusion_sha256,
+            "technical_review_refs": sorted(proposal.get("review_refs", [])),
+            "technical_reviewer_ids": sorted(
+                proposal.get("graph_reviewer_ids", [])
+            ),
+            "gate1_status": "passed",
+            "gate2_status": "passed",
+            "gate2_overlap_fields": [],
+            "dedup_status": "canonical",
+            "approval_status": "pending_human",
+            "approver_id": None,
+            "decision": None,
+            "decided_at": None,
+            "rationale": None,
+        }
+        row["queue_record_sha256"] = _hash_json(row)
+        queue.append(row)
+    return queue
+
+
+def validate_human_approval(
+    proposal: dict[str, Any],
+    queue_record: dict[str, Any],
+    approval: dict[str, Any],
+) -> list[str]:
+    """Validate one post-Gate-2 human decision against immutable evidence."""
+
+    if not isinstance(approval, dict):
+        return ["approval_not_object"]
+    errors = [
+        f"approval_missing_field:{field}"
+        for field in sorted(_HUMAN_APPROVAL_REQUIRED_FIELDS.difference(approval))
+    ]
+    if approval.get("schema") != HUMAN_APPROVAL_SCHEMA:
+        errors.append("approval_schema_invalid")
+    if approval.get("proposal_id") != proposal.get("proposal_id"):
+        errors.append("approval_proposal_id_mismatch")
+    if approval.get("queue_record_sha256") != queue_record.get(
+        "queue_record_sha256"
+    ):
+        errors.append("approval_queue_record_sha256_mismatch")
+    if approval.get("proposal_graph_sha256") != proposal_graph_sha256(proposal):
+        errors.append("approval_proposal_graph_sha256_mismatch")
+    if approval.get("gate2_exclusion_sha256") != queue_record.get(
+        "gate2_exclusion_sha256"
+    ):
+        errors.append("approval_gate2_exclusion_sha256_mismatch")
+    for field in ("approval_id", "approver_id", "decided_at", "rationale"):
+        if field in approval and (
+            not isinstance(approval.get(field), str) or not approval.get(field)
+        ):
+            errors.append(f"approval_{field}_invalid")
+    if approval.get("approver_kind") != "human_qgis_expert":
+        errors.append("approval_approver_kind_invalid")
+    if approval.get("decision") not in {
+        "approve",
+        "reject",
+        "return_for_revision",
+    }:
+        errors.append("approval_decision_invalid")
+    if approval.get("conflict_of_interest_declared") is not False:
+        errors.append("approval_conflict_of_interest_invalid")
+    if approval.get("qgis_expertise_attested") is not True:
+        errors.append("approval_qgis_expertise_not_attested")
+    if approval.get("approver_id") in queue_record.get(
+        "technical_reviewer_ids", []
+    ):
+        errors.append("approval_not_independent_from_technical_review")
+    if queue_record.get("approval_status") != "pending_human":
+        errors.append("approval_queue_not_pending")
+    return list(dict.fromkeys(errors))
+
+
+def apply_human_approval(
+    proposal: dict[str, Any],
+    queue_record: dict[str, Any],
+    approval: dict[str, Any],
+) -> dict[str, Any]:
+    """Apply a valid human decision without modifying processes or links."""
+
+    errors = validate_human_approval(proposal, queue_record, approval)
+    if errors:
+        raise ValueError("invalid human approval: " + ",".join(errors))
+    updated = deepcopy(proposal)
+    decision = approval["decision"]
+    updated["human_approval_status"] = {
+        "approve": "approved",
+        "reject": "rejected",
+        "return_for_revision": "returned_for_revision",
+    }[decision]
+    updated["human_approval_ref"] = approval["approval_id"]
+    updated["human_approver_id"] = approval["approver_id"]
+    _refresh_admission(updated)
+    return updated
 
 
 def graph_profile(
@@ -297,6 +455,13 @@ def emit_proposal(
             "production_merge": False,
             "review_refs": [],
             "graph_reviewer_ids": [],
+            "graph_accept_reviewer_ids": [],
+            "graph_revision_reviewer_ids": [],
+            "graph_reject_reviewer_ids": [],
+            "human_approval_status": "pending",
+            "quota_credit_eligible": (
+                row.get("topology") != "branch_or_multi_output"
+            ),
         }
     )
     return emitted
@@ -324,6 +489,15 @@ def validate_review(
             not isinstance(review.get(field), str) or not review.get(field)
         ):
             errors.append(f"review_{field}_invalid")
+    if "reviewer_kind" in review and review.get("reviewer_kind") not in {
+        "ai_independent_technical",
+        "human_qgis_expert",
+    }:
+        errors.append("review_reviewer_kind_invalid")
+    if "approval_authority" in review and not isinstance(
+        review.get("approval_authority"), bool
+    ):
+        errors.append("review_approval_authority_invalid")
 
     expected_operator_ids = [
         process.get("operator_id")
@@ -375,28 +549,31 @@ def apply_review(
         review_refs.append(review["review_id"])
     updated["review_refs"] = review_refs
 
-    if updated.get("graph_review_status") == "rejected":
-        updated["supply_admission"] = "proposal_only"
-        return updated
-    if review["decision"] == "reject":
-        updated["graph_review_status"] = "rejected"
-        updated["supply_admission"] = "proposal_only"
-        return updated
-    if review["decision"] == "revise":
-        updated["graph_review_status"] = "unreviewed"
-        updated["supply_admission"] = "proposal_only"
-        return updated
-
     reviewer_ids = list(updated.get("graph_reviewer_ids", []))
     if review["reviewer_id"] not in reviewer_ids:
         reviewer_ids.append(review["reviewer_id"])
     updated["graph_reviewer_ids"] = reviewer_ids
+
+    decision_fields = {
+        "accept": "graph_accept_reviewer_ids",
+        "revise": "graph_revision_reviewer_ids",
+        "reject": "graph_reject_reviewer_ids",
+    }
+    decision_field = decision_fields[review["decision"]]
+    decision_reviewer_ids = list(updated.get(decision_field, []))
+    if review["reviewer_id"] not in decision_reviewer_ids:
+        decision_reviewer_ids.append(review["reviewer_id"])
+    updated[decision_field] = decision_reviewer_ids
+
     required_reviews = 2 if updated.get("topology") in _COMPLEX_TOPOLOGIES else 1
-    updated["graph_review_status"] = (
-        "independent_reviewed"
-        if len(reviewer_ids) >= required_reviews
-        else "unreviewed"
-    )
+    if updated.get("graph_reject_reviewer_ids"):
+        updated["graph_review_status"] = "rejected"
+    elif updated.get("graph_revision_reviewer_ids"):
+        updated["graph_review_status"] = "revision_required"
+    elif len(updated.get("graph_accept_reviewer_ids", [])) >= required_reviews:
+        updated["graph_review_status"] = "independent_reviewed"
+    else:
+        updated["graph_review_status"] = "unreviewed"
     _refresh_admission(updated)
     return updated
 
@@ -550,6 +727,7 @@ def build_expert_proposals(
     catalog_path: Path,
     review_path: Path,
     exclusion_path: Path,
+    approval_path: Path | None = None,
 ) -> dict[str, Any]:
     """Build a review-only expert ledger without creating benchmark splits."""
 
@@ -559,7 +737,12 @@ def build_expert_proposals(
     review_rows = [
         row for row in _read_jsonl(review_path) if row.get("schema") == REVIEW_SCHEMA
     ]
+    approval_rows = [
+        row
+        for row in _read_jsonl(approval_path) if row.get("schema") == HUMAN_APPROVAL_SCHEMA
+    ] if approval_path is not None else []
     exclusion_rows = _read_jsonl(exclusion_path)
+    exclusion_sha256 = _sha256(exclusion_path)
     reviews_by_proposal: dict[str, list[dict[str, Any]]] = {}
     for review in review_rows:
         reviews_by_proposal.setdefault(str(review.get("proposal_id", "")), []).append(review)
@@ -603,8 +786,62 @@ def build_expert_proposals(
         valid_rows.append(proposal)
 
     rows, suppressions = deduplicate_proposals(valid_rows)
+    approval_queue = build_human_approval_queue(
+        rows, gate2_exclusion_sha256=exclusion_sha256
+    )
+    queue_by_proposal = {
+        str(row["proposal_id"]): row for row in approval_queue
+    }
+    approvals_by_proposal: dict[str, list[dict[str, Any]]] = {}
+    for approval in approval_rows:
+        approvals_by_proposal.setdefault(
+            str(approval.get("proposal_id", "")), []
+        ).append(approval)
+    approval_failures: list[dict[str, Any]] = []
+    row_index = {
+        str(row["proposal_id"]): index for index, row in enumerate(rows)
+    }
+    for proposal_id, approvals in sorted(approvals_by_proposal.items()):
+        if proposal_id not in queue_by_proposal or proposal_id not in row_index:
+            approval_failures.append(
+                {
+                    "proposal_id": proposal_id,
+                    "approval_id": str(approvals[0].get("approval_id", "")),
+                    "error_codes": ["approval_proposal_not_eligible"],
+                }
+            )
+            continue
+        if len(approvals) != 1:
+            approval_failures.append(
+                {
+                    "proposal_id": proposal_id,
+                    "approval_id": "",
+                    "error_codes": ["approval_duplicate_decisions"],
+                }
+            )
+            continue
+        approval = approvals[0]
+        proposal = rows[row_index[proposal_id]]
+        approval_errors = validate_human_approval(
+            proposal, queue_by_proposal[proposal_id], approval
+        )
+        if approval_errors:
+            approval_failures.append(
+                {
+                    "proposal_id": proposal_id,
+                    "approval_id": str(approval.get("approval_id", "")),
+                    "error_codes": approval_errors,
+                }
+            )
+            continue
+        rows[row_index[proposal_id]] = apply_human_approval(
+            proposal, queue_by_proposal[proposal_id], approval
+        )
     review_status_counts = dict(
         sorted(Counter(row["graph_review_status"] for row in rows).items())
+    )
+    human_approval_status_counts = dict(
+        sorted(Counter(row["human_approval_status"] for row in rows).items())
     )
     gate2_counts = dict(sorted(Counter(row["gate2_status"] for row in rows).items()))
     overlap_counts = dict(
@@ -625,6 +862,11 @@ def build_expert_proposals(
         "authored_input_count": len(batch_rows),
         "review_record_count": len(review_rows),
         "review_status_counts": review_status_counts,
+        "human_approval_status_counts": human_approval_status_counts,
+        "human_approval_queue_count": len(approval_queue),
+        "human_approval_decision_count": len(approval_rows),
+        "human_approval_failure_count": len(approval_failures),
+        "human_approval_failures": approval_failures,
         "gate1_failure_count": len(gate1_failures),
         "gate1_failures": gate1_failures,
         "review_failure_count": len(review_failures),
@@ -662,10 +904,21 @@ def build_expert_proposals(
             "mapping_sha256": _sha256(mapping_path),
             "catalog_sha256": _sha256(catalog_path),
             "review_ledger_sha256": _sha256(review_path),
-            "exclusion_ledger_sha256": _sha256(exclusion_path),
+            "exclusion_ledger_sha256": exclusion_sha256,
+            "human_approval_ledger_sha256": (
+                _sha256(approval_path)
+                if approval_path is not None and approval_path.is_file()
+                else None
+            ),
         },
     }
-    return {"rows": rows, "reviews": review_rows, "summary": summary}
+    return {
+        "rows": rows,
+        "reviews": review_rows,
+        "approval_queue": approval_queue,
+        "approvals": approval_rows,
+        "summary": summary,
+    }
 
 
 def _jsonl_bytes(rows: list[dict[str, Any]]) -> bytes:
@@ -681,6 +934,8 @@ def write_expert_outputs(result: dict[str, Any], output_dir: Path) -> dict[str, 
     paths = {
         "expert_proposals": output_dir / "expert_proposals_v1.jsonl",
         "expert_proposal_reviews": output_dir / "expert_proposal_reviews_v1.jsonl",
+        "expert_human_approval_queue": output_dir / "expert_human_approval_queue_v1.jsonl",
+        "expert_human_approvals": output_dir / "expert_human_approvals_v1.jsonl",
         "expert_proposal_summary": output_dir / "expert_proposal_summary_v1.json",
         "expert_proposal_hash_ledger": output_dir / "expert_proposal_hash_ledger_v1.json",
     }
@@ -691,18 +946,40 @@ def write_expert_outputs(result: dict[str, Any], output_dir: Path) -> dict[str, 
         "review_count": len(result["reviews"]),
     }
     review_bytes = _jsonl_bytes([review_header, *result["reviews"]])
+    approval_queue_header = {
+        "schema": "gis_recommend.qgis_benchmark_expert_human_approval_queue_ledger.v1",
+        "record_type": "schema_header",
+        "queue_count": len(result["approval_queue"]),
+    }
+    approval_queue_bytes = _jsonl_bytes(
+        [approval_queue_header, *result["approval_queue"]]
+    )
+    approval_header = {
+        "schema": "gis_recommend.qgis_benchmark_expert_human_approval_ledger.v1",
+        "record_type": "schema_header",
+        "approval_count": len(result["approvals"]),
+    }
+    approval_bytes = _jsonl_bytes([approval_header, *result["approvals"]])
     summary_bytes = (
         json.dumps(result["summary"], ensure_ascii=False, indent=2, sort_keys=True)
         + "\n"
     ).encode("utf-8")
     paths["expert_proposals"].write_bytes(proposal_bytes)
     paths["expert_proposal_reviews"].write_bytes(review_bytes)
+    paths["expert_human_approval_queue"].write_bytes(approval_queue_bytes)
+    paths["expert_human_approvals"].write_bytes(approval_bytes)
     paths["expert_proposal_summary"].write_bytes(summary_bytes)
     hash_ledger = {
         "schema": "gis_recommend.qgis_benchmark_expert_proposal_hash_ledger.v1",
         "artifacts": {
             paths["expert_proposals"].name: hashlib.sha256(proposal_bytes).hexdigest(),
             paths["expert_proposal_reviews"].name: hashlib.sha256(review_bytes).hexdigest(),
+            paths["expert_human_approval_queue"].name: hashlib.sha256(
+                approval_queue_bytes
+            ).hexdigest(),
+            paths["expert_human_approvals"].name: hashlib.sha256(
+                approval_bytes
+            ).hexdigest(),
             paths["expert_proposal_summary"].name: hashlib.sha256(summary_bytes).hexdigest(),
         },
     }
@@ -721,6 +998,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--mapping", type=Path, default=authority / "qgis_operator_l3_mapping.json")
     parser.add_argument("--catalog", type=Path, default=authority / "qgis_catalog.json")
     parser.add_argument("--reviews", type=Path, default=authority / "expert_proposal_reviews_v1.jsonl")
+    parser.add_argument(
+        "--approvals",
+        type=Path,
+        default=authority / "expert_human_approvals_v1.jsonl",
+    )
     parser.add_argument("--exclusions", type=Path, default=authority / "source_exclusion_ledger.jsonl")
     parser.add_argument("--output-dir", type=Path, default=authority)
     args = parser.parse_args(argv)
@@ -730,6 +1012,7 @@ def main(argv: list[str] | None = None) -> int:
         catalog_path=args.catalog,
         review_path=args.reviews,
         exclusion_path=args.exclusions,
+        approval_path=args.approvals,
     )
     write_expert_outputs(result, args.output_dir)
     print(

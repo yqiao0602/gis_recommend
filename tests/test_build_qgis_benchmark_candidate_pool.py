@@ -180,6 +180,7 @@ def test_optional_expert_input_counts_only_fully_admitted_rows(tmp_path: Path) -
         "gate1_status": "passed",
         "gate2_status": "passed",
         "dedup_status": "canonical",
+        "human_approval_status": "approved",
         "supply_admission": "gate3_candidate_admitted",
     }
     expert_path.write_text(json.dumps(expert) + "\n", encoding="utf-8")
@@ -201,3 +202,4 @@ def test_optional_expert_input_counts_only_fully_admitted_rows(tmp_path: Path) -
     }
     assert result["summary"]["distinct_source_authorities"] == 0
     assert result["rows"][0]["candidate_id"].startswith("qgis-expert-")
+    assert result["rows"][0]["quota_credit_eligible"] is True

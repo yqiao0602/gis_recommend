@@ -155,7 +155,8 @@ def _family_supply(
 ) -> list[dict[str, Any]]:
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
-        grouped[row["quota_anchor_l3"]].append(row)
+        if row.get("quota_credit_eligible", True):
+            grouped[row["quota_anchor_l3"]].append(row)
     result = []
     for capability in capability_rows:
         if capability["admission_tier"] != "headline_core":
@@ -361,6 +362,7 @@ def build(
                 and proposal.get("gate1_status") == "passed"
                 and proposal.get("gate2_status") == "passed"
                 and proposal.get("dedup_status") == "canonical"
+                and proposal.get("human_approval_status") == "approved"
                 and proposal.get("supply_admission") == "gate3_candidate_admitted"
             )
             processes = proposal.get("processes", [])
@@ -401,6 +403,9 @@ def build(
                     "links": [dict(link) for link in proposal.get("links", [])],
                     "parameters_included": False,
                     "quota_anchor_l3": proposal["quota_anchor_l3"],
+                    "quota_credit_eligible": proposal.get(
+                        "quota_credit_eligible", True
+                    ),
                     "covered_l3": proposal["covered_l3"],
                     "modality": proposal["modality"],
                     "topology": proposal["topology"],
