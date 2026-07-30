@@ -19,6 +19,10 @@ from scripts.build_qgis_benchmark_expert_proposals import (
     validate_proposal,
     write_expert_outputs,
 )
+from scripts.qgis_benchmark_semantic_intent import (
+    SEMANTIC_REVIEW_SCHEMA,
+    semantic_review_sha256,
+)
 
 
 def _authorities() -> tuple[dict[str, dict[str, object]], dict[str, dict[str, object]]]:
@@ -503,6 +507,149 @@ def _valid_human_approval(queue: dict[str, object]) -> dict[str, object]:
     }
 
 
+def _valid_semantic_review(
+    proposal: dict[str, object],
+    *,
+    decision: str = "closed",
+    review_id: str = "semantic-review-proposal-001-v1",
+) -> dict[str, object]:
+    review = {
+        "schema": SEMANTIC_REVIEW_SCHEMA,
+        "semantic_review_id": review_id,
+        "proposal_id": proposal["proposal_id"],
+        "proposal_graph_sha256": expert_module.proposal_graph_sha256(proposal),
+        "reviewer_id": "qgis-expert-01",
+        "reviewer_kind": "human_qgis_expert",
+        "reviewed_at": "2026-07-29T12:00:00Z",
+        "semantic_closure_decision": decision,
+        "task_intent": None,
+        "output_constraint": None,
+        "process_necessity": [],
+        "reason_codes": ["task_intent_missing"],
+        "rationale": "The proposal has no auditable semantic intent.",
+        "concrete_data_facts_included": False,
+        "execution_parameters_included": False,
+        "conflict_of_interest_declared": False,
+        "qgis_expertise_attested": True,
+    }
+    if decision == "closed":
+        review.update(
+            {
+                "task_intent": "Create a transformed planning layer.",
+                "output_constraint": "The output is one vector layer.",
+                "process_necessity": [
+                    {
+                        "process_id": process["process_id"],
+                        "role": "Required transformation.",
+                    }
+                    for process in proposal["processes"]
+                ],
+                "reason_codes": [],
+                "rationale": (
+                    "Every process is necessary for the declared output layer."
+                ),
+            }
+        )
+    review["semantic_review_sha256"] = semantic_review_sha256(review)
+    return review
+
+
+def test_apply_semantic_reviews_closes_review_and_refreshes_admission() -> None:
+    proposal = _approval_ready_proposal()
+    proposal["human_approval_status"] = "approved"
+    proposal["semantic_review_required"] = True
+    proposal["semantic_review_status"] = "pending"
+    review = _valid_semantic_review(proposal)
+
+    updated, failures, emitted_reviews = expert_module.apply_semantic_reviews(
+        [proposal], [review]
+    )
+
+    assert proposal["semantic_review_status"] == "pending"
+    assert failures == []
+    assert [row["semantic_review_id"] for row in emitted_reviews] == [
+        "semantic-review-proposal-001-v1"
+    ]
+    assert emitted_reviews[0] is not review
+    assert emitted_reviews[0]["semantic_review_sha256"] == semantic_review_sha256(
+        review
+    )
+    assert updated[0]["semantic_review_status"] == "closed"
+    assert updated[0]["semantic_review_ref"] == review["semantic_review_id"]
+    assert updated[0]["semantic_reviewer_id"] == "qgis-expert-01"
+    assert updated[0]["supply_admission"] == "gate3_candidate_admitted"
+    assert updated[0]["processes"] == proposal["processes"]
+    assert updated[0]["links"] == proposal["links"]
+
+
+def test_apply_semantic_reviews_missing_duplicate_and_stale_fail_closed() -> None:
+    proposal = _approval_ready_proposal()
+    proposal["semantic_review_required"] = True
+    proposal["semantic_review_status"] = "pending"
+    stale_proposal = deepcopy(proposal)
+    stale_proposal["proposal_id"] = "proposal-002"
+    missing = _valid_semantic_review(proposal, review_id="semantic-review-missing")
+    missing["proposal_id"] = "proposal-missing"
+    missing["semantic_review_sha256"] = semantic_review_sha256(missing)
+    duplicate_a = _valid_semantic_review(proposal, review_id="semantic-review-a")
+    duplicate_b = _valid_semantic_review(proposal, review_id="semantic-review-b")
+    stale = _valid_semantic_review(stale_proposal, review_id="semantic-review-stale")
+    stale["proposal_graph_sha256"] = "0" * 64
+    stale["semantic_review_sha256"] = semantic_review_sha256(stale)
+
+    updated, failures, emitted_reviews = expert_module.apply_semantic_reviews(
+        [proposal, stale_proposal],
+        [missing, duplicate_b, stale, duplicate_a],
+    )
+
+    assert emitted_reviews == []
+    assert updated[0]["semantic_review_status"] == "pending"
+    assert updated[1]["semantic_review_status"] == "pending"
+    assert failures == [
+        {
+            "proposal_id": "proposal-001",
+            "error_codes": ["semantic_review_duplicate_decisions"],
+        },
+        {
+            "proposal_id": "proposal-002",
+            "semantic_review_id": "semantic-review-stale",
+            "error_codes": ["semantic_review_proposal_graph_sha256_mismatch"],
+        },
+        {
+            "proposal_id": "proposal-missing",
+            "semantic_review_id": "semantic-review-missing",
+            "error_codes": ["semantic_review_proposal_not_found"],
+        },
+    ]
+
+
+def test_apply_semantic_reviews_surfaces_schema_and_independence_errors() -> None:
+    proposal = _approval_ready_proposal()
+    proposal["semantic_review_required"] = True
+    proposal["semantic_review_status"] = "pending"
+    review = _valid_semantic_review(proposal)
+    review["schema"] = "invalid"
+    review["reviewer_id"] = "reviewer-a"
+    review["semantic_review_sha256"] = semantic_review_sha256(review)
+
+    updated, failures, emitted_reviews = expert_module.apply_semantic_reviews(
+        [proposal], [review]
+    )
+
+    assert emitted_reviews == []
+    assert updated[0]["semantic_review_status"] == "pending"
+    assert failures == [
+        {
+            "proposal_id": "proposal-001",
+            "semantic_review_id": "semantic-review-proposal-001-v1",
+            "error_codes": [
+                "semantic_review_schema_invalid",
+                "semantic_review_not_independent_from_graph_review",
+            ],
+        }
+    ]
+
+
 def test_human_approval_queue_contains_only_reviewed_zero_overlap_candidates() -> None:
     ready = _approval_ready_proposal()
     blocked = dict(ready)
@@ -664,6 +811,7 @@ def test_build_outputs_are_byte_stable_and_keep_all_admissions_closed(
     mapping_path = tmp_path / "mapping.json"
     catalog_path = tmp_path / "catalog.json"
     review_path = tmp_path / "reviews.jsonl"
+    semantic_review_path = tmp_path / "semantic_reviews.jsonl"
     exclusion_path = tmp_path / "exclusions.jsonl"
     batch_path.write_text(json.dumps(row) + "\n", encoding="utf-8")
     mapping_path.write_text(
@@ -691,6 +839,17 @@ def test_build_outputs_are_byte_stable_and_keep_all_admissions_closed(
         + "\n",
         encoding="utf-8",
     )
+    semantic_review_path.write_text(
+        json.dumps(
+            {
+                "schema": "gis_recommend.qgis_benchmark_semantic_intent_review_ledger.v1",
+                "record_type": "schema_header",
+                "review_count": 0,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     exclusion_path.write_text("", encoding="utf-8")
 
     result = build_expert_proposals(
@@ -698,6 +857,7 @@ def test_build_outputs_are_byte_stable_and_keep_all_admissions_closed(
         mapping_path=mapping_path,
         catalog_path=catalog_path,
         review_path=review_path,
+        semantic_review_path=semantic_review_path,
         exclusion_path=exclusion_path,
     )
     first_dir = tmp_path / "first"
@@ -707,14 +867,46 @@ def test_build_outputs_are_byte_stable_and_keep_all_admissions_closed(
 
     assert result["summary"]["proposal_count"] == 1
     assert result["summary"]["admitted_expert_count"] == 0
+    assert result["summary"]["semantic_review_input_count"] == 0
+    assert result["summary"]["semantic_review_count"] == 0
+    assert result["summary"]["semantic_review_failure_count"] == 0
+    assert result["summary"]["semantic_review_failures"] == []
+    assert result["summary"]["input_hashes"]["semantic_review_ledger_sha256"]
+    assert result["semantic_summary"] == {
+        "schema": "gis_recommend.qgis_benchmark_semantic_intent_review_summary.v1",
+        "review_count": 0,
+        "failure_count": 0,
+        "failures": [],
+        "status_counts": {"not_required": 1},
+        "admission_flags": {
+            "training_admission": False,
+            "validation_eligible": False,
+            "test_eligible": False,
+            "production_merge": False,
+        },
+    }
     assert result["rows"][0]["supply_admission"] == "proposal_only"
     assert set(first_paths) == {
         "expert_proposals",
         "expert_proposal_reviews",
         "expert_human_approval_queue",
         "expert_human_approvals",
+        "expert_semantic_intent_reviews",
+        "expert_semantic_intent_review_summary",
         "expert_proposal_summary",
         "expert_proposal_hash_ledger",
     }
     for name in first_paths:
         assert first_paths[name].read_bytes() == second_paths[name].read_bytes()
+    hash_ledger = json.loads(
+        first_paths["expert_proposal_hash_ledger"].read_text(encoding="utf-8")
+    )
+    assert set(hash_ledger["artifacts"]) == {
+        "expert_proposals_v1.jsonl",
+        "expert_proposal_reviews_v1.jsonl",
+        "expert_human_approval_queue_v1.jsonl",
+        "expert_human_approvals_v1.jsonl",
+        "expert_semantic_intent_reviews_v1.jsonl",
+        "expert_semantic_intent_review_summary_v1.json",
+        "expert_proposal_summary_v1.json",
+    }

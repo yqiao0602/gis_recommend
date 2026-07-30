@@ -17,7 +17,13 @@ from scripts.build_qgis_benchmark_candidate_pool import (
     _modality as _gate3_modality,
     graph_profile as _gate3_graph_profile,
 )
-from scripts.qgis_benchmark_semantic_intent import requires_semantic_review
+from scripts.qgis_benchmark_semantic_intent import (
+    SEMANTIC_REVIEW_SCHEMA,
+    apply_semantic_review,
+    emit_semantic_review,
+    requires_semantic_review,
+    validate_semantic_review,
+)
 
 
 SCHEMA = "gis_recommend.qgis_benchmark_expert_proposal.v1"
@@ -251,6 +257,71 @@ def apply_human_approval(
     updated["human_approver_id"] = approval["approver_id"]
     _refresh_admission(updated)
     return updated
+
+
+def apply_semantic_reviews(
+    proposals: list[dict[str, Any]], semantic_rows: list[dict[str, Any]]
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    """Apply at most one hash-bound semantic decision per proposal."""
+
+    rows = [deepcopy(row) for row in proposals]
+    row_index = {
+        str(row.get("proposal_id", "")): index for index, row in enumerate(rows)
+    }
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for review in semantic_rows:
+        grouped.setdefault(str(review.get("proposal_id", "")), []).append(review)
+
+    failures: list[dict[str, Any]] = []
+    emitted_reviews: list[dict[str, Any]] = []
+    for proposal_id, reviews in sorted(grouped.items()):
+        reviews = sorted(
+            reviews, key=lambda row: str(row.get("semantic_review_id", ""))
+        )
+        first_review_id = str(reviews[0].get("semantic_review_id", ""))
+        if proposal_id not in row_index:
+            failures.append(
+                {
+                    "proposal_id": proposal_id,
+                    "semantic_review_id": first_review_id,
+                    "error_codes": ["semantic_review_proposal_not_found"],
+                }
+            )
+            continue
+        if len(reviews) != 1:
+            failures.append(
+                {
+                    "proposal_id": proposal_id,
+                    "error_codes": ["semantic_review_duplicate_decisions"],
+                }
+            )
+            continue
+
+        proposal = rows[row_index[proposal_id]]
+        review = reviews[0]
+        graph_sha256 = proposal_graph_sha256(proposal)
+        errors = validate_semantic_review(
+            proposal, review, graph_sha256=graph_sha256
+        )
+        if errors:
+            failures.append(
+                {
+                    "proposal_id": proposal_id,
+                    "semantic_review_id": first_review_id,
+                    "error_codes": errors,
+                }
+            )
+            continue
+
+        emitted = emit_semantic_review(proposal, review, graph_sha256=graph_sha256)
+        updated = apply_semantic_review(
+            proposal, emitted, graph_sha256=graph_sha256
+        )
+        _refresh_admission(updated)
+        rows[row_index[proposal_id]] = updated
+        emitted_reviews.append(emitted)
+
+    return rows, failures, emitted_reviews
 
 
 def graph_profile(
@@ -760,6 +831,7 @@ def build_expert_proposals(
     mapping_path: Path,
     catalog_path: Path,
     review_path: Path,
+    semantic_review_path: Path | None = None,
     exclusion_path: Path,
     approval_path: Path | None = None,
 ) -> dict[str, Any]:
@@ -770,6 +842,15 @@ def build_expert_proposals(
     batch_rows = _read_jsonl(batch_path)
     review_rows = [
         row for row in _read_jsonl(review_path) if row.get("schema") == REVIEW_SCHEMA
+    ]
+    semantic_rows = [
+        row
+        for row in (
+            _read_jsonl(semantic_review_path)
+            if semantic_review_path is not None
+            else []
+        )
+        if row.get("schema") == SEMANTIC_REVIEW_SCHEMA
     ]
     approval_rows = [
         row
@@ -820,6 +901,9 @@ def build_expert_proposals(
         valid_rows.append(proposal)
 
     rows, suppressions = deduplicate_proposals(valid_rows)
+    rows, semantic_failures, emitted_semantic_reviews = apply_semantic_reviews(
+        rows, semantic_rows
+    )
     approval_queue = build_human_approval_queue(
         rows, gate2_exclusion_sha256=exclusion_sha256
     )
@@ -878,6 +962,9 @@ def build_expert_proposals(
         sorted(Counter(row["human_approval_status"] for row in rows).items())
     )
     gate2_counts = dict(sorted(Counter(row["gate2_status"] for row in rows).items()))
+    semantic_status_counts = dict(
+        sorted(Counter(row["semantic_review_status"] for row in rows).items())
+    )
     overlap_counts = dict(
         sorted(
             Counter(
@@ -938,6 +1025,12 @@ def build_expert_proposals(
             "mapping_sha256": _sha256(mapping_path),
             "catalog_sha256": _sha256(catalog_path),
             "review_ledger_sha256": _sha256(review_path),
+            "semantic_review_ledger_sha256": (
+                _sha256(semantic_review_path)
+                if semantic_review_path is not None
+                and semantic_review_path.is_file()
+                else None
+            ),
             "exclusion_ledger_sha256": exclusion_sha256,
             "human_approval_ledger_sha256": (
                 _sha256(approval_path)
@@ -946,9 +1039,33 @@ def build_expert_proposals(
             ),
         },
     }
+    semantic_summary = {
+        "schema": "gis_recommend.qgis_benchmark_semantic_intent_review_summary.v1",
+        "review_count": len(emitted_semantic_reviews),
+        "failure_count": len(semantic_failures),
+        "failures": semantic_failures,
+        "status_counts": semantic_status_counts,
+        "admission_flags": {
+            "training_admission": False,
+            "validation_eligible": False,
+            "test_eligible": False,
+            "production_merge": False,
+        },
+    }
+    summary.update(
+        {
+            "semantic_review_input_count": len(semantic_rows),
+            "semantic_review_count": len(emitted_semantic_reviews),
+            "semantic_review_failure_count": len(semantic_failures),
+            "semantic_review_failures": semantic_failures,
+            "semantic_review_status_counts": semantic_status_counts,
+        }
+    )
     return {
         "rows": rows,
         "reviews": review_rows,
+        "semantic_reviews": emitted_semantic_reviews,
+        "semantic_summary": semantic_summary,
         "approval_queue": approval_queue,
         "approvals": approval_rows,
         "summary": summary,
@@ -970,6 +1087,8 @@ def write_expert_outputs(result: dict[str, Any], output_dir: Path) -> dict[str, 
         "expert_proposal_reviews": output_dir / "expert_proposal_reviews_v1.jsonl",
         "expert_human_approval_queue": output_dir / "expert_human_approval_queue_v1.jsonl",
         "expert_human_approvals": output_dir / "expert_human_approvals_v1.jsonl",
+        "expert_semantic_intent_reviews": output_dir / "expert_semantic_intent_reviews_v1.jsonl",
+        "expert_semantic_intent_review_summary": output_dir / "expert_semantic_intent_review_summary_v1.json",
         "expert_proposal_summary": output_dir / "expert_proposal_summary_v1.json",
         "expert_proposal_hash_ledger": output_dir / "expert_proposal_hash_ledger_v1.json",
     }
@@ -994,6 +1113,23 @@ def write_expert_outputs(result: dict[str, Any], output_dir: Path) -> dict[str, 
         "approval_count": len(result["approvals"]),
     }
     approval_bytes = _jsonl_bytes([approval_header, *result["approvals"]])
+    semantic_header = {
+        "schema": "gis_recommend.qgis_benchmark_semantic_intent_review_ledger.v1",
+        "record_type": "schema_header",
+        "review_count": len(result["semantic_reviews"]),
+    }
+    semantic_bytes = _jsonl_bytes(
+        [semantic_header, *result["semantic_reviews"]]
+    )
+    semantic_summary_bytes = (
+        json.dumps(
+            result["semantic_summary"],
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    ).encode("utf-8")
     summary_bytes = (
         json.dumps(result["summary"], ensure_ascii=False, indent=2, sort_keys=True)
         + "\n"
@@ -1002,6 +1138,10 @@ def write_expert_outputs(result: dict[str, Any], output_dir: Path) -> dict[str, 
     paths["expert_proposal_reviews"].write_bytes(review_bytes)
     paths["expert_human_approval_queue"].write_bytes(approval_queue_bytes)
     paths["expert_human_approvals"].write_bytes(approval_bytes)
+    paths["expert_semantic_intent_reviews"].write_bytes(semantic_bytes)
+    paths["expert_semantic_intent_review_summary"].write_bytes(
+        semantic_summary_bytes
+    )
     paths["expert_proposal_summary"].write_bytes(summary_bytes)
     hash_ledger = {
         "schema": "gis_recommend.qgis_benchmark_expert_proposal_hash_ledger.v1",
@@ -1013,6 +1153,12 @@ def write_expert_outputs(result: dict[str, Any], output_dir: Path) -> dict[str, 
             ).hexdigest(),
             paths["expert_human_approvals"].name: hashlib.sha256(
                 approval_bytes
+            ).hexdigest(),
+            paths["expert_semantic_intent_reviews"].name: hashlib.sha256(
+                semantic_bytes
+            ).hexdigest(),
+            paths["expert_semantic_intent_review_summary"].name: hashlib.sha256(
+                semantic_summary_bytes
             ).hexdigest(),
             paths["expert_proposal_summary"].name: hashlib.sha256(summary_bytes).hexdigest(),
         },
@@ -1033,6 +1179,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--catalog", type=Path, default=authority / "qgis_catalog.json")
     parser.add_argument("--reviews", type=Path, default=authority / "expert_proposal_reviews_v1.jsonl")
     parser.add_argument(
+        "--semantic-reviews",
+        type=Path,
+        default=authority / "expert_semantic_intent_reviews_v1.jsonl",
+    )
+    parser.add_argument(
         "--approvals",
         type=Path,
         default=authority / "expert_human_approvals_v1.jsonl",
@@ -1045,6 +1196,7 @@ def main(argv: list[str] | None = None) -> int:
         mapping_path=args.mapping,
         catalog_path=args.catalog,
         review_path=args.reviews,
+        semantic_review_path=args.semantic_reviews,
         exclusion_path=args.exclusions,
         approval_path=args.approvals,
     )
