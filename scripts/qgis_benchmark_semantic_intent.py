@@ -101,6 +101,46 @@ def _is_non_empty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def _closed_review_proposal_process_ids(
+    proposal: dict[str, Any],
+) -> list[str] | None:
+    processes = proposal.get("processes")
+    if not isinstance(processes, list):
+        return None
+
+    process_ids: list[str] = []
+    seen_process_ids: set[str] = set()
+    for process in processes:
+        if not isinstance(process, dict):
+            return None
+        process_id = process.get("process_id")
+        if not _is_non_empty_string(process_id):
+            return None
+        if process_id in seen_process_ids:
+            return None
+        seen_process_ids.add(process_id)
+        process_ids.append(process_id)
+    return process_ids
+
+
+def _has_exact_closed_review_coverage(
+    process_ids: list[Any], expected_process_ids: list[str]
+) -> bool:
+    if len(process_ids) != len(expected_process_ids):
+        return False
+
+    seen_process_ids: set[str] = set()
+    normalized_process_ids: list[str] = []
+    for process_id in process_ids:
+        if not _is_non_empty_string(process_id):
+            return False
+        if process_id in seen_process_ids:
+            return False
+        seen_process_ids.add(process_id)
+        normalized_process_ids.append(process_id)
+    return normalized_process_ids == expected_process_ids
+
+
 def validate_semantic_review(
     proposal: dict[str, Any],
     review: Any,
@@ -213,14 +253,11 @@ def validate_semantic_review(
             errors.append("semantic_review_task_intent_invalid")
         if not _is_non_empty_string(review.get("output_constraint")):
             errors.append("semantic_review_output_constraint_invalid")
-        expected_process_ids = [
-            process.get("process_id")
-            for process in proposal.get("processes", [])
-            if isinstance(process, dict)
-        ]
-        if (
-            not isinstance(process_necessity, list)
-            or process_ids != expected_process_ids
+        expected_process_ids = _closed_review_proposal_process_ids(proposal)
+        if expected_process_ids is None:
+            errors.append("semantic_review_proposal_processes_invalid")
+        elif not isinstance(process_necessity, list) or not _has_exact_closed_review_coverage(
+            process_ids, expected_process_ids
         ):
             errors.append("semantic_review_process_necessity_coverage_mismatch")
         if isinstance(reason_codes, list) and reason_codes:

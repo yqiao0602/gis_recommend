@@ -116,6 +116,123 @@ def test_semantic_review_requirement_fails_closed_on_malformed_processes(
     assert requires_semantic_review(proposal) is True
 
 
+@pytest.mark.parametrize(
+    ("proposal", "expected_error"),
+    [
+        pytest.param(
+            {
+                key: value
+                for key, value in _proposal().items()
+                if key != "processes"
+            },
+            "semantic_review_proposal_processes_invalid",
+            id="missing-processes",
+        ),
+        pytest.param(
+            {
+                **_proposal(),
+                "processes": "not-a-list",
+            },
+            "semantic_review_proposal_processes_invalid",
+            id="non-list-processes",
+        ),
+        pytest.param(
+            {
+                **_proposal(),
+                "processes": [
+                    _proposal()["processes"][0],
+                    "not-a-process",
+                    *_proposal()["processes"][2:],
+                ],
+            },
+            "semantic_review_proposal_processes_invalid",
+            id="non-dict-process-entry",
+        ),
+        pytest.param(
+            {
+                **_proposal(),
+                "processes": [
+                    {
+                        **_proposal()["processes"][0],
+                        "process_id": "",
+                    },
+                    *_proposal()["processes"][1:],
+                ],
+            },
+            "semantic_review_proposal_processes_invalid",
+            id="empty-process-id",
+        ),
+        pytest.param(
+            {
+                **_proposal(),
+                "processes": [
+                    {
+                        **_proposal()["processes"][0],
+                        "process_id": 7,
+                    },
+                    *_proposal()["processes"][1:],
+                ],
+            },
+            "semantic_review_proposal_processes_invalid",
+            id="non-string-process-id",
+        ),
+        pytest.param(
+            {
+                **_proposal(),
+                "processes": [
+                    _proposal()["processes"][0],
+                    {
+                        **_proposal()["processes"][1],
+                        "process_id": "p0",
+                    },
+                    *_proposal()["processes"][2:],
+                ],
+            },
+            "semantic_review_proposal_processes_invalid",
+            id="duplicate-process-id",
+        ),
+    ],
+)
+def test_closed_review_rejects_malformed_or_duplicate_proposal_processes(
+    proposal: dict[str, object], expected_error: str
+) -> None:
+    review = _closed_review(_proposal())
+
+    errors = validate_semantic_review(proposal, review, graph_sha256=GRAPH_SHA256)
+
+    assert errors == [expected_error]
+    with pytest.raises(
+        ValueError,
+        match=f"^invalid semantic review: {expected_error}$",
+    ):
+        apply_semantic_review(proposal, review, graph_sha256=GRAPH_SHA256)
+
+
+def test_closed_review_requires_unique_necessity_process_ids_for_exact_coverage() -> None:
+    proposal = _proposal()
+    review = _closed_review(proposal)
+    review["process_necessity"] = [
+        review["process_necessity"][0],
+        {
+            **review["process_necessity"][1],
+            "process_id": review["process_necessity"][0]["process_id"],
+        },
+        *review["process_necessity"][2:],
+    ]
+
+    errors = validate_semantic_review(proposal, review, graph_sha256=GRAPH_SHA256)
+
+    assert errors == ["semantic_review_process_necessity_coverage_mismatch"]
+    with pytest.raises(
+        ValueError,
+        match=(
+            "^invalid semantic review: "
+            "semantic_review_process_necessity_coverage_mismatch$"
+        ),
+    ):
+        apply_semantic_review(proposal, review, graph_sha256=GRAPH_SHA256)
+
+
 def test_closed_review_validates_emits_and_applies_closed_state() -> None:
     proposal = _proposal()
     review = _closed_review(proposal)
