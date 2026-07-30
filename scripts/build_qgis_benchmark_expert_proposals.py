@@ -32,6 +32,9 @@ HUMAN_APPROVAL_QUEUE_SCHEMA = (
     "gis_recommend.qgis_benchmark_expert_human_approval_queue.v1"
 )
 HUMAN_APPROVAL_SCHEMA = "gis_recommend.qgis_benchmark_expert_human_approval.v1"
+SEMANTIC_REVIEW_LEDGER_SCHEMA = (
+    "gis_recommend.qgis_benchmark_semantic_intent_review_ledger.v1"
+)
 FORBIDDEN_FIELDS = {
     "task_text",
     "task_description",
@@ -850,7 +853,10 @@ def build_expert_proposals(
             if semantic_review_path is not None
             else []
         )
-        if row.get("schema") == SEMANTIC_REVIEW_SCHEMA
+        if not (
+            row.get("schema") == SEMANTIC_REVIEW_LEDGER_SCHEMA
+            and row.get("record_type") == "schema_header"
+        )
     ]
     approval_rows = [
         row
@@ -1114,7 +1120,7 @@ def write_expert_outputs(result: dict[str, Any], output_dir: Path) -> dict[str, 
     }
     approval_bytes = _jsonl_bytes([approval_header, *result["approvals"]])
     semantic_header = {
-        "schema": "gis_recommend.qgis_benchmark_semantic_intent_review_ledger.v1",
+        "schema": SEMANTIC_REVIEW_LEDGER_SCHEMA,
         "record_type": "schema_header",
         "review_count": len(result["semantic_reviews"]),
     }

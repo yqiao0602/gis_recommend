@@ -910,3 +910,101 @@ def test_build_outputs_are_byte_stable_and_keep_all_admissions_closed(
         "expert_semantic_intent_review_summary_v1.json",
         "expert_proposal_summary_v1.json",
     }
+
+
+def test_build_reports_malformed_semantic_records_after_ledger_header(
+    tmp_path: Path,
+) -> None:
+    mapping, catalog = _authorities()
+    row = _valid_row()
+    proposal = emit_proposal(
+        row, mapping_by_operator=mapping, catalog_by_operator=catalog
+    )
+    review = _valid_review(proposal)
+    reviewed = apply_review(proposal, review)
+    screened = apply_gate2(reviewed, [])
+    canonical, _ = deduplicate_proposals([screened])
+    semantic_review = _valid_semantic_review(canonical[0])
+    semantic_review["schema"] = "invalid"
+    semantic_review["semantic_review_sha256"] = semantic_review_sha256(
+        semantic_review
+    )
+
+    batch_path = tmp_path / "batch.jsonl"
+    mapping_path = tmp_path / "mapping.json"
+    catalog_path = tmp_path / "catalog.json"
+    review_path = tmp_path / "reviews.jsonl"
+    semantic_review_path = tmp_path / "semantic_reviews.jsonl"
+    exclusion_path = tmp_path / "exclusions.jsonl"
+    batch_path.write_text(json.dumps(row) + "\n", encoding="utf-8")
+    mapping_path.write_text(
+        json.dumps(
+            {
+                "entries": [
+                    {"operator_id": operator_id, **entry}
+                    for operator_id, entry in mapping.items()
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    catalog_path.write_text(
+        json.dumps({"operators": list(catalog.values())}), encoding="utf-8"
+    )
+    review_path.write_text(
+        "\n".join(
+            json.dumps(record)
+            for record in (
+                {
+                    "schema": "gis_recommend.qgis_benchmark_expert_proposal_review_ledger.v1",
+                    "record_type": "schema_header",
+                    "review_count": 1,
+                },
+                review,
+            )
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    semantic_review_path.write_text(
+        "\n".join(
+            json.dumps(record)
+            for record in (
+                {
+                    "schema": "gis_recommend.qgis_benchmark_semantic_intent_review_ledger.v1",
+                    "record_type": "schema_header",
+                    "review_count": 1,
+                },
+                semantic_review,
+            )
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    exclusion_path.write_text("", encoding="utf-8")
+
+    result = build_expert_proposals(
+        batch_path=batch_path,
+        mapping_path=mapping_path,
+        catalog_path=catalog_path,
+        review_path=review_path,
+        semantic_review_path=semantic_review_path,
+        exclusion_path=exclusion_path,
+    )
+
+    assert result["summary"]["semantic_review_input_count"] == 1
+    assert result["summary"]["semantic_review_count"] == 0
+    assert result["summary"]["semantic_review_failure_count"] == 1
+    assert result["summary"]["semantic_review_failures"] == [
+        {
+            "proposal_id": "proposal-001",
+            "semantic_review_id": "semantic-review-proposal-001-v1",
+            "error_codes": ["semantic_review_schema_invalid"],
+        }
+    ]
+    assert result["semantic_summary"]["review_count"] == 0
+    assert result["semantic_summary"]["failure_count"] == 1
+    assert result["semantic_summary"]["failures"] == result["summary"][
+        "semantic_review_failures"
+    ]
+    assert result["rows"][0]["supply_admission"] == "proposal_only"
