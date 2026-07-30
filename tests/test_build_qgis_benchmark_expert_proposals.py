@@ -863,8 +863,17 @@ def test_build_outputs_are_byte_stable_and_keep_all_admissions_closed(
     first_dir = tmp_path / "first"
     second_dir = tmp_path / "second"
     first_paths = write_expert_outputs(result, first_dir)
-    second_paths = write_expert_outputs(result, second_dir)
+    second_result = build_expert_proposals(
+        batch_path=batch_path,
+        mapping_path=mapping_path,
+        catalog_path=catalog_path,
+        review_path=review_path,
+        semantic_review_path=semantic_review_path,
+        exclusion_path=exclusion_path,
+    )
+    second_paths = write_expert_outputs(second_result, second_dir)
 
+    assert result == second_result
     assert result["summary"]["proposal_count"] == 1
     assert result["summary"]["admitted_expert_count"] == 0
     assert result["summary"]["semantic_review_input_count"] == 0
