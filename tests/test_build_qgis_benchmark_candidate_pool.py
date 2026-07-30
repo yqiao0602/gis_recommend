@@ -116,7 +116,9 @@ def test_write_outputs_creates_only_gate3_authority_files(tmp_path: Path) -> Non
     ]
 
 
-def test_optional_expert_input_counts_only_fully_admitted_rows(tmp_path: Path) -> None:
+def test_optional_expert_input_counts_only_fully_admitted_rows(
+    tmp_path: Path, monkeypatch
+) -> None:
     module = _module()
     mapping_path = tmp_path / "mapping.json"
     catalog_path = tmp_path / "catalog.json"
@@ -205,6 +207,20 @@ def test_optional_expert_input_counts_only_fully_admitted_rows(tmp_path: Path) -
     assert result["summary"]["distinct_source_authorities"] == 0
     assert result["rows"][0]["candidate_id"].startswith("qgis-expert-")
     assert result["rows"][0]["quota_credit_eligible"] is True
+
+    monkeypatch.chdir(tmp_path)
+    relative_result = module.build(
+        root=tmp_path,
+        discovery_pools=(),
+        mapping_path=mapping_path,
+        catalog_path=catalog_path,
+        capability_path=capability_path,
+        exclusion_path=exclusion_path,
+        expert_proposals_path=Path("experts.jsonl"),
+    )
+
+    assert relative_result["summary"] == result["summary"]
+    assert result["summary"]["expert_proposal_input"]["path"] == "experts.jsonl"
 
 
 def test_optional_expert_input_rejects_pending_semantic_review(tmp_path: Path) -> None:

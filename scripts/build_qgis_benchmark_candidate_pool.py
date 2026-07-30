@@ -47,6 +47,13 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _root_relative_posix(root: Path, path: Path) -> str:
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError as exc:
+        raise ValueError(f"authority input must be under benchmark root: {path}") from exc
+
+
 def _json_hash(value: Any) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -351,7 +358,7 @@ def build(
     if expert_proposals_path is not None:
         expert_rows = _read_jsonl(expert_proposals_path)
         expert_input_ref = {
-            "path": str(expert_proposals_path),
+            "path": _root_relative_posix(root, expert_proposals_path),
             "sha256": _sha256(expert_proposals_path),
             "record_count": len(expert_rows),
         }
