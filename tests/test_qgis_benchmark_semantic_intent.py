@@ -76,6 +76,46 @@ def test_semantic_review_requirement_uses_graph_size_or_explicit_flag() -> None:
     assert requires_semantic_review(flagged) is True
 
 
+@pytest.mark.parametrize(
+    "proposal",
+    [
+        pytest.param(
+            {
+                **_proposal(3),
+                "processes": None,
+            },
+            id="none",
+        ),
+        pytest.param(
+            {
+                **_proposal(3),
+                "processes": {"process_id": "p0"},
+            },
+            id="non-list-object",
+        ),
+        pytest.param(
+            {
+                **_proposal(3),
+                "processes": "not-a-list",
+            },
+            id="string",
+        ),
+        pytest.param(
+            {
+                key: value
+                for key, value in _proposal(3).items()
+                if key != "processes"
+            },
+            id="missing",
+        ),
+    ],
+)
+def test_semantic_review_requirement_fails_closed_on_malformed_processes(
+    proposal: dict[str, object],
+) -> None:
+    assert requires_semantic_review(proposal) is True
+
+
 def test_closed_review_validates_emits_and_applies_closed_state() -> None:
     proposal = _proposal()
     review = _closed_review(proposal)

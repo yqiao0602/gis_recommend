@@ -61,7 +61,9 @@ def requires_semantic_review(proposal: dict[str, Any]) -> bool:
     """Return whether graph size or an explicit flag requires semantic review."""
 
     processes = proposal.get("processes")
-    process_count = len(processes) if isinstance(processes, list) else 0
+    if not isinstance(processes, list):
+        return True
+    process_count = len(processes)
     return process_count >= 4 or proposal.get("semantic_review_required") is True
 
 
