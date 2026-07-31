@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib
+import json
+from pathlib import Path
 
 import pytest
 
@@ -84,17 +86,19 @@ def test_merge_dag_requires_two_distinct_reviewers() -> None:
     assert two["rows"][0]["semantic_closure_status"] == "closed"
 
 
-def test_hash_mismatch_and_missing_necessity_fail_closed() -> None:
+def test_hash_mismatch_fails_closed() -> None:
     wrong_hash = approved_review("reviewer-a")
     wrong_hash["canonical_graph_sha256"] = "b" * 64
     assert module.apply_reviews([queue_row()], [wrong_hash])["failure_count"] == 1
 
+
+def test_missing_necessity_fails_closed() -> None:
     missing = approved_review("reviewer-a")
     missing["process_necessity"] = []
     assert module.apply_reviews([queue_row()], [missing])["failure_count"] == 1
 
 
-def test_merge_disagreement_and_revision_do_not_close() -> None:
+def test_merge_disagreement_does_not_close() -> None:
     disagreement = module.apply_reviews(
         [queue_row("multi_input_merge")],
         [approved_review("reviewer-a"), rejected_review("reviewer-b")],
@@ -103,6 +107,8 @@ def test_merge_disagreement_and_revision_do_not_close() -> None:
         "disagreement"
     )
 
+
+def test_return_for_revision_does_not_close() -> None:
     revision = module.apply_reviews(
         [queue_row()], [returned_review("reviewer-a")]
     )
@@ -137,22 +143,25 @@ def test_invalid_review_contract_fails_closed(
     assert result["rows"][0]["semantic_closure_status"] == "invalid_review"
 
 
-def test_duplicate_review_or_reviewer_identity_fails_closed() -> None:
+def test_duplicate_review_id_fails_closed() -> None:
     duplicate_id = approved_review("reviewer-b")
     duplicate_id["review_id"] = "review-reviewer-a"
-    duplicate_reviewer = approved_review("reviewer-a")
-    duplicate_reviewer["review_id"] = "another-review"
-
     by_id = module.apply_reviews(
         [queue_row("multi_input_merge")],
         [approved_review("reviewer-a"), duplicate_id],
     )
+
+    assert by_id["failure_count"] == 1
+
+
+def test_duplicate_reviewer_identity_fails_closed() -> None:
+    duplicate_reviewer = approved_review("reviewer-a")
+    duplicate_reviewer["review_id"] = "another-review"
     by_reviewer = module.apply_reviews(
         [queue_row("multi_input_merge")],
         [approved_review("reviewer-a"), duplicate_reviewer],
     )
 
-    assert by_id["failure_count"] == 1
     assert by_reviewer["failure_count"] == 1
 
 
@@ -179,10 +188,58 @@ def test_process_necessity_must_cover_exact_process_set_once(
     assert result["failure_count"] == 1
 
 
-def test_unknown_graph_and_duplicate_queue_id_fail_closed() -> None:
+def test_unknown_graph_fails_closed() -> None:
     unknown = approved_review("reviewer-a")
     unknown["canonical_graph_id"] = "dag-unknown"
 
     assert module.apply_reviews([queue_row()], [unknown])["failure_count"] == 1
+
+
+def test_duplicate_queue_id_fails_closed() -> None:
     with pytest.raises(ValueError, match="duplicate canonical_graph_id"):
         module.apply_reviews([queue_row(), queue_row()], [])
+
+
+def test_empty_queue_returns_empty_closure_authority() -> None:
+    result = module.apply_reviews([], [])
+
+    assert result["rows"] == []
+    assert result["failure_count"] == 0
+    assert result["summary"]["semantic_closure_status_counts"] == {}
+
+
+def test_empty_reviews_leave_graph_pending() -> None:
+    result = module.apply_reviews([queue_row()], [])
+
+    assert result["rows"][0]["semantic_closure_status"] == "pending_review"
+    assert result["summary"]["review_record_count"] == 0
+
+
+def test_main_initializes_missing_review_ledger(
+    tmp_path: Path,
+) -> None:
+    queue_path = tmp_path / "queue.jsonl"
+    reviews_path = tmp_path / "reviews.jsonl"
+    summary_path = tmp_path / "summary.json"
+    queue_path.write_text(
+        json.dumps(queue_row(), sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    exit_code = module.main(
+        [
+            "--queue",
+            str(queue_path),
+            "--reviews",
+            str(reviews_path),
+            "--summary",
+            str(summary_path),
+        ]
+    )
+
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    assert exit_code == 0
+    assert reviews_path.read_bytes() == b""
+    assert summary["queue_dag_count"] == 1
+    assert summary["review_record_count"] == 0
+    assert summary["semantic_closure_status_counts"] == {"pending_review": 1}
