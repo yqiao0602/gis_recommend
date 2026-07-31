@@ -684,3 +684,11 @@
 - 120/120 gold 与 immutable 52-DAG queue 的 graph/hash/拓扑精确匹配；参数字段、悬空链接、provider-qualified operator ID 文本泄漏和 step-number 答案泄漏均为 0。
 - development/final 的 canonical graph、source authority、forbidden near-DAG key 和 task text overlap 均为 0。
 - 可用 sealed 产物：`benchmarks/qgis_planner_v1/releases/v0.1-final-core-120/`，状态为 `sealed_reviewed_usable_final_core`。该阶段未运行任何 final 模型预测。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 refusal diagnostic 达到 12 条 reviewed
+
+- refusal diagnostic 独立交付 12 条 task，采用 4 个 refusal intent 各 3 个任务变体；6 条为 `unsupported_capability`，6 条为 `underspecified_goal`。
+- unsupported 样本分别回指 capability matrix 中 Atmospheric Correction 与 Polynomial Trend 的 `no_frozen_qgis_implementation` authority，二者 admitted operator 均为 0。
+- underspecified 样本只覆盖分析目标本身无法选择唯一方法的优先区选择与空间聚集任务；缺少字段、阈值、距离、CRS 或路径不作为 refusal 理由。
+- 12/12 primary review 和 12/12 blind independent secondary review 均为 approve；gold 全部为显式 `decision=abstain`，不使用空 process graph，reason code 配额为 6+6。
+- 可用 sealed 产物：`benchmarks/qgis_planner_v1/releases/v0.1-refusal-12/`，状态为 `sealed_reviewed_usable_refusal_diagnostic`，并已生成 release checksums。
