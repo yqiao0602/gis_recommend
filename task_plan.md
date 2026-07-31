@@ -13,11 +13,12 @@
 - [x] 首批 8 个 graph authority 已选定，全部避免未完成双审的 merge DAG。
 - [x] 首批 development pilot：8 条 task + 8 条 gold 完成独立语义复核并可直接评分。
 - [x] development set：40 条 task + 40 条 gold 已完成独立 task-to-gold 语义复核，可直接评分。
-- [ ] sealed final：120 条 task + 120 条 gold。
+- [x] sealed final：120 条 task + 120 条 gold 完成主审、30 条盲二审和 development 隔离检查。
 - [ ] refusal diagnostic：12-20 条，单独计数，不混入 operator+links 主任务。
 
-当前 development set 已达到 `40/40 reviewed_usable`。下一优先级是建设独立的
-120 条 sealed final task+gold；后续进度仍只按完成复核且可实际评分的数据行计数。
+当前 development set 已达到 `40/40 reviewed_usable`，sealed final 已达到
+`120/120 sealed_reviewed_usable`。下一优先级是独立 refusal diagnostic；后续进度
+仍只按完成复核且可实际评分的数据行计数。
 
 ## 当前阶段
 **2026-07-14 — 停止继续复制/上采样无自然语言语义的激活数据，按已批准的 evidence-first 计划重构约 300 条 QGIS 真实数据 pilot。当前只授权推进到 Phase 4 人工确认门禁，不训练、不扩量、不切换默认词表。**

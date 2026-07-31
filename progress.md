@@ -676,3 +676,11 @@
 - 数据由 8 个已审 canonical DAG 各自生成 5 个独立任务表述；40/40 gold 与冻结的 52-DAG queue 精确匹配，graph hash 匹配 40/40，参数字段和悬空链接均为 0。
 - 独立 task-to-gold 盲审为 40 approve / 0 revise / 0 reject；第二阶段整包规格和质量复核 `FAILURES=0`。
 - 可用产物：`benchmarks/qgis_planner_v1/releases/v0.1-development-40/`，状态为 `reviewed_usable_development`。该批是 development set，不冒充 sealed final。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 sealed final 达到 120 条 reviewed task+gold
+
+- final core 使用与 development 完全不同的 40 个 canonical DAG，每个 DAG 编写 3 条模型可见任务文本，共 120 条 task，并逐条绑定 parameter-free QGIS `processes + links` gold。
+- 120/120 完成 primary task-to-gold review；按 40-DAG roster 均匀抽取 30/120 完成 blind independent secondary review。二审发现 1 条复杂栅格任务漏写重复计算与依赖，三个文本变体同步修订，抽中样本重审通过；最终为 primary 120 approve、secondary 30 approve、0 unresolved disagreement。
+- 120/120 gold 与 immutable 52-DAG queue 的 graph/hash/拓扑精确匹配；参数字段、悬空链接、provider-qualified operator ID 文本泄漏和 step-number 答案泄漏均为 0。
+- development/final 的 canonical graph、source authority、forbidden near-DAG key 和 task text overlap 均为 0。
+- 可用 sealed 产物：`benchmarks/qgis_planner_v1/releases/v0.1-final-core-120/`，状态为 `sealed_reviewed_usable_final_core`。该阶段未运行任何 final 模型预测。
