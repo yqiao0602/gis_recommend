@@ -64,14 +64,6 @@ def _is_utc_timestamp(value: Any) -> bool:
     )
 
 
-def _is_sha256(value: Any) -> bool:
-    return (
-        isinstance(value, str)
-        and len(value) == 64
-        and all(character in "0123456789abcdef" for character in value)
-    )
-
-
 def _hash_json(value: dict[str, Any]) -> str:
     payload = json.dumps(
         value,
@@ -82,12 +74,10 @@ def _hash_json(value: dict[str, Any]) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
-def _load_jsonl(path: Path, *, missing_ok: bool = False) -> list[dict[str, Any]]:
-    if missing_ok and not path.exists():
-        return []
+def _parse_jsonl(payload: bytes, path: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for line_number, line in enumerate(
-        path.read_text(encoding="utf-8-sig").splitlines(), start=1
+        payload.decode("utf-8-sig").splitlines(), start=1
     ):
         if not line.strip():
             continue
@@ -96,6 +86,25 @@ def _load_jsonl(path: Path, *, missing_ok: bool = False) -> list[dict[str, Any]]
             raise ValueError(f"{path}:{line_number} must contain a JSON object")
         rows.append(value)
     return rows
+
+
+def _load_jsonl(path: Path, *, missing_ok: bool = False) -> list[dict[str, Any]]:
+    if missing_ok and not path.exists():
+        return []
+    return _parse_jsonl(path.read_bytes(), path)
+
+
+def _load_queue_artifact(
+    path: Path, *, expected_queue_sha256: str | None = None
+) -> tuple[list[dict[str, Any]], str]:
+    payload = path.read_bytes()
+    queue_sha256 = hashlib.sha256(payload).hexdigest()
+    if expected_queue_sha256 is not None and expected_queue_sha256 != queue_sha256:
+        raise ValueError(
+            f"queue SHA256 mismatch: expected {expected_queue_sha256}, "
+            f"got {queue_sha256}"
+        )
+    return _parse_jsonl(payload, path), queue_sha256
 
 
 def _queue_authority(
@@ -142,16 +151,18 @@ def _queue_authority(
 
 
 def build_review_jobs(
-    queue_rows: list[dict[str, Any]],
+    queue_path: Path,
     *,
-    queue_sha256: str,
     reviewer_ids: tuple[str, str] | list[str],
     reviewed_at: str,
+    expected_queue_sha256: str | None = None,
 ) -> list[dict[str, Any]]:
     """Build deterministic reviewer assignments bound to one queue authority."""
+    queue_rows, queue_sha256 = _load_queue_artifact(
+        queue_path,
+        expected_queue_sha256=expected_queue_sha256,
+    )
     queue = _queue_authority(queue_rows)
-    if not _is_sha256(queue_sha256):
-        raise ValueError("invalid queue SHA256")
     if (
         not isinstance(reviewer_ids, (tuple, list))
         or len(reviewer_ids) != 2
@@ -252,17 +263,19 @@ def _validate_review(
 
 
 def bind_review_drafts(
-    queue_rows: list[dict[str, Any]],
+    queue_path: Path,
     review_jobs: list[dict[str, Any]],
     draft_rows: list[dict[str, Any]],
     *,
-    queue_sha256: str,
     reviewer_id: str,
+    expected_queue_sha256: str | None = None,
 ) -> list[dict[str, Any]]:
     """Bind semantic-only drafts to validated queue-controlled review jobs."""
+    queue_rows, queue_sha256 = _load_queue_artifact(
+        queue_path,
+        expected_queue_sha256=expected_queue_sha256,
+    )
     queue = _queue_authority(queue_rows)
-    if not _is_sha256(queue_sha256):
-        raise ValueError("invalid queue SHA256")
     if not _nonempty(reviewer_id):
         raise ValueError("invalid reviewer_id")
 
@@ -499,9 +512,18 @@ def main(argv: list[str] | None = None) -> int:
         default=AUTHORITY_DIR / "v01_dag_review_queue.jsonl",
     )
     parser.add_argument(
-        "--reviews",
+        "--review-jobs",
         type=Path,
-        default=AUTHORITY_DIR / "v01_dag_semantic_reviews.jsonl",
+        default=AUTHORITY_DIR / "v01_dag_review_jobs.jsonl",
+    )
+    parser.add_argument(
+        "--drafts",
+        type=Path,
+        default=AUTHORITY_DIR / "v01_dag_semantic_review_drafts.jsonl",
+    )
+    parser.add_argument(
+        "--reviewer-id",
+        required=True,
     )
     parser.add_argument(
         "--summary",
@@ -510,12 +532,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    queue_rows = _load_jsonl(args.queue)
-    review_rows = _load_jsonl(args.reviews, missing_ok=True)
+    queue_rows, queue_sha256 = _load_queue_artifact(args.queue)
+    review_jobs = _load_jsonl(args.review_jobs)
+    draft_rows = _load_jsonl(args.drafts, missing_ok=True)
+    review_rows = bind_review_drafts(
+        args.queue,
+        review_jobs,
+        draft_rows,
+        reviewer_id=args.reviewer_id,
+        expected_queue_sha256=queue_sha256,
+    )
     result = apply_reviews(queue_rows, review_rows)
-    if not args.reviews.exists():
-        args.reviews.parent.mkdir(parents=True, exist_ok=True)
-        args.reviews.write_text("", encoding="utf-8", newline="\n")
     write_summary(result, args.summary)
     print(
         f"closed={result['summary']['closed_count']} "

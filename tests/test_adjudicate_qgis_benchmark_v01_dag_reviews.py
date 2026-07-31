@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import importlib
 import json
 from pathlib import Path
@@ -8,7 +9,6 @@ import pytest
 
 
 module = importlib.import_module("scripts.adjudicate_qgis_benchmark_v01_dag_reviews")
-QUEUE_SHA256 = "b" * 64
 REVIEWED_AT = "2026-07-31T00:00:00Z"
 REVIEWER_IDS = ("reviewer-a", "reviewer-b")
 
@@ -61,12 +61,27 @@ def returned_review(reviewer_id: str) -> dict[str, object]:
     return row
 
 
-def review_jobs(
-    row: dict[str, object] | None = None,
-) -> list[dict[str, object]]:
+def write_jsonl(path: Path, rows: list[dict[str, object]]) -> None:
+    path.write_text(
+        "".join(
+            json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n"
+            for row in rows
+        ),
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
+@pytest.fixture
+def queue_path(tmp_path: Path) -> Path:
+    path = tmp_path / "queue.jsonl"
+    write_jsonl(path, [queue_row()])
+    return path
+
+
+def review_jobs(queue_path: Path) -> list[dict[str, object]]:
     return module.build_review_jobs(
-        [row or queue_row()],
-        queue_sha256=QUEUE_SHA256,
+        queue_path,
         reviewer_ids=REVIEWER_IDS,
         reviewed_at=REVIEWED_AT,
     )
@@ -277,23 +292,26 @@ def test_empty_reviews_leave_graph_pending() -> None:
     assert result["summary"]["review_record_count"] == 0
 
 
-def test_main_initializes_missing_review_ledger(
-    tmp_path: Path,
+def test_main_binds_drafts_before_adjudication(
+    tmp_path: Path, queue_path: Path
 ) -> None:
-    queue_path = tmp_path / "queue.jsonl"
-    reviews_path = tmp_path / "reviews.jsonl"
+    jobs_path = tmp_path / "jobs.jsonl"
+    drafts_path = tmp_path / "drafts.jsonl"
     summary_path = tmp_path / "summary.json"
-    queue_path.write_text(
-        json.dumps(queue_row(), sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    jobs = review_jobs(queue_path)
+    write_jsonl(jobs_path, jobs)
+    write_jsonl(drafts_path, [semantic_draft(jobs[0])])
 
     exit_code = module.main(
         [
             "--queue",
             str(queue_path),
-            "--reviews",
-            str(reviews_path),
+            "--review-jobs",
+            str(jobs_path),
+            "--drafts",
+            str(drafts_path),
+            "--reviewer-id",
+            "reviewer-a",
             "--summary",
             str(summary_path),
         ]
@@ -301,15 +319,76 @@ def test_main_initializes_missing_review_ledger(
 
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
     assert exit_code == 0
-    assert reviews_path.read_bytes() == b""
     assert summary["queue_dag_count"] == 1
-    assert summary["review_record_count"] == 0
-    assert summary["semantic_closure_status_counts"] == {"pending_review": 1}
+    assert summary["review_record_count"] == 1
+    assert summary["semantic_closure_status_counts"] == {"closed": 1}
 
 
-def test_review_jobs_are_deterministic_and_bind_queue_identity() -> None:
-    once = review_jobs()
-    twice = review_jobs()
+def test_main_rejects_unbound_formal_review_input(
+    tmp_path: Path, queue_path: Path
+) -> None:
+    jobs_path = tmp_path / "jobs.jsonl"
+    drafts_path = tmp_path / "drafts.jsonl"
+    jobs = review_jobs(queue_path)
+    write_jsonl(jobs_path, jobs)
+    write_jsonl(drafts_path, [approved_review("unassigned-reviewer")])
+
+    with pytest.raises(ValueError, match="malformed draft fields"):
+        module.main(
+            [
+                "--queue",
+                str(queue_path),
+                "--review-jobs",
+                str(jobs_path),
+                "--drafts",
+                str(drafts_path),
+                "--reviewer-id",
+                "unassigned-reviewer",
+                "--summary",
+                str(tmp_path / "summary.json"),
+            ]
+        )
+
+
+def test_build_and_bind_verify_actual_queue_bytes(queue_path: Path) -> None:
+    with pytest.raises(ValueError, match="queue SHA256 mismatch"):
+        module.build_review_jobs(
+            queue_path,
+            expected_queue_sha256="b" * 64,
+            reviewer_ids=REVIEWER_IDS,
+            reviewed_at=REVIEWED_AT,
+        )
+
+    jobs = review_jobs(queue_path)
+    draft = semantic_draft(jobs[0])
+    original_sha256 = hashlib.sha256(queue_path.read_bytes()).hexdigest()
+    queue_path.write_bytes(queue_path.read_bytes() + b"\n")
+    assert hashlib.sha256(queue_path.read_bytes()).hexdigest() != original_sha256
+
+    with pytest.raises(ValueError, match="stale queue SHA256"):
+        module.bind_review_drafts(
+            queue_path,
+            jobs,
+            [draft],
+            reviewer_id="reviewer-a",
+        )
+
+    with pytest.raises(ValueError, match="queue SHA256 mismatch"):
+        module.bind_review_drafts(
+            queue_path,
+            jobs,
+            [draft],
+            expected_queue_sha256="c" * 64,
+            reviewer_id="reviewer-a",
+        )
+
+
+def test_review_jobs_are_deterministic_and_bind_queue_identity(
+    queue_path: Path,
+) -> None:
+    once = review_jobs(queue_path)
+    twice = review_jobs(queue_path)
+    queue_sha256 = hashlib.sha256(queue_path.read_bytes()).hexdigest()
 
     assert once == twice
     assert len(once) == 1
@@ -324,7 +403,7 @@ def test_review_jobs_are_deterministic_and_bind_queue_identity() -> None:
         "reviewer_id",
         "reviewed_at",
     }
-    assert once[0]["queue_sha256"] == QUEUE_SHA256
+    assert once[0]["queue_sha256"] == queue_sha256
     assert once[0]["canonical_graph_id"] == "dag-1"
     assert once[0]["canonical_graph_sha256"] == "a" * 64
     assert once[0]["topology"] == "linear"
@@ -333,29 +412,30 @@ def test_review_jobs_are_deterministic_and_bind_queue_identity() -> None:
     assert once[0]["reviewed_at"] == REVIEWED_AT
 
 
-def test_merge_review_jobs_assign_two_distinct_reviewers() -> None:
-    jobs = review_jobs(queue_row("multi_input_merge"))
+def test_merge_review_jobs_assign_two_distinct_reviewers(queue_path: Path) -> None:
+    write_jsonl(queue_path, [queue_row("multi_input_merge")])
+    jobs = review_jobs(queue_path)
 
     assert [job["reviewer_id"] for job in jobs] == list(REVIEWER_IDS)
     assert len({job["review_job_id"] for job in jobs}) == 2
 
 
-def test_binder_attaches_only_job_controlled_fields_and_reuses_validator() -> None:
-    job = review_jobs()[0]
+def test_binder_attaches_only_job_controlled_fields_and_reuses_validator(
+    queue_path: Path,
+) -> None:
+    job = review_jobs(queue_path)[0]
     draft = semantic_draft(job)
 
     once = module.bind_review_drafts(
-        [queue_row()],
+        queue_path,
         [job],
         [draft],
-        queue_sha256=QUEUE_SHA256,
         reviewer_id="reviewer-a",
     )
     twice = module.bind_review_drafts(
-        [queue_row()],
+        queue_path,
         [job],
         [draft],
-        queue_sha256=QUEUE_SHA256,
         reviewer_id="reviewer-a",
     )
 
@@ -389,27 +469,28 @@ def test_binder_attaches_only_job_controlled_fields_and_reuses_validator() -> No
     assert module.apply_reviews([queue_row()], once)["failure_count"] == 0
 
 
-def test_review_id_is_bound_to_review_job_queue_identity() -> None:
-    first_job = review_jobs()[0]
+def test_review_id_is_bound_to_review_job_queue_identity(
+    tmp_path: Path, queue_path: Path
+) -> None:
+    first_job = review_jobs(queue_path)[0]
+    second_queue_path = tmp_path / "second-queue.jsonl"
+    second_queue_path.write_bytes(queue_path.read_bytes() + b"\n")
     second_job = module.build_review_jobs(
-        [queue_row()],
-        queue_sha256="c" * 64,
+        second_queue_path,
         reviewer_ids=REVIEWER_IDS,
         reviewed_at=REVIEWED_AT,
     )[0]
 
     first = module.bind_review_drafts(
-        [queue_row()],
+        queue_path,
         [first_job],
         [semantic_draft(first_job)],
-        queue_sha256=QUEUE_SHA256,
         reviewer_id="reviewer-a",
     )[0]
     second = module.bind_review_drafts(
-        [queue_row()],
+        second_queue_path,
         [second_job],
         [semantic_draft(second_job)],
-        queue_sha256="c" * 64,
         reviewer_id="reviewer-a",
     )[0]
 
@@ -424,76 +505,63 @@ def test_review_id_is_bound_to_review_job_queue_identity() -> None:
     ],
 )
 def test_binder_accepts_explicit_non_approval_type_verdicts(
-    decision: str, verdict: str
+    decision: str, verdict: str, queue_path: Path
 ) -> None:
-    job = review_jobs()[0]
+    job = review_jobs(queue_path)[0]
 
     bound = module.bind_review_drafts(
-        [queue_row()],
+        queue_path,
         [job],
         [semantic_draft(job, decision=decision, verdict=verdict)],
-        queue_sha256=QUEUE_SHA256,
         reviewer_id="reviewer-a",
     )
 
     assert bound[0]["type_compatibility_verdict"] == verdict
 
 
-def test_binder_rejects_unknown_and_duplicate_jobs() -> None:
-    job = review_jobs()[0]
+def test_binder_rejects_unknown_and_duplicate_jobs(queue_path: Path) -> None:
+    job = review_jobs(queue_path)[0]
     unknown = semantic_draft(job)
     unknown["review_job_id"] = "unknown-job"
     with pytest.raises(ValueError, match="unknown review job"):
         module.bind_review_drafts(
-            [queue_row()],
+            queue_path,
             [job],
             [unknown],
-            queue_sha256=QUEUE_SHA256,
             reviewer_id="reviewer-a",
         )
 
     with pytest.raises(ValueError, match="duplicate review job"):
         module.bind_review_drafts(
-            [queue_row()],
+            queue_path,
             [job, job],
             [],
-            queue_sha256=QUEUE_SHA256,
             reviewer_id="reviewer-a",
         )
 
 
-def test_binder_rejects_duplicate_draft_job() -> None:
-    job = review_jobs()[0]
+def test_binder_rejects_duplicate_draft_job(queue_path: Path) -> None:
+    job = review_jobs(queue_path)[0]
     draft = semantic_draft(job)
 
     with pytest.raises(ValueError, match="duplicate draft review job"):
         module.bind_review_drafts(
-            [queue_row()],
+            queue_path,
             [job],
             [draft, draft],
-            queue_sha256=QUEUE_SHA256,
             reviewer_id="reviewer-a",
         )
 
 
-def test_binder_rejects_stale_queue_and_wrong_reviewer() -> None:
-    job = review_jobs()[0]
+def test_binder_rejects_wrong_reviewer(queue_path: Path) -> None:
+    job = review_jobs(queue_path)[0]
     draft = semantic_draft(job)
 
-    with pytest.raises(ValueError, match="stale queue SHA256"):
-        module.bind_review_drafts(
-            [queue_row()],
-            [job],
-            [draft],
-            queue_sha256="c" * 64,
-            reviewer_id="reviewer-a",
-        )
     with pytest.raises(ValueError, match="wrong reviewer"):
         module.bind_review_drafts(
-            [queue_row()],
+            queue_path,
             [job],
             [draft],
-            queue_sha256=QUEUE_SHA256,
             reviewer_id="reviewer-b",
         )
 
@@ -508,7 +576,7 @@ def test_binder_rejects_stale_queue_and_wrong_reviewer() -> None:
     ],
 )
 def test_binder_requires_exact_ordered_process_coverage_once(
-    process_ids: list[str],
+    process_ids: list[str], queue_path: Path
 ) -> None:
     row = queue_row()
     row["processes"].append(
@@ -518,7 +586,8 @@ def test_binder_requires_exact_ordered_process_coverage_once(
             "stable101_l3": "L3_02_03_05",
         }
     )
-    job = review_jobs(row)[0]
+    write_jsonl(queue_path, [row])
+    job = review_jobs(queue_path)[0]
     draft = semantic_draft(job)
     draft["process_necessity"] = [
         {"process_id": process_id, "necessity": "required"}
@@ -527,10 +596,9 @@ def test_binder_requires_exact_ordered_process_coverage_once(
 
     with pytest.raises(ValueError, match="process necessity"):
         module.bind_review_drafts(
-            [row],
+            queue_path,
             [job],
             [draft],
-            queue_sha256=QUEUE_SHA256,
             reviewer_id="reviewer-a",
         )
 
@@ -547,9 +615,9 @@ def test_binder_requires_exact_ordered_process_coverage_once(
     ],
 )
 def test_binder_rejects_malformed_or_semantically_invalid_drafts(
-    case: str,
+    case: str, queue_path: Path
 ) -> None:
-    job = review_jobs()[0]
+    job = review_jobs(queue_path)[0]
     draft = semantic_draft(job)
     if case == "missing_field":
         del draft["rationale"]
@@ -566,10 +634,9 @@ def test_binder_rejects_malformed_or_semantically_invalid_drafts(
 
     with pytest.raises(ValueError, match="draft"):
         module.bind_review_drafts(
-            [queue_row()],
+            queue_path,
             [job],
             [draft],
-            queue_sha256=QUEUE_SHA256,
             reviewer_id="reviewer-a",
         )
 
@@ -586,15 +653,16 @@ def test_binder_rejects_malformed_or_semantically_invalid_drafts(
         ("reviewed_at", "2026-07-31"),
     ],
 )
-def test_binder_rejects_tampered_review_jobs(field: str, value: object) -> None:
-    job = json.loads(json.dumps(review_jobs()[0]))
+def test_binder_rejects_tampered_review_jobs(
+    field: str, value: object, queue_path: Path
+) -> None:
+    job = json.loads(json.dumps(review_jobs(queue_path)[0]))
     job[field] = value
 
     with pytest.raises(ValueError, match="review job"):
         module.bind_review_drafts(
-            [queue_row()],
+            queue_path,
             [job],
             [],
-            queue_sha256=QUEUE_SHA256,
             reviewer_id="reviewer-a",
         )
