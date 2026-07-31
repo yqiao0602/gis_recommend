@@ -3,6 +3,22 @@
 ## 目标
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因，通过数据扩充+词汇扩展+模型重训，持续提升矢量规划能力。
 
+## QGIS Planner Benchmark v0.1 独立工作流（2026-07-31）
+
+本工作流只负责构建评测集，不负责 GEE 数据、QGIS 训练数据或模型训练。
+阶段验收只统计已形成模型可见 `task_text` 且有一一对应 parameter-free
+`processes + links` gold 的可评测记录数；脚本、schema、候选 DAG、review job
+和门禁数量均不计为评测数据交付。
+
+- [x] 首批 8 个 graph authority 已选定，全部避免未完成双审的 merge DAG。
+- [x] 首批 development pilot：8 条 task + 8 条 gold 完成独立语义复核并可直接评分。
+- [ ] development set：40 条 task + 40 条 gold。
+- [ ] sealed final：120 条 task + 120 条 gold。
+- [ ] refusal diagnostic：12-20 条，单独计数，不混入 operator+links 主任务。
+
+当前唯一优先级：先让 `benchmarks/qgis_planner_v1/releases/v0.1-pilot-8/`
+达到 `8/8 reviewed_usable`，再扩充 development set；不得用新增基础设施替代数据行。
+
 ## 当前阶段
 **2026-07-14 — 停止继续复制/上采样无自然语言语义的激活数据，按已批准的 evidence-first 计划重构约 300 条 QGIS 真实数据 pilot。当前只授权推进到 Phase 4 人工确认门禁，不训练、不扩量、不切换默认词表。**
 

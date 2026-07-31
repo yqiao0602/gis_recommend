@@ -661,3 +661,11 @@
 - locked gate 使用 operator/custom multiset 计算 E0/E1/E2/E3、overall precision、test/constructor false positive 和 completeness；`Eliminate` 等 bounded identity 升级不再重复要求旧 E3 fallback。
 - v2.2 仍不在本轮范围；只有 v2.1 七项硬门槛全部通过才可开始 completeness compiler。
 - 当前状态：计划完成，代码实现尚未开始，taxonomy/training admission 继续 `not_granted`。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 首批 8 条可评测 task+gold
+
+- 评测集工作流改为数据行验收：脚本、schema、候选 DAG、review job 和门禁数量不再计入交付进度。
+- 已交付 8 条英文模型可见 task，并逐条配对 8 条 parameter-free QGIS `processes + links` gold；8 个 sample ID 唯一，全部与 immutable 52-DAG queue 的 graph/hash/拓扑逐字一致。
+- 首批只使用已具备 approve 证据的线性图，未使用尚需双审的 merge 图；gold 中参数字段为 0。
+- 独立 AI-assisted QGIS task-to-gold 复核为 8/8 approve；其中 003、007 在消除可替代算子歧义后完成二次复核。
+- 可用产物：`benchmarks/qgis_planner_v1/releases/v0.1-pilot-8/`，状态为 `reviewed_usable_development_pilot`。下一验收目标为 40 条 development task+gold，而不是新增基础设施。
