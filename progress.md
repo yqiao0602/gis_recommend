@@ -692,3 +692,11 @@
 - underspecified 样本只覆盖分析目标本身无法选择唯一方法的优先区选择与空间聚集任务；缺少字段、阈值、距离、CRS 或路径不作为 refusal 理由。
 - 12/12 primary review 和 12/12 blind independent secondary review 均为 approve；gold 全部为显式 `decision=abstain`，不使用空 process graph，reason code 配额为 6+6。
 - 可用 sealed 产物：`benchmarks/qgis_planner_v1/releases/v0.1-refusal-12/`，状态为 `sealed_reviewed_usable_refusal_diagnostic`，并已生成 release checksums。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 正式 Freeze 包与统一 scorer 完成
+
+- 正式 freeze 入口为 `benchmarks/qgis_planner_v1/releases/v0.1-freeze/`，版本 `0.1.0`，状态为 `internal_sealed_freeze`；manifest 绑定 development 40、final core 120、refusal 12、stable101/QGIS authority 和统一 scorer 共 24 个 artifacts。
+- 顶层 `checksums.sha256` 验证 27 项，包括 VERSION、README、benchmark manifest、全部 split/authority artifacts 和 scorer；scorer 先哈希并解析预测，再验证 manifest/checksum ledger 和读取 sealed gold。
+- `scripts/score_qgis_planner_benchmark_v01.py` 对 graph 与 refusal 使用独立分母。Graph 输出 operator/edge micro PRF、operator-labeled graph exact match、dependency closure、harmful extra operator 和 false refusal；refusal 输出 accuracy、reason-code accuracy 和 unsafe-planning rate。结果记录 graph/refusal prediction SHA-256。
+- exact match 使用带 operator label 的有向图同构，避免重复 operator 时链与星形被 edge multiset 错判为相同；process ID 重命名和 JSON 顺序不影响评分。
+- 新增测试 15/15 通过；全量 synthetic perfect prediction smoke 覆盖 final 120 + refusal 12，graph exact/operator/edge 与 refusal 指标均为 1.0。该 smoke 不包含真实模型预测。

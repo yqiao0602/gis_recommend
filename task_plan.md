@@ -15,10 +15,12 @@
 - [x] development set：40 条 task + 40 条 gold 已完成独立 task-to-gold 语义复核，可直接评分。
 - [x] sealed final：120 条 task + 120 条 gold 完成主审、30 条盲二审和 development 隔离检查。
 - [x] refusal diagnostic：12 条完成主审和盲二审，单独计数，不混入 operator+links 主任务。
+- [x] v0.1 Freeze：版本、24 项 artifact manifest、27 项 checksum ledger 与统一 graph/refusal scorer 已冻结并通过 synthetic verification。
 
 当前 development set 已达到 `40/40 reviewed_usable`，sealed final 已达到
 `120/120 sealed_reviewed_usable`，refusal diagnostic 已达到 `12/12
-sealed_reviewed_usable`。下一优先级是整合正式 v0.1 Freeze 包与统一评分入口。
+sealed_reviewed_usable`。正式 v0.1 Freeze 包已完成；下一阶段仅允许 prediction
+lock 与 evaluation handoff，任何 gold 修订必须升级 benchmark 版本。
 
 ## 当前阶段
 **2026-07-14 — 停止继续复制/上采样无自然语言语义的激活数据，按已批准的 evidence-first 计划重构约 300 条 QGIS 真实数据 pilot。当前只授权推进到 Phase 4 人工确认门禁，不训练、不扩量、不切换默认词表。**

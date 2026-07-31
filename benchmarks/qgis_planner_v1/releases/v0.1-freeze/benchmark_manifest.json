@@ -1,0 +1,232 @@
+{
+  "schema": "gis_recommend.qgis_planner_benchmark_freeze.v0.1",
+  "version": "0.1.0",
+  "status": "internal_sealed_freeze",
+  "frozen_at": "2026-07-31T11:02:42Z",
+  "benchmark_contract": {
+    "primary_task": "natural-language task to parameter-free QGIS processes + links",
+    "root_business_inputs_in_gold": false,
+    "concrete_parameters_in_gold": false,
+    "refusal_separate_from_graph_denominator": true,
+    "process_id_serialization_significant": false
+  },
+  "splits": {
+    "development": {
+      "task_count": 40,
+      "tasks": "../v0.1-development-40/tasks.jsonl",
+      "gold": "../v0.1-development-40/gold_graphs.jsonl",
+      "authority": "../v0.1-development-40/authority_sidecar.jsonl",
+      "reviews": "../v0.1-development-40/reviews.jsonl"
+    },
+    "final_core": {
+      "task_count": 120,
+      "tasks": "../v0.1-final-core-120/tasks.jsonl",
+      "gold": "../v0.1-final-core-120/gold_graphs.sealed.jsonl",
+      "authority": "../v0.1-final-core-120/authority_sidecar.sealed.jsonl",
+      "reviews": "../v0.1-final-core-120/reviews.sealed.jsonl"
+    },
+    "refusal": {
+      "task_count": 12,
+      "tasks": "../v0.1-refusal-12/tasks.jsonl",
+      "gold": "../v0.1-refusal-12/gold.sealed.jsonl",
+      "authority": "../v0.1-refusal-12/authority_sidecar.sealed.jsonl",
+      "reviews": "../v0.1-refusal-12/reviews.sealed.jsonl"
+    }
+  },
+  "prediction_contracts": {
+    "graph": {
+      "required_fields": [
+        "sample_id",
+        "processes",
+        "links"
+      ],
+      "process_fields": [
+        "process_id",
+        "operator_id"
+      ],
+      "link_fields": [
+        "source_process_id",
+        "target_process_id"
+      ]
+    },
+    "refusal": {
+      "required_fields": [
+        "sample_id",
+        "decision"
+      ],
+      "decision": "abstain",
+      "reason_codes": [
+        "unsupported_capability",
+        "underspecified_goal"
+      ]
+    }
+  },
+  "scoring": {
+    "entrypoint": "../../../../scripts/score_qgis_planner_benchmark_v01.py",
+    "graph_metrics": [
+      "operator_micro_precision",
+      "operator_micro_recall",
+      "operator_micro_f1",
+      "edge_micro_precision",
+      "edge_micro_recall",
+      "edge_micro_f1",
+      "graph_exact_match_rate",
+      "dependency_closure_rate",
+      "harmful_extra_operator_rate",
+      "false_refusal_rate"
+    ],
+    "refusal_metrics": [
+      "refusal_accuracy",
+      "reason_code_accuracy",
+      "unsafe_planning_rate"
+    ],
+    "prediction_hashes_recorded": true
+  },
+  "disclosure_policy": "Lock and hash every final-route prediction before opening final gold or reviews.",
+  "artifacts": [
+    {
+      "path": "../v0.1-development-40/tasks.jsonl",
+      "role": "development_tasks",
+      "sealed": false,
+      "sha256": "961c61d353b213dc7fe682308c9b35b665be8661bbd1d8969ea2fd416fd1a8c0"
+    },
+    {
+      "path": "../v0.1-development-40/gold_graphs.jsonl",
+      "role": "development_gold",
+      "sealed": false,
+      "sha256": "838919eb48ba0274a04d977fab77e146df0b4f1b3f37895b736e2152f7880d99"
+    },
+    {
+      "path": "../v0.1-development-40/authority_sidecar.jsonl",
+      "role": "development_authority",
+      "sealed": false,
+      "sha256": "f44eec6b816f157f6095bd9a72a3b19422b47e178f239680d92b7875e33154be"
+    },
+    {
+      "path": "../v0.1-development-40/reviews.jsonl",
+      "role": "development_reviews",
+      "sealed": false,
+      "sha256": "f958cb3ead97cfed6f6844311af21126ff587be4db2c8503f6604038d83c70d4"
+    },
+    {
+      "path": "../v0.1-development-40/manifest.json",
+      "role": "development_manifest",
+      "sealed": false,
+      "sha256": "0e6a832cb447f396c3c578a98aaddcc9ea25da5b2b5a75f8d937be6bf0d7fa5c"
+    },
+    {
+      "path": "../v0.1-final-core-120/tasks.jsonl",
+      "role": "final_tasks",
+      "sealed": false,
+      "sha256": "1a2f0d239f37116ca35ee8526a98b7b8ee660826a2bd24790a1f1d4996b0b9c9"
+    },
+    {
+      "path": "../v0.1-final-core-120/gold_graphs.sealed.jsonl",
+      "role": "final_gold",
+      "sealed": true,
+      "sha256": "787a9ffc6cdbc15d5092869850ffb31be78d783463a26aaff257898cc082354d"
+    },
+    {
+      "path": "../v0.1-final-core-120/authority_sidecar.sealed.jsonl",
+      "role": "final_authority",
+      "sealed": true,
+      "sha256": "54b74be5b423b81d78db091ee4918a1f98219971792a059ad5a44bef47e24273"
+    },
+    {
+      "path": "../v0.1-final-core-120/reviews.sealed.jsonl",
+      "role": "final_reviews",
+      "sealed": true,
+      "sha256": "0866c593bdfb9bd930f91c9f6b9b48cc49d8dbf813aabf955337af7e3821b09e"
+    },
+    {
+      "path": "../v0.1-final-core-120/manifest.json",
+      "role": "final_manifest",
+      "sealed": true,
+      "sha256": "cc772649bd75a7d20a795c32661f16c859f99780463297584c8acdf404edcd7c"
+    },
+    {
+      "path": "../v0.1-final-core-120/checksums.sha256",
+      "role": "final_checksums",
+      "sealed": true,
+      "sha256": "4f46736ea9b5a2a4d6bfbdca5b431628e5d0e6bd819cb2d9ce24310fd96c68e3"
+    },
+    {
+      "path": "../v0.1-refusal-12/tasks.jsonl",
+      "role": "refusal_tasks",
+      "sealed": false,
+      "sha256": "acba74b73be62fe4347cebe8cf4880c9acde855a90c792144f2737aad73a8b3a"
+    },
+    {
+      "path": "../v0.1-refusal-12/gold.sealed.jsonl",
+      "role": "refusal_gold",
+      "sealed": true,
+      "sha256": "ad7712820452c96967d80d1b7999c6477ee12811db798c0a61927b2efeb3d9ee"
+    },
+    {
+      "path": "../v0.1-refusal-12/authority_sidecar.sealed.jsonl",
+      "role": "refusal_authority",
+      "sealed": true,
+      "sha256": "5311493cd182b68ad920d3d7be9f8a9332456fda3d4b05c8f7b942cd73e3edf5"
+    },
+    {
+      "path": "../v0.1-refusal-12/reviews.sealed.jsonl",
+      "role": "refusal_reviews",
+      "sealed": true,
+      "sha256": "3e29a0efdb42659e8b3f9cee38e464feba0b7964fda18f692662ba97c3cfe09e"
+    },
+    {
+      "path": "../v0.1-refusal-12/manifest.json",
+      "role": "refusal_manifest",
+      "sealed": true,
+      "sha256": "55255c1454f247a3933ed8c4a408282d3f059d85d2cf6fd26e2bbfff76c30f95"
+    },
+    {
+      "path": "../v0.1-refusal-12/checksums.sha256",
+      "role": "refusal_checksums",
+      "sealed": true,
+      "sha256": "39c1e09e8a8b423e59d50e3bdfb239315c6edc3d188a7cf7d4be9a2fb9ed8e60"
+    },
+    {
+      "path": "../../authority/stable101_taxonomy.json",
+      "role": "taxonomy",
+      "sealed": false,
+      "sha256": "9e7f871f022262ffc4de9891b686c30faa8cc9595f0e3fd27dcba6fe6563da3b"
+    },
+    {
+      "path": "../../authority/qgis_catalog.json",
+      "role": "qgis_catalog",
+      "sealed": false,
+      "sha256": "a0b2426205b5ba809f03171360f10ab80bf2bc2321d8619eb2994075a132d6bd"
+    },
+    {
+      "path": "../../authority/qgis_operator_l3_mapping.json",
+      "role": "operator_mapping",
+      "sealed": false,
+      "sha256": "5c4d50361aff121def86d7c3b38e5cb96ad95c98aaaf80d971d882fde88090b6"
+    },
+    {
+      "path": "../../authority/capability_matrix.jsonl",
+      "role": "capability_matrix",
+      "sealed": false,
+      "sha256": "a399136bebb31164065825bdc7fcfbb09e8f466c658c535ec1d3658ac26b3557"
+    },
+    {
+      "path": "../../authority/v01_dag_review_queue.jsonl",
+      "role": "dag_queue",
+      "sealed": false,
+      "sha256": "5014ee5ff8073a3876e787c852422b34e5328d21a61ea0c04740ba130a892ac5"
+    },
+    {
+      "path": "../../authority/source_exclusion_ledger_manifest_v1.json",
+      "role": "exclusion_ledger_manifest",
+      "sealed": false,
+      "sha256": "0705a2d548a381fd5c6b236a051732b979bbfb9837e323941dff4974b33c8066"
+    },
+    {
+      "path": "../../../../scripts/score_qgis_planner_benchmark_v01.py",
+      "role": "scorer",
+      "sealed": false,
+      "sha256": "5c07c58c9478a263188eb98049d190cde3a15a0fe2d0441a0c3c35a802dd4fda"
+    }
+  ]
+}
