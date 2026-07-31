@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -14,15 +15,37 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 AUTHORITY_DIR = ROOT / "benchmarks/qgis_planner_v1/authority"
 REVIEW_SCHEMA = "gis_recommend.qgis_benchmark_v01_dag_semantic_review.v1"
-CLOSURE_SCHEMA = (
-    "gis_recommend.qgis_benchmark_v01_dag_semantic_closure.v1"
-)
-SUMMARY_SCHEMA = (
-    "gis_recommend.qgis_benchmark_v01_dag_semantic_review_summary.v1"
-)
+REVIEW_JOB_SCHEMA = "gis_recommend.qgis_benchmark_v01_dag_review_job.v1"
+CLOSURE_SCHEMA = "gis_recommend.qgis_benchmark_v01_dag_semantic_closure.v1"
+SUMMARY_SCHEMA = "gis_recommend.qgis_benchmark_v01_dag_semantic_review_summary.v1"
 REVIEWER_KIND = "ai_assisted_qgis_technical_reviewer"
 ALLOWED_DECISIONS = {"approve", "reject", "return_for_revision"}
 ALLOWED_NECESSITY = {"required", "optional"}
+ALLOWED_TYPE_COMPATIBILITY_VERDICTS = {
+    "compatible",
+    "incompatible",
+    "uncertain",
+}
+REVIEW_JOB_FIELDS = {
+    "schema",
+    "review_job_id",
+    "queue_sha256",
+    "canonical_graph_id",
+    "canonical_graph_sha256",
+    "topology",
+    "process_ids",
+    "reviewer_id",
+    "reviewed_at",
+}
+REVIEW_DRAFT_FIELDS = {
+    "review_job_id",
+    "decision",
+    "task_intent",
+    "output_constraint",
+    "process_necessity",
+    "type_compatibility_verdict",
+    "rationale",
+}
 
 
 def _nonempty(value: Any) -> bool:
@@ -39,6 +62,24 @@ def _is_utc_timestamp(value: Any) -> bool:
     return parsed.tzinfo is not None and parsed.utcoffset() == timezone.utc.utcoffset(
         parsed
     )
+
+
+def _is_sha256(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
+
+
+def _hash_json(value: dict[str, Any]) -> str:
+    payload = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def _load_jsonl(path: Path, *, missing_ok: bool = False) -> list[dict[str, Any]]:
@@ -66,10 +107,15 @@ def _queue_authority(
         graph_hash = str(row.get("canonical_graph_sha256", "")).strip()
         topology = str(row.get("topology", "")).strip()
         processes = row.get("processes")
-        if not graph_id or not graph_hash or topology not in {
-            "linear",
-            "multi_input_merge",
-        }:
+        if (
+            not graph_id
+            or not graph_hash
+            or topology
+            not in {
+                "linear",
+                "multi_input_merge",
+            }
+        ):
             raise ValueError("queue row has invalid graph identity or topology")
         if graph_id in authority:
             raise ValueError(f"duplicate canonical_graph_id: {graph_id}")
@@ -90,9 +136,58 @@ def _queue_authority(
             "canonical_graph_id": graph_id,
             "canonical_graph_sha256": graph_hash,
             "topology": topology,
-            "process_ids": set(process_ids),
+            "process_ids": process_ids,
         }
     return authority
+
+
+def build_review_jobs(
+    queue_rows: list[dict[str, Any]],
+    *,
+    queue_sha256: str,
+    reviewer_ids: tuple[str, str] | list[str],
+    reviewed_at: str,
+) -> list[dict[str, Any]]:
+    """Build deterministic reviewer assignments bound to one queue authority."""
+    queue = _queue_authority(queue_rows)
+    if not _is_sha256(queue_sha256):
+        raise ValueError("invalid queue SHA256")
+    if (
+        not isinstance(reviewer_ids, (tuple, list))
+        or len(reviewer_ids) != 2
+        or any(not _nonempty(reviewer_id) for reviewer_id in reviewer_ids)
+        or len(set(reviewer_ids)) != 2
+    ):
+        raise ValueError("reviewer_ids must contain two distinct reviewers")
+    if not _is_utc_timestamp(reviewed_at):
+        raise ValueError("invalid reviewed_at")
+
+    jobs: list[dict[str, Any]] = []
+    for graph_id in sorted(queue):
+        graph = queue[graph_id]
+        required_reviewers = (
+            reviewer_ids
+            if graph["topology"] == "multi_input_merge"
+            else reviewer_ids[:1]
+        )
+        for reviewer_id in required_reviewers:
+            identity = {
+                "schema": REVIEW_JOB_SCHEMA,
+                "queue_sha256": queue_sha256,
+                "canonical_graph_id": graph_id,
+                "canonical_graph_sha256": graph["canonical_graph_sha256"],
+                "topology": graph["topology"],
+                "process_ids": list(graph["process_ids"]),
+                "reviewer_id": reviewer_id,
+                "reviewed_at": reviewed_at,
+            }
+            jobs.append(
+                {
+                    **identity,
+                    "review_job_id": f"qgis-v01-review-job-{_hash_json(identity)}",
+                }
+            )
+    return jobs
 
 
 def _validate_review(
@@ -128,6 +223,11 @@ def _validate_review(
         reasons.append("type_compatibility_not_attested")
     if review.get("decision") not in ALLOWED_DECISIONS:
         reasons.append("invalid_decision")
+    verdict = review.get("type_compatibility_verdict")
+    if verdict not in ALLOWED_TYPE_COMPATIBILITY_VERDICTS:
+        reasons.append("invalid_type_compatibility_verdict")
+    elif review.get("decision") == "approve" and verdict != "compatible":
+        reasons.append("approve_requires_compatible_type_verdict")
     if not _is_utc_timestamp(review.get("reviewed_at")):
         reasons.append("invalid_reviewed_at")
 
@@ -146,9 +246,125 @@ def _validate_review(
                 reasons.append("invalid_necessity_value")
         if len(necessity_ids) != len(set(necessity_ids)):
             reasons.append("duplicate_process_necessity")
-        if set(necessity_ids) != graph["process_ids"]:
+        if set(necessity_ids) != set(graph["process_ids"]):
             reasons.append("process_necessity_coverage_mismatch")
     return sorted(set(reasons))
+
+
+def bind_review_drafts(
+    queue_rows: list[dict[str, Any]],
+    review_jobs: list[dict[str, Any]],
+    draft_rows: list[dict[str, Any]],
+    *,
+    queue_sha256: str,
+    reviewer_id: str,
+) -> list[dict[str, Any]]:
+    """Bind semantic-only drafts to validated queue-controlled review jobs."""
+    queue = _queue_authority(queue_rows)
+    if not _is_sha256(queue_sha256):
+        raise ValueError("invalid queue SHA256")
+    if not _nonempty(reviewer_id):
+        raise ValueError("invalid reviewer_id")
+
+    jobs_by_id: dict[str, dict[str, Any]] = {}
+    for job in review_jobs:
+        if not isinstance(job, dict) or set(job) != REVIEW_JOB_FIELDS:
+            raise ValueError("malformed review job fields")
+        job_id = job["review_job_id"]
+        if not _nonempty(job_id):
+            raise ValueError("malformed review job ID")
+        if job_id in jobs_by_id:
+            raise ValueError(f"duplicate review job: {job_id}")
+        if job["schema"] != REVIEW_JOB_SCHEMA:
+            raise ValueError(f"review job {job_id} has invalid schema")
+        if job["queue_sha256"] != queue_sha256:
+            raise ValueError(f"review job {job_id} has stale queue SHA256")
+
+        graph = queue.get(job["canonical_graph_id"])
+        if graph is None:
+            raise ValueError(f"review job {job_id} has unknown graph")
+        if (
+            job["canonical_graph_sha256"] != graph["canonical_graph_sha256"]
+            or job["topology"] != graph["topology"]
+            or job["process_ids"] != graph["process_ids"]
+            or not _nonempty(job["reviewer_id"])
+            or not _is_utc_timestamp(job["reviewed_at"])
+        ):
+            raise ValueError(f"review job {job_id} does not match queue authority")
+        identity = {
+            field: job[field] for field in REVIEW_JOB_FIELDS - {"review_job_id"}
+        }
+        expected_job_id = f"qgis-v01-review-job-{_hash_json(identity)}"
+        if job_id != expected_job_id:
+            raise ValueError(f"review job {job_id} has invalid deterministic ID")
+        jobs_by_id[job_id] = job
+
+    bound_reviews: list[dict[str, Any]] = []
+    seen_draft_jobs: set[str] = set()
+    for draft in draft_rows:
+        if not isinstance(draft, dict) or set(draft) != REVIEW_DRAFT_FIELDS:
+            raise ValueError("malformed draft fields")
+        job_id = draft["review_job_id"]
+        if not _nonempty(job_id):
+            raise ValueError("malformed draft review job ID")
+        if job_id in seen_draft_jobs:
+            raise ValueError(f"duplicate draft review job: {job_id}")
+        seen_draft_jobs.add(job_id)
+
+        job = jobs_by_id.get(job_id)
+        if job is None:
+            raise ValueError(f"unknown review job: {job_id}")
+        if job["reviewer_id"] != reviewer_id:
+            raise ValueError(f"wrong reviewer for review job: {job_id}")
+        if draft["decision"] not in ALLOWED_DECISIONS:
+            raise ValueError(f"draft {job_id} has invalid decision")
+        verdict = draft["type_compatibility_verdict"]
+        if verdict not in ALLOWED_TYPE_COMPATIBILITY_VERDICTS:
+            raise ValueError(f"draft {job_id} has invalid type verdict")
+        if draft["decision"] == "approve" and verdict != "compatible":
+            raise ValueError(f"draft {job_id} approval has non-compatible verdict")
+        for field in ("task_intent", "output_constraint", "rationale"):
+            if not _nonempty(draft[field]):
+                raise ValueError(f"draft {job_id} has empty {field}")
+
+        necessity = draft["process_necessity"]
+        if not isinstance(necessity, list) or any(
+            not isinstance(entry, dict)
+            or set(entry) != {"process_id", "necessity"}
+            or entry["necessity"] not in ALLOWED_NECESSITY
+            for entry in necessity
+        ):
+            raise ValueError(f"draft {job_id} has malformed process necessity")
+        if [entry["process_id"] for entry in necessity] != job["process_ids"]:
+            raise ValueError(
+                f"draft {job_id} process necessity does not match review job"
+            )
+
+        review = {
+            "schema": REVIEW_SCHEMA,
+            "canonical_graph_id": job["canonical_graph_id"],
+            "canonical_graph_sha256": job["canonical_graph_sha256"],
+            "reviewer_id": job["reviewer_id"],
+            "reviewer_kind": REVIEWER_KIND,
+            "independent_review_attested": True,
+            "decision": draft["decision"],
+            "task_intent": draft["task_intent"],
+            "output_constraint": draft["output_constraint"],
+            "process_necessity": [dict(entry) for entry in necessity],
+            "type_compatibility_attested": True,
+            "type_compatibility_verdict": verdict,
+            "rationale": draft["rationale"],
+            "reviewed_at": job["reviewed_at"],
+        }
+        review_identity = {"review_job_id": job_id, "review": review}
+        review["review_id"] = f"qgis-v01-review-{_hash_json(review_identity)}"
+        reasons = _validate_review(review, queue)
+        if reasons:
+            raise ValueError(
+                f"draft {job_id} produced invalid review: {','.join(reasons)}"
+            )
+        bound_reviews.append(review)
+    return bound_reviews
 
 
 def _closure_status(
