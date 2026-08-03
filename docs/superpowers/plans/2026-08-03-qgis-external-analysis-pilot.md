@@ -36,7 +36,7 @@ The project `pyproject.toml` is not modified. Joern, QGIS, and DataTrove remain 
 - Create: `scripts/build_qgis_external_pilot_manifest.py`
 - Create: `tests/test_qgis_external_pilot_manifest.py`
 
-- [ ] **Step 1: Write failing selection and baseline tests**
+- [x] **Step 1: Write failing selection and baseline tests**
 
 Cover priority ordering (`conditional_early_exit`, `control_flow:for`, `missing_data_edges`, fill strata), normalized-body uniqueness, holdout exclusion, stable tie-breaking, exactly 100+100 rows, and explicit rejection of aggregate-only API verdicts.
 
@@ -57,7 +57,7 @@ def test_pending_api_reviews_cannot_become_baseline():
         build_api_baseline([{"review_status": "pending_human_review"}])
 ```
 
-- [ ] **Step 2: Run the focused tests and verify red state**
+- [x] **Step 2: Run the focused tests and verify red state**
 
 Run:
 
@@ -67,7 +67,7 @@ D:/01_software/02_DevelopmentKits/Python/Anaconda3/python.exe -m pytest tests/te
 
 Expected: import failure for `qgis_external_pilot_manifest`.
 
-- [ ] **Step 3: Implement deterministic manifest construction**
+- [x] **Step 3: Implement deterministic manifest construction**
 
 Use the current Processing inputs:
 
@@ -85,7 +85,7 @@ docs/reports/qgis_api_remaining_mutation_export_census_v4/upstream_family_census
 
 Materialize baseline roles from the exact paths listed in the approved design. Emit `target_manifest_200_v1.jsonl`, `regression_baseline_v1.jsonl`, `selection_summary_v1.json`, and `hash_ledger_v1.json` with sorted keys and LF endings.
 
-- [ ] **Step 4: Run tests and a local real-authority dry run**
+- [x] **Step 4: Run tests and a local real-authority dry run**
 
 ```powershell
 D:/01_software/02_DevelopmentKits/Python/Anaconda3/python.exe -m pytest tests/test_qgis_external_pilot_manifest.py -q
@@ -94,7 +94,7 @@ D:/01_software/02_DevelopmentKits/Python/Anaconda3/python.exe scripts/build_qgis
 
 Expected: tests pass; dry run reports 100 Processing and 100 API targets, zero target-body duplicates, and zero holdout overlap. If the current authorities cannot supply a stratum, the command fails instead of silently changing quotas.
 
-- [ ] **Step 5: Commit the manifest layer**
+- [x] **Step 5: Commit the manifest layer**
 
 Commit only the files from this task with a Lore message recording input authorities and the pending-v6-verdict limitation.
 
