@@ -54,6 +54,12 @@ deferred。现有冻结的 Processing accepted authority、API reviewed TP/TN、
 - API 100 条：跨函数 geometry/mutation/export、terminal sink 和 interleaved
   control flow。
 
+Processing 选择顺序必须直接对齐当前主线：先覆盖 `conditional_early_exit`，再覆盖
+`control_flow:for` 和 `missing_data_edges`，按 normalized-body authority 去重后才用
+跨函数 helper/return、output alias 和动态 operator ID 补足 100 条。选择器必须保留
+既有 family support 和关闭原因；例如 `control_flow:for` 的 44 个 authority 不能掩盖
+其中 fixed-small-independent 安全子族只有 3 个 authority 的事实。
+
 选择器必须记录 record/unit ID、source path、source SHA256、normalized-body
 authority、既有状态和分层标签。目标包内部不得有 normalized-body 重复；与作为
 评估基线的冻结 holdout authority 不得交叉。对应源码从 `/home/yll` 只读复制到
@@ -97,6 +103,9 @@ PyQGIS Registry API 导出：
 状态必须区分 `operator_not_found`、`provider_not_installed` 和
 `provider_version_mismatch`。GRASS/SAGA provider 未包含在镜像时不得误记为 catalog
 miss。Registry 快照用于 operator contract 验证，不自动创建或修改 L3 authority。
+Registry 与现有 hash-frozen `qgis_catalog.json` 的任何差异都只进入 pilot 报告。
+catalog、mapping 或 taxonomy 的变更必须另行走既有 authority 变更流程，本 pilot 无权
+自动升级或覆盖它们。
 
 ### 4. DataTrove sidecar
 
@@ -113,6 +122,65 @@ normalized source body，而不是包含爬取头、路径注释和采集元数�
 comparison driver 按稳定 ID 合并现有 verdict 与三类 sidecar，输出逐条 ledger、分层
 混淆矩阵、链完整性差异、新恢复 family census、运行时间、峰值内存、磁盘使用和全池
 资源预测。未命中的记录也必须保留，禁止只报告成功样本。
+
+报告必须同时输出证据差集，不得只比较最终状态。每条 Joern evidence signature 与现有
+extractor evidence signature 对照后分为：
+
+- `existing_only`：现有恢复器有证据，Joern没有；
+- `shared_equivalent`：双方证据语义等价；
+- `joern_only_partial`：Joern新增局部 flow，但不足以闭合任务边界；
+- `joern_only_complete`：Joern新增完整 source-to-terminal flow，且现有恢复器没有；
+- `contradictory`：双方在节点、边、控制路径或 terminal上冲突。
+
+Joern独有证据还必须按跨函数形参传播、返回值传播、FQN/import解析、多跳def-use、
+分支支配性和alias传播分类。若 `joern_only_partial + joern_only_complete = 0`，则生产
+增量价值结论固定为“未证明”；即使Joern复现了现有结果，也只能记为基础设施复核价值。
+
+### 6. 回归基线 authority
+
+pilot不得用文档中的汇总数字代替逐条hash-bound verdict。首版基线清单固定为：
+
+- Processing完整链正例：
+  `docs/reports/qgis_processing_delivery_283_v1_source_verified/qgis_unified_train_v1.jsonl`
+  的283条正式train-only authority。
+- Processing支持不足而非路径负例：
+  `docs/reports/qgis_processing_same_if_calibration_v1/calibration_v1.jsonl` 和
+  `holdout_v1.jsonl` 的15个normalized-body authority。这些行允许Joern发现path，但
+  不允许被解释为完整语义准入。
+- Processing下游边界负例：
+  `docs/reports/qgis_processing_downstream_transform_census_v1/downstream_units_v1.jsonl`
+  中的semantic continuation/unknown记录，以及同目录中路由为API-pattern deferred的
+  low-level sink记录。
+- API旧200条显式proposal评估：
+  `docs/reports/qgis_api_boundary_v2_calibration/proposal_evaluation_v1.json` 与
+  `docs/reports/qgis_api_boundary_v3_calibration/proposal_evaluation_v1.json`，共194 TP、
+  6 FP，并回连各目录的逐条review JSONL。
+- API新增post-filter负例：
+  `docs/reports/qgis_api_boundary_v6_post_filter_v1/excluded_candidate_units_v1.jsonl`
+  的1条 `adjacent_same_receiver_different_payload_terminal`。
+
+当前状态文档记录的旧新400条合计393 TP/7 FP可作为待对账目标，但
+`qgis_api_boundary_v6_fresh_seed20260730` 中当前同步的review JSONL仍标记
+`pending_human_review`。实施前必须定位或物化其199 TP/1 FP的逐条verdict及哈希；若无法
+建立，不得把CURRENT_STATE汇总直接伪装为逐条基线，只能使用上方已显式持久化的194 TP/
+7 FP并在报告中声明缺口。
+
+### 7. 度量定义
+
+Joern是证据sidecar，因此工具运行状态、证据覆盖和证据正确性分开计算：
+
+- `query_completion`：每个输入、每个适用query均得到结构化终态；runtime/query失败
+  单列，目标为100%。
+- `accepted_exact_coverage`：权威正例中Joern完整复现全部节点、边、控制路径和terminal
+  的比例。它是工具能力指标，不作为硬性100%门禁；未找到路径记为coverage miss。
+- `false_complete_evidence`：权威负例上Joern声称完整任务边界，或声称完整链但与权威
+  节点/边/terminal冲突。该值必须为0。
+- `claimed_complete_truncation`：Joern标记为complete的正例中缺少权威节点、边或terminal
+  的数量。该值必须为0；显式partial/insufficient不计截断，而计coverage miss。
+- `novel_complete_evidence`：目标200条中 `joern_only_complete` 的数量和family support。
+
+任何比较必须使用上述枚举，不允许把“查不到path”误算为FP，也不允许把partial path
+包装成complete来提高召回。
 
 ## 错误处理与可复现性
 
@@ -131,12 +199,15 @@ comparison driver 按稳定 ID 合并现有 verdict 与三类 sidecar，输出�
 硬门禁：
 
 1. 200/200 目标源码 SHA256 回连成功。
-2. 既有 accepted回归召回为 100%。
-3. 已审核负例 FP=0。
-4. 已知完整链的截断数为 0。
+2. 所有目标和回归输入均得到结构化query终态，query/runtime failure=0。
+3. `false_complete_evidence=0`。
+4. `claimed_complete_truncation=0`。
 5. QGIS operator contract没有静默 fallback或 provider状态混算。
 6. DataTrove exact cluster与现有 normalized-body authority一致。
 7. 三类 sidecar均可由稳定 ID回连到源码、输入 authority和工具版本。
+
+`accepted_exact_coverage`必须按Processing/API/query family完整报告，但不是100%硬门禁。
+若覆盖不足，只能降低Joern适用范围，不能由现有authority为其补写成功状态。
 
 推广门禁：
 
@@ -150,10 +221,25 @@ comparison driver 按稳定 ID 合并现有 verdict 与三类 sidecar，输出�
 门禁，则正式结论为“工具可运行，但尚未证明能提高训练数据产量”，不得为采用工具而
 放宽现有质量标准。
 
+## 时间盒与中途退出
+
+pilot上限为10个工作日，并设置三个技术检查点：
+
+1. 环境与fixture smoke（最多2日）：Joern必须通过跨函数形参、返回值、结果字典和
+   API-to-sink fixture；QGIS 3.28 Registry必须输出结构化operator contract；DataTrove
+   exact必须复现fixture正文hash。任一核心能力失败即停止，不进入真实源码。
+2. 40条真实源码检查点（20 Processing + 20 API，最多3日）：source SHA必须40/40；
+   query/runtime failure必须为0；必须至少产生一个可解释的Joern差集证据。差集为空即
+   停止，不扩到200条。
+3. 200条pilot与报告（最多5日）：执行完整硬门禁、推广门禁和资源预测。
+
+pilot目录设50 GiB软上限。单阶段超过预估时间两倍、磁盘超过软上限、容器反复不可复现
+或查询需要为单文件编写专用规则时，立即停止并形成失败报告，不继续投入以证明工具可用。
+
 ## 测试策略
 
-- 单元测试：输入选择、source-disjoint、sidecar schema、状态枚举、稳定排序、原子写入
-  和 DataTrove exact 对账。
+- 单元测试：输入选择、source-disjoint、sidecar schema、状态枚举、稳定排序、原子写入、
+  证据差集、度量枚举和 DataTrove exact 对账。
 - fixture集成测试：用小型 Python 源码覆盖 helper、返回值、结果字典、分支冲突、完整
   API-to-sink链和截断链。
 - 容器 smoke：分别验证 Joern Python frontend、QGIS 3.28 Registry和 DataTrove版本，
@@ -171,6 +257,8 @@ comparison driver 按稳定 ID 合并现有 verdict 与三类 sidecar，输出�
 - Joern规范化flow sidecar的小型摘要与哈希；
 - DataTrove cluster ledger的小型摘要与哈希；
 - comparison逐条小型ledger、summary和中文报告；
+- `existing_only/shared_equivalent/joern_only_partial/joern_only_complete/contradictory`
+  证据差集统计；
 - 服务器大型产物路径、文件大小与SHA256清单。
 
 首轮设计完成不代表工具已被正式纳入生产 QGIS 转换流水线。只有满足推广门禁并通过后续
