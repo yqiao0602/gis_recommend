@@ -104,11 +104,11 @@ Commit only the files from this task with a Lore message recording input authori
 - Create: `scripts/qgis_external_pilot/run_server_pilot.sh`
 - Create: `tests/test_qgis_external_pilot_server_contract.py`
 
-- [ ] **Step 1: Write failing server-contract tests**
+- [x] **Step 1: Write failing server-contract tests**
 
 Parse the shell file as text and require: `/home/yll` read-only mount, `/home/qy` output root, 50 GiB guard, no `latest` tag, explicit digests, Conda Python 3.11, DataTrove 0.9.0, atomic stage directories, and no training exporter invocation.
 
-- [ ] **Step 2: Implement the pinned setup stage**
+- [x] **Step 2: Implement the pinned setup stage**
 
 Pin:
 
@@ -120,13 +120,13 @@ datatrove[processing]==0.9.0
 
 The script must pull by digest, discover the staged Joern binary inside the official image, capture its actual version/commit, verify QGIS reports 3.28.15, create `/home/qy/.conda/envs/qgis-external-pilot-v1` with Python 3.11, install DataTrove, and write tool versions plus `pip freeze --all` hashes to `hashes/run_manifest_v1.json`. A version mismatch stops the run.
 
-- [ ] **Step 3: Run local contract tests**
+- [x] **Step 3: Run local contract tests**
 
 ```powershell
 D:/01_software/02_DevelopmentKits/Python/Anaconda3/python.exe -m pytest tests/test_qgis_external_pilot_server_contract.py -q
 ```
 
-- [ ] **Step 4: Synchronize only code and run server environment smoke**
+- [x] **Step 4: Synchronize only code and run server environment smoke**
 
 Copy the task files to `/home/qy/system_redesign`, then run:
 
@@ -136,9 +136,14 @@ bash scripts/qgis_external_pilot/run_server_pilot.sh env-smoke
 
 Expected: three tool versions, two image digests, environment lock hash, disk usage below 50 GiB, and no files written under `/home/yll`.
 
-- [ ] **Step 5: Stop immediately on environment-gate failure**
+- [x] **Step 5: Stop immediately on environment-gate failure**
 
 If Joern cannot expose its Python frontend, QGIS does not report 3.28.15, or DataTrove cannot import in Python 3.11, write `environment_failure_v1.json` and do not proceed to Task 3.
+
+Gate result (2026-08-03): stopped at `env-smoke:joern_image_pull`. The pinned
+GHCR digest did not finish within a detached 20-minute run and logged a layer
+retry. The time-boxed failure path produced exit code 124; Task 3 was not
+started. Evidence: `docs/reports/qgis_external_analysis_pilot_v1/environment_gate_v1/`.
 
 ### Task 3: Implement Joern Fixture Queries and Normalization
 
