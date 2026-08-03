@@ -24,7 +24,20 @@ emitted, and no formal QGIS training authority, L3 mapping, or catalog was
 modified. Retry must use the same pinned digest after GHCR connectivity is
 stable; a floating tag is not an acceptable fallback.
 
+## Controlled Retry
+
+The same pinned digest was retried after GHCR returned its OCI manifest. The
+manifest identifies a 2,610,138,976-byte compressed layer
+`c30c4c54daacfd3c25196cc4013f08b324cdb09fcf38cf767c0d49e72af678e0`.
+The hardened runner executed detached with its own 1,200-second timeout. It
+terminated automatically with exit code 124 at `env-smoke:joern_image_pull`;
+both `c30c4c54daac` and `373b3e292b8f` logged retries. The image was not
+materialized, no runner or pull process remained, and the pilot directory used
+32 KiB. Downstream environment stages therefore remained closed.
+
 Evidence hashes:
 
 - `environment_failure_v1.json`: `1aaaaea0c5a530e89acd10c839fbfe48ff8b9ad97ebbd455932a1b6f964be14b`
 - `env-smoke.nohup.log`: `6a891943232f856ceab0eb839ed3ee3af003f32474c7af4bf9652e738a757103`
+- `environment_failure_retry_v2.json`: `2c8b8e0ba3ad47ff41707c83352bbb36cba47f33e2caf4631545164017a4906b`
+- `env-smoke-retry.nohup.log`: `08557b2eb60445478063e639f5805bb3594a201b8014cb725f584f2dd372d7d3`

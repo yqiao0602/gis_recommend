@@ -144,6 +144,8 @@ Gate result (2026-08-03): stopped at `env-smoke:joern_image_pull`. The pinned
 GHCR digest did not finish within a detached 20-minute run and logged a layer
 retry. The time-boxed failure path produced exit code 124; Task 3 was not
 started. Evidence: `docs/reports/qgis_external_analysis_pilot_v1/environment_gate_v1/`.
+An on-demand retry with the same digest also exhausted the runner's 1,200-second
+timeout after two layers logged retries; it left no residual process or image.
 
 ### Task 3: Implement Joern Fixture Queries and Normalization
 
