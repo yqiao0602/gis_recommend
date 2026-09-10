@@ -1,0 +1,67 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_v02_budget_matrix.v1",
+  "budget_id": "qgis-planner-v0.2-budget",
+  "frozen_at": "2026-09-10",
+  "status": "frozen_for_supply_repair",
+  "roster_authority": {
+    "path": "benchmarks/qgis_planner_v1/authority/v02_supported_family_roster.json",
+    "roster_id": "qgis-planner-v0.2-supported-family-roster",
+    "supported_family_count": 20,
+    "deferred_family_count": 8,
+    "out_of_scope_family_count": 22
+  },
+  "development": {
+    "task_target": 40,
+    "canonical_dag_target": 36,
+    "dag_disjoint_from_final": true,
+    "task_style_target": {
+      "operator_explicit": 20,
+      "planning_oriented": 20
+    },
+    "canonical_dag_strata": {
+      "chain_length": {"one_step": 8, "two_to_three": 18, "four_to_six": 8, "seven_plus": 2},
+      "topology": {"linear": 22, "merge": 8, "branch": 6},
+      "modality": {"vector": 24, "mixed": 7, "raster": 5}
+    },
+    "variant_policy": "Prefer one task per canonical DAG; up to four DAGs may receive a second text variant only when needed to reach 40 reviewed tasks."
+  },
+  "final": {
+    "task_target": 120,
+    "canonical_dag_target": 60,
+    "variants_per_dag": 2,
+    "task_style_target": {
+      "operator_explicit": 60,
+      "planning_oriented": 60
+    },
+    "canonical_dag_strata": {
+      "chain_length": {"one_step": 6, "two_to_three": 28, "four_to_six": 18, "seven_plus": 8},
+      "topology": {"linear": 32, "merge": 20, "branch": 8},
+      "modality": {"vector": 40, "mixed": 12, "raster": 8}
+    },
+    "coverage_floor_notes": {
+      "raster_or_mixed_dags_min": 20,
+      "one_step_dags_min": 6,
+      "branch_dags_min": 8,
+      "long_chain_dags_min": 8
+    }
+  },
+  "family_tier_envelope": {
+    "A": {"family_count": 6, "target_dags_each": 4, "candidate_quota": 7},
+    "B": {"family_count": 4, "target_dags_each": 4, "candidate_quota": 7},
+    "C": {"family_count": 4, "target_dags_each": 3, "candidate_quota": 7},
+    "D": {"family_count": 6, "target_dags_each": 2, "candidate_quota": 7},
+    "nominal_dag_envelope": 64,
+    "final_cap": 60,
+    "trim_rule": "If all tier targets are available, trim four lowest-contribution D-tier DAG slots first; preserve every final stratum floor and record each trim as quota_shortfall."
+  },
+  "selection_rules": [
+    "Only supported roster families may receive v0.2 quota.",
+    "A candidate is not a task+gold until independent graph review, Gate 2 nine-index zero-overlap, and human approval pass.",
+    "Final DAGs must be disjoint from development DAGs and source authorities.",
+    "Refusal diagnostic remains outside the operator_plus_links denominator.",
+    "Any unmet target is reported explicitly; no substitution from deferred or out_of_scope families."
+  ],
+  "next_gate": "R3_supply_repair",
+  "training_admission": "not_granted",
+  "production_merge": "not_granted"
+}

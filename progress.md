@@ -662,6 +662,16 @@
 - v2.2 仍不在本轮范围；只有 v2.1 七项硬门槛全部通过才可开始 completeness compiler。
 - 当前状态：计划完成，代码实现尚未开始，taxonomy/training admission 继续 `not_granted`。
 
+## 2026-09-10：QGIS Planner Benchmark v0.2 roster-first 规划启动
+
+- 明确 v0.2 不是扩容到 200/300 条，而是在约 120 条 final 预算内修复 supported family、DAG diversity、modality、topology 和 chain length coverage。
+- R1 roster authority 已由提交 `f186d31` 冻结：20 个 `supported`、8 个 `deferred`、22 个 `out_of_scope`；权威文件为 `benchmarks/qgis_planner_v1/authority/v02_supported_family_roster.json` 与同名 `.md`。
+- 冻结 roster 的配套说明存在一个 L3 标识笔误，已通过独立 `v02_supported_family_roster_errata_v1.md` 记录；不修改或重哈希 f186d31 的冻结 JSON/MD，后续一律以 JSON authority 为准。
+- v0.1 保持 immutable；不修改 sealed task/gold，不重训 M1/M2/M3，不生成 v0.2 candidate/task/gold。
+- 已复核既有 roster freeze 记录，冻结 stable101 四态 roster、R1-R5 gate、development 约 40（目标 30–40 canonical DAG）和 final 约 120 的预算原则。
+- R2 budget authority 已冻结：`benchmarks/qgis_planner_v1/authority/v02_budget_matrix.json` 与同名 `.md`，development 40/36 canonical DAG，final 120/60 canonical DAG，显式覆盖 chain length、topology、modality 和 task_style floors。
+- 当前 v0.2 可交付 task+gold 为 `0`。下一门为 R3 supply repair；验收只统计完成 graph review、Gate 2 零重叠和人工批准的 task+gold，不统计脚本、schema、review job 或 candidate 数量。
+
 ## 2026-07-31：QGIS Planner Benchmark v0.1 首批 8 条可评测 task+gold
 
 - 评测集工作流改为数据行验收：脚本、schema、候选 DAG、review job 和门禁数量不再计入交付进度。
