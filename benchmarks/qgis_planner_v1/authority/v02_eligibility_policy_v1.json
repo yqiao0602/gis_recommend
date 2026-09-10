@@ -1,0 +1,36 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_v02_eligibility_policy.v1",
+  "policy_id": "v02-eligibility-policy-c",
+  "decided_at": "2026-09-10",
+  "decided_by": "qiaoyun",
+  "decider_kind": "human_benchmark_authority",
+  "status": "frozen",
+  "supersedes": "the all-covered-L3-in-supported-roster filter implemented by the R-stage supply review (v02_supply_review_summary.json), which misread DEFERRED (no quota) as DEFERRED (banned as intermediate step)",
+  "rule": {
+    "dag_eligibility": [
+      "anchor family in SUPPORTED",
+      "every intermediate family in SUPPORTED union DEFERRED",
+      "no family in OUT_OF_SCOPE"
+    ],
+    "machine_expression": "anchor_family in SUPPORTED AND forall intermediate_family: intermediate_family in (SUPPORTED union DEFERRED) AND forall family: family not in OUT_OF_SCOPE",
+    "quota_credit": [
+      "only a SUPPORTED anchor contributes family quota",
+      "DEFERRED never contributes quota",
+      "OUT_OF_SCOPE never eligible"
+    ]
+  },
+  "family_state_matrix": [
+    {"state": "SUPPORTED", "dag_anchor": true, "intermediate_step": true, "family_quota_credit": true},
+    {"state": "DEFERRED", "dag_anchor": false, "intermediate_step": true, "family_quota_credit": false},
+    {"state": "OUT_OF_SCOPE", "dag_anchor": false, "intermediate_step": false, "family_quota_credit": false}
+  ],
+  "rationale": "The roster governs which families the benchmark actively covers (anchor + quota), not which real-workflow intermediate steps may appear. Rule B conflated the two semantics and dropped 21 of 52 DAGs -- including 15 of 22 merge topologies and 13 long chains -- because ordinary DEFERRED/OUT_OF_SCOPE steps (Repair Geometry, Erase, Extract by Location) poisoned whole DAGs. Rule A (anchor-only) restores supply but lets OUT_OF_SCOPE families re-enter as intermediate steps, erasing the capability boundary. Rule C keeps the boundary while restoring the supply.",
+  "roster_authority": "benchmarks/qgis_planner_v1/authority/v02_supported_family_roster.json @ f186d31 (unchanged; 20 SUPPORTED / 8 DEFERRED / 22 OUT_OF_SCOPE)",
+  "known_counts_at_freeze": {
+    "rule_A_anchor_only_dag_count": 52,
+    "rule_B_all_covered_dag_count": 31,
+    "rule_C_dag_count": 37,
+    "note": "37 is an intermediate statistic over the current candidate pool only; the 57 pending fan-out records and topology-taxonomy correction may change it; the authoritative count is recomputed after supply repair"
+  },
+  "topology_taxonomy_note": "graph_profile classifies merge before branch: a DAG with both fan-in and fan-out is labeled multi_input_merge, masking its fan-out. The branch budget therefore needs an explicit semantics choice: 'primary-topology branch' (pure fan-out, no fan-in) vs 'contains branch structure' (pure + hybrid). Counts under both readings must be reported, never silently one of them."
+}
