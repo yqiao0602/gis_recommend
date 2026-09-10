@@ -1,0 +1,105 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_supported_family_roster.v1",
+  "roster_id": "qgis-planner-v0.2-supported-family-roster",
+  "frozen_at": "2026-09-10",
+  "taxonomy_id": "stable101-paper-v1",
+  "status": "frozen_for_v0.2_supply_repair",
+  "decision_basis": {
+    "candidate_supply_summary_sha256_bound_at": "benchmarks/qgis_planner_v1/authority/candidate_supply_summary.json (Gate 3 run of 2026-07)",
+    "supply_facts": {
+      "total_candidates": 149,
+      "total_distinct_dags": 52,
+      "families_with_supply": 20,
+      "families_zero_supply": 30,
+      "note": "All 149 candidates and all 52 distinct DAGs are concentrated in exactly the 20 families listed below as SUPPORTED."
+    }
+  },
+  "supported_families": [
+    {"l3_code": "L3_01_10_01", "l3_name": "Project/Reproject", "tier": "A", "role": ["one_step_carrier", "vector_core"], "current_supply": {"candidates": 17, "distinct_dags": 3, "modality": {"vector": 16, "mixed": 1}, "graph_size": {"one_step": 14, "two_to_three": 3}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "quota_8_supply_eligible"},
+    {"l3_code": "L3_02_01_01", "l3_name": "Buffer", "tier": "A", "role": ["vector_core", "merge_topology"], "current_supply": {"candidates": 16, "distinct_dags": 6, "modality": {"vector": 14, "mixed": 2}, "graph_size": {"two_to_three": 8, "four_to_six": 5, "seven_plus": 3}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "quota_4_supply_eligible"},
+    {"l3_code": "L3_02_02_06", "l3_name": "Clip", "tier": "A", "role": ["vector_core"], "current_supply": {"candidates": 20, "distinct_dags": 7, "modality": {"vector": 20}, "graph_size": {"two_to_three": 14, "seven_plus": 6}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "quota_8_supply_eligible"},
+    {"l3_code": "L3_02_04_01", "l3_name": "Spatial Join", "tier": "A", "role": ["vector_core", "mixed_modality"], "current_supply": {"candidates": 11, "distinct_dags": 4, "modality": {"vector": 6, "mixed": 5}, "graph_size": {"two_to_three": 8, "seven_plus": 3}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "quota_4_supply_eligible"},
+    {"l3_code": "L3_02_06_02", "l3_name": "Extract by Attribute", "tier": "A", "role": ["vector_core", "one_step_candidate"], "current_supply": {"candidates": 15, "distinct_dags": 5, "modality": {"vector": 14, "mixed": 1}, "graph_size": {"two_to_three": 9, "four_to_six": 6}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "quota_4_supply_eligible"},
+    {"l3_code": "L3_03_05_02", "l3_name": "Reproject", "tier": "A", "role": ["mixed_modality_carrier", "merge_topology"], "current_supply": {"candidates": 10, "distinct_dags": 2, "modality": {"mixed": 10}, "graph_size": {"four_to_six": 10}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "quota_4_supply_eligible"},
+    {"l3_code": "L3_02_02_01", "l3_name": "Intersect", "tier": "B", "role": ["topology_repair", "merge_topology"], "current_supply": {"candidates": 7, "distinct_dags": 3, "modality": {"vector": 7}, "graph_size": {"two_to_three": 3, "four_to_six": 4}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_02_03_05", "l3_name": "Collect Features", "tier": "B", "role": ["topology_repair", "merge_topology"], "current_supply": {"candidates": 7, "distinct_dags": 3, "modality": {"vector": 7}, "graph_size": {"two_to_three": 3, "four_to_six": 3, "seven_plus": 1}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_01_03_04", "l3_name": "Merge", "tier": "B", "role": ["topology_repair", "merge_carrier"], "current_supply": {"candidates": 2, "distinct_dags": 2, "modality": {"vector": 2}, "graph_size": {"two_to_three": 2}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_01_02_06", "l3_name": "Calculate Field", "tier": "B", "role": ["length_repair", "long_chain_carrier"], "current_supply": {"candidates": 5, "distinct_dags": 2, "modality": {"vector": 5}, "graph_size": {"four_to_six": 4, "seven_plus": 1}}, "quota": {"min_dags": 4, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_03_03_A", "l3_name": "Arithmetic & Math", "tier": "C", "role": ["raster_repair"], "current_supply": {"candidates": 10, "distinct_dags": 4, "modality": {"raster": 7, "mixed": 3}, "graph_size": {"four_to_six": 7, "seven_plus": 3}}, "quota": {"min_dags": 3, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_04_01_01", "l3_name": "Slope Gradient", "tier": "C", "role": ["raster_repair", "terrain"], "current_supply": {"candidates": 7, "distinct_dags": 2, "modality": {"mixed": 6, "raster": 1}, "graph_size": {"two_to_three": 7}}, "quota": {"min_dags": 3, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_03_02_01", "l3_name": "Zonal Statistics", "tier": "C", "role": ["raster_repair", "mixed_modality_carrier"], "current_supply": {"candidates": 6, "distinct_dags": 2, "modality": {"mixed": 6}, "graph_size": {"two_to_three": 6}}, "quota": {"min_dags": 3, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_03_01_02", "l3_name": "Clip Raster by Extent", "tier": "C", "role": ["raster_repair", "raster_only", "one_step_candidate"], "current_supply": {"candidates": 2, "distinct_dags": 1, "modality": {"raster": 2}, "graph_size": {"two_to_three": 2}}, "quota": {"min_dags": 3, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_02_05_12", "l3_name": "Minimum Bounding Geometry", "tier": "D", "role": ["long_tail", "one_step_candidate"], "current_supply": {"candidates": 4, "distinct_dags": 1, "modality": {"vector": 4}, "graph_size": {"two_to_three": 4}}, "quota": {"min_dags": 2, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_01_02_02", "l3_name": "Delete Field", "tier": "D", "role": ["long_tail"], "current_supply": {"candidates": 3, "distinct_dags": 1, "modality": {"vector": 3}, "graph_size": {"two_to_three": 3}}, "quota": {"min_dags": 2, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_02_05_11", "l3_name": "Feature to Point", "tier": "D", "role": ["long_tail", "one_step_candidate"], "current_supply": {"candidates": 3, "distinct_dags": 1, "modality": {"vector": 3}, "graph_size": {"two_to_three": 3}}, "quota": {"min_dags": 2, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_02_07_01", "l3_name": "Multipart to Singlepart", "tier": "D", "role": ["long_tail", "one_step_candidate"], "current_supply": {"candidates": 2, "distinct_dags": 1, "modality": {"vector": 2}, "graph_size": {"two_to_three": 2}}, "quota": {"min_dags": 2, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_01_09_03", "l3_name": "Raster-Vector Conversion", "tier": "D", "role": ["long_tail", "modality_bridge"], "current_supply": {"candidates": 1, "distinct_dags": 1, "modality": {"mixed": 1}, "graph_size": {"two_to_three": 1}}, "quota": {"min_dags": 2, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"},
+    {"l3_code": "L3_08_01_01", "l3_name": "Region-based Sample Extraction", "tier": "D", "role": ["long_tail", "modality_bridge"], "current_supply": {"candidates": 1, "distinct_dags": 1, "modality": {"mixed": 1}, "graph_size": {"two_to_three": 1}}, "quota": {"min_dags": 2, "min_candidates_quota4": 7}, "gate3_status": "diagnostic_insufficient_supply"}
+  ],
+  "deferred_families": [
+    {"l3_code": "L3_03_04_01", "l3_name": "Reclassify / Remap", "defer_reason": "classic raster analysis; zero supply; v0.3 candidate if P0 mining produces candidates"},
+    {"l3_code": "L3_03_02_03", "l3_name": "Focal Statistics", "defer_reason": "classic raster analysis; zero supply; v0.3 candidate"},
+    {"l3_code": "L3_04_01_03", "l3_name": "Hillshade", "defer_reason": "classic terrain; zero supply; v0.3 candidate"},
+    {"l3_code": "L3_04_01_02", "l3_name": "Aspect Direction", "defer_reason": "classic terrain; zero supply; v0.3 candidate"},
+    {"l3_code": "L3_03_07_01", "l3_name": "Mosaic to New Raster", "defer_reason": "classic raster; zero supply; v0.3 candidate"},
+    {"l3_code": "L3_02_02_02", "l3_name": "Union", "defer_reason": "classic overlay; zero supply; v0.3 candidate"},
+    {"l3_code": "L3_02_02_04", "l3_name": "Erase", "defer_reason": "classic overlay; zero supply; v0.3 candidate"},
+    {"l3_code": "L3_02_06_03", "l3_name": "Extract by Location", "defer_reason": "classic selection; zero supply; v0.3 candidate"}
+  ],
+  "out_of_scope_families": [
+    {"l3_code": "L3_01_01_03", "l3_name": "Create Raster Dataset"},
+    {"l3_code": "L3_01_02_01", "l3_name": "Add Field"},
+    {"l3_code": "L3_01_02_03", "l3_name": "Alter Field"},
+    {"l3_code": "L3_01_08_03", "l3_name": "Get Count"},
+    {"l3_code": "L3_02_02_05", "l3_name": "Symmetrical Difference"},
+    {"l3_code": "L3_02_05_06", "l3_name": "Split Line at Point"},
+    {"l3_code": "L3_02_06_01", "l3_name": "Select by Attribute"},
+    {"l3_code": "L3_03_01_01", "l3_name": "Clip Raster by Geometry"},
+    {"l3_code": "L3_03_01_04", "l3_name": "Select Bands"},
+    {"l3_code": "L3_03_02_05", "l3_name": "Global Statistics"},
+    {"l3_code": "L3_03_03_L", "l3_name": "Logical & Comparison"},
+    {"l3_code": "L3_03_10_R", "l3_name": "Temporal Reducer"},
+    {"l3_code": "L3_03_12_01", "l3_name": "Bi-temporal Differencing"},
+    {"l3_code": "L3_08_03_01", "l3_name": "Train Random Forest Classifier"},
+    {"l3_code": "L3_08_04_01", "l3_name": "Apply Classifier to Imagery"},
+    {"l3_code": "L3_08_05_C", "l3_name": "Pixel Clustering & Segmentation"},
+    {"l3_code": "L3_09_03_01", "l3_name": "Mean/Median/Bilateral Filtering"},
+    {"l3_code": "L3_01_05_01", "l3_name": "Check Geometry"},
+    {"l3_code": "L3_01_09_01", "l3_name": "Vector Format Conversion"},
+    {"l3_code": "L3_02_05_07", "l3_name": "Extend Line"},
+    {"l3_code": "L3_02_06_06", "l3_name": "Sample Points"},
+    {"l3_code": "L3_01_05_02", "l3_name": "Repair Geometry"}
+  ],
+  "final_budget": {
+    "task_count": 120,
+    "structure": "approximately 60 canonical DAGs x 2 text variants",
+    "variant_pairing": "each DAG's variant pair targets 1 operator_explicit + 1 planning_oriented task_style where supply allows; both subsets reportable independently",
+    "modality_target": {"raster_plus_mixed_min_dags": 20, "of_total_dags": 60, "note": ">= 33% raster+mixed, vs 14-19/120 raster-only in v0.1"},
+    "graph_size_targets": {"one_step_min": 6, "two_to_three": 28, "four_to_six": 18, "seven_plus": 8},
+    "topology_targets": {"linear": 32, "multi_input_merge": 20, "branch_or_multi_output_min": 8, "note": "branch supply is zero in the candidate pool; branch DAGs must come from expert-authored proposals (vector_branch stratum) or new authored supply"},
+    "family_dag_quota_sum": {"upper_bound": 64, "note": "A:6x4 + B:4x4 + C:4x3 + D:6x2 = 64; selection trims to the 120-task cap; a family landing below its quota is recorded as quota_shortfall in the v0.2 audit, never silently absorbed"}
+  },
+  "dev_budget": {
+    "task_count": 40,
+    "structure": "approximately 35 canonical DAGs x <= 2 text variants",
+    "requirements": ["DAGs disjoint from final selection", "task_style labeling carried over", "gold remains unsealed as in v0.1"]
+  },
+  "supply_feasibility": {
+    "distinct_dags_required": 90,
+    "distinct_dags_available": 52,
+    "net_new_dags_required": "approximately 40, concentrated in raster / branch / 1-step / long-chain",
+    "candidate_quota_total": 140,
+    "candidates_available": 149,
+    "note": "candidate total is sufficient in aggregate but mis-distributed across tiers; Tier B/C/D families need 2-5 additional candidates each",
+    "fast_supply_path": "expert_proposals_v1.jsonl holds 8 proposals targeting exactly the P0 strata (raster_terrain x2, vector_branch x1, vector_long_chain x2, vector_merge x2, vector_preparation x1); 4 pending + 1 returned_for_revision await adjudication"
+  },
+  "rules": [
+    "R1 quota_shortfall_explicit: a family missing its quota is recorded in the v0.2 audit as quota_shortfall; no silent quota reduction, no roster substitution",
+    "R2 roster_immutable_during_repair: roster changes after this freeze require a new roster version and re-acknowledgement",
+    "R3 v01_immutable: v0.1 sealed gold is never regenerated; corrections require a new benchmark version",
+    "R4 prediction_hash_before_gold: final-route prediction hashes locked before any sealed gold read",
+    "R5 no_model_retraining: M1/M3 checkpoints are not retrained for v0.2; inference config frozen at prediction time; M2 joins after its training completes",
+    "R6 deferred_not_counted: DEFERRED families are excluded from v0.2 coverage deficit calculations",
+    "R7 refusal_rebind: unaffected refusal gold is inherited into the v0.2 manifest but must be re-hash-bound; refusal boundary is re-checked against this roster (clustering families are not in roster, so refusal-004 unsupported_capability remains consistent)"
+  ]
+}
