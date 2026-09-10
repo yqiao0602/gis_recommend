@@ -1,0 +1,29 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_expert_proposal_adjudication_addendum.v1",
+  "addendum_id": "expert-proposal-adjudication-addendum-v1",
+  "amends": "expert-proposal-adjudication-v1",
+  "decided_at": "2026-09-10",
+  "decided_by": "qiaoyun",
+  "decider_kind": "human_benchmark_authority",
+  "decision": "SPEC_STRICT",
+  "rationale": "The v0.2 task derivation spec (frozen 2026-09-10, commits c6ae4d4 + 5bec9e9) is the strongest provenance constraint of v0.2 and must not be carved open one hour after freezing to rescue the branch gap, especially since corpus evidence shows branch structure is not actually scarce.",
+  "effects": [
+    "The five expert proposals (001, 002, 003, 004, 005, 008 and their batch-v2 revisions) are retained as graph-feasibility / topology references for supply repair; none can directly produce a v0.2 final task because none carries a source record for task-text derivation.",
+    "expert_authoring_batch_v2.jsonl records are marked v02_role=structural_reference_only, task_derivation_eligible=false, benchmark_task_provenance=none; the 008 semantic layer is renamed adjudication_justification_artifact and explicitly disclaims task-text/provenance status.",
+    "The branch P0 gap pivots to source-backed supply: 143 all-admitted fan-out records exist in the discovery corpus (106 in routing_v6, 37 in stable106); the earlier claim 'corpus branch=0, expert-authored is the only source' is formally corrected -- it described the admitted candidate pool, not the corpus.",
+    "The original adjudication decisions (1 ACCEPT_CONDITIONAL + 4 REVISE) stand unchanged in their graph-level content; only the end-use changes."
+  ],
+  "supply_reconciliation_ref": "v02_supply_reconciliation_v1.json (per-DAG 52->31 ledger, rule A/B/C comparison, fan-out funnel diagnosis)",
+  "open_decision": "eligibility rule for v0.2 supply: A (anchor-in-roster, 52 DAGs), B (all-covered-in-roster, 31 DAGs, current R-stage), or C (covered in roster-or-deferred, 37 DAGs). The frozen v02_budget_matrix targets (branch>=8, merge 20, seven_plus 8, raster_or_mixed>=20) are unreachable under rule B; rule choice gates all supply repair.",
+  "governance_status_snapshot": {
+    "v01": "IMMUTABLE",
+    "roster": "FROZEN (20 supported / 8 deferred / 22 out_of_scope; one prose typo errata'd, JSON authoritative)",
+    "budget_matrix": "FROZEN (449ef0b)",
+    "task_derivation_spec": "FROZEN (source-derived tasks only)",
+    "expert_proposals": "STRUCTURAL_REFERENCE_ONLY (spec-strict)",
+    "r4b_approved_dags": "23 of 31 reviewed (20 source-backed + 3 expert; expert ones are task-ineligible, effective task-eligible base = 20 source-backed)",
+    "p0_supply_repair": "BLOCKED pending eligibility-rule decision (A/B/C)",
+    "model_training": "FROZEN / NO RETRAIN",
+    "v02_final_gold": "NOT YET CREATED"
+  }
+}
