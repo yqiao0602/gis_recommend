@@ -9,6 +9,8 @@
 
 本 agent 的唯一职责仍是构建正式 QGIS planner benchmark，当前目标是冻结 v0.2 supported family roster 与约 120 条 final 的结构预算；不负责 GEE、QGIS 训练数据或模型训练。
 
+v0.2 是 v0.1 的受控修订，不是从零开始：v0.1 protocol/taxonomy/scorer/exclusion/review assets 继续继承；v0.1 sealed release 保持 immutable。当前 31 个 source-backed DAG 中 22 个可作为 v0.1 graph/gold migration 候选，9 个为新增 graph；但 v0.1 手写 task text 必须完成 source provenance rebind 后才能计入 v0.2。
+
 - [x] v0.1 保持 immutable；v0.1 errata、hash-bound artifacts 与 sealed gold 不重生成。
 - [x] 确认 v0.2 采用 roster-first：先 stable101 四态分类，再冻结 quota，再做 candidate supply repair。
 - [x] 复核既有 roster freeze 记录；R1-R5 gate、预算原则和禁止事项以现有 benchmark authority 与本段计划为准。

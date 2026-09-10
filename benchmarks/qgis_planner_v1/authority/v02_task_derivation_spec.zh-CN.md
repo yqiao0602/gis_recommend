@@ -9,6 +9,18 @@ v0.2 的 task 不允许由 reviewer 凭空编写。每条 task 必须从已有�
 
 人工审核只负责确认来源语义、去参数化是否保真和 task-to-gold 是否闭合；人工可以做最小文字整理，不能新增来源中没有的操作、依赖、业务目标或输出类型。
 
+## v0.1 -> v0.2 lineage
+
+v0.2 是 v0.1 的受控修订，不是从零重建：v0.1 的 protocol、stable101 taxonomy、scorer、exclusion ledger、review schema 和 sealed release 全部保留；v0.1 仍作为 immutable baseline。当前 31 个 source-backed DAG 中有 22 个与 v0.1 final 的 40 个 canonical DAG 重合，另外 9 个是新增结构。
+
+迁移分三类：
+
+- `carry_forward_graph`：canonical graph/hash 与 source authority 复核一致，可复用 v0.1 gold 结构，但必须重新绑定 source-derived task text；
+- `new_source_graph`：来自当前 v0.2 source-backed supply，需走完整 task derivation 和 review；
+- `supplemental_gap`：为 raster、branch、1-step、长链等预算缺口补充的新 source-backed graph。
+
+v0.1 的手写 task variants 不直接复制为 v0.2 task。它们仍可作为语言表达参考和 baseline 结果，但只有完成 source provenance rebind、参数剥离、source-disjoint 检查和 task-to-gold review 后，才可作为 v0.2 记录。这就是“v0.2 task+gold 当前计数为 0”的含义：迁移尚未完成，不代表 v0.1 被删除。
+
 ## 派生优先级
 
 按以下顺序获取 task text：
