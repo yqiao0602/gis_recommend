@@ -682,6 +682,11 @@
 - 对 31 个 eligible DAG 按 hash-bound jobs 生成并绑定 38 条 review record：`qgis-expert-01` 31 条，`qgis-expert-02` 对 7 个 merge DAG 各 1 条二审；queue SHA 全部一致，validator `failure_count=0`。
 - 语义闭合结果：23 个 `closed`（approve），8 个 `returned_for_revision`；无 disagreement。返回项集中在重复 field-calculator、重复 reproject、重复 raster/statistics 和缺少中间输出语义的复杂链。
 - review closure 不是 task+gold admission；当前 v0.2 可交付 task+gold 仍为 `0`。下一步是 R4b 独立人工批准和 task 文本编写。
+## 2026-09-10：QGIS Planner Benchmark v0.2 R4b approval ledger
+
+- 对 31 个 semantic closure 建立 hash-bound approval ledger：23 个 `approve`，4 个 `return_for_revision`，4 个 `reject/exclude`。
+- 23 个 approved DAG 仅获得 `task_authoring_status=eligible`；全部 31 条记录保持 `task_gold_admission=not_granted`，因此 v0.2 可交付 task+gold 仍为 `0`。
+- 产物：`benchmarks/qgis_planner_v1/authority/v02_dag_human_approval_ledger.jsonl` 与 `v02_dag_human_approval_summary.json`。下一步为 R4c task authoring、task-to-gold review 和 Gate 2 重检。
 
 ## 2026-07-31：QGIS Planner Benchmark v0.1 首批 8 条可评测 task+gold
 

@@ -17,10 +17,11 @@
 - [x] R3：149 条既有 source-backed/expert candidate 已逐条生成 v0.2 intake ledger；87 条符合 20-family roster，62 条因 family 不在 roster 排除；Gate 1、Gate 2、parameter-free 和结构检查结果已绑定。
 - [x] R3 review envelope：31 个 eligible DAG 生成 38 个 hash-bound review jobs；linear 主审 31，merge 二审 7，queue SHA 固定。
 - [x] R4a：31 个 DAG 已完成独立 graph semantic review；38 条 review record、23 个 `closed`、8 个 `returned_for_revision`、0 个 validator failure；7 个 merge DAG 均完成双 reviewer。
-- [ ] R4b：对 review closure 执行独立人工批准并编写 task+gold；approve closure 不自动计入可交付数据。
+- [x] R4b approval：31 个 DAG 已完成 hash-bound approval ledger；23 个批准进入 task authoring，4 个 `return_for_revision`，4 个排除；全部 `task_gold_admission=not_granted`。
+- [ ] R4c：为 23 个批准 DAG 编写自然语言 task，执行 task-to-gold review 和 Gate 2 重检，累计可交付 task+gold。
 - [ ] R5：生成 v0.2 manifest、sealed gold、review/leakage ledger、scorer 与 checksums。
 
-当前 v0.2 可交付 task+gold 计数仍为 `0`；脚本、schema、review job、candidate 或 review closure 数量均不计进度。R4a 已完成，下一步是 R4b 人工批准与 task+gold 编写；模型 prediction 必须等 v0.2 freeze 且 inference config 冻结后才开始。
+当前 v0.2 可交付 task+gold 计数仍为 `0`；脚本、schema、review job、candidate、review closure 或 approval 数量均不计进度。R4a/R4b 已完成，下一步是 R4c task authoring + task-to-gold review；模型 prediction 必须等 v0.2 freeze 且 inference config 冻结后才开始。
 
 本工作流只负责构建评测集，不负责 GEE 数据、QGIS 训练数据或模型训练。
 阶段验收只统计已形成模型可见 `task_text` 且有一一对应 parameter-free
