@@ -686,7 +686,8 @@
 
 - 对 31 个 semantic closure 建立 hash-bound approval ledger：23 个 `approve`，4 个 `return_for_revision`，4 个 `reject/exclude`。
 - 23 个 approved DAG 仅获得 `task_authoring_status=eligible`；全部 31 条记录保持 `task_gold_admission=not_granted`，因此 v0.2 可交付 task+gold 仍为 `0`。
-- 产物：`benchmarks/qgis_planner_v1/authority/v02_dag_human_approval_ledger.jsonl` 与 `v02_dag_human_approval_summary.json`。下一步为 R4c task authoring、task-to-gold review 和 Gate 2 重检。
+- R4c 已纠正为 source-derived task extraction：从已有 QGIS workflow/training records 派生并去参数化 task text，人工只做最小保真审核，不允许凭空手写。规范为 `benchmarks/qgis_planner_v1/authority/v02_task_derivation_spec.zh-CN.md`。
+- 产物：`benchmarks/qgis_planner_v1/authority/v02_dag_human_approval_ledger.jsonl` 与 `v02_dag_human_approval_summary.json`。下一步为 source extraction、task-to-gold review 和 Gate 2 重检。
 
 ## 2026-07-31：QGIS Planner Benchmark v0.1 首批 8 条可评测 task+gold
 
