@@ -86,10 +86,30 @@ verdict; two of them strengthen the "repair, not rebuild" rationale.
 |---|---|
 | Repository | git@github.com:yqiao0602/gis_recommend.git |
 | Branch | `qgis-benchmark-semantic-sidecar` (worktree: `C:\Users\qiaoyun\.config\superpowers\worktrees\system_redesign\qgis-benchmark-semantic-sidecar`) |
-| Freeze commits | a5ef254 (dev-40) → 693ce17 (final-120, sealed 2026-07-31T10:39:16Z) → 358bdea (freeze contract) → **1857eca (evidence chain committed)** |
-| Merge state | Branch is ahead of `main` by 12 benchmark commits; main has zero benchmark-only commits; merge-base `de591c92`. **`releases/` is NOT in main yet.** |
+| Freeze commits | a5ef254 (dev-40) → 693ce17 (final-120, sealed 2026-07-31T10:39:16Z) → 358bdea (freeze contract) → 1857eca (evidence chain committed) → 08a96c6 (this errata) |
+| Merge state | Benchmark-path lead: this branch is ahead of `main` by **13 commits** under `benchmarks/qgis_planner_v1` paths (main has zero benchmark-only commits). Whole-branch topology: benchmark branch ahead **26**, main ahead **6** — the 26/6 figures include non-benchmark workflow divergence and are NOT additional benchmark commits; merge-base `de591c92`. **`releases/` is NOT in main yet.** |
 
 ### Hash-bound artifacts (all in `benchmarks/qgis_planner_v1/`)
+
+**Version boundary — artifact counts (do not conflate):**
+
+- The table below has 17 rows covering **18 distinct artifacts** — the
+  *audit-record subset*. Fourteen of them also appear in the formal freeze
+  manifest; the other four (the freeze `benchmark_manifest.json` itself,
+  `source_exclusion_ledger.jsonl`, `routing_manifest.jsonl`,
+  `l3_gated_manifest_v1.jsonl`) are bound by the top-level checksum ledger
+  and by `candidate_supply_summary.json` /
+  `source_exclusion_ledger_manifest_v1.json` instead.
+- The formal freeze manifest (`benchmark_manifest.json`) binds **24**
+  artifacts (the 14 shared with the table above, plus dev
+  authority/reviews/manifest, final manifest/checksums, refusal
+  authority/reviews/manifest/checksums, and
+  `source_exclusion_ledger_manifest_v1.json`).
+- The top-level checksum ledger (`checksums.sha256`) verifies **27** paths
+  = the manifest's 24 plus `VERSION`, `README.md`, and
+  `benchmark_manifest.json` itself (verified by set diff, 2026-09-10).
+- **Authoritative reference remains the freeze manifest + checksum ledger,
+  not this errata table.**
 
 | Artifact | SHA-256 (first 12) | Tracked |
 |---|---|---|
