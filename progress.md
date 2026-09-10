@@ -671,6 +671,12 @@
 - 已复核既有 roster freeze 记录，冻结 stable101 四态 roster、R1-R5 gate、development 约 40（目标 30–40 canonical DAG）和 final 约 120 的预算原则。
 - R2 budget authority 已冻结：`benchmarks/qgis_planner_v1/authority/v02_budget_matrix.json` 与同名 `.md`，development 40/36 canonical DAG，final 120/60 canonical DAG，显式覆盖 chain length、topology、modality 和 task_style floors。
 - 当前 v0.2 可交付 task+gold 为 `0`。下一门为 R3 supply repair；验收只统计完成 graph review、Gate 2 零重叠和人工批准的 task+gold，不统计脚本、schema、review job 或 candidate 数量。
+## 2026-09-10：QGIS Planner Benchmark v0.2 R3 入场 ledger 与 review envelope
+
+- 复用既有 `candidate_supply.jsonl`，按冻结的 20-family roster 逐条检查 Gate 1、Gate 2 九索引字段、parameter-free 和图结构：149 条中 87 条 eligible，62 条因包含非 supported family 排除；eligible 为 31 个 distinct DAG。
+- 生成 `benchmarks/qgis_planner_v1/authority/v02_supply_review_queue.jsonl`、`v02_supply_review_summary.json` 和 `v02_dag_review_queue.jsonl`，所有候选保持 `task_gold_admission=not_granted`，graph review 为 pending。
+- 生成 `v02_dag_review_jobs.jsonl`：38 个 hash-bound jobs（31 主审 + 7 merge 二审），绑定 queue SHA `f3bc59e3f9ab1c378a4cb96ac465f294bca82dbaa50e3a02f894e18b25e7c1dd`。
+- R4 尚未开始人工语义裁决；v0.2 可交付 task+gold 仍为 `0`。
 
 ## 2026-07-31：QGIS Planner Benchmark v0.1 首批 8 条可评测 task+gold
 

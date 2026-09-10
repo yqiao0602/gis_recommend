@@ -14,11 +14,12 @@
 - [x] 复核既有 roster freeze 记录；R1-R5 gate、预算原则和禁止事项以现有 benchmark authority 与本段计划为准。
 - [x] R1：stable101 四态 roster 已冻结；权威文件为 `benchmarks/qgis_planner_v1/authority/v02_supported_family_roster.json` 及同名 `.md`，提交 `f186d31`，20 supported / 8 deferred / 22 out_of_scope。
 - [x] R2：已冻结 `benchmarks/qgis_planner_v1/authority/v02_budget_matrix.json` 与同名 `.md`；development 40 / 36 canonical DAG，final 120 / 60 canonical DAG，含 family tier envelope 与 P0 结构 floors。
-- [ ] R3：仅从 supported roster 补 candidate，并对每条执行 Gate 1 authority 与 Gate 2 九索引零重叠。
+- [x] R3：149 条既有 source-backed/expert candidate 已逐条生成 v0.2 intake ledger；87 条符合 20-family roster，62 条因 family 不在 roster 排除；Gate 1、Gate 2、parameter-free 和结构检查结果已绑定。
+- [x] R3 review envelope：31 个 eligible DAG 生成 38 个 hash-bound review jobs；linear 主审 31，merge 二审 7，queue SHA 固定。
 - [ ] R4：完成独立 graph review、merge/branch 双 reviewer 与人工批准，累计可评测 task+gold。
 - [ ] R5：生成 v0.2 manifest、sealed gold、review/leakage ledger、scorer 与 checksums。
 
-当前 v0.2 可交付 task+gold 计数仍为 `0`；脚本、schema、review job、candidate 数量均不计进度。下一步进入 R3 supply repair；模型 prediction 必须等 v0.2 freeze 且 inference config 冻结后才开始。
+当前 v0.2 可交付 task+gold 计数仍为 `0`；脚本、schema、review job、candidate 数量均不计进度。R3 已完成入场准备，下一步是 R4 独立 graph review；模型 prediction 必须等 v0.2 freeze 且 inference config 冻结后才开始。
 
 本工作流只负责构建评测集，不负责 GEE 数据、QGIS 训练数据或模型训练。
 阶段验收只统计已形成模型可见 `task_text` 且有一一对应 parameter-free
