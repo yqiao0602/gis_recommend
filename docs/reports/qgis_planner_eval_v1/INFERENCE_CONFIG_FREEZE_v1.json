@@ -1,0 +1,61 @@
+{
+  "schema": "gis_recommend.qgis_planner_eval_inference_config_freeze.v1",
+  "benchmark": {
+    "id": "qgis-planner-benchmark-v0.2.1",
+    "freeze_commit": "6006e49",
+    "main_baseline": "5647636"
+  },
+  "canonical_vocab_ruling": "paper_v1_128 is the single canonical L3 vocabulary; stable101 is benchmark coverage subset; 50-code bridge is the QGIS capability layer (owner ruling 2026-09-11)",
+  "m1": {
+    "checkpoint": "/home/qy/gee_llm_smoke/m1_r1_ckpt/best_gen_composite_model.pth",
+    "checkpoint_epoch": 18,
+    "checkpoint_sha256": "97e61fd448d3369f3ef36ce800cffe267a69511a2b418910b9a31a90479d1bea",
+    "inference": {
+      "engine": "L3SequenceInferencerV4 diverse beam search, top-1 candidate",
+      "prompt_style": "structured (Task type/Task name/Goal), max_text_length=256",
+      "task_type": "Unknown (benchmark tasks carry no task-type metadata)",
+      "max_length": 40,
+      "min_length": 1,
+      "expected_length": 8,
+      "eos_suppress_until": 2,
+      "set_predictor": "off",
+      "transition_matrix": "paper_v1 profile (79 states)",
+      "env": "GIS_VOCAB_PROFILE=paper_v1_128 + paper_v1 runtime dir for id_mappings/transition"
+    }
+  },
+  "m3": {
+    "base_model": "/home/qy/models/Qwen3.5/Qwen3.5-9B",
+    "adapter": "/home/qy/gee_llm_smoke/m3_p1/adapter_v1",
+    "adapter_sha256": "fa31ad630ebcc10350b9bbc7941a0e5baa130688b6bca1ce3ca54886da37d8f5",
+    "inference": {
+      "decode": "greedy, max_new_tokens=300, eos stop list [eos,pad]",
+      "prompt": "Task: {task_text}\nL3 workflow:",
+      "quantization": "NF4 double-quant bfloat16 compute",
+      "code_extraction": "L3_\\d{2}_\\d{2}_(?:\\d{2}[A-Z]?|[A-Z]) — letter-code safe"
+    }
+  },
+  "bridge": {
+    "file": "docs/reports/qgis_planner_eval_v1/bridge/l3_operator_bridge_v1.json",
+    "sha256": "a889981c21d1dab933afc94662c6f841b7da40aea789cd5408ba593e52eff4e8",
+    "rule": "headline_core tier; max frequency; operator_id lexicographic tie-break; 50 codes"
+  },
+  "materialized_inputs": {
+    "final_100": "ac83c3b8d94e2f57efa05d7d46be0dc8ca347271a6f8763deeffeed81b8e0c91",
+    "dev_20": "4117a8e0dfec34ece5c2f6a9e8c4d90eff23ea072f6b948e6f7eafb39300c377",
+    "refusal_12": "eff41bca0eedcc7340d0e5eb709abc8792884f79ceace8a9ecf9691ed8b767cf",
+    "materializer_manifest": "d108921ed03be340752904935816036c86c9ff6eedd2bf4bd6d9f3b0f59e9c73",
+    "materializer_script": "scripts/materialize_qgis_planner_v021_inputs.py",
+    "materializer_script_sha256": "ef23cecf83b89e052178ff2edf72efa3ba49d2b33a9974c6f025dd143b4ee37c",
+    "assertions": "33/33 pass"
+  },
+  "predict_script": {
+    "file": "scripts/qgis_planner_predict.py",
+    "sha256": "34309e13ec0c2999603037ee61d9d367ab27f74cab0c12948acdc06a9bfbaaeb",
+    "note": "letter-code regex fix included; M1/M3 unified entry; linear-chain graph emission"
+  },
+  "refusal_policy": "always-plan for M1/M3 (owner ruling 2026-09-11): graph predictions emitted; refusal_accuracy will be 0 and unsafe_planning 12/12 — capability-boundary record, not a defect",
+  "dev_smoke": {
+    "m1": "bridge drop 29/33 tokens; 16/20 rows empty graph — 128-legal outputs outside stable101 coverage",
+    "m3": "bridge drop 36/139 tokens; 3 rows 23-25 op runaway chains"
+  }
+}
