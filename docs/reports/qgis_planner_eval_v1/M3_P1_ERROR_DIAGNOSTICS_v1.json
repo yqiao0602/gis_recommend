@@ -1,0 +1,80 @@
+{
+  "schema": "gis_recommend.m3_p1_error_diagnostics.v1",
+  "subject": "M3-P1 locked final-100 predictions (PREDICTION_LOCK_v1, no re-inference)",
+  "decoding_note": "M3-P1 official inference is GREEDY (eos stop, max_new_tokens 300) — the repetition runaways are model behavior under greedy, not a beam artifact",
+  "block1_statistics": {
+    "n": 100,
+    "pred_len_mean": 9.29,
+    "pred_len_median": 2.5,
+    "pred_len_p90": 25,
+    "pred_len_p95": 25,
+    "pred_len_max": 29,
+    "gold_len_mean": 2.94,
+    "gold_len_median": 2.0,
+    "gold_len_p95": 6,
+    "gold_len_max": 6,
+    "runaway_rows_ge20ops": 31,
+    "max_consecutive_repeat_median": 1.0,
+    "max_consecutive_repeat_p90": 24,
+    "global_repeat_ratio_mean": 0.381,
+    "unique_ops_mean": 1.84,
+    "first_operator_in_gold_sources": "43/100",
+    "operator_set_recall_mean": 0.275,
+    "set_recall_ge50pct_rows": 35,
+    "prefix_coverage_mean": 0.204,
+    "prefix_coverage_ge50pct_rows": 24
+  },
+  "block2_postprocessing_rescoring": {
+    "A": {
+      "label": "original (locked)",
+      "oracle": false,
+      "operator_micro_f1": 0.1605,
+      "operator_micro_precision": 0.1152,
+      "operator_micro_recall": 0.2649,
+      "edge_micro_f1": 0.0447,
+      "graph_exact_match_rate": 0.01,
+      "harmful_extra_operator_rate": 0.8848
+    },
+    "B": {
+      "label": "consecutive-dedup",
+      "oracle": false,
+      "operator_micro_f1": 0.2838,
+      "operator_micro_precision": 0.4359,
+      "operator_micro_recall": 0.2104,
+      "edge_micro_f1": 0.0559,
+      "graph_exact_match_rate": 0.0,
+      "harmful_extra_operator_rate": 0.5641
+    },
+    "C1": {
+      "label": "truncate-to-gold-length",
+      "oracle": true,
+      "operator_micro_f1": 0.2949,
+      "operator_micro_precision": 0.3365,
+      "operator_micro_recall": 0.2624,
+      "edge_micro_f1": 0.0947,
+      "graph_exact_match_rate": 0.01,
+      "harmful_extra_operator_rate": 0.6635
+    },
+    "C2": {
+      "label": "truncate-to-3",
+      "oracle": false,
+      "operator_micro_f1": 0.2764,
+      "operator_micro_precision": 0.4028,
+      "operator_micro_recall": 0.2104,
+      "edge_micro_f1": 0.0404,
+      "graph_exact_match_rate": 0.01,
+      "harmful_extra_operator_rate": 0.5972
+    },
+    "D": {
+      "label": "stop-at-first-repeat",
+      "oracle": false,
+      "operator_micro_f1": 0.2483,
+      "operator_micro_precision": 0.4226,
+      "operator_micro_recall": 0.1757,
+      "edge_micro_f1": 0.0198,
+      "graph_exact_match_rate": 0.0,
+      "harmful_extra_operator_rate": 0.5774
+    }
+  },
+  "oracle_warning": "C1 uses gold length — diagnostic only, can never be an official score"
+}
