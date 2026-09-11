@@ -27,13 +27,6 @@
     "origin": "recovered"
    },
    {
-    "key": "f950402772",
-    "topology": "pure_branch",
-    "size": "two_to_three",
-    "modality": "vector",
-    "origin": "recovered"
-   },
-   {
     "key": "571c057b7e92",
     "topology": "hybrid",
     "size": "seven_plus",
@@ -55,13 +48,6 @@
     "origin": "recovered"
    },
    {
-    "key": "fc01749f30",
-    "topology": "hybrid",
-    "size": "four_to_six",
-    "modality": "vector",
-    "origin": "recovered"
-   },
-   {
     "key": "303d4eb1156d",
     "topology": "linear",
     "size": "seven_plus",
@@ -70,7 +56,12 @@
    }
   ],
   "pool_reserve": 32,
-  "pool_admitted_count": 8
+  "pool_admitted_count": 6,
+  "rebalance_consistency_fix": {
+   "date": "2026-09-11",
+   "issue": "the dev-topology rebalance moved f950402772 (pure_branch) and fc01749f30 (hybrid) to dev but left them in final_admitted, violating DAG-disjointness",
+   "resolution": "removed from final; the final reserve holds only linear/pure_merge DAGs so no like-for-like substitution exists; final's rare-structure counts honestly decrease (branch 1/3 of pool, hybrid 2/4) and the final task total recomputes to 87 retained + 12 new = 99; no silent substitution"
+  }
  },
  "dev_side": {
   "dag_count": 20,
