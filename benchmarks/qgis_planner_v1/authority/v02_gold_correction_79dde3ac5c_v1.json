@@ -1,0 +1,30 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_v02_gold_correction.v1",
+  "correction_id": "v02-gold-correction-79dde3ac5c-1",
+  "date": "2026-09-11",
+  "authority": "owner adjudication O1 (2026-09-11): correct the edge set, do not reject; the fc01749f30 governance precedent applies",
+  "target_dag": {
+    "pool_key": "79dde3ac5c",
+    "role": "final-admitted hybrid seven_plus DAG",
+    "operators": ["native:clip", "native:extractbyexpression", "native:extractbyexpression", "native:extractbyexpression", "native:buffer", "native:buffer", "native:intersection", "native:difference", "native:multiparttosingleparts", "native:extractbyexpression"]
+  },
+  "defect": {
+    "class": "recovery-pipeline silent drop of an undefined variable reference caused by a source typo",
+    "source_evidence": "script_0002969.py (sha-verified github_qgis_workflow mirror) L68 defines the variable 'interesection' (typo) as the intersection output; L70 consumes 'intersection' (the undefined name) as the difference INPUT -- the original script NameError-crashes at runtime; the discovery extractor dropped the undefined reference, leaving the recovered DAG without the p6->p7 edge and the intersection as a dead-end sink",
+    "author_intent": "unambiguous: the difference is meant to consume the intersection output with the detached-class buffers as overlay (the Polish comments and the surrounding one-buffer-per-class structure confirm the flow)"
+  },
+  "correction": {
+    "original_edges": [[0, 1], [0, 2], [0, 3], [1, 6], [2, 4], [3, 5], [4, 6], [5, 7], [7, 8], [8, 9]],
+    "original_defects": ["p6 (intersection) is a dead-end sink despite the workflow continuing to difference", "p7 (difference) has a single input (p5 detached buffer) where the source clearly gives it two"],
+    "corrected_edges": [[0, 1], [0, 2], [0, 3], [1, 6], [2, 4], [3, 5], [4, 6], [5, 7], [6, 7], [7, 8], [8, 9]],
+    "added_edges": [[6, 7]],
+    "corrected_topology": "hybrid (unchanged: fan-out at p0 and fan-in at p6 and p7)"
+  },
+  "governance": {
+    "superseded_artifact": "the original recovered graph in candidate_supply.jsonl (hash-bound discovery manifest) is NOT modified; this correction is a superseding artifact",
+    "supersedes_reason": "source typo recovery defect, owner-adjudicated O1",
+    "review_requirement": "the corrected graph must pass dual re-review before admission stands",
+    "invariant": "Final remains 99 tasks; no slot changes"
+  },
+  "contingent_task_texts": "the two 79dde3ac5c variants in v02_final_variant_set_v2.jsonl already describe the corrected flow (clip -> selections -> per-class buffers -> intersection -> difference -> multipart -> area filter); they were adjudicated against this intent and stand if the corrected graph passes re-review"
+}
