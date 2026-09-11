@@ -58,7 +58,7 @@ lock 与 evaluation handoff，任何 gold 修订必须升级 benchmark 版本。
 | M1-R3（候选） | + 解冻全层领域 MLM | 同 R2 | ❌ | ✅ | encoder 领域适配（Phase 3 定） |
 | M1-R4（候选） | 同 R2 | 同 R2 | ✅ | ✅ | 任务语言适配（Phase 3 定） |
 
-- [ ] 前置确认 A：任务文本语言分布实测（paper train/val/test × benchmark dev/final/refusal 的 Chinese/English/Mixed 矩阵）——决定 domain corpus 语言池与 M1 失败归因表述（英文 BERT vs 中文任务文本是否为独立混杂）。只读统计，分钟级。
+- [x] 前置确认 A 完成（2026-09-11，`docs/reports/m1_phase0_precheck_a_language_v1/`）：benchmark dev/final/refusal 共 132 条**全英文、bert [UNK]=0**——推理侧无语言混杂，M1 塌缩不可归因于输入语言；paper train 整体 94.3% 英文（GEE 8,201 行 100% 英文），但 **QGIS 子集 616 行中 81.7% 中文/混合，426/616（69.2%）对 M1 encoder ≥50% [UNK]**，有效可读 QGIS 监督仅 ~190 行（M3 原生可读全部 8,817 行）——训练侧语言不对称列入 M1 vs M3 混杂清单；M1-R2 的 DAPT 只能消费英文池。次要观察：benchmark 文本长度约为训练文本一半（median 120.5 vs 313 字符）。
 - [ ] 前置确认 B：task_type oracle vs Unknown 推理消融（同 M1-R1 checkpoint、49 行 val；比较 SetF1/P/R/Top1/空图率/首 token/输出长度/Define Projection 比例）——量化 FiLM 条件 + 动态长度先验缺失的混杂（task_type OOD）。结果仅作论文注脚与 M1-R2 归因依据，不修改 R1 正式结果、不改变评测协议。
 - [ ] Phase 1 domain_corpus_v1 构建：规则已冻结 v1（`docs/plans/domain_corpus_v1_spec.md`，2026-09-11 owner 批准）：source SHA exclusion → 6-gram exclusion → L3 structure exclusion → dedup → token census → manifest/hash ledger + 断言电池（6-gram=0 等）。
 - [ ] Phase 2 M1-R2：**decoder-only causal-LM DAPT**（BERT encoder 保持 R1 冻结配置不变，owner 决策 ②）→ 完全复用 M1-R1 的 SFT 协议（paper_v1 8,817、70:30 采样、20 epochs、同 checkpoint 选择）→ 完全复用 INFERENCE_CONFIG_FREEZE_v1 冻结解码评测。验收主指标 = benchmark 空图率下降 + 首 L3 token 多样性恢复；次指标 = val Top1 与 49 行诊断 P/R 相对 R1（13.75% / 0.153/0.198）的增量。

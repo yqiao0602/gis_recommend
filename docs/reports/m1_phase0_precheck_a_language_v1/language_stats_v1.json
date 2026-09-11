@@ -1,0 +1,419 @@
+{
+  "schema": "gis_recommend.m1_phase0_precheck_a_language.v1",
+  "classification_rule": "label decided on alphabetic content: cjk_ratio=n_cjk/(n_cjk+n_latin); chinese >= 0.8, english <= 0.2, mixed in between; empty=blank text; other=no letters",
+  "bert_tokenizer": "bert-base-uncased",
+  "inputs": {
+    "paper_manifest": {
+      "path": "docs\\reports\\paper_v1_supervision\\paper_v1_supervision_manifest.jsonl",
+      "sha256": "f604789563170f74385a9b3cfc6b3c1cb85385b1b10b254d2b5ee78acf79467c"
+    },
+    "benchmark_dev": {
+      "path": "docs/reports/qgis_planner_eval_v1/materialized/dev_20.tasks.jsonl",
+      "sha256": "4117a8e0dfec34ece5c2f6a9e8c4d90eff23ea072f6b948e6f7eafb39300c377"
+    },
+    "benchmark_final": {
+      "path": "docs/reports/qgis_planner_eval_v1/materialized/final_100.tasks.jsonl",
+      "sha256": "ac83c3b8d94e2f57efa05d7d46be0dc8ca347271a6f8763deeffeed81b8e0c91"
+    },
+    "benchmark_refusal": {
+      "path": "docs/reports/qgis_planner_eval_v1/materialized/refusal_12.tasks.jsonl",
+      "sha256": "eff41bca0eedcc7340d0e5eb709abc8792884f79ceace8a9ecf9691ed8b767cf"
+    }
+  },
+  "datasets": {
+    "paper_v1 train": {
+      "n": 8817,
+      "labels": {
+        "chinese": 171,
+        "english": 8313,
+        "mixed": 332,
+        "empty": 0,
+        "other": 1
+      },
+      "chinese_ratio": 0.01939435182034706,
+      "chinese_or_mixed_ratio": 0.05704888283996824,
+      "char_level": {
+        "mean_cjk_share": 0.03641299129071447,
+        "mean_latin_share": 0.8289107509795377
+      },
+      "length": {
+        "mean": 315.2,
+        "median": 313,
+        "p95": 454
+      },
+      "mixed_examples": [
+        "向现有矢量图层新增字段 change_detected，按已验证的条件分支逐要素计算并写入该字段。",
+        "向现有矢量图层新增字段 calc、len_test_m，按已定义的 QGIS 表达式逐要素计算并写入相应字段。",
+        "向现有矢量图层新增字段 crop_prediction，按已验证的条件分支逐要素计算并写入该字段。"
+      ],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0213,
+        "mean_sample_unk_ratio": 0.038,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.4603,
+        "samples_with_unk_ratio_ge_0.5": 426,
+        "n_tokenized": 8817,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "paper_v1 val": {
+      "n": 49,
+      "labels": {
+        "chinese": 2,
+        "english": 44,
+        "mixed": 3,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.04081632653061224,
+      "chinese_or_mixed_ratio": 0.10204081632653061,
+      "char_level": {
+        "mean_cjk_share": 0.0625436280052792,
+        "mean_latin_share": 0.7953798178768363
+      },
+      "length": {
+        "mean": 274.1,
+        "median": 300,
+        "p95": 398
+      },
+      "mixed_examples": [
+        "向现有矢量图层新增字段 edge_btw，并提交字段结构更新。",
+        "向现有矢量图层新增字段 between、closeness、degree，并提交字段结构更新。",
+        "按源码中确定构造的栅格表达式“f'(\"{entry.ref}\" - {min_val}) / ({max_val} - {min_val})'”计算输入栅格，并将计算结果写出为新的栅格数据。"
+      ],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0363,
+        "mean_sample_unk_ratio": 0.0655,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.6538,
+        "samples_with_unk_ratio_ge_0.5": 4,
+        "n_tokenized": 49,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "paper_v1 test": {
+      "n": 46,
+      "labels": {
+        "chinese": 2,
+        "english": 42,
+        "mixed": 2,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.043478260869565216,
+      "chinese_or_mixed_ratio": 0.08695652173913043,
+      "char_level": {
+        "mean_cjk_share": 0.06250975004307473,
+        "mean_latin_share": 0.8204071223173708
+      },
+      "length": {
+        "mean": 316.7,
+        "median": 302.0,
+        "p95": 454
+      },
+      "mixed_examples": [
+        "在该 Processing 工作流中，对输入数据转换栅格数据格式或范围；随后将前述转换后的栅格用于计算坡度栅格（高程缩放因子为 1）；随后将前述坡度栅格用于重投影并对齐栅格，得到此 Processin",
+        "在该局部工作流中，对输入数据计算图层相交结果（INPUT_FIELDS 为 空列表，OVERLAY_FIELDS 为 空列表，GRID_SIZE 为 None），得到此 Processing 链的结果"
+      ],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0468,
+        "mean_sample_unk_ratio": 0.0614,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.6939,
+        "samples_with_unk_ratio_ge_0.5": 4,
+        "n_tokenized": 46,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "benchmark dev": {
+      "n": 20,
+      "labels": {
+        "chinese": 0,
+        "english": 20,
+        "mixed": 0,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.0,
+      "chinese_or_mixed_ratio": 0.0,
+      "char_level": {
+        "mean_cjk_share": 0.0,
+        "mean_latin_share": 0.9767794395960422
+      },
+      "length": {
+        "mean": 144.6,
+        "median": 141.0,
+        "p95": 234
+      },
+      "mixed_examples": [],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0,
+        "mean_sample_unk_ratio": 0.0,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.0,
+        "samples_with_unk_ratio_ge_0.5": 0,
+        "n_tokenized": 20,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "benchmark final": {
+      "n": 100,
+      "labels": {
+        "chinese": 0,
+        "english": 100,
+        "mixed": 0,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.0,
+      "chinese_or_mixed_ratio": 0.0,
+      "char_level": {
+        "mean_cjk_share": 0.0,
+        "mean_latin_share": 0.975533941204921
+      },
+      "length": {
+        "mean": 152.0,
+        "median": 120.5,
+        "p95": 337
+      },
+      "mixed_examples": [],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0,
+        "mean_sample_unk_ratio": 0.0,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.0,
+        "samples_with_unk_ratio_ge_0.5": 0,
+        "n_tokenized": 100,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "benchmark refusal": {
+      "n": 12,
+      "labels": {
+        "chinese": 0,
+        "english": 12,
+        "mixed": 0,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.0,
+      "chinese_or_mixed_ratio": 0.0,
+      "char_level": {
+        "mean_cjk_share": 0.0,
+        "mean_latin_share": 0.9816906218665818
+      },
+      "length": {
+        "mean": 101.4,
+        "median": 98.5,
+        "p95": 123
+      },
+      "mixed_examples": [],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0,
+        "mean_sample_unk_ratio": 0.0,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.0,
+        "samples_with_unk_ratio_ge_0.5": 0,
+        "n_tokenized": 12,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "paper_v1 train [gee]": {
+      "n": 8201,
+      "labels": {
+        "chinese": 0,
+        "english": 8201,
+        "mixed": 0,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.0,
+      "chinese_or_mixed_ratio": 0.0,
+      "char_level": {
+        "mean_cjk_share": 6.285378826067226e-07,
+        "mean_latin_share": 0.8665102294815868
+      },
+      "length": {
+        "mean": 332.9,
+        "median": 317,
+        "p95": 466
+      },
+      "mixed_examples": [],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0,
+        "mean_sample_unk_ratio": 0.0,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.0,
+        "samples_with_unk_ratio_ge_0.5": 0,
+        "n_tokenized": 8201,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "paper_v1 test [gee]": {
+      "n": 41,
+      "labels": {
+        "chinese": 0,
+        "english": 41,
+        "mixed": 0,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.0,
+      "chinese_or_mixed_ratio": 0.0,
+      "char_level": {
+        "mean_cjk_share": 0.0,
+        "mean_latin_share": 0.8766983494082847
+      },
+      "length": {
+        "mean": 342.3,
+        "median": 315,
+        "p95": 454
+      },
+      "mixed_examples": [],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0,
+        "mean_sample_unk_ratio": 0.0,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.0,
+        "samples_with_unk_ratio_ge_0.5": 0,
+        "n_tokenized": 41,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "paper_v1 val [gee]": {
+      "n": 41,
+      "labels": {
+        "chinese": 0,
+        "english": 41,
+        "mixed": 0,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.0,
+      "chinese_or_mixed_ratio": 0.0,
+      "char_level": {
+        "mean_cjk_share": 0.0,
+        "mean_latin_share": 0.8730378694984936
+      },
+      "length": {
+        "mean": 310.7,
+        "median": 317,
+        "p95": 398
+      },
+      "mixed_examples": [],
+      "bert_unk": {
+        "aggregate_unk_share": 0.0,
+        "mean_sample_unk_ratio": 0.0,
+        "median_sample_unk_ratio": 0.0,
+        "p95_sample_unk_ratio": 0.0,
+        "samples_with_unk_ratio_ge_0.5": 0,
+        "n_tokenized": 41,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "paper_v1 train [qgis]": {
+      "n": 616,
+      "labels": {
+        "chinese": 171,
+        "english": 112,
+        "mixed": 332,
+        "empty": 0,
+        "other": 1
+      },
+      "chinese_ratio": 0.2775974025974026,
+      "chinese_or_mixed_ratio": 0.8165584415584416,
+      "char_level": {
+        "mean_cjk_share": 0.5211821259270362,
+        "mean_latin_share": 0.3283371743637814
+      },
+      "length": {
+        "mean": 79.0,
+        "median": 61.5,
+        "p95": 200
+      },
+      "mixed_examples": [
+        "向现有矢量图层新增字段 change_detected，按已验证的条件分支逐要素计算并写入该字段。",
+        "向现有矢量图层新增字段 calc、len_test_m，按已定义的 QGIS 表达式逐要素计算并写入相应字段。",
+        "向现有矢量图层新增字段 crop_prediction，按已验证的条件分支逐要素计算并写入该字段。"
+      ],
+      "bert_unk": {
+        "aggregate_unk_share": 0.5173,
+        "mean_sample_unk_ratio": 0.5438,
+        "median_sample_unk_ratio": 0.6569,
+        "p95_sample_unk_ratio": 0.8077,
+        "samples_with_unk_ratio_ge_0.5": 426,
+        "n_tokenized": 616,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "paper_v1 val [qgis]": {
+      "n": 8,
+      "labels": {
+        "chinese": 2,
+        "english": 3,
+        "mixed": 3,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.25,
+      "chinese_or_mixed_ratio": 0.625,
+      "char_level": {
+        "mean_cjk_share": 0.3830797215323351,
+        "mean_latin_share": 0.39738230331584307
+      },
+      "length": {
+        "mean": 86.6,
+        "median": 49.5,
+        "p95": 200
+      },
+      "mixed_examples": [
+        "向现有矢量图层新增字段 edge_btw，并提交字段结构更新。",
+        "向现有矢量图层新增字段 between、closeness、degree，并提交字段结构更新。",
+        "按源码中确定构造的栅格表达式“f'(\"{entry.ref}\" - {min_val}) / ({max_val} - {min_val})'”计算输入栅格，并将计算结果写出为新的栅格数据。"
+      ],
+      "bert_unk": {
+        "aggregate_unk_share": 0.3464,
+        "mean_sample_unk_ratio": 0.4014,
+        "median_sample_unk_ratio": 0.519,
+        "p95_sample_unk_ratio": 0.7692,
+        "samples_with_unk_ratio_ge_0.5": 4,
+        "n_tokenized": 8,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    },
+    "paper_v1 test [qgis]": {
+      "n": 5,
+      "labels": {
+        "chinese": 2,
+        "english": 1,
+        "mixed": 2,
+        "empty": 0,
+        "other": 0
+      },
+      "chinese_ratio": 0.4,
+      "chinese_or_mixed_ratio": 0.8,
+      "char_level": {
+        "mean_cjk_share": 0.5750897003962876,
+        "mean_latin_share": 0.35881906017187637
+      },
+      "length": {
+        "mean": 106.8,
+        "median": 101,
+        "p95": 200
+      },
+      "mixed_examples": [
+        "在该 Processing 工作流中，对输入数据转换栅格数据格式或范围；随后将前述转换后的栅格用于计算坡度栅格（高程缩放因子为 1）；随后将前述坡度栅格用于重投影并对齐栅格，得到此 Processin",
+        "在该局部工作流中，对输入数据计算图层相交结果（INPUT_FIELDS 为 空列表，OVERLAY_FIELDS 为 空列表，GRID_SIZE 为 None），得到此 Processing 链的结果"
+      ],
+      "bert_unk": {
+        "aggregate_unk_share": 0.6174,
+        "mean_sample_unk_ratio": 0.5653,
+        "median_sample_unk_ratio": 0.6939,
+        "p95_sample_unk_ratio": 0.8214,
+        "samples_with_unk_ratio_ge_0.5": 4,
+        "n_tokenized": 5,
+        "note": "plain task_text tokenized (no structured-prompt template words; template words are English and would only dilute the ratio)"
+      }
+    }
+  }
+}

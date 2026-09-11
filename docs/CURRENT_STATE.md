@@ -24,6 +24,15 @@ D5 audit fields). Execution order locked: Phase 0 pre-checks (task-text language
 task_type oracle-vs-Unknown inference ablation) → Phase 1 corpus build → Phase 2 M1-R2 →
 Phase 3 decision on R3/R4/stop. See the "模型实验" section of `task_plan.md`.
 
+**Phase 0-A is complete** (2026-09-11, `docs/reports/m1_phase0_precheck_a_language_v1/`):
+all 132 benchmark tasks are English with bert [UNK]=0 — no inference-side language
+confounder, so M1's collapse cannot be attributed to input language. However, within
+paper train the QGIS subset (616 rows) is 81.7% Chinese/mixed and 69.2% of those rows are
+≥50% [UNK] for the M1 encoder, leaving only ~190 readable QGIS supervision rows for M1
+versus all 8,817 for M3 — a training-side language asymmetry now on the M1-vs-M3
+confounder list, and M1-R2's DAPT can only consume the English pool. Next: Phase 0-B
+(task_type oracle ablation; needs the server checkpoint).
+
 ## Agent Ownership
 
 This agent owns **QGIS data processing only**: deterministic conversion of the
