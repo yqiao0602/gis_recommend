@@ -43,7 +43,29 @@ sealed_reviewed_usable`。正式 v0.1 Freeze 包已完成；下一阶段仅允�
 lock 与 evaluation handoff，任何 gold 修订必须升级 benchmark 版本。
 
 ## 当前阶段
-**2026-07-14 — 停止继续复制/上采样无自然语言语义的激活数据，按已批准的 evidence-first 计划重构约 300 条 QGIS 真实数据 pilot。当前只授权推进到 Phase 4 人工确认门禁，不训练、不扩量、不切换默认词表。**
+**2026-09-11 — benchmark v0.2.1 已冻结（6006e49）并合并 main（c515c77/5647636），M1/M3 推理配置冻结（45f5abb）且 final-100 预测完成。模型实验主线切换为：M1 增强消融（M1-R2）+ domain_corpus_v1 构建 → M2 路线 → 三路线统一比较。M1-R1 冻结为 scratch baseline（准确构成 = 冻结的通用英文 BERT + 从零 decoder，非纯 random init），不重训、不翻案；R4 规则（开 gold 前先锁 prediction hash）继续有效。**
+
+## 模型实验：M1 增强消融路线 + domain_corpus_v1（2026-09-11 立项）
+
+实验动机：M1-R1 在 benchmark v0.2.1 final-100 上 OOD 塌缩（88 空图、100/100 以 Define Projection 开头、val Top1 13.75%），M3 输出跟随任务文本（74% token 覆盖内）→ 预训练先验是任务泛化主来源。M1 增强体系回答"领域适配能弥补多少从零训练的语言先验缺口"，与 M2（Qwen Base + DAPT → SFT）形成"先验 × 领域适配 × 规模"对照矩阵。增强路线是**独立新实验**，不替换 M1-R1，不修改既有 M1/M2/M3 冻结矩阵。
+
+消融矩阵（每级相对上一级只新增一个变量；R3/R4 具体方案 Phase 3 再定）：
+
+| 模型 | Encoder (BERT) | Decoder | TAPT | SFT | 角色 |
+|---|---|---|---|---|---|
+| M1-R1 | R1 冻结配置（大部分冻结+顶部两层解冻） | 从零训练 | ❌ | ✅ | scratch baseline（已冻结） |
+| M1-R2 | 同 R1，**不变** | + 领域 CLM-DAPT 后 SFT | ❌ | ✅ | decoder 领域适配（本轮执行） |
+| M1-R3（候选） | + 解冻全层领域 MLM | 同 R2 | ❌ | ✅ | encoder 领域适配（Phase 3 定） |
+| M1-R4（候选） | 同 R2 | 同 R2 | ✅ | ✅ | 任务语言适配（Phase 3 定） |
+
+- [ ] 前置确认 A：任务文本语言分布实测（paper train/val/test × benchmark dev/final/refusal 的 Chinese/English/Mixed 矩阵）——决定 domain corpus 语言池与 M1 失败归因表述（英文 BERT vs 中文任务文本是否为独立混杂）。只读统计，分钟级。
+- [ ] 前置确认 B：task_type oracle vs Unknown 推理消融（同 M1-R1 checkpoint、49 行 val；比较 SetF1/P/R/Top1/空图率/首 token/输出长度/Define Projection 比例）——量化 FiLM 条件 + 动态长度先验缺失的混杂（task_type OOD）。结果仅作论文注脚与 M1-R2 归因依据，不修改 R1 正式结果、不改变评测协议。
+- [ ] Phase 1 domain_corpus_v1 构建：规则已冻结 v1（`docs/plans/domain_corpus_v1_spec.md`，2026-09-11 owner 批准）：source SHA exclusion → 6-gram exclusion → L3 structure exclusion → dedup → token census → manifest/hash ledger + 断言电池（6-gram=0 等）。
+- [ ] Phase 2 M1-R2：**decoder-only causal-LM DAPT**（BERT encoder 保持 R1 冻结配置不变，owner 决策 ②）→ 完全复用 M1-R1 的 SFT 协议（paper_v1 8,817、70:30 采样、20 epochs、同 checkpoint 选择）→ 完全复用 INFERENCE_CONFIG_FREEZE_v1 冻结解码评测。验收主指标 = benchmark 空图率下降 + 首 L3 token 多样性恢复；次指标 = val Top1 与 49 行诊断 P/R 相对 R1（13.75% / 0.153/0.198）的增量。
+- [ ] Phase 3：视 R2 结果决定——R3（BERT domain MLM，encoder 侧）/ R4（DAPT+TAPT）/ 停止 M1 增强线。R2 已解决大部分 collapse 则不继续堆预训练阶段。
+- [x] owner 三项决策已定（2026-09-11），spec v1 冻结：① D2 外部文档（QGIS/GDAL/OGC docs）本轮不纳入；② M1-R2 = decoder-only CLM-DAPT，BERT 保持 R1 冻结配置，BERT MLM 移为 R3 候选；③ R3/R4 暂不开，R2 后决定。
+
+执行顺序（锁定）：**Phase 0（前置确认 A+B，先于一切 DAPT）→ Phase 1（domain_corpus_v1 构建）→ Phase 2（M1-R2：decoder CLM-DAPT → SFT → dev-20 → final-100）→ Phase 3（视 R2 结果决定）**。Phase 3 之前不讨论 R3/R4 具体方案、不爬官方文档。
 
 ## 2026-07-14：真实 QGIS 数据 Pilot 批准计划
 

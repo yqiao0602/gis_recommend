@@ -1,0 +1,1445 @@
+# Current Project State
+
+Last updated: 2026-09-11
+
+This is the routine handoff entrypoint. See `task_plan.md` for live work and
+`docs/PROJECT_CONTEXT.md` for detailed historical evidence.
+
+## M1 enhancement-ablation route opened + domain_corpus_v1 spec drafted (2026-09-11)
+
+Benchmark v0.2.1 freeze (6006e49) is merged into main (c515c77/5647636); the M1/M3
+inference config is frozen (45f5abb, `docs/reports/qgis_planner_eval_v1/INFERENCE_CONFIG_FREEZE_v1.json`)
+and final-100 predictions are complete: M1 has 88 empty graphs with 100/100 chains starting
+with L3_01_10_02 Define Projection (OOD collapse; val Top1 13.75%), while M3's outputs
+follow the task text (74% of tokens within bridge coverage). M1-R1 is frozen as the
+scratch baseline (its true composition is a frozen general-purpose English BERT plus a
+from-scratch decoder, not pure random init) — no retraining, no relitigating. On this
+basis the M1 enhancement ablation is opened (this round adds only M1-R2 = decoder-only
+causal-LM DAPT with the BERT encoder kept at its R1 frozen configuration; R3 = BERT MLM
+and R4 = +TAPT are Phase-3 candidates pending R2's result) together with domain_corpus_v1
+(rules frozen at v1 in `docs/plans/domain_corpus_v1_spec.md`; owner decisions 2026-09-11:
+no external QGIS/GDAL/OGC docs this round; D1–D5 corpus pools; four-layer leakage
+isolation including a 6-gram=0 assertion; one manifest with separate M1/M2 recipes; four
+D5 audit fields). Execution order locked: Phase 0 pre-checks (task-text language matrix,
+task_type oracle-vs-Unknown inference ablation) → Phase 1 corpus build → Phase 2 M1-R2 →
+Phase 3 decision on R3/R4/stop. See the "模型实验" section of `task_plan.md`.
+
+## Agent Ownership
+
+This agent owns **QGIS data processing only**: deterministic conversion of the
+QGIS Processing corpus and low-level PyQGIS API corpus into auditable train-only
+candidates. GEE processing and benchmark construction belong to separate
+workspaces. This agent must not rewrite their conclusions, counts, gates, or next
+actions; updates to this file should change only the QGIS entry and necessary
+cross-workstream references.
+
+
+
+
+## M3-P0 and M3-P1 complete: SFT aligns the L3 output space (2026-09-08)
+
+M3-P0 (zero-shot post-trained Qwen3.5-9B, frozen protocol, val 49): 0/49 exact,
+code P/R 0/0, length error −4.0 — the model answers GEE tasks in fluent
+English steps (semantically right direction, e.g. "filterDate → select → mean")
+but never emits L3 codes. Clean Qwen-prior floor. M3-P1 (same model, plain
+QLoRA/SFT — NF4, r16 q/k/v/o, weighted CE, 1 epoch × 8,817 paper_v1 train rows,
+83 min, 14.35 GB): the frozen-protocol pass read 0/49 exact with recall 0.885
+and +3.71 length error, which diagnosed as a truncation artifact: with
+EOS-aware decoding the prediction begins with the exact gold chain in **42/49
+(85.7%)** and the first block matches exactly in **41/49 (83.7%)**; EOS is
+generated 46/49. Failure taxonomy of the 8 misses: 6 wrong-first-operator or
+order errors, 2 no-EOS repetition. Known next-round fix (one line, no
+retraining): pass eos_token_id/stop strings to generate. Q2 answered for round
+one: plain task SFT maps the model's GIS semantic prior onto the L3 output
+space; the 0→41/49 delta is attributable to SFT alone (same model, prompt,
+decode). Both experiments registered in the append-only experiment ledger
+(M3-P0-v1, M3-P1-v1 with checkpoint SHA, data version, params, GPU time).
+Evidence: `docs/reports/m3_p1_sft_v1/m3_p1_report_v1.md`.
+
+## Qwen3.5-9B-Base E3 smoke + E4 overfit gate: PASSED (2026-09-08)
+
+The ladder foundation is complete. Isolated `qwen35` env (torch 2.5.1+cu121 /
+transformers 5.16.1 with the qwen3_5 class and pure-torch GatedDeltaNet
+fallback / peft 0.20.0 / bnb 0.50.2; 2.2.2-era envs untouched). Both Qwen3.5-9B
+variants downloaded as original HF safetensors (19.3 GB each, hf-mirror,
+completed 04:57); ollama GGUF stays inference-only. **E3 smoke 9/9** on Base:
+NF4 load 7.19 GB, forward/backward/accumulation finite, LoRA save/reload
+byte-identical (32 lora_A tensors), generation OK, peak 18.13/23 GB. **E4
+100-sample overfit gate PASSED**: 100 paper_v1 train rows (60 GEE + 40 QGIS),
+40 epochs, first loss 0.788 → 0.0000, exact L3-chain probe 10/10, 28.6 min,
+peak 12.74 GB — the stack demonstrably learns the task format. Next: ⑤ M3-P0
+zero-shot (post-trained Qwen3.5-9B), ⑥ M3-P1, ⑦ M1 controlled rerun. Evidence:
+`docs/reports/qwen35_base_a10_smoke_v1/`.
+## Three model-experiment routes fixed (2026-09-07)
+
+User corrected the Qwen3.5-9B assessment: the architecture is fine-tunable — the problem was only that the local ollama GGUF (Q4_K quantized) is not suitable for the Transformers + BitsAndBytes + PEFT/QLoRA pipeline. The correct path is downloading the original HF safetensors weights: `Qwen/Qwen3.5-9B-Base` (verified on HF, 4 safetensors shards, `Qwen3_5ForConditionalGeneration`) for M2/M2-C0 and `Qwen/Qwen3.5-9B` (the post-trained variant, same repo family) for M3/M3-P0, loading NF4 at train time via BitsAndBytes. Route definitions are now fixed in `task_plan.md` under "Model-experiment route definitions": M1 = in-house planning architecture route (keep V4.x, data governance → SFT → AR → optional DPO); M2 = Base-model domain-specialization route (Base → DAPT → task SFT → optional process/preference stages); M3 = mature post-trained model direct task adaptation (Qwen3.5-9B → QLoRA/SFT only, no DAPT). All three share the same output boundary (L3 semantic workflow → common L3→QGIS landing) for fair comparison. M2-C0 is M2's internal no-DAPT control; M3-P0 is M3's zero-shot floor. Open scoping decision pending: which M2 stages (DAPT→SFT→process supervision→preference/tool feedback) belong to the main experiment vs. follow-ups.
+## A10 QLoRA smoke 9/9 passed; Qwen3.5-9B unusable as base (2026-09-07)
+
+Stage ③ complete. **Critical finding: the local `qwen3.5:9b` ollama weight is a
+hybrid SSM+attention multimodal architecture** (ssm_* state-space layers,
+mtp.* multi-token-prediction head, v.blk.* vision tower) — transformers 4.57.5
+has no `qwen35` class (verified fail), and supporting it means implementing the
+SSM scan/MTP/vision stack from scratch. The experiment matrix's base model must
+be replaced; candidates on disk: Qwen2.5-7B (validated), Qwen2.5-14B (needs NF4
+memory check), or an HF download of Qwen3-8B.
+
+The stack itself is proven on **Qwen2.5-7B** (`/data/llms/Qwen2.5/7b`): NF4
+double-quant load 6.59 GB, forward/backward/grad-accumulation finite, LoRA
+(r=16, q/k/v/o) save + reload byte-identical (112 lora_A tensors compared),
+generation works. **Peak memory 12.86 / 23 GB.** Environment pinned: torch
+2.2.2+cu121, transformers 4.57.5, peft 0.20.0, bitsandbytes 0.45.0 (wheel
+transferred from local because the server mirror kept timing out). Evidence:
+`docs/reports/qwen_a10_qlora_smoke_v1/` (per-step ledger, report, hash
+ledger); script `scripts/qwen_a10_qlora_smoke.py`.
+
+Next: user decides the base model, then ④ 100-sample overfit on paper_v1 rows
+(data path and LoRA config already proven).
+
+## paper_v1 supervision manifest v2 — GEE side corrected to the 8,283 authority (2026-09-07)
+
+The user corrected a real error in the first paper_v1 build: the GEE side had
+been taken from the superseded 76,884-row legacy baseline (old step1-8
+pipeline). The current official GEE train-only authority is the 8,283-row
+Batch12-merged cumulative package. That package was **recovered intact** from
+the repo-root working file `.tmp_gee_cumulative_authority_v8_9_9_batch12_20260811.json`
+— SHA256 exactly matches the recorded cumulative-authority hash
+(`30dbfe5c…`), so it is the original file, not a regeneration. It is now
+materialized with a recovery hash ledger at
+`docs/reports/gee_train_only_authority_v8_9_9_8283/`; the option-B server
+rebuild was stopped and cleaned after the discovery.
+
+**paper_v1 v2 = 8,912 rows** (GEE 8,283 + QGIS 629): train 8,817 / val 49 /
+test 46; source-disjoint verified independently (8,797 distinct source
+identities, 0/0/0 overlap); zero empty task texts; both held-out splits carry
+real multi-step supervision on both platforms (GEE val/test 37/35 multi-step,
+QGIS val/test 5/4). L3 vocabulary: GEE 57 codes, QGIS 56, shared 25, QGIS-only
+31. Weights: GEE 0.5×8,283; QGIS 1.0×172 / 0.8×24 / 0.7×430 / 0.6×3. The
+invalid 77,513-row first build is fully superseded. Training rows 0; manifest
+only. Evidence: `docs/reports/paper_v1_supervision/` (manifest, summary,
+`manifest_report_v1.md`, hash ledger pinning the 8,283 input at `30dbfe5c…`).
+
+## paper_v1 supervision manifest frozen (2026-09-07) — SUPERSEDED by v2 above
+
+The model-experiment phase is open. `paper_v1` unifies GEE + QGIS into one
+supervision ledger (108 MB, 77,513 rows: GEE 76,884 + QGIS 629) with a uniform
+schema (record id, task text, platform, source identity + SHA, L3 chain,
+operator chain or package reference, alignments, split, weight, evidence level)
+and **source-disjoint train/val/test** assigned per source identity (77,398
+distinct identities; independently re-verified 0/0/0 overlaps). Splits:
+train 76,733 / val 391 / test 389; QGIS val 8 (6 multi-step, incl. 9- and
+6-step chains) and test 3 (all multi-step, incl. one GOLD). Weights 1.0×77,056 /
+0.8×24 / 0.7×430 / 0.6×3. L3 overlap: 18 shared codes between platforms, 38
+QGIS-only. 17 GEE train rows have empty task text (inherited; kept in train).
+A merge bug that dropped the 3 standalone task texts was caught during
+manifest verification and fixed (pool rebuilt, hashes refreshed, tests 5/5).
+Evidence: `docs/reports/paper_v1_supervision/` (manifest, summary,
+`manifest_report_v1.md`, hash ledger pinning both inputs); script
+`scripts/build_paper_v1_supervision_manifest.py` (rng seed 20260907).
+
+Next per the user's roadmap: ③ Qwen3.5-9B A10 training smoke (NF4 QLoRA:
+tokenizer/forward/backward/grad-accum/checkpoint save-reload/generation), ④
+100-sample overfit, ⑤ M3-P0 zero-shot, ⑥ M3-P1, ⑦ M1 controlled rerun — all
+consuming this one manifest; Benchmark Gate-3 supply refill runs in parallel
+from QGIS source-backed data outside the 629 pool. No training row has been
+emitted; no checkpoint exists.
+
+## Official merged QGIS training pool v1: 629 rows (2026-09-07)
+
+The final merge-level admission over the three audited sources — 506 audited
+existing + 120 API-pattern candidates + 3 standalone — with all dedup layers
+re-applied jointly (sample identity, source-SHA+span, L3-sequence+task-text).
+**Result: 629 admitted, 0 cross-pool rejects** — the prior stages' cross-dedup
+held exactly. Structure: single-step 367, **multi-step 262** (workflow
+composition supervision, +84.5% over the old 142), 277 unique L3 sequences
+(227 of them multi-step: 107 existing + 120 pattern, the pattern lane's entire
+contribution sequence-unique), 617 unique task texts, length bands 1:367 /
+2–3:138 / 4–7:89 / 8+:35, weights 1.0×172 / 0.8×24 / 0.7×430 / 0.6×3. V4 smoke
+over the full pool: real dataset + real tokenizer, 20 batches, max content 55/100,
+finite loss/gradients, no checkpoint/epoch. The pool is
+`admitted_train_only_candidate_v1` — versioned and hash-bound, not a training
+run; every row carries validation/test=false and production_merge=not_granted.
+Evidence: `docs/reports/qgis_training_pool_merged_v1/` (`pool_report_v1.md`,
+`qgis_training_pool_v1.jsonl`, summary, hash ledgers); script
+`scripts/merge_qgis_training_pool_v1.py`.
+
+Per the user's roadmap: next is the GEE-vs-QGIS distribution analysis and the
+decision between a first GEE→QGIS adaptation training experiment (QGIS now has
+500+ rows of which 260+ are true workflow supervision) and an AI reconstruction
+round aimed specifically at the workflow-diversity gap (262 → ~500), not at a
+raw row count.
+
+## Existing QGIS training-pool audit: 508 → 52 GOLD / 454 SILVER / 2 REJECT (2026-09-07)
+
+The user-ordered audit of the existing 508-row aggregate ran directly against
+the pool ledger with no new mining. Every check is mechanical and complete (not
+sampled): server-side source SHA re-verification **508/508** (0 missing/mismatch/
+unreadable), span checks 453 verified + 55 no-span rows, L3 validity and
+token-ID consistency **508/508** against the 128 taxonomy, task text ≥15 chars
+508/508, QGIS platform (no `ee.*`) 508/508, real tokenizer gate **0 rejections**
+(max 126), V4 smoke over the 506 non-reject rows (16 batches, max content 14/100,
+finite loss/gradients, no checkpoint/epoch). Duplicates: 2 exact (L3 sequence +
+task text) twins → REJECT. The 20 multi-step rows without `dependency_edges`
+all carry `normalized_dag_key` + `call_graph_key` — dataflow proven at
+admission, serialized as sequence (V4 does not consume edges); reclassified
+`sequence_serialized_dag_verified`, not a defect.
+
+**The pool is real: 506 structurally clean rows (52 GOLD weight 1.0, 454
+SILVER weight 0.7/0.8/0.6).** Caveats: GOLD/SILVER inherit admission-time review
+tiers — this audit re-verified structure, not human semantics (those reviews are
+frozen in the source packages); 364/506 are single-step rows (operator-level
+supervision; multi-step mass is 142); 406 rows share 55 distinct L3 sequences —
+task-text diversity carries the supervision. Combined QGIS standing: audited
+506 + 120 pattern candidates + 3 standalone + 56 proven operators = potential
+629-row supervision ceiling if the 120 are admitted. The 2 REJECT rows are
+flagged, not deleted. Evidence: `docs/reports/qgis_508_pool_audit_v1/`
+(`audit_report_v1.md`, verdict/structural/source ledgers, hash ledger).
+
+## API pattern 875-funnel FINAL: 120 training candidates (2026-09-07)
+
+The full 875-funnel is closed. Final number: **875 → 120 training candidates**
+(13.7% of signatures; 2.5% of the 4,880 instances), all passing the real
+`bert-base-uncased` gate (max 119 tokens, mean 49.3, zero rejections) and the
+real V4 data path (8 batches, max content length 55/100, finite loss and
+gradients, sample weights emitted; no checkpoint, no epoch). Final-stage
+attribution over the 142 qualified: task-text reject (no source context) 4;
+internal L3-sequence dedup 8; 508-pool hits 10 (source SHA 4 / L3 sequence 6 /
+task text 0). Task text provenance — nothing invented: docstrings 90,
+task-bearing comments 11, domain-named class.function scope 19 (real plugin
+algorithm classes like `JunctionBufferTrimAndExplode`). Distributions: length
+mode 3 with a real tail to 55; L3 coverage Intersect 289 / Buffer 161 /
+Reproject 150 / Feature to Point 131 / Collect 78 / Erase 49 / Repair 34 / Min
+Bounding 7 / Simplify 5 / Smooth 1 / SymDiff 3.
+
+**Reading (user's bands): 120 is in the 50–150 band** — API pattern has real
+multi-step structure but insufficient task supervision to be a primary training
+source alone; per the pre-agreed interpretation, AI-assisted reconstruction and
+other lanes now enter the roadmap formally, while the lane's standing products
+are the 120 verified candidates plus the frozen predicate/operator evidence.
+The largest known unlock remains the 645 unproven transform steps (238 rows).
+The 120 are candidates, not training rows: package consumption is a separate
+user decision. Training rows 0; authority/evaluation/checkpoints unchanged.
+Evidence: `docs/reports/qgis_api_pattern_production_final/`
+(`final_report_v1.md`, `pattern_consumption_v1.jsonl` with stage reasons and
+token counts, `qualified_context_v1.json`, hash ledgers); script
+`scripts/consume_qgis_api_pattern_training_rows.py`; tests 6/6.
+
+## API pattern L3 qualification: 875 → 142 QUALIFIED (2026-09-07)
+
+Pattern-lane qualification ran over the 875 unique chain signatures using the
+frozen `human_binding_review_2026_09_04` binding classes (reused unchanged) and
+the user-approved **Predicate/Metric Step Policy v1**: a predicate enters the
+sequence only when its result provably controls a later transform call
+(`if`/`while` operand whose branch executes a chain call; 61 of the 142
+qualified rows have such a control node, encoded with the existing Intersect
+token); measurements never take a slot; 1,796 predicate steps are retained as
+structural evidence on the rows. No new L3 codes; taxonomy untouched.
+
+Funnel: of 875, L3 mapping complete 434 (unresolved 306 — 645 of 647 unresolved
+steps are `transform:unproven_receiver`, the same name-bound receiver wall as
+the standalone lane; deferred actions 135 rows / 451 steps). QUALIFIED
+**142** = complete mapping + ≥2 transform steps + domain-named owner. DEFERRED
+733: owner 292, policy-insufficient transforms 127, unresolved 238, deferred
+actions 76. Qualified chains span 11 L3 classes (Intersect 298, Buffer 177,
+Reproject 168, Feature to Point 141, Collect 90, Erase 52, Repair 37, Min
+Bounding 8, Simplify 5, SymDiff 3, Smooth 1), length 2–55 with no dominant
+duplicate L3 sequence — chain diversity survived qualification. Training rows 0;
+tokenizer/V4 not yet run; authority unchanged. Note: the census ledger lacked
+`source_path`; the qualification input was joined by record_id to the v2
+normalized ledger server-side before the run. Evidence:
+`docs/reports/qgis_api_pattern_qualification_v1/` (ledger, summary, hash
+ledgers, `qualification_report_v1.md`); script
+`scripts/qualify_qgis_api_pattern_chains.py`; tests 9/9.
+
+Next: cross-pool dedup of the 142 vs the 508 pool, then task text/tokenizer/V4.
+Optional unlocks (user decision): dominating-assignment proof for the 645
+unproven transform steps (238 rows), and an owner-policy adjudication for the
+292 plain-scope complete chains.
+
+## API pattern multi-step census: 4,880 → 875 (2026-09-04)
+
+First pass over the 4,880 `api_pattern` rows measuring compression structure
+only — no L3 mapping, no task text, no admission. Stage table: 0 source
+failures; FAIL_CLOSED 45 (foreign receiver/keyword); structure invalid 2,742
+(no QGIS-proven receiver 813, no dataflow linkage 731, predicate/measurement-
+dominated 1,198); **2,093 structurally valid multi-step chains**, deduped by
+chain signature to **875 unique signatures** (2.4:1). All 875 have verified
+producer→consumer linkage. Task owners: `domain_named` 322 (all with unique
+signatures and real multi-operation shapes like
+`makevalid|intersects|buffer|unaryunion|intersection|transform`), `plain_scope`
+505, `module_level` 25, `generic_verb` 23. Chain-length mode is 3–8 steps with a
+tail to 102 — not two-call fragments; the largest signature is
+`transform|transform` (257→1). Predicate contamination is high (531/875 carry
+predicates; only 259 are pure transform chains).
+
+Reading: instance count (4,880) was never the supervision number — 875
+signatures is, and the task-qualified training ceiling starts near the 322
+domain-named rows before predicate filtering, per-source review, 508-pool
+cross-dedup, and tokenizer/V4 gates. The move to multi-step structure is
+confirmed; the standalone lane stays sealed at its 3 candidates. Training rows
+0; authority unchanged. Evidence: `docs/reports/qgis_api_pattern_census_v1/`
+(`pattern_census_v1.jsonl` with per-row stage reasons, `census_report_v1.md`,
+hash ledgers); script `scripts/census_qgis_api_pattern_chains.py`; tests 9/9.
+
+## API semantic standalone consumption: 137 → 3 (2026-09-04)
+
+The yield pipeline over the 137 adjudicated standalone rows completed with no new
+parsing. **Result: 3 training candidates** (Reproject 1, Intersect 1, Simplify 1),
+after 1 existing-pool SHA hit, 66 internal payload duplicates (99 of 137 rows
+share identical call text; 39 signatures cover all 137), and 67 rows without
+independent task context (55 module-level snippets with no task owner, 12
+no-observable-semantics helpers). The 3 survivors all passed on
+`domain_named_scope` (e.g. `AddMultipleTreesTool.get_line_segment`), passed the
+real `bert-base-uncased` gate (max 35 tokens), and passed the real
+`TaskConditionedL3DatasetV4` + weighted-CE + backward smoke (loss/gradients
+finite, no checkpoint, no epoch). They are candidates only — consumption into a
+training package needs an explicit user decision.
+
+**Lane conclusion:** the API semantic *unit* lane contributes operator-semantic
+knowledge (998 qualified action bindings; 861 grounding-grade), not workflow
+training data. Single geometry calls without task context are not user workflows,
+and per the locked principle different sources were not dressed up as different
+tasks. The next API-side yield increment must come from multi-step structure:
+`api_pattern` (4,880) and the workflow lanes. Evidence:
+`docs/reports/qgis_api_semantic_production_v2/consumption/`
+(`consumption_report_v1.md`, `standalone_collapse_v1.jsonl`,
+`training_candidates_v1.json`, hash ledgers); script
+`scripts/collapse_qgis_api_standalone_candidates.py`; tests 10/10.
+
+## QGIS API semantic production v2 — L3 qualification adjudicated (2026-09-04)
+
+The human binding review (`human_binding_review_2026_09_04`) is applied and
+materialized as a ledger: **QUALIFIED 998 / DEFERRED 59 / FAIL_CLOSED 1** over the
+1,058 proof rows. Approved as classes: `native_operator_slug_equivalence` 387,
+`transform_crs_receiver` 558 (+1 promoted geometry transform with an inline
+`QgsCoordinateTransform` argument), `taxonomy_class_equivalence` 52 — per-row
+evidence retained. `interpolate` 40 / `offsetcurve` 3 / `splitgeometry` 2 stay
+DEFERRED (`action_deferred_by_adjudication`); geometry-flavored `transform` split
+1 QUALIFIED / 14 DEFERRED (`transform_argument_not_yet_proven`, recoverable later
+via dominating-assignment proof on the argument) / 1 FAIL_CLOSED (numeric
+`transform(float(x), float(y))`). The ledger resolved the arithmetic caution: the
+16 transforms were inside the 61 unresolved, outside the 997 proposals, hence 998.
+
+Consumption routing (QUALIFIED only): **137 standalone rows → workflow-training
+candidate pool** (Reproject 65, Feature to Point 25, Buffer 21, Simplify 8,
+Intersect 7, Smooth 5, Collect 4, Repair 1, Minimum Bounding 1), still downstream
+of normalized-sequence/dedup/context/tokenizer/stable124 gates — training-eligible
+≠ training row; **861 intermediate rows → operator-grounding corpus**. Training
+rows 0; authority/evaluation/checkpoints unchanged. Evidence:
+`docs/reports/qgis_api_semantic_production_v2/phase2_adjudicated/`
+(`adjudication_v1.jsonl`, summary, hash ledgers, `adjudication_report_v1.md`);
+script `scripts/adjudicate_qgis_api_semantic_l3.py` (adjudication text frozen
+inside); tests 6/6.
+
+The lane KPI is now: **how many independent QGIS training rows the 137 standalone
+candidates yield** (sequence construction → cross-source dedup → independent
+workflow/task context → tokenizer → stable124/V4), not further parsing volume.
+
+## QGIS API semantic production v2 — phase 2 complete (2026-09-04)
+
+Phase 2 (L3 proof over the 1,058 candidates) is done. It binds each semantic
+action to an L3 class **with recorded mapping evidence** and splits standalone
+operations from implementation steps, but emits **proposals only**: every row is
+`DEFERRED / awaiting_independent_binding_review`, because the binding review is
+the QUALIFIED gate and is a separate authorized pass. `qualified_rows = 0` by
+construction.
+
+Mapping evidence per row — never method-name-only:
+`transform_crs_receiver` 558 (`QgsCoordinateTransform.transform` is reprojection
+by type contract), `native_operator_slug_equivalence` 387 (PyQGIS engine of the
+same-named Processing operator whose L3 is already fixed in
+`composed_stable124`), `taxonomy_class_equivalence` 52 (`convexhull` →
+L3_02_05_12 as an enumerated hull variant; `combine` → L3_02_03_05 Collect
+Features), `unresolved_action` 61 (`interpolate` 40, `offsetcurve` 3,
+`splitgeometry` 2, geometry-flavored `transform` 16 — no binding proposed until
+each is separately decided).
+
+Result: **997/1,058 carry an L3 proposal across 11 distinct classes** (Reproject
+558, Feature to Point 174, Buffer 92, Intersect 57, Minimum Bounding 33,
+Simplify 28, Repair Geometry 24, Collect Features 19, Smooth 10, Erase 1,
+Symmetrical Difference 1). Standalone split: **137 standalone-operation rows**
+(result returned to caller 62 / module-level 75) — the only rows a
+workflow-training line could consume, composed of Reproject 65, Feature to
+Point 25, Buffer 21, Simplify 8, Intersect 7, Smooth 5, Collect 4, Repair 1,
+Minimum Bounding 1 — versus **860 intermediate-implementation rows** whose
+result never leaves the enclosing function (operator-semantic knowledge, not
+workflow steps). Training rows 0; authority/evaluation/checkpoints unchanged.
+Evidence: `docs/reports/qgis_api_semantic_production_v2/phase2/` (`l3_proof_v1.jsonl`,
+summary, hash ledgers, `phase2_report_v1.md`); script
+`scripts/prove_qgis_api_semantic_l3.py`; tests 9/9.
+
+Next: the independent binding review (one decision per mapping class:
+slug-equivalence table, CRS-receiver rule, hull/combine equivalences, plus
+verdicts for `interpolate`/`offsetcurve`/`splitgeometry`/geometry-`transform`)
+is the QUALIFIED gate; after it, the 137 standalone rows become this lane's
+first training-eligible pool pending downstream gates, and the 860 intermediate
+rows feed the operator-grounding corpus.
+
+## QGIS API semantic production v2 — phase 1 complete (2026-09-04)
+
+The API semantic lane is open. Phase 1 (source fact extraction + semantic
+qualification) ran over the 3,209 confirmed `api_semantic_unit` rows of the v2
+normalized ledger (hash-pinned input `a13ce1a2…`), with L3 mapping explicitly
+**not attempted** — only `DEFERRED`/`FAIL_CLOSED` are reachable; `QUALIFIED`
+requires the phase-2 L3 proof layer. Result:
+
+- **1,058 candidate geometry semantics** (33%): receiver proven QGIS,
+  geometry-transform role, result retained. Composition: **558
+  `QgsCoordinateTransform.transform` (reproject semantics)**, 484 classic
+  geometry transforms (centroid 174, buffer 92, intersection 57, interpolate 40,
+  convexhull 33, simplify 28, makevalid 24, combine 19, smooth 10, offsetcurve 3,
+  splitgeometry 2, symdifference 1, difference 1), 16 geometry-flavored
+  `transform`. 1,058 unique source SHAs; only 26 non-transform candidates have
+  all-literal argument values.
+- **1,168 ambiguous receivers**: the receiver's QGIS type is not provable from the
+  file alone — the measured size of the "semantics hidden in implementation"
+  problem and the concrete phase-3 capability decision (inter-procedural type
+  recovery), not a rule tweak.
+- **889 predicates/measurements/discarded results** (527 scalar-returning, 362
+  unused): honest knowledge, not workflow steps.
+- **94 foreign libraries fail closed** (osgeo 33, pyproj 23, shapely 18, sklearn 8,
+  geopandas 5+4, others 3).
+
+Method-name matching required receiver proof because the same names exist in
+shapely/geopandas/pyproj/sklearn; two hardening rules were added from inspecting
+the first run and are regression-tested: foreign-only keyword arguments
+(`cap_style` etc.) fail closed, and a bare `.geometry` attribute (GeoDataFrame
+idiom) is not a QGIS receiver while `.geometry()` calls are. Every row keeps the
+full fact record (`call_span`, `call_text`, receiver binding evidence,
+`argument_facts`, `return_target`, `enclosing_scope`, `semantic_action` as
+role:method, never an L3 code), so later phases never reparse source. Verdicts:
+DEFERRED 3,115 / FAIL_CLOSED 94 / QUALIFIED 0. Training rows 0. Evidence:
+`docs/reports/qgis_api_semantic_production_v2/` (ledger, summary, hash ledgers,
+`phase1_report_v1.md`).
+
+## Asset Miner / normalization v2 rebuild (2026-09-04)
+
+The asset ledger was rebuilt as **v2** (not a v1 restore) after the server-side v1
+tree was deleted; no v1 directory was overwritten. Inputs came from local
+manifests (8,466 Processing + 39,386 API = 47,852) plus the intact read-only
+`/home/yll`. v2 parses **47,852/47,852 with zero unresolved sources**, versus v1's
+47,542/310. Two source roots had been renamed on disk after the manifests froze
+(`model_tutorial` → `…/downloaded_scripts(QGIS_Model_Tutorial_Workflows)`,
+`pwc_qgis` → `…/downloaded_scripts-PWC`), accounting for exactly 301 + 9 = 310
+rows; both substitutions were SHA-verified against the manifest before use.
+
+v2 pools: `unresolved` 23,650 (−295), `api_implementation_evidence` 12,410 (+3),
+`api_pattern` **4,880** (0), `api_semantic_unit` **3,209** (0),
+`processing_workflow` 1,337 (+101), `processing_implementation` 1,266 (+178),
+`processing_operator` 595 (+4), `processing_dynamic_candidate` 505 (+9). Every
+delta traces to the 310 recovered sources; no row moved between pools, and the
+3,209/4,880 match was measured, not enforced.
+
+Census gate passed: 47,852 unique source SHA and record IDs, duplicate SHA rows 0,
+`unique_operator_sequences` 1,411 and `unique_semantic_sequences` 1,729 unchanged.
+Definition confirmed against evidence: **`api_semantic_unit` = exactly one API
+semantic call** (3,209/3,209, zero Processing calls); `api_pattern` = two or more
+(2–102). This is the normalizer's definition and deliberately not the miner's
+label — 2,242 of the semantic units came from miner `api_pattern_candidate` rows.
+It is neither a boundary-unit nor a composite macro.
+
+The operator pool is 595 rows but still **207 unique operator IDs**: the 4 new
+rows carry `omm:*` third-party operators already `FAIL_CLOSED`, so the sealed
+56/44/107 qualification is unaffected and stays bound to its own frozen 591-row
+v7 sidecar input.
+
+Preservation gate now mandatory: `preservation_ledger_v1.json` binds input
+manifest hashes and row counts, all script hashes, the git commit, and every
+output hash with its second-copy location. The 83 MB normalized ledger is
+mirrored in-repo and hash-verified after transfer (`a13ce1a2…`); the 66 MB merged
+miner ledger and 479-shard tree remain server-side and are regenerable.
+
+Historical API artifacts stay **reference lineage only** and are not merged:
+`qgis_api_boundary_v6_post_filter_v1` (2,707 intake units),
+`qgis_api_l3_mapping_census_v1` (2,632 rows, 2,605 `mutation_export_only`),
+`qgis_api_composite_macro_census_v1` (10,800 discovery units). The 2026-08
+mutation/export closure is not reopened. Asset Miner v2 is the canonical API asset
+source. Training rows 0; authority, evaluation, and checkpoints unchanged.
+Evidence: `docs/reports/qgis_asset_normalization_full_v2/` and
+`docs/reports/qgis_asset_miner_full_v2/`.
+
+## Latest QGIS family collapse audit (2026-09-03)
+
+The read-only `normalized-DAG` collapse audit covered all 107 rows in the
+combined family admission ledger. It found two duplicate groups: dissolve /
+multipart-to-singleparts (73 rows, 31 source SHAs, 21 semantic parameter
+signatures, 34 parent structures) and buffer / clip (34 rows, 24 source SHAs,
+10 semantic parameter signatures, 18 parent structures). Task text, L3, vector
+I/O, and normalized DAG are identical within each group; source-backed parameter
+and parent-structure variation is present in both. This is a potential
+over-merge signal for future parameter-aware assets, not sufficient evidence to
+change the current task-to-L3 workflow dedup key. Dedup is unchanged, Gold=0,
+training rows=0, and the two survivors remain candidate-only Silver.
+Evidence: `docs/reports/qgis_normalized_dag_collapse_audit_v1/`.
+
+## QGIS parameter and parent asset pool v1 (2026-09-03)
+
+The collapse evidence is now materialized as a separate candidate-only pool:
+31 processing parameter-signature assets, 52 parent-structure assets, and four
+operator observations from 107 source-backed rows. Every asset retains source
+SHA, family, normalized-DAG provenance, and zero training admission. This pool
+does not relax workflow dedup and does not modify L3 authority, evaluation
+splits, production profiles, or checkpoints. Evidence:
+`docs/reports/qgis_family_parameter_asset_pool_v1/`.
+
+## Processing operator asset lane (2026-09-03)
+
+The server full-pool census is complete using the normalized Asset Miner ledger:
+47,852 input rows contain exactly 591 `processing_operator` asset rows, which
+aggregate to 207 unique operator IDs backed by 591 unique source SHA values.
+All 591 rows have processing-call evidence and the expected-row check is
+`matched`. The normalized v1 schema does not carry parameter dictionaries or
+provider I/O contracts, so both are reported as
+`not_carried_by_normalized_ledger`, not as failed qualification. L3 mapping,
+training admission, authority, and checkpoints remain closed. Evidence:
+`docs/reports/qgis_processing_operator_assets_full_v3/`.
+
+The independent evidence sidecar is now at v7 after a repaired binding rule. On the
+same frozen input it source-verifies all 591 rows and recovers 591 AST calls:
+**511** calls have static parameter dictionaries, 438 expose static INPUT/OUTPUT
+keys, 504 have I/O evidence including positional `runalg`, 589 have provider-prefix
+evidence, and 12 remain deferred. v6 labelled a by-name parameter dictionary
+`name_to_static_assignment` using a module-wide `{name: last assignment}` walk, which
+proved nothing about scope, order, dominance, or mutation; it attributed another
+call's payload to 4 `qgis:joinattributesbylocation` rows and wrongly deferred 6
+provable ones. Rule `dominating_same_scope_static_dict_v2` now requires a single
+dominating same-scope assignment, no rebinding or dict mutation before the call span,
+and a static dict, and records `assignment_lineno`/`assignment_span`/
+`dominance_verified`/`mutation_guard` for all 224 accepted bindings (224/224 on every
+provenance field). Parameter completeness is reported for the first time:
+`static_parameter_complete=50`, `static_parameter_partial=529`,
+`parameter_unresolved=12`. The sidecar remains evidence-only; L3 mapping,
+qualification, authority, and training are closed. Evidence:
+`docs/reports/qgis_processing_operator_evidence_sidecar_full_v7/` (including
+`regression_v6_to_v7_v1.md`); v6 is superseded.
+
+Operator-pool L3 qualification is complete with a three-state verdict
+(`QUALIFIED` / `DEFERRED` / `FAIL_CLOSED`, no interim states). Of the 207 unique
+operator IDs: **56 QUALIFIED** (15 exact `composed_stable124` mappings with 39
+support rows + 41 `qgis:<slug>`→`native:<same slug>` operators with 241 rows,
+every row independently alias-proven by source reread, SHA re-verification, and
+span-exact literal relocation across all three entrypoints; the 198-row
+`processing.run` subset agrees 198/198 with the existing precedent verifier),
+covering **37 distinct L3 codes**; **44 DEFERRED** (36 catalog providers without
+a mapping, including `native:rastercalc` and `qgis:filedownloader`, kept as
+minimal-extension observation candidates; 8 no-precedent alias shapes — 7
+`gdalogr:`→`gdal:` and 1 `sagang:`→`saga:`); **107 FAIL_CLOSED** third-party
+plugin providers (210 rows). 56 is the operator-level ceiling under current
+authority, not a promise of 280 training rows; parameter/IO evidence is recorded
+as coverage without gating. Training rows 0; L3 grants, authority, evaluation,
+and checkpoints unchanged. Evidence:
+`docs/reports/qgis_processing_operator_qualification_v1/` (ledger, alias proofs,
+precedent cross-check, and `semantic_qualification_report_v1.md`).
+
+Infrastructure note (2026-09-04): the entire server-side
+`/home/qy/system_redesign/diagnostics/` tree was deleted outside this session
+(~450G freed on `/`, ~590G on `/data`), including the server copies of the
+operator-asset census, the frozen normalized ledger input (`45a1c12d…`), and all
+GEE batch evidence. `/home/yll` is intact. The operator lane's authoritative
+chain now lives in this repository (v7 sidecar ledger + qualification ledger);
+the qualification rebuilt the operator aggregation from the local v7 sidecar and
+matched the frozen census exactly (207/591/591). The normalized ledger is
+regenerable from `/home/yll` via `scripts/mine_qgis_assets.py` +
+`scripts/normalize_qgis_assets.py` if ever needed; that regeneration has not
+been run.
+
+## Processing family calibration status (2026-09-02, superseded v1)
+
+The first high-support family packet, `native:dissolve ->
+native:multiparttosingleparts`, is source-disjoint by SHA (40 sources; 20
+calibration and 20 holdout; 86 occurrences total). The first audit passed 70
+occurrences and deferred 16 for an explicit cross-variable/list-loop dataflow
+rule gap; there were zero semantic or structural failures and zero SHA overlap.
+The audit remains candidate-only: no L3, task, I/O, dedup, Gold/Silver,
+training, authority, or evaluation admission has been granted. The dependency
+auditor now recognizes bounded `append`/`extend`/`insert` result sinks and
+`for item in container` propagation, with regression coverage; arbitrary
+mutation and runtime aliasing remain deferred. Evidence:
+`docs/reports/qgis_family_calibration_audit_dissolve_multipart_v1.md`.
+
+This historical v1 paragraph is superseded by the server v2 rerun below.
+
+## Processing family calibration rerun (2026-09-02)
+
+The frozen 86-occurrence `native:dissolve -> native:multiparttosingleparts`
+packet was replayed without regeneration using the bounded container/loop rule:
+73 passed, 13 remained deferred, and 0 failed. All 86 source SHAs were
+verified; calibration/holdout overlap remained zero. Three dependency-only rows
+were recovered (two calibration, one holdout). This remains candidate-only;
+L3, task, I/O, dedup, Gold/Silver, training, authority, and evaluation are
+closed. Independently qualify the 73 passed rows and explicitly resolve or
+bound the remaining 13 before promotion or batch expansion. Evidence:
+`docs/reports/qgis_family_calibration_audit_dissolve_multipart_v2.md`.
+
+The 73 passed dissolve/multipart rows completed qualification preflight: 73/73
+existing-authority L3 proposals and 73/73 deterministic vector I/O contracts;
+task fidelity and cross-pool dedup remain pending. In parallel,
+`native:buffer -> native:clip` was calibrated from 54 occurrences / 36 sources /
+19 structures: 34 passed, 20 dependency-only deferred, 0 failed, SHA overlap 0.
+Both lanes remain candidate-only. Evidence:
+`docs/reports/qgis_family_qualification_dissolve_multipart_v1.md` and
+`docs/reports/qgis_family_calibration_buffer_clip_v1.md`.
+
+Independent source-fact review packets are now frozen for both lanes: 73
+dissolve/multipart rows (31 unique source SHAs) and 34 buffer/clip rows (24
+unique source SHAs). Each packet embeds verified source text and an explicit
+gold/silver/reject review contract; decisions and training rows remain zero.
+Evidence:
+`docs/reports/qgis_family_semantic_review_dissolve_multipart_v1.md` and
+`docs/reports/qgis_family_semantic_review_buffer_clip_v1.md`.
+
+The deterministic source-fact review and combined four-layer admission pass is
+complete: 107/107 rows passed the frozen AST facts, L3, vector I/O, and family
+task-vocabulary checks. Dedup retained 2 normalized-DAG-unique Silver
+candidates (one per family) and suppressed 105 duplicates. Gold=0 and
+training rows=0; the two survivors still need independent intent adjudication.
+Dashboard: `docs/reports/qgis_asset_production_dashboard_v1/dashboard_v1.md`.
+
+## Raw-source LLM extraction pilot (2026-08-11)
+
+The prior boundary v3 pilot sent bounded source windows plus pre-extracted AST
+steps; it did not test raw-source operator extraction. The isolated raw route is
+now prepared: one complete Python source file per request, a catalog shortlist,
+and operator candidates with source line evidence only. The local validator now
+allows candidates absent from the deterministic extractor and labels them
+`locally_confirmed` or `call_site_only`. No L3, training, or authority admission
+is granted.
+
+The first server pilot is complete: 10 Processing + 10 API, 20 unique SHAs. API
+known AST facts were recovered 6/8 (0.750 recall, 1.0 precision among verified
+known facts). All five Processing gold sources had empty/non-JSON responses; a
+five-source retry recovered one partial response with an incompatible extra
+candidate and remained fail-closed. `call_site_only` (LLM-only) candidates=0,
+training rows=0. This proves the raw request/local validation chain runs, but
+does not prove recovery beyond the deterministic extractor. Keep isolated and
+candidate-only; do not expand or merge. Report:
+`docs/reports/qgis_llm_raw_operator_extraction_pilot_v1/report_v1.md`.
+
+## Workflow Gold/Silver Pilot (2026-08-12)
+
+The 455 Processing workflow-tier candidates are not a workflow corpus, but
+they have now produced a bounded output pilot. Corrected structural replay
+results are 70 candidates, 161 boundary deferrals, 36 extractor-unsupported,
+80 mapping deferrals, and 108 operator-resolution deferrals. Deterministic
+description fidelity passed for 69/70. Dual-baseline (294 Processing + 508
+all-QGIS) four-layer dedup classified 21 rows as **Silver** and 49 as Reject.
+The frozen independent full-source semantic review then classified those 21 as
+**15 Gold, 4 retained Silver, and 2 revoked**. The two revoked rows are excluded
+from the curated package: one has a Boolean raster-expression L3 mismatch and
+one has a conflicting vector/raster output contract.
+
+The original isolated package has 21 unique source SHA rows and remains
+immutable. A separate curated package has 19 reviewed train-only rows: 15 Gold
+(weight 1.0) and 4 retained Silver (weight 0.7). It cannot enter validation/test,
+benchmark, production authority, or a checkpoint-producing run. Four overlong
+descriptions were deterministically compacted from ordered source-verified
+operator chains. A real cached `bert-base-uncased` gate then passed 21/21
+without truncation (max 122), and the real `TaskConditionedL3DatasetV4` plus
+`weighted_sequence_cross_entropy` covered 21/21 rows with finite loss and
+gradients. The stable124 (max token 118) runtime adapter is smoke-only and
+does not change the production 94/107 profile. Evidence:
+`docs/reports/qgis_workflow_admission_v2_structural_replay_v1/report_v2.md` and
+`docs/reports/qgis_workflow_admission_v2_structural_replay_v1/silver_semantic_review_decision_v1/`.
+
+## `runalg` Entry-Point Calibration Freeze (2026-08-16)
+
+The first unsupported Processing family is now frozen as legacy
+`processing.runalg`, not yet supported by the production extractor. A
+read-only server census over all 8,466 Processing authorities found 201
+readable `runalg` sources (927 calls): 775 literal calls, 152 dynamic/blank
+calls, and 189 non-authority literal-source rows. Normalized-body dedup left
+148 authorities and deterministically froze 30 calibration + 30 holdout rows
+with zero source-SHA and body-hash overlap. The 295 absent source files remain
+fail-closed; no training rows were produced. `runalg` is predominantly a
+positional legacy API (918/927 calls), so it cannot be added as a synonym for
+dictionary-based `processing.run`.
+
+The isolated adapter passed calibration (30/30 independent structural audit)
+but failed its source-disjoint holdout (26/30): three sources mix literal and
+dynamic calls, and one requires a positional static-output-path proof rule.
+`runalg` is therefore **not promoted**. The 26 matching holdout rows remain
+candidate-only and cannot enter any training path. The family is now **frozen
+and deprioritized**: do not open a strict-profile follow-up unless a later
+corpus-yield decision explicitly re-prioritizes it. Do not touch the production
+extractor, merge authority, run model training, write checkpoints, or lower
+operator/boundary/L3 constraints. Evidence:
+`docs/reports/qgis_runalg_adapter_calibration_v1/report_v1.md`.
+
+## Workflow-corpus expansion policy (2026-08-16)
+
+The primary QGIS KPI is now the cumulative number of usable, source-grounded
+Gold/Silver workflows, not additional gate-pass counts. The reviewed 19-row
+Processing package is the seed workflow corpus. Existing PyQGIS local-macro
+packages, including the nine `route1` rows, remain a separate operator-semantic
+knowledge asset; they must not be relabelled as user workflows merely to raise
+the corpus count.
+
+The next bounded production lane is a synthetic-workflow **candidate** design
+based on the seed corpus, L3 operator semantics, and explicit I/O/transition
+constraints. Every candidate must carry its seed provenance and constraint
+profile, be grouped by `parent_source_sha256` in every future split, remain
+train-only and evaluation-ineligible, and undergo an
+independent semantic review before Gold/Silver admission. It must not be
+generated by arbitrary operator concatenation. Cross-platform operator
+semantics remain a separate corpus, not a direct workflow-count multiplier.
+No model training or checkpoint is authorized by this policy.
+
+The first intake has completed: six multistep seeds yielded 31 source-derived,
+catalog-I/O-compatible subworkflow candidates; 13 single-step seeds were
+excluded. The review packet restricts decisions to `independent_workflow`,
+`implementation_subworkflow`, or `duplicate_or_parent_contained`, and enforces
+parent-group split lineage. Report:
+`docs/reports/qgis_seed_subworkflow_candidate_intake_v1/semantic_review_packet_v1/`.
+
+The cumulative expansion KPI is updated: 52 in-scope candidate rows, 20 Gold,
+eight Silver, and 24 Reject. The curated train-only corpus now has 28 rows;
+formal authority and evaluation splits are unchanged. Report:
+`docs/reports/qgis_workflow_corpus_kpi_v1/`.
+
+The 31-way semantic review is complete: 11 `independent_workflow`, 17
+`implementation_subworkflow`, and three `duplicate_or_parent_contained`. The
+11 independent rows received source-fact task-fidelity review: five Gold, four
+Silver, and two exact-parent duplicates rejected. The 28-row combined package
+passed real V4 data-path smoke (BERT-128 no truncation, correct weights, finite
+forward/loss/backward/gradients); no training or checkpoint was written. Report:
+`docs/reports/qgis_seed_subworkflow_candidate_intake_v1/semantic_review_packet_v1/task_fidelity_review_v1/`.
+
+## Stable124 augmentation experiment profile (2026-09-02)
+
+The isolated `stable124_experimental` profile is now materialized under
+`docs/reports/qgis_stable124_experiment_profile_v1/`. It contains a baseline copy
+of the 76,884-row mainline package and a 76,912-row copy with all 28 curated QGIS
+rows appended to train only. Validation/test indices are byte-identical between
+the two packages; the 124x256 embedding keeps the original 94 rows unchanged and
+uses deterministic seed `124256` for the 30 appended rows. The profile activates
+with `GIS_VOCAB_PROFILE=stable124_experimental` and reports model vocab size 128.
+Both baseline and +28 training-entry dry-runs pass preflight; no model training or
+checkpoint has been run. Production `v2_94_stable`, `outputs_v2`, authority,
+validation/test, and benchmark remain unchanged.
+An exact census of the actual baseline rows shows all 76,884 `operator_sequence`
+values are exclusively `ee.*` (GEE-only); QGIS appears only in the appended 28.
+The experiment task vocabulary is 49 types (47 baseline + 2 explicit QGIS types).
+Composition evidence: `baseline_composition_v1.json`.
+
+## Data-role definition (2026-09-02)
+
+The project objective is QGIS-oriented workflow generation, not a platform-balanced
+GEE/QGIS generator. GEE supplies scalable workflow supervision for learning
+general GIS composition patterns; QGIS supplies target-platform operator semantics,
+vector-processing behavior, I/O transitions, and QGIS-specific composition. L3 is
+the shared algorithm-semantic representation between these sources. QGIS corpus
+targets are therefore coverage-driven (operator, L3, vector, transition, I/O,
+length, and task-semantic coverage), not a numeric parity target with GEE. The
+verified 76,884-row baseline is GEE-only; historical figures such as 8,283 must
+be labeled as a subset and not used as the baseline total without a source ledger.
+
+## QGIS data-production acceleration (2026-09-02)
+
+The active objective is production yield: rapidly increasing source-traceable,
+train-only QGIS rows without weakening structural, I/O, mapping, or semantic hard
+constraints. First scan the 23,638 raw `unclassified` sources with deterministic
+high-recall signatures for real Processing/API calls, wrappers, and local workflows;
+then recover bounded workflows/subworkflows, maintain a separate single-operator
+grounding corpus, and only later expand implementation/API families. Existing
+verified QGIS assets remain the baseline and dedup reference. Unconstrained LLM
+structural extraction is not the production path.
+
+Every batch must emit a manifest-backed census, provenance and parent lineage,
+four-layer deduplication, and a Gold/Silver/Reject/Deferred ledger. Track accepted
+rows, review cost, unique sources/parents, family concentration, and coverage gain.
+The near-term goal is a repeatable batch process with measured yield improvement,
+not a fixed 2,000-row claim. Training remains downstream of this loop.
+
+## Asset semantic normalization v1 (2026-09-02)
+
+The next semantic-preparation layer is implemented as
+`scripts/normalize_qgis_assets.py`. It consumes the candidate-only Asset Miner
+ledger and emits typed, provenance-preserving assets with explicit operation
+hints, source/parent lineage, four deduplication keys, and next-gate routing.
+Operation hints are lexical semantic labels only, not L3 mappings. The script
+emits zero training rows and cannot change authority, validation, test, or
+production state. Focused normalizer/miner tests pass 7/7. A server run now
+covers the full ledger: 1,236 Processing workflows, 1,088 implementations,
+591 operators, 496 dynamic candidates, 3,209 API semantic units, 4,880 API
+patterns, 12,407 implementation-evidence rows, and 23,945 unresolved rows;
+47,542 rows are SHA-verified. Report:
+`docs/reports/qgis_asset_normalization_full_v1.md`.
+
+The first bounded family packet is now generated for
+`native:clip|qgis:multiparttosingleparts` (7 Processing workflow candidates):
+3 calibration and 4 holdout rows, seven verified source SHAs, and zero
+calibration/holdout source overlap. It remains candidate-only with no L3,
+training, authority, or evaluation admission. Report:
+`docs/reports/qgis_asset_family_review_clip_multipart_v1.md`.
+
+Deterministic semantic calibration is complete: 7/7 rows pass SHA, AST literal
+ID/order, parameter, and inter-call alias-dependency checks; 0 failures/deferred,
+zero calibration/holdout SHA overlap, and seven distinct normalized templates.
+This validates the recovery rule only; task fidelity, provider/I/O, L3,
+cross-pool dedup, and Gold/Silver gates remain closed. Report:
+`docs/reports/qgis_asset_family_semantic_audit_clip_multipart_v1.md`.
+
+The calibrated rule was applied to the full normalized Processing workflow
+population: all 1,236 `processing_workflow` candidates yielded 7 matching
+parents and 7 family candidates, with one distinct full parent sequence and no
+multiple matched spans. Qualification preflight resolves an existing L3
+proposal and deterministic vector I/O contract for 7/7, while task fidelity
+and cross-pool dedup remain pending. Reports:
+`docs/reports/qgis_family_expansion_clip_multipart_v1.md` and
+`docs/reports/qgis_family_qualification_clip_multipart_v1.md`.
+
+The first full Processing family census is complete: 8,330 family records from
+all 1,236 workflow candidates (exact=363, 2-step=2,427, 3-step=3,113,
+transition=2,427; support >=2). Priority scheduling now recommends
+`native:dissolve -> native:multiparttosingleparts` (support 86, 40 sources, 18
+parent structures, fully pre-resolvable L3/I/O), followed by
+`native:buffer -> native:clip` (support 54, 36 sources, 19 structures). The
+previous clip/multipart family remains a calibration baseline (support 7).
+Task/template metrics are explicitly unavailable until semantic review. Report:
+`docs/reports/qgis_processing_family_census_full_v1.md`.
+
+## Raw-source 13-candidate review (2026-09-02)
+
+The 13 structural candidates were reviewed directly against `/home/yll` raw sources with SHA binding. `d8d9…` (DEMProcessing) is a real raster implementation candidate: `classify` contains the two-step `calc_stats → grass7:r.reclass` dependency chain, while `export_uniques` is independent. `bb18…` (CSV Tools) is plugin implementation/subworkflow evidence only. Three dynamic calls are deferred, four generic wrappers/CLI runners are rejected, one detector false positive is rejected, and three other implementations remain deferred for recovery. Training rows remain 0 and production merge is not granted. See `docs/reports/qgis_raw_unclassified_pilot_v1/review_v2/`.
+
+The `d8d9…` candidate record now materializes source spans, dependency/I-O evidence, provisional L3 mappings, task text, and dedup keys. `bb18…` is materialized separately as implementation evidence and is excluded from complete-workflow counts; both remain gated on independent semantic review and downstream gates.
+
+The `d8d9…` gate review is complete: candidate-level semantics are coherent; strict L3 remains deferred (statistics pending, GRASS provider binding pending); no exact operator-sequence duplicate was observed locally, but full cross-pool four-layer dedup remains deferred; real local `bert-base-uncased` 128-token smoke passed at 40 tokens without truncation. Final status remains `deferred_candidate_only`.
+
+`scripts/mine_qgis_assets.py` (Asset Miner v1) now emits a unified candidate-only inventory for Processing workflow/implementation/operator, dynamic recovery, API semantic-unit/pattern, plumbing, and unresolved assets. A server pilot of 100 rows per pool parsed 194/200 rows; training rows remain 0. Summary: `docs/reports/qgis_asset_miner_pilot_v1.md`.
+
+A direct full-pool run exceeded 10 minutes without incremental output because of per-row path resolution; it was stopped and is not treated as a full-pool result. The next version must shard by source root and checkpoint before deterministic merge.
+
+Added `scripts/run_qgis_asset_miner_sharded.py`: fixed pool shards with `DONE.json` checkpoints and merge-only-completed behavior; tests cover exclusion of incomplete shards.
+
+Server tiny end-to-end validation passed (10 rows per pool, 20 total): two checkpoints completed and merged to 20 rows (parsed=19, source_unresolved=1), with 0 training rows. A 250-row shard exceeded the SSH time limit due to `/home/yll` NFS read latency and is not counted.
+
+Full Asset Miner inventory completed (479/479 shards, 47,852 rows): parsed=47,542 and source_unresolved=310; workflow=1,236, implementation=1,088, operator=591, dynamic=496, API semantic-unit=1,874, pattern=6,215, plumbing=12,407, unresolved/no-known-signature=23,945. This is an asset-discovery baseline, not training admission; L3, authority, and training rows remain unchanged. Report: `docs/reports/qgis_asset_miner_full_v1.md`.
+
+## Silver Scale Validation (2026-08-11)
+
+## Source-Role Census (2026-08-11)
+
+A read-only census over all 47,852 sources found `user_workflow=2,209`,
+`processing_implementation=1,012`, `api_semantic_operation=9,028`,
+`api_plumbing=11,655`, `unclassified=23,638`, and 310 missing server files.
+The Processing pool contains 2,068 workflow and 1,011 implementation rows. A
+strict preliminary screen (run>=2, task/input-output signals, downstream
+dependency) leaves 169 workflow + 114 implementation candidates; these still
+need normal fidelity/L3/dedup/V4 gates. API semantic rows feed the API/L2-L3
+knowledge layer, not the main workflow training corpus. Report:
+`docs/reports/qgis_source_role_census_v2/report_v1.md`.
+
+## Workflow-value tiers (2026-08-11)
+
+The server scored all 47,852 census rows without rereading source or calling
+an LLM: tier1 multi-step workflow=169, tier2 single-operator workflow=325,
+tier3 Processing implementation=983, API semantic knowledge=4,737, API
+plumbing evidence=11,655, unclassified deferred=29,673, and missing=310.
+The next Processing workflow queue is 455 rows (tier1=169, tier2=286 in the
+Processing pool); 39 tier2 rows retain API provenance and remain separate. No training rows were
+emitted. Report: `docs/reports/qgis_source_role_tiers_v1/report_v1.md`.
+
+The 455-row replay is complete and its superseding 70/69/21 result is recorded
+above. The current next action is the semantic review of the 31 source-derived
+subworkflow candidates. The broader workflow-tier deferred bucket is 29,673 rows,
+of which raw `unclassified` is 23,638; neither bucket goes to unrestricted LLM
+extraction.
+
+## Workflow Admission Structural Replay (superseded counts, 2026-08-11)
+
+This earlier `304/3/0` statement came from an adapter-order defect and is
+superseded by the 70/69/21 report above. Do not use it for planning or yield
+estimates.
+
+The current 508 formal QGIS train-only rows (539 including isolated rows) are
+not an extraction ceiling for 47,852 sources. They are the observed result of
+the strict Gold gates and four-layer deduplication. The API census contains
+13,554 pattern candidates, 10,800 discovery units, and 2,773 priority units in
+14 composite families, but those units are not yet normalized or admitted.
+Existing family experiments retain between 0.5% and 75% of source authorities,
+so no global yield extrapolation is valid. The evidence report is
+`docs/reports/qgis_silver_scale_validation_v1/report_v1.md`.
+
+The 2,773 priority units are historical discovery population: their 14
+mutation-only families have subsequently been replayed, completed, or closed.
+Next action: refresh the API census with those families excluded. Only if at
+least five new high-support families remain will a no-LLM, source-disjoint
+150-source scale pilot measure replay, mapping, fidelity, and canonical-row
+retention. It cannot modify the 508-row authority or relax Gold gates.
+
+## Isolated API LLM Boundary Pilot (2026-08-11)
+
+The first 100-source API boundary pilot is complete: 50 calibration and 50
+frozen holdout sources, all SHA-disjoint. `deepseek-v4-flash-0731` returned 79
+locally validated boundary proposals, 2 multiple-sink proposals were rejected,
+and 19 requests failed with HTTP errors. Validation currently establishes JSON,
+source-step, line, and single-sink consistency only; it does not establish
+semantic correctness. The pilot remains candidate-only with zero training rows.
+Evidence: `docs/reports/qgis_api_llm_boundary_pilot_v1/`.
+
+Latest retry and audit update: the complete request ledger is 80 validated, 3
+invalid, and 17 HTTP failures. Retrying those 17 with frozen prompt hashes
+recovered 2, rejected 1 for multiple sinks, and left 14 HTTP failures. The
+independent audit packet contains 82 proposals (41/41 calibration/holdout),
+with 8 baseline-step omissions and 52 edge-set differences; no unsupported or
+reverse data-flow edges were found. Independent source-backed semantic review
+accepted 75, found five wrong chains and two truncated chains; holdout is 38/41,
+so the zero-error promotion gate is not met. No semantic promotion or training
+admission is granted. Evidence:
+`docs/reports/qgis_api_llm_boundary_pilot_v1/semantic_review_v1/`.
+
+The v3 fail-closed follow-up added two local checks: a selected control-path
+step must include its controlling header in the source span, and every visible
+QGIS data mutation in that span must be represented by a selected AST step.
+It rejects 8 of the former 18 locally valid v2 proposals on replay. A newly
+frozen 200-source (100/100), source-disjoint v3 packet supplied a controlled
+20-source (10/10) experiment: one validated holdout proposal, 16 empty/invalid
+proposals, and three HTTP failures. The
+single holdout proposal passed independent semantic review, but this recall and
+service reliability are far below a promotion threshold. The route is closed
+to expansion and remains candidate-only: no L3, training row, or authority
+change. Evidence: `docs/reports/qgis_api_llm_boundary_pilot_v3/`.
+
+Scope correction: this v3 experiment supplied bounded source windows plus
+pre-extracted AST steps. It tested LLM boundary selection, not raw-source
+operator extraction. It therefore does not establish that an LLM cannot find
+operators missing from the deterministic extractor; that raw-source route is
+still unvalidated and must be tested separately before being closed.
+
+## Isolated LLM Operator Extraction 100-Source Pilot (2026-08-10)
+
+The SHA/AST-verified mixed staging contains 50 Processing and 50 API sources.
+Ten bounded scopes per pool were sent to `deepseek-v4-flash-0731`: all 20
+responses were valid JSON, selected only supplied catalog IDs, and cited valid
+original lines; request failures and unverified candidates were both zero.
+Every sent scope had locally observable facts, so this validates the
+scope-to-shortlist-to-LLM-to-line-validation protocol only, not recovery of
+dynamic IDs or complex workflows. Eighty-seven supported scopes remain budget
+deferred and three oversized scopes were not truncated. The API uses a new,
+restricted semantic catalog, not L3 labels. Training rows remain zero and no
+authority merge is granted. Evidence:
+`docs/reports/qgis_processing_llm_operator_pilot_v1/mixed_100_request_budget_10_v1/`;
+plan: `docs/plans/qgis_llm_mixed_operator_pilot_v1.md`. The source-disjoint
+dynamic/partial-evidence control is complete and produced no independently
+verified dynamic recovery; this isolated LLM lane has no approved expansion.
+
+## Processing Dynamic-Argument Full Census (2026-08-10)
+
+A read-only SHA/AST census of all 8,466 Processing authorities found 8,143
+readable verified sources, 295 missing sources, and 28 parse failures. Only
+**484 sources / 1,379 calls (5.95% of readable sources)** pass a nonliteral
+first argument to a Processing-module call: 1,190 `Name` arguments, 125
+expression forms, and 64 calls without an argument. Another 4,841 sources have
+no direct Processing-module call. The current `deferred_operator=387` group is
+not dynamic-ID work; it already has literal provider/algorithm IDs but lacks
+catalog or mapping authority. LLM work is therefore limited to the expression
+lane, after static recovery of `Name` bindings; all other unresolved forms stay
+deferred. The API lane is frozen for now. Evidence:
+`docs/reports/qgis_processing_dynamic_argument_census_v1/`.
+
+The 25/25 source-disjoint dynamic-expression LLM pilot is complete: 50
+SHA-verified sources / 74 expression calls, 20 attempted scopes, and 15 valid
+responses. Its six returned IDs were all already proven literal calls in the
+same scopes; new dynamic-expression candidates were zero, and five responses
+were unparseable. Expanded JSON parsing and retries yielded two abstentions and
+four more unparseable responses, still with zero yield. **Do not expand the LLM
+route to 125 calls**. A deterministic AST pass now resolves only source-proven
+Boolean conditions; runtime conditions remain multi-candidate and deferred.
+The `mappy.matchAlgo` exception has now been tested under a separately frozen
+`mappy v0.3.2` implementation hash. Recovery requires the matching source
+header, exact relative import, no visible rebinding, one literal argument, and
+catalog proof of the returned ID. The full authority census found only **3
+sources / 5 calls**; all three were SHA-replayed locally and none formed a
+canonical candidate. Two remain blocked by unmapped custom `mappy:*` IDs, and
+one is blocked by the existing downstream-transform gate. This wrapper family
+is closed as non-scalable. Evidence:
+`docs/reports/qgis_processing_dynamic_operator_contract_v1/`. The next
+source-only recovery lane is the 1,190 `Name`-argument calls, not an expanded
+LLM run.
+
+That `Name` lane has now been census-replayed: 316 sources / 997 calls contain
+a `Name` first argument; 97 dynamic chains resolved, and 83 fully normalized.
+The eight route-level auto candidates are all one-operator scopes and violate
+the Processing two-to-six boundary. The remaining bounded follow-up is 20
+fully normalized two-to-six-operator sources were replayed through the existing
+call-graph/local-subworkflow gate; two additional two-operator sources were
+already `review_api_sidecar`. The replay produced 63 local units but zero
+eligible two-to-six units (31 single-step, 32 deferred). Training rows remain
+zero. Evidence:
+`docs/reports/qgis_processing_name_binding_split_replay_v1/`.
+
+## QGIS API polygon_geometry_construction family (2026-08-09, complete)
+## QGIS API coordinate_transform family (2026-08-09, complete)
+## QGIS API rectangle_geometry_construction family (2026-08-09, complete)
+## QGIS API semantic_priority layer exhausted + composite-macro discovery (2026-08-10)
+
+unary_union (last remaining semantic family): calibration 50 -> full pool 119
+-> **0 complete** (real unaryUnion shapes mismatch: non-literal sinks 68,
+non-unique calls 33, with-args 14). **The census_v2 semantic_priority layer
+(7 families) is mined out**: six complete (polygon 3 + coordinate_transform 1
++ rectangle 2 = +6 rows) plus unary_union zero.
+
+**v3 composite-macro census** (`build_qgis_api_composite_macro_census.py`)
+fixes two census_v2 blind spots: dropped multi-producer units (1,286/5,580)
+and dropped mutation-only windows (3,718 windows / 2,232 unique sources;
+the add_field mechanisms overlapped only 40/2,232). **14 new priority
+families / 2,773 units; largest setattributes->addfeature 575 sources.**
+
+## QGIS API setattributes family closed (2026-08-10, +3 rows)
+
+- Calibration 200: v1 strict-literal rule 1/200 (0.5%); sampling showed 68%
+  are attribute-copy shapes (`setAttributes(feature.attributes())` alias or
+  direct) -> one evidence-driven relaxation -> **60/200 (30%)**; also fixed
+  replay template defects (complete rows missing authority key; split without
+  source-SHA fallback).
+- Full pool 883 units / 575 sources -> **213 complete / 173 authorities
+  (24%, largest ever)**; deferred mainly on non-literal sinks 239, dynamic
+  values 197, non-unique calls 121, non-unique aliases 113.
+- L3 mapping (vocabulary 130, no extension): buffer->L3_02_01_01(8),
+  intersects/intersection->L3_02_06_03(22) Extract by Location,
+  simplify->L3_02_05_01(104), difference->L3_02_02_04(11) Erase. **Deferred**:
+  PLAIN_COPY 145 units/110 auth (no geometry processing inside the evidence
+  window; no attribute-copy L3 class), centroid 9 (no class), construct 12
+  (evidence invisible).
+- Export 45 fidelity -> four-layer dedup **3 canonical rows** (one per group;
+  description-template compression, same shape as polygon 43->3) ->
+  cross-pool 0 suppressed -> loader smoke (130 vocab) passes. Output
+  `docs/reports/qgis_api_setattributes_train_only_v1/` (buffer 1 + extract 1
+  + simplify 1). **Semantic proximity note**: extract_by_location is a new
+  API single-chain shape absent from 508 (508's L3_02_06_03 rows are all
+  Processing/direct); buffer/simplify share L3 with existing 508 API rows
+  (similar task, different description) - retention is the user's call.
+- **517 train-only rows overall** (508 + 9 isolated: 15-step 1 + polygon 3
+  + coordinate_transform 1 + rectangle 2 + setattributes 3).
+
+## Route-1 pilot (LLM candidates + deterministic verifier, 2026-08-14 closed, +9 rows)
+
+User authorized the boundary shift to "LLM proposes candidates, verifier
+hard-filters". Protocol evolution: v1 (LLM locates line numbers itself) 0
+verified (reasoning model truncation 98 + endpoint 504 61) -> fix max_tokens
+16000 + deep backoff -> v2 **5%** (10/200, 12h) -> **v3 protocol inversion**
+(AST pre-extracts the call-fact list; LLM only selects indexes) -> **10.5%**
+(21/200) -> export **9 rows** (buffer 3 + centroid 1 + changeattributevalue 1
++ difference 1 + frompointxy 1 + frompolygonxy 1 + fromwkt 1; all L3 reused
+from vocabulary 130). cross-pool 0 suppressed; loader smoke passes. Verifier
+admitted zero hallucinations. **Scale-up projection**: T2 fresh pool 3,575 x
+10.5% ~ 160 exported rows. Artifacts `docs/reports/qgis_api_route1_train_only_v1/`,
+`qgis_api_route1_pilot_v3/`. Current total **548 train-only** (539 + 9).
+
+## QGIS API mutation-only pool remaining families mined out (2026-08-10, +21 rows)
+
+- **Batch sinks are not provable**: addattributes+updatefields->addfeatures
+  calibration 0/200 (batch addFeatures lists are dynamically accumulated in
+  loops) - **all 9 sink=addfeatures families (252/216/157/114/63/53/45/33/32)
+  permanently closed**.
+- **Singular-sink mining**: 63->4, 117->19, 45->5 (addattributes rule:
+  literal QgsField names + updateFields + addFeature);
+  setattribute->addfeature (182) -> 5 (new rule setAttribute('field',
+  literal/unique-alias value)); addattribute->addfeature (40) -> 0.
+- **Combined export 21 rows** (`docs/reports/qgis_api_addattributes_train_only_v1/`):
+  addattributes 19 (L3_01_02_01/token 1, field-name descriptions - breaks the
+  one-per-group compression, 33 fidelity -> 21 canonical) + setattribute 2
+  (L3_01_02_06/token 4). cross-pool 0 suppressed; loader smoke passes.
+- **All 14 mutation-only priority families mined; +24 rows total
+  (setattributes 3 + addattributes-class 21 + setattribute-class 2)**;
+  **539 train-only rows overall** (508 + 31 isolated: 15-step 1 + polygon 3
+  + coordinate_transform 1 + rectangle 2 + setattributes 3 + addattributes 19
+  + setattribute 2).
+
+
+Vocabulary 129->**130** (L3_01_01_09/token 129); calibration 100 -> full pool
+153 -> **4 complete (2.6%, lowest)** -> four-layer dedup keeps **2 canonical
+rows** -> BERT-128 + V4 smoke passes. Export
+`docs/reports/qgis_api_rectangle_geometry_train_only_v1/`. Deferred mainly on
+non-construction extents (46) and non-literal sinks (72). **2026-08-09 API
+families total +6 (polygon 3 + coordinate_transform 1 + rectangle 2); 514
+train-only rows overall.**
+
+
+Calibration 200 -> full pool 370 -> **27 complete (25 authorities, 7.3%)** ->
+L3 reuse `L3_01_10_01 Project/Reproject` (token 100; no vocabulary extension) ->
+27/27 descriptions pass -> four-layer dedup keeps **1 canonical row** ->
+BERT-128 (52 tokens) + V4 smoke passes. Export
+`docs/reports/qgis_api_coordinate_transform_train_only_v1/`. Deferred mainly on
+non-unique transform calls (136) and non-literal sinks (113).
+
+
+First family of the post-Processing API local-macro lane is closed:
+calibration 200 -> full pool 491 -> **43 complete (37 authorities)** ->
+stable129 L3 grant (`L3_01_01_08 Create Polygon Features from Vertices` /
+token 128; vocabulary 128->**129**,
+`docs/reports/qgis_taxonomy_129_authority_v1/taxonomy_129_v1.json`) ->
+43 deterministic descriptions pass -> four-layer dedup keeps **3 canonical
+rows** (40 suppressed as exact training pairs) -> zero cross-pool suppression
+against the 508 aggregate -> BERT-128 + V4 smoke passes (3/3, 2 batches,
+finite). Export `docs/reports/qgis_api_polygon_geometry_train_only_v1/`,
+SHA256=`32e6035d...`; L3 authority
+`qgis_api_polygon_geometry_stable129_authority_v1/`. Deferred on runtime
+vertices (179) and non-literal sinks (207). Yield 3 rows (same magnitude as
+point/polyline; four-layer dedup dominates).
+
+## QGIS L3 Vocabulary Authority (fixed 2026-08-08)
+
+**The single authoritative L3 vocabulary is 128 content tokens (0-127)**, fixed
+in `docs/reports/qgis_taxonomy_128_authority_v1/taxonomy_128_v1.json`
+(SHA256=`45860335...`; all 128 classes have names/descriptions; tokens are
+contiguous). Composition: 101 (stable101) + 17 (stable106/108, tokens 101-117)
++ 6 (stable120/121/124, 118-123) + 4 (stable125-128, 124-127). All L3 validity
+checks, mapping checks, and token assignments use this file only; the
+94/101/107/114 systems (v2_94_stable, stable101_taxonomy, qgis_l3_v1_114,
+v3_107_experimental) are superseded historical profiles and must not be used as
+judgment baselines (the ruggednessindex/basicstats false positive came from
+using the stable101-taxonomy baseline).
+
+## QGIS Processing Driver v2 (executed 2026-08-08)
+
+The Processing conversion mainline completed the v2 pipeline end to end. All
+8,466 source authorities pass through the driver; no source-level subtraction
+is permitted. **The helper-inline route is formally terminated** (v1/v1.1/v1.2
+all hit zero units on the real corpus; the gap between real helper forms and a
+statically provable whitelist is unbridgeable without re-entering the
+branch-uniqueness region Batch-3 already proved low-yield).
+
+The real blocker was a stale L3 mapping authority: the full-pool replay used
+the stable110-era mapping (153 operators). Upgrading to the stable124 composed
+mapping (168 operators, strict superset) unlocked the standing candidates. The
+upgrade also fixed authority pollution (two mappings in composed pointed to
+L3 codes outside the 124-token registry and were removed) and a route
+alignment contract bug (`call_sites=None` full extraction was misjudged as
+unaligned; now accepts `all_literal_calls`).
+
+Results: full-pool replay (direct 100->147, defer_mapping 7,913->7,255) ->
+unlock batch of 520 candidates -> 50-row source-disjoint audit (zero wrong
+chains/truncations) -> 12 canonical rows. **The formal Processing authority
+stays 294 rows**: the 12 canonical rows were checked and all share identical
+operator chains and L3 sequences with existing 294 rows - only the description
+differs (new compact template vs old template), i.e. zero new tasks; per user
+decision they are not merged and remain an isolated description-variant
+package (`train_only_v1/decision_note_v1.json`, usable for MR-style
+multi-description training). The full QGIS aggregate is 508 rows. The frozen
+dual reference is `docs/reports/qgis_processing_conversion_v2_freeze_v5/`
+(508 unique / 294 overlap). All artifacts:
+`docs/reports/qgis_processing_stable124_unlock_v1/`.
+**Correction (late 2026-08-08)**: the `ruggednessindex`/`basicstatisticsforfields`
+mappings were once misjudged as pointing outside the token registry and four
+rows were revoked - this was a false positive (L3_04_02_02 = token 110 and
+L3_01_08_04 = token 113 are official classes; the 505 package contains a
+basicstats row). The mappings (composed back to 170 operators) and the four
+rows were restored; 302/306/516/520/freeze_v3/v4 were built on the
+false-positive revocation and are superseded by 294/508/freeze_v5 (revocation
+sidecar marked `restored_false_positive_revocation`).
+
+## QGIS Authority Correction
+
+The previous 454/455-row and 29/2 geometry-difference statements in this file
+were written by an obsolete parallel branch and are superseded. The 495-row
+entrypoint has now received a strict stable127 polyline-geometry local-macro
+increment of three rows. The authoritative V4-128 train-only entrypoint is
+`docs/reports/qgis_train_only_v4_128_505_v1/` (505 rows, SHA256
+`13bb886d87ce8b487f7f45e80a155e592b8c937667b61cf835e7f121b952a97a`).
+The 495-row entrypoint, the 492-row entrypoint, the old 455-row package, and
+geometry-difference v1/v2 artifacts remain superseded provenance only and must
+not be used as training authority.
+
+The active API expansion stage has completed a 200-source point-geometry
+calibration: 200/200 source SHA verified, 193 normalized-body authorities,
+107 complete strict macros (102 complete authorities), and 93 fail-closed
+deferrals. Calibration/holdout source-SHA and normalized-body overlap are both
+zero. The complete macros split into 57 coordinate-constructor and 50
+prebuilt-point payloads. Stable126 has admitted 55 strict coordinate-pair
+macros; the 50 prebuilt-point payloads remain outside L3 and training admission.
+`L3_01_01_04 Create Points from Table` covers only the former when field
+provenance is established, so it cannot be applied to the whole family.
+Authorities: `docs/reports/qgis_api_point_geometry_calibration_v1/`,
+`qgis_api_point_geometry_replay_v3/`, and
+`qgis_api_point_geometry_payload_census_v1/`.
+Stable126 minimally adds `L3_01_01_05 Create Point Features from Coordinates`
+/ token 125 for the source-verified local macro `point factory -> same-feature
+setGeometry -> sink`. Its 55/55 deterministic Chinese descriptions pass
+source-fact fidelity without an LLM. Four-layer deduplication suppresses 52
+exact training-pair copies, retaining three rows with zero cross-pool overlap
+against the 492-row base. All 495 rows pass real tokenizer and V4
+loader/loss/backward gates; no training/checkpoint, validation/test, or
+production merge is granted. Authorities are `docs/reports/qgis_api_stable126_authority_v1/`,
+`docs/reports/qgis_api_point_geometry_train_only_v1/`, and
+`docs/reports/qgis_train_only_v4_128_495_v1/`.
+
+The next API family, `polyline_geometry_construction`, has completed its
+source-disjoint boundary gate: a 200-source calibration yields 9 complete
+calibration and 9 complete holdout macros with zero source-SHA/body-authority
+leakage. Full replay verifies 611/611 source rows and retains 54 strict local
+macros from 34 normalized-body authorities; 557 rows remain fail-closed.
+Stable127 minimally adds `L3_01_01_06 Create Polyline Features from Vertices`
+/ token 126 for `fromPolyline/fromPolylineXY -> same-feature setGeometry ->
+literal sink`. It does not claim whole-function semantics. Deterministic
+source-fact descriptions pass 54/54 without an LLM; four-layer dedup suppresses
+51 exact pairs and cross-pool dedup retains three new rows. All 498 rows pass
+real tokenizer and V4 loader/loss/backward gates. Authorities are
+`docs/reports/qgis_api_polyline_geometry_replay_v2/`,
+`qgis_api_polyline_geometry_replay_v3/`,
+`qgis_api_stable127_authority_v1/`,
+`qgis_api_polyline_geometry_train_only_v2/`, and
+`qgis_train_only_v4_128_498_v1/`.
+
+The WKT-geometry family then completed source-disjoint calibration. After
+tightening cross-branch geometry-mutation detection, it retained 74 complete
+macros / 73 normalized-body authorities with zero calibration/holdout authority
+overlap. Full replay verifies 644/644 source rows and retains 270 complete
+macros / 156 authorities. Stable128 minimally adds
+`L3_01_01_07 Create Features from WKT Geometry` / token 127 only for
+`fromWkt -> same-feature setGeometry -> literal sink`; it does not reuse the
+raster format-conversion class. All 270 source-fact Chinese descriptions pass;
+four-layer dedup suppresses 263 copies and cross-pool dedup retains seven new
+rows. That stage's V4-128 entrypoint was `docs/reports/qgis_train_only_v4_128_505_v1/`
+(505 rows, SHA256
+`13bb886d87ce8b487f7f45e80a155e592b8c937667b61cf835e7f121b952a97a`),
+passing the real `bert-base-uncased` 128-token gate and V4 loader/loss/backward
+smoke (16 batches; finite loss/gradients). No LLM, training, checkpoint,
+validation/test, or production merge was granted. **The current formal full
+QGIS train-only aggregate is 508 rows**
+(`docs/reports/qgis_train_only_aggregate_508_v1/`, SHA256
+`4d9e64af...`)
+= 214 API rows + 294 Processing rows; the 507-, 516- and 520-row entrypoints
+are superseded provenance.
+
+## Isolated LLM Catalog Extraction (2026-08-10)
+
+The pilot repairs two protocol defects: canonical literals now enter catalog options, and a
+module-level `processing.run(name, ...)` carries its unique prior static binding with original line
+evidence. Five sent literal scopes returned all 9 locally proved IDs with no empty response. In a
+four-source control audit, the static-alias positive returned
+`native:joinattributesbylocation@115`; both external-parameter/wrapper negatives abstained.
+
+This validates the scope/binding protocol, not reliable recovery of runtime-dynamic IDs. The gain is
+deterministically recoverable static aliases. LLM remains isolated and candidate-only: do not batch
+call 8,466 sources or emit L3, descriptions, training rows, or authority merges. Evidence:
+`docs/reports/qgis_processing_llm_catalog_extraction_pilot_v2/literal_protocol_fix_5_v1/` and
+`docs/reports/qgis_processing_llm_catalog_extraction_pilot_v2/dynamic_binding_audit_4_v2/`.
+
+## Mainline
+
+The QGIS mainline deterministically converts source code into high-quality train-only
+data for natural-language task to reliable QGIS workflow operator chains. The formal
+aggregate is the 516-row full QGIS package, of which the current formal Processing
+aggregate has **294 rows** (`docs/reports/qgis_processing_aggregate_294_v1/`;
+the 302/306 packages (built on the false-positive revocation / on 12
+description-variant rows with zero new tasks) are superseded); the remainder
+are earlier API deliveries. `8,466` is Processing source replay/provenance coverage, not
+the number of converted training samples.
+
+The Processing 500-1000 target is judged unreachable with current capabilities
+(2026-08-08 review: all remaining pools are closed - 5,714 empty chains dead,
+729 single-gap rows below the L3 support>=30 gate, boundary 778 diagnosed with
+no mineable stratum, 390 multi-gap dead; 295 rows is the capability ceiling).
+**The API family freeze is lifted**; low-level PyQGIS API local-macro families
+(historically the most stable source) become the main data-construction lane. Processing Batch-3 selects 200 source-disjoint authorities from
+995 unadmitted blocker parents: 40 each for `control_flow_if`, `control_flow_for`,
+`helper_alias_missing_edges`, `split_local_subworkflow`, and
+`dynamic_or_custom_operator_resolution`, split 100/100 into calibration and holdout.
+Normalized-body authorities and source SHA values are both disjoint. The server freshly
+reverified all 200 `/home/yll` source SHA values with zero missing or mismatched files.
+This is a rule-calibration baseline, not training data. The next loop is reusable-rule
+calibration/holdout -> whole-family replay -> source-disjoint random audit ->
+description/L3/four-layer-dedup/V4 gates, never per-file production review.
+
+The server-side Batch-3 structural evaluation produced 366 local units from the 200
+authorities: 31 structural eligible and 335 fail-closed deferred, with zero source
+failures in both partitions. Helper/alias, split, and some control-flow strata have
+candidate units; 40 dynamic/custom authorities remain `catalog_provider_resolution_pending`.
+No rule promotion, L3 admission, or training admission is granted. Evidence:
+`docs/reports/qgis_processing_batch3_calibration_v1/structural_evaluation_summary_v1.json`.
+
+Dual-partition rule grouping permits only three rules to enter full-family replay:
+`recovery-connected-local-dag-v1` at 3/5, `recovery-multi-root-fanin-dag-v1` at 4/4,
+and `split-local-structure-v9` at 12/3 eligible units (calibration/holdout). The
+995-parent replay is complete: 491/491 parser source SHA checks passed, yielding 44
+candidates across 33 normalized-body authorities. These are still candidates, not training rows.
+
+`scripts/admit_qgis_processing_batch3_candidates.py` now provides authority folding,
+four-layer keys, exact training-pair cross-pool suppression against the existing 293-row
+Processing package, and a deterministic source-disjoint audit manifest. The run retains
+five canonical candidates pending source-snippet audit; 11 same-authority units, five
+within-batch duplicates, and 23 existing-pool duplicates are recorded in sidecars. Audit
+calibration/holdout normalized-body overlap is zero, but no train-only row is emitted until
+the sampled source review passes. The hash-frozen admission package is
+`docs/reports/qgis_processing_batch3_admission_v3/`.
+
+The five canonical source snippets are now audited on `/home/yll`: three are accepted pending
+downstream gates and two are deferred (interleaved low-level edits break the local boundary;
+one source formula references a misspelled field). Deterministic source-fact compression brings
+the three accepted descriptions under the real `bert-base-uncased` 128-token gate (max 80 tokens),
+and the isolated V4 loader/weighted-loss/backward smoke covers 3/3 with finite loss/gradients and
+no checkpoint. The isolated train-only package is
+`docs/reports/qgis_processing_batch3_train_only_v2/`; it is not merged into the formal aggregate,
+and validation/test plus production merge remain disabled. Evidence and adjudication are under
+`qgis_processing_batch3_source_audit_v1/` and `qgis_processing_batch3_source_adjudication_v2/`.
+The legacy BERT-128 gate is now batch-repaired: 33 overlong descriptions pass deterministic
+`task name + ordered operator run-length` source-fact compaction, while two ultra-long chains remain
+deferred. Together with the three new rows, the 294-row package at
+`docs/reports/qgis_processing_aggregate_294_v1/` passes real BERT-128 (maximum 127 tokens) and
+V4 loader/weighted-loss/backward smoke (294/294, 19 batches, finite loss/gradients). No training,
+checkpoint, validation/test eligibility, or production merge is granted.
+
+A seven-row canonical trial from the historical stable124 candidate package completed server source
+audit (7/7 SHA verified): five local boundaries were acceptable and two were deferred. The five
+otherwise acceptable rows are already present in the current 294-row pool by both source SHA256 and
+normalized DAG, so the corrected cross-pool four-layer dedup suppresses all five and emits zero new
+rows. The temporary 299-row aggregate and pre-fix five-row export are explicitly superseded and must
+not be used. The exporter now separates stable token authority from operator-to-L3 mapping and makes
+source region, call graph, normalized DAG, and training-pair overlap hard gates; source SHA remains
+source-verification and source-disjoint evidence rather than a dedup key by itself.
+
+The prior conclusion that no old narrow Processing signature met support>=30 closes only
+that narrow search; it does not complete Processing or permit an API switch. Validation/test,
+production merge, and model training remain closed.
+
+The next source-backed static-recovery census excludes 1,565 formal or previously scanned source SHA256s and replays
+6,820 remaining `deferred_mapping`/`deferred_operator` sources on read-only `/home/yll`. Only AST-provable constant
+aliases, fixed dictionary keys, and fixed list/tuple indexes are accepted; runtime indexes, multi-value branches,
+registry/wrapper calls, catalog misses, and missing sources remain deferred. It recovers 57 direct static chains,
+records helper evidence for 55 and strict output-alias evidence for three, but produces only three complete local
+units from two sources. No source-disjoint support family exists, so calibration, L3, descriptions, and training rows
+remain zero. The server-only evidence ledger is mirrored locally only by summary/hash at
+`docs/reports/qgis_processing_static_recovery_census_v1/`. The next capability must recover real cross-helper
+parameter/result propagation or single-path dynamic IDs and prove complete local boundaries before calibration;
+structural similarity remains non-admissible as a training label.
+
+The remaining blocker authority outside the first 319-source verified subset has now received
+the same exact provider reanchoring and structural census. Of 343 selected sources, 323 passed
+server SHA verification (20 missing sources remain fail-closed); 93 exact `qgis:<slug>` to
+`native:<same slug>` alias migrations were independently AST-proved. The remaining recovery
+and split parents yield six and 94 local units respectively, but only one unit survives the
+strict boundary plus description gate, so its normalized-body support is one. The 230 remaining
+operator-resolution sources contain 222 normalized bodies and 124 exact canonical operator
+sequence clusters; the highest support is only 11 (`native:mergevectorlayers`), followed by
+10 (`native:fieldcalculator`). These sequence clusters have no recovered task boundary and are
+explicitly not calibration-eligible. No family reaches the support-30 source-disjoint
+calibration threshold; no training, L3, description, or export admission is granted. Authority:
+`docs/reports/qgis_processing_expansion_remaining_census_server_v1/reanchored_family_census_v2/`.
+The reusable census entry is `scripts/census_qgis_processing_reanchored_families.py`.
+
+An independent blocker intake, without revisiting those 343 sources, excluded the formal 294-row authority and the
+previously scanned 360/343 source-SHA populations. Requiring exact agreement between `call_sites` and
+`operator_sequence` left 297 clusters; 6,408 rows lacked call evidence and 365 database/support-export rows were
+fail-closed. No safe cluster reached support 30, so no calibration, L3, description, or training row was emitted. The
+preliminary 126-row PostGIS-import selection is superseded provenance. This closes only exact whole-chain signatures;
+next recover local-subworkflow boundaries from call-bearing sources, without re-scanning the 343-source pool. Evidence:
+`docs/reports/qgis_processing_independent_blocker_intake_v2/`.
+
+The full local-boundary replay for that independent population is complete: 624 of 678 safe source representatives
+passed server SHA verification and splitting, with 530 exact `qgis:<slug> -> native:<same slug>` AST reanchors. It
+recovered 1,952 local units, 623 multi-step units, 47 structurally eligible units from 33 sources, and 331 boundary
+signature clusters. The maximum structural signature support is 13 but mixes distinct operator chains; the maximum
+exact canonical local-chain support is 8. Sixteen over-64-call sources cannot lift any family to support 30. No
+source-disjoint calibration, L3, description, or training row is granted. This closes the independent call-bearing
+boundary-signature route; the next lane needs a different source-backed subpopulation or a new helper/output-alias/
+dynamic-ID recovery capability. Authority: `docs/reports/qgis_processing_independent_local_boundary_replay_v1/replay_v6/`.
+
+`task_plan.md` maintains three independent sections: GEE data processing, QGIS
+data processing, and benchmark construction. GEE and benchmark work may proceed
+in parallel, but neither pauses nor replaces the QGIS mainline.
+
+This agent's scope is QGIS source-to-training-data conversion only. It owns the
+8,466-row Processing pool and the 39,386-row low-level PyQGIS API pool through
+source replay, task-boundary recovery, L3 mapping, description fidelity,
+deduplication, and train-only admission. It does not own GEE data or benchmark
+construction.
+
+## Latest Verified State
+
+- **2026-08-08: Processing authority stays 294 rows.** The 12 stable124-unlock canonicals (520 candidates -> 50-row source-disjoint audit with zero wrong chains/truncations -> 12 rows) were checked and all share identical chains/L3 with existing 294 rows - only descriptions differ (new compact template), i.e. zero new tasks; per user decision not merged, kept isolated as description variants (`train_only_v1/decision_note_v1.json`). The 306 package (294+12) is superseded.
+- **2026-08-08 (late) false-positive correction**: `ruggednessindex->L3_04_02_02` and `basicstatisticsforfields->L3_01_08_04` were misjudged as pointing outside the token registry (wrong baseline: stable101 taxonomy + added_l3 collection missed the stable106/108 classes in existing_code_to_id, tokens 101-117; L3_04_02_02 = token 110 and L3_01_08_04 = token 113 are official, and the 505 package contains a basicstats row). The four-row revocation and mapping removal were rescinded: composed restored to 170 operators, rows restored, revocation sidecar marked `restored_false_positive_revocation`; 302/516/freeze_v3 superseded.
+- **2026-08-08: Full QGIS aggregate is 508 rows** (214 API + 294 Processing), `qgis_train_only_aggregate_508_v1/`, SHA256=`4d9e64af...`; the 507-, 516- and 520-row entrypoints are superseded. Frozen dual reference is `qgis_processing_conversion_v2_freeze_v5/` (508 unique / 294 overlap, SHA256=`13debc60...`).
+- **2026-08-08: helper-inline route terminated** (v1/v1.1/v1.2 all zero hits on the real corpus). Empty-chain attribution: 87 of 215 dual-feature rows carry catalog-external third-party provider operators (umep/pff/trendsearth etc.; 16 mix QGIS-native operators but whole chains contain third-party ones) - permanently deferred, not unlockable; 128 are truly empty (no literal processing call; deferred).
+- **2026-08-08: mapping authority upgrade.** Replay mapping upgraded from stable110 (153 operators) to stable124 composed (170 operators, strict superset); route alignment contract fixed (`all_literal_calls` accepted). Gap census (after restoration): 472 missing operators, raw support>=30 for only four (deleteholes/stringconcatenation/package/orderbyexpression), all below the normalized-body threshold, so no minimal-extension L3 admission; kept as an observation list (`empty_chain_and_gap_diagnosis_v1.json`, `mapping_gap_prioritization_v1.json`).
+- The API mainline has closed its first reusable family. A 102-row field-schema replay narrows to 67 strict rows after macro-contract, higher-level spatial-semantics, and source-scope gates. Frozen 20-row calibration and 20-row holdout splits have zero source-SHA and normalized-body overlap. Full AST alias replay yields 52 complete local macros, 11 missing memory-layer constructors, three incomplete chains, and one ambiguous multi-chain row; all incomplete or ambiguous cases remain fail-closed. Whole-function single-L3 mapping was formally rejected because only 5/20 calibration and 6/20 holdout functions preserve the full task, while the rest would truncate split/import/calculation/sampling/export semantics.
+- Stable125 restores only legacy-350 `L3_01_01_01 Create Feature Class` as token 124 and preserves stable124 tokens 0-123. Its authority is restricted to the source-verified local macro `QgsVectorLayer(..., "memory") -> schema -> optional prepared features -> writer`; `whole_function_semantics_admission=not_granted`. Source-fact-only descriptions pass 52/52 without an LLM, and four-layer dedup retains 28 canonical rows while suppressing 24 exact training-pair duplicates. Cross-pool overlap against 304 existing QGIS rows is zero. The formal package is `docs/reports/qgis_api_create_feature_class_train_only_v1/`, JSONL SHA256=`17cb1de9fbf469ca7cd8e4d9decdcedfd0070088160712533721e12b2d13809e`. Real V4 loader/weighted-loss/backward covers 28/28 rows in seven batches with finite loss and gradients; no training, checkpoint, validation/test eligibility, or production merge was granted.
+- `Vector File Export` has completed one rule calibration and full-pool replay. The 60-row source-disjoint calibration/holdout packet yields 24 complete and 36 fail-closed rows with zero complete false positives, chain truncations, or silent fallbacks. The identical parser verifies source SHA for all 211 strict candidates and yields 83 complete local writer macros plus 128 deferrals. Source-fact descriptions pass 83/83 with `llm_called=false`; four-layer dedup retains 18 training pairs and suppresses 65 exact duplicates. Existing stable125 `L3_07_04_01`/token 67 is reused. Cross-pool overlap against 332 existing QGIS rows is zero. The formal package is `docs/reports/qgis_api_vector_file_export_train_only_v1/`, JSONL SHA256=`09f3d62ee14159f903a1f3b23d4be5e029e50d9d20401b9228bedbf93e19fa14`. Real V4 loader/weighted-loss/backward covers 18/18 rows in five batches with finite loss and gradients; no training, checkpoint, validation/test eligibility, or production merge was granted.
+- `Add Field -> Calculate Field` has completed rule hardening, full replay, and an isolated delivery. Of 3,190 Add Field sidecar rows, 66 enter the family. The v2 rule yields 30 complete macros / 28 normalized-body authorities and fails closed on 22 missing same-feature update chains, five adjacent schema mutations, three cross-layer/spatial boundaries, and six downstream same-field transforms. Source-disjoint 14/14 calibration/holdout covers the complete authority population with zero source/body overlap, observed false positives, or chain truncations. Source-fact descriptions pass 30/30 with `llm_called=false`; four-layer dedup retains 15 training pairs and suppresses 15 exact duplicates, with zero overlap against the existing 350-row pool. The formal package is `docs/reports/qgis_api_add_calculate_field_train_only_v1/`, JSONL SHA256=`23b14847d29470aba97817491adc085911d944298376965c048be9253dafd47a`. Real V4 loader/weighted-loss/backward covers 15/15 rows in four batches with finite loss and gradients. Automatic family promotion remains ungranted because normalized-body support is 28<30; only this fully reviewed bounded population receives train-only admission. No training, checkpoint, validation/test eligibility, or production merge was granted.
+- `Raster Calculator` and `Set CRS Metadata` deliver 83 and 35 source-verified API train-only rows. Both source-disjoint reviews use 20/20 calibration/holdout with zero source-SHA/body overlap, false positives, or chain truncations. Real V4 loader/loss/backward covers 83/83 and 35/35 rows. Raster File Export remains deferred because one writer family mixes incompatible output-format contracts.
+- The corrected Existing-Layer Add Field bounded batch screens 2,651 authorities and recovers only 30 complete units across 23 normalized-body authorities by grouping every same-layer add call before one `updateFields()` commit. The superseded v1 truncated population is not reused. Source-disjoint 15/15 review covers all 30 candidate unit IDs with zero overlap, false positives, or chain truncations. All descriptions pass from literal field names only; stable125 `L3_01_02_01`/token 1 is reused. Four-layer dedup retains 24 rows, suppresses six exact pairs, and cross-pool comparison against 483 rows suppresses zero more. JSONL SHA256 is `320bce3f65d6e8573c20f32999000ebe43f88c017cc73954ca0803e2c9288c78`; V4 smoke passes 24/24. Rule promotion remains closed at support 23<30.
+- The bounded `geometry_difference` batch is explicitly anchored to 31 frozen `resolved_local_call_chain` units, all source-SHA verified on the server. Control-path-correct replay retains 29 complete local macros across 17 authorities and defers two post-difference `convertToMultiType()` units. Calibration/holdout source-SHA/body overlap, observed false positives, and chain truncations are zero. Deterministic descriptions pass 29/29; four-layer dedup suppresses 28 exact training-pair duplicates, and cross-pool comparison against 454 rows suppresses zero, yielding one net-new row. Automatic family promotion remains closed below support 30. Authorities are `docs/reports/qgis_api_geometry_difference_replay_v2/`, `qgis_api_geometry_difference_source_review_v2/`, and `qgis_api_geometry_difference_train_only_v1/`.
+- Remaining mutation/export family selection is closed for the current census: the six semantic anchors have authority support 24/18/16/15/13/8, all below 30. Seven apparent support-30-to-40 groups are only generic `x/y`, `geometry/boundingBox/center`, or legacy parameter-access co-occurrences that mix multiple tasks and cannot be mapped as training operators. The next census must cluster the 13,554 pattern candidates by composite producer + mutation + sink terminal macros rather than single calls or call co-occurrence.
+- The old 507-row provenance and 455/498-row V4-128 entrypoints remain superseded historical evidence only. The current formal entrypoint is the 505-row stable128 package stated above; it retains the same closed validation/test and production-merge boundary.
+- The stratified aggregate audit is complete. Its 25/25 calibration/holdout split has zero source-SHA or authority overlap. Server replay verifies 50/50 files, hashes, decodes, ASTs, source spans, and 1,689 evidence lines. Semantic review yields 40 `accepted_v4_128_audit` and ten `deferred_text_truncation`; boundary, description-fidelity, and stable125 operator/L3 failures are all zero. Authority: `docs/reports/qgis_train_only_aggregate_507_audit_v1/`.
+- The authoritative Processing delivery is now 293 train-only rows at `docs/reports/qgis_processing_delivery_293_v1_source_verified/`. Stable124 replay of the 445-row dynamic/empty operator-ID slice yields 53 candidates, ten canonical rows, and 43 exact training-pair duplicates. All ten pass source SHA, call-site, parameter provenance, description fidelity, stable124 L3, and cross-pool four-layer dedup without granting a new rule signature. All 293 sample IDs, source regions, call graphs, and training pairs are unique; the package covers 237 source SHA values, 209 normalized DAGs, 170 operator sequences, and 150 L3 sequences. JSONL SHA256 is `bc82877b644072dc803b63563a8ecbef0deb65374b73ac50f86404d845a9ed58`. Real V4 loader, weighted loss, and backward cover 293/293 rows in 19 batches with finite loss and gradients. Validation/test eligibility is false and production merge is not granted. The 283-row package is superseded provenance.
+- The prior narrow Processing family search has deferred-authority counts of 18/22/16/25/23/14 for parameter/result/output/backward/immediate/helper, with five true cross-function authorities and only three safe fixed-small-independent `control_flow:for` bodies. This closes that narrow-signature search only. It does not close Processing: Batch-3 now calibrates reusable rules over 200 source-disjoint authorities across five blocker strata; API new-family work is frozen until a 500-1000-row Processing delivery. Authority: `docs/reports/qgis_processing_batch3_calibration_v1/`.
+
+- Processing boundary-family replay is frozen at splitter v9 over 995 blocker parents and 173 direct rows with zero source failures. Its same-if, downstream/sink, `QgsProcessingUtils`, and output-alias conclusions are closed evidence rather than active work. Authorities: `docs/reports/qgis_processing_boundary_families_v2_condition_evidence/`, `docs/reports/qgis_processing_same_if_calibration_v1/`, and `docs/reports/qgis_processing_downstream_transform_census_v1/`.
+- Stable124 adds only the original-350 classes `Define Projection`, `Flip Line`, and `Split by Attribute` as tokens 121-123, preserving tokens 0-120. Their QGIS 3.28 catalog contracts are exact, 83 source files pass SHA verification, and normalized-body support is 11, 12, and 22. This fixed-provider mapping authority remains separate from the support>=30 extraction-signature auto-generalization gate and does not directly grant training admission. The 3,163-row replay raises mapping-complete rows from 984 to 1,012; full replay yields 570 strict candidates, with all 12 mapping-induced candidates suppressed as existing training-pair duplicates. The remaining seven canonical rows enter through explicit candidate IDs and server source/description replay in a canonical calibration batch; no new rule signature is granted. Authorities are under `docs/reports/qgis_processing_stable124_authority_v1/`, `docs/reports/qgis_processing_stable124_full_population_v1/`, and `docs/reports/qgis_processing_stable124_canonical_adjudication_v1/`.
+- Stable121 follows the minimum-supplement rule: `qgis:voronoipolygons` adds `L3_02_07_07`/token 120 and `native:removeduplicatesbyattribute` reuses `L3_01_05_04`/token 102. `native:boundary`, `native:convexhull`, and `qgis:linestopolygons` remain deferred because normalized-body support is below 30. The 3,163-row replay yields 1,536 fully normalized, 984 mapping-complete, and 173 direct rows; full-population replay yields 558 strict candidates and 13 canonical rows. Six canonical rows match stable120 v5's admitted exact dual-split signature and are exported, while seven unseen-signature rows remain deferred. No per-row gate relaxation, LLM generation, or training occurred. Authorities are under `docs/reports/qgis_processing_stable121_authority_v1/`, `docs/reports/qgis_processing_stable121_full_population_v1/`, and `docs/reports/qgis_processing_stable121_train_increment_v1/`.
+- stable120 follows the minimum-extension rule: `native:createspatialindex` adds `L3_01_07_01`/token 118, `native:snapgeometries` adds `L3_02_07_09`/token 119 after 51 independent normalized source bodies, and `native:saveselectedfeatures` reuses existing `L3_07_04_01`. `native:serviceareafromlayer` and unconditional `grass7:v.clean` break/snap aliases remain deferred. The 3,163-row replay yields 982 mapping-complete and 173 direct rows; authority is `docs/reports/qgis_processing_stable120_authority_v1/`.
+- The stable120 v5 full-population replay verifies 952/952 recovery/split/operator-resolution parents plus 173/173 direct rows with zero source failures. `deterministic_operator_dag_zh_v5` recovers only AST-proven function inputs and dominating same-scope derived values while keeping all uncertain cases fail-closed. The result is 530 strict candidates: 61 canonical, 126 duplicate source regions, and 343 exact training-pair duplicates. The seed-20260803 review has 50 calibration and 50 holdout rows with zero source-SHA and normalized-body-authority overlap. Only three support>=30 exact signatures with dual-split evidence are admitted, yielding 55 incremental rows. The merged 270 package passes real `TaskConditionedL3DatasetV4`, weighted loss, and backward for 270/270 rows in 17 batches with finite loss/gradients; no checkpoint, training run, LLM description generation, or production merge occurred. Candidate authority: `docs/reports/qgis_processing_stable120_full_population_v5_policy_v1/`.
+- The QGIS Processing-resolution authority contains 8,466 rows. Source SHA verification passes for 8,466/8,466 with zero source failures.
+- Full Processing source replay now covers 8,466/8,466 unique source SHA rows with feature extractor v8: 100 direct candidates, 222 recovery rows, 203 API sidecars, 7,913 mapping deferrals, and 28 unparseable exclusions. This is routing-only and emits zero training rows.
+- `scripts/run_qgis_processing_batch.py` is now the unified Processing entrypoint. It uses the 8,466-row authority and full replay v2 as its base, overlays the latest 3,163-row stable110/correction replay only by `(record_id, source_sha256)`, and joins deterministic descriptions, four-layer dedup evidence, and the admitted train-only authority. A 200-row stratified calibration includes all 129 latest direct rows and all 38 existing accepted rows; after identity/chain/leakage gates pass, the identical frozen inputs replay across all 8,466 rows. Final outcomes are accepted 38, deferred 8,284, duplicate 70, and excluded 74; detailed blockers are boundary 612, operator 387, mapping 7,261, description fidelity 22, source replay 2, alignment exclusion 50, and unparseable 24. All 35 direct accepted rows exactly match the latest operator/L3 chain and no uncertain row is exported. Authority: `docs/reports/qgis_processing_unified_replay_v1/`. This calibration proves batch-state and admission invariants, not human semantic precision for new rules.
+- All 757 blockers have completed read-only replay with 757/757 source hashes verified and zero failures. v10 fixes the missing existing-L3 authority for `native:extractwithindistance` and is now the blocker authority: 166 candidates, 45 canonical rows, 121 duplicates, 130 fully-normalized mapping-complete rows, and 218 partial mapped subsets. This pool contains custom callers only and emits no direct training row. Corrected custom-scope replay covers 8,471 unique sources and 97 variants, raises complete variants/scope parents from 7/7 to 9/9, and yields three scope candidates (two canonical and one duplicate). Quality gates export one new six-step `filterstructures` train-only row. Authority: `docs/reports/qgis_processing_operator_expansion_v1/report_v2.md` and `docs/reports/qgis_processing_custom_scope_replay_v2_corrected_mapping/report_v1.md`.
+- The stable110 existing-L3 alias batch is complete: nine mapping authorities cover 21 single-gap records, and the 3,163-row replay raises direct routing to 150. Of 17 newly routed direct rows, nine pass deterministic description fidelity; three missing-source rows and three exact training-pair duplicates are then suppressed, leaving three canonical rows. All 3/3 pass source SHA, AST, and call-span replay and are exported train-only. A real V4 loader/loss/backward smoke covers 3/3 with finite loss and gradients and no training or production merge. This historical stage reached 168 rows and is superseded by the 210-row authority above. Authority: `docs/reports/qgis_processing_mapping_gap_stable110_alias_replay_v2/report_v2.md`.
+- Full-pool workflow-input provenance replay is complete for the 73 description-deferred direct rows. Dynamic parameters are admitted only when AST evidence traces them to `parameters[...]` or a dominating same-scope `parameterAs*()` assignment; bare locals, computed expressions, non-dominating branches, and dictionary mutation remain fail-closed. Description fidelity rises from 77 to 97. Of the 20 recovered rows, one missing source and 13 exact training-pair duplicates are suppressed, leaving six canonical rows. All 6/6 pass source SHA/AST/call-span replay and real V4 loader/loss/backward. The 52-step target has 54 sequence tokens below the 100-token label limit, but its natural-language prompt is 1,955>128 and is now deferred from the V4-128 package. This historical stage reached 174 rows and is superseded by the 210-row authority above. Authority: `docs/reports/qgis_processing_runtime_parameter_replay_v1/report_v1.md`.
+- A provenance census of the remaining 53 description-deferred rows led to a TDD-locked rule for dominating same-scope literal aliases and three explicit empty-default parameter keys. Its four-row increment produced the historical 178 count. Later semantic review revoked the incorrectly mapped `native:ruggednessindex` and `qgis:basicstatisticsforfields` rows, while corrected custom-scope replay added one row, yielding 177 at that stage. The 177/178 counts are now superseded by the 210-row stable120 authority. Authorities: `docs/reports/qgis_processing_runtime_parameter_replay_v2_corrected/report_v1.md` and `docs/reports/qgis_processing_custom_scope_replay_v2_corrected_mapping/report_v1.md`.
+- The corrected custom-implementation resolver searched an 8,471-row source index and found 167 matching instances / 97 implementation variants; 8,471 is not a workflow-candidate count. Its 10 expanded-complete variants, 27 unresolved variants across 16 families, four scope candidates -> two canonical/two duplicate rows, and zero net-new result close only that target-family subproblem. They do not close all 4,858 implementation/custom records. Authority: `docs/reports/qgis_processing_custom_implementation_closure_v1/`.
+- Recomputing the old 3,163-row replay with the corrected 153-operator stable110 mapping yields 726 fully normalized mapping gaps rather than the stale count of 708. Only 195 are structurally eligible; after excluding 142 database-side-effect rows and 16 support/export rows, 37 semantic-review rows collapse to 33 normalized source bodies and 18 feature signatures. Source SHA is verified for 149/195 rows; all 46 unverified rows are sidecars (44 database side effects and two semantic deferred) and cannot count as normalized-body support. Exact existing-stable110 candidates are zero, training rows are zero, and this lane is closed. Authority: `docs/reports/qgis_processing_mapping_gap_stable110_closure_v1/`.
+- The strong-signal low-level API authority is exactly 39,386 unique source SHA rows; the broader layer table contains one extra non-authoritative row and is not used. Full source-backed AST extraction verifies and parses 39,386/39,386 rows, yields 235,795 API steps, 13,554 multi-signal pattern candidates, and 25,832 insufficient-boundary deferrals. L3/description/dedup/training outputs remain zero.
+- Final boundary rule `typed-terminal-control-path-dag-v4` has completed full-pool v6 replay: 39,386/39,386 source hashes verify, 37,901 normalized source bodies yield 2,708 candidate units across 1,587 source authorities and 2,327 deferred terminal units. The reviewed post-filter leaves 2,707 L3-intake units; across the old 200 and fresh calibration/holdout 200, all 393 true positives are retained and all seven false positives are suppressed.
+- The stable110 API mapping census covers all 2,707 intake units. Of 102 strong-semantic-anchor units, 75 units across 59 source authorities map completely to existing Buffer, Intersect, Simplify, Feature to Point, or Minimum Bounding Geometry L3 contracts. Twenty-seven fail closed: seven for insufficient output contracts, eight for parameter dependence, ten for taxonomy-contract mismatch, one taxonomy gap, and one insufficient task scope. The other 2,605 units contain mutation/export support only; `setGeometry`, `setAttributes`, and `addFeature` are not treated as algorithms.
+- Read-only `/home/yll` replay verifies source SHA, AST, API call span, and arguments for all 75 exact-L3 proposals with zero failures. Deterministic description fidelity passes 74 and defers one `buffer(0, 1)` geometry-repair idiom. Four-layer deduplication retains six canonical rows and suppresses 68 exact training-pair duplicates.
+- Cross-pool comparison against 118 existing QGIS train-only rows finds no exact overlap. Six isolated `qgis_api_training_sample_v1` rows now cover six source authorities and five L3 sequences. A real V4 loader/weighted-loss/backward smoke covers 6/6 with finite loss and gradients; no checkpoint, training run, production merge, or LLM call occurred.
+- The remaining 2,605 `mutation_export_only` units were replayed with `control-path-caller-and-terminal-backward-slice-v4`: 1,429 resolve locally, 382 remain branch-ambiguous, 51 remain external payload, and 743 remain without a locatable `setGeometry`. The 743 terminal payload sidecar has 593 support/custom-only, 109 no local chain, 41 ambiguous, and 0 known geometry-semantic candidates. After excluding 158 reviewed-family units, 2,447 remain; 210 complete signature families exist but none has support>=30. No mapping, description, or training rows are emitted. Authority: `docs/reports/qgis_api_unresolved_recovery_v1/`.
+- The 52 nested-centroid candidates have completed the strict source-disjoint pipeline. Normalized bodies collapse 12 declared authorities to nine; 50 units have complete boundaries and two defer because point-in-polygon counting dependencies were omitted. The 25/25 calibration and 25/25 holdout partitions have zero source-authority, source-SHA, alias-group, or unit-ID overlap. All 50 pass stable110 mapping, source replay, and description fidelity; four-layer dedup retains one canonical row, which is already present in the 124-row QGIS train-only authority, so net new training yield is zero.
+- The 44-authority geometry-return expansion is also closed. The broad pool contains 85 units/44 declared authorities; after excluding the 52 reviewed baseline units, 33 units/32 authorities remain. Rule v2 fail-closes two `buffer -> WKB -> cascaded_union -> WKT` truncations and one `buffer -> difference` truncation while retaining eight branch-ambiguous sidecars. The remaining 22 units across 18 normalized-body authorities pass boundary review with 11/11 calibration/holdout and zero overlap on all four identities. All 22 pass stable110 mapping, source replay, and description fidelity. Four-layer dedup yields four canonical tasks (convex hull, buffer, centroid, simplify), but all four are suppressed against the existing 124-row pool. Net new training yield is zero and loader/loss is not run for an empty export.
+- The next authority-ranked family, `random_point_construction`, is now closed as a composite API pattern rather than a synthetic Processing operator. Its 40 units/32 normalized-body authorities split into disjoint 20/20 calibration and holdout packets (all four identity overlaps are zero). A lexical-scope AST recovery verifies two random draws, bounded point/iteration counters, a point factory, containment and minimum-distance predicates, `setGeometry`, and the declared sink. All 40 pass source replay and map through frozen recovery provenance to existing `L3_02_06_06 Sample Points` (token 97). Scope-faithful deterministic descriptions yield five canonical tasks; none overlaps the 124-row pool, so five isolated `qgis_api_training_sample_v1` train-only rows are granted. Real V4 loader/weighted-loss/backward smoke covers 5/5 with finite loss and gradients, no checkpoint, training run, production merge, or LLM call. The other reviewed anchor, unary union, has only 21 normalized-body authorities after downstream-transform deferrals and remains below the support>=30 gate.
+- The remaining mutation/export census is formally closed. The control-path, caller-provenance, and terminal-payload rules produced no new support>=30 family and no train-only row; unary union remains at 21 authorities and deferred. The old v2 census is historical; the current evidence is `docs/reports/qgis_api_remaining_mutation_export_census_v4/` and `docs/reports/qgis_api_unresolved_recovery_v1/`.
+- The dispersed 107 unified, nine stable106, one top20, one correction, six exact API, and five random-point rows now form a 129-row cross-pool authority with zero additional suppression. A deterministic diversity selector emits the first 50-row QGIS train-only delivery: six pools, 50 distinct source SHA/regions/call graphs/operator sequences/L3 sequences, and 41 L3 codes. The real V4 loader/weighted-loss/backward path covers 50/50 with finite loss and gradients and no checkpoint or training run. Evidence status remains explicit: 39 `source_reviewed_evidence`, ten `verified_sha256`, and one carried-forward verified row. Authority: `docs/reports/qgis_train_delivery_50_v3/`.
+- Stable106 top-15 adjudication freezes five new L3 classes and one stable101 alias. Full-pool mapping-complete coverage rises from 553 to 700, and direct routing from 100 to 125.
+- Stable106 direct description fidelity, four-layer deduplication, and source replay yield nine train-only increment rows: nine unique sources and nine unique DAGs. A real V4 loader/loss/backward smoke covers 9/9; validation/test are false and production merge is not granted.
+- Read-only replay covers 24 new recovery and 27 new split routes with 51/51 source hashes verified. Structural gates retain only two unadmitted candidates and emit zero training rows.
+- Seven existing-L3 mappings have source-reviewed authority. Their replay unlocks two `native:rasterlayerstatistics` direct rows: both pass description fidelity, four-layer deduplication keeps one canonical row, and 1/1 source replay plus real loader/loss/backward passes. Only that isolated train-only row is granted; no training or production merge occurred.
+- Stable108 additionally grants Smooth=`L3_02_05_02`/token 106 and Delaunay Triangulation=`L3_06_01_02`/token 107 while preserving stable106 tokens 0-105. Fully normalized mapping-complete coverage rises from 754 to 766, unique chains from 268 to 271, and `defer_mapping` falls from 2,040 to 2,020, with no new direct row.
+- Relative to stable106, 87 records leave mapping gaps: 66 are fully normalized and 21 remain partially normalized under `defer_operator_resolution`. The stable108-only 20-record delta is recovery 2, API sidecar 6, alignment exclusion 4, and operator-resolution defer 8; it emits zero training rows.
+- Repeated stable108 authority/replay builds are byte-identical. Fifteen focused tests, contiguous unique tokens 0-107, 3,163 unique record IDs, and zero replay training rows all pass.
+- Read-only server audit closes the two stable108-only recovery rows: 2/2 source hashes verify and each yields one `gdal:contour -> native:smoothgeometry` local unit, but both fail closed on `control_flow:try` and downstream low-level data transforms. The files differ only by a seven-line harvest header, so canonical authority support is 1<30; structural eligibility and training output are both zero, and the rows remain sidecars.
+- Stable113 was frozen and replayed before the newer anti-bloat audit, but training/production never opened and it emitted zero training rows. Option A now marks it `superseded_historical_evidence_only`; tokens 110-112 are unassigned and its direct rows are closed.
+- Stable110 freezes only `native:explodelines`=`L3_02_05_16`/108 and `native:splitwithlines`=`L3_02_05_17`/109 after the 235/235 source-verified audit measured normalized source-body support 81 and 70. Five other candidates remain deferred, including `splitvectorlayer` despite support 32 because its multi-output contract is not representable.
+- Stable110 now explicitly excludes the incorrect `native:lineintersections -> L3_02_05_06 Split Line at Point` mapping; its fail-closed replay is 775 mapping-complete rows, 274 unique chains, and 127 direct rows. A separate correction authority uses the catalog contract, L3 definitions, and 59 unique source rows to restore the now-unmapped operator to existing `L3_02_02_01 Intersect`. Corrected replay returns to 791/282/129 without adding an L3 or token. The two new direct rows, `9a7cdfe933736366640a4e1c` and `e452e53925dfe7c00eb2a1c4`, now end in Intersect.
+- The correction direct loop is complete: both descriptions pass deterministic fidelity; four-layer dedup keeps one canonical and suppresses one exact training-pair duplicate; the canonical row carries forward 1/1 source identity from the frozen 235/235 source-SHA-verified normalized-body authority and verifies 4/4 cached processing call spans. One stable110 train-only JSONL row was exported and passed a real V4 loader/loss/backward smoke in an isolated 110-content-token process. Production vocab, `outputs_v2`, validation/test, and training remain closed; no LLM was called.
+- The GEE `mean_clip_core` review is complete at 22 accepted / 13 deferred. The original rule fails (precision 0.6286, Wilson lower 0.4634); the repaired transitive-provenance/type gate matches 35/35 (TP/FP/TN/FN=22/0/13/0, precision 1.0, Wilson lower 0.8513).
+- Deterministic task-text replay now covers all 86 repaired-rule mean/clip definitions from 24 source authorities. All 86 pass source SHA, AST, dependency-backlink, and schema gates; normalized text/L3 deduplication retains 27 non-admitted candidates and records 59 duplicates. Of the 27, 26 have one exact public ImageCollection and one uses the generic fallback. A risk-first 20-row audit packet contains the generic row and all eight candidates whose unreviewed temporal facts were omitted. Training/validation/test/production admission remains closed and training rows remain zero.
+
+## Next Actions Across Three Workstreams
+
+- QGIS expansion priority is reset: first build a bounded, auditable high-recall detector for the 23,638 raw `unclassified` sources, then expand provenance-preserving workflows/subworkflows and a separate operator-level semantic package. Candidate yield, admission rate, and coverage gain come before any fixed row target; defer the stable124 training run.
+- QGIS data: the formal Processing authority is 294 rows and the full QGIS aggregate is 508 rows. Next: ① the 170-composed full-pool rerun is done: unlock batch 534 candidates -> 15 canonical (13 description variants not merged + the 15-step chain exported isolated + the 52-step chain deferred per precedent); the 87 rows are third-party-provider operators, permanently deferred; ② keep the four gap operators (deleteholes/stringconcatenation/package/orderbyexpression) on the observation list until normalized-body support accumulates - no minimal-extension L3 admission now; ③ the API pool (39,386) is now the main lane: cluster the remaining 13,554 pattern candidates by producer+mutation+sink composite terminal macros and select the next support>=30 family through source-disjoint calibration, full replay, minimal L3, description, dedup, tokenizer, and V4 gates; the Processing residual pools stay closed. Every new row must pass source-disjoint calibration, full-pool replay, exact/minimal L3 contract, deterministic source-fact description, four-layer/cross-pool dedup, real tokenizer gate, and random audit.
+- GEE data: jointly review the 20-row repaired-batch audit packet for dataset, temporal, and retained-chain fidelity. Any mismatch returns to deterministic rule repair and full replay; even a clean audit does not grant training admission automatically.
+- Benchmark: Gates 1 and 2 are complete. Four hash-bound human decisions pass the state-machine validator: `001/006/007` are approved and admitted to Gate 3, while `008` is `returned_for_revision` because no task intent or output constraint demonstrates semantic closure of the long chain. Gate 3 now contains 149 rows (146 source-backed + 3 expert-authored), 90 source authorities, and 52 distinct DAGs; only two families still meet 8+3 and status remains `failed_insufficient_candidate_supply`. `L3_02_03_05` is a semantic class that intentionally admits dissolve/collect variants, not a one-operator class. Gate 4, development/final/refusal rows, and the family roster remain closed. See `docs/reports/qgis_benchmark_expert_human_approval_v1.md`.
+
+## Hard Boundaries
+
+- The formal mainline does not use an LLM to guess, add, or change chains and does not train.
+  The user-approved isolated `qgis_processing_llm_candidate_extraction_pilot_v1` may only
+  propose operator IDs with source-line evidence; AST/catalog/single-value verification remains
+  authoritative, and the pilot cannot emit L3 labels, training rows, or authority changes. The
+  v2 pilot parses each source locally and sends only one bounded Processing-relevant AST scope
+  per call with original line numbers; whole-file submission and silent truncation are prohibited.
+  Its first five-scope literal baseline returned catalog/span-valid 5/5 (TP=5, FP=0, FN=0), but
+  all five scopes came from one source and are protocol evidence only, not recovery capability.
+  The source-disjoint literal holdout staged 10 SHA-verified sources read-only from `/home/yll`.
+  After one AST-candidate correction and one bounded retry, successful responses cover 8 sources:
+  TP=10, FP=0, FN=3 (precision=1.0, recall=0.769); one scope was too large to send and one source
+  still returned empty JSON. It is therefore a high-precision but incomplete candidate aid only,
+  not an extractor replacement or a gateway to training authority. Contract revalidation found
+  the prior ledger dropped returned source lines; v2 now persists `proposed_operator_source_lines`
+  and verified lines remain inside their scopes. Empty JSON and oversized scopes stay deferred.
+- Do not modify `outputs/`, `outputs_v2/`, `train11397_*`, or `/home/yll`.
+- Benchmark planner gold compares only parameter-free QGIS `processes + links`; do not fabricate supply or enter Gate 4 before Gate 3 passes.
+
+QGIS plan: `.omx/plans/2026-07-24-qgis-source-to-training-data.md`. Benchmark
+plan: `.omx/plans/2026-07-28-qgis-benchmark-freeze-v1.md`.
+## Blocker source-disjoint yield (2026-09-02)
+
+A bounded 60-row audit of the `recover_call_graph` (222 available) and
+`review_api_sidecar` (203 available) lanes preserved zero source-SHA overlap between
+calibration and holdout. Local SHA/AST replay verified 35 rows; 25 rows lacked a local
+source mirror and remain deferred. The fixed rubric measured 6 Gold, 13 Silver, 16 Reject,
+and 25 Deferred (19/35 accepted among verified rows). No training rows or authority/eval
+changes were made; the 7,567 low-evidence deferred rows were untouched. Results:
+`docs/reports/qgis_blocker_source_disjoint_audit_v1/result_v1/`.
