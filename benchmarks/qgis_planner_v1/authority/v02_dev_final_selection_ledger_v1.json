@@ -81,15 +81,15 @@
    "linear": 11
   },
   "size": {
-   "two_to_three": 12,
-   "four_to_six": 6,
+   "two_to_three": 11,
+   "four_to_six": 7,
    "seven_plus": 1,
    "one_step": 1
   },
   "modality": {
-   "vector": 12,
-   "mixed": 5,
-   "raster": 3
+   "vector": 11,
+   "mixed": 7,
+   "raster": 2
   },
   "entries": [
    {
@@ -109,12 +109,21 @@
     "reason": "topology_anchor_hybrid_rebalanced_from_final"
    },
    {
-    "key": "cfef1a7cffe8",
+    "key": "5900c6409f",
     "topology": "pure_merge",
-    "size": "two_to_three",
-    "modality": "vector",
+    "size": "four_to_six",
+    "modality": "mixed",
+    "covered": [
+     "L3_01_03_04",
+     "L3_01_09_03",
+     "L3_02_01_01",
+     "L3_02_02_02",
+     "L3_02_06_03",
+     "L3_03_03_A"
+    ],
+    "anchor": "L3_03_03_A",
     "origin": "existing",
-    "reason": "topology_anchor_pure_merge"
+    "reason": "replaced expert-authored pure_merge per owner controlled-exception ruling (source-backed substitute)"
    },
    {
     "key": "c96ae35b7ae5",
@@ -133,12 +142,17 @@
     "reason": "topology_anchor_pure_merge"
    },
    {
-    "key": "93ed22f6ceeb",
+    "key": "1275af8b1d9a",
     "topology": "linear",
     "size": "two_to_three",
-    "modality": "raster",
+    "modality": "mixed",
+    "covered": [
+     "L3_01_02_06",
+     "L3_08_01_01"
+    ],
+    "anchor": "L3_08_01_01",
     "origin": "existing",
-    "reason": "topology_anchor_linear"
+    "reason": "replaced expert-authored linear/raster per owner controlled-exception ruling (source-backed substitute)"
    },
    {
     "key": "487702e4fc71",
@@ -249,11 +263,27 @@
     "topology": "linear",
     "size": "one_step",
     "modality": "vector",
-    "origin": "existing",
-    "reason": "length_anchor_one_step_rebalanced_from_final (v0.1 final retains a one-step family already; pool has no other)"
+    "origin": "expert_authored",
+    "reason": "DEV-ONLY pinned exception: the pool's single one_step DAG; dev length-layer completeness; may derive dev tasks only; never enters v0.2 final, main evaluation, training, or formal benchmark gold",
+    "dev_track": "DEV_EXCEPTION",
+    "expert_dag_dev_exception": true,
+    "exception_reason": "unique_one_step_coverage",
+    "final_eligible": false,
+    "benchmark_final_eligible": false,
+    "training_eligible": false
    }
   ]
  },
  "disjointness_note": "dev keys and final-admitted keys are disjoint by construction; overlap with the 29 retained v0.1 final families is bounded by the [25,37] existing-pool overlap and handled at assembly",
- "patch_note": "2026-09-11: single pool one_step DAG moved from final-admitted to dev; final keeps 1-step coverage via the retained v0.1 one-step family; dev now covers all four topologies AND all four length strata"
+ "patch_note": "2026-09-11: single pool one_step DAG moved from final-admitted to dev; final keeps 1-step coverage via the retained v0.1 one-step family; dev now covers all four topologies AND all four length strata",
+ "dev_exception_ruling": {
+  "date": "2026-09-11",
+  "decided_by": "qiaoyun (benchmark owner)",
+  "rule": "Dev-only expert DAG exception: allowed ONLY to preserve the pool's unique one-step structure coverage; exactly ONE expert-authored DAG may stay in dev and derive dev tasks; that task never enters v0.2 final, the main evaluation set, the training set, or any formal benchmark gold. Final remains 100% source-backed with zero exceptions. The exception is pinned to d2165c006df4 and cannot spill.",
+  "swapped_out": [
+   "cfef1a7cffe8 (expert pure_merge -> source-backed replacement)",
+   "93ed22f6ceeb (expert linear/raster -> source-backed replacement)"
+  ],
+  "kept": "d2165c006df4 (expert one_step, DEV_EXCEPTION track, final_eligible=false)"
+ }
 }
