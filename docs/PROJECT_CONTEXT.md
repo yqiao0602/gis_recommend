@@ -1,6 +1,6 @@
 # Project Context Handoff
 
-Last updated: 2026-07-16
+Last updated: 2026-07-31
 
 This document is the durable project memory for `system_redesign`. New Codex sessions should read this file before continuing work. Update it after each completed phase with concise changes to `Completed`, `Open Work`, `Known Pitfalls`, and `Verification`.
 
@@ -1931,4 +1931,13 @@ Follow-up artifact:
 - v2.1 will keep the v1 compiler frozen and apply an explicit-profile deterministic precision pass in focused modules for source quality, class roles, identity/suppression/deduplication, and locked-gate evaluation.
 - The locked evaluator uses operator/custom multisets. A class retained as E3 only because bounded identity was previously missed, such as legacy Eliminate, is upgraded to bounded E1 and is not also required as an E3 fallback.
 - v2.2 remains blocked until every v2.1 hard gate passes. No implementation, taxonomy admission, training data generation, or model training has started from this plan.
+
+### 2026-07-31: QGIS Planner Benchmark v0.1 Freeze
+
+- This workstream owns only the QGIS planner benchmark; it does not alter GEE data, QGIS training data, taxonomy admission, or model training.
+- Version `0.1.0` is frozen at `benchmarks/qgis_planner_v1/releases/v0.1-freeze/` with status `internal_sealed_freeze`. Its manifest binds 24 artifacts across development 40, final core 120, refusal diagnostic 12, stable101/QGIS authorities, and the unified scorer; the top-level ledger verifies 27 paths.
+- `scripts/score_qgis_planner_benchmark_v01.py` scores graph and refusal splits with separate denominators, records both prediction SHA-256 values, and hashes/parses predictions before verifying or reading sealed freeze artifacts.
+- Graph exact match uses operator-labeled directed graph isomorphism, while supporting operator and edge metrics remain multiset-based. Refusal scoring treats any emitted process or link as unsafe planning.
+- Verification: 15 focused scorer/freeze tests passed, including full perfect-prediction smoke over final 120 plus refusal 12. No real model predictions were run. The legacy exclusion-ledger test remains environment-blocked because this worktree lacks the external Step8 quality-gate fixture; no old gate code was changed.
+- Any gold change after this freeze requires a new benchmark version. The next allowed work is prediction locking and evaluation handoff.
 

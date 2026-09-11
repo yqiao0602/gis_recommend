@@ -1,0 +1,834 @@
+{
+ "summary": {
+  "schema": "gis_recommend.qgis_benchmark_v02_supply_reconciliation.v1",
+  "reconciliation_id": "v02-supply-reconciliation-1",
+  "date": "2026-09-10",
+  "question_1_31_vs_50": {
+   "mechanism": "R-stage supply review (v02_supply_review_summary.json) applied an all-covered-L3-in-supported-roster filter: 149 candidates -> 87 eligible -> 31 distinct DAGs; 62 candidates excluded with reason family_not_in_supported_roster",
+   "gate3_source_backed_dag_count": 50,
+   "gate3_total_distinct_dags": 52,
+   "r_stage_eligible_dag_count": 31,
+   "r_stage_dag_provenance_split": {
+    "qgis_source_backed": 28,
+    "expert_authored": 3
+   },
+   "spec_claim_correction": "v02_task_derivation_spec says 31 source-backed DAGs; precisely 28 are source-backed, 3 are expert-authored; the 22-overlap / 9-new split against v0.1 final is the other session's measurement and was not independently re-verified here (final gold is sealed)",
+   "dropped_21_dags_structural_profile": {
+    "modality": {
+     "mixed": 6,
+     "vector": 13,
+     "raster": 2
+    },
+    "topology": {
+     "multi_input_merge": 15,
+     "linear": 6
+    },
+    "graph_size": {
+     "four_to_six": 8,
+     "seven_plus": 5,
+     "two_to_three": 8
+    }
+   },
+   "dropped_21_dags_offender_families": {
+    "L3_01_05_02 Repair Geometry (out_of_scope)": 6,
+    "L3_02_02_04 Erase (deferred)": 4,
+    "L3_02_06_03 Extract by Location (deferred)": 3,
+    "L3_03_04_01 Reclassify/Remap (deferred)": 2,
+    "L3_03_01_01 Clip Raster by Geometry (out_of_scope)": 2,
+    "L3_01_02_03 Alter Field (out_of_scope)": 2,
+    "others": 4
+   }
+  },
+  "rule_comparison": {
+   "rule_A_anchor_in_roster": {
+    "dag_count": 52,
+    "topology": {
+     "linear": 30,
+     "multi_input_merge": 22
+    },
+    "graph_size": {
+     "one_step": 1,
+     "two_to_three": 32,
+     "four_to_six": 12,
+     "seven_plus": 7
+    },
+    "semantics": "quota credit for anchor family only; covered annotation unrestricted (the roster JSON original intent)"
+   },
+   "rule_B_all_covered_in_roster": {
+    "dag_count": 31,
+    "topology": {
+     "linear": 24,
+     "multi_input_merge": 7
+    },
+    "graph_size": {
+     "one_step": 1,
+     "two_to_three": 24,
+     "four_to_six": 4,
+     "seven_plus": 2
+    },
+    "semantics": "entire DAG must live inside the 20 supported families (current R-stage implementation)"
+   },
+   "rule_C_covered_in_roster_or_deferred": {
+    "dag_count": 37,
+    "topology": {
+     "linear": 25,
+     "multi_input_merge": 12
+    },
+    "graph_size": {
+     "one_step": 1,
+     "two_to_three": 26,
+     "four_to_six": 6,
+     "seven_plus": 4
+    },
+    "semantics": "out_of_scope coverage banned; deferred families tolerated as intermediate steps with no quota credit"
+   },
+   "budget_authority_conflict": "frozen v02_budget_matrix requires final branch>=8, merge 20, seven_plus 8, raster_or_mixed>=20; under rule B the existing supply (31 DAGs: 0 branch, 7 merge, 2 seven_plus, 10 raster+mixed) plus only 6 rule-B-surviving fan-out records cannot reach any of these floors; rule A or C is required for the budget to be feasible"
+  },
+  "question_2_fanout_funnel_diagnosis": {
+   "corpus_fact": "routing_v6 holds 136 fan-out dependency records (106 with all operators admitted); stable106 holds 305 (37 all-admitted); 143 total all-admitted fan-out records",
+   "prior_claim_correction": "branch=0 was true only of the 149 admitted candidates, not of the corpus; the funnel discarded branch structure at three layers",
+   "fate_of_143": {
+    "admitted_but_fanout_normalized_away": 19,
+    "action_not_candidate": {
+     "count": 61,
+     "detail": "58 review_api_sidecar + 3 exclude_current_chain"
+    },
+    "invalid_graph_unused_temporary_terminals": 6,
+    "passes_local_checks_pending_gate2": 57
+   },
+   "roster_survivability_of_the_57": {
+    "rule_B": 6,
+    "rule_C": 32,
+    "distinct_operator_edge_structures": 20
+   },
+   "verdict": "branch shortage is a funnel artifact, not a corpus property; recoverable paths are (a) rule change B to A or C, (b) admitting the 57 pending gate2 recheck, (c) fixing the normalizer that collapsed fan-out in 19 admitted records"
+  },
+  "open_decision_for_user": "choose eligibility rule A / B / C; this changes the R4a/R4b review scope (31 reviewed; +6 under C, +21 under A need fresh review) and unblocks supply repair"
+ },
+ "per_dag_ledger": [
+  {
+   "normalized_dag_key": "cfef1a7cffe839ad7497a7feec865de201d97ddbd379fbaa0985070dae185a29",
+   "provenance": "expert_authored",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "d2165c006df40490b9694e8080785acf2b37f0d203736623b6231e42cc8c7d87",
+   "provenance": "expert_authored",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "one_step",
+   "candidate_count": 14,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "93ed22f6ceeb7f4757dbd1671878bad15c6c87544b59511a2c1ce4cfe1a47410",
+   "provenance": "expert_authored",
+   "modality": "raster",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "7ed5f65f544ad9a0becf9bfb4366b28740297a62d9d4481ac7617a9b6fd8b06e",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 7,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_02_01"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "487702e4fc71a820dcdf4f2f85f958e7e804d5027b6c917a4e897ad35d84ba34",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 7,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "e589d1bb8f543d89324af1089784ba6521224897fcb71cf275a1a18d2c728b1e",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_05_02",
+    "L3_03_02_05"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "43d7f526c1e67d588ef22a59fe532f0eb8598d48fa3bfc14da43a74088fc97e9",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "10464b7a442a5b82ed93a3a72b3ae35966e5f7c037d21b97268836f7c81c8cff",
+   "provenance": "qgis_source_backed",
+   "modality": "raster",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "seven_plus",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_01_03",
+    "L3_03_04_01",
+    "L3_04_01_02"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "ce6959eac95d49ca91a673b8d8ed24f8a4e7d5b0c4ac5ce7e52dc50f38c8fb93",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_05_02"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "6e6cdd76539d3dc466a07ff436b6fe2e795d254cbfec15469a8cb64115ed0555",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "e17c9848b3db0e8fff4d5a9c6128d2342a16b65bbc3d15694760fc92fc2e744a",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "c96ae35b7ae59963de81a338196c8447995b3adf6b48aa0f2418094922566620",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 2,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "a13596ae256c7eddc6e3bdd39eeba7a8173102dddf9e222f4d27a444b0f37e3e",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "reject"
+  },
+  {
+   "normalized_dag_key": "79d89a21b8f3bbce18e991db56ed9b9a81216ce39c7aedc9c07e4e12997afdd9",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "387aa770f929e969be3676cc1e295033ad810ced38adbfa7d638aaa03f7f0b6c",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 2,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [
+    "L3_02_06_03"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_deferred_family_only",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "b4c1e6170ab2e858d21bdc724fff97adefa5782d017ef8fa07a2044782b75733",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_05_02"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "9d177117e8345d5727a3364567d7b0a01ebe625fcb66ad862f7fc2fb5a497d54",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "return_for_revision"
+  },
+  {
+   "normalized_dag_key": "5e05f8a8a8c5dc31dccfc71588b9aa6ead7818137d06865469e170c5ea250e19",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_03_01_01"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "fff4d8363b022709627db561e43f42127f07097b7859fb712601f40d4c589473",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_02_03"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "a56ab507bcdd9b568f82a7a7c53e34d7fa8b0d2159bb55b8a2ba709ae102a93c",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 2,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "f415fe779ce0b622bc9ba43091d7b7d414f8457d55a7e86df34666838e6e4e86",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 4,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "reject"
+  },
+  {
+   "normalized_dag_key": "c99fa02ef0496bef6a66aaee03b7ba0b26628f5150f9a42a6f871537993fbe77",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "seven_plus",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_02_03",
+    "L3_02_05_06"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "ff5f9377434ece4e939041fb1aa87ed860fa5842c13d0fa7313d32e552709e15",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "79dde3ac5c7309319d3407151d443af0813127552e4bd5cdf27e27e751ab829e",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "seven_plus",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [
+    "L3_02_02_04"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_deferred_family_only",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "f91953b7eda79982a8970cab386cad644781a9d2213bcdf9ef7b00b9a5118b65",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_03_01_01"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "f1ac30257c48d7558f7e476028a2411812c7dc11ccc55b84bb5d53357726e507",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "seven_plus",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [
+    "L3_02_02_04"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_deferred_family_only",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "48efa86ce22094d379bdbc3d66b6fc636b2462f6a707ab244aaee82238cc0d9e",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 4,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "a1247efb2c1d12cae9db8ca08891c2e8c7f0dc227c9bcda15ac0960ae37223fb",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 6,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [
+    "L3_02_02_04"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_deferred_family_only",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "83ebd6544c5e5f61ec119540727310a92f60d385cb464e43abb34b02212b949e",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_05_02"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "657bd33a7a9d0b6087c13e244f3a766b7304114a7c34e1864ed7cfa5c5d4c1d6",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "9edc38d66639ff31cb458ce84e58db579f966fb434d2c4250063db39de2c51c0",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 4,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [
+    "L3_02_06_03"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_deferred_family_only",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "571c057b7e9239b20b9995e1fdd7cd3d7df9a45022d457ec24169fec58098eb3",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "seven_plus",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "return_for_revision"
+  },
+  {
+   "normalized_dag_key": "7bea02b07dd368830df60ae15ca74995d01d315dfb0f835b93b992fbf9ab6073",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 6,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "7613993ea0badc60fa11577cc1560c9cc4018ac9151cb2d3f9c282a7373e6bba",
+   "provenance": "qgis_source_backed",
+   "modality": "raster",
+   "topology": "linear",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_03_03_L",
+    "L3_03_04_01"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "c2f535b7461d5939fd80afc2f4dff6fa69ffee7f7f955b04cfd45df89d655ed4",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "1b6baf90e929052c1df832827b4d334ef5e0368b25408c37cfb620fc8922f19c",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "c47a6d14f1c57baf6eaea202e4caee609ec10d0e4279ba2ec6026da39e9daaa4",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_05_02"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "dff2303deb1add5950025d3b4b50ed1eec3777baa55613a2041a7130e2e0bb87",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "61eb37a5e22b74b33f3a98d2c927611e53c911c020254837df7bb3cb96376e67",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [
+    "L3_02_06_03"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_deferred_family_only",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "e698026ee35d85766d3c523b65b9092c12b9c995c31ab17f5bd42a89abb00f83",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "76ae19426b6a4e2141dda482f435ac562855d2326ef83dd3fcc0f7db8505c63e",
+   "provenance": "qgis_source_backed",
+   "modality": "raster",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 2,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "1275af8b1d9af30c90c0cbc9fd7788de3c16855e0352caaa959785ae5c6e276f",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "85927c468a24d25179d48adfeb9b975674a7519de8efd6b63a7aefdb726e3a40",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 2,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "feecaae246ca41c2eb0cf8d64d9004f0b2313e1f826cfe97a0dd88eef9e9ca69",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "303d4eb1156d7d434ec8fd0d14b7ca850854601e2ec7ba8dc89c95f4c1d4180b",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "seven_plus",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "reject"
+  },
+  {
+   "normalized_dag_key": "5faed1514b4d5b63ea28c531d0ed8de038a1ff785e8d8275ed5c1c654dd02a57",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_02_02_05"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "fffdb5df0db68dba67d05098d7c1aaea905e8a6ef3f7f4d8fef94ed82b1223d2",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 2,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "reject"
+  },
+  {
+   "normalized_dag_key": "7a762a307907070b6580d8a5a4aac78679faa04744aa93bbcab530fe1513458e",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "approve"
+  },
+  {
+   "normalized_dag_key": "0db6a78b8bea3bf87fb9e3d823430cbd45c5ef499204ac335b1c7ccd50cc8e92",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "seven_plus",
+   "candidate_count": 3,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_08_05_C"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "860bcb6c76334bb59e78ca672c00b3de77414c056c446fcefca850d035a3eb64",
+   "provenance": "qgis_source_backed",
+   "modality": "vector",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": false,
+   "rule_C_covered_in_roster_or_deferred": false,
+   "non_roster_covered_families": [
+    "L3_01_05_02",
+    "L3_02_02_04"
+   ],
+   "exclusion_reason": "all_covered_in_roster_failed_out_of_scope_family",
+   "r4b_decision": null
+  },
+  {
+   "normalized_dag_key": "a6948cd4e269a62b7c3375c3142caa579dd4eb70b607267d6e0c9721a869ade6",
+   "provenance": "qgis_source_backed",
+   "modality": "mixed",
+   "topology": "linear",
+   "graph_size_stratum": "two_to_three",
+   "candidate_count": 2,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "return_for_revision"
+  },
+  {
+   "normalized_dag_key": "8cf59ec70d53258bd0b6f73c56824214b38773c1f2d78de1189763a78206d166",
+   "provenance": "qgis_source_backed",
+   "modality": "raster",
+   "topology": "multi_input_merge",
+   "graph_size_stratum": "four_to_six",
+   "candidate_count": 1,
+   "rule_B_all_covered_in_roster": true,
+   "rule_C_covered_in_roster_or_deferred": true,
+   "non_roster_covered_families": [],
+   "exclusion_reason": null,
+   "r4b_decision": "return_for_revision"
+  }
+ ]
+}

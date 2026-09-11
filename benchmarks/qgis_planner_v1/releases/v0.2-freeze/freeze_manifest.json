@@ -1,0 +1,222 @@
+{
+ "schema": "gis_recommend.qgis_planner_benchmark_v02_freeze_manifest.v1",
+ "benchmark_id": "qgis-planner-benchmark-v0.2",
+ "version": "0.2.0",
+ "status": "frozen",
+ "frozen_at": "2026-09-11",
+ "supersedes": "v0.1 (immutable baseline; this is a controlled coverage-repair revision per the v02_benchmark_positioning and coverage-delta decisions)",
+ "invariants": {
+  "final_source_backed": "99/99",
+  "final_expert_authored": "0/99",
+  "final_task_count": 99,
+  "dev_dag_count": 20,
+  "dev_composition": "19 source-backed tasked DAGs + 1 expert-authored DEV_EXCEPTION task (d2165c006df4, four locks, excluded from final/benchmark/training/source-backed statistics)",
+  "refusal_task_count": 12,
+  "dev_final_disjoint": true,
+  "prediction_hash_before_gold": true
+ },
+ "final": {
+  "task_count": 99,
+  "composition": {
+   "retained_from_v01": {
+    "task_count": 87,
+    "family_count": 29,
+    "note": "v0.1 final tasks whose texts passed stage-1 spec compliance 120/120 and whose families were retained by the coverage-driven release policy (11 short-linear families released for pool admission)"
+   },
+   "new_from_pool": {
+    "task_count": 12,
+    "dag_count": 6,
+    "dags": [
+     {
+      "pool_key": "302f34cdd7",
+      "topology": "pure_branch",
+      "size": "four_to_six",
+      "modality": "vector"
+     },
+     {
+      "pool_key": "429556807a",
+      "topology": "pure_branch",
+      "size": "seven_plus",
+      "modality": "mixed"
+     },
+     {
+      "pool_key": "571c057b7e92",
+      "topology": "hybrid",
+      "size": "seven_plus",
+      "modality": "vector"
+     },
+     {
+      "pool_key": "79dde3ac5c73",
+      "topology": "hybrid",
+      "size": "seven_plus",
+      "modality": "vector"
+     },
+     {
+      "pool_key": "7a19dc431b",
+      "topology": "hybrid",
+      "size": "four_to_six",
+      "modality": "mixed"
+     },
+     {
+      "pool_key": "303d4eb1156d",
+      "topology": "linear",
+      "size": "seven_plus",
+      "modality": "vector"
+     }
+    ],
+    "text_sources": "3 first variants reused from the adjudicated recovered-21 set; 3 first + 6 second variants authored and dual-reviewed (5 source-verified fixes applied); all 12 clean under the unified Gate 2 recheck"
+   }
+  },
+  "gold_corrections": [
+   {
+    "pool_key": "79dde3ac5c",
+    "correction": "p6->p7 edge added (source typo interesection/intersection)",
+    "artifact": "v02_gold_correction_79dde3ac5c_v1.json",
+    "re_review": "dual accept"
+   }
+  ]
+ },
+ "dev": {
+  "dag_count": 20,
+  "source_backed_tasked": {
+   "mainline": 15,
+   "reused_from_recovered": 4,
+   "note": "15 authored + dual-reviewed (6 source-verified fixes); 4 reused from the adjudicated recovered-21 set"
+  },
+  "dev_exception": {
+   "packet_entry_id": "dev-exception-d2165c006df4",
+   "task_text": "Reproject the input layer to the target coordinate reference system.",
+   "task_scope": "full_workflow",
+   "task_style": "operator_explicit",
+   "output_expression": "single",
+   "dev_exception": {
+    "source_type": "expert_authored",
+    "source_provenance": "none",
+    "dev_only": true,
+    "final_eligible": false,
+    "benchmark_final_eligible": false,
+    "training_eligible": false,
+    "expert_dag_dev_exception": true,
+    "exception_reason": "unique_one_step_coverage",
+    "ruling": "owner adjudication a, 2026-09-11: one dev-only task; four locks; minimal audit; never counted in final/benchmark/training or the source-backed statistics"
+   },
+   "semantic_consistency_check": {
+    "dag": {
+     "operators": [
+      "native:reprojectlayer"
+     ],
+     "edges": []
+    },
+    "check": "task expresses exactly one operation (reprojection to a target CRS); no extra operations, no parameters, single output -- consistent with the one-step gold",
+    "result": "pass"
+   },
+   "provenance": {
+    "source_authority_key": "expert_proposal:expert-v1-001",
+    "source_sha256": null,
+    "derivation_method": "exception_minimal_audit",
+    "derived_text_sha256": "c8e9fe79a0385fe98823a3372b84588654577d793968a20a107f333f1ac6b810",
+    "canonical_dag_key": "d2165c006df4",
+    "review_status": "dev_exception_adjudicated",
+    "split": "development_exception"
+   }
+  },
+  "topology_coverage": {
+   "pure_branch": 1,
+   "hybrid": 1,
+   "pure_merge": 7,
+   "linear": 11
+  },
+  "length_coverage": {
+   "one_step": 1,
+   "two_to_three": 11,
+   "four_to_six": 7,
+   "seven_plus": 1
+  },
+  "modality_coverage": {
+   "vector": 11,
+   "mixed": 7,
+   "raster": 2
+  }
+ },
+ "refusal": {
+  "task_count": 12,
+  "inherited_from": "v0.1 refusal-12 (sealed artifacts checksum-verified; content unread)",
+  "rebind": "v02_refusal_rebind_v1.json"
+ },
+ "verification": {
+  "gate2_unified_recheck": {
+   "scope": "45 newly authored texts ({'final_new': 21, 'dev_mainline': 15, 'final_variants': 9})",
+   "checks": [
+    "exclusion-ledger token signatures",
+    "6-gram vs 8,912 training texts",
+    "forbidden literals + field names"
+   ],
+   "result": "ALL CLEAN"
+  },
+  "assertion_battery": [
+   {
+    "assertion": "final == 99",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "assertion": "dev DAGs == 20",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "assertion": "refusal == 12",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "assertion": "final ∩ dev = ∅",
+    "pass": true,
+    "detail": "overlap none"
+   },
+   {
+    "assertion": "source_backed(final) == 99",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "assertion": "expert_authored(final) == 0",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "assertion": "DEV_EXCEPTION.final_eligible == false",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "assertion": "DEV_EXCEPTION.benchmark_final_eligible == false",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "assertion": "DEV_EXCEPTION.training_eligible == false",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "assertion": "gold correction 79dde3ac5c dual-rereviewed accept",
+    "pass": true,
+    "detail": "both reviewers accept: typo confirmed, edge set correct, hybrid confirmed, no other defects"
+   }
+  ],
+  "coverage_delta": "v02_coverage_delta_v1.json",
+  "retention_ledger": "v02_retention_replacement_ledger_v2.json"
+ },
+ "governance_chain": [
+  "v02_supported_family_roster (f186d31)",
+  "eligibility rule C (217e739)",
+  "spec-strict decision (50d6123)",
+  "positioning decision (b52b03d)",
+  "coverage delta + three adjudications (caba33f)",
+  "dev-exception ruling (a04c772)",
+  "disjointness fix + assertion battery (1a4bc7d)",
+  "O1 gold correction (df838b8 + e5c80a7)",
+  "DEV_EXCEPTION ruling a (this freeze)"
+ ]
+}

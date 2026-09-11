@@ -1,0 +1,31 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_v02_recovered_dag_corrections.v1",
+  "corrections_id": "v02-recovered-dag-corrections-1",
+  "date": "2026-09-10",
+  "authority": "owner adjudication v02-recovered-dag-adjudication-1; source verification scripts/verify_structural_defects_9_10.py",
+  "policy": "corrections are recorded here as superseding artifacts; the hash-bound discovery manifests (stable101_routing_v6 sha256 1c098a41..., stable106_catalog_miss_replay sha256 d7160371...) are NEVER modified; corrected graphs must pass re-review before admission",
+  "corrections": [
+    {
+      "packet_entry_id": "recovered-fc01749f30a8e4ea",
+      "defect": "dependency_edges in the discovery record misrepresent the source workflow; recorded as linear [[0,1],[1,2],[2,3],[3,4]]",
+      "source_evidence": "local mirror 爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_31927.py lines 27-53: buffer(atbn,20)->autobahn20; buffer(autobahn20,100)->autobahn100; buffer(autobahn100,200)->autobahn300; union(INPUT=autobahn20, OVERLAY=autobahn100)->innerImpactArea; union(INPUT=innerImpactArea, OVERLAY=autobahn300)->impactArea",
+      "corrected_graph": {
+        "operators": ["native:buffer", "native:buffer", "native:buffer", "native:union", "native:union"],
+        "l3_codes": ["L3_02_01_01", "L3_02_01_01", "L3_02_01_01", "L3_02_02_02", "L3_02_02_02"],
+        "edges": [[0, 1], [1, 2], [0, 3], [1, 3], [3, 4], [2, 4]]
+      },
+      "topology_change": "linear -> hybrid (fan-in at operators 3 and 4; fan-out at operators 0 and 1)",
+      "rule_c_after_correction": "anchor L3_02_01_01 Buffer (SUPPORTED) unchanged; covered adds nothing new (Union L3_02_02_02 is DEFERRED, allowed as intermediate); still C-eligible",
+      "reviewer_error_note": "reviewer-a accepted the wrong recorded edges; reviewer-b identified the union fan-in but proposed an edge set that omits the buffer chain (0,1),(1,2); the verified full set above supersedes both",
+      "next": "mandatory re-review of the corrected graph"
+    }
+  ],
+  "verifications_without_correction": [
+    {
+      "packet_entry_id": "recovered-dec749a979996d6f",
+      "claim": "reviewer-b: packet records native:zonalstatisticsfb, a mismatch with the legacy source call",
+      "verification": "packet records native:zonalstatistics; the discovery record's provider_migrations applies the frozen qgis_to_native_same_slug rule (qgis:zonalstatistics -> native:zonalstatistics); mapping authority confirms native:zonalstatistics strict/stable101_direct/headline under L3_03_02_01",
+      "result": "claim incorrect; no correction applied; residual legacy-semantics note (in-place poly_area modification, no OUTPUT parameter) forwarded to the mapping authority as a v0.3 candidate question"
+    }
+  ]
+}

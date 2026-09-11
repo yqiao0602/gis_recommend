@@ -116,7 +116,9 @@ def test_write_outputs_creates_only_gate3_authority_files(tmp_path: Path) -> Non
     ]
 
 
-def test_optional_expert_input_counts_only_fully_admitted_rows(tmp_path: Path) -> None:
+def test_optional_expert_input_counts_only_fully_admitted_rows(
+    tmp_path: Path, monkeypatch
+) -> None:
     module = _module()
     mapping_path = tmp_path / "mapping.json"
     catalog_path = tmp_path / "catalog.json"
@@ -180,6 +182,9 @@ def test_optional_expert_input_counts_only_fully_admitted_rows(tmp_path: Path) -
         "gate1_status": "passed",
         "gate2_status": "passed",
         "dedup_status": "canonical",
+        "human_approval_status": "approved",
+        "semantic_review_required": False,
+        "semantic_review_status": "not_required",
         "supply_admission": "gate3_candidate_admitted",
     }
     expert_path.write_text(json.dumps(expert) + "\n", encoding="utf-8")
@@ -201,3 +206,109 @@ def test_optional_expert_input_counts_only_fully_admitted_rows(tmp_path: Path) -
     }
     assert result["summary"]["distinct_source_authorities"] == 0
     assert result["rows"][0]["candidate_id"].startswith("qgis-expert-")
+    assert result["rows"][0]["quota_credit_eligible"] is True
+
+    monkeypatch.chdir(tmp_path)
+    relative_result = module.build(
+        root=tmp_path,
+        discovery_pools=(),
+        mapping_path=mapping_path,
+        catalog_path=catalog_path,
+        capability_path=capability_path,
+        exclusion_path=exclusion_path,
+        expert_proposals_path=Path("experts.jsonl"),
+    )
+
+    assert relative_result["summary"] == result["summary"]
+    assert result["summary"]["expert_proposal_input"]["path"] == "experts.jsonl"
+
+
+def test_optional_expert_input_rejects_pending_semantic_review(tmp_path: Path) -> None:
+    module = _module()
+    mapping_path = tmp_path / "mapping.json"
+    catalog_path = tmp_path / "catalog.json"
+    capability_path = tmp_path / "capability.jsonl"
+    exclusion_path = tmp_path / "exclusion.jsonl"
+    expert_path = tmp_path / "experts.jsonl"
+    mapping_path.write_text(
+        json.dumps(
+            {
+                "entries": [
+                    {
+                        "operator_id": "native:buffer",
+                        "strict_catalog_present": True,
+                        "mapping_status": "stable101_direct",
+                        "stable101_l3": "L3_02_01_01",
+                        "headline_eligible": True,
+                        "task_role": "analytical",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    catalog_path.write_text(
+        json.dumps(
+            {
+                "operators": [
+                    {
+                        "operator_id": "native:buffer",
+                        "input_types": ["vector"],
+                        "output_types": ["vector"],
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    capability_path.write_text("", encoding="utf-8")
+    exclusion_path.write_text("", encoding="utf-8")
+    expert = {
+        "proposal_id": "expert-001",
+        "provenance_class": "expert_authored",
+        "processes": [
+            {
+                "process_id": "p0",
+                "operator_id": "native:buffer",
+                "l3_code": "L3_02_01_01",
+            }
+        ],
+        "links": [],
+        "parameters_included": False,
+        "quota_anchor_l3": "L3_02_01_01",
+        "covered_l3": ["L3_02_01_01"],
+        "modality": "vector",
+        "topology": "linear",
+        "graph_size_stratum": "one_step",
+        "normalized_dag_key": "dag-1",
+        "forbidden_near_dag_key": "near-1",
+        "semantic_dag_key": "semantic-1",
+        "graph_review_status": "independent_reviewed",
+        "gate1_status": "passed",
+        "gate2_status": "passed",
+        "dedup_status": "canonical",
+        "human_approval_status": "approved",
+        "semantic_review_required": True,
+        "semantic_review_status": "pending",
+        "supply_admission": "gate3_candidate_admitted",
+    }
+    expert_path.write_text(json.dumps(expert) + "\n", encoding="utf-8")
+
+    result = module.build(
+        root=tmp_path,
+        discovery_pools=(),
+        mapping_path=mapping_path,
+        catalog_path=catalog_path,
+        capability_path=capability_path,
+        exclusion_path=exclusion_path,
+        expert_proposals_path=expert_path,
+    )
+
+    assert result["summary"]["candidate_count"] == 0
+    assert result["summary"]["provenance_counts"] == {
+        "expert_authored": 0,
+        "qgis_source_backed": 0,
+    }
+    assert result["summary"]["rejection_counts"] == {
+        "expert_proposal_not_fully_admitted": 1
+    }

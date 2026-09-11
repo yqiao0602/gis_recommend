@@ -1,0 +1,734 @@
+{
+ "schema": "gis_recommend.qgis_benchmark_v02_gate2_recheck.v1",
+ "recheck_id": "v02-gate2-recheck-fanout-1",
+ "date": "2026-09-10",
+ "policy_ref": "v02_eligibility_policy_v1.json (rule C)",
+ "scope": "the 57 pending fan-out records (candidate action, all operators capability-admitted, locally passing, not previously admitted)",
+ "method": "repository's own exclusion machinery: fingerprint_record + build_overlap_indexes + check_candidate_overlap over the frozen 104.7MB source_exclusion_ledger.jsonl; gate1 per build_qgis_benchmark_candidate_pool strict mapping rule; anchor per analytical-first rule",
+ "existing_pool_four_way_taxonomy": {
+  "pure_merge": 15,
+  "linear": 30,
+  "hybrid_merge_and_branch": 7
+ },
+ "taxonomy_correction": "the 19 previously-described 'admitted but fan-out normalized away' records actually preserve ALL edges; graph_profile classifies merge before branch, so hybrid fan-in+fan-out DAGs are labeled multi_input_merge and their fan-out is masked by the label, not lost. Existing pool four-way taxonomy above is the corrected reading.",
+ "verdict_counts": {
+  "rejected_gate2_overlap": 28,
+  "rejected_invalid_graph": 35
+ },
+ "eligible_four_way_taxonomy": {},
+ "eligible_size_strata": {},
+ "records": [
+  {
+   "discovery_ref": "stable101_routing_v6:118",
+   "action": "recover_call_graph",
+   "n_ops": 7,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "seven_plus",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "normalized_source_body_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:121",
+   "action": "recover_call_graph",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:123",
+   "action": "recover_call_graph",
+   "n_ops": 5,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "normalized_source_body_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:125",
+   "action": "auto_accept_candidate",
+   "n_ops": 6,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:139",
+   "action": "recover_call_graph",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:148",
+   "action": "recover_call_graph",
+   "n_ops": 5,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:149",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:150",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:184",
+   "action": "split_subworkflow",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:218",
+   "action": "recover_call_graph",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "normalized_source_body_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:297",
+   "action": "split_subworkflow",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:418",
+   "action": "recover_call_graph",
+   "n_ops": 5,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:469",
+   "action": "recover_call_graph",
+   "n_ops": 7,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "seven_plus",
+   "gate2_overlap_fields": [
+    "normalized_source_body_sha256",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:536",
+   "action": "recover_call_graph",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:585",
+   "action": "split_subworkflow",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:651",
+   "action": "recover_call_graph",
+   "n_ops": 5,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_source_body_sha256",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:653",
+   "action": "auto_accept_candidate",
+   "n_ops": 6,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:659",
+   "action": "recover_call_graph",
+   "n_ops": 5,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:660",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:661",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:685",
+   "action": "split_subworkflow",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:787",
+   "action": "recover_call_graph",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_source_body_sha256",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:804",
+   "action": "recover_call_graph",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:895",
+   "action": "recover_call_graph",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:912",
+   "action": "recover_call_graph",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:989",
+   "action": "recover_call_graph",
+   "n_ops": 5,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1075",
+   "action": "split_subworkflow",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1118",
+   "action": "split_subworkflow",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1146",
+   "action": "recover_call_graph",
+   "n_ops": 7,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "seven_plus",
+   "gate2_overlap_fields": [
+    "normalized_source_body_sha256",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1200",
+   "action": "recover_call_graph",
+   "n_ops": 5,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_source_body_sha256",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1202",
+   "action": "auto_accept_candidate",
+   "n_ops": 6,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1233",
+   "action": "recover_call_graph",
+   "n_ops": 5,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1234",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1235",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "multi_input_merge",
+   "four_way_topology": "hybrid_merge_and_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable101_routing_v6:1264",
+   "action": "recover_call_graph",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "normalized_source_body_sha256",
+    "task_text_signature",
+    "task_text_token_signature"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:38",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:129",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:730",
+   "action": "split_subworkflow",
+   "n_ops": 10,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:794",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:867",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1078",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1273",
+   "action": "recover_call_graph",
+   "n_ops": 12,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1567",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1584",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1589",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1730",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1742",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1748",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:1792",
+   "action": "split_subworkflow",
+   "n_ops": 10,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2024",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2271",
+   "action": "split_subworkflow",
+   "n_ops": 10,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2297",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2451",
+   "action": "recover_call_graph",
+   "n_ops": 9,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2532",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2548",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2560",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2664",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2667",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2752",
+   "action": "split_subworkflow",
+   "n_ops": 11,
+   "gate1": true,
+   "graph_profile_valid": false
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2914",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:2929",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:3026",
+   "action": "auto_accept_candidate",
+   "n_ops": 4,
+   "gate1": true,
+   "graph_profile_valid": true,
+   "topology": "branch_or_multi_output",
+   "four_way_topology": "pure_branch",
+   "graph_size_stratum": "four_to_six",
+   "gate2_overlap_fields": [
+    "source_sha256",
+    "source_region_key",
+    "call_graph_signature",
+    "normalized_dag_key",
+    "forbidden_near_dag_key",
+    "semantic_dag_key"
+   ]
+  },
+  {
+   "discovery_ref": "stable106_catalog_miss_replay:3117",
+   "action": "split_subworkflow",
+   "n_ops": 10,
+   "gate1": true,
+   "graph_profile_valid": false
+  }
+ ]
+}

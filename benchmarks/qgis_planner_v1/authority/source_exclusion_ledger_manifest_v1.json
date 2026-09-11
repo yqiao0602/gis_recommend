@@ -1,0 +1,94 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_release_artifact_manifest.v1",
+  "manifest_version": "1.0.0-draft",
+  "benchmark_id": "qgis-planner-benchmark",
+  "benchmark_version": "1.0.0-planned",
+  "freeze_status": "local_packaged_unpublished",
+  "git_commit": null,
+  "git_tag": "qgis-planner-benchmark-v1.0.0",
+  "artifact": {
+    "artifact_id": "qgis-planner-gate2-source-exclusion-v1",
+    "role": "gate2_source_exclusion_authority",
+    "logical_path": "benchmarks/qgis_planner_v1/authority/source_exclusion_ledger.jsonl",
+    "format": "jsonl",
+    "encoding": "utf-8",
+    "line_ending": "LF",
+    "terminal_newline": true,
+    "sha256": "b6202e4b0d43123342a701eb5a4bed8b8cb16f64bc9f58e0e545c75553c6fc4c",
+    "byte_count": 109617990,
+    "record_count": 106562,
+    "record_type_counts": {
+      "artifact": 15,
+      "exclusion": 106547
+    },
+    "schema_counts": {
+      "gis_recommend.qgis_benchmark_exclusion_artifact.v1": 15,
+      "gis_recommend.qgis_benchmark_exclusion.v1": 106547
+    },
+    "exposure_class_counts": {
+      "current_training": 11504,
+      "historical_train_val_test": 77569,
+      "historical_training": 16799,
+      "human_audit": 200,
+      "prior_evaluation": 230,
+      "probe_exposure": 50,
+      "prompt_exposure": 70,
+      "reviewed_description_exposure": 125
+    },
+    "overlap_fields": [
+      "source_sha256",
+      "normalized_source_body_sha256",
+      "source_region_key",
+      "call_graph_signature",
+      "normalized_dag_key",
+      "forbidden_near_dag_key",
+      "semantic_dag_key",
+      "task_text_signature",
+      "task_text_token_signature"
+    ],
+    "content_policy": "hash_only_no_raw_task_text"
+  },
+  "distribution": {
+    "backend": "github_release",
+    "publication_status": "pending",
+    "repository": "yqiao0602/gis_recommend",
+    "tag": "qgis-planner-benchmark-v1.0.0",
+    "asset_name": "qgis-planner-benchmark-v1.0.0-source-exclusion-b6202e4b.jsonl.gz",
+    "download_url": null,
+    "mirrors": []
+  },
+  "compression": {
+    "algorithm": "gzip",
+    "level": 9,
+    "mtime": 0,
+    "filename_header": "",
+    "os_header": 255,
+    "implementation": "CPython zlib 1.2.13",
+    "compressed_sha256": "82d1f90a96a2cf3f41127e468a73667f2633f4c47ae6660e1815e7cccbdd1e84",
+    "compressed_byte_count": 26087577,
+    "decoded_sha256": "b6202e4b0d43123342a701eb5a4bed8b8cb16f64bc9f58e0e545c75553c6fc4c"
+  },
+  "provenance": {
+    "producer_script": "scripts/build_qgis_benchmark_exclusion_ledger.py",
+    "build_command": "python -m scripts.build_qgis_benchmark_exclusion_ledger",
+    "source_artifact_count": 15,
+    "source_inventory_location": "the 15 record_type=artifact rows embedded in the ledger",
+    "canonical_json": "UTF-8; sort_keys=true; separators=[comma,colon]; one object per LF-terminated line",
+    "rebuild_scope": "A clean clone can verify a published payload but cannot rebuild it unless all 15 hash-pinned source artifacts are also available."
+  },
+  "superseded_local_authorities": [
+    {
+      "sha256": "0620ae57e31927c0b7176bc443f63709ad6d20d90cd8b06ef429874226a0373d",
+      "byte_count": 109724552,
+      "reason": "Windows-default CRLF serialization; not cross-platform deterministic"
+    }
+  ],
+  "release_requirements": [
+    "Populate the producer commit and exact release download URL.",
+    "Upload the exact asset under the fixed tag without using a latest URL.",
+    "Download the release asset into a clean environment and verify compressed and decoded hashes.",
+    "Verify record, schema, exposure-class, LF, and terminal-newline contracts.",
+    "Add an immutable DOI or read-only mirror before the paper release when available.",
+    "Change freeze_status to published_verified only after the download-back verification passes."
+  ]
+}

@@ -661,3 +661,70 @@
 - locked gate 使用 operator/custom multiset 计算 E0/E1/E2/E3、overall precision、test/constructor false positive 和 completeness；`Eliminate` 等 bounded identity 升级不再重复要求旧 E3 fallback。
 - v2.2 仍不在本轮范围；只有 v2.1 七项硬门槛全部通过才可开始 completeness compiler。
 - 当前状态：计划完成，代码实现尚未开始，taxonomy/training admission 继续 `not_granted`。
+
+## 2026-09-10：QGIS Planner Benchmark v0.2 roster-first 规划启动
+
+- 明确 v0.2 不是扩容到 200/300 条，而是在约 120 条 final 预算内修复 supported family、DAG diversity、modality、topology 和 chain length coverage。
+- R1 roster authority 已由提交 `f186d31` 冻结：20 个 `supported`、8 个 `deferred`、22 个 `out_of_scope`；权威文件为 `benchmarks/qgis_planner_v1/authority/v02_supported_family_roster.json` 与同名 `.md`。
+- 冻结 roster 的配套说明存在一个 L3 标识笔误，已通过独立 `v02_supported_family_roster_errata_v1.md` 记录；不修改或重哈希 f186d31 的冻结 JSON/MD，后续一律以 JSON authority 为准。
+- v0.1 保持 immutable；不修改 sealed task/gold，不重训 M1/M2/M3，不生成 v0.2 candidate/task/gold。
+- 已复核既有 roster freeze 记录，冻结 stable101 四态 roster、R1-R5 gate、development 约 40（目标 30–40 canonical DAG）和 final 约 120 的预算原则。
+- R2 budget authority 已冻结：`benchmarks/qgis_planner_v1/authority/v02_budget_matrix.json` 与同名 `.md`，development 40/36 canonical DAG，final 120/60 canonical DAG，显式覆盖 chain length、topology、modality 和 task_style floors。
+- 当前 v0.2 可交付 task+gold 为 `0`。下一门为 R3 supply repair；验收只统计完成 graph review、Gate 2 零重叠和人工批准的 task+gold，不统计脚本、schema、review job 或 candidate 数量。
+## 2026-09-10：QGIS Planner Benchmark v0.2 R3 入场 ledger 与 review envelope
+
+- 复用既有 `candidate_supply.jsonl`，按冻结的 20-family roster 逐条检查 Gate 1、Gate 2 九索引字段、parameter-free 和图结构：149 条中 87 条 eligible，62 条因包含非 supported family 排除；eligible 为 31 个 distinct DAG。
+- 生成 `benchmarks/qgis_planner_v1/authority/v02_supply_review_queue.jsonl`、`v02_supply_review_summary.json` 和 `v02_dag_review_queue.jsonl`，所有候选保持 `task_gold_admission=not_granted`，graph review 为 pending。
+- 生成 `v02_dag_review_jobs.jsonl`：38 个 hash-bound jobs（31 主审 + 7 merge 二审），绑定 queue SHA `f3bc59e3f9ab1c378a4cb96ac465f294bca82dbaa50e3a02f894e18b25e7c1dd`。
+- R4 尚未开始人工语义裁决；v0.2 可交付 task+gold 仍为 `0`。
+## 2026-09-10：QGIS Planner Benchmark v0.2 R4 DAG semantic review
+
+- 对 31 个 eligible DAG 按 hash-bound jobs 生成并绑定 38 条 review record：`qgis-expert-01` 31 条，`qgis-expert-02` 对 7 个 merge DAG 各 1 条二审；queue SHA 全部一致，validator `failure_count=0`。
+- 语义闭合结果：23 个 `closed`（approve），8 个 `returned_for_revision`；无 disagreement。返回项集中在重复 field-calculator、重复 reproject、重复 raster/statistics 和缺少中间输出语义的复杂链。
+- review closure 不是 task+gold admission；当前 v0.2 可交付 task+gold 仍为 `0`。下一步是 R4b 独立人工批准和 task 文本编写。
+## 2026-09-10：QGIS Planner Benchmark v0.2 R4b approval ledger
+
+- 对 31 个 semantic closure 建立 hash-bound approval ledger：23 个 `approve`，4 个 `return_for_revision`，4 个 `reject/exclude`。
+- 23 个 approved DAG 仅获得 `task_authoring_status=eligible`；全部 31 条记录保持 `task_gold_admission=not_granted`，因此 v0.2 可交付 task+gold 仍为 `0`。
+- R4c 已纠正为 source-derived task extraction：从已有 QGIS workflow/training records 派生并去参数化 task text，人工只做最小保真审核，不允许凭空手写。规范为 `benchmarks/qgis_planner_v1/authority/v02_task_derivation_spec.zh-CN.md`。
+- lineage 核对确认 v0.2 不是从零开始：当前 31 个 source-backed DAG 与 v0.1 final 的 40 个 canonical DAG 有 22 个重合、9 个新增；v0.1 sidecar 的 120 条记录带 source authority。v0.1 graph/gold 可作为 migration seed，但手写 task text 必须重新绑定 source-derived provenance 后才可计入 v0.2。
+- 产物：`benchmarks/qgis_planner_v1/authority/v02_dag_human_approval_ledger.jsonl` 与 `v02_dag_human_approval_summary.json`。下一步为 source extraction、task-to-gold review 和 Gate 2 重检。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 首批 8 条可评测 task+gold
+
+- 评测集工作流改为数据行验收：脚本、schema、候选 DAG、review job 和门禁数量不再计入交付进度。
+- 已交付 8 条英文模型可见 task，并逐条配对 8 条 parameter-free QGIS `processes + links` gold；8 个 sample ID 唯一，全部与 immutable 52-DAG queue 的 graph/hash/拓扑逐字一致。
+- 首批只使用已具备 approve 证据的线性图，未使用尚需双审的 merge 图；gold 中参数字段为 0。
+- 独立 AI-assisted QGIS task-to-gold 复核为 8/8 approve；其中 003、007 在消除可替代算子歧义后完成二次复核。
+- 可用产物：`benchmarks/qgis_planner_v1/releases/v0.1-pilot-8/`，状态为 `reviewed_usable_development_pilot`。下一验收目标为 40 条 development task+gold，而不是新增基础设施。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 development set 达到 40 条 reviewed task+gold
+
+- 已交付 40 条英文模型可见 task，并逐条配对 40 条 parameter-free QGIS `processes + links` gold；40 个 task/gold/sidecar/review ID 一一对应，40 条任务文本互异。
+- 数据由 8 个已审 canonical DAG 各自生成 5 个独立任务表述；40/40 gold 与冻结的 52-DAG queue 精确匹配，graph hash 匹配 40/40，参数字段和悬空链接均为 0。
+- 独立 task-to-gold 盲审为 40 approve / 0 revise / 0 reject；第二阶段整包规格和质量复核 `FAILURES=0`。
+- 可用产物：`benchmarks/qgis_planner_v1/releases/v0.1-development-40/`，状态为 `reviewed_usable_development`。该批是 development set，不冒充 sealed final。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 sealed final 达到 120 条 reviewed task+gold
+
+- final core 使用与 development 完全不同的 40 个 canonical DAG，每个 DAG 编写 3 条模型可见任务文本，共 120 条 task，并逐条绑定 parameter-free QGIS `processes + links` gold。
+- 120/120 完成 primary task-to-gold review；按 40-DAG roster 均匀抽取 30/120 完成 blind independent secondary review。二审发现 1 条复杂栅格任务漏写重复计算与依赖，三个文本变体同步修订，抽中样本重审通过；最终为 primary 120 approve、secondary 30 approve、0 unresolved disagreement。
+- 120/120 gold 与 immutable 52-DAG queue 的 graph/hash/拓扑精确匹配；参数字段、悬空链接、provider-qualified operator ID 文本泄漏和 step-number 答案泄漏均为 0。
+- development/final 的 canonical graph、source authority、forbidden near-DAG key 和 task text overlap 均为 0。
+- 可用 sealed 产物：`benchmarks/qgis_planner_v1/releases/v0.1-final-core-120/`，状态为 `sealed_reviewed_usable_final_core`。该阶段未运行任何 final 模型预测。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 refusal diagnostic 达到 12 条 reviewed
+
+- refusal diagnostic 独立交付 12 条 task，采用 4 个 refusal intent 各 3 个任务变体；6 条为 `unsupported_capability`，6 条为 `underspecified_goal`。
+- unsupported 样本分别回指 capability matrix 中 Atmospheric Correction 与 Polynomial Trend 的 `no_frozen_qgis_implementation` authority，二者 admitted operator 均为 0。
+- underspecified 样本只覆盖分析目标本身无法选择唯一方法的优先区选择与空间聚集任务；缺少字段、阈值、距离、CRS 或路径不作为 refusal 理由。
+- 12/12 primary review 和 12/12 blind independent secondary review 均为 approve；gold 全部为显式 `decision=abstain`，不使用空 process graph，reason code 配额为 6+6。
+- 可用 sealed 产物：`benchmarks/qgis_planner_v1/releases/v0.1-refusal-12/`，状态为 `sealed_reviewed_usable_refusal_diagnostic`，并已生成 release checksums。
+
+## 2026-07-31：QGIS Planner Benchmark v0.1 正式 Freeze 包与统一 scorer 完成
+
+- 正式 freeze 入口为 `benchmarks/qgis_planner_v1/releases/v0.1-freeze/`，版本 `0.1.0`，状态为 `internal_sealed_freeze`；manifest 绑定 development 40、final core 120、refusal 12、stable101/QGIS authority 和统一 scorer 共 24 个 artifacts。
+- 顶层 `checksums.sha256` 验证 27 项，包括 VERSION、README、benchmark manifest、全部 split/authority artifacts 和 scorer；scorer 先哈希并解析预测，再验证 manifest/checksum ledger 和读取 sealed gold。
+- `scripts/score_qgis_planner_benchmark_v01.py` 对 graph 与 refusal 使用独立分母。Graph 输出 operator/edge micro PRF、operator-labeled graph exact match、dependency closure、harmful extra operator 和 false refusal；refusal 输出 accuracy、reason-code accuracy 和 unsafe-planning rate。结果记录 graph/refusal prediction SHA-256。
+- exact match 使用带 operator label 的有向图同构，避免重复 operator 时链与星形被 edge multiset 错判为相同；process ID 重命名和 JSON 顺序不影响评分。
+- 新增测试 15/15 通过；全量 synthetic perfect prediction smoke 覆盖 final 120 + refusal 12，graph exact/operator/edge 与 refusal 指标均为 1.0。该 smoke 不包含真实模型预测。

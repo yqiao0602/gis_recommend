@@ -1,0 +1,30 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_v02_recovered_dag_adjudication.v1",
+  "adjudication_id": "v02-recovered-dag-adjudication-1",
+  "decided_at": "2026-09-10",
+  "decided_by": "qiaoyun",
+  "decider_kind": "human_benchmark_authority",
+  "input": "v02_recovered_dag_reviews_v1.jsonl (dual glm-5.3 review, commit 835e262) plus owner adjudication",
+  "subchain_policy": {
+    "decision": "subchain-scoped tasks are ALLOWED with mandatory labeling",
+    "label": "task_scope=subchain_scoped",
+    "hard_constraint": "the task text may only describe the recovered and verified sub-chain (its inputs, operations, outputs); the original script's overall business goal must not be smuggled into the task text",
+    "example": "original script A -> custom algorithm -> B -> C with recovered DAG B -> C: allowed task = 'apply C to data processed by B...'; forbidden task = 'complete the whole A->custom->B->C workflow...'"
+  },
+  "final_outcomes": [
+    {"packet_entry_id": "recovered-c4b53b68a27f2468", "basis": "dual_reject", "outcome": "REJECTED", "note": "cartogram wrapper; both reviewers independently verified"},
+    {"packet_entry_id": "recovered-cb16fe08fbe1fb28", "basis": "owner adjudication of disagreement (A accept / B revise)", "outcome": "REJECTED", "note": "the BFS neighborhood-propagation algorithm is the script's actual purpose; the buffer sub-chain has no independent task meaning even under subchain_scoped policy; rejected rather than kept for volume, per the positioning decision"},
+    {"packet_entry_id": "recovered-099e2c2db0f38ba6", "basis": "owner adjudication of disagreement (A accept / B reject)", "outcome": "REJECTED", "note": "rastersampling x2 is a trivial prefix of a Random Forest modeling pipeline; no faithful parameter-free task; ML modeling is out-of-scope adjacent"},
+    {"packet_entry_id": "recovered-dfeda93ca52d334e", "basis": "owner adjudication of disagreement (A accept / B revise)", "outcome": "REVISE_WITH_SUBCHAIN_SCOPE", "note": "2-op chain (minimumboundinggeometry -> extractvertices) is faithful but peripheral; task text must be scoped to convex-hull vertex extraction under the subchain policy"},
+    {"packet_entry_id": "recovered-287be70f78ee0c0c", "basis": "dual_revise", "outcome": "REVISE", "note": "extend DAG with the wrapped union (DEFERRED-eligible intermediate) and field-calculator, or scope task text to the extract-dissolve subchain"},
+    {"packet_entry_id": "recovered-81bbd4ba77af88e3", "basis": "owner adjudication of disagreement (A revise / B accept)", "outcome": "REVISE", "note": "insert native:extractbyattribute (SUPPORTED) between clip and buffer, or scope the task text to the unfiltered chain"},
+    {"packet_entry_id": "recovered-85e32230f111f006", "basis": "dual_revise", "outcome": "REVISE", "note": "document or add the attribute-fixing stage (fieldcalculator / deletefield semantics) between merge and reproject"},
+    {"packet_entry_id": "recovered-8c87bab93cfc8fe5", "basis": "owner adjudication of disagreement (A accept / B revise)", "outcome": "REVISE", "note": "record the FID-strip rebuild as an explicit step or accept the edge as data-lineage-only with documentation"},
+    {"packet_entry_id": "recovered-f950402772c6e9d1", "basis": "owner adjudication of disagreement (A accept / B revise)", "outcome": "REVISE_RETAINED", "note": "one of only three pure_branch candidates; record the mid-chain FID field-join step; fix then re-verify"},
+    {"packet_entry_id": "recovered-fc01749f30a8e4ea", "basis": "owner adjudication of disagreement -- STRUCTURAL DATA DEFECT, now independently verified against source", "outcome": "REVISE_DATA_FIX_APPLIED", "note": "recorded linear edges are wrong; source script_31927.py shows buffer(20)->buffer(100)->buffer(300) chain PLUS union1(autobahn20,autobahn100) and union2(innerImpactArea,autobahn300). Reviewer-a accepted the wrong recorded edges; reviewer-b found the union fan-in but omitted the buffer-chain edges. Verified full edge set: (0,1),(1,2),(0,3),(1,3),(3,4),(2,4); correct topology_class = hybrid (fan-in at both unions, fan-out at buffers 0 and 1), not linear and not pure_merge. Correction recorded in v02_recovered_dag_corrections_v1.json; the hash-bound discovery manifest is NOT modified; mandatory re-review of the corrected graph"},
+    {"packet_entry_id": "recovered-dec749a979996d6f", "basis": "owner adjudication of disagreement -- VERIFICATION OVERTURNED THE DEFECT CLAIM", "outcome": "NO_DATA_DEFECT_RECOMMEND_ACCEPT_WITH_NOTE", "note": "reviewer-b claimed the packet records native:zonalstatisticsfb; verification shows the packet records native:zonalstatistics, which exactly matches the frozen qgis_to_native_same_slug migration rule (qgis:zonalstatistics -> native:zonalstatistics) and the strict mapping authority (L3_03_02_01, stable101_direct, headline_eligible). No data fix required. Reviewer-b's residual point -- legacy qgis:zonalstatistics modifies poly_area in place with no OUTPUT parameter, so its semantic equivalence to the native algorithm is a mapping-authority-level question -- is recorded as a note for the mapping authority, not a packet defect. Recommendation: accept with that note; final call belongs to the owner with these verified facts"}
+  ],
+  "dual_accept_entries_proceeding": 13,
+  "count_discipline": "final surviving new-DAG count is NOT pre-committed; it is determined only after the 8 revision entries are fixed and the 2 data-defect entries are corrected and re-reviewed. Current precise status: of 24 dual-reviewed entries -- 13 consensus accept, 2 rejected by consensus, 2 rejected by owner adjudication, 7 in revision flow, of which 2 are structural data corrections requiring mandatory re-review",
+  "next_pipeline": "execute revisions -> re-review revised and data-fixed entries -> final new-DAG count -> recompute supply account (with honest quota_shortfall for pure_branch and 1-step) -> task-text fidelity (subchain_scoped labels where applicable) -> v0.2 candidate pool"
+}

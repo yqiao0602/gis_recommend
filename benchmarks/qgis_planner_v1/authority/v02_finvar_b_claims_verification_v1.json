@@ -1,0 +1,37 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_v02_finvar_b_claims_verification.v1",
+  "date": "2026-09-11",
+  "rule": "every reviewer claim verified against sha-verified sources before adjudication",
+  "claims": [
+    {
+      "id": "C1-79dde3ac-gold-defect",
+      "claim": "the recovered gold DAG for 79dde3ac5c is structurally defective: the source defines the variable 'interesection' (typo) at L68 but the subsequent difference consumes 'intersection' (undefined name) at L70 -- the original script would raise NameError; the discovery extractor silently dropped the undefined reference, leaving the gold without the p6->p7 edge and the intersection as a dead-end sink",
+      "verification": "VERIFIED against script_0002969.py (sha-verified github_qgis_workflow mirror) L67-71: interesection = processing.run(native:intersection...) at L68; params['INPUT'] = intersection['OUTPUT'] at L70 -- typo confirmed, the source script is itself broken",
+      "severity": "gold-dag data defect (recovery-pipeline class, same family as the fc01749f30 edge-set defect fixed earlier)",
+      "options": [
+        "O1: correct the gold edge set to include p6->p7 (the author's evident intent), record the correction as a v02 correction artifact, re-review the corrected graph -- mirrors the fc01749f30 precedent",
+        "O2: reject the DAG from final (its source is a script that crashes at runtime; arguably not a real executable workflow), substitute from reserve (linear/merge only), final becomes 87+10=97"
+      ],
+      "note": "this is an owner decision -- a graph correction changes frozen admission; a rejection changes the 99 invariant"
+    },
+    {
+      "id": "C2-79dde3ac-task-omissions",
+      "claim": "the draft v1/v2 texts omit the root clip (gold p0) and the selected-areas extraction (gold p1)",
+      "verification": "VERIFIED: the texts start at class selections; clip at L28 and selected_areas at L42 are real gold operators",
+      "fix": "rewrite both variants to open with clipping to the boundary and selecting the qualifying areas"
+    },
+    {
+      "id": "C3-303d4eb-omissions",
+      "claim": "the 7-step field-calculator chain stamps seven attributes (FSID, map_period, month, region, up_date, current, comments at L118-250); the drafts enumerate only four, leaving gold p4-p6 without task counterparts",
+      "verification": "VERIFIED: five and seven calls at L118/138/157/176/195/214/233 (FSID, map_period, month, region, up_date, current, comments)",
+      "fix": "cover all seven attributes (enumerate or collectively, e.g. '...together with the upload date, the current-state flag, and the comments')"
+    },
+    {
+      "id": "C4-42955680-v2-direction",
+      "claim": "v2's intersection phrasing reverses operands: source INPUT=vlayer (grid) OVERLAY=polyTypolayer (enriched); v1 already has it right",
+      "verification": "VERIFIED: script_0000912.py L917-923 INPUT=vlayer, OVERLAY=polyTypolayer; the draft says 'intersect them [enriched] with the grid' making enriched the base",
+      "fix": "swap to the source order (the v1 phrasing already correct)"
+    }
+  ],
+  "summary": "four of B's five revisions are task-text fixes (verified); the fifth is a GOLD-DAG DEFECT requiring an owner ruling because it touches frozen admission and the 99-task invariant. Reviewer A is still running; adjudication waits for both."
+}

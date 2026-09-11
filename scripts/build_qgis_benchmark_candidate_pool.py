@@ -47,6 +47,13 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _root_relative_posix(root: Path, path: Path) -> str:
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError as exc:
+        raise ValueError(f"authority input must be under benchmark root: {path}") from exc
+
+
 def _json_hash(value: Any) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -155,7 +162,8 @@ def _family_supply(
 ) -> list[dict[str, Any]]:
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
-        grouped[row["quota_anchor_l3"]].append(row)
+        if row.get("quota_credit_eligible", True):
+            grouped[row["quota_anchor_l3"]].append(row)
     result = []
     for capability in capability_rows:
         if capability["admission_tier"] != "headline_core":
@@ -350,7 +358,7 @@ def build(
     if expert_proposals_path is not None:
         expert_rows = _read_jsonl(expert_proposals_path)
         expert_input_ref = {
-            "path": str(expert_proposals_path),
+            "path": _root_relative_posix(root, expert_proposals_path),
             "sha256": _sha256(expert_proposals_path),
             "record_count": len(expert_rows),
         }
@@ -361,6 +369,8 @@ def build(
                 and proposal.get("gate1_status") == "passed"
                 and proposal.get("gate2_status") == "passed"
                 and proposal.get("dedup_status") == "canonical"
+                and proposal.get("human_approval_status") == "approved"
+                and proposal.get("semantic_review_status") in {"closed", "not_required"}
                 and proposal.get("supply_admission") == "gate3_candidate_admitted"
             )
             processes = proposal.get("processes", [])
@@ -401,6 +411,9 @@ def build(
                     "links": [dict(link) for link in proposal.get("links", [])],
                     "parameters_included": False,
                     "quota_anchor_l3": proposal["quota_anchor_l3"],
+                    "quota_credit_eligible": proposal.get(
+                        "quota_credit_eligible", True
+                    ),
                     "covered_l3": proposal["covered_l3"],
                     "modality": proposal["modality"],
                     "topology": proposal["topology"],

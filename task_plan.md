@@ -3,6 +3,45 @@
 ## 目标
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因，通过数据扩充+词汇扩展+模型重训，持续提升矢量规划能力。
 
+## QGIS Planner Benchmark v0.1 独立工作流（2026-07-31）
+
+## QGIS Planner Benchmark v0.2 roster-first 规划（2026-09-10）
+
+本 agent 的唯一职责仍是构建正式 QGIS planner benchmark，当前目标是冻结 v0.2 supported family roster 与约 120 条 final 的结构预算；不负责 GEE、QGIS 训练数据或模型训练。
+
+v0.2 是 v0.1 的受控修订，不是从零开始：v0.1 protocol/taxonomy/scorer/exclusion/review assets 继续继承；v0.1 sealed release 保持 immutable。当前 31 个 source-backed DAG 中 22 个可作为 v0.1 graph/gold migration 候选，9 个为新增 graph；但 v0.1 手写 task text 必须完成 source provenance rebind 后才能计入 v0.2。
+
+- [x] v0.1 保持 immutable；v0.1 errata、hash-bound artifacts 与 sealed gold 不重生成。
+- [x] 确认 v0.2 采用 roster-first：先 stable101 四态分类，再冻结 quota，再做 candidate supply repair。
+- [x] 复核既有 roster freeze 记录；R1-R5 gate、预算原则和禁止事项以现有 benchmark authority 与本段计划为准。
+- [x] R1：stable101 四态 roster 已冻结；权威文件为 `benchmarks/qgis_planner_v1/authority/v02_supported_family_roster.json` 及同名 `.md`，提交 `f186d31`，20 supported / 8 deferred / 22 out_of_scope。
+- [x] R2：已冻结 `benchmarks/qgis_planner_v1/authority/v02_budget_matrix.json` 与同名 `.md`；development 40 / 36 canonical DAG，final 120 / 60 canonical DAG，含 family tier envelope 与 P0 结构 floors。
+- [x] R3：149 条既有 source-backed/expert candidate 已逐条生成 v0.2 intake ledger；87 条符合 20-family roster，62 条因 family 不在 roster 排除；Gate 1、Gate 2、parameter-free 和结构检查结果已绑定。
+- [x] R3 review envelope：31 个 eligible DAG 生成 38 个 hash-bound review jobs；linear 主审 31，merge 二审 7，queue SHA 固定。
+- [x] R4a：31 个 DAG 已完成独立 graph semantic review；38 条 review record、23 个 `closed`、8 个 `returned_for_revision`、0 个 validator failure；7 个 merge DAG 均完成双 reviewer。
+- [x] R4b approval：31 个 DAG 已完成 hash-bound approval ledger；23 个批准进入 task authoring，4 个 `return_for_revision`，4 个排除；全部 `task_gold_admission=not_granted`。
+- [ ] R4c：从已有 source-backed QGIS workflow/training records 抽取并去参数化 task text，为 23 个批准 DAG 绑定 gold；执行 task-to-gold review 和 Gate 2 重检，累计可交付 task+gold。禁止凭空手写任务。
+- [ ] R5：生成 v0.2 manifest、sealed gold、review/leakage ledger、scorer 与 checksums。
+
+当前 v0.2 可交付 task+gold 计数仍为 `0`；脚本、schema、review job、candidate、review closure 或 approval 数量均不计进度。R4a/R4b 已完成，下一步是 R4c source-derived task extraction + task-to-gold review；模型 prediction 必须等 v0.2 freeze 且 inference config 冻结后才开始。
+
+本工作流只负责构建评测集，不负责 GEE 数据、QGIS 训练数据或模型训练。
+阶段验收只统计已形成模型可见 `task_text` 且有一一对应 parameter-free
+`processes + links` gold 的可评测记录数；脚本、schema、候选 DAG、review job
+和门禁数量均不计为评测数据交付。
+
+- [x] 首批 8 个 graph authority 已选定，全部避免未完成双审的 merge DAG。
+- [x] 首批 development pilot：8 条 task + 8 条 gold 完成独立语义复核并可直接评分。
+- [x] development set：40 条 task + 40 条 gold 已完成独立 task-to-gold 语义复核，可直接评分。
+- [x] sealed final：120 条 task + 120 条 gold 完成主审、30 条盲二审和 development 隔离检查。
+- [x] refusal diagnostic：12 条完成主审和盲二审，单独计数，不混入 operator+links 主任务。
+- [x] v0.1 Freeze：版本、24 项 artifact manifest、27 项 checksum ledger 与统一 graph/refusal scorer 已冻结并通过 synthetic verification。
+
+当前 development set 已达到 `40/40 reviewed_usable`，sealed final 已达到
+`120/120 sealed_reviewed_usable`，refusal diagnostic 已达到 `12/12
+sealed_reviewed_usable`。正式 v0.1 Freeze 包已完成；下一阶段仅允许 prediction
+lock 与 evaluation handoff，任何 gold 修订必须升级 benchmark 版本。
+
 ## 当前阶段
 **2026-07-14 — 停止继续复制/上采样无自然语言语义的激活数据，按已批准的 evidence-first 计划重构约 300 条 QGIS 真实数据 pilot。当前只授权推进到 Phase 4 人工确认门禁，不训练、不扩量、不切换默认词表。**
 

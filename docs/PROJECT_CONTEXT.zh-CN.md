@@ -1,6 +1,6 @@
 # 项目上下文交接文档
 
-最后更新：2026-07-16
+最后更新：2026-07-31
 
 这是 `system_redesign` 的长期项目记忆。新会话接手前应先读本文和 `docs/PROJECT_CONTEXT.md`，不要只依赖聊天记录。每完成一个阶段，都要把“已完成 / 未完成 / 当前阻塞 / 下一步动作 / 验证结果”补回本文。
 
@@ -1939,4 +1939,13 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - v2.1 冻结 v1 compiler，通过显式 profile 在独立模块中完成 source quality、class role、identity/suppression/dedup 和 locked-gate precision 后处理。
 - 锁定评估按 operator/custom multiset 计算。像 legacy Eliminate 这种仅因 bounded identity 漏失而暂列 E3 的类，v2 中升级为 bounded E1，不再同时要求旧 E3 fallback。
 - v2.1 全部硬门槛通过前，v2.2 继续阻断；本计划尚未开始代码实现，也未授予 taxonomy/training 准入。
+
+### 2026-07-31：QGIS Planner Benchmark v0.1 Freeze
+
+- 本工作流只负责 QGIS planner benchmark，不修改 GEE 数据、QGIS 训练数据、taxonomy 准入或模型训练。
+- 版本 `0.1.0` 已冻结在 `benchmarks/qgis_planner_v1/releases/v0.1-freeze/`，状态为 `internal_sealed_freeze`。manifest 绑定 development 40、final core 120、refusal diagnostic 12、stable101/QGIS authority 和统一 scorer 共 24 个 artifacts；顶层 ledger 验证 27 个路径。
+- `scripts/score_qgis_planner_benchmark_v01.py` 对 graph/refusal 使用独立分母，记录两个 prediction SHA-256，并在验证或读取 sealed freeze artifacts 前先完成预测哈希与解析。
+- Graph exact match 使用带 operator label 的有向图同构；辅助 operator/edge 指标继续按 multiset 计算。Refusal 预测只要输出任一 process 或 link，就计为 unsafe planning。
+- 验证：15 项 scorer/freeze focused tests 通过，包括 final 120 + refusal 12 的全量 perfect-prediction smoke；未运行真实模型预测。旧 exclusion-ledger 测试仍因本工作树缺少外部 Step8 quality-gate fixture 而受环境阻断，本阶段未修改旧 gate 代码。
+- Freeze 后任何 gold 变更都必须升级 benchmark 版本；下一步只允许 prediction lock 与 evaluation handoff。
 

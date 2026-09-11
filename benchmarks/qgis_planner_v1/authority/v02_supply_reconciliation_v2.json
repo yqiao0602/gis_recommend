@@ -1,0 +1,63 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_v02_supply_reconciliation.v2",
+  "reconciliation_id": "v02-supply-reconciliation-2",
+  "date": "2026-09-10",
+  "supersedes_diagnosis_of": "v02_supply_reconciliation_v1.json (per-DAG rule ledger in v1 remains valid; two v1 diagnosis claims are corrected here)",
+  "policy_ref": "v02_eligibility_policy_v1.json (rule C, frozen 2026-09-10)",
+  "corrections_to_v1": [
+    {
+      "v1_claim": "19 admitted fan-out records had their branch structure normalized away",
+      "correction": "WRONG mechanism. All 19 records' edges are fully preserved in their candidates (verified edge-by-edge). The loss is classification masking: graph_profile classifies merge before branch, so fan-in+fan-out hybrids are labeled multi_input_merge and their fan-out is invisible in the label. The 19 records collapse into 7 distinct hybrid DAGs. Nothing needs normalization repair; the taxonomy needs the four-way reading."
+    },
+    {
+      "v1_claim": "of the 57 pending fan-out records, 32 survive rule C (~20 distinct branch structures)",
+      "correction": "WRONG. That estimate applied roster analysis only. Running the REAL nine-index Gate 2 (fingerprint_record + build_overlap_indexes + check_candidate_overlap over the frozen 104.7MB exclusion ledger) plus the pool builder's strict gate1 and graph_profile: 63 pending records -> 35 rejected invalid graph (disconnected/out-of-range/cyclic) + 28 rejected gate2 overlap (real exclusion-index hits, dominated by normalized_dag_key / forbidden_near_dag_key / semantic_dag_key at 19 hits each) + 0 eligible."
+    }
+  ],
+  "four_way_topology_taxonomy": {
+    "definition": "linear (no fan-in, no fan-out) / pure_merge (fan-in only) / pure_branch (fan-out only) / hybrid (both)",
+    "existing_52_dag_pool": {"linear": 30, "pure_merge": 15, "hybrid": 7, "pure_branch": 0},
+    "c_eligible_37_dag_pool": {"linear": 25, "pure_merge": 10, "hybrid": 2, "pure_branch": 0},
+    "note": "5 of the 7 hybrid DAGs are C-ineligible (OUT_OF_SCOPE coverage), so under rule C only 2 branch-containing DAGs survive today"
+  },
+  "gate2_recheck_fanout": {
+    "source": "v02_gate2_recheck_fanout_v1.json (script scripts/recheck_fanout_gate2_c_v1.py, repository's own exclusion machinery)",
+    "targets": 63,
+    "verdicts": {"rejected_invalid_graph": 35, "rejected_gate2_overlap": 28, "c_eligible_gate2_clean": 0},
+    "gate2_overlap_field_hits": {"normalized_dag_key": 19, "forbidden_near_dag_key": 19, "semantic_dag_key": 19, "source_sha256": 15, "source_region_key": 13, "call_graph_signature": 13, "task_text_signature": 12, "task_text_token_signature": 12, "normalized_source_body_sha256": 9}
+  },
+  "action_gate_recovery_analysis": {
+    "scope": "the 61 action-rejected fan-out records (58 review_api_sidecar + 3 exclude_current_chain), informational only -- the action policy was NOT changed",
+    "funnel": {"invalid_graph": 24, "gate2_overlap": 10, "c_ineligible": 11, "would_pass_all": 16},
+    "would_pass_all_detail": "16 records, all action=review_api_sidecar, all structure_class=blocked_custom_transform (source scripts contain custom intermediate transforms such as pandas operations), all task_text_admission=not_granted_pending_fidelity_gate; they collapse to 4 distinct DAGs: 3 pure_branch (buffer-branch 4-op anchored L3_02_01_01; extractspecificvertices-branch 3-op anchored L3_02_05_11; dissolve/rasterize/zonal 7-op anchored L3_02_03_05) plus 1 hybrid (warpreproject/rastercalculator/reproject/zonal anchored L3_03_05_02)",
+    "admission_preconditions": [
+      "a governance decision to admit review_api_sidecar action records into the candidate pool",
+      "resolution of the blocked_custom_transform review concern (the operator DAG may under-represent workflows with custom transforms)",
+      "the task-text fidelity gate for source-derived task authoring"
+    ]
+  },
+  "c_pool_snapshot_after_recovery": {
+    "existing_c_eligible": 37,
+    "action_gate_recoverable_distinct_dags": 4,
+    "ceiling_from_current_discovery_pools": 41,
+    "structural_profile_c_eligible_37": {"modality": {"vector": 26, "raster": 3, "mixed": 8}, "graph_size": {"one_step": 1, "two_to_three": 26, "four_to_six": 6, "seven_plus": 4}},
+    "gap_vs_budget_matrix": {
+      "note": "budget: final 60 DAG (linear 32 / merge 20 / branch 8; 1-step 6 / 2-3 28 / 4-6 18 / 7+ 8; vector 40 / mixed 12 / raster 8) plus dev 36 DAG; gaps below are TARGET GAPS not quotas",
+      "total_dags": {"budget": 96, "available_ceiling": 41, "gap": 55},
+      "pure_branch": {"budget": 8, "available": 3, "gap": 5},
+      "branch_containing_incl_hybrid": {"budget": 8, "available": 6, "gap": 2, "caveat": "hybrid DAGs already occupy the merge stratum; counting them as branch double-books topology slots -- budget semantics must be decided explicitly"},
+      "merge_labeled": {"budget": 20, "available": 10, "gap": 10},
+      "one_step": {"budget": 6, "available": 1, "gap": 5},
+      "four_to_six": {"budget": 18, "available": 6, "gap": 12},
+      "seven_plus": {"budget": 8, "available": 4, "gap": 4},
+      "raster_plus_mixed": {"budget_min": 20, "available": 11, "gap": 9}
+    }
+  },
+  "remaining_levers_in_priority_order": [
+    "L1 action-gate governance decision on review_api_sidecar records (16 fan-out would-pass now; the non-fan-out review_api_sidecar population is unmined and may hold merge/long-chain/raster/1-step supply behind the same gate)",
+    "L2 broad action-gate mining beyond fan-out (3,479 action_not_candidate records in the full funnel were never checked against gate1/profile/gate2/C)",
+    "L3 budget-semantics decision: does branch>=8 mean pure_branch or contains-fan-out, and how do hybrid DAGs book against merge vs branch strata",
+    "L4 expert-authored structural fill (02-5 fallback), now quantified: 5 pure-branch DAGs short if pure semantics is chosen"
+  ],
+  "caveat": "all numbers are the 2026-09-10 recheck snapshot over the two current discovery pools; they are not the final v0.2 supply count"
+}

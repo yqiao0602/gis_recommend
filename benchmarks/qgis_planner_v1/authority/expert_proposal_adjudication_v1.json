@@ -1,0 +1,103 @@
+{
+  "schema": "gis_recommend.qgis_benchmark_expert_proposal_adjudication.v1",
+  "adjudication_id": "expert-proposal-adjudication-v1",
+  "decided_at": "2026-09-10",
+  "decided_by": "qiaoyun",
+  "decider_kind": "human_benchmark_authority",
+  "conflict_of_interest_declared": false,
+  "scope": "Adjudication of the 5 non-admitted expert proposals (4 pending + 1 returned_for_revision) per the dual independent technical reviews of 2026-07-29, the semantic review of 2026-07-29, and the supply-gap analysis against the frozen v0.2 supported-family roster.",
+  "evidence_reviewed": {
+    "technical_reviews": "expert_proposal_reviews_v1.jsonl (reviewer pair codex-qgis-graph-reviewer-a/b-20260729, 2 reviews per proposal)",
+    "semantic_review": "expert_semantic_intent_reviews_v1.jsonl (qgis-expert-01, 2026-07-29)",
+    "human_approvals": "expert_human_approvals_v1.jsonl (human-approval-expert-v1-008-v2: return_for_revision)",
+    "dedup_check": "operator-multiset and dag-key comparison against all 149 admitted candidates: zero duplicates for all 5 proposals; zero overlap with dev gold",
+    "gate1_check": "all operators of all 5 proposals confirmed inside the 122-operator capability-matrix admission set"
+  },
+  "decisions": [
+    {
+      "proposal_id": "expert-v1-002",
+      "decision": "REVISE",
+      "current_state": "gate2=pending, graph_review=revision_required (2x revise), human=pending",
+      "revision_requirement": "Restructure to a shared-DEM branch: warpreproject -> (gdal:slope | gdal:aspect). Both reviewers held that slope output is not a valid elevation input for aspect; branching both terrain derivatives from one reprojected DEM resolves the semantic defect and simultaneously supplies the raster and branch P0 gaps.",
+      "revision_file": "expert_authoring_batch_v2.jsonl#expert-v1-002-r2",
+      "downstream": "review round 2 -> gate2 -> queue -> approval"
+    },
+    {
+      "proposal_id": "expert-v1-003",
+      "decision": "REVISE",
+      "current_state": "gate2=pending, graph_review=revision_required (2x revise), human=pending",
+      "revision_requirement": "Both merge upstreams must share one geometry family (buffer yields polygons, centroids yields points; merge requires compatible types). Revision uses two centroids branches into mergevectorlayers. Hard constraint: must not become operator-equivalent to admitted expert-v1-007 (buffer,buffer->merge).",
+      "revision_file": "expert_authoring_batch_v2.jsonl#expert-v1-003-r2",
+      "downstream": "review round 2 -> gate2 -> queue -> approval"
+    },
+    {
+      "proposal_id": "expert-v1-004",
+      "decision": "ACCEPT_CONDITIONAL",
+      "current_state": "gate2=pending, graph_review=revision_required (1x revise on quota-anchor governance, 1x accept on executability), human=pending, quota_credit_eligible=false",
+      "conditions": [
+        "Enters candidate supply with quota_credit_eligible=false held fixed",
+        "Quota credit (family or topology) is decided only after Gate 3 freezes a deterministic multi-output anchor rule; until then this DAG must not contribute to any family or topology quota count, preventing double-counted coverage in the 60-DAG budget",
+        "Reviewer-a's objection was governance (missing anchor rule for multi-sink graphs), not graph validity; the no-quota-credit condition scopes that objection away, but mechanical admission still follows the pipeline: review round 2 -> gate2 -> queue -> approval"
+      ],
+      "revision_file": "expert_authoring_batch_v2.jsonl#expert-v1-004-r2 (graph unchanged; quota_credit_eligible=false made explicit)",
+      "downstream": "review round 2 -> gate2 -> queue -> approval; quota credit deferred to Gate 3 anchor-rule freeze"
+    },
+    {
+      "proposal_id": "expert-v1-005",
+      "decision": "REVISE",
+      "current_state": "gate2=pending, graph_review=revision_required (1x accept-with-note, 1x revise), human=pending",
+      "revision_requirement": "native:clip requires two vector inputs; the graph declares one incoming edge and the freeze contract forbids root business inputs (root_business_inputs_in_gold=false). Revision rewires the buffer output (p1) as the in-graph clip overlay (edge p1->p6), so clip consumes the reprojected chain result plus in-graph polygon mask. No implicit external input remains.",
+      "revision_file": "expert_authoring_batch_v2.jsonl#expert-v1-005-r2",
+      "downstream": "review round 2 (tail topology becomes hybrid fan-out + fan-in; reviewer must confirm classification) -> gate2 -> queue -> approval"
+    },
+    {
+      "proposal_id": "expert-v1-008",
+      "decision": "REVISE",
+      "current_state": "gate2=passed, graph_review=independent_reviewed (2x accept), semantic=returned_for_revision, human=returned_for_revision",
+      "revision_requirement": "Graph unchanged (both technical reviewers accepted it). Author the missing semantic layer: draft_task_intent, output_constraint, process_necessity -- the semantic review returned reason codes task_intent_missing, output_constraint_missing, process_necessity_missing, specifically demanding proof that the collect sink is necessary.",
+      "revision_file": "expert_authoring_batch_v2.jsonl#expert-v1-008-r2",
+      "downstream": "semantic review round 2 -> queue -> approval"
+    }
+  ],
+  "tally": {"ACCEPT_CONDITIONAL": 1, "REVISE": 4, "REJECT": 0},
+  "supply_impact_if_all_revisions_admitted": {
+    "new_canonical_dags": 5,
+    "branch_dags": 2,
+    "raster_dags": 1,
+    "long_chain_seven_plus_dags": 2,
+    "merge_dags": 1,
+    "note": "004 counts toward branch topology supply but not branch quota until the anchor rule is frozen; same lock applies to the 002 revision (also multi-output)"
+  },
+  "process_rules_adopted": [
+    {
+      "rule_id": "PR1_complex_chain_intent_required",
+      "rule": "Expert proposals with chain length >= 7 must carry draft_task_intent, output_constraint, and process_necessity at authoring time; proposals lacking them fail semantic review by construction",
+      "motivation": "expert-v1-008 was returned for exactly these three missing fields; the v1 authoring batch carried no task intent for any proposal, so the gap is systemic, not specific to 008"
+    },
+    {
+      "rule_id": "PR2_multi_output_anchor_rule_at_gate3",
+      "rule": "The deterministic rule for anchoring multi-sink / multi-output DAGs (which family and topology quotas a multi-output DAG may credit) is frozen as part of the v0.2 Gate 3 rebuild, not per-proposal; until frozen, multi-output DAGs enter supply with quota_credit_eligible=false",
+      "motivation": "Reviewer-a's expert-v1-004 objection; with the 002 revision also multi-output, two candidates now depend on this rule"
+    }
+  ],
+  "p0_gap_restatement": {
+    "framing": "The remaining-need numbers below are TARGET GAPS, not mandatory output quotas; supply repair stops when gaps are honestly reported, not when numbers are hit",
+    "branch": {"target": 8, "this_batch": 2, "remaining_gap": 6, "note": "corpus branch supply is zero; further branch DAGs must be expert-authored"},
+    "raster_plus_mixed": {"target": ">=20 of 60 DAGs", "this_batch": 1, "remaining_gap": "approximately 7-9", "note": "primary source: targeted replay of unused stable106 records"},
+    "one_step": {"target": 6, "this_batch": 0, "remaining_gap": "approximately 5", "note": "a 1-step task must have a genuine, non-degenerate single-operator solution from its natural-language statement; never truncate a complex task into one operator to fill the count"},
+    "seven_plus": {"target": 8, "this_batch": 2, "existing": 7, "note": "pressure is already low"},
+    "merge": {"this_batch": 1, "note": "after 003 revision lands, check whether the Merge family quota gains valid credit"}
+  },
+  "governance_status_snapshot": {
+    "v01": "IMMUTABLE",
+    "roster": "FROZEN (20 supported / 8 deferred / 22 out_of_scope)",
+    "expert_proposals": "1 ACCEPT_CONDITIONAL + 4 REVISE (this adjudication)",
+    "p0_supply_repair": "READY",
+    "model_training": "FROZEN / NO RETRAIN (M1/M3 checkpoints untouched)",
+    "v02_final_gold": "NOT YET CREATED"
+  },
+  "next_actions": [
+    "Review round 2 on expert_authoring_batch_v2.jsonl by independent technical reviewers (not the batch author), per the 2026-07-29 dual-reviewer pattern",
+    "Targeted supply repair: replay unused stable106 records (3163 - 58 used) and routing_v6 remainder against roster Tier B/C/D gaps; no re-crawl, no v0.1 sealed gold access, no training-pool contact, no protocol or roster changes"
+  ]
+}

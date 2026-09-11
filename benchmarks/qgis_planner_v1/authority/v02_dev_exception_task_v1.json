@@ -1,0 +1,37 @@
+{
+ "packet_entry_id": "dev-exception-d2165c006df4",
+ "task_text": "Reproject the input layer to the target coordinate reference system.",
+ "task_scope": "full_workflow",
+ "task_style": "operator_explicit",
+ "output_expression": "single",
+ "dev_exception": {
+  "source_type": "expert_authored",
+  "source_provenance": "none",
+  "dev_only": true,
+  "final_eligible": false,
+  "benchmark_final_eligible": false,
+  "training_eligible": false,
+  "expert_dag_dev_exception": true,
+  "exception_reason": "unique_one_step_coverage",
+  "ruling": "owner adjudication a, 2026-09-11: one dev-only task; four locks; minimal audit; never counted in final/benchmark/training or the source-backed statistics"
+ },
+ "semantic_consistency_check": {
+  "dag": {
+   "operators": [
+    "native:reprojectlayer"
+   ],
+   "edges": []
+  },
+  "check": "task expresses exactly one operation (reprojection to a target CRS); no extra operations, no parameters, single output -- consistent with the one-step gold",
+  "result": "pass"
+ },
+ "provenance": {
+  "source_authority_key": "expert_proposal:expert-v1-001",
+  "source_sha256": null,
+  "derivation_method": "exception_minimal_audit",
+  "derived_text_sha256": "c8e9fe79a0385fe98823a3372b84588654577d793968a20a107f333f1ac6b810",
+  "canonical_dag_key": "d2165c006df4",
+  "review_status": "dev_exception_adjudicated",
+  "split": "development_exception"
+ }
+}

@@ -1,5 +1,5 @@
 {
-  "candidate_count": 146,
+  "candidate_count": 149,
   "discovery_inputs": {
     "stable101_routing_v6": {
       "path": "docs/reports/qgis_mapping_high_impact_blockers_2026-07-24/stable101_all1442_source_replay_v1/routing_v6/routing_manifest.jsonl",
@@ -13,10 +13,14 @@
     }
   },
   "discovery_record_count": 4605,
-  "distinct_normalized_dags": 50,
+  "distinct_normalized_dags": 52,
   "distinct_source_authorities": 90,
+  "expert_proposal_input": {
+    "path": "benchmarks/qgis_planner_v1/authority/expert_proposals_v1.jsonl",
+    "record_count": 8,
+    "sha256": "eddc00523dddd0cc703eab479eb6a65dce7f546a58feb2d549a6e1ad66222957"
+  },
   "failure_reasons": [
-    "expert_authored_minimum_unmet",
     "twenty_family_quota_plus_reserve_unmet",
     "modality_raster_minimum_unmet",
     "topology_branch_or_multi_output_minimum_unmet",
@@ -115,24 +119,25 @@
       }
     },
     {
-      "candidate_count": 1,
-      "distinct_normalized_dags": 1,
-      "distinct_source_authorities": 1,
+      "candidate_count": 2,
+      "distinct_normalized_dags": 2,
+      "distinct_source_authorities": 2,
       "gate3_family_status": "diagnostic_insufficient_supply",
       "graph_size_counts": {
-        "two_to_three": 1
+        "two_to_three": 2
       },
       "l3_code": "L3_01_03_04",
       "l3_name": "Merge",
       "modality_counts": {
-        "vector": 1
+        "vector": 2
       },
       "quota_4_required_supply": 7,
       "quota_4_supply_met": false,
       "quota_8_required_supply": 11,
       "quota_8_supply_met": false,
       "topology_counts": {
-        "linear": 1
+        "linear": 1,
+        "multi_input_merge": 1
       }
     },
     {
@@ -669,24 +674,25 @@
       "topology_counts": {}
     },
     {
-      "candidate_count": 6,
-      "distinct_normalized_dags": 1,
-      "distinct_source_authorities": 2,
+      "candidate_count": 7,
+      "distinct_normalized_dags": 2,
+      "distinct_source_authorities": 3,
       "gate3_family_status": "diagnostic_insufficient_supply",
       "graph_size_counts": {
-        "two_to_three": 6
+        "two_to_three": 7
       },
       "l3_code": "L3_04_01_01",
       "l3_name": "Slope Gradient",
       "modality_counts": {
-        "mixed": 6
+        "mixed": 6,
+        "raster": 1
       },
       "quota_4_required_supply": 7,
       "quota_4_supply_met": false,
       "quota_8_required_supply": 11,
       "quota_8_supply_met": false,
       "topology_counts": {
-        "linear": 6
+        "linear": 7
       }
     },
     {
@@ -897,26 +903,26 @@
       }
     },
     {
-      "candidate_count": 16,
+      "candidate_count": 17,
       "distinct_normalized_dags": 3,
-      "distinct_source_authorities": 15,
+      "distinct_source_authorities": 16,
       "gate3_family_status": "quota_8_supply_eligible",
       "graph_size_counts": {
-        "one_step": 13,
+        "one_step": 14,
         "two_to_three": 3
       },
       "l3_code": "L3_01_10_01",
       "l3_name": "Project/Reproject",
       "modality_counts": {
         "mixed": 1,
-        "vector": 15
+        "vector": 16
       },
       "quota_4_required_supply": 7,
       "quota_4_supply_met": true,
       "quota_8_required_supply": 11,
       "quota_8_supply_met": true,
       "topology_counts": {
-        "linear": 16
+        "linear": 17
       }
     }
   ],
@@ -925,25 +931,25 @@
     "catalog_sha256": "a0b2426205b5ba809f03171360f10ab80bf2bc2321d8619eb2994075a132d6bd",
     "mapping_sha256": "5c4d50361aff121def86d7c3b38e5cb96ad95c98aaaf80d971d882fde88090b6"
   },
-  "gate2_exclusion_sha256": "0620ae57e31927c0b7176bc443f63709ad6d20d90cd8b06ef429874226a0373d",
+  "gate2_exclusion_sha256": "b6202e4b0d43123342a701eb5a4bed8b8cb16f64bc9f58e0e545c75553c6fc4c",
   "gate_status": "failed_insufficient_candidate_supply",
   "graph_size_counts": {
     "four_to_six": 39,
-    "one_step": 13,
+    "one_step": 14,
     "seven_plus": 17,
-    "two_to_three": 77
+    "two_to_three": 79
   },
   "joint_feasibility_evaluated": false,
   "joint_feasibility_reason": "necessary_supply_conditions_failed",
   "modality_counts": {
     "mixed": 36,
-    "raster": 9,
-    "vector": 101
+    "raster": 10,
+    "vector": 103
   },
   "next_action": "add independently reviewed expert-authored candidates and source-backed raster/merge/branch/long-graph supply, then rebuild Gate 3",
   "proposed_family_roster": [],
   "provenance_counts": {
-    "expert_authored": 0,
+    "expert_authored": 3,
     "qgis_source_backed": 146
   },
   "quota_4_supply_eligible_families": [
@@ -960,6 +966,7 @@
   ],
   "rejection_counts": {
     "action_not_candidate": 3479,
+    "expert_proposal_not_fully_admitted": 5,
     "gate1_authority_failed": 146,
     "gate2_overlap": 319,
     "invalid_or_incomplete_graph": 515
@@ -967,7 +974,7 @@
   "schema": "gis_recommend.qgis_benchmark_candidate_supply_summary.v1",
   "taxonomy_id": "stable101-paper-v1",
   "topology_counts": {
-    "linear": 84,
-    "multi_input_merge": 62
+    "linear": 86,
+    "multi_input_merge": 63
   }
 }

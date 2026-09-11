@@ -1,0 +1,131 @@
+{
+ "schema": "gis_recommend.qgis_benchmark_v02_coverage_delta.v1",
+ "delta_id": "v02-coverage-delta-1",
+ "date": "2026-09-11",
+ "disclosure_option": "B (boundary-level; no sealed v0.1 internals opened; per-DAG final selection remains undisclosed)",
+ "adjudications_applied": {
+  "1_disclosure": "option B -- boundary-level delta only",
+  "2_retention": "frozen spec is the superior constraint; each v0.1 task is checked against it (retain if compliant, rebind/replace if not); the spec is NOT modified to legitimize old data",
+  "3_entry5": "A+B merged revision: named building-height raster input + region formation semantics (to be applied to the task text when the pipeline resumes)"
+ },
+ "v0.1_side": {
+  "source": "v0.1 audit (2026-09-10) + v01_dag_review_queue_summary.json -- unsealed, boundary level",
+  "final_tasks": 120,
+  "final_canonical_dags": 40,
+  "variants_per_dag": 3,
+  "topology_known": {
+   "note": "the v0.1 audit measured the 52-DAG queue the final 40 were drawn from; the exact 40-subset per-topology split is inside sealed gold (not disclosed under option B); queue-side bounds: linear between 30-22* and merge between 22-30*, branch 0, hybrid 0 (queue had none)",
+   "linear_range": [
+    22,
+    30
+   ],
+   "merge_range": [
+    7,
+    22
+   ],
+   "pure_branch": 0,
+   "hybrid": 0
+  },
+  "graph_size_queue_side": {
+   "one_step": 1,
+   "two_to_three": 32,
+   "four_to_six": 12,
+   "seven_plus": 7
+  },
+  "modality_queue_side": {
+   "vector": 34,
+   "mixed": 13,
+   "raster": 5
+  },
+  "concentration_findings": [
+   "branch topology: ZERO in the entire 52-DAG queue -- v0.1 final cannot contain any",
+   "hybrid topology: ZERO in the queue",
+   "one_step: 1 DAG in the queue -> at most 1 in final",
+   "dev split is the weakest: 8 canonical DAG x 5 variants, 12 operators, all linear"
+  ]
+ },
+ "v0.1_dev_side": {
+  "canonical_dags": 8,
+  "topology": {
+   "linear": 8
+  },
+  "size": {
+   "two_to_three": 6,
+   "seven_plus": 1,
+   "one_step": 1
+  },
+  "note": "dev gold is unsealed; fully measured: 8 DAG, all linear"
+ },
+ "v02_repair_pool": {
+  "total_dags": 58,
+  "composition": {
+   "existing_c_eligible": 37,
+   "recovered_reviewed": 21
+  },
+  "topology": {
+   "pure_merge": 12,
+   "linear": 39,
+   "hybrid": 4,
+   "pure_branch": 3
+  },
+  "size": {
+   "two_to_three": 38,
+   "one_step": 1,
+   "four_to_six": 13,
+   "seven_plus": 6
+  },
+  "adds_to_v01": {
+   "pure_branch": 3,
+   "hybrid": 4,
+   "note": "v0.1 queue had zero branch and zero hybrid; the repair pool is the ONLY source of these topologies"
+  }
+ },
+ "combined_theoretical_v02_coverage": {
+  "note": "v0.1 final 40 DAG (undisclosed subset of the 52 queue) + 58 repair pool; overlap between the final-40 subset and the 37 existing C-eligible is bounded but unknown without disclosure (other-session measurement: 22 carry-forward, 9 new -- recorded as their claim, not independently verified)",
+  "overlap_bounds": [
+   25,
+   37
+  ],
+  "theoretical_max_dags": "40 (v0.1 final, retained subset) + 58 - overlap"
+ },
+ "retention_analysis": {
+  "principle": "frozen spec is the check, not the checked",
+  "v01_task_fates": "each of the 120 final tasks: compliant-with-spec -> retain; else rebind (source provenance binding + parameter strip + source-disjoint recheck + task-to-gold review) or replace from the repair pool",
+  "binding_unknown": "which v0.1 tasks map to which DAG is sealed; per-task retain/replace marking is deferred to the rebind stage and will be produced as each task is processed, not pre-estimated here"
+ },
+ "replacement_scale_estimate": {
+  "method": "boundary-level: replace-to-repair arithmetic on structure classes, not on sealed task identities",
+  "structural_gaps_in_v01": {
+   "branch": {
+    "v01": 0,
+    "pool": 3,
+    "needed_to_repair": "every branch DAG in v0.2 comes from the pool"
+   },
+   "hybrid": {
+    "v01": 0,
+    "pool": 4
+   },
+   "one_step": {
+    "v01_queue": 1,
+    "pool": 1
+   },
+   "seven_plus": {
+    "v01_queue": 7,
+    "pool": 6
+   },
+   "raster": {
+    "v01_queue": 5,
+    "pool": null,
+    "note": "pool modality counted only for existing C-eligible; see modality note"
+   }
+  },
+  "estimate": "structural repair needs (branch/hybrid/1-step/7+) are all pool-sourced; the retained v0.1 tasks serve linear/merge/2-3/4-6/vector mass; the exact replace count is decided per-task at rebind, with the structural minimum being: enough v0.1 slots freed to admit all branch/hybrid/1-step pool DAGs the budget matrix's aspiration flags"
+ },
+ "next_steps": [
+  "apply adjudication 3 (entry-5 merged text) to the task set",
+  "per-task rebind pass over v0.1 final (spec as the check; retain / rebind / replace marking produced incrementally)",
+  "dev split rebuild from the repair pool (dev is fully rebuildable: v0.1 dev was the weakest)",
+  "refusal 12 inherited with hash rebinding",
+  "then candidate pool -> dev/final selection -> v0.2 freeze"
+ ]
+}

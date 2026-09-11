@@ -1,0 +1,191 @@
+{
+ "schema": "gis_recommend.qgis_benchmark_v02_candidate_set.v1",
+ "set_id": "v02-candidate-set-1",
+ "date": "2026-09-11",
+ "composition": {
+  "final": {
+   "task_slots": 99,
+   "retained_v01_tasks": 87,
+   "retained_family_ids": [
+    "qgis-v01-final-030",
+    "qgis-v01-final-002",
+    "qgis-v01-final-004",
+    "qgis-v01-final-006",
+    "qgis-v01-final-009",
+    "qgis-v01-final-013",
+    "qgis-v01-final-016",
+    "qgis-v01-final-017",
+    "qgis-v01-final-023",
+    "qgis-v01-final-027",
+    "qgis-v01-final-028",
+    "qgis-v01-final-029",
+    "qgis-v01-final-031",
+    "qgis-v01-final-032",
+    "qgis-v01-final-038",
+    "qgis-v01-final-039",
+    "qgis-v01-final-040",
+    "qgis-v01-final-001",
+    "qgis-v01-final-007",
+    "qgis-v01-final-018",
+    "qgis-v01-final-019",
+    "qgis-v01-final-024",
+    "qgis-v01-final-026",
+    "qgis-v01-final-037",
+    "qgis-v01-final-011",
+    "qgis-v01-final-012",
+    "qgis-v01-final-014",
+    "qgis-v01-final-015",
+    "qgis-v01-final-035"
+   ],
+   "released_family_ids": [
+    "qgis-v01-final-003",
+    "qgis-v01-final-020",
+    "qgis-v01-final-021",
+    "qgis-v01-final-025",
+    "qgis-v01-final-033",
+    "qgis-v01-final-034",
+    "qgis-v01-final-036",
+    "qgis-v01-final-005",
+    "qgis-v01-final-008",
+    "qgis-v01-final-010",
+    "qgis-v01-final-022"
+   ],
+   "new_final_dags": [
+    {
+     "pool_key": "302f34cdd7",
+     "topology": "pure_branch",
+     "size": "four_to_six",
+     "modality": "vector",
+     "first_variant_text_available": true,
+     "variants_planned": 2,
+     "note": "second variant authored at task-varianting stage"
+    },
+    {
+     "pool_key": "429556807a",
+     "topology": "pure_branch",
+     "size": "seven_plus",
+     "modality": "mixed",
+     "first_variant_text_available": true,
+     "variants_planned": 2,
+     "note": "second variant authored at task-varianting stage"
+    },
+    {
+     "pool_key": "571c057b7e",
+     "topology": "hybrid",
+     "size": "seven_plus",
+     "modality": "vector",
+     "first_variant_text_available": false,
+     "variants_planned": 2,
+     "note": "first variant authored at task-varianting stage"
+    },
+    {
+     "pool_key": "79dde3ac5c",
+     "topology": "hybrid",
+     "size": "seven_plus",
+     "modality": "vector",
+     "first_variant_text_available": false,
+     "variants_planned": 2,
+     "note": "first variant authored at task-varianting stage"
+    },
+    {
+     "pool_key": "7a19dc431b",
+     "topology": "hybrid",
+     "size": "four_to_six",
+     "modality": "mixed",
+     "first_variant_text_available": true,
+     "variants_planned": 2,
+     "note": "second variant authored at task-varianting stage"
+    },
+    {
+     "pool_key": "303d4eb115",
+     "topology": "linear",
+     "size": "seven_plus",
+     "modality": "vector",
+     "first_variant_text_available": false,
+     "variants_planned": 2,
+     "note": "first variant authored at task-varianting stage"
+    }
+   ]
+  },
+  "dev": {
+   "dag_count": 20,
+   "tasked_track": 19,
+   "mainline_adjudicated": 15,
+   "reused_candidates": [
+    "f950402772",
+    "fc01749f30",
+    "5900c6409f",
+    "8c87bab93c"
+   ],
+   "dev_exception": {
+    "key": "d2165c006df4",
+    "isolated": true,
+    "task_pending_separate_track": true
+   }
+  },
+  "refusal": {
+   "count": 12,
+   "rebind": "v02_refusal_rebind_v1.json",
+   "inherited_unchanged": true
+  }
+ },
+ "assertion_battery": [
+  {
+   "assertion": "final_task_slots == 99 (post-disjointness-fix honest count: 87 retained + 6 admitted x 2 variants)",
+   "pass": true,
+   "detail": "actual 99"
+  },
+  {
+   "assertion": "dev_dag_count == 20",
+   "pass": true,
+   "detail": "actual 20"
+  },
+  {
+   "assertion": "refusal == 12",
+   "pass": true,
+   "detail": "actual 12"
+  },
+  {
+   "assertion": "final ∩ dev = ∅",
+   "pass": true,
+   "detail": "overlap: none"
+  },
+  {
+   "assertion": "final ∩ refusal = ∅",
+   "pass": true,
+   "detail": "refusal records are abstain-only, not DAG-keyed; disjoint by construction"
+  },
+  {
+   "assertion": "dev ∩ refusal = ∅",
+   "pass": true,
+   "detail": "same construction argument"
+  },
+  {
+   "assertion": "source-backed final == 103/103",
+   "pass": true,
+   "detail": "expert DAGs in final: none"
+  },
+  {
+   "assertion": "DEV_EXCEPTION final_eligible == 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "DEV_EXCEPTION benchmark_final_eligible == 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "DEV_EXCEPTION training_eligible == 0",
+   "pass": true,
+   "detail": ""
+  }
+ ],
+ "pending_before_freeze": [
+  "author the missing task variants (second variants for 8 new-final DAGs; first variants where first_variant_text_available=false; dev second variants per <=2-variant policy)",
+  "Gate 2 nine-index recheck on all newly authored variant texts",
+  "DEV_EXCEPTION d2165c006df4 separate-track handling (owner present)",
+  "final manifest / checksums / seal assembly"
+ ],
+ "status": "assembled_pending_variant_authoring_and_freeze"
+}

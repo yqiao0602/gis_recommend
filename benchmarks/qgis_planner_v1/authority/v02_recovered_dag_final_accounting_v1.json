@@ -1,0 +1,78 @@
+{
+ "schema": "gis_recommend.qgis_benchmark_v02_recovered_dag_final_accounting.v1",
+ "accounting_id": "v02-recovered-dag-final-accounting-1",
+ "date": "2026-09-10",
+ "inputs": [
+  "v02_recovered_dag_reviews_v1.jsonl (dual review)",
+  "v02_recovered_dag_adjudication_v1.json (owner adjudication)",
+  "v02_recovered_dag_revision_batch_v1.json (revision resolutions)",
+  "dual re-review of the corrected fc01749f30 graph: both reviewers accept, hybrid confirmed, rule C holds (review_dispatch/rereview_{a,b}_fc01749f30.txt)"
+ ],
+ "final_outcomes": {
+  "recovered-099e2c2db0f38ba6": "rejected",
+  "recovered-287be70f78ee0c0c": "accept_subchain_scoped",
+  "recovered-29be1d80531328b3": "accept",
+  "recovered-302f34cdd7d87920": "accept",
+  "recovered-361c5eb306dbc618": "accept",
+  "recovered-429556807ae79c01": "accept",
+  "recovered-4792105e9cd94dde": "accept",
+  "recovered-4cb8772d44c58cc4": "accept",
+  "recovered-55d364d9cdcd6585": "accept",
+  "recovered-5900c6409f7a6294": "accept",
+  "recovered-7a19dc431ba7e1b8": "accept",
+  "recovered-81bbd4ba77af88e3": "accept_subchain_scoped",
+  "recovered-85e32230f111f006": "accept_subchain_scoped",
+  "recovered-8c87bab93cfc8fe5": "accept_subchain_scoped",
+  "recovered-98b45c90e33c0954": "accept",
+  "recovered-c4b53b68a27f2468": "rejected",
+  "recovered-c5863951f3b98f92": "accept",
+  "recovered-cb16fe08fbe1fb28": "rejected",
+  "recovered-d57f26d6bca916c9": "accept",
+  "recovered-debe9501a653ec47": "accept",
+  "recovered-dec749a979996d6f": "accept",
+  "recovered-dfeda93ca52d334e": "accept_subchain_scoped",
+  "recovered-f950402772c6e9d1": "accept_subchain_scoped",
+  "recovered-fc01749f30a8e4ea": "accept_corrected_graph_dual_rereviewed"
+ },
+ "tally": {
+  "accept_subchain_scoped": 6,
+  "accept": 14,
+  "rejected": 3,
+  "accept_corrected_graph_dual_rereviewed": 1
+ },
+ "survivor_profile": {
+  "count": 21,
+  "topology_class": {
+   "linear": 14,
+   "pure_branch": 3,
+   "pure_merge": 2,
+   "hybrid": 2
+  },
+  "graph_size_stratum": {
+   "two_to_three": 12,
+   "four_to_six": 7,
+   "seven_plus": 2
+  }
+ },
+ "v02_supply_ceiling": {
+  "existing_c_eligible_dags": 37,
+  "recovered_survivors_pending_task_fidelity": 21,
+  "new_ceiling": 58,
+  "budget_target": 96,
+  "gap": 38,
+  "honest_shortfalls": {
+   "pure_branch": {
+    "target": 8,
+    "available": 3,
+    "note": "shortfall recorded per roster rule R1 and the positioning decision; L4 expert fill is closed"
+   },
+   "one_step": {
+    "target": 6,
+    "available": 1,
+    "note": "corpus has zero admissible single-operator records; shortfall recorded, frozen mapping untouched"
+   }
+  }
+ },
+ "next_stage": "task-text fidelity: source-derived task texts for the survivors (task_scope=subchain_scoped where designated), then v0.2 candidate pool assembly",
+ "count_discipline_final": "this accounting is final for the recovered-24 cohort; survivors are NOT yet admitted -- task fidelity and human approval remain"
+}
