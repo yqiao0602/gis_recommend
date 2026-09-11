@@ -1,0 +1,37 @@
+{
+  "schema": "gis_recommend.qgis_planner_eval_inference_config_freeze.p2d.v1",
+  "experiment": "M3-P2-D (decoding-level sequence-control intervention)",
+  "inherits": "INFERENCE_CONFIG_FREEZE_v1.json (M3 block) — same checkpoint, adapter, tokenizer, prompt, quantization, bridge, tasks, gold, scorer; ONLY decoding parameters differ",
+  "baseline": "M3-P1 (locked F1 0.1605; post-hoc dedup ceiling 0.2838; oracle 0.2949)",
+  "m3_adapter_sha256": "fa31ad630ebcc10350b9bbc7941a0e5baa130688b6bca1ce3ca54886da37d8f5",
+  "bridge_sha256": "a889981c21d1dab933afc94662c6f841b7da40aea789cd5408ba593e52eff4e8",
+  "materialized_inputs": {
+    "final_100": "ac83c3b8d94e2f57efa05d7d46be0dc8ca347271a6f8763deeffeed81b8e0c91",
+    "dev_20": "4117a8e0dfec34ece5c2f6a9e8c4d90eff23ea072f6b948e6f7eafb39300c377",
+    "refusal_12": "eff41bca0eedcc7340d0e5eb709abc8792884f79ceace8a9ecf9691ed8b767cf",
+    "materializer_manifest": "d108921ed03be340752904935816036c86c9ff6eedd2bf4bd6d9f3b0f59e9c73",
+    "materializer_script": "scripts/materialize_qgis_planner_v021_inputs.py",
+    "materializer_script_sha256": "ef23cecf83b89e052178ff2edf72efa3ba49d2b33a9974c6f025dd143b4ee37c",
+    "assertions": "33/33 pass"
+  },
+  "variants": {
+    "P2-D1": {
+      "repetition_penalty": 1.2,
+      "no_repeat_ngram_size": 0
+    },
+    "P2-D2": {
+      "repetition_penalty": 1.0,
+      "no_repeat_ngram_size": 3
+    },
+    "P2-D3": {
+      "repetition_penalty": 1.2,
+      "no_repeat_ngram_size": 3
+    }
+  },
+  "discipline": "each variant: inference -> prediction lock -> frozen scorer -> ledger; P1 artifacts untouched; post-hoc dedup remains diagnostic-only (never official)",
+  "decision_framework": {
+    "A: F1>=0.25 & runaway collapse": "sequence control is decoding-level; proceed to P2-train as add-on",
+    "B: F1~0.20": "repetition is one of several issues; focus EOS supervision + selection",
+    "C: F1~0.17": "model distribution lacks stopping; P2-train is the necessary intervention"
+  }
+}

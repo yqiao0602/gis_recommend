@@ -159,9 +159,16 @@ def run_m3(args, tasks: list[dict], bridge: dict[str, str]) -> list[dict]:
         prompt = PROMPT_TEMPLATE.format(task_text=t["task_text"])
         inputs = tok(prompt, return_tensors="pt", truncation=True, max_length=1024).to("cuda:0")
         eos_ids = [x for x in {tok.eos_token_id, tok.pad_token_id} if x is not None]
+        gen_kwargs = dict(max_new_tokens=300, do_sample=False,
+                          eos_token_id=eos_ids, pad_token_id=tok.pad_token_id)
+        # M3-P2-D decode interventions (defaults reproduce P1 exactly):
+        # repetition_penalty=1.0 -> off; no_repeat_ngram_size=0 -> off
+        if getattr(args, "rep_penalty", 1.0) != 1.0:
+            gen_kwargs["repetition_penalty"] = float(args.rep_penalty)
+        if getattr(args, "no_repeat_ngram", 0):
+            gen_kwargs["no_repeat_ngram_size"] = int(args.no_repeat_ngram)
         with torch.no_grad():
-            gen = model.generate(**inputs, max_new_tokens=300, do_sample=False,
-                                 eos_token_id=eos_ids, pad_token_id=tok.pad_token_id)
+            gen = model.generate(**inputs, **gen_kwargs)
         text = tok.decode(gen[0][inputs["input_ids"].shape[1]:],
                           skip_special_tokens=True).strip()
         first_block = text.split("\n\n")[0].split("\n")[0].strip()
@@ -197,6 +204,10 @@ def main() -> int:
                                  "task_type_length_stats_paper_v1.json"))
     ap.add_argument("--model", type=Path, help="M3 base model dir")
     ap.add_argument("--adapter", type=Path, help="M3 LoRA adapter dir")
+    ap.add_argument("--rep-penalty", type=float, default=1.0,
+                    help="M3-P2-D1: repetition_penalty (1.0 = off, P1 behavior)")
+    ap.add_argument("--no-repeat-ngram", type=int, default=0,
+                    help="M3-P2-D2: no_repeat_ngram_size (0 = off, P1 behavior)")
     args = ap.parse_args()
 
     t0 = time.time()
