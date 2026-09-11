@@ -1,0 +1,71 @@
+{
+ "schema": "gis_recommend.qgis_benchmark_v02_gate2_recheck_and_assertions.v1",
+ "date": "2026-09-11",
+ "gold_correction_rereview": {
+  "pool_key": "79dde3ac5c",
+  "reviewer_a": "accept (typo confirmed, 11 edges verified, hybrid confirmed, buffer reassignments self-consistent)",
+  "reviewer_b": "accept (typo confirmed, all edges verified including the corrected p6->p7, hybrid confirmed)",
+  "consensus": "dual_accept -- O1 admission stands, Final remains 99"
+ },
+ "gate2_unified_recheck": {
+  "scope": "45 newly authored texts ({'final_new': 21, 'dev_mainline': 15, 'final_variants': 9})",
+  "checks": [
+   "exclusion-ledger token signatures",
+   "6-gram vs 8,912 training texts",
+   "forbidden literals + field names"
+  ],
+  "result": "ALL CLEAN"
+ },
+ "assertion_battery": [
+  {
+   "assertion": "final == 99",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "dev DAGs == 20",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "refusal == 12",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "final ∩ dev = ∅",
+   "pass": true,
+   "detail": "overlap none"
+  },
+  {
+   "assertion": "source_backed(final) == 99",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "expert_authored(final) == 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "DEV_EXCEPTION.final_eligible == false",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "DEV_EXCEPTION.benchmark_final_eligible == false",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "DEV_EXCEPTION.training_eligible == false",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "assertion": "gold correction 79dde3ac5c dual-rereviewed accept",
+   "pass": true,
+   "detail": "both reviewers accept: typo confirmed, edge set correct, hybrid confirmed, no other defects"
+  }
+ ]
+}
