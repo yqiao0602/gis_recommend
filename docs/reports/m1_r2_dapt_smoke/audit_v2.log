@@ -1,0 +1,41 @@
+======================================================================
+PHASE 2-A: DAPT INITIALIZATION AUDIT (no training)
+======================================================================
+[budget] d3=390,710,469 d4=96,759,756 d1=16,452 total=487,486,677
+[tokenizer] 58 chars -> 66 byte ids, roundtrip OK
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 18530.44it/s]
+[transformers] [1mBertModel LOAD REPORT[0m from: bert-base-uncased
+Key                                        | Status     |  | 
+-------------------------------------------+------------+--+-
+cls.predictions.transform.dense.weight     | UNEXPECTED |  | 
+cls.predictions.bias                       | UNEXPECTED |  | 
+cls.seq_relationship.bias                  | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  | 
+cls.predictions.transform.dense.bias       | UNEXPECTED |  | 
+cls.seq_relationship.weight                | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+[model] total=117.4M trainable(DAPT)=7.3M (BERT and condition path frozen out)
+[pe] extended to 1024; positions 0-99 match analytic sinusoid
+[forward] logits (2, 64, 259), init loss 48.3081 (expect ~ln(259)=5.5568)
+[corpus] D3 kept rows: 26285 (dropped 17524)
+
+======================================================================
+  PASS  recipe_seed_20260914
+  PASS  recipe_factors
+  PASS  budget_total_487.5M
+  PASS  byte_roundtrip
+  PASS  byte_ids_in_range
+  PASS  temp_vocab_259
+  PASS  embedding_tied_to_output
+  PASS  r1_checkpoint_not_loaded
+  PASS  dummy_condition_shape
+  PASS  dummy_memory_shape
+  PASS  dummy_condition_constant
+  PASS  pe_extension_lossless
+  PASS  forward_logits_shape
+  PASS  loss_finite_at_init
+  PASS  d3_kept_count_26285
+PHASE 2-A AUDIT: ALL PASS
