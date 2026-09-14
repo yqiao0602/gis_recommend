@@ -34,16 +34,27 @@ confounder list, and M1-R2's DAPT can only consume the English pool.
 
 **Phase 0-B is complete** (2026-09-14, `docs/reports/m1_phase0_precheck_b_tasktype_v1/`):
 a 2x2 ablation (task_type {oracle, Unknown} x length {per-type, fixed-8}) on the same
-SHA-bound checkpoint, same 49 val rows, same process — **task_type OOD is the dominant
-factor in M1's collapse**: switching only the task_type string to Unknown drops P/R from
-0.13/0.20 to 0.00/0.00, first-token diversity 26→5, with an attractor emerging
-(L3_04_05_09 + Define Projection 24.5%); GEE and QGIS rows both collapse to zero. The
-length policy is second-order, and the empty-prediction rate is 0/49 in every condition
-(the benchmark's 88/100 empty graphs are bridge drops, not empty chains). task_type is
-now a quantified M1-specific handicap (ΔP −0.13 / ΔR −0.20; M3 consumes no task_type),
-and the benchmark number understates M1's in-distribution ability (oracle val P/R
-0.13/0.20, still 0/49 exact). **Phase 0 is done; next is Phase 1 domain_corpus_v1
-construction** (rules frozen at `docs/plans/domain_corpus_v1_spec.md` v1).
+SHA-bound checkpoint, same 49 val rows, same process — **task_type OOD is the primary
+trigger/amplifier of M1's collapse, but not its only cause**: switching only the
+task_type string to Unknown drops P/R from 0.13/0.20 to 0.00/0.00, first-token diversity
+26→5, with an attractor emerging (L3_04_05_09 + Define Projection 24.5%); GEE and QGIS
+rows both collapse to zero. Yet under Oracle the model is still 0/49 exact with SetF1
+0.148 — the base capability is low on its own. The length policy is second-order, and
+the empty-prediction rate is 0/49 in every condition (the benchmark's 88/100 empty
+graphs are bridge drops, not empty chains; token-level and graph-level emptiness are
+reported separately from now on). task_type is a quantified M1-specific handicap
+(ΔP −0.13 / ΔR −0.20; M3 consumes no task_type).
+
+**Phase 0 closed** (2026-09-14, owner ruling: no further A/B). Final four-layer
+attribution: M1-R1 benchmark collapse = (1) task_type conditioning failure (primary
+trigger/amplifier) + (2) benchmark text OOD (amplifier, not a necessary condition) +
+(3) insufficient domain/GIS prior (to be tested by R2) + (4) QGIS Chinese-supervision
+coverage gap (training-side structural limit). **R2 goal: not to "fix the M1-R1
+benchmark" but to measure the independent generalization contribution of decoder-only
+DAPT with task conditioning and the inference protocol held fully frozen (single
+active variable = decoder DAPT; even F1 0.00→0.08 has clear interpretive value).
+Current: Phase 1 domain_corpus_v1 construction (first step: token-scale and
+language-pool feasibility check).**
 
 ## Agent Ownership
 

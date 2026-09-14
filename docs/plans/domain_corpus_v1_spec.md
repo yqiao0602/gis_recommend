@@ -95,6 +95,7 @@ SFT：  task → L3 序列（paper_v1，已有，本 spec 不碰）
 
 ## 10. M1-R2 实验合同（已冻结）
 
+- **目标定义（owner 2026-09-14，Phase 0-B 后修订）**：R2 不是"修复 M1-R1 benchmark"，而是在 task conditioning 与推理协议完全不变的前提下，测试 decoder-only domain DAPT 能否提高 M1 对 GIS 领域语言/工作流语义的泛化——即使 F1 0.00→0.08 也有明确解释价值。R1→R2 唯一主动变量 = decoder DAPT；不得因 Phase 0-B 发现 Unknown 有害而在 R2 改用 Oracle task_type。
 - **DAPT 对象固定为 decoder-only causal-LM DAPT**：BERT encoder 保持 M1-R1 冻结配置不变（大部分冻结、解冻顶部两层 + pooler 的原状）。R1→R2 唯一新增变量 = decoder 的领域预训练，归因最干净。
 - **BERT 领域 MLM（encoder 侧适配）不属于 M1-R2**，作为后续 M1-R3 候选消融（Phase 3 视 R2 结果决定）。届时 R2→R3 唯一新增变量 = encoder 领域适配，才能分别回答 decoder 与 encoder 领域适配各自的贡献。
 - 架构与 SFT 协议完全复用 M1-R1（V4.6、70:30 平台分层采样、paper_v1 train 8,817、20 epochs、同 checkpoint 选择标准）。

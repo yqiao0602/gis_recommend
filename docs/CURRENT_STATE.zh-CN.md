@@ -11,7 +11,9 @@ benchmark v0.2.1 冻结（6006e49）已合并 main（c515c77/5647636）；M1/M3 
 
 **Phase 0-A 已完成**（2026-09-11，`docs/reports/m1_phase0_precheck_a_language_v1/`）：benchmark 132 条任务全英文、bert [UNK]=0——推理侧无语言混杂，M1 塌缩不能归因于输入语言；但 paper train 的 QGIS 子集 616 行中 81.7% 中文/混合、69.2% 对 M1 encoder ≥50% [UNK]，M1 有效可读 QGIS 监督仅 ~190 行（M3 可读全部 8,817 行）——训练侧语言不对称列入 M1 vs M3 混杂清单，M1-R2 DAPT 只能消费英文池。
 
-**Phase 0-B 已完成**（2026-09-14，`docs/reports/m1_phase0_precheck_b_tasktype_v1/`）：2×2 消融（task_type {oracle, Unknown} × 长度 {按类型, 固定 8}），同 checkpoint（SHA=冻结记录）、同 49 行 val、同进程——**task_type OOD 是 M1 塌缩的主导因素**：仅把 task_type 换成 Unknown，P/R 即从 0.13/0.20 塌到 0.00/0.00，首 token 多样性 26→5，吸引子出现（L3_04_05_09 + Define Projection 24.5%），GEE/QGIS 行双归零；长度策略二阶；空预测率全条件 0/49（benchmark 88/100 空图 = bridge 丢弃，非空链）。task_type 是 M1 特有、已量化的 handicap（ΔP −0.13/ΔR −0.20；M3 不消费 task_type）；benchmark 数字低估 M1 近分布能力（Oracle 下 val P/R 0.13/0.20 但仍 0/49 exact）。**Phase 0 完成；下一步 Phase 1 domain_corpus_v1 构建**（规则见 `docs/plans/domain_corpus_v1_spec.md` v1）。
+**Phase 0-B 已完成**（2026-09-14，`docs/reports/m1_phase0_precheck_b_tasktype_v1/`）：2×2 消融（task_type {oracle, Unknown} × 长度 {按类型, 固定 8}），同 checkpoint（SHA=冻结记录）、同 49 行 val、同进程——**task_type OOD 是 M1 塌缩的主要触发/放大因素（非唯一原因）**：仅把 task_type 换成 Unknown，P/R 即从 0.13/0.20 塌到 0.00/0.00，首 token 多样性 26→5，吸引子出现（L3_04_05_09 + Define Projection 24.5%），GEE/QGIS 行双归零；但 Oracle 下 exact 仍 0/49、SetF1 仅 0.148——基础能力本来就低。长度策略二阶；空预测率全条件 0/49（benchmark 88/100 空图 = bridge 丢弃，非空链；token-level 与 graph-level empty 自此分开表述）。task_type 是 M1 特有、已量化的 handicap（ΔP −0.13/ΔR −0.20；M3 不消费 task_type）。
+
+**Phase 0 收官（2026-09-14，owner 裁定不再追加 A/B）**。四层归因定稿：M1-R1 benchmark collapse = ① task_type conditioning failure（主要触发/放大因素）+ ② benchmark 文本 OOD（放大因素，非必要条件）+ ③ domain/GIS prior 不足（R2 待验证）+ ④ QGIS 中文监督覆盖不足（训练侧结构性限制）。**R2 目标定义：不是"修复 M1-R1 benchmark"，而是在 task conditioning 与推理协议完全不变的前提下测 decoder-only DAPT 的独立泛化贡献（唯一主动变量 = decoder DAPT，即使 F1 0.00→0.08 也有明确解释价值）。当前：Phase 1 domain_corpus_v1 构建（第一步 token 规模与语言池可行性检查）**。
 
 
 

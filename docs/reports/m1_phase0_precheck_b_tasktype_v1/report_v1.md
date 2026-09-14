@@ -48,9 +48,9 @@ task_type 进入模型只有两个通道：task_type_id embedding（FiLM 条件�
 
 ## 结论
 
-**Q：task_type OOD 贡献了多少 M1-R1 的塌缩？——主导因素。**
+**Q：task_type OOD 贡献了多少 M1-R1 的塌缩？——主要触发/放大因素，但非唯一原因。**
 
-1. **仅把 task_type 字符串从真实类型换成 "Unknown"（其余一切不变），val 上的 P/R 即从 0.13/0.20 塌到 0.00/0.00**，首 token 多样性 26–27 → 5，出现支配性吸引子（L3_04_05_09 51–59% + Define Projection 24.5%），wrong_family 46–48/49。benchmark 式塌缩在**近分布 val 文本上单独由 Unknown 条件复现**——OOD 任务文本不是产生塌缩的必要条件。
+1. **仅把 task_type 字符串从真实类型换成 "Unknown"（其余一切不变），val 上的 P/R 即从 0.13/0.20 塌到 0.00/0.00**，首 token 多样性 26–27 → 5，出现支配性吸引子（L3_04_05_09 51–59% + Define Projection 24.5%），wrong_family 46–48/49。benchmark 式塌缩在**近分布 val 文本上单独由 Unknown 条件复现**——OOD 任务文本不是产生塌缩的必要条件。但 Oracle 条件下 exact 仍为 0/49、SetF1 仅 0.148：**task_type OOD 解释塌缩模式，不解释 M1 性能低下的全部**。
 2. **长度策略是二阶效应**：Oracle 下固定 8 略有增益（ΔR +0.058）；Unknown 下无论长度策略结果都接近零。
 3. **空预测率在全部四个条件下为 0/49**：benchmark 的 88/100 "空图"不是模型输出空链，而是 bridge 丢弃（50-code 覆盖外）所致——与 Phase 0-A 后的分析一致，token 层与 graph 层的"空"必须分开表述。
 4. benchmark 上 Define Projection 100% 首 token vs val-Unknown 下 24.5%（首位是 L3_04_05_09）：**吸引子身份依赖文本分布，塌缩机制（Unknown 条件化失效 → 吸引子）是共有的**。
@@ -59,7 +59,8 @@ task_type 进入模型只有两个通道：task_type_id embedding（FiLM 条件�
 ## 对 M1-R2 的直接含义
 
 - R2 评测协议保持冻结（task_type=Unknown），因此 **DAPT 必须在 Unknown 条件下恢复条件化**才算数；"完美 R2"的形态就是 unknown_len_8 向 oracle 水平回归。
-- 归因链更新：M1 benchmark 塌缩 = **Unknown 条件化失效（主导，本次量化）** + OOD 文本分布（放大器）+ 语言/领域先验不足（R2 量化）+ QGIS 监督半盲（Phase 0-A，训练侧结构性限制）。
+- **R2 目标定义（owner 2026-09-14）**：不是"修复 M1-R1 benchmark"，而是**在 task conditioning 与推理协议完全不变的前提下，测试 decoder-only domain DAPT 能否提高 M1 对 GIS 领域语言/工作流语义的泛化**——即使 F1 0.00→0.08 也有明确解释价值。R1→R2 唯一主动变量 = decoder DAPT；不得因 B 发现 Unknown 有害而在 R2 中改用 Oracle。
+- 归因链（Phase 0 收官定稿，四层）：M1-R1 benchmark collapse = ① task_type conditioning failure（**主要触发/放大因素**，B 量化 ΔP −0.13/ΔR −0.20）+ ② benchmark 文本 OOD（放大因素；B 证明非必要条件，吸引子身份随文本分布变化）+ ③ domain/GIS prior 不足（R2 待验证）+ ④ QGIS 中文监督覆盖不足（A 量化，训练侧结构性限制）。
 - 给 owner 的备忘（**不改变当前冻结协议**）：benchmark 任务均为 QGIS 规划任务但无 task_type 元数据，未来协议版本可考虑类型推断（如喂 QGIS 侧类型），属协议变更，须升版本号并重锁 prediction hash，不追溯修改 v0.2.1 结果。
 
 ## 复现性与诚实记录
