@@ -13,7 +13,9 @@ benchmark v0.2.1 冻结（6006e49）已合并 main（c515c77/5647636）；M1/M3 
 
 **Phase 0-B 已完成**（2026-09-14，`docs/reports/m1_phase0_precheck_b_tasktype_v1/`）：2×2 消融（task_type {oracle, Unknown} × 长度 {按类型, 固定 8}），同 checkpoint（SHA=冻结记录）、同 49 行 val、同进程——**task_type OOD 是 M1 塌缩的主要触发/放大因素（非唯一原因）**：仅把 task_type 换成 Unknown，P/R 即从 0.13/0.20 塌到 0.00/0.00，首 token 多样性 26→5，吸引子出现（L3_04_05_09 + Define Projection 24.5%），GEE/QGIS 行双归零；但 Oracle 下 exact 仍 0/49、SetF1 仅 0.148——基础能力本来就低。长度策略二阶；空预测率全条件 0/49（benchmark 88/100 空图 = bridge 丢弃，非空链；token-level 与 graph-level empty 自此分开表述）。task_type 是 M1 特有、已量化的 handicap（ΔP −0.13/ΔR −0.20；M3 不消费 task_type）。
 
-**Phase 0 收官（2026-09-14，owner 裁定不再追加 A/B）**。四层归因定稿：M1-R1 benchmark collapse = ① task_type conditioning failure（主要触发/放大因素）+ ② benchmark 文本 OOD（放大因素，非必要条件）+ ③ domain/GIS prior 不足（R2 待验证）+ ④ QGIS 中文监督覆盖不足（训练侧结构性限制）。**R2 目标定义：不是"修复 M1-R1 benchmark"，而是在 task conditioning 与推理协议完全不变的前提下测 decoder-only DAPT 的独立泛化贡献（唯一主动变量 = decoder DAPT，即使 F1 0.00→0.08 也有明确解释价值）。当前：Phase 1 domain_corpus_v1 构建（第一步 token 规模与语言池可行性检查）**。
+**Phase 0 收官（2026-09-14，owner 裁定不再追加 A/B）**。四层归因定稿：M1-R1 benchmark collapse = ① task_type conditioning failure（主要触发/放大因素）+ ② benchmark 文本 OOD（放大因素，非必要条件）+ ③ domain/GIS prior 不足（R2 待验证）+ ④ QGIS 中文监督覆盖不足（训练侧结构性限制）。R2 目标：测 decoder 骨干领域预训练的独立泛化贡献（唯一主动变量 = decoder 初始化）。
+
+**Phase 1 domain_corpus_v1 已完成并冻结（2026-09-14）**：D3 代码池 43,809 docs/174.7M WP（47,852 权威源清洗后保留 91.6%）+ D4 英文文本 6.6M WP + D1 锚点；断言电池全过。recipe 冻结：D3 60% 降采样 + D4 4× 过采样 + D1 1×，**byte-level training budget 487.5M byte-tokens**（exposure D3 80.15%/D4 19.85%）。M1-R2 §10 implementation contract 已冻结（decoder backbone domain pretraining：byte-level 临时词表 + 哑 memory + task_type=Unknown 的 DAPT → SFT 时 132 L3 词表重初始化、body/FiLM carry over、R1 协议完全不变）。构建中发现并修复泄漏集 GPL 样板误杀（paper_v1 test 1 行 task_text 本身是 GPL 许可证头——数据质量注记）。证据：`docs/reports/domain_corpus_v1/`。**下一步：Phase 2 M1-R2 DAPT 实现与训练**。
 
 
 

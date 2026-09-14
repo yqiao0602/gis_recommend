@@ -49,12 +49,22 @@ reported separately from now on). task_type is a quantified M1-specific handicap
 attribution: M1-R1 benchmark collapse = (1) task_type conditioning failure (primary
 trigger/amplifier) + (2) benchmark text OOD (amplifier, not a necessary condition) +
 (3) insufficient domain/GIS prior (to be tested by R2) + (4) QGIS Chinese-supervision
-coverage gap (training-side structural limit). **R2 goal: not to "fix the M1-R1
-benchmark" but to measure the independent generalization contribution of decoder-only
-DAPT with task conditioning and the inference protocol held fully frozen (single
-active variable = decoder DAPT; even F1 0.00→0.08 has clear interpretive value).
-Current: Phase 1 domain_corpus_v1 construction (first step: token-scale and
-language-pool feasibility check).**
+coverage gap (training-side structural limit). R2 goal: measure the independent
+generalization contribution of decoder-backbone domain pretraining (single active
+variable = decoder initialization).
+
+**Phase 1 domain_corpus_v1 is complete and frozen (2026-09-14)**: D3 code pool
+43,809 docs / 174.7M WP (91.6% of the 47,852 authority sources retained after
+cleaning) + D4 English text 6.6M WP + D1 anchors; assertion battery all-pass. Frozen
+recipe: D3 60% downsampling + D4 4x epoch-level oversampling + D1 1x, with a
+**byte-level training budget of 487.5M byte-tokens** (exposure D3 80.15% / D4 19.85%).
+The M1-R2 §10 implementation contract is frozen (decoder backbone domain pretraining:
+DAPT with a temporary byte-level vocab, dummy memory, and task_type=Unknown; SFT
+reinitializes the 132-token L3 vocab, carries over the body+FiLM, and keeps the R1
+protocol exactly unchanged). A leakage-set GPL-boilerplate false-positive was found and
+fixed during the build (one paper_v1 test row's task_text is itself a GPL header —
+recorded as a data-quality note). Evidence: `docs/reports/domain_corpus_v1/`.
+**Next: Phase 2, M1-R2 DAPT implementation and training.**
 
 ## Agent Ownership
 

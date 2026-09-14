@@ -80,28 +80,42 @@ SFT：  task → L3 序列（paper_v1，已有，本 spec 不碰）
 ## 8. 规模策略
 
 - **先实测再定稿**：对 §4 各来源跑 token 计数（代码与文本分开统计），再冻结第一版规模。
-- 起点量级：100M 参数级模型 DAPT/TAPT 经验值为 **50–200M token** 即可有可测增益；D3 全量源码可能已数百 M token，**第一版不追求大规模，不为此爬取新数据**。
+- 起点量级：100M 参数级模型 DAPT/TAPT 经验值为 **50–200M token** 即可有可测增益。Phase 1 首轮实测（2026-09-14）：D3 权威源 47,852 文件 = 0.74GB 原始（≈185–250M token 估算）；D4 README 全树 71.7MB（≈15–17M，未过滤）；D1 taxonomy 16.2K 字符；D5 train 任务文本 2.78M 字符（≈0.65M）。
+- **原始规模 ≠ 训练规模**：D3 必须过完整构建管线（排除组 → 6-gram → code cleaning → 自动生成/license boilerplate 剥离 → dedup → 语言分池）后才计入 usable corpus。**不得为凑规模放宽任何过滤条件——宁可 100M 高质量 token，不用泄漏或重复代码补数。**
 - 若做规模敏感性，仅对主路线（M1-R2 或 M2-P1 之一）设 2–3 个规模点，其余单点，对齐三路线文档 §6.4 的规模曲线纪律。
 
 ## 9. Recipe 分离（一个 manifest，多个配方）
 
 | 消费方 | 配方 | 备注 |
 |---|---|---|
-| M1-R2/R3/R4 | 以 D1/D4（文本）为主，D3 少量或不用；D2 仅含 KG 本地概念描述 | M1 任务是英文任务文本 → L3，代码语言分布价值有限；BERT 为英文；外部文档本轮不纳入（决策 ①） |
+| M1-R2/R3/R4 | **D3 代码语料为主体，D4 英文 GIS 文本为核心语义补充，D1 为少量领域锚点；D5 不进入 M1-R2（仅 TAPT 候选）**。最终采样比例不预设死值，由构建后真实 token census 确定并固化于 manifest；可用 D4 oversampling / D3 downsampling，但实际 token exposure（D3/D4/D1 各自 token 数与占比）必须写入 manifest。D2 仅含 KG 本地概念描述 | owner 拍板 2026-09-14（选项 b）：纯文本池（D1+D4 ≈15–20M）低于经验起点一个数量级，D3（47,852 源 ≈0.74GB 原始）单独达标；任务形态"英文 → L3 结构化符号序列"与代码语料同族——D3 提供结构化序列建模先验，D4 提供 GIS 自然语言领域语义。风险控制：D3 不得淹没 D4 的语义信号，配比以实测 exposure 为准 |
 | M2-P1 | D1–D4 全量（含 D3 代码） | 与三路线文档 §M2-1 的领域语料定义一致 |
 | M3 | 不消费 | M3 按定义不做 DAPT/TAPT |
 
 每个实验的运行 manifest 必须记录所用 recipe、池构成、epoch、token 数；配方差异在实验表中显式列出（对齐 §6.5"允许差异"条款）。
 
-## 10. M1-R2 实验合同（已冻结）
+## 10. M1-R2 实验合同（**implementation contract 已冻结，2026-09-14 owner 确认配比**）
 
-- **目标定义（owner 2026-09-14，Phase 0-B 后修订）**：R2 不是"修复 M1-R1 benchmark"，而是在 task conditioning 与推理协议完全不变的前提下，测试 decoder-only domain DAPT 能否提高 M1 对 GIS 领域语言/工作流语义的泛化——即使 F1 0.00→0.08 也有明确解释价值。R1→R2 唯一主动变量 = decoder DAPT；不得因 Phase 0-B 发现 Unknown 有害而在 R2 改用 Oracle task_type。
-- **DAPT 对象固定为 decoder-only causal-LM DAPT**：BERT encoder 保持 M1-R1 冻结配置不变（大部分冻结、解冻顶部两层 + pooler 的原状）。R1→R2 唯一新增变量 = decoder 的领域预训练，归因最干净。
-- **BERT 领域 MLM（encoder 侧适配）不属于 M1-R2**，作为后续 M1-R3 候选消融（Phase 3 视 R2 结果决定）。届时 R2→R3 唯一新增变量 = encoder 领域适配，才能分别回答 decoder 与 encoder 领域适配各自的贡献。
+- **目标定义（owner 2026-09-14，Phase 0-B 后修订）**：R2 不是"修复 M1-R1 benchmark"，而是在 task conditioning 与推理协议完全不变的前提下，测试 decoder 骨干领域预训练能否提高 M1 对 GIS 领域工作流语义的泛化——即使 F1 0.00→0.08 也有明确解释价值。R1→R2 唯一主动变量 = **decoder 初始化（random vs domain-pretrained backbone）**；不得因 Phase 0-B 发现 Unknown 有害而在 R2 改用 Oracle task_type。
+- **实验名称（owner 2026-09-14 修正）**：**decoder backbone domain pretraining**，不写 "decoder-only CLM-DAPT"。原因：decoder 的 132-token L3 词表与 DAPT 语料无共同词表，临时词表的 embedding/输出投影在 SFT 时被丢弃——**真正迁移的只有 Transformer body + FiLM，lexical embedding 不迁移**。R2 测试的是"GIS/代码领域 exposure 能否改变 decoder 骨干的参数先验、使其在后续 L3 监督生成中具有更好的结构化生成能力"。
+- **Corpus recipe（owner 拍板 2026-09-14，基于 attempt-2 census）**：
+  - D3 代码池：**60% 降采样**（固定 seed，记录被抽样的 SHA 清单）
+  - D4 英文领域文本（docstring 112,196 + README 1,276）：**4× oversampling**（epoch/sample 级、固定 seed、可复现；不简单复制 JSONL 四遍）
+  - D1 taxonomy 锚点：**原始保留（1×），不做大规模过采样**——D1 作用是锚点不是训练量来源（3.4K WP token 拉到 5% 需重复 ~2000 倍，只会过拟合 taxonomy）
+  - **Target exposure：D3 ≈ 80% / D4 ≈ 20% / D1 ≈ negligible**（实测 byte 口径 80.1% / 19.8% / 0.003%）
+- **双口径 token 纪律（防止口径混用）**：
+  - **Census token = wordpiece**：描述 corpus 语言/文本规模（D3 174.7M / D4 6.6M / D1 3.4K，总 181.3M WP）——**不是训练预算**
+  - **Training token = byte-level**：实际 DAPT budget = **487.5M byte-tokens**（D3 0.6× = 390.7 MB + D4 4× = 96.8 MB + D1 16 KB）——用于 steps/epoch/lr-schedule/GPU 时间/checkpoint 解释
+  - 任何报告不得把 181M WP census 写成训练 token 数
+- **初始化合同（owner 九项拍板 2026-09-14）**：
+  - DAPT 阶段：临时 **byte-level** tokenizer（256 bytes + specials；不用 wordpiece——lexical transfer 本来就不发生，byte-level 简单稳定且避免"共享词表产生 lexical transfer"的错误解释）；embedding/输出投影按临时词表随机初始化；条件输入 = **哑 memory（零向量）+ task_type=Unknown**（纯序列先验，不接真实文本 memory，避免与 SFT 边界模糊）；可训练 = 临时 embedding + 输出投影 + Transformer body + FiLM。
+  - SFT 阶段：**丢弃临时 embedding/输出投影**；132-token L3 词表 embedding/投影**重新随机初始化**；**Transformer body + FiLM 从 DAPT checkpoint carry over**；最终 L3 词表与 R1 完全一致（公平性保证）；SFT 协议 = R1 完全不变。
+- **论文标准表述（不得偏离）**："在保持最终 L3 输出词表与 SFT 协议不变的条件下，首先利用 GIS 代码与领域文本对 Transformer 解码器骨干进行无监督领域预训练，再将预训练后的骨干迁移至 L3 工作流生成任务，以考察领域预训练对结构化工作流生成泛化能力的贡献。"**不得写**"通过 DAPT 学习 GIS 领域词汇表示并迁移至 L3 decoder"，也不得写"给 M1 增加了 181M 个领域 token"。
+- **BERT 领域 MLM（encoder 侧适配）不属于 M1-R2**，作为后续 M1-R3 候选消融（Phase 3 视 R2 结果决定）。届时 R2→R3 唯一新增变量 = encoder 领域适配。
 - 架构与 SFT 协议完全复用 M1-R1（V4.6、70:30 平台分层采样、paper_v1 train 8,817、20 epochs、同 checkpoint 选择标准）。
-- 评测协议与 M1-R1 完全一致（含 `INFERENCE_CONFIG_FREEZE_v1.json` 的 task_type=Unknown 与解码配置），保证 R1↔R2 差异可单独归因于 decoder DAPT。
+- 评测协议与 M1-R1 完全一致（含 `INFERENCE_CONFIG_FREEZE_v1.json` 的 task_type=Unknown 与解码配置）。
 - 验收：主指标 = benchmark（先 dev-20 后 final-100）空图率下降与首 L3 token 多样性恢复（不再单一 Define Projection 开头）；次指标 = val Top1 相对 13.75% 的增量、49 行诊断 P/R 相对 0.153/0.198 的增量。
-- 归因声明：M1-R2 vs M1-R1 同架构、同 encoder 冻结状态、同 SFT、同解码 → 差值 = decoder 领域 DAPT 的独立贡献。前置确认 B 的结果作为归因解读的注脚，不改变比较协议。
+- 归因声明：M1-R2 vs M1-R1 同架构、同 encoder 冻结状态、同 SFT 协议、同解码 → 差值 = decoder 骨干领域预训练的独立贡献。前置确认 B 的结果作为归因解读的注脚。
 
 ## 11. owner 决策记录（2026-09-11）与执行顺序
 
