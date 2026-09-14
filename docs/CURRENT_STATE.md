@@ -30,8 +30,20 @@ confounder, so M1's collapse cannot be attributed to input language. However, wi
 paper train the QGIS subset (616 rows) is 81.7% Chinese/mixed and 69.2% of those rows are
 ≥50% [UNK] for the M1 encoder, leaving only ~190 readable QGIS supervision rows for M1
 versus all 8,817 for M3 — a training-side language asymmetry now on the M1-vs-M3
-confounder list, and M1-R2's DAPT can only consume the English pool. Next: Phase 0-B
-(task_type oracle ablation; needs the server checkpoint).
+confounder list, and M1-R2's DAPT can only consume the English pool.
+
+**Phase 0-B is complete** (2026-09-14, `docs/reports/m1_phase0_precheck_b_tasktype_v1/`):
+a 2x2 ablation (task_type {oracle, Unknown} x length {per-type, fixed-8}) on the same
+SHA-bound checkpoint, same 49 val rows, same process — **task_type OOD is the dominant
+factor in M1's collapse**: switching only the task_type string to Unknown drops P/R from
+0.13/0.20 to 0.00/0.00, first-token diversity 26→5, with an attractor emerging
+(L3_04_05_09 + Define Projection 24.5%); GEE and QGIS rows both collapse to zero. The
+length policy is second-order, and the empty-prediction rate is 0/49 in every condition
+(the benchmark's 88/100 empty graphs are bridge drops, not empty chains). task_type is
+now a quantified M1-specific handicap (ΔP −0.13 / ΔR −0.20; M3 consumes no task_type),
+and the benchmark number understates M1's in-distribution ability (oracle val P/R
+0.13/0.20, still 0/49 exact). **Phase 0 is done; next is Phase 1 domain_corpus_v1
+construction** (rules frozen at `docs/plans/domain_corpus_v1_spec.md` v1).
 
 ## Agent Ownership
 

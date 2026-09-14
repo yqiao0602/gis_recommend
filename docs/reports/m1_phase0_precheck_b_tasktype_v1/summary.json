@@ -1,0 +1,364 @@
+{
+  "schema": "gis_recommend.m1_phase0_b_tasktype_ablation.v1",
+  "question": "task_type OOD contribution to M1-R1 collapse, isolated on the 49-row val set: oracle vs Unknown task_type x per-type vs fixed-8 length",
+  "checkpoint_sha256": "97e61fd448d3369f3ef36ce800cffe267a69511a2b418910b9a31a90479d1bea",
+  "conditions": {
+    "oracle_len_type": {
+      "condition": "oracle_len_type",
+      "task_type_mode": "oracle",
+      "length_mode": "type",
+      "n": 49,
+      "exact_chain": 0,
+      "exact_chain_rate": 0.0,
+      "mean_code_precision": 0.1151,
+      "mean_code_recall": 0.1391,
+      "mean_set_f1": 0.1216,
+      "empty_predictions": 0,
+      "empty_rate": 0.0,
+      "eos_terminated": "49/49",
+      "mean_pred_length": 5.45,
+      "median_pred_length": 6,
+      "mean_length_error": 0.96,
+      "invalid_l3_token_rows": 0,
+      "first_token_top": [
+        [
+          "L3_03_02_03",
+          9
+        ],
+        [
+          "L3_08_01_02",
+          3
+        ],
+        [
+          "L3_07_01_05",
+          3
+        ],
+        [
+          "L3_03_01_01",
+          3
+        ],
+        [
+          "L3_03_02_01",
+          3
+        ],
+        [
+          "L3_01_09_03",
+          3
+        ],
+        [
+          "L3_09_06_01",
+          2
+        ],
+        [
+          "L3_02_05_19",
+          2
+        ],
+        [
+          "L3_02_05_02",
+          2
+        ],
+        [
+          "L3_01_03_04",
+          2
+        ]
+      ],
+      "first_token_define_projection_share": 0.0,
+      "first_token_distinct": 26,
+      "failure_reasons": {
+        "wrong_family": 25,
+        "partial_overlap": 24
+      },
+      "by_platform": {
+        "gee": {
+          "n": 41,
+          "exact": 0,
+          "mean_precision": 0.1177,
+          "mean_recall": 0.1412,
+          "empty": 0
+        },
+        "qgis": {
+          "n": 8,
+          "exact": 0,
+          "mean_precision": 0.1014,
+          "mean_recall": 0.1285,
+          "empty": 0
+        }
+      }
+    },
+    "unknown_len_type": {
+      "condition": "unknown_len_type",
+      "task_type_mode": "unknown",
+      "length_mode": "type",
+      "n": 49,
+      "exact_chain": 0,
+      "exact_chain_rate": 0.0,
+      "mean_code_precision": 0.0075,
+      "mean_code_recall": 0.004,
+      "mean_set_f1": 0.0052,
+      "empty_predictions": 0,
+      "empty_rate": 0.0,
+      "eos_terminated": "48/49",
+      "mean_pred_length": 3.88,
+      "median_pred_length": 4,
+      "mean_length_error": -0.61,
+      "invalid_l3_token_rows": 0,
+      "first_token_top": [
+        [
+          "L3_04_05_09",
+          29
+        ],
+        [
+          "L3_01_10_02",
+          12
+        ],
+        [
+          "L3_02_07_07",
+          5
+        ],
+        [
+          "L3_02_07_03",
+          2
+        ],
+        [
+          "L3_01_05_01",
+          1
+        ]
+      ],
+      "first_token_define_projection_share": 0.2449,
+      "first_token_distinct": 5,
+      "failure_reasons": {
+        "wrong_family": 46,
+        "partial_overlap": 2,
+        "nontermination_no_end": 1
+      },
+      "by_platform": {
+        "gee": {
+          "n": 41,
+          "exact": 0,
+          "mean_precision": 0.0089,
+          "mean_recall": 0.0047,
+          "empty": 0
+        },
+        "qgis": {
+          "n": 8,
+          "exact": 0,
+          "mean_precision": 0.0,
+          "mean_recall": 0.0,
+          "empty": 0
+        }
+      }
+    },
+    "oracle_len_8": {
+      "condition": "oracle_len_8",
+      "task_type_mode": "oracle",
+      "length_mode": "8",
+      "n": 49,
+      "exact_chain": 0,
+      "exact_chain_rate": 0.0,
+      "mean_code_precision": 0.1308,
+      "mean_code_recall": 0.1966,
+      "mean_set_f1": 0.1478,
+      "empty_predictions": 0,
+      "empty_rate": 0.0,
+      "eos_terminated": "49/49",
+      "mean_pred_length": 6.29,
+      "median_pred_length": 7,
+      "mean_length_error": 1.8,
+      "invalid_l3_token_rows": 0,
+      "first_token_top": [
+        [
+          "L3_03_02_03",
+          5
+        ],
+        [
+          "L3_03_02_01",
+          4
+        ],
+        [
+          "L3_02_02_02",
+          3
+        ],
+        [
+          "L3_01_02_02",
+          3
+        ],
+        [
+          "L3_02_05_19",
+          3
+        ],
+        [
+          "L3_01_09_03",
+          3
+        ],
+        [
+          "L3_08_01_01",
+          2
+        ],
+        [
+          "L3_03_01_01",
+          2
+        ],
+        [
+          "L3_02_03_06",
+          2
+        ],
+        [
+          "L3_08_01_02",
+          2
+        ]
+      ],
+      "first_token_define_projection_share": 0.0204,
+      "first_token_distinct": 27,
+      "failure_reasons": {
+        "partial_overlap": 29,
+        "wrong_family": 20
+      },
+      "by_platform": {
+        "gee": {
+          "n": 41,
+          "exact": 0,
+          "mean_precision": 0.122,
+          "mean_recall": 0.1672,
+          "empty": 0
+        },
+        "qgis": {
+          "n": 8,
+          "exact": 0,
+          "mean_precision": 0.176,
+          "mean_recall": 0.3472,
+          "empty": 0
+        }
+      }
+    },
+    "unknown_len_8": {
+      "condition": "unknown_len_8",
+      "task_type_mode": "unknown",
+      "length_mode": "8",
+      "n": 49,
+      "exact_chain": 0,
+      "exact_chain_rate": 0.0,
+      "mean_code_precision": 0.0,
+      "mean_code_recall": 0.0,
+      "mean_set_f1": 0.0,
+      "empty_predictions": 0,
+      "empty_rate": 0.0,
+      "eos_terminated": "48/49",
+      "mean_pred_length": 4.12,
+      "median_pred_length": 4,
+      "mean_length_error": -0.37,
+      "invalid_l3_token_rows": 0,
+      "first_token_top": [
+        [
+          "L3_04_05_09",
+          25
+        ],
+        [
+          "L3_01_10_02",
+          12
+        ],
+        [
+          "L3_02_07_07",
+          7
+        ],
+        [
+          "L3_01_05_01",
+          4
+        ],
+        [
+          "L3_02_07_03",
+          1
+        ]
+      ],
+      "first_token_define_projection_share": 0.2449,
+      "first_token_distinct": 5,
+      "failure_reasons": {
+        "wrong_family": 48,
+        "nontermination_no_end": 1
+      },
+      "by_platform": {
+        "gee": {
+          "n": 41,
+          "exact": 0,
+          "mean_precision": 0.0,
+          "mean_recall": 0.0,
+          "empty": 0
+        },
+        "qgis": {
+          "n": 8,
+          "exact": 0,
+          "mean_precision": 0.0,
+          "mean_recall": 0.0,
+          "empty": 0
+        }
+      }
+    }
+  },
+  "contrasts": [
+    {
+      "contrast": "oracle_len_type vs unknown_len_type",
+      "meaning": "task_type model-input effect (per-type length policy held constant)",
+      "delta_exact_rate": 0.0,
+      "delta_precision": -0.1076,
+      "delta_recall": -0.1351,
+      "delta_set_f1": -0.1164,
+      "delta_empty_rate": 0.0,
+      "delta_define_projection_share": 0.2449,
+      "delta_mean_pred_length": -1.57
+    },
+    {
+      "contrast": "oracle_len_8 vs unknown_len_8",
+      "meaning": "task_type model-input effect (fixed length 8 held constant)",
+      "delta_exact_rate": 0.0,
+      "delta_precision": -0.1308,
+      "delta_recall": -0.1966,
+      "delta_set_f1": -0.1478,
+      "delta_empty_rate": 0.0,
+      "delta_define_projection_share": 0.2245,
+      "delta_mean_pred_length": -2.17
+    },
+    {
+      "contrast": "unknown_len_type vs unknown_len_8",
+      "meaning": "length-policy effect under task_type=Unknown",
+      "delta_exact_rate": 0.0,
+      "delta_precision": -0.0075,
+      "delta_recall": -0.004,
+      "delta_set_f1": -0.0052,
+      "delta_empty_rate": 0.0,
+      "delta_define_projection_share": 0.0,
+      "delta_mean_pred_length": 0.24
+    },
+    {
+      "contrast": "oracle_len_type vs oracle_len_8",
+      "meaning": "length-policy effect under task_type=Oracle",
+      "delta_exact_rate": 0.0,
+      "delta_precision": 0.0157,
+      "delta_recall": 0.0575,
+      "delta_set_f1": 0.0262,
+      "delta_empty_rate": 0.0,
+      "delta_define_projection_share": 0.0204,
+      "delta_mean_pred_length": 0.84
+    }
+  ],
+  "sep9_anchor_reproduction": {
+    "anchor": {
+      "code_precision": 0.1532,
+      "code_recall": 0.1978,
+      "mean_length_error": 1.04,
+      "tolerance": 0.03
+    },
+    "observed": {
+      "mean_code_precision": 0.1151,
+      "mean_code_recall": 0.1391,
+      "mean_length_error": 0.96
+    },
+    "precision_ok": false,
+    "recall_ok": false
+  },
+  "notes": [
+    "task_type reaches the model via task_type_id embedding + structured prompt text only; per-task-type dynamic median lengths do not exist in the paper_v1 profile (flat means only, set explicitly per condition).",
+    "unknown_len_8 replicates the frozen benchmark inference protocol (INFERENCE_CONFIG_FREEZE_v1.json m1 block) on val rows.",
+    "benchmark empty graphs (88/100) additionally include bridge drops; the empty_rate here is token-level (no bridge involved)."
+  ],
+  "minutes": 0.0,
+  "peak_memory_gb": null
+}

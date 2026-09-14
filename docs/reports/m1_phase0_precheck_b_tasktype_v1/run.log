@@ -1,0 +1,105 @@
+  [OK] Length stats loaded (0 task types): /home/qy/system_redesign/docs/reports/paper_v1_profile_v1/task_type_length_stats_paper_v1.json
+[V4 Inferencer] Loading model: /home/qy/gee_llm_smoke/m1_r1_ckpt/best_gen_composite_model.pth
+[V4 Inferencer] Task vocab: /home/qy/gee_llm_smoke/m1_task_vocab_v1.json
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  32%|███▏      | 64/199 [00:00<00:00, 633.37it/s]Loading weights:  64%|██████▍   | 128/199 [00:00<00:00, 410.78it/s]Loading weights:  87%|████████▋ | 174/199 [00:00<00:00, 422.21it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 432.65it/s]
+[transformers] [1mBertModel LOAD REPORT[0m from: bert-base-uncased
+Key                                        | Status     |  | 
+-------------------------------------------+------------+--+-
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  | 
+cls.seq_relationship.weight                | UNEXPECTED |  | 
+cls.predictions.bias                       | UNEXPECTED |  | 
+cls.predictions.transform.dense.weight     | UNEXPECTED |  | 
+cls.predictions.transform.dense.bias       | UNEXPECTED |  | 
+cls.seq_relationship.bias                  | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+  Checkpoint info: epoch=18
+  [OK] state_dict strict=True loaded successfully
+  Model loaded on cuda:0
+  Vocab loaded: 128 L3 codes, 0 with names
+  Transition matrix: 79 states
+  [INFO] Set predictor not configured; running without set-prior constraints
+[STAGE 0] reload gate:
+{
+  "checkpoint": "/home/qy/gee_llm_smoke/m1_r1_ckpt/best_gen_composite_model.pth",
+  "checkpoint_sha256": "97e61fd448d3369f3ef36ce800cffe267a69511a2b418910b9a31a90479d1bea",
+  "frozen_sha256": "97e61fd448d3369f3ef36ce800cffe267a69511a2b418910b9a31a90479d1bea",
+  "vocab_profile": "paper_v1_128",
+  "model_vocab_size": 132,
+  "content_vocab_size": 128,
+  "n_id_to_l3": 128,
+  "transition_states": 79,
+  "task_types": 5,
+  "val_rows": 49,
+  "length_policy_means": {
+    "GEE_COMPLETE_OUTPUT_WORKFLOW": 6,
+    "qgis_audited_existing_506": 2,
+    "qgis_api_pattern_v2": 8,
+    "qgis_api_standalone_v2": 1
+  },
+  "ckpt_epoch": 18,
+  "params_m": 117.4,
+  "deterministic_beam": true
+}
+
+[COND] oracle_len_type
+{
+  "exact_chain": 0,
+  "mean_code_precision": 0.1151,
+  "mean_code_recall": 0.1391,
+  "mean_set_f1": 0.1216,
+  "empty_predictions": 0,
+  "mean_pred_length": 5.45,
+  "mean_length_error": 0.96,
+  "first_token_define_projection_share": 0.0,
+  "first_token_distinct": 26
+}
+
+[COND] unknown_len_type
+{
+  "exact_chain": 0,
+  "mean_code_precision": 0.0075,
+  "mean_code_recall": 0.004,
+  "mean_set_f1": 0.0052,
+  "empty_predictions": 0,
+  "mean_pred_length": 3.88,
+  "mean_length_error": -0.61,
+  "first_token_define_projection_share": 0.2449,
+  "first_token_distinct": 5
+}
+
+[COND] oracle_len_8
+{
+  "exact_chain": 0,
+  "mean_code_precision": 0.1308,
+  "mean_code_recall": 0.1966,
+  "mean_set_f1": 0.1478,
+  "empty_predictions": 0,
+  "mean_pred_length": 6.29,
+  "mean_length_error": 1.8,
+  "first_token_define_projection_share": 0.0204,
+  "first_token_distinct": 27
+}
+
+[COND] unknown_len_8
+{
+  "exact_chain": 0,
+  "mean_code_precision": 0.0,
+  "mean_code_recall": 0.0,
+  "mean_set_f1": 0.0,
+  "empty_predictions": 0,
+  "mean_pred_length": 4.12,
+  "mean_length_error": -0.37,
+  "first_token_define_projection_share": 0.2449,
+  "first_token_distinct": 5
+}
+Traceback (most recent call last):
+  File "/home/qy/gee_llm_smoke/m1_phase0_b_tasktype_ablation.py", line 367, in <module>
+    raise SystemExit(main())
+  File "/home/qy/gee_llm_smoke/m1_phase0_b_tasktype_ablation.py", line 307, in main
+    "observed": {k: anchor[k] for k in ("code_precision", "code_recall", "mean_length_error")},
+  File "/home/qy/gee_llm_smoke/m1_phase0_b_tasktype_ablation.py", line 307, in <dictcomp>
+    "observed": {k: anchor[k] for k in ("code_precision", "code_recall", "mean_length_error")},
+KeyError: 'code_precision'
