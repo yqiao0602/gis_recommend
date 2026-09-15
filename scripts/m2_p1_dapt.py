@@ -187,22 +187,32 @@ def main() -> int:
     print(f"train files {len(train_rows)}, eval files {len(eval_rows)}")
 
     def to_blocks(texts):
-        blocks = []
+        """Stream-pack all text into uniform `block`-token blocks (GPT-style:
+        files joined by EOS, then chunked; no partial blocks)."""
+        blocks, carry = [], []
+        eos = tok.eos_token_id
         for t in texts:
             ids = tok(t, truncation=True, max_length=200_000,
                       add_special_tokens=False)["input_ids"]
-            for s in range(0, len(ids), args.block):
-                b = ids[s:s + args.block]
-                if len(b) >= 128:
-                    blocks.append(torch.tensor(b, dtype=torch.long))
+            carry.extend(ids)
+            carry.append(eos)
+            while len(carry) >= args.block:
+                blocks.append(torch.tensor(carry[:args.block], dtype=torch.long))
+                carry = carry[args.block:]
         return blocks
 
+    # eval texts for the PPL buckets (holdout files never enter training)
+    eval_texts = [r["text"] for r in eval_rows]
     t_blocks = to_blocks([r["text"] for r in train_rows])
     random.shuffle(t_blocks)
     print(f"train blocks (x{args.block}): {len(t_blocks)}")
-    # eval buckets: held-out GIS scripts; API-heavy subset; generic control
-    eval_texts = [r["text"] for r in eval_rows]
-    api_texts = [t for t in eval_texts if "Qgs" in t or "processing.run" in t][:8]
+    # eval buckets: random GIS holdout sample; class-level API subset; generic control
+    gis_holdout = random.sample(eval_texts, min(8, len(eval_texts)))
+    api_texts = [t for t in eval_texts
+                 if "QgsVectorLayer" in t or "QgsProcessingAlgorithm" in t
+                 or "QgsRasterLayer" in t or "QgsGeometry" in t][:8]
+    if not api_texts:
+        api_texts = gis_holdout  # degenerate fallback; recorded in metrics
     ds = BlockDataset(t_blocks)
     loader = DataLoader(ds, batch_size=args.batch_size, shuffle=False, collate_fn=collate)
 
@@ -222,7 +232,7 @@ def main() -> int:
     # ── BEFORE checks (Base) ──
     print("\n== domain-signal checks BEFORE DAPT (Base) ==")
     before = {
-        "ppl_gis_holdout": round(ppl_on_texts(model, tok, eval_texts[:8]), 4),
+        "ppl_gis_holdout": round(ppl_on_texts(model, tok, gis_holdout), 4),
         "ppl_api_heavy": round(ppl_on_texts(model, tok, api_texts), 4),
         "ppl_generic_control": round(ppl_on_texts(model, tok, [GENERIC_CONTROL * 3]), 4),
         "cloze": cloze_probe(model, tok),
@@ -263,7 +273,7 @@ def main() -> int:
     model.eval()
     print("\n== domain-signal checks AFTER DAPT ==")
     after = {
-        "ppl_gis_holdout": round(ppl_on_texts(model, tok, eval_texts[:8]), 4),
+        "ppl_gis_holdout": round(ppl_on_texts(model, tok, gis_holdout), 4),
         "ppl_api_heavy": round(ppl_on_texts(model, tok, api_texts), 4),
         "ppl_generic_control": round(ppl_on_texts(model, tok, [GENERIC_CONTROL * 3]), 4),
         "cloze": cloze_probe(model, tok),

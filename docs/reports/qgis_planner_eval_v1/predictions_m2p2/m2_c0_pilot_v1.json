@@ -1,0 +1,43 @@
+{
+  "schema": "gis_recommend.m2_c0_sft.v1",
+  "arm": "M2-C0 (Base + plain SFT, no DAPT)",
+  "base_model": "/home/qy/models/Qwen3.5-9B-Base-dapt-merged",
+  "train_rows": 8817,
+  "epochs": 1,
+  "loss_first": 0.4320137419993989,
+  "loss_last": 0.11186929361325383,
+  "train_minutes": 157.8,
+  "peak_memory_gb": 14.35,
+  "pilot_val": {
+    "n": 49,
+    "exact_chain": 43,
+    "code_precision": 0.9209,
+    "code_recall": 0.9087,
+    "mean_length_error": 0.73,
+    "runaway_rows_ge20": 2,
+    "empty_rows": 0
+  },
+  "pilot_dev20_runaway_probe": {
+    "n": 20,
+    "runaway_ge20ops_tokens": 4,
+    "empty_token_rows": 0,
+    "mean_codes": 7.4,
+    "max_codes": 25
+  },
+  "references": {
+    "M3-P1-EOS-R1-V2_val": {
+      "exact": 41,
+      "P": 0.885,
+      "R": 0.912,
+      "lenErr": 1.22
+    },
+    "M3-P1_dev20": {
+      "runaway": 3,
+      "mean_codes": 6.95
+    },
+    "M3-P2-T1_dev20": {
+      "runaway": 2,
+      "mean_codes": 4.95
+    }
+  }
+}
