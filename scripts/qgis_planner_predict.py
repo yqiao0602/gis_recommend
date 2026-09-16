@@ -74,8 +74,10 @@ def run_m1(args, tasks: list[dict], bridge: dict[str, str]) -> list[dict]:
     import os
     import torch
 
-    assert os.environ.get("GIS_VOCAB_PROFILE") == "paper_v1_128", \
-        "M1 route requires GIS_VOCAB_PROFILE=paper_v1_128"
+    profile = os.environ.get("GIS_VOCAB_PROFILE", "")
+    assert profile in ("paper_v1_128", "v2_94_stable"), \
+        f"M1 route requires GIS_VOCAB_PROFILE=paper_v1_128 (M1-R1) or " \
+        f"v2_94_stable (legacy V4.x cross-era eval); got {profile!r}"
     sys_path_setup()
     from gis_recommend.inference.infer_l3_candidates_v4 import L3SequenceInferencerV4
 
