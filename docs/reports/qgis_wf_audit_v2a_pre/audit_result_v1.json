@@ -1,0 +1,199 @@
+{
+  "schema": "gis_recommend.qgis_wf_v2a_pre_audit.v1",
+  "funnel": {
+    "raw": 4415,
+    "multi_step": 3924,
+    "link_valid": 3525,
+    "dag_valid": 3449,
+    "sha_pass": 3422,
+    "leakage_pass": 3421,
+    "dedup_pass": 2304,
+    "dedup_drop": 1117,
+    "link_invalid": 399,
+    "cyclic": 76,
+    "single_proc": 491
+  },
+  "tiers": {
+    "gold_structural": 817,
+    "silver_structural": 608,
+    "no_resolvable_alg": 806,
+    "single_operator": 73
+  },
+  "operator_support": {
+    "distinct_operators": 369,
+    "bands": {
+      "core_ge100": 46,
+      "normal_30_99": 51,
+      "observe_10_29": 72,
+      "longtail_3_9": 109,
+      "rare_1_2": 91
+    },
+    "top15": [
+      [
+        "native:fieldcalculator",
+        3684
+      ],
+      [
+        "native:buffer",
+        781
+      ],
+      [
+        "native:joinattributestable",
+        759
+      ],
+      [
+        "native:reprojectlayer",
+        742
+      ],
+      [
+        "native:fixgeometries",
+        670
+      ],
+      [
+        "native:extractbyexpression",
+        606
+      ],
+      [
+        "native:createspatialindex",
+        522
+      ],
+      [
+        "transform",
+        507
+      ],
+      [
+        "native:dissolve",
+        500
+      ],
+      [
+        "native:clip",
+        483
+      ],
+      [
+        "native:deletecolumn",
+        469
+      ],
+      [
+        "native:mergevectorlayers",
+        415
+      ],
+      [
+        "native:extractbylocation",
+        397
+      ],
+      [
+        "native:refactorfields",
+        392
+      ],
+      [
+        "gdal:rastercalculator",
+        379
+      ]
+    ]
+  },
+  "provider_instances": {
+    "api": 17686,
+    "native": 15910,
+    "gdal": 2332,
+    "qgis": 1171,
+    "grass7": 583,
+    "saga": 168,
+    "otb": 17,
+    "rvt": 13,
+    "wbt": 2
+  },
+  "kind_instances": {
+    "alg": 20196,
+    "api_plumbing": 8192,
+    "api_unknown": 7779,
+    "api_attr_edit": 1079,
+    "api_semantic": 636
+  },
+  "task_type_coverage_top15": [
+    [
+      "Infrastructure",
+      426
+    ],
+    [
+      "Topography",
+      422
+    ],
+    [
+      "Land use/land cover",
+      401
+    ],
+    [
+      "Human settlements",
+      336
+    ],
+    [
+      "Boundaries",
+      211
+    ],
+    [
+      "Geomorphic landforms/processes",
+      193
+    ],
+    [
+      "Surface water",
+      184
+    ],
+    [
+      "Natural hazards",
+      154
+    ],
+    [
+      "Terrestrial hydrosphere indicators",
+      126
+    ],
+    [
+      "Forest science",
+      94
+    ],
+    [
+      "Environmental governance/management",
+      63
+    ],
+    [
+      "Vegetation",
+      48
+    ],
+    [
+      "Land surface/agriculture indicators",
+      48
+    ],
+    [
+      "Geodetics",
+      44
+    ],
+    [
+      "Habitat conversion/fragmentation",
+      42
+    ]
+  ],
+  "chain_length_of_tiered": {
+    "mean": 14.2,
+    "median": 8
+  },
+  "sha_excluded": 27,
+  "leakage_6gram_hits": 1,
+  "notes": [
+    "Structural audit only: description-code consistency NOT verified (needs sampling review).",
+    "gold_structural = >=2 catalog-resolvable operators + valid DAG + zero unresolved processes;",
+    "silver_structural = >=2 resolvable but some unresolved leftovers.",
+    "API lift: slug-equivalence + 998 semantic bindings + attribute-edit classes; plumbing dropped.",
+    "qgis: aliases normalized to native:."
+  ],
+  "dedup_correction_v2": {
+    "note": "v1 dedup by operator-chain signature alone dropped 1,117 (32%) — WRONG for V2a: paper_v1 508-pool precedent keeps same-chain-different-text rows (task-text diversity carries supervision). Corrected key = (normalized chain, workflow name).",
+    "dup_drop": 298,
+    "gold_structural": 1337,
+    "silver_structural": 928,
+    "single_operator": 294,
+    "pure_api_flows": 565,
+    "trainable_gold_plus_silver": 2265,
+    "with_single_operator": 2559,
+    "total_including_pure_api": 3124
+  },
+  "verdict_vs_owner_threshold": "trainable 2,265 >= 2,000 threshold (structural upper bound; description-code consistency NOT yet verified)"
+}
