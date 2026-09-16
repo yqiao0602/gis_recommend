@@ -728,3 +728,31 @@
 - `scripts/score_qgis_planner_benchmark_v01.py` 对 graph 与 refusal 使用独立分母。Graph 输出 operator/edge micro PRF、operator-labeled graph exact match、dependency closure、harmful extra operator 和 false refusal；refusal 输出 accuracy、reason-code accuracy 和 unsafe-planning rate。结果记录 graph/refusal prediction SHA-256。
 - exact match 使用带 operator label 的有向图同构，避免重复 operator 时链与星形被 edge multiset 错判为相同；process ID 重命名和 JSON 顺序不影响评分。
 - 新增测试 15/15 通过；全量 synthetic perfect prediction smoke 覆盖 final 120 + refusal 12，graph exact/operator/edge 与 refusal 指标均为 1.0。该 smoke 不包含真实模型预测。
+
+### 2026-09-15 对账更正：api_pattern 120 条已并入训练集（QGIS 池 629）
+
+- **更正**：此前（含 full_funnel_audit_v1 初版）引用 `qgis_api_pattern_production_final/final_report_v1.md` 的 `not_granted_consumption_only` 冻结时点，误判"120 条待用户裁决"。用户对账指出：并入决策已于 2026-09 初做出并执行。
+- **manifest 现值核验**（`paper_v1_supervision/summary_v1.json`）：QGIS 池 = **629 行**（train 616 / val 8 / test 5）；evidence levels：GOLD 52 / SILVER 454 / **NEW_SILVER_PATTERN 120** / NEW_SILVER_STANDALONE 3；全 manifest 8,912 行（GEE 8,283 权威 + QGIS 629），source-disjoint 8,797、跨 split 0 重叠。120 条全部 `granted_paper_v1_train_only`，在 C0/P2 SFT 训练数据内。
+- **120 条构成**（875-funnel）：任务文本 98 英 + 22 中，来源 docstring 原文 90 / 任务性注释 11 / 领域命名 scope 19；链长 2-55 步（mode 3），零 tokenizer/V4 拒绝。
+- **遗留数据治理靶点（新登记）**：98 条英文任务文本是未清洗的原始 docstring（`#` 注释标记、星号线、`Class.method: N 步几何处理链` 直出）——全项目唯一英文 QGIS 监督，真实用户语言 ✅ / 输入分布干净 ❌（推理时收到的是干净英文任务）。清洗/规范化列入数据治理轮，与"522 行中文 QGIS 英文化"增广一起权衡——这批独扛英文监督，杠杆不成比例地大。
+- 教训：**引用报告结论前必须查 manifest 现值**——报告记录的是冻结时点，决策执行后报告不会自动更新；`training_admission` 字段以 manifest/实际训练文件为准。
+
+## 2026-09-16：外部 GIS 训练数据资源调研完成（paper_v2 前置，只读）
+
+- 只读调研：未下载/未消费任何外部数据，未修改 authority/评测/checkpoint，训练行 0。报告：`docs/reports/external_gis_training_data_survey_v1.md`。
+- 检索面：arXiv API（https）、OpenAlex、GitHub API + 仓库页核验、Hugging Face 目录、QGIS Hub。所有"已核验"条目均直接访问仓库页/API 原始响应；排除一条 WebSearch 误报（LLM-Geo arXiv ID 错误，实为机器人论文）。
+- 结论 ①：**不存在现成的"NL 意图 → QGIS 算子 DAG"训练集**（HF + 学术文献双空白）——dataset contribution 机会。
+- 结论 ②：三条可转化外部增量——GeoAnalystBench（Apache-2.0，GeoDS，50 任务×3-10 子任务，NL+人工工作流+参考代码，ArcPy 生态）；AutoGEEval-plus（szx-0633，2,612 用例 NL→GEE Python code，无 license）；GISAgentBench（arXiv 2608.01645，349 任务全部来自 GIS Stack Exchange + 可执行轨迹 + ground truth，仓库未公开）。
+- 结论 ③：**GEE↔QGIS / ArcPy↔QGIS 算子 crosswalk 外部不存在**——内部 KG（350 L3 挂双平台算子）是已知唯一实现，列为论文贡献点。
+- 结论 ④：GEE-Ops（whuhsy/GEE-Ops，18.5 万脚本）/Geo-FuB（15.4 万脚本）为平行工作（AST+频繁项集挖算子链），方法论同构，related work 引用与对比基线。
+- 定位：外部数据 = 评测集 + 意图重写种子/few-shot + 引用对标；主料仍是内部 25.7 万描述库。行动建议（未批准）：克隆审计 GeoAnalystBench + GEE-Ops；邮件联系 AutoGEEval 作者要 license；从 GISAgentBench PDF 找仓库。
+- 操作注意：GitHub API 匿名配额 60/hr 极易用尽（HTML 搜索 429 Retry-After 3600，.model3 全量扫描未完成）；arXiv API 必须 https；S2 无 key 必 429；WebSearch 结论必须二次核验。
+
+## 2026-09-16：M1 增强线收官（M1-R2 评测完成 + Phase 3 裁决不开 R3/R4）
+
+- M1-R2（decoder backbone domain pretraining）全链闭环并评测：DAPT 493.4M byte-tokens（migrate 审计 8/8）→ SFT（R1 协议逐行不变）→ 冻结协议评测（R4 纪律遵守，M3 块重评分精确复现 0.1605）。
+- R1→R2（final-100）：空图 88%→20%、bridge 丢弃 83.8%→43.9%、L3 token ×3.4、Define Projection 首 token 99%→0%、operator F1 0.0047→0.0857（×18）；近分布持平（val Top1 14.87→15.24%、诊断 F1 0.173→0.187）；edge F1 仍 0、EM 0/100。
+- Owner 定稿结论：R2 提升"生成什么样的序列"的结构能力，未提升"根据任务语义生成哪一条具体工作流"的条件映射能力；与 Phase 0-B 归因闭环（层次 A 生成器状态修复 / 层次 B 条件映射未动）。
+- Phase 3 裁决：R3/R4 不开，M1 线收束于提交 5e3f818（评测记录）+ 本次收束提交。三路线（M1/M2/M3）一致信号：模型侧调整不改善 task→L3 映射——任务语义—算子映射监督不足为值得优先检验的主要候选瓶颈。
+- 下一阶段：paper_v2 数据侧（25.7 万描述库意图重写）。评测环境事故 2 起（legacy mapping 泄漏 / taxonomy 路径）独立归档于 docs/reports/m1_r2_eval_v1/。
+- 证据：docs/reports/m1_r2_eval_v1/、docs/reports/qgis_planner_eval_v1/SCORES_R2_v1.json + predictions_r2/。

@@ -20,11 +20,17 @@ Add Spatial Index 70 / Lake Inundation 26 / Simplify 4); chain length 1.5 ->
 5.3; **operator F1 0.0047 -> 0.0857 (x18)**. In-distribution is essentially
 flat (val Top1 14.87 -> 15.24%, diagnostic F1 0.173 -> 0.187); edge F1 still
 0, harmful-extra 0.90 (fixgeometries appears in 88/100 rows — a new
-"universal opener" bias). **Conclusion (scenario B, optimistic side)**: domain
-sequence prior solves "can it generate", not "what to generate"; the remaining
-bottlenecks are still task_type conditioning and OOD text->first-step mapping
-(Phase 0-B attribution layers 1-2). R3 (encoder-side adaptation) targets
-exactly those bottlenecks but is NOT started. Two evaluation-environment
+"universal opener" bias). **Conclusion (owner-final, M1 line closed at 5e3f818)**: R2 improves the
+structural capability of "what kind of sequence to generate" but not the
+conditional mapping of "which specific workflow to generate from the task
+semantics" (layer A generator state fixed by DAPT; layer B conditional
+mapping untouched — closing the loop with the Phase 0-B attribution).
+**Phase 3 ruling: R3/R4 will NOT be opened** — the three-route convergent
+signal shows model-side changes do not improve task->L3 mapping; insufficient
+task-semantics-to-operator supervision in the training data is the primary
+candidate bottleneck worth prioritizing (careful wording: not "proven to be
+data"). **Next phase: paper_v2 data side** (intent rewrite of the 257k
+description library), with R1/R2/M2/M3 as the preceding baselines. Two evaluation-environment
 incidents are archived separately (dev-20 first run invalidated by legacy
 id-mapping leakage; val diagnostic crashed on the taxonomy default path — the
 three M1 inference env vars must be embedded in the launch entrypoint).

@@ -9,7 +9,7 @@
 
 M1 增强线（decoder backbone domain pretraining）全链闭环：DAPT 493.4M byte-tokens（loss 5.56→0.6257）→ migrate 审计 8/8 → SFT（R1 协议逐行不变，唯一变量 = decoder 骨干初始化，ckpt `22a77f77…`）→ 冻结协议评测（R4 纪律：prediction hash 先于 gold 锁定；M3 块重评分精确复现锁定值 0.1605）。
 
-**R1 → R2（final-100）**：空图 88%→**20%**；bridge 丢弃 83.8%→43.9%；L3 token 154→528；Define Projection 首 token 99%→0%（新吸引子 AddSpatialIndex 70/LakeInundation 26/Simplify 4）；链长 1.5→5.3；**operator F1 0.0047→0.0857（×18）**。**近分布基本持平**（val Top1 14.87→15.24%、诊断 F1 0.173→0.187）；edge F1 仍 0、harmful extra 0.90（fixgeometries 88/100"万能开头"新偏置）。**结论（B 场景偏乐观）**：领域序列先验解决"能不能生成"，不解决"生成什么"；剩余瓶颈仍是 task_type 条件化与文本 OOD 条件映射（Phase 0-B 归因①②）；R3（encoder 侧适配）方向对准剩余瓶颈但未启动。评测环境事故 2 起已独立归档（dev-20 首跑 legacy mapping 泄漏无效；val 诊断 taxonomy 路径崩——M1 推理三环境变量必须内嵌启动入口）。证据：`docs/reports/m1_r2_eval_v1/`、`docs/reports/qgis_planner_eval_v1/SCORES_R2_v1.json` + `predictions_r2/`。
+**R1 → R2（final-100）**：空图 88%→**20%**；bridge 丢弃 83.8%→43.9%；L3 token 154→528；Define Projection 首 token 99%→0%（新吸引子 AddSpatialIndex 70/LakeInundation 26/Simplify 4）；链长 1.5→5.3；**operator F1 0.0047→0.0857（×18）**。**近分布基本持平**（val Top1 14.87→15.24%、诊断 F1 0.173→0.187）；edge F1 仍 0、harmful extra 0.90（fixgeometries 88/100"万能开头"新偏置）。**结论（owner 定稿，M1 线收束于 5e3f818）**：R2 提升了"生成什么样的序列"的结构能力，但没有显著提升"根据任务语义生成哪一条具体工作流"的条件映射能力（层次 A 生成器状态被 DAPT 修复；层次 B 条件映射未动，与 Phase 0-B 归因闭环）。**Phase 3 裁决：R3/R4 不开**——三路线一致信号表明模型侧调整不改善 task→L3 映射，"任务语义—算子映射监督不足"为值得优先检验的主要候选瓶颈（严格措辞：非"已证明来自数据"）。**下一阶段：paper_v2 数据侧**（25.7 万描述库意图重写），R1/R2/M2/M3 为前置基线。评测环境事故 2 起已独立归档（dev-20 首跑 legacy mapping 泄漏无效；val 诊断 taxonomy 路径崩——M1 推理三环境变量必须内嵌启动入口）。证据：`docs/reports/m1_r2_eval_v1/`、`docs/reports/qgis_planner_eval_v1/SCORES_R2_v1.json` + `predictions_r2/`。
 
 ## 外部 GIS 训练数据调研完成（2026-09-16，paper_v2 前置）
 
