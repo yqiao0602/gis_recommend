@@ -1,0 +1,64 @@
+{
+  "schema": "gis_recommend.v2a.eval.v1",
+  "tag": "dev_canon",
+  "n": 147,
+  "adapter": "v2a_b/adapter_v1",
+  "decoding": {
+    "greedy": true,
+    "max_new_tokens": 512,
+    "eos_stop_ids": [
+      248044,
+      248046
+    ],
+    "hit_cap_rows": 64
+  },
+  "parse_ok_rate": 0.5578,
+  "parse_failures": {
+    "json_error": 65
+  },
+  "operator_micro": {
+    "tp": 76,
+    "fp": 162,
+    "fn": 274,
+    "precision": 0.3193,
+    "recall": 0.2171,
+    "f1": 0.2585
+  },
+  "operator_macro_row_f1": 0.3009,
+  "link_micro": {
+    "tp": 90,
+    "fp": 62,
+    "fn": 169,
+    "precision": 0.5921,
+    "recall": 0.3475,
+    "f1": 0.438
+  },
+  "link_macro_row_f1": 0.5708,
+  "graph_exact_match_rate": 0.0272,
+  "empty_operator_rows": 0,
+  "distinct_operators_predicted": 88,
+  "distinct_operators_gold": 149,
+  "out_of_catalog_operator_instances": 89,
+  "gold_operator_instances": 811,
+  "pred_operator_instances": 238,
+  "minutes": 44.4,
+  "canonicalized_secondary": {
+    "note": "diagnostic only: catalog name canonicalization (alias+nearest) and consecutive-duplicate collapse applied post-hoc; NOT the primary metric",
+    "operator": {
+      "tp": 93,
+      "fp": 108,
+      "fn": 257,
+      "precision": 0.4627,
+      "recall": 0.2657,
+      "f1": 0.3376
+    },
+    "link": {
+      "tp": 90,
+      "fp": 62,
+      "fn": 169,
+      "precision": 0.5921,
+      "recall": 0.3475,
+      "f1": 0.438
+    }
+  }
+}
