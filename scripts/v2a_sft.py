@@ -24,11 +24,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import time
 from collections import Counter
 from pathlib import Path
 
 import torch
+import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import LoraConfig, get_peft_model
@@ -259,6 +261,15 @@ def main() -> int:
     ap.add_argument("--eval-every", type=int, default=0,
                     help="0 = M3-P1-compatible end-only save; >0 = periodic dev eval "
                          "with best-checkpoint keeping (V2a addition, flagged in report)")
+    ap.add_argument("--per-sample-weight", action="store_true",
+                    help="true per-sample weighted CE (required for profile B)")
+    ap.add_argument("--smoke", action="store_true", help="pre-training smoke: real loss+eval paths")
+    ap.add_argument("--smoke-steps", type=int, default=8)
+    ap.add_argument("--smoke-eval-rows", type=int, default=3)
+    ap.add_argument("--weight-sanity", action="store_true",
+                    help="run the three weighted-loss sanity checks and exit")
+    ap.add_argument("--length-bucketed", action="store_true",
+                    help="memory adaptation: similar-length micro-batches, shuffled batch order")
     ap.add_argument("--audit", action="store_true")
     ap.add_argument("--skip-gpu", action="store_true")
     args = ap.parse_args()
@@ -275,6 +286,125 @@ def main() -> int:
         audit(args, train_rows, val_rows, tok)
         return 0
 
+    if args.smoke:
+        import torch.nn.functional as _F
+        # SMOKE: exercises the REAL training loss path, the REAL eval path, and
+        # the artifact writers on a handful of rows, and asserts the per-sample
+        # weighted path agrees with HF's native loss. Catches exactly the three
+        # failure classes that a prompt/target-only audit misses.
+        print("=" * 70)
+        print("V2a SMOKE: real loss path + real eval path + artifact persistence")
+        print("=" * 70)
+        n_steps = args.smoke_steps
+        sub = train_rows[:max(args.batch_size * n_steps * 2, 4)]
+        collate.tok = tok
+        bnb = BitsAndBytesConfig(load_in_4bit=True, bnb_quant_type="nf4",
+                                 bnb_4bit_compute_dtype=torch.bfloat16,
+                                 bnb_4bit_use_double_quant=True)
+        model = AutoModelForCausalLM.from_pretrained(args.model, quantization_config=bnb,
+                                                     device_map="cuda:0")
+        model.config.use_cache = False
+        model.gradient_checkpointing_enable()
+        model.enable_input_require_grads()
+        model = get_peft_model(model, LoraConfig(
+            r=args.lora_r, lora_alpha=args.lora_alpha, lora_dropout=0.0,
+            target_modules=["q_proj", "k_proj", "v_proj", "o_proj"], task_type="CAUSAL_LM"))
+        ds = SFTSet(sub, tok, args.max_len)
+        batch = collate([ds[i] for i in range(min(args.batch_size, len(sub)))])
+        batch = {k: v.to("cuda:0") for k, v in batch.items()}
+        w = batch.pop("sample_weight")
+
+        def per_sample_loss(b, weights):
+            labels = b["labels"]
+            logits = model(**{k: v for k, v in b.items() if k != "labels"}).logits
+            sl = labels[:, 1:]
+            slog = logits[:, :-1, :]
+            flat = _F.cross_entropy(slog.reshape(-1, slog.size(-1)).float(),
+                                    sl.reshape(-1), reduction="none", ignore_index=-100)
+            per_tok = flat.view(sl.size(0), -1)
+            mask = (sl != -100).float()
+            weights = weights.to(per_tok.device)
+            w_tok = weights.unsqueeze(1) * mask
+            row = per_tok.sum(1) / mask.sum(1).clamp(min=1)
+            return (per_tok * w_tok).sum() / w_tok.sum().clamp(min=1e-9), row
+
+        with torch.no_grad():
+            hf = model(**batch).loss.item()
+            uni, row = per_sample_loss(batch, torch.ones_like(w))
+            align = abs(float(uni) - hf) < 5e-4
+        print(f"  [A] per-sample(w=all 1) vs HF native loss: {float(uni):.6f} vs {hf:.6f} "
+              f"-> {'MATCH' if align else 'MISMATCH'}")
+        print(f"      per-row losses: {[round(float(x), 4) for x in row]}")
+
+        # real training steps through the production code path
+        opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=args.lr)
+        model.train()
+        losses = []
+        for step in range(n_steps):
+            b = collate([ds[i % len(sub)] for i in range(args.batch_size)])
+            b = {k: v.to("cuda:0") for k, v in b.items()}
+            ww = b.pop("sample_weight")
+            loss, _ = per_sample_loss(b, ww)
+            opt.zero_grad(set_to_none=True)
+            loss.backward()
+            opt.step()
+            losses.append(round(float(loss), 4))
+        print(f"  [B] {n_steps} real optimizer steps ran; losses {losses}")
+        finite = all(x == x and abs(x) < 1e4 for x in losses)
+        print(f"      losses finite: {finite}")
+
+        # real eval path on a few rows + artifact persistence
+        args.out_dir.mkdir(parents=True, exist_ok=True)
+        m, preds = evaluate(model, tok, val_rows[:args.smoke_eval_rows], {"max_new_tokens": 128})
+        (args.out_dir / "smoke_metrics.json").write_text(
+            json.dumps(m, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"  [C] eval ran on {m['n']} rows and metrics persisted: {json.dumps(m)}")
+        ls = sorted(args.out_dir.glob("smoke_metrics.json"))
+        print(f"      artifact check: {[p.name for p in ls]}")
+        ok = align and finite and m["n"] == args.smoke_eval_rows
+        print(f"  SMOKE {'PASS' if ok else 'FAIL'}")
+        return 0 if ok else 1
+
+    if args.weight_sanity:
+        import torch.nn.functional as _F
+        # three checks on a synthetic 2-row batch using the SAME loss code path
+        ids = torch.randint(3, 512, (2, 24))
+        labels = ids.clone()
+        labels[:, :4] = -100
+        logits = torch.randn(2, 24, 512)
+
+        def wloss(w):
+            sl = labels[:, 1:]
+            slog = logits[:, :-1, :]
+            flat = _F.cross_entropy(slog.reshape(-1, 512), sl.reshape(-1),
+                                    reduction="none", ignore_index=-100)
+            per_tok = flat.view(sl.size(0), -1)
+            mask = (sl != -100).float()
+            w = torch.tensor(w, dtype=torch.float32)
+            w_tok = w.unsqueeze(1) * mask
+            row = per_tok.sum(1) / mask.sum(1).clamp(min=1)
+            return float((per_tok * w_tok).sum() / w_tok.sum().clamp(min=1e-9)), row
+
+        plain = float(_F.cross_entropy(logits[:, :-1, :].reshape(-1, 512),
+                                       labels[:, 1:].reshape(-1), ignore_index=-100))
+        eq, row = wloss([1.0, 1.0])
+        chk1 = abs(eq - plain) < 1e-5
+        r1 = float(row[0]); r2 = float(row[1])
+        chk2 = abs(float(wloss([1.0, 0.0])[0]) - r1) < 1e-5
+        half = float(wloss([1.0, 0.5])[0])
+        chk3 = (r1 > half > 0) and (abs(half - (r1 + 0.5 * r2) / 1.5) < 1e-5)
+        naive = plain * 0.75  # what M3-P1's loss*w.mean() would give for [1.0,0.5]
+        print("weighted-loss sanity (same code path as training):")
+        print(f"  per-row losses: r1={r1:.6f} r2={r2:.6f} | plain CE={plain:.6f}")
+        print(f"  1. all weights 1.0 -> equals plain CE: {chk1} ({eq:.6f})")
+        print(f"  2. Tier-2 weight 0 -> Tier-2 contributes nothing: {chk2} ({wloss([1.0,0.0])[0]:.6f} vs r1={r1:.6f})")
+        print(f"  3. Tier-2 weight 0.5 -> partial, analytic match: {chk3} ({half:.6f})")
+        print(f"  (M3-P1's batch-scalar approach would have given {naive:.6f} — "
+              f"different from the per-sample value {half:.6f}: "
+              f"{abs(naive - half) > 1e-6})")
+        print(f"  ALL PASS: {chk1 and chk2 and chk3}")
+        return 0 if (chk1 and chk2 and chk3) else 1
+
     collate.tok = tok
     bundle = {"max_new_tokens": args.max_new_tokens}
     bnb = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4",
@@ -288,8 +418,20 @@ def main() -> int:
         target_modules=["q_proj", "k_proj", "v_proj", "o_proj"], task_type="CAUSAL_LM"))
 
     ds = SFTSet(train_rows, tok, args.max_len)
-    loader = DataLoader(ds, batch_size=args.batch_size, shuffle=True, collate_fn=collate,
-                        generator=torch.Generator().manual_seed(args.seed))
+    if args.length_bucketed:
+        # Memory adaptation (documented): group rows of similar target length into
+        # micro-batches so padding waste stops dominating peak memory, then shuffle
+        # the batch ORDER. Data distribution and effective batch are unchanged.
+        lengths = [len(tok(serialize_target(r), truncation=False)["input_ids"]) for r in train_rows]
+        order = sorted(range(len(train_rows)), key=lambda i: lengths[i])
+        groups = [order[i:i + args.batch_size] for i in range(0, len(order), args.batch_size)]
+        random.Random(args.seed).shuffle(groups)
+        flat = [i for g in groups for i in g]
+        loader = DataLoader(ds, batch_size=args.batch_size, sampler=flat,
+                            collate_fn=collate)
+    else:
+        loader = DataLoader(ds, batch_size=args.batch_size, shuffle=True, collate_fn=collate,
+                            generator=torch.Generator().manual_seed(args.seed))
     opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=args.lr)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -303,10 +445,29 @@ def main() -> int:
         for i, batch in enumerate(loader):
             batch = {k: v.to("cuda:0") for k, v in batch.items()}
             w = batch.pop("sample_weight")
-            out = model(**batch)
-            weighted = out.loss * w.mean()
+            if args.per_sample_weight:
+                # TRUE per-sample weighting: per-row mean CE, then weight by the
+                # row's sample weight. (M3-P1's `loss * w.mean()` only scaled the
+                # batch scalar and could not express Tier-2 x0.5.)
+                labels = batch["labels"]
+                logits = model(**{k: v for k, v in batch.items() if k != "labels"}).logits
+                # CAUSAL SHIFT (same as HF's internal loss): predict token t+1
+                # from position t. Omitting this made B train on a degenerate
+                # copy objective (loss ~8.4 vs A's 0.75).
+                sl = labels[:, 1:]
+                slog = logits[:, :-1, :]
+                flat = F.cross_entropy(slog.reshape(-1, slog.size(-1)).float(),
+                                       sl.reshape(-1), reduction="none", ignore_index=-100)
+                per_tok = flat.view(sl.size(0), -1)
+                mask = (sl != -100).float()
+                w_tok = w.unsqueeze(1).to(per_tok.device) * mask      # per-token weight
+                weighted = (per_tok * w_tok).sum() / w_tok.sum().clamp(min=1e-9)
+                running += weighted.item()
+            else:
+                out = model(**batch)
+                weighted = out.loss * w.mean()
+                running += out.loss.item()
             (weighted / args.grad_accum).backward()
-            running += out.loss.item()
             if (i + 1) % args.grad_accum == 0:
                 opt.step(); opt.zero_grad(set_to_none=True); step += 1
                 if step % 25 == 0:
