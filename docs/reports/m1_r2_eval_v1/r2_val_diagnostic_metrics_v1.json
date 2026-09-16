@@ -1,0 +1,49 @@
+{
+  "schema": "gis_recommend.m1_r1_dev_eval.v1",
+  "route": "M1",
+  "run": "M1-R1",
+  "inference": "V4.6 diverse beam search + transition/length constraints (top-1 candidate)",
+  "eval_set": "/home/qy/gee_llm_smoke/m3_p0_val_49.jsonl",
+  "n_val_rows": 49,
+  "protocol": {
+    "max_length": 40,
+    "mode": "beam",
+    "set_predictor": "off (not trained in this run)",
+    "expected_length": "per-task-type mean from task_type_length_stats_paper_v1.json, capped 15"
+  },
+  "metrics": {
+    "n": 49,
+    "checkpoint": "r2_ep15_best_gen_composite",
+    "exact_chain": 0,
+    "exact_chain_rate": 0.0,
+    "lenient_exact": 0,
+    "code_precision": 0.1635,
+    "code_recall": 0.218,
+    "mean_length_error": 1.08,
+    "order_errors_multiset_correct": 0,
+    "invalid_l3_token_rows": 0,
+    "eos_terminated": "49/49",
+    "by_platform": {
+      "gee": {
+        "n": 41,
+        "exact": 0,
+        "mean_len_err": 0.95,
+        "mean_precision": 0.1634,
+        "mean_recall": 0.2137
+      },
+      "qgis": {
+        "n": 8,
+        "exact": 0,
+        "mean_len_err": 1.75,
+        "mean_precision": 0.1637,
+        "mean_recall": 0.2396
+      }
+    },
+    "failure_reasons": {
+      "partial_overlap": 30,
+      "wrong_family": 19
+    }
+  },
+  "minutes": 2.8,
+  "peak_memory_gb": 0.88
+}

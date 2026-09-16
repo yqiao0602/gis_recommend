@@ -1,9 +1,53 @@
 # Current Project State
 
-Last updated: 2026-09-11
+Last updated: 2026-09-16
 
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
+
+## M1-R2 evaluation complete: structural collapse fixed, task mapping not (2026-09-16, Phase 2 closed)
+
+The M1 enhancement line (decoder backbone domain pretraining) is fully closed:
+DAPT 493.4M byte-tokens (loss 5.56 -> 0.6257) -> migration audit 8/8 -> SFT with
+the R1 protocol verbatim (single variable = decoder backbone init, ckpt
+22a77f77...) -> frozen-protocol evaluation (R4 discipline: prediction hashes
+locked before any gold access; the M3 block re-scores to the locked 0.1605
+exactly).
+
+**R1 -> R2 (final-100)**: empty graphs 88% -> 20%; bridge drop 83.8% -> 43.9%;
+L3 tokens 154 -> 528; Define-Projection first token 99% -> 0% (new attractors:
+Add Spatial Index 70 / Lake Inundation 26 / Simplify 4); chain length 1.5 ->
+5.3; **operator F1 0.0047 -> 0.0857 (x18)**. In-distribution is essentially
+flat (val Top1 14.87 -> 15.24%, diagnostic F1 0.173 -> 0.187); edge F1 still
+0, harmful-extra 0.90 (fixgeometries appears in 88/100 rows — a new
+"universal opener" bias). **Conclusion (scenario B, optimistic side)**: domain
+sequence prior solves "can it generate", not "what to generate"; the remaining
+bottlenecks are still task_type conditioning and OOD text->first-step mapping
+(Phase 0-B attribution layers 1-2). R3 (encoder-side adaptation) targets
+exactly those bottlenecks but is NOT started. Two evaluation-environment
+incidents are archived separately (dev-20 first run invalidated by legacy
+id-mapping leakage; val diagnostic crashed on the taxonomy default path — the
+three M1 inference env vars must be embedded in the launch entrypoint).
+Evidence: `docs/reports/m1_r2_eval_v1/`, `docs/reports/qgis_planner_eval_v1/
+SCORES_R2_v1.json` + `predictions_r2/`.
+
+## External GIS training-data survey complete (2026-09-16, paper_v2 precursor)
+
+Read-only survey saved at `docs/reports/external_gis_training_data_survey_v1.md`.
+Headlines: (1) no ready-made "NL intent -> QGIS operator DAG" training set exists
+(HF + literature both empty — a dataset-contribution opportunity); (2) three
+convertible external increments: GeoAnalystBench (Apache-2.0, 50 tasks x 3-10
+subtasks, intent-form), AutoGEEval-plus (2,612 NL->GEE-code cases, no license),
+GISAgentBench (349 tasks sourced from GIS Stack Exchange, repo not yet public);
+(3) no external GEE<->QGIS operator crosswalk exists — the in-repo KG is the
+only implementation (claim as a paper contribution); (4) GEE-Ops/Geo-FuB are
+parallel works (AST + frequent-itemset operator-chain mining) usable as related
+work and baselines. External data is positioned as eval sets + intent-rewrite
+seeds + citation anchors; **the 257k internal description library remains the
+main rewrite material**. Action suggestions not yet approved (clone-audit two
+repos; email AutoGEEval authors). Mainline status: M1-R2 Phase 2-D SFT pending
+(DAPT complete, commit da5932b); the M2 three-arm loop is closed (C0 best at
+0.2236, commit f877842); M3 closed at P2-T1.
 
 ## M1 enhancement-ablation route opened + domain_corpus_v1 spec drafted (2026-09-11)
 

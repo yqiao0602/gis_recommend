@@ -1,0 +1,47 @@
+  [OK] Length stats loaded (0 task types): /home/qy/system_redesign/docs/reports/paper_v1_profile_v1/task_type_length_stats_paper_v1.json
+[V4 Inferencer] Loading model: m1_r2_sft_ckpt/best_gen_composite_model.pth
+[V4 Inferencer] Task vocab: /home/qy/gee_llm_smoke/m1_task_vocab_v1.json
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 13634.33it/s]
+[transformers] [1mBertModel LOAD REPORT[0m from: bert-base-uncased
+Key                                        | Status     |  | 
+-------------------------------------------+------------+--+-
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  | 
+cls.predictions.bias                       | UNEXPECTED |  | 
+cls.predictions.transform.dense.weight     | UNEXPECTED |  | 
+cls.seq_relationship.weight                | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  | 
+cls.predictions.transform.dense.bias       | UNEXPECTED |  | 
+cls.seq_relationship.bias                  | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+  Checkpoint info: epoch=15
+  [OK] state_dict strict=True loaded successfully
+  Model loaded on cuda:0
+  Vocab loaded: 128 L3 codes, 0 with names
+  Transition matrix: 79 states
+  [INFO] Set predictor not configured; running without set-prior constraints
+[1/20] dev-c96ae35b7ae59963: 6 ops (dropped 2)
+[2/20] dev-a13596ae256c7edd: 2 ops (dropped 3)
+[3/20] dev-1275af8b1d9af30c: 1 ops (dropped 5)
+[4/20] dev-487702e4fc71a820: 0 ops (dropped 2)
+[5/20] dev-43d7f526c1e67d58: 8 ops (dropped 1)
+[6/20] dev-6e6cdd76539d3dc4: 0 ops (dropped 1)
+[7/20] dev-f415fe779ce0b622: 5 ops (dropped 3)
+[8/20] dev-f1ac30257c48d755: 4 ops (dropped 3)
+[9/20] dev-e17c9848b3db0e8f: 1 ops (dropped 4)
+[10/20] dev-79d89a21b8f3bbce: 4 ops (dropped 3)
+[11/20] dev-76ae19426b6a4e21: 0 ops (dropped 1)
+[12/20] dev-8cf59ec70d53258b: 3 ops (dropped 2)
+[13/20] dev-387aa770f929e969: 8 ops (dropped 3)
+[14/20] dev-9d177117e8345d57: 1 ops (dropped 6)
+[15/20] dev-657bd33a7a9d0b60: 0 ops (dropped 1)
+[16/20] qpl-v021-dev-5900c6409f-v1: 7 ops (dropped 2)
+[17/20] qpl-v021-dev-8c87bab93c-v1: 2 ops (dropped 4)
+[18/20] qpl-v021-dev-f950402772-v1: 3 ops (dropped 2)
+[19/20] qpl-v021-dev-fc01749f30-v1: 3 ops (dropped 5)
+[20/20] dev-exception-d2165c006df4: 0 ops (dropped 1)
+
+wrote m1_r2_dev_20_predictions_v2.jsonl (20 rows)
+bridge drop rate: 54/112 (48.2%)
+minutes: 1.4

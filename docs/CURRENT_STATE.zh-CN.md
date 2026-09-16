@@ -1,9 +1,19 @@
 # 当前项目状态
 
-最后更新：2026-09-11
+最后更新：2026-09-16
 
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
+
+## M1-R2 评测完成：结构性塌缩修复、任务映射未解（2026-09-16，Phase 2 收官）
+
+M1 增强线（decoder backbone domain pretraining）全链闭环：DAPT 493.4M byte-tokens（loss 5.56→0.6257）→ migrate 审计 8/8 → SFT（R1 协议逐行不变，唯一变量 = decoder 骨干初始化，ckpt `22a77f77…`）→ 冻结协议评测（R4 纪律：prediction hash 先于 gold 锁定；M3 块重评分精确复现锁定值 0.1605）。
+
+**R1 → R2（final-100）**：空图 88%→**20%**；bridge 丢弃 83.8%→43.9%；L3 token 154→528；Define Projection 首 token 99%→0%（新吸引子 AddSpatialIndex 70/LakeInundation 26/Simplify 4）；链长 1.5→5.3；**operator F1 0.0047→0.0857（×18）**。**近分布基本持平**（val Top1 14.87→15.24%、诊断 F1 0.173→0.187）；edge F1 仍 0、harmful extra 0.90（fixgeometries 88/100"万能开头"新偏置）。**结论（B 场景偏乐观）**：领域序列先验解决"能不能生成"，不解决"生成什么"；剩余瓶颈仍是 task_type 条件化与文本 OOD 条件映射（Phase 0-B 归因①②）；R3（encoder 侧适配）方向对准剩余瓶颈但未启动。评测环境事故 2 起已独立归档（dev-20 首跑 legacy mapping 泄漏无效；val 诊断 taxonomy 路径崩——M1 推理三环境变量必须内嵌启动入口）。证据：`docs/reports/m1_r2_eval_v1/`、`docs/reports/qgis_planner_eval_v1/SCORES_R2_v1.json` + `predictions_r2/`。
+
+## 外部 GIS 训练数据调研完成（2026-09-16，paper_v2 前置）
+
+只读调研报告：`docs/reports/external_gis_training_data_survey_v1.md`。核心结论：①不存在现成"NL 意图 → QGIS 算子 DAG"训练集（HF + 文献双空白，dataset contribution 机会）；②三条可转化外部增量：GeoAnalystBench（Apache-2.0，50 任务×3-10 子任务意图式）、AutoGEEval-plus（2,612 用例 NL→GEE code，无 license）、GISAgentBench（349 任务来自 GIS Stack Exchange，仓库未公开）；③GEE↔QGIS 算子 crosswalk 外部不存在，内部 KG 是唯一实现（论文贡献点）；④GEE-Ops/Geo-FuB 为平行工作可引用。外部数据定位 = 评测集 + 意图重写种子 + 引用对标；**主料仍是内部 25.7 万描述库**。行动建议未批准（克隆审计两仓库 / 邮件联系作者）。主线现状：M1-R2 已全部完成并评测（见上方 Phase 2 收官段）；M2 三臂已收束（C0 最优 0.2236，提交 f877842）；M3 已收束于 P2-T1。
 
 ## M1 增强消融路线立项 + domain_corpus_v1 spec 草案（2026-09-11）
 
