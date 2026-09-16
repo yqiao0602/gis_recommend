@@ -17,6 +17,7 @@ support-band recall, and the prediction-side direct/other link split.
 from __future__ import annotations
 
 import argparse
+import difflib
 import json
 import sys
 import time
@@ -29,6 +30,24 @@ from peft import PeftModel
 
 PROMPT_TEMPLATE = "Task: {task_text}\nQGIS workflow:"
 REPO = Path("/home/qy/system_redesign")
+
+
+def _canon_factory(catalog_list):
+    catset = set(catalog_list)
+    slugs = {c.split(":")[-1]: c for c in catalog_list}
+
+    def canon(op):
+        if not isinstance(op, str) or not op:
+            return None
+        if op in catset:
+            return op
+        fixed = op.replace("native:gdal:", "gdal:").replace("native:gdal_", "gdal:")
+        if fixed in catset:
+            return fixed
+        close = difflib.get_close_matches(op.split(":")[-1], list(slugs), n=1, cutoff=0.72)
+        return slugs[close[0]] if close else op
+
+    return canon
 
 
 def parse_pred(text: str) -> dict:
@@ -66,6 +85,8 @@ def main() -> int:
     ap.add_argument("--tag", default="dev")
     ap.add_argument("--max-new-tokens", type=int, default=512)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--canonicalize", action="store_true",
+                    help="also report the canonicalized diagnostic block (secondary)")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -115,7 +136,7 @@ def main() -> int:
         if not pr["ok"]:
             parse_fail[pr["reason"]] += 1
             preds.append({"wid": r["wid"], "ok": False, "reason": pr["reason"],
-                          "n_gen_tokens": int(len(out_ids)), "raw": text[:400]})
+                          "n_gen_tokens": int(len(out_ids)), "raw": text})
         else:
             pm = Counter(p["operator_id"] for p in pr["processes"])
             op_inst.update(pm)
@@ -142,7 +163,7 @@ def main() -> int:
                           "n_gen_tokens": int(len(out_ids)),
                           "ops_p": round(inter / max(sum(pm.values()), 1), 3),
                           "ops_r": round(inter / max(sum(gm.values()), 1), 3),
-                          "raw": text[:400]})
+                          "raw": text})
         if (i + 1) % 10 == 0:
             micro = 2 * op_tp / max(2 * op_tp + op_fp + op_fn, 1)
             print(f"[{i+1}/{len(rows)}] elapsed {(time.time()-t0)/60:.1f}m "
@@ -184,6 +205,43 @@ def main() -> int:
         "pred_operator_instances": sum(op_inst.values()),
         "minutes": round((time.time() - t0) / 60, 1),
     }
+    if args.canonicalize:
+        canon = _canon_factory(sorted(catalog))
+        ctp = cfp = cfn = cltp = clfp = clfn = 0
+        for r, g in zip(preds, rows):
+            if not r.get("ok"):
+                continue
+            pr = parse_pred(r["raw"])
+            if not pr["ok"]:
+                continue
+            ops = []
+            for proc in pr["processes"]:
+                o = canon(proc["operator_id"])
+                if o and (not ops or ops[-1] != o):
+                    ops.append(o)
+            if not ops:
+                continue
+            gm = Counter(p["operator_id"] for p in g["processes"])
+            pm = Counter(ops)
+            i = sum((gm & pm).values())
+            ctp += i; cfp += sum(pm.values()) - i; cfn += sum(gm.values()) - i
+            gl = {(l["source_process_id"], l["target_process_id"]) for l in g["links"]}
+            pl = {(l["source_process_id"], l["target_process_id"]) for l in pr["links"]}
+            li = len(gl & pl)
+            cltp += li; clfp += len(pl) - li; clfn += len(gl) - li
+        cp = ctp / max(ctp + cfp, 1); cr = ctp / max(ctp + cfn, 1)
+        lp = cltp / max(cltp + clfp, 1); lr = cltp / max(cltp + clfn, 1)
+        metrics["canonicalized_secondary"] = {
+            "note": "diagnostic only: catalog name canonicalization (alias+nearest) and "
+                    "consecutive-duplicate collapse applied post-hoc; NOT the primary metric",
+            "operator": {"tp": ctp, "fp": cfp, "fn": cfn,
+                         "precision": round(cp, 4), "recall": round(cr, 4),
+                         "f1": round(2 * cp * cr / max(cp + cr, 1e-9), 4)},
+            "link": {"tp": cltp, "fp": clfp, "fn": clfn,
+                     "precision": round(lp, 4), "recall": round(lr, 4),
+                     "f1": round(2 * lp * lr / max(lp + lr, 1e-9), 4)},
+        }
+
     args.out_dir.mkdir(parents=True, exist_ok=True)
     (args.out_dir / f"v2a_{args.tag}_eval_metrics.json").write_text(
         json.dumps(metrics, indent=2, ensure_ascii=False), encoding="utf-8")
