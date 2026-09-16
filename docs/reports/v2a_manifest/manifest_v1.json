@@ -1,0 +1,175 @@
+{
+  "schema": "gis_recommend.v2a.manifest.v1",
+  "built_at": "2026-09-16",
+  "rules_source": "docs/plans/v2a_spec.md (spec defines rules; this manifest defines facts)",
+  "profiles": {
+    "A": {
+      "definition": "Tier-1 only, weight 1.0",
+      "rows": 1663,
+      "cap_log": [
+        {
+          "cap": "fieldcalculator<=10%",
+          "before": 0.1429,
+          "after": 0.1,
+          "method": "iterated exact-formula whole-row scaling"
+        },
+        {
+          "cap": "fieldcalculator<=10%",
+          "before": 0.1,
+          "after": 0.1,
+          "method": "iterated exact-formula whole-row scaling"
+        }
+      ],
+      "eff_exposure": 1490.6
+    },
+    "B": {
+      "definition": "Tier-1 x1.0 + Tier-2 x0.5",
+      "rows": 2185,
+      "cap_log": [
+        {
+          "cap": "fieldcalculator<=10%",
+          "before": 0.1365,
+          "after": 0.1,
+          "method": "iterated exact-formula whole-row scaling"
+        },
+        {
+          "cap": "fieldcalculator<=10%",
+          "before": 0.1,
+          "after": 0.1,
+          "method": "iterated exact-formula whole-row scaling"
+        }
+      ],
+      "eff_exposure": 1754.5
+    }
+  },
+  "split": {
+    "method": "source-disjoint by provenance SHA, seed 20260916, ONE shared split for both profiles",
+    "counts": {
+      "train": 1857,
+      "dev": 163,
+      "test": 165
+    }
+  },
+  "sampling_control": {
+    "fieldcalculator_cap": "10% weighted instance share",
+    "taskType_cap": "max/median <= 2x (weight-based, two passes)",
+    "vocab": "369 operators retained, no pruning"
+  },
+  "output_format": "task_text -> processes(process_id, operator_id) + links; no L3",
+  "tier_label_method": "rules (88% calibration) + 100 manual overrides; see tier_labels_full_v1.json",
+  "static_audit": {
+    "profiles": {
+      "A": {
+        "rows": 1663,
+        "effective_exposure": 1490.6,
+        "tier1_rows": 1663,
+        "tier2_rows": 0,
+        "distinct_operators": 332,
+        "operator_instances": 14859,
+        "fieldcalculator_exposure_share_weighted": 0.1,
+        "fieldcalculator_raw_instance_share": 0.1429,
+        "weighted_operator_exposure": 11061.0,
+        "taskType_top5": [
+          [
+            "Infrastructure",
+            225
+          ],
+          [
+            "Topography",
+            216
+          ],
+          [
+            "Land use/land cover",
+            166
+          ],
+          [
+            "Human settlements",
+            133
+          ],
+          [
+            "Surface water",
+            131
+          ]
+        ],
+        "support_band_distinct": {
+          "30_99": 48,
+          "ge100": 32,
+          "3_9": 103,
+          "10_29": 56,
+          "1_2": 93
+        },
+        "illegal_operator_ids": [],
+        "illegal_link_count": 0,
+        "empty_process_rows": 0,
+        "link_prov": {
+          "projected": 1156,
+          "linear_fallback": 113,
+          "projected+patched": 394
+        }
+      },
+      "B": {
+        "rows": 2185,
+        "effective_exposure": 1754.5,
+        "tier1_rows": 1663,
+        "tier2_rows": 522,
+        "distinct_operators": 362,
+        "operator_instances": 18688,
+        "fieldcalculator_exposure_share_weighted": 0.1,
+        "fieldcalculator_raw_instance_share": 0.1314,
+        "weighted_operator_exposure": 13012.0,
+        "taskType_top5": [
+          [
+            "Infrastructure",
+            301
+          ],
+          [
+            "Topography",
+            275
+          ],
+          [
+            "Land use/land cover",
+            227
+          ],
+          [
+            "Human settlements",
+            204
+          ],
+          [
+            "Surface water",
+            154
+          ]
+        ],
+        "support_band_distinct": {
+          "ge100": 43,
+          "30_99": 48,
+          "3_9": 105,
+          "10_29": 70,
+          "1_2": 96
+        },
+        "illegal_operator_ids": [],
+        "illegal_link_count": 0,
+        "empty_process_rows": 0,
+        "link_prov": {
+          "projected": 1429,
+          "linear_fallback": 236,
+          "projected+patched": 520
+        }
+      }
+    },
+    "shared_split": {
+      "train": 1857,
+      "dev": 163,
+      "test": 165
+    },
+    "source_disjoint": true,
+    "duplicate_sha_groups": 0
+  },
+  "file_sha256": {
+    "v2a_A_dev.jsonl": "90953f8c4021f7586bd6745c0e7a8f9c1f4cbaba6220af084828c8c77f56e3fe",
+    "v2a_A_test.jsonl": "02cd15ae2576f8173b66b801553f8fc1e575bd6cd248af43376a4536922390fd",
+    "v2a_A_train.jsonl": "cde037223deddbffbb3b5ddd1099fa13a626e7f45f0f3b565d88ffb8cacbdc1e",
+    "v2a_B_dev.jsonl": "49ba4a7689ff0ff80900c5d6f9e392763f8a35fc9c74b1402efad0e346232266",
+    "v2a_B_test.jsonl": "175d31779f1144998c91395c69f0326187aec36d881a5d55d851bf66bd61600b",
+    "v2a_B_train.jsonl": "0de0109688c3e9d12d123e30867b24e69fa963dc1c98b288e8ce027947536a72"
+  }
+}
