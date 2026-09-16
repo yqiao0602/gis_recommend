@@ -1,13 +1,17 @@
-# V2a 实验规格（Spec v1 草案）：QGIS 原生算子空间基线
+# V2a 实验规格（Spec v1）：QGIS 原生算子空间基线
 
-状态：草案（2026-09-16），A/B data profile 待 owner 选择后冻结
+状态：v1 定稿（2026-09-16 owner 批准 **A/B 双跑**——定义为 V2a 内部的小型数据消融，不开启新研究线；同协议顺序 A 先 B 后，最后 V1 vs V2a-A vs V2a-B 架构级对照）
 定位：owner 已批准的 V2a——**NL → Qwen → QGIS 原生算子/工作流 DAG（processes+links），QGIS-only**；目标是干净基线与 V1 对照，不追求高 F1
 
 ## 0. 铁律（owner 2026-09-16）
 
-> **V2a 的实验变量只能是数据构成（A/B profile）。** 模型、tokenizer、训练超参、benchmark、输出格式、评测协议在 A/B 之间完全不变——否则 A→B 差异无解释意义。
+> **A/B 之间唯一实验变量 = Tier-2 是否进入训练及其权重。** 模型、tokenizer、超参、seed 策略、benchmark、输出格式、评测协议、scorer、dev/final 划分完全一致。
 
-禁做清单（V2a 第一版）：不加 GEE、不加 L3、不加 RL、不加 DPO、不改 benchmark、不扩数据、不造新中间表示。
+**报告纪律（owner 指定）**：A/B 对比必须同时报告绝对指标 + 数据效率——训练样本数、有效 exposure、Operator F1、Process F1、Link F1、DAG validity、Empty rate、平均链长、Unique operator coverage。若 B 仅以 ~17.5% 额外 exposure 换来边际提升，解读为"Tier-2 有信息但边际收益有限"；若提升显著，Tier-2 弱监督价值成立。
+
+**V1 基线定位**：M3-P2-T1 的 0.1991 属于 L3→bridge 体系，是 V1 历史参照**不是 V2a 门槛**。V2a 的主问题：取消跨平台映射损失后，模型对 QGIS 原生工作流的学习能力到底是多少。
+
+禁做清单（V2a 第一版）：不加 GEE、不加 L3、不加 RL、不加 DPO、不改 benchmark、不扩数据、不造新中间表示、**不因 A/B 选择回到"继续研究数据"的循环**。
 
 ## 1. 数据
 
