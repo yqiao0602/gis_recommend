@@ -61,6 +61,36 @@ VERB_MAP = {
     "builds": "build", "defines": "define", "shows": "show", "outputs": "output",
 }
 
+# canonical-table supplement (2026-09-17 pilot finding): entries present in the
+# GEE corpus but missing from 06_Operator_Syntax_Knowledge_Table. Kept in-script
+# so /home/yll stays read-only and the supplement is version-controlled.
+CANONICAL_SUPPLEMENT = {
+    "ee.ImageCollection.filterMetadata",
+    "ee.FeatureCollection.filterMetadata",
+    "ee.Image.filterMetadata",
+    "ee.Filter.metadata",
+    "ee.Classifier.gmoMaxent",
+}
+# legacy JS API names -> current canonical names (verified against the 06 table)
+API_ALIAS = {
+    "randomForest": "ee.Classifier.smileRandomForest",
+    "cart": "ee.Classifier.smileCart",
+    "svm": "ee.Classifier.libsvm",
+    "naiveBayes": "ee.Classifier.smileNaiveBayes",
+    "gmoMaxEnt": "ee.Classifier.gmoMaxent",
+    "focal_median": "ee.Image.focalMedian",
+    "focal_mean": "ee.Image.focalMean",
+    "focal_max": "ee.Image.focalMax",
+    "focal_min": "ee.Image.focalMin",
+    "focal_mode": "ee.Image.focalMode",
+}
+# class segments that appear in chains without the ee. prefix
+EE_CLASSES = {
+    "Classifier", "Reducer", "Join", "Algorithms", "Filter", "Image",
+    "ImageCollection", "FeatureCollection", "Geometry", "Number", "List",
+    "Date", "DateRange", "Feature", "Table", "TurbidWater" "Crosshair",
+}
+
 # ── load ───────────────────────────────────────────────────────────────────
 
 def load_all():
@@ -94,6 +124,7 @@ def load_canonical():
             continue
     for r in rows:
         canon.add((r.get("full_name") or "").strip())
+    canon |= CANONICAL_SUPPLEMENT
     # method -> set of canonical full names ending with .method
     by_method = defaultdict(set)
     for full in canon:
@@ -160,10 +191,21 @@ def fold_element(elem, canon, by_method):
     """
     parts = [_clean_token(p) for p in elem.split(".")]
     parts = [p for p in parts if p]
-    if not parts:
+    if not parts or parts == ["ee"]:
         return "empty", []
+    # bare legacy-alias method, e.g. focal_median in a stripped chain
+    if len(parts) == 1 and parts[0] in API_ALIAS:
+        return "alias", [API_ALIAS[parts[0]]]
+    # alias normalization: chain segments often drop the ee. prefix
+    # (Classifier.smileRandomForest.train -> ee.Classifier.smileRandomForest + train)
+    if parts[0] in EE_CLASSES and f"ee.{'.'.join(parts)}" in canon:
+        parts = ["ee"] + parts
     if ".".join(parts) in canon:
         return "exact", [".".join(parts)]
+    # legacy alias, e.g. ee.Classifier.randomForest.train -> ee.Classifier.smileRandomForest + train
+    if parts[0] in ("ee", "Export") and len(parts) >= 3 and parts[2] in API_ALIAS:
+        aliased = API_ALIAS[parts[2]].split(".")
+        return "alias", [".".join(aliased)] + list(parts[3:])
     out = []
     i = 0
     # greedy: consume the longest leading run of segments forming a canonical name
@@ -182,6 +224,9 @@ def fold_element(elem, canon, by_method):
                 i = 2
     unmapped = False
     for tok in parts[i:]:
+        if tok in API_ALIAS and API_ALIAS[tok] in canon:
+            out.append(API_ALIAS[tok])
+            continue
         owners = by_method.get(tok)
         if owners is None:
             unmapped = True
@@ -254,10 +299,13 @@ def main() -> int:
     print(f"reasoning tier: {len(tier)}")
 
     # ── stratified sample: length bucket x core-family count ──
+    # (tier is built from set intersection; sort for deterministic sampling
+    #  across runs regardless of PYTHONHASHSEED)
     def bucket(n):
         return "2-4" if n <= 4 else "5-8" if n <= 8 else "9-16" if n <= 16 else ">16"
     strata = defaultdict(list)
-    for s, (eeops, fams) in tier.items():
+    for s in sorted(tier):
+        eeops, fams = tier[s]
         strata[(bucket(len(eeops)), min(len(fams), 4))].append(s)
     sample = []
     quota = args.sample
