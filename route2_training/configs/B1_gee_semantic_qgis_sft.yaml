@@ -1,0 +1,16 @@
+# Route-2 arm: B1 — P0 contract 33cc614, frozen hyperparameters
+name: "B1"
+base_model: "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base"
+qgis_train: "/home/qy/gee_llm_smoke/v2a_A_train.jsonl"
+qgis_dev: "/home/qy/gee_llm_smoke/v2a_A_dev.jsonl"
+qgis_test: "/home/qy/gee_llm_smoke/v2a_A_test.jsonl"
+output_dir: "/home/qy/gee_llm_smoke/route2_B1"
+gee_stage: "semantic_sft"
+gee_data: "/home/qy/system_redesign/outputs_v2/gee_b1_stage_data_v1/b1_gee_stage_train.jsonl"
+qgis_epochs: 20
+gee_epochs: 1
+max_lr: 1.0e-4
+batch_size: 8
+grad_accum: 4
+max_len: 1024
+seed: 20260917
