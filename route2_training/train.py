@@ -208,13 +208,27 @@ def train_stage(model, ds, collator, epochs, lr, bs, accum, log_every=50,
                           "target": ds.prompt_target(i)[1]} for i in chunk]
             else:
                 batch = [{"text": ds.domain_text(i)} for i in chunk]
-            yield collator(batch)
+            c = collator(batch)
+            c["trunc_target"] = [e["n_target_truncated"] > 0 for e in
+                                 (collator.encode_pair(b["prompt"], b["target"]) for b in batch)] if masked else [False] * len(chunk)
+            c["trunc_prompt"] = [e["n_prompt_truncated"] > 0 for e in
+                                 (collator.encode_pair(b["prompt"], b["target"]) for b in batch)] if masked else [False] * len(chunk)
+            c["trunc_text"] = [collator.encode_text(b["text"])["n_truncated"] > 0
+                               for b in batch] if not masked else [False] * len(chunk)
+            yield c
 
+    stats = {"n_examples": 0, "n_tokens": 0,
+             "n_target_truncated": 0, "n_prompt_truncated": 0, "n_text_truncated": 0}
     model.train()
     step = 0
     for ep in range(epochs):
         running = 0.0
         for bi, batch in enumerate(make_batches()):
+            stats["n_examples"] += len(batch["input_ids"])
+            stats["n_tokens"] += sum(len(x) for x in batch["input_ids"])
+            stats["n_target_truncated"] += sum(1 for t in batch.get("trunc_target", []) if t)
+            stats["n_prompt_truncated"] += sum(1 for t in batch.get("trunc_prompt", []) if t)
+            stats["n_text_truncated"] += sum(1 for t in batch.get("trunc_text", []) if t)
             out = model(input_ids=torch.tensor(batch["input_ids"]).to("cuda:0"),
                         attention_mask=torch.tensor(batch["attention_mask"]).to("cuda:0"),
                         labels=torch.tensor(batch["labels"]).to("cuda:0"))
@@ -231,10 +245,10 @@ def train_stage(model, ds, collator, epochs, lr, bs, accum, log_every=50,
                     print(f"  step {step}: loss {running / (accum * log_every):.4f}",
                           flush=True)
                     running = 0.0
-    return model
+    return model, stats
 
 
-def run_release(cfg: ArmConfig) -> int:
+def run_release(cfg: ArmConfig, config_path: str) -> int:
     import torch
     from transformers import AutoTokenizer
     from route2_training.evaluate_dev import evaluate_dev
@@ -246,6 +260,7 @@ def run_release(cfg: ArmConfig) -> int:
         tok.pad_token = tok.eos_token
 
     ledger = {"arm": cfg.name, "base_model": cfg.base_model,
+              "config_path": config_path, "config_sha": sha256_file(config_path),
               "sha": {"qgis_train": sha256_file(cfg.qgis_train),
                       "qgis_dev": sha256_file(cfg.qgis_dev),
                       "qgis_test": sha256_file(cfg.qgis_test)}}
@@ -258,14 +273,14 @@ def run_release(cfg: ArmConfig) -> int:
         if cfg.gee_stage == "dapt":
             ds = GeeDaptCorpus(cfg.gee_data, split="train")
             col = CausalLMCollator(tok, cfg.max_len)
-            model = train_stage(model, ds, col, cfg.gee_epochs, cfg.max_lr,
-                                cfg.batch_size, cfg.grad_accum, masked=False)
+            model, gstats = train_stage(model, ds, col, cfg.gee_epochs, cfg.max_lr,
+                                         cfg.batch_size, cfg.grad_accum, masked=False)
             stage_tag = "gee_dapt"
         else:
             ds = GeeSemanticDataset(cfg.gee_data, split="train")
             col = QgisGraphCollator(tok, cfg.max_len, prompt_suffix=B1_SUFFIX)
-            model = train_stage(model, ds, col, cfg.gee_epochs, cfg.max_lr,
-                                cfg.batch_size, cfg.grad_accum, masked=True)
+            model, gstats = train_stage(model, ds, col, cfg.gee_epochs, cfg.max_lr,
+                                         cfg.batch_size, cfg.grad_accum, masked=True)
             stage_tag = "gee_semantic"
         adapter = out / f"{stage_tag}_adapter"
         model.save_pretrained(str(adapter))
@@ -279,7 +294,8 @@ def run_release(cfg: ArmConfig) -> int:
         current_base = str(merged_dir)
         ledger["gee_stage"] = {"kind": cfg.gee_stage, "adapter": str(adapter),
                                "merged": current_base,
-                               "data_sha": sha256_file(cfg.gee_data)}
+                               "data_sha": sha256_file(cfg.gee_data),
+                               "actual": gstats}
 
     # ── stage 2: QGIS SFT (identical for all arms) ──
     model = load_base_4bit(current_base)
@@ -287,10 +303,12 @@ def run_release(cfg: ArmConfig) -> int:
     ds = QgisGraphDataset(cfg.qgis_train)
     col = QgisGraphCollator(tok, cfg.max_len)
     best_f1, best_dir = -1.0, None
-    history = []
+    history, qstats = [], {"n_examples": 0, "n_tokens": 0,
+                           "n_target_truncated": 0, "n_prompt_truncated": 0}
     for ep in range(cfg.qgis_epochs):
-        model = train_stage(model, ds, col, epochs=1, lr=cfg.max_lr,
-                            bs=cfg.batch_size, accum=cfg.grad_accum, masked=True)
+        model, estats = train_stage(model, ds, col, epochs=1, lr=cfg.max_lr,
+                                    bs=cfg.batch_size, accum=cfg.grad_accum, masked=True)
+        for k in qstats: qstats[k] += estats[k]
         ckpt = out / f"qgis_sft_ep{ep + 1}"
         model.save_pretrained(str(ckpt))
         m = evaluate_dev(current_base, str(ckpt), cfg.qgis_dev,
@@ -303,7 +321,7 @@ def run_release(cfg: ArmConfig) -> int:
               f"(best {best_f1:.4f})", flush=True)
     ledger["qgis_sft"] = {"best_epoch_dir": str(best_dir),
                           "best_operator_set_f1": best_f1,
-                          "history": history}
+                          "history": history, "actual": qstats}
     (out / "run_ledger.json").write_text(
         json.dumps(ledger, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"done. best checkpoint: {best_dir} (dev opF1 {best_f1:.4f})")
@@ -331,7 +349,7 @@ def main() -> int:
         print(f"\nwrote {outp}")
         print("DRY-RUN ONLY — GPU not started. Awaiting owner release.")
         return 0
-    return run_release(cfg)
+    return run_release(cfg, args.config)
 
 
 if __name__ == "__main__":
