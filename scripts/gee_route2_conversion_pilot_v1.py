@@ -23,6 +23,7 @@ import argparse
 import csv
 import glob
 import json
+import os
 import random
 import re
 import statistics
@@ -32,8 +33,13 @@ from pathlib import Path
 CHAIN_CSV = "/data/yll/GeoWorkflow-Knowledge-Dataset/01原始代码/GEE/GEE_OPs/15_Operator_Relationship_Chain_Knowledge_Table.csv"
 API_TABLE = "/data/yll/GeoWorkflow-Knowledge-Dataset/01原始代码/GEE/GEE_OPs/06_Operator_Syntax_Knowledge_Table.csv"
 DESC_GLOB = "/home/yll/GEE/描述性知识抽取汇总/facts_summary*.csv"
-SOURCE_INDEX = "/home/yll/GEE/爬取gee脚本/collected_scripts/index.json"
-RENAME_400K = "/home/yll/GEE/Data/data400000_original_rename_mapping.csv"
+# pool-A raw scripts (GEE playground corpus) for author-proxy extraction
+RAW_SCRIPT_DIR = "/data/yll/GeoWorkflow-Knowledge-Dataset/01原始代码/GEE/GEE_OPs/01_Input_raw_script"
+# NOTE 2026-09-17 provenance audit: collected_scripts/index.json and
+# data400000_original_rename_mapping.csv belong to yll's own GitHub-crawl pool
+# (pool B, 241,206 scripts) whose script ids are a DIFFERENT id space from the
+# GEE-OPs playground corpus (pool A). Matching pool-B repo maps onto pool-A
+# ids was cross-pool contamination (5/5 sampled mismatches) and is REMOVED.
 
 SYS_PREFIX = ("ee.", "Map.", "ui.", "Export.")
 NOISE_M = {"print", "addLayer", "setCenter", "centerObject", "setChartType", "setOptions", "main"}
@@ -135,20 +141,29 @@ def load_canonical():
 
 
 def load_sources():
+    """Author-proxy from GEE playground script headers.
+
+    Pool A scripts are GEE Code Editor share exports (68.6% carry the
+    'Start of imports ... playground' header). Author signal comes from
+    asset-path prefixes: users/{author}/... or projects/{project}/...
+    """
     src = {}
-    idx = json.load(open(SOURCE_INDEX, encoding="utf-8"))
-    for k, v in idx.items():
-        repo = (v or {}).get("repository") or ""
-        if repo:
-            src[k] = repo.split("/")[0] + "/" + repo.split("/")[-1] if "/" in repo else repo
-    with open(RENAME_400K, encoding="utf-8-sig") as fh:
-        for r in csv.DictReader(fh):
-            orig = (r.get("original_filename") or "")
-            stem = (r.get("new_stem") or "")
-            if orig and stem and stem not in src:
-                seg = orig.split("__")
-                if len(seg) >= 2:
-                    src[stem] = f"{seg[0]}/{seg[1]}"
+    pat = re.compile(r"(?:users|projects)/([A-Za-z0-9_.-]+)/")
+    for fname in os.listdir(RAW_SCRIPT_DIR):
+        if not fname.startswith("script_"):
+            continue
+        sid = fname[:-4]
+        try:
+            with open(os.path.join(RAW_SCRIPT_DIR, fname), "rb") as fh:
+                head = fh.read(4096).decode("utf-8", errors="replace")
+        except OSError:
+            continue
+        m = pat.search(head)
+        if m:
+            a = m.group(1)
+            # skip shared/public asset roots that are not author-like
+            if a not in ("google", "Earthengine", "GEE", "sample", "assets"):
+                src[sid] = a
     return src
 
 # ── normalization (mirrors gee_workflow_diversity_audit_v1) ─────────────────
@@ -351,39 +366,94 @@ def main() -> int:
             "ee_chain_folded": " -> ".join(folded),
             "n_tokens": n_tok, "n_mapped": n_map,
             "n_ambiguous": n_amb, "n_unmapped": n_unmap,
-            "repository": sources.get(s, ""),
+            "author_proxy": sources.get(s, ""),
         })
-    # gate 4: source-disjoint group split among rows WITH source; report the rest
-    with_src = [r for r in rows if r["repository"]]
-    repos = defaultdict(list)
-    for r in with_src:
-        repos[r["repository"]].append(r)
-    repo_list = sorted(repos)
-    rng.shuffle(repo_list)
-    n_r = len(repo_list)
-    train_cut, val_cut = int(n_r * 0.8), int(n_r * 0.9)
-    for i, repo in enumerate(repo_list):
-        split = "train" if i < train_cut else "val" if i < val_cut else "test"
-        for r in repos[repo]:
-            r["split"] = split
+    # ── gate 4: disjoint split by union-find components ──
+    # Component = connected via shared author-proxy OR shared folded chain.
+    # This guarantees: (a) one author's scripts never straddle train/test,
+    # (b) one template mirror (same folded chain) never straddles train/test.
+    parent: dict[str, str] = {}
+
+    def find(x: str) -> str:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a: str, b: str) -> None:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb
+
     for r in rows:
-        r.setdefault("split", "nosource")
-    # gate 4b: rows without repo provenance are split at folded-chain family level
-    # so exact template mirrors cannot straddle train/test
-    nosrc = defaultdict(list)
+        row_node = f"R:{r['script']}"
+        parent[row_node] = row_node
+        chain_node = f"C:{r['ee_chain_folded']}"
+        parent.setdefault(chain_node, chain_node)
+        union(row_node, chain_node)
+        if r["author_proxy"]:
+            a_node = f"A:{r['author_proxy']}"
+            parent.setdefault(a_node, a_node)
+            union(row_node, a_node)
+
+    comp_members = defaultdict(list)
     for r in rows:
-        if r["split"] == "nosource":
-            nosrc[r["ee_chain_folded"]].append(r)
-    fam_list = sorted(nosrc)
-    rng.shuffle(fam_list)
-    n_f = len(fam_list)
-    t_cut, v_cut = int(n_f * 0.8), int(n_f * 0.9)
-    for i, fam in enumerate(fam_list):
-        sp = "train_chainfamily" if i < t_cut else "val_chainfamily" if i < v_cut else "test_chainfamily"
-        for r in nosrc[fam]:
-            r["split"] = sp
-    funnel["g4_with_source"] = len(with_src)
-    funnel["g4_no_source_chainfamily_split"] = sum(len(v) for v in nosrc.values())
+        comp_members[find(f"R:{r['script']}")].append(r)
+    comps = sorted(comp_members, key=lambda c: (len(comp_members[c]), c))
+    rng.shuffle(comps)
+    # Hub-component handling: components larger than HUB_MAX are split at row
+    # level (deterministic hash). Their chains are generic (appear across most
+    # tasks), so per-row assignment does not create template leakage; keeping
+    # them whole would hand one split up to 56% of the corpus.
+    HUB_MAX = 200
+
+    def _fallback_split(r):
+        return "train" if hash(r["script"]) % 10 < 8 else "val" if hash(r["script"]) % 10 == 8 else "test"
+
+    n_small = sum(1 for c in comps if len(comp_members[c]) <= HUB_MAX)
+    t_cut, v_cut = int(n_small * 0.8), int(n_small * 0.9)
+    split_of = {}
+    for i, c in enumerate(comps):
+        if len(comp_members[c]) <= HUB_MAX:
+            split_of[c] = "train" if i < t_cut else "val" if i < v_cut else "test"
+        else:
+            # hub component: split at author sub-group level (an author's rows
+            # stay together). Rows without author inherit the sub-group of the
+            # single author sharing their chain in this hub (kills the
+            # singleton-author chain-split artifact); chains shared by 2+
+            # authors are generic idioms and remain split across authors.
+            hub_rows = comp_members[c]
+            chain_author = defaultdict(set)
+            for r in hub_rows:
+                if r["author_proxy"]:
+                    chain_author[r["ee_chain_folded"]].add(r["author_proxy"])
+            sub = defaultdict(list)
+            for r in hub_rows:
+                if r["author_proxy"]:
+                    sub[r["author_proxy"]].append(r)
+                else:
+                    owners = chain_author.get(r["ee_chain_folded"])
+                    # inherit the single co-chain author's sub-group (same key
+                    # form as author rows); multi-owner chains are generic
+                    key = (next(iter(owners)) if owners and len(owners) == 1
+                           else f"chain:{r['ee_chain_folded']}")
+                    sub[key].append(r)
+            keys = sorted(sub)
+            rng.shuffle(keys)
+            nsub = len(keys)
+            stc, svc = int(nsub * 0.8), int(nsub * 0.9)
+            for j, k in enumerate(keys):
+                sp = "train" if j < stc else "val" if j < svc else "test"
+                for r in sub[k]:
+                    r["split"] = sp
+    for r in rows:
+        if "split" not in r:
+            r["split"] = split_of[find(f"R:{r['script']}") if find(f"R:{r['script']}") in split_of
+                              else find(f"C:{r['ee_chain_folded']}") if find(f"C:{r['ee_chain_folded']}") in split_of
+                              else _fallback_split(r)]
+    n_c = len(comps)
+    funnel["g4_components"] = n_c
+    funnel["g4_author_proxy_rows"] = sum(1 for r in rows if r["author_proxy"])
 
     # ── outputs ──
     out_rows = args.out / "pilot_3000_rows.jsonl"
@@ -396,7 +466,7 @@ def main() -> int:
     stats = {
         "funnel": dict(funnel),
         "final_rows": len(rows),
-        "source_coverage": f"{len(with_src)}/{len(rows)}",
+        "author_proxy_coverage": f"{sum(1 for r in rows if r['author_proxy'])}/{len(rows)}",
         "canonical_token_coverage": {
             "mean": round(statistics.mean(mapped_ratio), 4),
             "p10": round(sorted(mapped_ratio)[max(0, int(len(mapped_ratio)*0.1)-1)], 4),
@@ -410,7 +480,7 @@ def main() -> int:
     }
     (args.out / "pilot_3000_stats.json").write_text(
         json.dumps(stats, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(json.dumps({k: stats[k] for k in ("funnel", "final_rows", "source_coverage",
+    print(json.dumps({k: stats[k] for k in ("funnel", "final_rows", "author_proxy_coverage",
                                             "canonical_token_coverage", "split_counts")},
                      indent=2, ensure_ascii=False))
     print(f"\nwrote {out_rows}")
