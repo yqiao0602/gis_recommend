@@ -385,12 +385,25 @@ def main() -> int:
             b = collate([ds[i % len(sub)] for i in range(args.batch_size)])
             b = {k: v.to("cuda:0") for k, v in b.items()}
             ww = b.pop("sample_weight")
-            loss, _ = per_sample_loss(b, ww)
+            if args.eos_lambda != 1.0:
+                # E1 production path (same branch as formal training):
+                # the smoke MUST exercise the actual eos_weighted_ce loss
+                logits = model(**{k: v for k, v in b.items() if k != "labels"}).logits
+                loss, _, w_tok = eos_weighted_ce(logits, b["labels"],
+                                                 tok.eos_token_id, args.eos_lambda)
+                n_boost = int((w_tok == args.eos_lambda).sum())
+                assert n_boost == b["labels"].size(0), \
+                    f"smoke: expected {b['labels'].size(0)} EOS-boosted positions, got {n_boost}"
+            else:
+                loss, _ = per_sample_loss(b, ww)
             opt.zero_grad(set_to_none=True)
             loss.backward()
             opt.step()
             losses.append(round(float(loss), 4))
-        print(f"  [B] {n_steps} real optimizer steps ran; losses {losses}")
+        print(f"  [B] {n_steps} real optimizer steps ran; losses {losses}"
+              + (f" (E1 path, lam={args.eos_lambda}, "
+                 f"{int(b['labels'].size(0))} EOS positions boosted per step)"
+                 if args.eos_lambda != 1.0 else ""))
         finite = all(x == x and abs(x) < 1e4 for x in losses)
         print(f"      losses finite: {finite}")
 
