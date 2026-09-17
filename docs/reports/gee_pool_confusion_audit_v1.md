@@ -4,6 +4,18 @@
 触发：owner 两次指向 `/data/yll/工作流抽取结果` 与 `/home/yll/GEE/描述性知识抽取汇总`，复查后发现前两轮溯源结论均建立在错误前提上。
 影响：`gee_conversion_full_v1/v2` 的 44,220 行"指令↔链"配对 **~70% 错配，作废重建**。
 
+> **链源重建结果（同日完成）**：`gee_route2_conversion_workflow_chains_v1.py` 以
+> Workflowoutput 数字批 merged_nodes_process 为链源。试点三轮迭代修复：
+> ①BOM 列名致 31 张 GEE 表全跳过（v1 的链实际来自 8 张 ArcGIS/QGIS 混合表）；
+> ②glob 过滤到 `Workflowoutput\d+`（链+作者代理两处）；③micro-only（macro 是
+> 抽取器自造的伪 API `ee.Image.maskLogic/arithmetic`；micro-only 推理层损失实测 0.2%）；
+> ④复合串逐方法展开（`img.select.lt.multiply.rename` → 4 个真方法，v2 的首尾折叠语义错）；
+> ⑤批次区间重叠首见优先（data280000/290000）。
+> **v3 终版指标：3,000/3,000 全通过（100%）、canonical 覆盖 99.98%、链长 median 14/p90 67、
+> 未映射仅 22 token、作者泄漏 0、链泄漏 0。** 抽验语义一致（ERA5 冻结降水 ↔
+> filterBounds/select/Filter.date/Reducer.mean；作物分类 ↔ filterDate/filterMetadata/
+> filterBounds/map/calendarRange）。全量 180,883 推理层转化运行中。
+
 ---
 
 ## 1. 结论（先行）
