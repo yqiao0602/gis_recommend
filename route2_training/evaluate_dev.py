@@ -15,7 +15,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+# script-mode bootstrap: when launched as `python evaluate_dev.py` (from the
+# training subprocess), put the repo root on sys.path so `route2_training`
+# resolves
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import torch
 
