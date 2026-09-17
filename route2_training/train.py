@@ -160,7 +160,12 @@ def build_lora(model):
     lcfg = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05,
                       target_modules=LORA_TARGET,
                       task_type="CAUSAL_LM")
-    return get_peft_model(model, lcfg)
+    model = get_peft_model(model, lcfg)
+    # A10 shares with a 4.4GB resident kernel; checkpointing keeps
+    # 9B batch8x1024 activations in a few GB instead of >12GB
+    model.gradient_checkpointing_enable()
+    model.enable_input_require_grads()
+    return model
 
 
 def load_base_4bit(base_model: str):
@@ -311,8 +316,18 @@ def run_release(cfg: ArmConfig, config_path: str) -> int:
         for k in qstats: qstats[k] += estats[k]
         ckpt = out / f"qgis_sft_ep{ep + 1}"
         model.save_pretrained(str(ckpt))
-        m = evaluate_dev(current_base, str(ckpt), cfg.qgis_dev,
-                         str(out / f"dev_ep{ep + 1}.json"))
+        import subprocess, sys as _sys
+        r = subprocess.run(
+            [_sys.executable, str(Path(__file__).parent / "evaluate_dev.py"),
+             "--base-model", current_base, "--adapter", str(ckpt),
+             "--dev", cfg.qgis_dev, "--out", str(out / f"dev_ep{ep + 1}.json")],
+            capture_output=True, text=True)
+        if r.returncode != 0:
+            print("[dev] eval subprocess failed: " + r.stderr[-2000:], flush=True)
+            m = {"operator_set_f1": -1.0, "exact_graph_em": 0, "link_f1": 0,
+                 "parse_failure_rate": 1.0, "n": 0}
+        else:
+            m = json.loads((out / f"dev_ep{ep + 1}.json").read_text(encoding="utf-8"))
         history.append({"epoch": ep + 1, **m})
         if m["operator_set_f1"] > best_f1:
             best_f1 = m["operator_set_f1"]
