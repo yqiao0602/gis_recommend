@@ -111,8 +111,10 @@ def main() -> int:
     t0 = time.time()
     preds = []
     op_tp = op_fp = op_fn = link_tp = link_fp = link_fn = 0
-    row_opf1 = []
+    total_op_gold = total_link_gold = 0   # gold in ALL rows incl. unparseable
+    row_opf1 = []                          # per-row F1 for every row (0 if no usable pred)
     row_linkf1 = []
+    n_usable_rows = 0                      # rows with a non-empty predicted op set
     exact = empty = hit_cap = 0
     parse_fail = Counter()
     op_inst = Counter()
@@ -133,20 +135,27 @@ def main() -> int:
         gm = Counter(p["operator_id"] for p in r["processes"])
         gl = {(l["source_process_id"], l["target_process_id"]) for l in r["links"]}
         tgt_op_inst.update(gm)
+        total_op_gold += sum(gm.values())
+        total_link_gold += len(gl)
         if not pr["ok"]:
             parse_fail[pr["reason"]] += 1
+            row_opf1.append(0.0)      # unparseable row scores zero end-to-end
+            row_linkf1.append(0.0)
             preds.append({"wid": r["wid"], "ok": False, "reason": pr["reason"],
                           "n_gen_tokens": int(len(out_ids)), "raw": text})
         else:
             pm = Counter(p["operator_id"] for p in pr["processes"])
             op_inst.update(pm)
-            # micro counts (correct F1): TP/FP/FN over instances
             inter = sum((gm & pm).values())
             op_tp += inter
             op_fp += sum(pm.values()) - inter
             op_fn += sum(gm.values()) - inter
-            # macro (per-row) for reference
-            row_opf1.append(2 * inter / max(sum(pm.values()) + sum(gm.values()), 1))
+            if pm:
+                n_usable_rows += 1
+                row_opf1.append(2 * inter / max(sum(pm.values()) + sum(gm.values()), 1))
+            else:
+                empty += 1
+                row_opf1.append(0.0)
             pl = {(l["source_process_id"], l["target_process_id"]) for l in pr["links"]}
             li = len(gl & pl)
             link_tp += li
@@ -184,18 +193,36 @@ def main() -> int:
             "eos_stop_ids": eos_ids, "hit_cap_rows": hit_cap},
         "parse_ok_rate": round(parse_ok / n, 4),
         "parse_failures": dict(parse_fail),
-        "operator_micro": {
+        # PRIMARY: end-to-end. Unparseable rows contribute zero TP/FP and all
+        # their gold as FN — this is the usable result, not the optimistic one.
+        "operator_end_to_end": {
+            "tp": op_tp, "fp": op_fp, "fn": total_op_gold - op_tp,
+            "precision": round(op_tp / max(op_tp + op_fp, 1), 4),
+            "recall": round(op_tp / max(total_op_gold, 1), 4),
+            "f1": round(2 * op_tp / max(2 * op_tp + op_fp + (total_op_gold - op_tp), 1), 4)},
+        "operator_macro_end_to_end_f1": round(sum(row_opf1) / max(len(row_opf1), 1), 4),
+        "link_end_to_end": {
+            "tp": link_tp, "fp": link_fp, "fn": total_link_gold - link_tp,
+            "precision": round(link_tp / max(link_tp + link_fp, 1), 4),
+            "recall": round(link_tp / max(total_link_gold, 1), 4),
+            "f1": round(2 * link_tp / max(2 * link_tp + link_fp + (total_link_gold - link_tp), 1), 4)},
+        "link_macro_end_to_end_f1": round(sum(row_linkf1) / max(len(row_linkf1), 1), 4),
+        # SECONDARY: conditional-on-parse (optimistic). Only rows with a
+        # non-empty predicted op set contribute; gold of unparseable rows is
+        # excluded from FN. Never quote this as the usability number.
+        "operator_conditional_on_parse": {
+            "note": "optimistic; excludes unparseable rows from both numerator and denominator",
             "tp": op_tp, "fp": op_fp, "fn": op_fn,
+            "n_usable_rows": n_usable_rows,
             "precision": round(op_tp / max(op_tp + op_fp, 1), 4),
             "recall": round(op_tp / max(op_tp + op_fn, 1), 4),
             "f1": round(2 * op_tp / max(2 * op_tp + op_fp + op_fn, 1), 4)},
-        "operator_macro_row_f1": round(sum(row_opf1) / max(len(row_opf1), 1), 4),
-        "link_micro": {
+        "link_conditional_on_parse": {
             "tp": link_tp, "fp": link_fp, "fn": link_fn,
+            "n_usable_rows": n_usable_rows,
             "precision": round(link_tp / max(link_tp + link_fp, 1), 4),
             "recall": round(link_tp / max(link_tp + link_fn, 1), 4),
             "f1": round(2 * link_tp / max(2 * link_tp + link_fp + link_fn, 1), 4)},
-        "link_macro_row_f1": round(sum(row_linkf1) / max(len(row_linkf1), 1), 4),
         "graph_exact_match_rate": round(exact / n, 4),
         "empty_operator_rows": empty,
         "distinct_operators_predicted": len(op_inst),
