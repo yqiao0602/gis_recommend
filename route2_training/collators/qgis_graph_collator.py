@@ -53,7 +53,7 @@ class QgisGraphCollator:
         from the LEFT if overlong so the target head is preserved; target is
         truncated from the RIGHT (tail loss only). Caller logs counts.
         """
-        p_ids = self.tok.encode(self.PROMPT_SUFFIX + prompt, add_special_tokens=False)
+        p_ids = self.tok.encode(prompt + self.PROMPT_SUFFIX, add_special_tokens=False)
         t_ids = self.tok.encode(" " + target, add_special_tokens=False) + [self.tok.eos_token_id]
         # budget split: prompt at most 60% of window
         p_budget = int(self.max_len * 0.6)

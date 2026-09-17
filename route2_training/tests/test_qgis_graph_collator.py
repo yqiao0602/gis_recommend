@@ -81,5 +81,26 @@ class TestGraphRoundTrip(unittest.TestCase):
         self.assertEqual((p2, l2), (processes, links))
 
 
+class TestPromptSuffixOrdering(unittest.TestCase):
+    """Regression: suffix must come AFTER the task text (train/eval match)."""
+
+    def test_prompt_precedes_suffix(self):
+        class Tok:
+            eos_token_id = 2; bos_token_id = None; pad_token_id = 0
+            def encode(self, t, add_special_tokens=False):
+                return [ord(c) % 250 + 3 for c in t]
+        from route2_training.collators.qgis_graph_collator import QgisGraphCollator
+        col = QgisGraphCollator(Tok(), max_len=512)
+        e = col.encode_pair("TASKTEXT", "P:p0:op")
+        parts = []
+        for i in e["input_ids"]:
+            parts.append("?" if not isinstance(i, int) or i < 3
+                         else chr((i - 3) % 90 + 32))
+        decoded = "".join(parts)
+        task_pos = decoded.find("TASKTEXT")
+        suffix_pos = decoded.find("workflow")
+        self.assertGreater(suffix_pos, task_pos, "suffix must follow task text")
+
+
 if __name__ == "__main__":
     unittest.main()
