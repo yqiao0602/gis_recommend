@@ -92,61 +92,100 @@ def load_descriptions():
     return desc, tname, ttype
 
 
-def _step_token(raw: str, norm: str) -> str | None:
-    """Canonical token for one step, preserving true method names."""
+def _step_token(raw: str, norm: str) -> list[str]:
+    """Canonical tokens for one step. Composite raw names expand per method.
+
+    raw forms in the tables:
+      ee.ImageCollection.filterBounds            -> [ee.ImageCollection.filterBounds]
+      img.select.lt.multiply.rename              -> [select, lt, multiply, rename]
+      boundary.filter                            -> [filter]
+      ee.Filter.equals (norm=ee.Image.maskLogic) -> [ee.Filter.equals]
+    norm is used only when raw is empty; extractor-invented role names
+    (maskLogic / arithmetic) never enter the chain.
+    """
     raw = (raw or "").strip()
     norm = (norm or "").strip()
-    if raw and EE_PREFIX_RE.match(raw):
+    if not raw:
+        if norm and EE_PREFIX_RE.match(norm):
+            return [norm]
+        return []
+    if EE_PREFIX_RE.match(raw):
         parts = [p for p in raw.split(".") if p]
         if len(parts) == 1:
-            return raw
+            return [raw]
         cls, last = parts[1], parts[-1]
         if last in API_ALIAS:
-            return API_ALIAS[last]
+            return [API_ALIAS[last]]
         if len(parts) == 2:                      # ee.ImageCollection
-            return raw
-        return f"{parts[0]}.{cls}.{last}"        # ee.ImageCollection.filterBounds
-    if norm and EE_PREFIX_RE.match(norm):
-        return norm                              # receiver-prefixed -> canonical
-    if raw and "." in raw:
-        return raw.split(".")[-1]                # boundary.filter -> filter
-    return raw or None
+            return [raw]
+        return [f"{parts[0]}.{cls}.{last}"]      # ee.ImageCollection.filterBounds
+    # composite receiver chain: img.select.lt.multiply.rename -> per-method
+    parts = [p for p in raw.split(".") if p]
+    out = []
+    for p in parts[1:]:
+        if p in API_ALIAS:
+            out.append(API_ALIAS[p])
+        elif p != "main":
+            out.append(p)
+    return out
 
 
 def build_chains():
-    """Per-script ordered token chains from merged process tables (pool B)."""
+    """Per-script ordered token chains from merged process tables (pool B).
+
+    Four construction rules (2026-09-17 pilot findings):
+      1. numeric GEE batches only -- the glob also matches ArcGIS/QGIS
+         'Workflowoutput ...' dirs whose script ids are a different space
+      2. no column-name gating -- 31/31 GEE tables carry a BOM'd '﻿id'
+         column; an idkey check silently skipped every GEE table in pilot v1
+      3. micro steps only -- macro rows are composite statements whose
+         normalized names are extractor-invented pseudo-APIs
+         (ee.Image.arithmetic, ee.Image.maskLogic); micro rows carry the
+         real leaf calls
+      4. first-seen wins -- batch ranges overlap (data280000 covers
+         270001-289999, data290000 re-covers 280000-289999)
+    """
     chains = {}
-    for mp in sorted(glob.glob(WO_GLOB)):
+    files = sorted(f for f in glob.glob(WO_GLOB)
+                   if re.fullmatch(r"Workflowoutput\d+", Path(f).parent.name))
+    for mp in files:
         with open(mp, encoding="utf-8-sig") as fh:
             rdr = csv.DictReader(fh)
-            idkey = next((k for k in (rdr.fieldnames or []) if k.strip() == "id"), None)
-            if idkey is None:
-                continue
             cur_script, cur_tokens = None, []
+
             def flush():
-                if cur_script is not None and len(cur_tokens) >= 2:
+                if cur_script is not None and len(cur_tokens) >= 2 and cur_script not in chains:
                     chains[cur_script] = cur_tokens
+
             for row in rdr:
                 s = (row.get("source_script") or "").replace(".txt", "")
                 if s != cur_script:
                     flush()
                     cur_script, cur_tokens = s, []
-                tok = _step_token(row.get("raw_api_name", ""), row.get("normalized_api_name", ""))
-                if not tok or tok in NOISE_TOKEN or tok.startswith(("Map.", "ui.")):
+                if row.get("step_level") != "micro":
                     continue
-                if tok == "main":
-                    continue
-                if not cur_tokens or cur_tokens[-1] != tok:
-                    cur_tokens.append(tok)
+                for tok in _step_token(row.get("raw_api_name", ""), row.get("normalized_api_name", "")):
+                    if not tok or tok in NOISE_TOKEN or tok.startswith(("Map.", "ui.")):
+                        continue
+                    if tok == "main":
+                        continue
+                    if not cur_tokens or cur_tokens[-1] != tok:
+                        cur_tokens.append(tok)
             flush()
     return chains
 
 
 def load_author_proxies():
-    """script -> author from users|projects/{author}/ asset references."""
+    """script -> author from users|projects/{author}/ asset references.
+
+    Numeric GEE batches only -- the datasource glob also matches ArcGIS/QGIS
+    dirs whose script ids share the same namespace but different content.
+    """
     pat = re.compile(r"^(?:users|projects)/([A-Za-z0-9_.-]+)/")
     authors = defaultdict(set)
-    for dp in sorted(glob.glob(DS_GLOB)):
+    files = sorted(f for f in glob.glob(DS_GLOB)
+                   if re.fullmatch(r"Workflowoutput\d+", Path(f).parent.name))
+    for dp in files:
         with open(dp, encoding="utf-8-sig") as fh:
             for row in csv.DictReader(fh):
                 m = pat.match((row.get("name") or "").strip())
