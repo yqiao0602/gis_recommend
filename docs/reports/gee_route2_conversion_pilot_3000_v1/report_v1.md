@@ -1,9 +1,17 @@
 # Route-2 数据转化可行性闸门 v1：3,000 条试点
 
-日期：2026-09-17
+日期：2026-09-17（v3 更新同日）
 定位（owner 定义）：**Route-2 Data Conversion Feasibility Gate v1**——不是清洗任务，是路线 ②（GEE workflow reasoning + QGIS grounding，无显式 L3）进入训练实验的前置判定。
 前置：`gee_data_asset_audit_v1.md`（e92cd5e）、`gee_workflow_diversity_audit_v1.md`（dee1b4b）
-产物：`scripts/gee_route2_conversion_pilot_v1.py` + 服务器 `outputs_v2/gee_conversion_pilot_3000_v1/`（pilot_3000_rows.jsonl / pilot_3000_stats.json，本地镜像 stats）
+产物：`scripts/gee_route2_conversion_pilot_v1.py` + 服务器 `outputs_v2/gee_conversion_pilot_3000_v3/`（最终试点）与 `outputs_v2/gee_conversion_full_v1/`（全量 44,220 行，SHA256 `de5b1fdb…f5882a`）
+
+> **v3 + 全量更新（e908bfa，2026-09-17）**：owner 裁定 Step 1（先补 canonical）后执行。
+> 修复内容：① canonical 增补集（`filterMetadata` 家族，/home/yll 保持只读）；② 旧版 JS API 别名层
+> （`randomForest→smileRandomForest`、`cart→smileCart`、`svm→libsvm`、`focal_median→focalMedian` 等，
+> 三处位置全覆盖）；③ 抽样确定性修复（tier 排序遍历，双跑核验一致）。
+> 结果：试点 **2,993/2,997（99.87%）、token 覆盖 99.96%**，残留未映射 40 token（真实自定义函数名，正确保持 UNMAPPED）。
+> 全量 **44,231 → 44,220（99.98%）**：train/test repo 交集 0、chain-family 交集 0、canonical 词汇 790、
+> 链长 median 14 / p90 48。split 为**临时版**（35,497 无溯源行用 chain-family 隔离），待 Step 2 溯源恢复后重切。
 
 ---
 
