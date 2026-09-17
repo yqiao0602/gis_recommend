@@ -87,6 +87,41 @@ def collate(batch):
             "sample_weight": torch.tensor(w, dtype=torch.float32)}
 
 
+def eos_token_weight(sl: torch.Tensor, eos_id: int, lam: float) -> torch.Tensor:
+    """E1 token weights over the causal-shifted label matrix `sl`.
+
+    Base weight 1 on every supervised token; lambda ONLY on the row's LAST
+    supervised position, and only if that label is the EOS id (defensive:
+    the 2026-09-17 gold audit showed exactly one <|im_end|> per row at the
+    final position, but we assert position AND id so a JSON-internal token
+    can never be mis-weighted). lambda=1 -> all-ones (identity with C0).
+    """
+    mask = (sl != -100)
+    w = mask.float()
+    if lam == 1.0:
+        return w
+    # last supervised column per row (argmax on the boolean mask)
+    last = mask.float().mul(torch.arange(sl.size(1), dtype=torch.float32)
+                            .unsqueeze(0).to(sl.device)).argmax(dim=1)
+    for b in range(sl.size(0)):
+        j = int(last[b])
+        if mask[b, j] and int(sl[b, j]) == eos_id:
+            w[b, j] = lam
+    return w
+
+
+def eos_weighted_ce(logits, labels, eos_id, lam):
+    """Token-mean weighted CE. At lam=1 this is bit-identical in form to HF's
+    native causal-LM loss (sum CE over supervised positions / count)."""
+    sl = labels[:, 1:]
+    slog = logits[:, :-1, :]
+    flat = F.cross_entropy(slog.reshape(-1, slog.size(-1)).float(),
+                           sl.reshape(-1), reduction="none", ignore_index=-100)
+    per_tok = flat.view(sl.size(0), -1)
+    w_tok = eos_token_weight(sl, eos_id, lam)
+    return (per_tok * w_tok).sum() / w_tok.sum().clamp(min=1e-9), per_tok, w_tok
+
+
 def parse_pred(text: str) -> dict:
     """Parse model output into the graph contract; report failure explicitly."""
     s = text.strip()
@@ -263,6 +298,12 @@ def main() -> int:
                          "with best-checkpoint keeping (V2a addition, flagged in report)")
     ap.add_argument("--per-sample-weight", action="store_true",
                     help="true per-sample weighted CE (required for profile B)")
+    ap.add_argument("--eos-lambda", type=float, default=1.0,
+                    help="E1 (V2a-P1): loss weight of the final <|im_end|> token. "
+                         "1.0 = identity with the C0 plain-CE path (frozen default)")
+    ap.add_argument("--eos-sanity", action="store_true",
+                    help="run the E1 sanity checks (S1 identity / S2 analytic / "
+                         "S3 position) and exit")
     ap.add_argument("--smoke", action="store_true", help="pre-training smoke: real loss+eval paths")
     ap.add_argument("--smoke-steps", type=int, default=8)
     ap.add_argument("--smoke-eval-rows", type=int, default=3)
@@ -365,6 +406,75 @@ def main() -> int:
         print(f"  SMOKE {'PASS' if ok else 'FAIL'}")
         return 0 if ok else 1
 
+    if args.eos_sanity:
+        # V2a-P1 E1 sanity (spec §3). S1/S2 need a real forward pass (GPU);
+        # S3 is pure tensor logic and runs on the REAL dataset serialization.
+        print("=" * 70)
+        print("V2a-P1 E1 EOS SANITY (S1 lambda=1 identity / S2 analytic / S3 position)")
+        print("=" * 70)
+        # --- S3 (CPU): weight mask on real target labels ---
+        ds = SFTSet(train_rows[:8], tok, args.max_len)
+        collate.tok = tok
+        b = collate([ds[i] for i in range(4)])
+        sl = b["labels"][:, 1:]
+        pos_ok = True
+        for lam in (2.0, 20.0):
+            w = eos_token_weight(sl, tok.eos_token_id, lam)
+            n_eos = int((w == lam).sum())
+            n_sup = int((sl != -100).sum())
+            # every weighted position must be the row-final supervised label
+            mask = (sl != -100)
+            for r in range(sl.size(0)):
+                cols = [c for c in range(sl.size(1)) if w[r, c] == lam]
+                last = [c for c in range(sl.size(1)) if mask[r, c]][-1]
+                if cols not in ([last], []) or (cols and int(sl[r, cols[0]]) != tok.eos_token_id):
+                    pos_ok = False
+            print(f"  [S3] lam={lam}: weighted positions={n_eos}/4 rows, all at row-final "
+                  f"EOS: {pos_ok and n_eos == 4}")
+        # identity at lam=1
+        w1 = eos_token_weight(sl, tok.eos_token_id, 1.0)
+        s3_ok = bool(torch.equal(w1, (sl != -100).float())) and pos_ok and n_eos == 4
+        print(f"  [S3] lam=1 equals plain supervision mask: {s3_ok}")
+
+        # --- S1/S2 (GPU): real forward, analytic identity/increment ---
+        if args.skip_gpu:
+            print("  [S1/S2] skipped (--skip-gpu); run with GPU before E1 training")
+            return 0 if s3_ok else 1
+        bnb = BitsAndBytesConfig(load_in_4bit=True, bnb_quant_type="nf4",
+                                 bnb_4bit_compute_dtype=torch.bfloat16,
+                                 bnb_4bit_use_double_quant=True)
+        model = AutoModelForCausalLM.from_pretrained(args.model, quantization_config=bnb,
+                                                     device_map="cuda:0")
+        model.config.use_cache = False
+        model = get_peft_model(model, LoraConfig(
+            r=args.lora_r, lora_alpha=args.lora_alpha, lora_dropout=0.0,
+            target_modules=["q_proj", "k_proj", "v_proj", "o_proj"], task_type="CAUSAL_LM"))
+        bb = {k: v.to("cuda:0") for k, v in b.items() if k != "sample_weight"}
+        with torch.no_grad():
+            logits = model(**{k: v for k, v in bb.items() if k != "labels"}).logits
+            labels = bb["labels"]
+            hf = model(**bb).loss.item()
+            l1, per_tok, _ = eos_weighted_ce(logits, labels, tok.eos_token_id, 1.0)
+            l2, _, w2 = eos_weighted_ce(logits, labels, tok.eos_token_id, 2.0)
+            l1 = float(l1); l2 = float(l2)
+            # S1: lam=1 must equal HF native loss (token-mean over supervised)
+            s1 = abs(l1 - hf) < 5e-4
+            # S2 analytic: L(2) = (S + E) / (N + k) where S=sum CE over all
+            # supervised, N=count, E=sum CE at the k EOS positions
+            # (each EOS weight goes 1 -> 2, i.e. +1)
+            S = float(per_tok.sum()); N = int((labels[:, 1:] != -100).sum())
+            eos_pos = (w2 == 2.0).nonzero()
+            E = float(per_tok[w2 == 2.0].sum())
+            k = int(len(eos_pos))
+            analytic = (S + E) / (N + k)
+            s2 = abs(l2 - analytic) < 1e-3
+            print(f"  [S1] lam=1 {l1:.6f} vs HF native {hf:.6f} -> {'MATCH' if s1 else 'MISMATCH'}")
+            print(f"  [S2] lam=2 {l2:.6f} vs analytic (S+E)/(N+k)={analytic:.6f} "
+                  f"(S={S:.2f}, N={N}, E={E:.4f}, k={k}) -> {'MATCH' if s2 else 'MISMATCH'}")
+        ok = s1 and s2 and s3_ok
+        print(f"  EOS SANITY {'PASS' if ok else 'FAIL'}")
+        return 0 if ok else 1
+
     if args.weight_sanity:
         import torch.nn.functional as _F
         # three checks on a synthetic 2-row batch using the SAME loss code path
@@ -463,6 +573,17 @@ def main() -> int:
                 w_tok = w.unsqueeze(1).to(per_tok.device) * mask      # per-token weight
                 weighted = (per_tok * w_tok).sum() / w_tok.sum().clamp(min=1e-9)
                 running += weighted.item()
+            elif args.eos_lambda != 1.0:
+                # V2a-P1 E1: EOS-aware token-mean CE. ONLY the row-final
+                # <|im_end|> position carries lambda; every other supervised
+                # token keeps weight 1 (no repetition suppression, no JSON-
+                # internal weighting). eos_lambda=1 must never reach this
+                # branch - it stays on the C0 path bit-for-bit.
+                labels = batch["labels"]
+                logits = model(**{k: v for k, v in batch.items() if k != "labels"}).logits
+                weighted, _, _ = eos_weighted_ce(logits, labels, tok.eos_token_id,
+                                                 args.eos_lambda)
+                running += weighted.item()
             else:
                 out = model(**batch)
                 weighted = out.loss * w.mean()
@@ -505,6 +626,7 @@ def main() -> int:
                    "target_modules": "qkvo", "lr": args.lr, "batch": args.batch_size,
                    "grad_accum": args.grad_accum, "quant": "nf4", "max_len": args.max_len,
                    "max_new_tokens": args.max_new_tokens, "seed": args.seed,
+                   "eos_lambda": args.eos_lambda,
                    "weighted_ce": True, "eval_every": args.eval_every},
         "dev_metrics": metrics, "best_dev": best,
         "target_format": "benchmark gold contract (processes+links)",
