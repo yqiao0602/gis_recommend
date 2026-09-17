@@ -1,9 +1,20 @@
 # Route-2 数据转化可行性闸门 v1：3,000 条试点
 
-日期：2026-09-17（v3 更新同日）
+日期：2026-09-17（v3 + Step 2 溯源解决，同日）
 定位（owner 定义）：**Route-2 Data Conversion Feasibility Gate v1**——不是清洗任务，是路线 ②（GEE workflow reasoning + QGIS grounding，无显式 L3）进入训练实验的前置判定。
 前置：`gee_data_asset_audit_v1.md`（e92cd5e）、`gee_workflow_diversity_audit_v1.md`（dee1b4b）
-产物：`scripts/gee_route2_conversion_pilot_v1.py` + 服务器 `outputs_v2/gee_conversion_pilot_3000_v3/`（最终试点）与 `outputs_v2/gee_conversion_full_v1/`（全量 44,220 行，SHA256 `de5b1fdb…f5882a`）
+产物：`scripts/gee_route2_conversion_pilot_v1.py` + 服务器 `outputs_v2/gee_conversion_full_v2/`（**正式冻结候选**，44,220 行，SHA256 `eab9494d…8a2232`）
+
+> **Step 2 溯源解决（02c5aa6，2026-09-17）**：owner 提示排查 `/data/yll/工作流抽取结果` 后发现**语料池混淆**——
+> 44,220 条链的真实来源是 GEE-OPs **playground 语料**（pool A：295,943 个脚本，mtime 2023-12~2024-01，
+> 68.6% 带 GEE Code Editor `Start of imports` 导出头），**不是** yll 的 GitHub 爬取池（pool B：
+> dataNNNNN 目录 241,206 个脚本）。两池 script id 同号不同内容：试点 v1-v3 的 20.3% "repo" 匹配是
+> **跨池污染**（抽样 5/5 md5 不符、内容哈希交叉 0/2000），已全部移除。
+> pool A 服务器上无 repo 级溯源（zip/metadata/crawler_state 均查过），但**作者信号可从资产路径恢复**
+> （`users/{author}/`、`projects/{project}/`，转化行覆盖率 67.2%）。
+> Gate 4 重构为 union-find 连通分量（作者∪链）+ 枢纽分量作者子组切分（无作者行继承唯一同链作者）。
+> **终版指标：作者泄漏 0（全 split 对），链泄漏仅 81 条多作者通用习语（2.32% 行，全部 ≥2 作者，
+> 无单作者案例），split 33,156/4,436/6,628（75/10/15）。**
 
 > **v3 + 全量更新（e908bfa，2026-09-17）**：owner 裁定 Step 1（先补 canonical）后执行。
 > 修复内容：① canonical 增补集（`filterMetadata` 家族，/home/yll 保持只读）；② 旧版 JS API 别名层
