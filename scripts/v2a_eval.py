@@ -87,6 +87,10 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--canonicalize", action="store_true",
                     help="also report the canonicalized diagnostic block (secondary)")
+    ap.add_argument("--repetition-penalty", type=float, default=1.0,
+                    help="decoding-layer repetition penalty (1.0 = none, frozen default)")
+    ap.add_argument("--no-repeat-ngram-size", type=int, default=0,
+                    help="decoding-layer n-gram blocking (0 = disabled, frozen default)")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -126,6 +130,8 @@ def main() -> int:
         with torch.no_grad():
             gen = model.generate(**inputs, max_new_tokens=args.max_new_tokens,
                                  do_sample=False, eos_token_id=eos_ids,
+                                 repetition_penalty=args.repetition_penalty,
+                                 no_repeat_ngram_size=args.no_repeat_ngram_size,
                                  pad_token_id=tok.pad_token_id)
         out_ids = gen[0][inputs["input_ids"].shape[1]:]
         text = tok.decode(out_ids, skip_special_tokens=True)
@@ -190,6 +196,8 @@ def main() -> int:
         "schema": "gis_recommend.v2a.eval.v1", "tag": args.tag, "n": n,
         "adapter": str(args.adapter), "decoding": {
             "greedy": True, "max_new_tokens": args.max_new_tokens,
+            "repetition_penalty": args.repetition_penalty,
+            "no_repeat_ngram_size": args.no_repeat_ngram_size,
             "eos_stop_ids": eos_ids, "hit_cap_rows": hit_cap},
         "parse_ok_rate": round(parse_ok / n, 4),
         "parse_failures": dict(parse_fail),
