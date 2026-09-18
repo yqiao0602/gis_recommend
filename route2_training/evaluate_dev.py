@@ -62,7 +62,7 @@ def parse_generation(text: str) -> tuple[list[dict], list[dict]]:
 @torch.no_grad()
 def evaluate_dev(base_model: str, adapter: str | None, dev_path: str,
                  out_json: str, max_new_tokens: int = 512,
-                 batch_size: int = 4) -> dict:
+                 batch_size: int = 2) -> dict:
     from transformers import (AutoModelForCausalLM, AutoTokenizer,
                               BitsAndBytesConfig)
     from peft import PeftModel
@@ -127,8 +127,10 @@ def main() -> int:
     ap.add_argument("--adapter", default=None)
     ap.add_argument("--dev", required=True, help="v2a_A_dev.jsonl (120 rows)")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--batch-size", type=int, default=2)
     args = ap.parse_args()
-    evaluate_dev(args.base_model, args.adapter, args.dev, args.out)
+    evaluate_dev(args.base_model, args.adapter, args.dev, args.out,
+                 batch_size=args.batch_size)
     return 0
 
 

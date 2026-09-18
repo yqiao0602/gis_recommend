@@ -316,11 +316,17 @@ def run_release(cfg: ArmConfig, config_path: str) -> int:
         for k in qstats: qstats[k] += estats[k]
         ckpt = out / f"qgis_sft_ep{ep + 1}"
         model.save_pretrained(str(ckpt))
+        # release cached blocks so the eval subprocess can co-load a second
+        # 4-bit model next to the live training tensors
+        import gc
+        gc.collect()
+        torch.cuda.empty_cache()
         import subprocess, sys as _sys
         r = subprocess.run(
             [_sys.executable, str(Path(__file__).parent / "evaluate_dev.py"),
              "--base-model", current_base, "--adapter", str(ckpt),
-             "--dev", cfg.qgis_dev, "--out", str(out / f"dev_ep{ep + 1}.json")],
+             "--dev", cfg.qgis_dev, "--out", str(out / f"dev_ep{ep + 1}.json"),
+             "--batch-size", "2"],
             capture_output=True, text=True)
         if r.returncode != 0:
             print("[dev] eval subprocess failed: " + r.stderr[-2000:], flush=True)
