@@ -70,6 +70,7 @@ def evaluate_dev(base_model: str, adapter: str | None, dev_path: str,
     tok = AutoTokenizer.from_pretrained(base_model)
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
+    tok.padding_side = 'left'   # decoder-only: right padding corrupts batch generation
     bnb = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4",
                              bnb_4bit_compute_dtype=torch.bfloat16,
                              bnb_4bit_use_double_quant=True)
