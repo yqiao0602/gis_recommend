@@ -50,6 +50,65 @@ def _canon_factory(catalog_list):
     return canon
 
 
+def build_gold_ebnf(catalog_list):
+    """P2 protocol revision (owner-approved 2026-09-18): EBNF grammar for the
+    frozen gold contract, operator names emitted as a NESTED PREFIX TRIE.
+
+    Why a trie: xgrammar 0.1.29's FSM merges states by consumed text across
+    different flat-alternation literals (found 2026-09-18: after
+    'native:generatepointspixelcentroids' + 'in', the mask offered BOTH the
+    'insidepolygons' continuation AND 'layer...' from
+    'qgis:randompointsinlayerbounds', accepting cross-literal chimera names).
+    Nesting each trie node in its own rule makes states rule-path-scoped and
+    the leak disappears (verified: leak rejected, all legal names accepted).
+    Layout mirrors serialize_target exactly (separators ', ', ': ').
+    Repetition is UNLIMITED by construction - no repetition control exists
+    anywhere in this grammar (gold repeat audit 79065a8 forbids it)."""
+    ops = sorted(set(catalog_list))
+    for o in ops:
+        assert '"' not in o and "\\" not in o, "EBNF-unsafe operator id: %r" % o
+
+    trie = {}
+    for n in ops:
+        d = trie
+        for ch in n:
+            d = d.setdefault(ch, {})
+        d[""] = True
+
+    rules = []
+    counter = [0]
+
+    def emit(d):
+        rid = "t%d" % counter[0]
+        counter[0] += 1
+        alts = []
+        if "" in d:
+            alts.append('""')
+        for ch in sorted(k for k in d if k):
+            alts.append('"%s" %s' % (ch, emit(d[ch])))
+        rules.append('%s ::= %s' % (rid, " | ".join(alts) if alts else '""'))
+        return rid
+
+    oproot = emit(trie)
+    return "\n".join([
+        'root ::= "{" q processes q ":" sp procsarr "," sp q links q ":" sp linksarr "}"',
+        'q ::= ["]',
+        'sp ::= " "',
+        'processes ::= "processes"',
+        'links ::= "links"',
+        'procsarr ::= "[]" | "[" proc ("," sp proc)* "]"',
+        'proc ::= "{" q process_id q ":" sp q pid q "," sp q operator_id q ":" sp q opname q "}"',
+        'process_id ::= "process_id"',
+        'operator_id ::= "operator_id"',
+        'linksarr ::= "[]" | "[" link ("," sp link)* "]"',
+        'link ::= "{" q source q ":" sp q pid q "," sp q target q ":" sp q pid q "}"',
+        'source ::= "source_process_id"',
+        'target ::= "target_process_id"',
+        'pid ::= [a-zA-Z0-9_-]*',
+        'opname ::= ' + oproot,
+    ] + rules)
+
+
 def parse_pred(text: str) -> dict:
     s = text.strip()
     i, j = s.find("{"), s.rfind("}")
@@ -91,6 +150,9 @@ def main() -> int:
                     help="decoding-layer repetition penalty (1.0 = none, frozen default)")
     ap.add_argument("--no-repeat-ngram-size", type=int, default=0,
                     help="decoding-layer n-gram blocking (0 = disabled, frozen default)")
+    ap.add_argument("--constrained", action="store_true",
+                    help="V2a-P2: JSON grammar + operator-catalog enum masking via "
+                         "xgrammar; default off = frozen free decoding")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -112,6 +174,37 @@ def main() -> int:
     model.eval()
     eos_ids = [x for x in {tok.eos_token_id, tok.pad_token_id} if x is not None]
 
+    constraint_state = None
+    if args.constrained:
+        # V2a-P2 (spec 0078b82 + protocol revision 2026-09-18): EBNF grammar
+        # + catalog enum. One matcher per row; the processor accepts the
+        # tokens the model chose under its own mask and asserts the grammar
+        # never rejects them (mask/chosen consistency).
+        import xgrammar as xgr
+        ebnf = build_gold_ebnf(sorted(catalog))
+        ti = xgr.TokenizerInfo.from_huggingface(tok, stop_token_ids=eos_ids)
+        cg = xgr.GrammarCompiler(ti).compile_grammar(xgr.Grammar.from_ebnf(ebnf))
+        constraint_state = {"ti": ti, "cg": cg}
+
+        class _Constraint:
+            def __init__(self):
+                self.matcher = xgr.GrammarMatcher(cg)
+                self.bm = xgr.allocate_token_bitmask(1, ti.vocab_size)
+                self.offset = None
+
+            def __call__(self, input_ids, scores):
+                ids = input_ids[0].tolist()
+                if self.offset is None:
+                    self.offset = len(ids)          # prompt length at prefill
+                while self.offset < len(ids):
+                    if not self.matcher.accept_token(int(ids[self.offset])):
+                        raise RuntimeError(
+                            "grammar rejected a token chosen under its own mask")
+                    self.offset += 1
+                self.matcher.fill_next_token_bitmask(self.bm, 0)
+                xgr.apply_token_bitmask_inplace(scores, self.bm.to(scores.device))
+                return scores
+
     t0 = time.time()
     preds = []
     op_tp = op_fp = op_fn = link_tp = link_fp = link_fn = 0
@@ -127,12 +220,16 @@ def main() -> int:
     for i, r in enumerate(rows):
         prompt = PROMPT_TEMPLATE.format(task_text=r["task_text"])
         inputs = tok(prompt, return_tensors="pt", truncation=True, max_length=2560).to("cuda:0")
+        lp = _Constraint() if constraint_state else None
+        t_row = time.time()
         with torch.no_grad():
             gen = model.generate(**inputs, max_new_tokens=args.max_new_tokens,
                                  do_sample=False, eos_token_id=eos_ids,
                                  repetition_penalty=args.repetition_penalty,
                                  no_repeat_ngram_size=args.no_repeat_ngram_size,
+                                 logits_processor=[lp] if lp else None,
                                  pad_token_id=tok.pad_token_id)
+        row_seconds = time.time() - t_row
         out_ids = gen[0][inputs["input_ids"].shape[1]:]
         text = tok.decode(out_ids, skip_special_tokens=True)
         if len(out_ids) >= args.max_new_tokens:
@@ -148,7 +245,9 @@ def main() -> int:
             row_opf1.append(0.0)      # unparseable row scores zero end-to-end
             row_linkf1.append(0.0)
             preds.append({"wid": r["wid"], "ok": False, "reason": pr["reason"],
-                          "n_gen_tokens": int(len(out_ids)), "raw": text})
+                          "n_gen_tokens": int(len(out_ids)), "raw": text,
+                          "row_seconds": round(row_seconds, 2),
+                          "tok_per_sec": round(len(out_ids) / max(row_seconds, 1e-6), 1)})
         else:
             pm = Counter(p["operator_id"] for p in pr["processes"])
             op_inst.update(pm)
@@ -176,6 +275,8 @@ def main() -> int:
                           "n_proc_pred": len(pm), "n_proc_gold": len(gm),
                           "n_link_pred": len(pl), "n_link_gold": len(gl),
                           "n_gen_tokens": int(len(out_ids)),
+                          "row_seconds": round(row_seconds, 2),
+                          "tok_per_sec": round(len(out_ids) / max(row_seconds, 1e-6), 1),
                           "ops_p": round(inter / max(sum(pm.values()), 1), 3),
                           "ops_r": round(inter / max(sum(gm.values()), 1), 3),
                           "raw": text})
@@ -198,7 +299,11 @@ def main() -> int:
             "greedy": True, "max_new_tokens": args.max_new_tokens,
             "repetition_penalty": args.repetition_penalty,
             "no_repeat_ngram_size": args.no_repeat_ngram_size,
+            "constrained": bool(args.constrained),
             "eos_stop_ids": eos_ids, "hit_cap_rows": hit_cap},
+        "gpu_peak_gb": round(torch.cuda.max_memory_allocated() / 2**30, 2),
+        "gen_tok_per_sec_median": (lambda v: round(sorted(v)[len(v) // 2], 1))(
+            [p.get("tok_per_sec", 0) for p in preds]) if preds else 0,
         "parse_ok_rate": round(parse_ok / n, 4),
         "parse_failures": dict(parse_fail),
         # PRIMARY: end-to-end. Unparseable rows contribute zero TP/FP and all

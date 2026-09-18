@@ -1,0 +1,69 @@
+{
+  "schema": "gis_recommend.v2a.eval.v1",
+  "tag": "smoke_p2",
+  "n": 8,
+  "adapter": "v2a_a/adapter_v1",
+  "decoding": {
+    "greedy": true,
+    "max_new_tokens": 512,
+    "repetition_penalty": 1.0,
+    "no_repeat_ngram_size": 0,
+    "constrained": true,
+    "eos_stop_ids": [
+      248044,
+      248046
+    ],
+    "hit_cap_rows": 5
+  },
+  "gpu_peak_gb": 7.32,
+  "gen_tok_per_sec_median": 13.7,
+  "parse_ok_rate": 0.375,
+  "parse_failures": {
+    "json_error": 5
+  },
+  "operator_end_to_end": {
+    "tp": 1,
+    "fp": 7,
+    "fn": 27,
+    "precision": 0.125,
+    "recall": 0.0357,
+    "f1": 0.0556
+  },
+  "operator_macro_end_to_end_f1": 0.0625,
+  "link_end_to_end": {
+    "tp": 3,
+    "fp": 2,
+    "fn": 12,
+    "precision": 0.6,
+    "recall": 0.2,
+    "f1": 0.3
+  },
+  "link_macro_end_to_end_f1": 0.25,
+  "operator_conditional_on_parse": {
+    "note": "optimistic; excludes unparseable rows from both numerator and denominator",
+    "tp": 1,
+    "fp": 7,
+    "fn": 9,
+    "n_usable_rows": 3,
+    "precision": 0.125,
+    "recall": 0.1,
+    "f1": 0.1111
+  },
+  "link_conditional_on_parse": {
+    "tp": 3,
+    "fp": 2,
+    "fn": 2,
+    "n_usable_rows": 3,
+    "precision": 0.6,
+    "recall": 0.6,
+    "f1": 0.6
+  },
+  "graph_exact_match_rate": 0.0,
+  "empty_operator_rows": 0,
+  "distinct_operators_predicted": 5,
+  "distinct_operators_gold": 16,
+  "out_of_catalog_operator_instances": 1,
+  "gold_operator_instances": 28,
+  "pred_operator_instances": 8,
+  "minutes": 3.5
+}

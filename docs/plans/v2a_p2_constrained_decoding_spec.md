@@ -55,6 +55,28 @@ JSON grammar（字段结构合法）
    - repetition 不变（合法重复被允许，本来就不该动）
 4. **论文价值预设**（owner §7 原则）：即使只有"输出空间约束改善离散输出可靠性、长工作流生成仍是独立瓶颈"，也是干净结论
 
+## 7. 协议修订记录（2026-09-18，owner 批准：方案甲，记为"判据纠错"而非原判据 PASS）
+
+### 7.1 C-original（2026-09-18 13:49，永久保留，不因修订改写）
+
+**FAIL**。8 行约束冒烟：parse_ok 0.375、invalid 1、截断 5/8、13.7 tok/s、7.32 GB。证据归档：`docs/reports/v2a_results/gate_c_original/`（metrics + predictions + queue log）。
+
+### 7.2 失败解剖（两项根因，一层定责）
+
+1. **5 个 json_error 全部为纯截断**（gen_tokens=512、尾部良构 JSON 被砍）——语法只能约束"生成出来的 token"，管不住 max_tokens 处的硬截断。截断率是 P2 的**实验对象**（约束是否改变生成分布），不是约束正确性的门槛。
+2. **1 个越界算子 = xgrammar 上游 FSM 缺陷（已定位到机制）**：其状态机按"已消费文本片段"跨字面量合并状态——实测在 `...centroids`+`in` 处，掩码同时放行 `insidepolygons` 延续与 `qgis:randompointsinlayerbounds` 的 `layer...` 延续，产出跨字面量嵌合名。与回滚无关（max_rollback_tokens=0 不消失）。**绕过：算子名以嵌套前缀 trie 生成 EBNF（16k 规则），状态按规则路径建键，泄漏消失**。
+
+### 7.3 C-revised 判据（门 C 重跑适用）
+
+- **语法正确性**：malformed non-truncated JSON = 0；invalid operator = 0；gold false-rejection = 0（1,565 全量重验 + 178 个历史幻觉名全拒）
+- **运行时**：速度中位 >5 tok/s、显存峰值 <20 GB
+- **生成行为**：截断仅作 diagnostic 记录，**不设门**
+- 冻结面不变：checkpoint/prompt/max_tokens=512/seed/catalog/canonicalization 一律不动（截断 5/8 > C0 2/8 是实验结果，不得通过调 max_tokens 掩盖）
+
+### 7.4 修订后执行序
+
+修 trie 语法 → 门 B-revised 全量重验 → 重跑门 C → C-revised PASS 才进门 D → 门 D 后按 A/B/C 三分支裁决 → **无论结果如何不自动进 P3**（owner 停止条件）。
+
 ## 6. 结案条款
 
 P2 完成后 V2a 路线收官判定：P0（正）+ ngram8（负）+ P1（负）+ repeat audit（定性）+ P2（?）→ benchmark v0.2.1 架构级对照（V1 vs V2a）。74 dup + W034030 型个案保留为 data_quality appendix，不动 Gold。
