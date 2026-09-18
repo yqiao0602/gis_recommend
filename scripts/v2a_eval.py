@@ -182,7 +182,15 @@ def main() -> int:
         # never rejects them (mask/chosen consistency).
         import xgrammar as xgr
         ebnf = build_gold_ebnf(sorted(catalog))
-        ti = xgr.TokenizerInfo.from_huggingface(tok, stop_token_ids=eos_ids)
+        # Mask must cover the MODEL's logit dimension, not len(tokenizer):
+        # Qwen's config vocab > len(tok), and tokens with id >= len(tok) are
+        # real logits the greedy path can pick (gate D crash 2026-09-18, dev
+        # row 57: token 248121 >= 248077 slipped past an undersized mask).
+        # Sizing the mask to the model vocab FORBIDS those slots - which is
+        # the constraint working as intended.
+        model_vocab = base.get_input_embeddings().weight.shape[0]
+        ti = xgr.TokenizerInfo.from_huggingface(
+            tok, vocab_size=model_vocab, stop_token_ids=eos_ids)
         cg = xgr.GrammarCompiler(ti).compile_grammar(xgr.Grammar.from_ebnf(ebnf))
         constraint_state = {"ti": ti, "cg": cg}
 
