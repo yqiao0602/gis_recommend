@@ -80,3 +80,11 @@ C-original 冒烟（保留，不得覆盖）：`gate1_runs/smoke_fail_c0.log`—
 | 其余（架构/数据/ctx/batch/dropout/warmup/种子/冒烟判据/Gate 1 判据） | — | **全部不变** |
 
 定性：**不是放宽 Gate 1 判据，是修探针**。纪律：修订后冒烟 PASS → 自动三种子正式跑，不再追加任何优化器调整；若 ③ 仍 FAIL → 停止调参，升级 owner 裁决"探针容量/设计是否合理"。
+
+## 10. 冒烟夹具修复记录（owner 批准 2026-09-20）
+
+**Smoke Harness Bug Fix，不计调参迭代**：修订 2 后冒烟仍 ③ FAIL（0.4917 vs 0.5515），追根因发现训练循环 epoch 上限（`range(20)` × ~28 批/epoch ≈ 560 步）先于注册的 2,000 步触发——**C-original 与修订 2 两轮冒烟均未跑完注册预算，两次 ③ FAIL 均无效为容量否决证据**（工件保留：`smoke_fail_c0.log` / `smoke_fail_c1.log`）。
+
+- 修复：训练循环改为严格步数驱动（`while global_step < 2000`），无 epoch 上限；日志须出现 step 500/1000/1500/2000；③ 在 step=2000 后评测。
+- 冻结确认：lr=1e-3、wd=0.01（bias/LN/embedding 不衰减）、架构、数据、ctx、batch、dropout、warmup=100、2k rows、B2、三项冒烟判据、Gate 1 判据——全部不变。**优化器空间自此锁死。**
+- 纪律：③ 在真实 2,000 步 PASS → 自动三种子；仍 FAIL → 触发真正的容量自检失败，停止一切修复，重新裁决 probe design。不得提前把"容量足够"写入结论。

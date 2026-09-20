@@ -371,9 +371,12 @@ def run_smoke(args):
     model.train()
     losses = []
     step = 0
-    for epoch in range(20):
-        if step >= args.smoke_steps:
-            break
+    # Harness bug fix (owner-approved 2026-09-20): the old epoch cap
+    # (range(20) x ~28 batches/epoch) bound at ~560 steps, so both prior
+    # smoke runs never reached the registered 2,000-step budget (their
+    # check-3 FAILs are therefore void as capacity evidence). Strictly
+    # step-driven now; nothing else changes (spec section 10).
+    while step < args.smoke_steps:
         for batch in make_batches(sids, args.smoke_budget, rng):
             if step >= args.smoke_steps:
                 break
@@ -387,7 +390,7 @@ def run_smoke(args):
             opt.step()
             losses.append(float(loss))
             step += 1
-            if step % 250 == 0:
+            if step % 500 == 0:
                 print("[smoke] step %d loss %.3f" % (step, loss), flush=True)
     tail = float(np.mean(losses[-100:]))
     ok1 = tail < 4.0
