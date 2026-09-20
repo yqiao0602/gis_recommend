@@ -167,6 +167,22 @@ class Probe(nn.Module):
         return self.head(self.ln_f(x))
 
 
+def make_optimizer(model, lr, wd=0.01):
+    """Owner-approved optimizer revision 2 (2026-09-20, after smoke FAIL
+    C-original): lr 3e-4 -> 1e-3; weight decay excludes bias, LayerNorm and
+    embeddings. Architecture/data/criteria untouched."""
+    decay, no_decay = [], []
+    for n, p in model.named_parameters():
+        if (n in ("emb.weight", "pos.weight") or n.endswith(".bias")
+                or ".ln" in n or n.startswith("ln_f")):
+            no_decay.append(p)
+        else:
+            decay.append(p)
+    return torch.optim.AdamW(
+        [{"params": decay, "weight_decay": wd},
+         {"params": no_decay, "weight_decay": 0.0}], lr=lr)
+
+
 def seq_of(op_ids):
     return [BOS] + list(op_ids) + [EOS]
 
@@ -208,7 +224,7 @@ def lr_scale(step, warmup, total):
 
 
 @torch.no_grad()
-def eval_model(model, id_lists, flat_n, pos_chains, pos_slots, bs=48):
+def eval_model(model, id_lists, flat_n, pos_slots, bs=48):
     """top1/top3 correctness arrays in flat position order."""
     top1 = np.zeros(flat_n, dtype=np.int8)
     top3 = np.zeros(flat_n, dtype=np.int8)
@@ -350,7 +366,7 @@ def run_smoke(args):
     sb0, sb1, sb2 = eval_baselines(sbase, sids, len(spc), sps)
     torch.manual_seed(args.seed)
     model = Probe(svocab)
-    opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=0.01)
+    opt = make_optimizer(model, args.lr)
     rng = np.random.default_rng(args.seed)
     model.train()
     losses = []
@@ -412,7 +428,7 @@ def run_seed(args):
     model = Probe(vocab)
     print("[seed %d] params %.2fM" % (args.seed,
           sum(p.numel() for p in model.parameters()) / 1e6), flush=True)
-    opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=0.01)
+    opt = make_optimizer(model, args.lr)
 
     # model selection: disjoint-val next-op top-1 (spec section 3)
     vpc, vps, vbk = position_index(val_disc)
@@ -485,7 +501,9 @@ def run_seed(args):
                                              model.parameters()) / 1e6, 3),
         "config": {"layers": 4, "d": 256, "heads": 8, "ff": 1024,
                    "ctx_ops": OPS_CAP, "dropout": 0.1, "lr": args.lr,
-                   "wd": 0.01, "warmup": args.warmup,
+                   "wd": 0.01,
+                   "wd_policy": "excl bias/LayerNorm/embedding (revision 2)",
+                   "warmup": args.warmup,
                    "warmup_note": "revised 500->100 at smoke stage (spec 6.3)",
                    "max_epochs": args.max_epochs, "budget": args.budget,
                    "best_epoch": best_epoch, "best_val_disc_top1": round(
@@ -586,7 +604,8 @@ def main():
     ap.add_argument("--mode", choices=["smoke", "seed", "aggregate"],
                     required=True)
     ap.add_argument("--seed", type=int, default=20260920)
-    ap.add_argument("--lr", type=float, default=3e-4)
+    ap.add_argument("--lr", type=float, default=1e-3,
+                    help="optimizer revision 2 (owner 2026-09-20): was 3e-4")
     ap.add_argument("--warmup", type=int, default=100)
     ap.add_argument("--max-epochs", type=int, default=8)
     ap.add_argument("--budget", type=int, default=16384)
