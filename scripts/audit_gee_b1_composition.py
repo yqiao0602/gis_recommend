@@ -48,7 +48,9 @@ def chain_stats(chains):
     for c in chains:
         t = tuple(c)
         bigrams.update(zip(t, t[1:]))
-        trigrams.update(zip(t, t[2:]))
+        # errata 2026-09-20: was zip(t, t[2:]) (skip-2 pairs, mislabeled as
+        # trigrams); true 3-grams now (all-corpus distinct: 126,840 vs 40,969)
+        trigrams.update(zip(t, t[1:], t[2:]))
     bg_total = sum(bigrams.values())
     bg_desc = sorted(bigrams.values(), reverse=True)
 
@@ -138,6 +140,7 @@ def main():
     train_chains = {"gee": set(), "sem_raw": set()}
     split_rows = Counter()
     contam = {s: Counter() for s in ("val", "test")}
+    eval_buffer = []
     cap_rows = cap_orig = cap_final = 0
     trivial = {"gee": 0, "sem_raw": 0}
     infer_proxy = {"gee": 0, "sem_raw": 0}
@@ -165,10 +168,14 @@ def main():
                 train_chains["sem_raw"].add(key_sem)
                 train_chains["gee"].add(key_gee)
             elif sp in contam:
+                # errata 2026-09-20: the file is row-shuffled (splits interleave
+                # from row 0), so membership must be tested AFTER the complete
+                # train set is built; the original single-pass version
+                # undercounted cross-split contamination (test gee 11.75% ->
+                # true 13.59%, test sem 23.1% -> true 27.37%).
                 contam[sp]["sem_rows"] += 1
-                contam[sp]["sem_hit"] += key_sem in train_chains["sem_raw"]
                 contam[sp]["gee_rows"] += 1
-                contam[sp]["gee_hit"] += key_gee in train_chains["gee"]
+                eval_buffer.append((sp, key_sem, key_gee))
             if r.get("run_cap_applied"):
                 cap_rows += 1
                 cap_orig += int(r.get("original_semantic_length", 0))
@@ -183,6 +190,10 @@ def main():
                 print("[%d] %.1fs" % (i + 1, time.time() - t0), flush=True)
 
     n = i + 1
+    # complete train sets now built -> membership is order-independent
+    for sp, key_sem, key_gee in eval_buffer:
+        contam[sp]["sem_hit"] += key_sem in train_chains["sem_raw"]
+        contam[sp]["gee_hit"] += key_gee in train_chains["gee"]
     res = {
         "schema": "gis_recommend.transfer.gate0_v2", "n_rows": n,
         "sha256": h_sha.hexdigest(), "split_rows": dict(split_rows),
