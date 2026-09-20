@@ -1,0 +1,94 @@
+{
+  "schema": "gis_recommend.transfer.gate1.seed",
+  "seed": 20260922,
+  "sha256": "09c37104d2fd33138cbc15d5d23676d4d169acf1d0cfb8057a0baf3a100c02a2",
+  "params_m": 3.482,
+  "config": {
+    "layers": 4,
+    "d": 256,
+    "heads": 8,
+    "ff": 1024,
+    "ctx_ops": 256,
+    "dropout": 0.1,
+    "lr": 0.001,
+    "wd": 0.01,
+    "wd_policy": "excl bias/LayerNorm/embedding (revision 2)",
+    "warmup": 100,
+    "warmup_note": "revised 500->100 at smoke stage (spec 6.3)",
+    "max_epochs": 8,
+    "budget": 16384,
+    "best_epoch": 8,
+    "best_val_disc_top1": 0.4369
+  },
+  "baselines_official": {
+    "b0_disjoint": 0.0581,
+    "b1_disjoint": 0.2685,
+    "b2_disjoint": 0.3969,
+    "b0_long": 0.0577,
+    "b1_long": 0.2691,
+    "b2_long": 0.4017,
+    "n_positions": 402613,
+    "n_long": 377973,
+    "n_unk_gold_positions": 39
+  },
+  "model": {
+    "disjoint_top1": 0.3781,
+    "disjoint_top3": 0.5817,
+    "long_top1": 0.3816,
+    "full_test_top1_secondary": 0.3882
+  },
+  "delta_vs_b2": {
+    "disjoint": -0.0188,
+    "disjoint_ci95": [
+      -0.0203,
+      -0.0173
+    ],
+    "long": -0.0202,
+    "long_ci95": [
+      -0.0218,
+      -0.0187
+    ]
+  },
+  "delta_vs_b1": {
+    "disjoint": 0.1097,
+    "long": 0.1125
+  },
+  "length_buckets": {
+    "2-7": {
+      "n": 10387,
+      "model_top1": 0.313,
+      "b2_top1": 0.3029,
+      "model_top3": 0.5226
+    },
+    "8-11": {
+      "n": 14253,
+      "model_top1": 0.3347,
+      "b2_top1": 0.3368,
+      "model_top3": 0.5513
+    },
+    "12-15": {
+      "n": 24285,
+      "model_top1": 0.3386,
+      "b2_top1": 0.4313,
+      "model_top3": 0.5058
+    },
+    "16-31": {
+      "n": 93874,
+      "model_top1": 0.3896,
+      "b2_top1": 0.3836,
+      "model_top3": 0.5863
+    },
+    "32+": {
+      "n": 259814,
+      "model_top1": 0.3827,
+      "b2_top1": 0.4055,
+      "model_top3": 0.5911
+    }
+  },
+  "generation_diagnostic": {
+    "op_set_f1_mean": 0.1867,
+    "length_ratio_mean": 0.5298,
+    "n_rows": 500
+  },
+  "minutes": 286.5
+}
