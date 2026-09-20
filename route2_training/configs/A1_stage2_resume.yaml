@@ -1,0 +1,19 @@
+# A1 stage-2 resume: DAPT completed 2026-09-19 (3172 steps, loss 0.91->0.88),
+# merged to gee_dapt_merged; host process died silently at stage-2 model
+# load (SIGKILL, suspected RAM OOM-killer). This config resumes QGIS SFT
+# from the DAPT-merged base. gee_stage=none because stage 1 is already done.
+name: "A1"
+base_model: "/home/qy/gee_llm_smoke/route2_A1/gee_dapt_merged"
+qgis_train: "/home/qy/gee_llm_smoke/v2a_A_train.jsonl"
+qgis_dev: "/home/qy/gee_llm_smoke/v2a_A_dev.jsonl"
+qgis_test: "/home/qy/gee_llm_smoke/v2a_A_test.jsonl"
+output_dir: "/home/qy/gee_llm_smoke/route2_A1"
+gee_stage: "none"
+gee_data: "/home/qy/system_redesign/outputs_v2/gee_b1_stage_data_v1/b1_gee_stage_train.jsonl"
+qgis_epochs: 20
+gee_epochs: 1
+max_lr: 1.0e-4
+batch_size: 2
+grad_accum: 16
+max_len: 1024
+seed: 20260917
