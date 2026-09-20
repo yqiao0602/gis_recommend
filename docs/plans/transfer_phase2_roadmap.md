@@ -1,0 +1,59 @@
+# 第二阶段路线裁定：跨平台 GIS 工作流组合知识迁移
+
+日期：2026-09-20（owner 裁定）
+状态：**已批准**；本文档为路线冻结，Gate 设计与判据另立 spec，开训前须逐 Gate 预注册。
+
+## 1. 第一阶段收官（定论）
+
+| 线 | 定论 |
+|---|---|
+| M1/M2/M3 | 模型路线诊断完成：生成能力可修（M1-R2），DAPT 净负（M2），SFT 有能力但 mapping 无突破（M3）；瓶颈在**数据侧监督**，不在"再调一次模型" |
+| V2a | 生成约束诊断完成：P0 正（后处理）、ngram8 负、P1 EOS 负、P2 局部正但触发附加失败条款；**V2a 封存，P3 不立项**（owner 停止条件） |
+
+P2 定论表述（owner 采纳措辞）：**"P2 改善了 operator 合法性和条件 operator 质量，但同时加剧了长链/截断问题，因此其收益主要集中于 operator 层，而尚未转化为完整 DAG 结构质量的同步提升。"** 不得写成"显著提升整体性能"。
+
+阶段结论：单纯提高生成合法性不自动解决 workflow 长链结构问题；后处理、n-gram、EOS 惩罚、语法/目录约束分别作用于不同 failure mode。benchmark v0.2.1 架构对照**本轮未获排期**（owner 裁定转向第二阶段；Gate 2 的 C0-vs-C1 本质上承载该对照）。
+
+## 2. 第二阶段核心假设（可证伪）
+
+**跨平台 GIS 工作流组合知识迁移**：GEE 大规模工作流（约 12.8 万行冻结转化语料）可先教会模型"GIS 工作流如何组合"（操作依赖、常见 motif、长链结构、数据流关系），随后用 QGIS 数据把该组合能力约束到 QGIS 算子/参数/I-O 上。
+
+- 命名约束：**不迁移算子 ID，不做 GEE→QGIS 算子级映射；不走 L2 桥接。**
+- 一句话：**GEE 教"怎么组合"，QGIS 教"用什么组合"。**
+- 研究假设（须实验证明，不得默认成立）：`GEE composition pretraining → QGIS SFT` 优于 `QGIS-only SFT`（同模型、同 QGIS 数据、同 token budget、同 benchmark、同训练协议；唯一变量 = GEE 组合预训练有无）。
+- 反向结果同样有效：若两臂无差异，结论为"大规模跨平台工作流组合知识在当前实现下不可直接迁移"，需归因到数据/训练目标/迁移机制。
+
+## 3. Gate 流水线（硬纪律：任一 Gate 不过，不进下一阶段）
+
+| Gate | 内容 | 不过则 |
+|---|---|---|
+| **0** | GEE 冻结语料组合能力审计（不训练）：长度/唯一率/转移/motif/长链/重复/近重复/平台通用性/组合熵 + 预注册 FAIL 判据 | 调整路线 |
+| **1** | GEE 组合可学性（无 QGIS）：GEE train→held-out，next-operator/transition/motif/长链预测 | 直接停止迁移路线 |
+| **2** | 核心对照：C0 QGIS-only SFT vs C1 GEE 组合预训练→QGIS SFT | 假设未获支持，归因分析 |
+| **3** | 负迁移诊断：C1 输出有无 GEE API/语法/链式污染 | 迁移机制问题，非组合知识不存在 |
+| **4** | QGIS 数据梯度（10/25/50/100%）× 两臂曲线，验证低资源增益 | —（诊断性） |
+| **5** | 参数与 I/O 学习（QGIS 语义层，GEE 不参与） | — |
+| **6** | QGIS 执行与严格任务成功（对齐 GISAgentBench 层级） | — |
+
+先小规模验证、过 Gate 才扩大；**任何 Gate 开跑前，判据先预注册成文**。
+
+## 4. 三级成功标准（目标区间，非及格线）
+
+| 层级 | 指标 | 目标区间 |
+|---|---|---:|
+| L1 结构能力 | Valid Workflow / Op F1 / Edge F1 / 长链完整率 / motif Recall / graph EM | Valid ≥90%，Op F1 ≥0.30，Edge F1 ≥0.20 |
+| L2 QGIS 工作流 | Op F1 / **Parameter Acc** / I-O 兼容率 / **Edge F1（核心）** | Op F1 ≥0.40，Edge F1 ≥0.30，Param ≥70% |
+| L3 执行成功 | Strict Workflow Success（可对照 GISAgentBench：最高 32.7%，六模型均值 ~23.8%） | ≥20%；~30% 有强现实对照意义 |
+
+裁定：**不设孤立及格线**。科研价值判定 = 跨平台迁移是否带来**显著、稳定、可解释**的增益（含低资源场景增益、无 GEE 污染）；`QGIS-only 0.20 → GEE→QGIS 0.30` 即使未达 30% 也成立；持平则如实记录假设未获支持。Operator F1 衡量"用了哪些工具"，Edge F1 衡量"怎么连接"——后者是本研究核心指标。
+
+## 5. 与既有资产/契约的关系
+
+- GEE 侧资产：Route-2 P0 契约冻结的 `outputs_v2/gee_b1_stage_data_v1/b1_gee_stage_train.jsonl`（128,447 行 = 101,513/11,075/15,859；SHA256 `ab9ab2…446a5e`，0f85c83）为第二阶段 GEE 组合语料的**候选正源**；Gate 0 审计对象即该文件。
+  **勘误（2026-09-20，7f 复核）**：上行 SHA256 系误记——`ab9ab2…` 属 `gee_conversion_wf_full_v1/pilot_rows.jsonl`（P0_CONTRACT_v1.md 第 12 行，同源 128,447 行的另一种序列化）。`b1_gee_stage_train.jsonl` 实测 SHA256 = `09c37104d2fd33138cbc15d5d23676d4d169acf1d0cfb8057a0baf3a100c02a2`（审计运行时计算与服务器独立复核一致；mtime 2026-09-17 15:39，审计前未变更）。详见 `docs/reports/transfer_phase2/gate0_v2_report.md` §1。
+- Route-2 四臂（C0/A1/B1/B2）设计与本 Gate 计划的衔接**待对齐**，在 Gate 1 设计文档中明确，不在本文档擅自改冻结契约。
+- 历史资产（629 旧池、pool-A 44,220 行）不得混入（沿用 P0 契约纪律）。
+
+## 6. 立即行动
+
+**Gate 0 v2**（增量审计，规格见 `gee_composition_audit_gate0_v2_spec.md`）：v1 审计（`gee_workflow_diversity_audit_v1.md`，2026-09-17）已回答"raw 池是否模板化"（否，多样性真实）；v2 在**冻结训练资产本身**上补测 owner 十项清单中缺失的 ③转移分布 ④motif 谱 ⑦算子重复 ⑩组合条件熵 + canonical→semantic 结构保留率（平台通用性的直接度量）+ 跨 split 链污染。
