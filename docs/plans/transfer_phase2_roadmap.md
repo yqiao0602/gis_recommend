@@ -57,3 +57,11 @@ P2 定论表述（owner 采纳措辞）：**"P2 改善了 operator 合法性和�
 ## 6. 立即行动
 
 **Gate 0 v2**（增量审计，规格见 `gee_composition_audit_gate0_v2_spec.md`）：v1 审计（`gee_workflow_diversity_audit_v1.md`，2026-09-17）已回答"raw 池是否模板化"（否，多样性真实）；v2 在**冻结训练资产本身**上补测 owner 十项清单中缺失的 ③转移分布 ④motif 谱 ⑦算子重复 ⑩组合条件熵 + canonical→semantic 结构保留率（平台通用性的直接度量）+ 跨 split 链污染。
+
+## 7. 执行进展（2026-09-20/21）
+
+- **Gate 0：PASS 零警告**（`d1d0ec9`；勘误 `15d9caa`：真 trigram 谱 + 两段式判重，污染实为语义面 27.4-29.5%）。报告 `docs/reports/transfer_phase2/gate0_v2_report.md`。
+- **Gate 1：MIDDLE**（`975ebba`）——三种子探针 38.03% vs B2 39.69%（Δ −1.66pp，CI 全部<0）；短链反超、12-15 桶 B2 模板尖峰、探针未饱和。owner 定性（2026-09-21）：**"GEE 序列具有很强的局部转移统计结构，但当前小型从零探针未显示出超过 trigram 基线的显著 next-operator 预测优势"**——不阻断、不证明。报告 `docs/reports/transfer_phase2/gate1/gate1_report.md`。
+- **Gate 2 裁定（owner 2026-09-21）**：方案 A 批准启动；B（n-gram 注入）冻结为候选 C2，主协议冻结后单独注册；C 拒绝，Gate 1 不重开。
+- **衔接闭环（roadmap §5 遗留项）**：C1 ≡ Route-2 A1（DAPT 语料 = 同一冻结文件的 instruction+canonical chain 纯文本 LM；run_ledger + yaml + dataset 代码三重证据）、C0 ≡ Route-2 C0；**主对照零新增训练**。spec：`transfer_phase2_gate2_spec.md`。
+- **执行状态**：B1 训练中（3f 线，语义 SFT ~1.5 天 + QGIS SFT ~5h）；L-dev Protocol-v2 双评（C0/A1）等 B1 退出后 GPU 全空连排；L-test/L-bench 三臂终评随后一次。
