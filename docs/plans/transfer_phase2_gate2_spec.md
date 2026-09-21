@@ -54,3 +54,13 @@ checkpoint 路径以 run ledger 为准，执行时记录。dev-120 既有内部�
 - 不重选 checkpoint、不解冻 P0 契约；
 - scorer 逐字导入冻结版本；prediction lock → SHA → append-only；
 - 任何偏离本 spec 之举 = 协议修订，须 owner 批准且 FAIL 原样保留。
+
+## 8. 实现注记（窗口前预验，2026-09-21）
+
+预验发现并修正两处**表面失配**（指标核心零改动）：
+
+1. **Prompt 前缀**：route-2 两臂 SFT prompt = `task_text + "\nQGIS workflow:"`（无 "Task: " 前缀；collator `PROMPT_SUFFIX` 与 `evaluate_dev.py` L87 双重证实），与 V2a 的模板不同 → `v2a_eval.py` 增加 `--prompt-style route2`（默认 v2a 不变，历史运行可复现）。
+2. **输出格式**：route-2 目标为 token 制（`P:pid:operator L:src>dst`，`harness.graph_to_text`），非 JSON → `v2a_score.py` 增加 `--parser route2`：逐字导入 `route2_training.harness.text_to_graph`，首非空行、行级 fail-closed（与 `evaluate_dev.parse_generation` 语义一致）；分类学行 `empty_output`/`malformed_graph` 对应替换 `no_json`/`json_error`/`shape`，其余指标代码零改动（单一指标实现纪律）。悬空 link 按 Protocol v2 既有规则丢弃。
+3. **生成配置逐字对齐 evaluate_dev**：greedy、max_new_tokens=512、eos=[eos,pad]、prompt 截断上限 768；批内 left-padding（commit a1a5336）。
+4. 单元冒烟（服务器）：多冒号算子、畸形行、空文本、JSON 回归共 5 项全过（2026-09-21）。
+5. Gate 3 扫描器就绪：`scripts/gate3_ee_contamination_scan.py`（7 个 GEE 残留族正则，纯报告）。

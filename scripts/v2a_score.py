@@ -58,6 +58,38 @@ def parse_pred(text: str) -> dict:
     return {"ok": True, "processes": procs, "links": links}
 
 
+def parse_route2(text: str) -> dict:
+    """Route-2 token surface (P:pid:operator / L:src>dst): first non-empty
+    line, fail-closed per line — mirrors evaluate_dev.parse_generation and
+    reuses route2_training.harness.text_to_graph verbatim (Gate 2 spec §8).
+    Returns the same dict shape as parse_pred; taxonomy rows empty_output /
+    malformed_graph replace no_json/json_error/shape."""
+    if not text or not text.strip():
+        return {"ok": False, "reason": "empty_output"}
+    if str(REPO) not in sys.path:
+        sys.path.insert(0, str(REPO))
+    from route2_training.harness import text_to_graph
+    for line in text.strip().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            processes, links = text_to_graph(line)
+        except ValueError:
+            continue
+        procs = [{"process_id": str(p["process_id"]),
+                  "operator_id": p["operator_id"]} for p in processes]
+        if not procs:
+            return {"ok": False, "reason": "empty_processes"}
+        ids = {p["process_id"] for p in procs}
+        clean = [(l["source_process_id"], l["target_process_id"])
+                 for l in links
+                 if l["source_process_id"] in ids
+                 and l["target_process_id"] in ids and l["source_process_id"] != l["target_process_id"]]
+        return {"ok": True, "processes": procs, "links": clean}
+    return {"ok": False, "reason": "malformed_graph"}
+
+
 def canon_factory(catalog: list):
     catset = set(catalog)
 
@@ -134,6 +166,9 @@ def main() -> int:
     ap.add_argument("--max-new-tokens", type=int, default=512)
     ap.add_argument("--canonicalize", action="store_true",
                     help="add the deterministic name-repair column (P0 experiment)")
+    ap.add_argument("--parser", choices=["json", "route2"], default="json",
+                    help="prediction surface: v2a JSON contract (default) or "
+                         "route-2 P:/L: token format (Gate 2)")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -170,9 +205,14 @@ def main() -> int:
         lfn += gold_links
         kfn += gold_ops          # canonicalized e2e shares the all-rows denominator
 
-        # reliability taxonomy (regex works on truncated JSON too)
+        # reliability taxonomy (extraction is parser-aware; regex works on
+        # truncated JSON too)
         gen = p.get("n_gen_tokens", 0)
-        op_seq = OPID_RE.findall(raw)
+        if args.parser == "route2":
+            op_seq = [t.split(":", 2)[2] for t in raw.split()
+                      if t.startswith("P:") and t.count(":") >= 2]
+        else:
+            op_seq = OPID_RE.findall(raw)
         run = max_consecutive_run(op_seq)
         is_trunc = gen >= args.max_new_tokens
         if is_trunc:
@@ -180,7 +220,10 @@ def main() -> int:
         if run >= REPEAT_RUN_THRESHOLD:
             repetition_rows += 1
 
-        pr = parse_pred(raw) if raw else {"ok": False, "reason": "no_json"}
+        parse = parse_route2 if args.parser == "route2" else parse_pred
+        pr = parse(raw) if raw else {
+            "ok": False,
+            "reason": "empty_output" if args.parser == "route2" else "no_json"}
         # primary cause, mutually exclusive, spec ordering:
         # truncated > no_json/json_error/shape/empty_processes > empty_pred
         # > repetition_runaway > ok
@@ -242,6 +285,7 @@ def main() -> int:
     metrics = {
         "schema": "gis_recommend.v2a.score.v2",
         "predictions": str(args.predictions),
+        "parser": args.parser,
         "n": n,
         "reliability": {
             "parse_ok_rate": round(parse_ok / n, 4),

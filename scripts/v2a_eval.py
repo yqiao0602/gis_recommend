@@ -153,6 +153,9 @@ def main() -> int:
     ap.add_argument("--constrained", action="store_true",
                     help="V2a-P2: JSON grammar + operator-catalog enum masking via "
                          "xgrammar; default off = frozen free decoding")
+    ap.add_argument("--prompt-style", choices=["v2a", "route2"], default="v2a",
+                    help="v2a: 'Task: {t}\\nQGIS workflow:' (V2a line); route2: "
+                         "'{t}\\nQGIS workflow:' (route-2 SFT format, Gate 2)")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -226,7 +229,10 @@ def main() -> int:
     pred_direct_like = 0
     tgt_op_inst = Counter()
     for i, r in enumerate(rows):
-        prompt = PROMPT_TEMPLATE.format(task_text=r["task_text"])
+        if args.prompt_style == "route2":
+            prompt = r["task_text"] + "\nQGIS workflow:"
+        else:
+            prompt = PROMPT_TEMPLATE.format(task_text=r["task_text"])
         inputs = tok(prompt, return_tensors="pt", truncation=True, max_length=2560).to("cuda:0")
         lp = _Constraint() if constraint_state else None
         t_row = time.time()
@@ -305,6 +311,7 @@ def main() -> int:
         "schema": "gis_recommend.v2a.eval.v1", "tag": args.tag, "n": n,
         "adapter": str(args.adapter), "decoding": {
             "greedy": True, "max_new_tokens": args.max_new_tokens,
+            "prompt_style": args.prompt_style,
             "repetition_penalty": args.repetition_penalty,
             "no_repeat_ngram_size": args.no_repeat_ngram_size,
             "constrained": bool(args.constrained),
