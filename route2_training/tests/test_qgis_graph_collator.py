@@ -94,8 +94,7 @@ class TestPromptSuffixOrdering(unittest.TestCase):
         e = col.encode_pair("TASKTEXT", "P:p0:op")
         parts = []
         for i in e["input_ids"]:
-            parts.append("?" if not isinstance(i, int) or i < 3
-                         else chr((i - 3) % 90 + 32))
+            parts.append("?" if not isinstance(i, int) or i < 3 else chr(i - 3))
         decoded = "".join(parts)
         task_pos = decoded.find("TASKTEXT")
         suffix_pos = decoded.find("workflow")

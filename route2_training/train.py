@@ -194,19 +194,46 @@ def collator_batch(prompt, target):
 
 
 def train_stage(model, ds, collator, epochs, lr, bs, accum, log_every=50,
-                masked=True):
+                masked=True, ckpt_dir=None, ckpt_every=150):
+    """Training with deterministic mid-stage checkpoint/resume.
+
+    Every ckpt_every optimizer steps: adapter weights + optimizer state +
+    scheduler state + RNG states + rows-consumed are saved, so a crash or
+    reboot resumes the SAME trajectory (identical shuffled order, LR
+    position, RNG). Near-exact continuation (GPU matmul nondeterminism
+    aside). Resumes automatically if ckpt_dir/latest.pt exists.
+    """
     import torch
-    from torch.utils.data import DataLoader
     opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],
                             lr=lr)
     total = epochs * math.ceil(len(ds) / bs)
     sched = torch.optim.lr_scheduler.LambdaLR(
         opt, lambda step: 0.5 * (1 + math.cos(math.pi * min(step / max(total, 1), 1.0))))
 
-    def make_batches():
+    start_step, rows_consumed = 0, 0
+    if ckpt_dir:
+        ckpt_dir = Path(ckpt_dir)
+        ckpt_dir.mkdir(parents=True, exist_ok=True)
+        latest = ckpt_dir / "latest.pt"
+        if latest.exists():
+            from peft.utils.save_and_load import set_peft_model_state_dict
+            ck = torch.load(latest, map_location="cpu", weights_only=False)
+            set_peft_model_state_dict(model, ck["peft"])
+            opt.load_state_dict(ck["optim"])
+            sched.load_state_dict(ck["sched"])
+            start_step = ck["step"]
+            rows_consumed = ck["rows_consumed"]
+            torch.set_rng_state(ck["rng_cpu"])
+            torch.cuda.set_rng_state_all(ck["rng_cuda"])
+            import random as _r
+            _r.setstate(ck["rng_py"])
+            print(f"  [resume] stage checkpoint at step {start_step} "
+                  f"(rows {rows_consumed})", flush=True)
+
+    def make_batches(skip_rows=0):
         idx = list(range(len(ds)))
         random.Random(20260917).shuffle(idx)
-        for k in range(0, len(idx), bs):
+        for k in range(skip_rows - skip_rows % bs, len(idx), bs):
             chunk = idx[k:k + bs]
             if masked:
                 batch = [{"prompt": ds.prompt_target(i)[0],
@@ -225,10 +252,31 @@ def train_stage(model, ds, collator, epochs, lr, bs, accum, log_every=50,
     stats = {"n_examples": 0, "n_tokens": 0,
              "n_target_truncated": 0, "n_prompt_truncated": 0, "n_text_truncated": 0}
     model.train()
-    step = 0
+    step = start_step
+    from peft.utils.save_and_load import get_peft_model_state_dict
+
+    def save_ckpt(step_now, rows_now):
+        if not ckpt_dir:
+            return
+        torch.save({
+            "peft": get_peft_model_state_dict(model),
+            "optim": opt.state_dict(), "sched": sched.state_dict(),
+            "step": step_now, "rows_consumed": rows_now,
+            "rng_cpu": torch.get_rng_state(),
+            "rng_cuda": torch.cuda.get_rng_state_all(),
+            "rng_py": random.getstate(),
+        }, Path(ckpt_dir) / "latest.pt")
+
+    done_epochs = start_step // max(math.ceil(len(ds) / (bs * accum)), 1)
+    skipped_in_epoch = rows_consumed
     for ep in range(epochs):
+        if ep < done_epochs:
+            continue
+        skip = skipped_in_epoch if ep == done_epochs else 0
+        skipped_in_epoch = 0
         running = 0.0
-        for bi, batch in enumerate(make_batches()):
+        for bi, batch in enumerate(make_batches(skip)):
+            skip = 0
             stats["n_examples"] += len(batch["input_ids"])
             stats["n_tokens"] += sum(len(x) for x in batch["input_ids"])
             stats["n_target_truncated"] += sum(1 for t in batch.get("trunc_target", []) if t)
@@ -246,10 +294,16 @@ def train_stage(model, ds, collator, epochs, lr, bs, accum, log_every=50,
                 sched.step()
                 opt.zero_grad()
                 step += 1
+                rows_consumed += bs * accum
+                if ckpt_dir and step % ckpt_every == 0:
+                    save_ckpt(step, rows_consumed)
+                    print(f"  [ckpt] step {step} saved", flush=True)
                 if step % log_every == 0:
                     print(f"  step {step}: loss {running / (accum * log_every):.4f}",
                           flush=True)
                     running = 0.0
+    if ckpt_dir:
+        save_ckpt(step, rows_consumed)
     return model, stats
 
 
@@ -279,13 +333,15 @@ def run_release(cfg: ArmConfig, config_path: str) -> int:
             ds = GeeDaptCorpus(cfg.gee_data, split="train")
             col = CausalLMCollator(tok, cfg.max_len)
             model, gstats = train_stage(model, ds, col, cfg.gee_epochs, cfg.max_lr,
-                                         cfg.batch_size, cfg.grad_accum, masked=False)
+                                         cfg.batch_size, cfg.grad_accum, masked=False,
+                                         ckpt_dir=out / "stage1_ckpt", ckpt_every=150)
             stage_tag = "gee_dapt"
         else:
             ds = GeeSemanticDataset(cfg.gee_data, split="train")
             col = QgisGraphCollator(tok, cfg.max_len, prompt_suffix=B1_SUFFIX)
             model, gstats = train_stage(model, ds, col, cfg.gee_epochs, cfg.max_lr,
-                                         cfg.batch_size, cfg.grad_accum, masked=True)
+                                         cfg.batch_size, cfg.grad_accum, masked=True,
+                                         ckpt_dir=out / "stage1_ckpt", ckpt_every=150)
             stage_tag = "gee_semantic"
         adapter = out / f"{stage_tag}_adapter"
         model.save_pretrained(str(adapter))
