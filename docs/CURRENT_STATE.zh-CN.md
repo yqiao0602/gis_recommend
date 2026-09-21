@@ -1,9 +1,35 @@
 # 当前项目状态
 
-最后更新：2026-09-16
+最后更新：2026-09-21
 
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
+
+## Route-2 三臂实验：C0/A1 完成，B1 在跑（2026-09-17 → 09-21）
+
+当前主线。P0 契约冻结（33cc614），同基座/同数据/同协议，dev-120
+op-set-F1 选 checkpoint，四臂输出全 QGIS 图。
+
+- **C0（完成）**：纯 QGIS SFT，best ep20 dev opF1 **0.5611**（linkF1 0.5392、
+  EM 0.167、parse 失败 1.7%），曲线 0.337→0.561 未饱和。账本
+  `docs/reports/route2_p0_contract/run_ledger.json`，ckpt
+  `/home/qy/gee_llm_smoke/route2_C0/qgis_sft_ep20`。
+- **A1（完成）**：GEE DAPT 23.6M token（loss 1.454→0.893）→ QGIS SFT，best
+  ep15 dev opF1 **0.5510**。A1−C0 = −0.010 ⇒ 纯 causal-LM 域暴露无可测迁移
+  （轻于 M2-P2 的净负）；H1 押在 B1。账本 `run_ledger_A1.json`，ckpt
+  `route2_A1/qgis_sft_ep15`。**不要拿 0.561 与 M2 的 0.224 直接比**（空间/
+  benchmark/任务定义均不同）。
+- **B1（运行中，v3）**：语义工作流 SFT 17.4M token → QGIS SFT 20 epoch。
+  服务器两天内重启两次（最近 09-21 ~09:43），B1 stage-1 两次被打断，
+  09-21 11:06 以同一冻结配置重启。train.py 已具备**精确状态 mid-stage
+  断点续训**（每 150 步存 adapter+optimizer+scheduler+RNG+已消费行数 至
+  `route2_B1/stage1_ckpt/latest.pt`；固定 seed 重推导 shuffle ⇒ 同轨迹续跑，
+  协议未触碰）。最坏重启损失 ~100 分钟。缺口：重启后 wrapper 不会被自动
+  拉起（需人工 ssh 启动一次，之后 train.py 自动续）。@reboot 自启动留作
+  B1 后的运维增强。ETA ~09-22/23。
+- 后续：B1 完成 → 核心归因 B1−C0 / B1−A1 → Gate-2 Protocol-v2 dev 重评
+  C0/A1（peer 会话，窗口在 B1 退出后）→ test-111 三臂一次性终评（P0-6）
+  → B2 设计。
 
 ## M1-R2 评测完成：结构性塌缩修复、任务映射未解（2026-09-16，Phase 2 收官）
 
@@ -11,9 +37,11 @@ M1 增强线（decoder backbone domain pretraining）全链闭环：DAPT 493.4M 
 
 **R1 → R2（final-100）**：空图 88%→**20%**；bridge 丢弃 83.8%→43.9%；L3 token 154→528；Define Projection 首 token 99%→0%（新吸引子 AddSpatialIndex 70/LakeInundation 26/Simplify 4）；链长 1.5→5.3；**operator F1 0.0047→0.0857（×18）**。**近分布基本持平**（val Top1 14.87→15.24%、诊断 F1 0.173→0.187）；edge F1 仍 0、harmful extra 0.90（fixgeometries 88/100"万能开头"新偏置）。**结论（owner 定稿，M1 线收束于 5e3f818）**：R2 提升了"生成什么样的序列"的结构能力，但没有显著提升"根据任务语义生成哪一条具体工作流"的条件映射能力（层次 A 生成器状态被 DAPT 修复；层次 B 条件映射未动，与 Phase 0-B 归因闭环）。**Phase 3 裁决：R3/R4 不开**——三路线一致信号表明模型侧调整不改善 task→L3 映射，"任务语义—算子映射监督不足"为值得优先检验的主要候选瓶颈（严格措辞：非"已证明来自数据"）。**下一阶段：paper_v2 数据侧**（25.7 万描述库意图重写），R1/R2/M2/M3 为前置基线。评测环境事故 2 起已独立归档（dev-20 首跑 legacy mapping 泄漏无效；val 诊断 taxonomy 路径崩——M1 推理三环境变量必须内嵌启动入口）。证据：`docs/reports/m1_r2_eval_v1/`、`docs/reports/qgis_planner_eval_v1/SCORES_R2_v1.json` + `predictions_r2/`。
 
-## 外部 GIS 训练数据调研完成（2026-09-16，paper_v2 前置）
+## 外部数据与评测资源全景调研（2026-09-16 → 09-18，paper_v2 前置）
 
-只读调研报告：`docs/reports/external_gis_training_data_survey_v1.md`。核心结论：①不存在现成"NL 意图 → QGIS 算子 DAG"训练集（HF + 文献双空白，dataset contribution 机会）；②三条可转化外部增量：GeoAnalystBench（Apache-2.0，50 任务×3-10 子任务意图式）、AutoGEEval-plus（2,612 用例 NL→GEE code，无 license）、GISAgentBench（349 任务来自 GIS Stack Exchange，仓库未公开）；③GEE↔QGIS 算子 crosswalk 外部不存在，内部 KG 是唯一实现（论文贡献点）；④GEE-Ops/Geo-FuB 为平行工作可引用。外部数据定位 = 评测集 + 意图重写种子 + 引用对标；**主料仍是内部 25.7 万描述库**。行动建议未批准（克隆审计两仓库 / 邮件联系作者）。主线现状：M1-R2 已全部完成并评测（见上方 Phase 2 收官段）；M2 三臂已收束（C0 最优 0.2236，提交 f877842）；M3 已收束于 P2-T1。
+调研系列三份报告（全部只读，未消费外部数据）：v1 GIS 专用数据 `docs/reports/external_gis_training_data_survey_v1.md`；v2 通用工具链文献与方法补遗 `docs/reports/external_gis_training_data_survey_v2.md`；**综合报告（新增评测对比维度）`docs/reports/qgis_data_eval_landscape_v1.md`**。
+
+核心结论：①数据——外部不存在"NL 意图→QGIS 算子 DAG"训练集；主料仍是内部 25.7 万描述库 + GEE 44,220 行转化资产；外部三源（GeoAnalystBench Apache-2.0 / AutoGEEval-plus 2,612 用例无 license / GISAgentBench 349 任务仓库未公开）≈1,800 条意图式样本，只作 OOD 评测+种子+引用；GEE↔QGIS crosswalk 外部不存在，内部 KG 是唯一实现（论文贡献点）。②评测——benchmark v0.2.1 生态位独特（唯一评"结构化算子 DAG"而非代码、唯一 refusal diagnostic + unsafe-planning、唯一 prediction-lock + 冻结 scorer、拓扑分级 gold）；与外部标杆差距 = 执行级 GT（GISAgentBench）、规模（AutoGEEval++ 千级 vs 100）、动态/多轮（BFCL V4、GeoAgentBench 沙盒）；v0.3 四候选（执行增强层/规模扩充/拓扑细分/refusal 扩容）全部未批准。③对齐诊断——benchmark 已是意图式，错位在训练侧（GEE 100% answer-echo）：修数据不修评测；评测侧短板 = 规模与执行验证。重写管线方法锚点：back-instruct（TaskBench）/ WorkflowLLM 三阶段 / APIGen 三段验证。主线现状：M1 线收束于 5e3f818（R2 ×18 但条件映射未解）；M2 三臂收束（C0 最优 0.2236）；M3 收束于 P2-T1；下一阶段 = paper_v2 数据侧四臂重写。
 
 ## M1 增强消融路线立项 + domain_corpus_v1 spec 草案（2026-09-11）
 

@@ -1,9 +1,36 @@
 # Current Project State
 
-Last updated: 2026-09-16
+Last updated: 2026-09-21
 
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
+
+## Route-2 three-arm experiment: C0/A1 done, B1 running (2026-09-17 -> 09-21)
+
+Mainline. P0 contract frozen (33cc614), same base/data/protocol, dev-120
+op-set-F1 checkpoint selection. All arms output QGIS graphs.
+
+- **C0 (done)**: QGIS SFT only, best ep20 dev opF1 **0.5611** (linkF1 0.5392,
+  EM 0.167, parse-fail 1.7%), curve 0.337 -> 0.561 unsaturated. Ledger
+  `docs/reports/route2_p0_contract/run_ledger.json`, ckpt
+  `/home/qy/gee_llm_smoke/route2_C0/qgis_sft_ep20`.
+- **A1 (done)**: GEE DAPT 23.6M tok (loss 1.454 -> 0.893) -> QGIS SFT, best
+  ep15 dev opF1 **0.5510**. A1 − C0 = −0.010 => plain causal-LM domain
+  exposure transfers nothing measurable (milder than M2-P2's negative);
+  H1 rests on B1. Ledger `run_ledger_A1.json`, ckpt `route2_A1/qgis_sft_ep15`.
+  Do NOT compare 0.561 with M2's 0.224 (different spaces/benchmarks).
+- **B1 (running, v3)**: semantic workflow SFT 17.4M tok -> QGIS SFT 20 ep.
+  Server rebooted twice (09-21 ~09:43 and prior); B1 killed mid-stage-1 twice,
+  relaunched 09-21 11:06 from the same frozen config. train.py now has
+  **exact-state mid-stage checkpoint/resume** (adapter+optimizer+scheduler+RNG
+  +rows_consumed every 150 steps to `route2_B1/stage1_ckpt/latest.pt`;
+  fixed-seed shuffle re-derivation => same-trajectory continuation, protocol
+  untouched). Worst-case reboot loss ~100 min. Gap: nothing auto-relaunches
+  the wrapper after reboot (manual ssh relaunch; resume then automatic).
+  @reboot auto-start deferred to post-B1 ops work. ETA ~09-22/23.
+- Next: B1 done -> core attribution B1−C0 / B1−A1 -> Gate-2 Protocol-v2 dev
+  re-evals of C0/A1 (peer session; window after B1 exits) -> test-111 final
+  eval once for all arms (P0-6) -> B2 design.
 
 ## M1-R2 evaluation complete: structural collapse fixed, task mapping not (2026-09-16, Phase 2 closed)
 
@@ -37,23 +64,36 @@ three M1 inference env vars must be embedded in the launch entrypoint).
 Evidence: `docs/reports/m1_r2_eval_v1/`, `docs/reports/qgis_planner_eval_v1/
 SCORES_R2_v1.json` + `predictions_r2/`.
 
-## External GIS training-data survey complete (2026-09-16, paper_v2 precursor)
+## External data & evaluation landscape survey (2026-09-16 -> 09-18, paper_v2 precursor)
 
-Read-only survey saved at `docs/reports/external_gis_training_data_survey_v1.md`.
-Headlines: (1) no ready-made "NL intent -> QGIS operator DAG" training set exists
-(HF + literature both empty — a dataset-contribution opportunity); (2) three
-convertible external increments: GeoAnalystBench (Apache-2.0, 50 tasks x 3-10
-subtasks, intent-form), AutoGEEval-plus (2,612 NL->GEE-code cases, no license),
-GISAgentBench (349 tasks sourced from GIS Stack Exchange, repo not yet public);
-(3) no external GEE<->QGIS operator crosswalk exists — the in-repo KG is the
-only implementation (claim as a paper contribution); (4) GEE-Ops/Geo-FuB are
-parallel works (AST + frequent-itemset operator-chain mining) usable as related
-work and baselines. External data is positioned as eval sets + intent-rewrite
-seeds + citation anchors; **the 257k internal description library remains the
-main rewrite material**. Action suggestions not yet approved (clone-audit two
-repos; email AutoGEEval authors). Mainline status: M1-R2 Phase 2-D SFT pending
-(DAPT complete, commit da5932b); the M2 three-arm loop is closed (C0 best at
-0.2236, commit f877842); M3 closed at P2-T1.
+Survey series, three reports (all read-only, no external data consumed): v1
+GIS-specific data `docs/reports/external_gis_training_data_survey_v1.md`; v2
+general tool-chain literature & methods addendum
+`docs/reports/external_gis_training_data_survey_v2.md`; **consolidated report
+with the new evaluation-comparison dimension
+`docs/reports/qgis_data_eval_landscape_v1.md`**.
+
+Headlines: (1) Data — no ready-made "NL intent -> QGIS operator DAG" training
+set exists; the main material remains the internal 257k description library +
+44,220 converted GEE rows; the three external sources (GeoAnalystBench
+Apache-2.0 / AutoGEEval-plus 2,612 cases, no license / GISAgentBench 349 tasks,
+repo not public) total ~1,800 intent-form samples usable only as OOD eval +
+seeds + citations; no external GEE<->QGIS crosswalk exists — the in-repo KG is
+the only implementation (paper contribution). (2) Evaluation — benchmark
+v0.2.1 occupies a unique niche (the only GIS eval scoring structured operator
+DAGs rather than code, the only refusal diagnostic + unsafe-planning metric,
+prediction-lock + frozen scorer, topology-tiered gold); gaps vs external
+standards = execution-level ground truth (GISAgentBench), scale (AutoGEEval++
+thousands vs our 100), dynamic/multi-turn (BFCL V4, GeoAgentBench sandbox);
+four v0.3 candidates (execution-augmented layer / scale expansion / topology
+breakdown / refusal expansion) all NOT approved. (3) Alignment diagnosis — the
+benchmark is already intent-form; the mismatch is on the training side (GEE
+100% answer-echo): fix the data, not the eval; the eval-side shortcomings are
+scale and execution evidence. Rewrite-pipeline method anchors: back-instruct
+(TaskBench) / WorkflowLLM three phases / APIGen three-stage verification.
+Mainline status: M1 line closed at 5e3f818 (R2 x18 but conditional mapping
+unsolved); M2 three-arm loop closed (C0 best at 0.2236); M3 closed at P2-T1;
+next phase = paper_v2 data-side four-arm rewrite.
 
 ## M1 enhancement-ablation route opened + domain_corpus_v1 spec drafted (2026-09-11)
 
