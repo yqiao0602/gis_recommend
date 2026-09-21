@@ -65,3 +65,4 @@ P2 定论表述（owner 采纳措辞）：**"P2 改善了 operator 合法性和�
 - **Gate 2 裁定（owner 2026-09-21）**：方案 A 批准启动；B（n-gram 注入）冻结为候选 C2，主协议冻结后单独注册；C 拒绝，Gate 1 不重开。
 - **衔接闭环（roadmap §5 遗留项）**：C1 ≡ Route-2 A1（DAPT 语料 = 同一冻结文件的 instruction+canonical chain 纯文本 LM；run_ledger + yaml + dataset 代码三重证据）、C0 ≡ Route-2 C0；**主对照零新增训练**。spec：`transfer_phase2_gate2_spec.md`。
 - **执行状态**：B1 训练中（3f 线，语义 SFT ~1.5 天 + QGIS SFT ~5h）；L-dev Protocol-v2 双评（C0/A1）等 B1 退出后 GPU 全空连排；L-test/L-bench 三臂终评随后一次。
+- **Evaluation harness freeze（owner 2026-09-21，`665723d`）**：Gate 2 评价口径就此冻结——prompt surface、route-2 parser、Protocol v2 指标核心、生成配置、Gate 3 扫描器均不得再改；模型生成问题与评价协议问题自此严格分离；**L-dev 结果不得触发对 L-test 的任何修改**，数字按预注册判读矩阵自行说话。
