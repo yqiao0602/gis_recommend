@@ -19,15 +19,19 @@ op-set-F1 checkpoint selection. All arms output QGIS graphs.
   exposure transfers nothing measurable (milder than M2-P2's negative);
   H1 rests on B1. Ledger `run_ledger_A1.json`, ckpt `route2_A1/qgis_sft_ep15`.
   Do NOT compare 0.561 with M2's 0.224 (different spaces/benchmarks).
-- **B1 (running, v3)**: semantic workflow SFT 17.4M tok -> QGIS SFT 20 ep.
-  Server rebooted twice (09-21 ~09:43 and prior); B1 killed mid-stage-1 twice,
-  relaunched 09-21 11:06 from the same frozen config. train.py now has
-  **exact-state mid-stage checkpoint/resume** (adapter+optimizer+scheduler+RNG
-  +rows_consumed every 150 steps to `route2_B1/stage1_ckpt/latest.pt`;
-  fixed-seed shuffle re-derivation => same-trajectory continuation, protocol
-  untouched). Worst-case reboot loss ~100 min. Gap: nothing auto-relaunches
-  the wrapper after reboot (manual ssh relaunch; resume then automatic).
-  @reboot auto-start deferred to post-B1 ops work. ETA ~09-22/23.
+- **B1 (running, v4)**: semantic workflow SFT 17.4M tok -> QGIS SFT 20 ep.
+  Server rebooted three times in three days (latest 09-22 night; B1 died at
+  step 1050). The **exact-state mid-stage checkpoint/resume** was validated
+  live: the 09-22 relaunch logged `[resume] stage checkpoint at step 1050
+  (rows 33600)` and continued the same trajectory with zero step loss
+  (adapter+optimizer+scheduler+RNG+rows_consumed saved every 150 steps;
+  fixed-seed shuffle re-derivation). **Ops loop closed (09-22, owner
+  approved)**: `route2_training/b1_supervisor.sh` (idempotent pgrep guard,
+  gated by AUTOBOOT.enabled) + crontab `@reboot` (auto-launch 60s after
+  boot — reboots no longer need a manual ssh) + DONE.flag watcher. After
+  the B1 line finishes, delete
+  `/home/qy/gee_llm_smoke/route2_B1/AUTOBOOT.enabled` to permanently disarm
+  autoboot. ETA ~09-22 late / 09-23.
 - Next: B1 done -> core attribution B1−C0 / B1−A1 -> Gate-2 Protocol-v2 dev
   re-evals of C0/A1 (peer session; window after B1 exits) -> test-111 final
   eval once for all arms (P0-6) -> B2 design.
