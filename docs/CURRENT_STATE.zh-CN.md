@@ -19,14 +19,16 @@ op-set-F1 选 checkpoint，四臂输出全 QGIS 图。
   （轻于 M2-P2 的净负）；H1 押在 B1。账本 `run_ledger_A1.json`，ckpt
   `route2_A1/qgis_sft_ep15`。**不要拿 0.561 与 M2 的 0.224 直接比**（空间/
   benchmark/任务定义均不同）。
-- **B1（运行中，v3）**：语义工作流 SFT 17.4M token → QGIS SFT 20 epoch。
-  服务器两天内重启两次（最近 09-21 ~09:43），B1 stage-1 两次被打断，
-  09-21 11:06 以同一冻结配置重启。train.py 已具备**精确状态 mid-stage
-  断点续训**（每 150 步存 adapter+optimizer+scheduler+RNG+已消费行数 至
-  `route2_B1/stage1_ckpt/latest.pt`；固定 seed 重推导 shuffle ⇒ 同轨迹续跑，
-  协议未触碰）。最坏重启损失 ~100 分钟。缺口：重启后 wrapper 不会被自动
-  拉起（需人工 ssh 启动一次，之后 train.py 自动续）。@reboot 自启动留作
-  B1 后的运维增强。ETA ~09-22/23。
+- **B1（运行中，v4）**：语义工作流 SFT 17.4M token → QGIS SFT 20 epoch。
+  服务器三天重启三次（最近 09-22 凌晨，B1 死于 step 1050）。train.py 的
+  **精确状态 mid-stage 断点续训**已实战验证：09-22 supervisor 重拉后日志出现
+  `[resume] stage checkpoint at step 1050 (rows 33600)`，同轨迹续跑零损失
+  （每 150 步存 adapter+optimizer+scheduler+RNG+已消费行数；固定 seed 重推导
+  shuffle）。**运维层已闭环（09-22 owner 批准）**：`route2_training/
+  b1_supervisor.sh`（幂等 pgrep 守卫 + AUTOBOOT.enabled 门控）+ crontab
+  `@reboot`（开机 60s 自动拉起，重启无需人工 ssh）+ DONE.flag watcher。
+  B1 线完成后删除 `/home/qy/gee_llm_smoke/route2_B1/AUTOBOOT.enabled` 即
+  使 autoboot 永久失效。ETA ~09-22 深夜/09-23。
 - 后续：B1 完成 → 核心归因 B1−C0 / B1−A1 → Gate-2 Protocol-v2 dev 重评
   C0/A1（peer 会话，窗口在 B1 退出后）→ test-111 三臂一次性终评（P0-6）
   → B2 设计。
