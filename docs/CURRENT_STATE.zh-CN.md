@@ -5,6 +5,18 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
+## Route-2 v2 架构已定：两阶段能力形成训练（2026-09-23，owner 裁定）
+
+**当前主线最高决策**：新 Route-2 = 两阶段能力形成（Stage 1 GEE Workflow
+Learning → 独立能力验收门 → Stage 2 QGIS Grounding Post-training；
+Stage 3 RL 留位不启动）。B1 形式两段实质单段（第二段直接训 Task→QGIS，
+无能力接口）是本决策直接动因；Oracle 判决（37 类语义链→QGIS 全贴地）
+是证据基础。关键认识：**Stage-1 能力 ≠ 37 类 Semantic Workflow**——
+Stage 1 应从原始 GEE workflow（gee_canonical_chain）自行形成 reasoning。
+执行顺序：①架构（本条）→ ②Stage 1 输出/接口+能力门设计（**当前推进
+点**）→ ③Stage 2 信息需求 → ④B2 数据 → ⑤训练协议。详见
+`route2_p0_contract/ROUTE2_V2_ARCHITECTURE_v1.md`。
+
 ## Route-2 四块合璧：语义→算子接口断裂（2026-09-17 → 09-23）
 
 dev + test + error audit + Oracle grounding 四块齐：

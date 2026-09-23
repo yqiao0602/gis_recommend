@@ -5,6 +5,21 @@ Last updated: 2026-09-21
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
+## Route-2 v2 architecture decided: two-stage capability formation (2026-09-23, owner ruling)
+
+**Top mainline decision**: new Route-2 = two-stage capability formation
+(Stage 1 GEE Workflow Learning -> independent capability gate -> Stage 2
+QGIS Grounding Post-training; Stage 3 RL reserved, not started). Direct
+motivation: B1 was formally two-stage but effectively single-stage
+(stage 2 trained Task->QGIS directly — no verified capability interface);
+evidence base: the Oracle verdict (37-class semantic chains ground to
+nothing). Key understanding: **Stage-1 capability != 37-class semantic
+workflow** — Stage 1 must form reasoning from the raw GEE workflows
+(gee_canonical_chain) themselves. Order: (1) architecture (this entry)
+-> (2) Stage-1 output/interface + capability-gate design (**current
+frontier**) -> (3) Stage-2 information needs -> (4) B2 data -> (5)
+training protocol. See `route2_p0_contract/ROUTE2_V2_ARCHITECTURE_v1.md`.
+
 ## Route-2 four-block synthesis: the semantic->operator interface is broken (2026-09-17 -> 09-23)
 
 dev + test + error audit + Oracle grounding, all four blocks:
