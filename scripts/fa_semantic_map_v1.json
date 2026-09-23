@@ -1,0 +1,2366 @@
+{
+ "schema": "gis_recommend.transfer.fa.semantic_map_v1",
+ "version": "v1",
+ "n_rules": 30,
+ "n_classes": 30,
+ "observed_vocab": 404,
+ "observed_instances": 11736,
+ "coverage_rate": 0.9456,
+ "mapping": {
+  "native:centroids": {
+   "class": "GEOM_CONVERT",
+   "rule": "centroids",
+   "instances": 72
+  },
+  "qgis:distancematrix": {
+   "class": "PROXIMITY",
+   "rule": "distancematrix",
+   "instances": 39
+  },
+  "native:reclassifybytable": {
+   "class": "RECLASSIFY",
+   "rule": "reclassify",
+   "instances": 146
+  },
+  "gdal:polygonize": {
+   "class": "POLYGONIZE",
+   "rule": "polygonize",
+   "instances": 115
+  },
+  "saga:upslopearea": {
+   "class": "TERRAIN",
+   "rule": "slope",
+   "instances": 10
+  },
+  "native:rastersurfacevolume": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 10
+  },
+  "native:mergevectorlayers": {
+   "class": "VECTOR_MERGE",
+   "rule": "mergevectorlayers",
+   "instances": 226
+  },
+  "native:buffer": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 504
+  },
+  "native:fieldcalculator": {
+   "class": "ATTR_TABLE",
+   "rule": "fieldcalculator",
+   "instances": 1078
+  },
+  "native:setzfromraster": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "native:reprojectlayer": {
+   "class": "REPROJECT",
+   "rule": "reproject",
+   "instances": 590
+  },
+  "native:package": {
+   "class": "IO_MGMT",
+   "rule": "package",
+   "instances": 23
+  },
+  "native:saveselectedfeatures": {
+   "class": "IO_MGMT",
+   "rule": "saveselectedfeatures",
+   "instances": 96
+  },
+  "native:savefeatures": {
+   "class": "IO_MGMT",
+   "rule": "savefeatures",
+   "instances": 85
+  },
+  "native:removeduplicatevertices": {
+   "class": "GEOM_MODIFY",
+   "rule": "removeduplicate",
+   "instances": 20
+  },
+  "gdal:rastercalculator": {
+   "class": "RASTER_CALC",
+   "rule": "rastercalculator",
+   "instances": 322
+  },
+  "gdal:rasterize": {
+   "class": "RASTERIZE",
+   "rule": "rasterize",
+   "instances": 175
+  },
+  "native:extractbyexpression": {
+   "class": "ATTRIBUTE_FILTER",
+   "rule": "extractbyexpression",
+   "instances": 231
+  },
+  "native:fixgeometries": {
+   "class": "GEOM_MODIFY",
+   "rule": "fixgeometries",
+   "instances": 671
+  },
+  "native:addautoincrementalfield": {
+   "class": "ATTR_TABLE",
+   "rule": "addautoincrementalfield",
+   "instances": 56
+  },
+  "native:deletecolumn": {
+   "class": "ATTR_TABLE",
+   "rule": "deletecolumn",
+   "instances": 185
+  },
+  "native:renametablefield": {
+   "class": "ATTR_TABLE",
+   "rule": "renametablefield",
+   "instances": 62
+  },
+  "native:extractbylocation": {
+   "class": "SPATIAL_FILTER",
+   "rule": "extractbylocation",
+   "instances": 205
+  },
+  "gdal:cliprasterbyextent": {
+   "class": "RASTER_CLIP",
+   "rule": "clipraster",
+   "instances": 51
+  },
+  "gdal:cliprasterbymasklayer": {
+   "class": "RASTER_CLIP",
+   "rule": "clipraster",
+   "instances": 246
+  },
+  "native:rasterlayerproperties": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "native:pixelstopoints": {
+   "class": "GEOM_CONVERT",
+   "rule": "pixelstopoints",
+   "instances": 27
+  },
+  "native:createspatialindex": {
+   "class": "IO_MGMT",
+   "rule": "createspatialindex",
+   "instances": 108
+  },
+  "native:multiparttosingleparts": {
+   "class": "GEOM_CONVERT",
+   "rule": "multiparttosingleparts",
+   "instances": 156
+  },
+  "native:joinattributesbylocation": {
+   "class": "JOIN",
+   "rule": "joinattributes",
+   "instances": 108
+  },
+  "native:splitlinesbylength": {
+   "class": "SPLIT",
+   "rule": "split",
+   "instances": 15
+  },
+  "native:extractspecificvertices": {
+   "class": "GEOM_CONVERT",
+   "rule": "extractspecificvertices",
+   "instances": 26
+  },
+  "native:rastersampling": {
+   "class": "RASTER_SAMPLE",
+   "rule": "rastersampling",
+   "instances": 79
+  },
+  "gdal:proximity": {
+   "class": "PROXIMITY",
+   "rule": "proximity",
+   "instances": 24
+  },
+  "native:extractbyattribute": {
+   "class": "ATTRIBUTE_FILTER",
+   "rule": "extractbyattribute",
+   "instances": 117
+  },
+  "native:dissolve": {
+   "class": "DISSOLVE",
+   "rule": "dissolve",
+   "instances": 328
+  },
+  "native:difference": {
+   "class": "OVERLAY",
+   "rule": "difference",
+   "instances": 115
+  },
+  "native:intersection": {
+   "class": "OVERLAY",
+   "rule": "intersection",
+   "instances": 247
+  },
+  "native:refactorfields": {
+   "class": "ATTR_TABLE",
+   "rule": "refactorfields",
+   "instances": 286
+  },
+  "native:setlayerencoding": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:delaunaytriangulation": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "native:clip": {
+   "class": "VECTOR_CLIP",
+   "rule": "native:clip",
+   "instances": 348
+  },
+  "gdal:warpreproject": {
+   "class": "REPROJECT",
+   "rule": "reproject",
+   "instances": 160
+  },
+  "gdal:merge": {
+   "class": "RASTER_MERGE",
+   "rule": "gdal:merge",
+   "instances": 63
+  },
+  "native:zonalstatisticsfb": {
+   "class": "ZONAL_STATS",
+   "rule": "zonalstatistics",
+   "instances": 210
+  },
+  "grass7:r.grow.distance": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:polygonstolines": {
+   "class": "GEOM_CONVERT",
+   "rule": "polygonstolines",
+   "instances": 66
+  },
+  "grass7:r.slope.aspect": {
+   "class": "TERRAIN",
+   "rule": "slope",
+   "instances": 3
+  },
+  "native:roundrastervalues": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "grass7:r.neighbors": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 12
+  },
+  "native:explodelines": {
+   "class": "GEOM_CONVERT",
+   "rule": "explodelines",
+   "instances": 43
+  },
+  "native:removenullgeometries": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 7
+  },
+  "native:multiringconstantbuffer": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 9
+  },
+  "qgis:advancedpythonfieldcalculator": {
+   "class": "ATTR_TABLE",
+   "rule": "fieldcalculator",
+   "instances": 40
+  },
+  "gdal:rasterize_over": {
+   "class": "RASTERIZE",
+   "rule": "rasterize",
+   "instances": 15
+  },
+  "gdal:hillshade": {
+   "class": "TERRAIN",
+   "rule": "hillshade",
+   "instances": 14
+  },
+  "gdal:slope": {
+   "class": "TERRAIN",
+   "rule": "slope",
+   "instances": 30
+  },
+  "gdal:translate": {
+   "class": "RASTER_CONVERT",
+   "rule": "translate",
+   "instances": 116
+  },
+  "gdal:contour": {
+   "class": "CONTOUR",
+   "rule": "contour",
+   "instances": 35
+  },
+  "native:smoothgeometry": {
+   "class": "GEOM_MODIFY",
+   "rule": "smooth",
+   "instances": 41
+  },
+  "qgis:variabledistancebuffer": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 6
+  },
+  "saga:splitrgbbands": {
+   "class": "SPLIT",
+   "rule": "split",
+   "instances": 2
+  },
+  "native:splitwithlines": {
+   "class": "SPLIT",
+   "rule": "split",
+   "instances": 56
+  },
+  "native:reverselinedirection": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 5
+  },
+  "qgis:rastercalculator": {
+   "class": "RASTER_CALC",
+   "rule": "rastercalculator",
+   "instances": 111
+  },
+  "gdal:sieve": {
+   "class": "RASTER_CONVERT",
+   "rule": "sieve",
+   "instances": 22
+  },
+  "native:retainfields": {
+   "class": "ATTR_TABLE",
+   "rule": "retainfields",
+   "instances": 62
+  },
+  "native:simplifygeometries": {
+   "class": "GEOM_MODIFY",
+   "rule": "simplify",
+   "instances": 46
+  },
+  "qgis:listuniquevalues": {
+   "class": "AGGREGATE_STATS",
+   "rule": "uniquevalues",
+   "instances": 6
+  },
+  "gdal:importvectorintopostgisdatabaseavailableconnections": {
+   "class": "IO_MGMT",
+   "rule": "postgis",
+   "instances": 113
+  },
+  "qgis:exportaddgeometrycolumns": {
+   "class": "ATTR_TABLE",
+   "rule": "addgeometrycolumns",
+   "instances": 60
+  },
+  "grass7:v.to.3d": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:dxfexport": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:randompointsinpolygons": {
+   "class": "GEN_GEOMETRY",
+   "rule": "randompoints",
+   "instances": 8
+  },
+  "native:addxyfields": {
+   "class": "ATTR_TABLE",
+   "rule": "addxyfields",
+   "instances": 18
+  },
+  "qgis:statisticsbycategories": {
+   "class": "AGGREGATE_STATS",
+   "rule": "statisticsbycategories",
+   "instances": 36
+  },
+  "native:selectbylocation": {
+   "class": "SPATIAL_FILTER",
+   "rule": "selectbylocation",
+   "instances": 60
+  },
+  "qgis:heatmapkerneldensityestimation": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 7
+  },
+  "native:joinattributestable": {
+   "class": "JOIN",
+   "rule": "joinattributes",
+   "instances": 329
+  },
+  "native:union": {
+   "class": "OVERLAY",
+   "rule": "union",
+   "instances": 46
+  },
+  "qgis:eliminateselectedpolygons": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "grass7:r.resample": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "native:slope": {
+   "class": "TERRAIN",
+   "rule": "slope",
+   "instances": 53
+  },
+  "qgis:setstyleforrasterlayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "native:loadlayer": {
+   "class": "IO_MGMT",
+   "rule": "loadlayer",
+   "instances": 30
+  },
+  "gdal:rasterize_over_fixed_value": {
+   "class": "RASTERIZE",
+   "rule": "rasterize",
+   "instances": 11
+  },
+  "gdal:assignprojection": {
+   "class": "REPROJECT",
+   "rule": "assignprojection",
+   "instances": 18
+  },
+  "native:rasterlayerstatistics": {
+   "class": "AGGREGATE_STATS",
+   "rule": "statistics",
+   "instances": 24
+  },
+  "gdal:contour_polygon": {
+   "class": "CONTOUR",
+   "rule": "contour",
+   "instances": 10
+  },
+  "native:polygonfromlayerextent": {
+   "class": "GEN_GEOMETRY",
+   "rule": "layerextent",
+   "instances": 23
+  },
+  "native:calculatevectoroverlaps": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 12
+  },
+  "native:collect": {
+   "class": "GEOM_CONVERT",
+   "rule": "collect",
+   "instances": 22
+  },
+  "native:geometrybyexpression": {
+   "class": "GEOM_CONVERT",
+   "rule": "geometrybyexpression",
+   "instances": 24
+  },
+  "native:dropmzvalues": {
+   "class": "GEOM_MODIFY",
+   "rule": "dropmzvalues",
+   "instances": 29
+  },
+  "grass7:r.null": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "saga:rastermasking": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "native:reclassifybylayer": {
+   "class": "RECLASSIFY",
+   "rule": "reclassify",
+   "instances": 2
+  },
+  "native:pixelstopolygons": {
+   "class": "POLYGONIZE",
+   "rule": "pixelstopolygons",
+   "instances": 17
+  },
+  "grass7:r.watershed": {
+   "class": "HYDRO",
+   "rule": "watershed",
+   "instances": 51
+  },
+  "grass7:v.net.centrality": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "qgis:randompointsinsidepolygons": {
+   "class": "GEN_GEOMETRY",
+   "rule": "randompoints",
+   "instances": 11
+  },
+  "native:rectanglesovalsdiamonds": {
+   "class": "GEN_GEOMETRY",
+   "rule": "rectanglesovalsdiamonds",
+   "instances": 2
+  },
+  "grass7:r.water.outlet": {
+   "class": "HYDRO",
+   "rule": "water.outlet",
+   "instances": 27
+  },
+  "saga:fillsinksxxlwangliu": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 5
+  },
+  "native:hillshade": {
+   "class": "TERRAIN",
+   "rule": "hillshade",
+   "instances": 13
+  },
+  "grass7:r.mapcalc.simple": {
+   "class": "RASTER_CALC",
+   "rule": "mapcalc",
+   "instances": 23
+  },
+  "grass7:r.thin": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 10
+  },
+  "grass7:r.to.vect": {
+   "class": "POLYGONIZE",
+   "rule": "r.to.vect",
+   "instances": 54
+  },
+  "qgis:regularpoints": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:snapgeometries": {
+   "class": "GEOM_MODIFY",
+   "rule": "snap",
+   "instances": 72
+  },
+  "native:deleteholes": {
+   "class": "GEOM_MODIFY",
+   "rule": "deleteholes",
+   "instances": 48
+  },
+  "native:zonalhistogram": {
+   "class": "ZONAL_STATS",
+   "rule": "zonalhistogram",
+   "instances": 14
+  },
+  "gdal:clipvectorbypolygon": {
+   "class": "VECTOR_CLIP",
+   "rule": "gdal:clip",
+   "instances": 23
+  },
+  "native:aggregate": {
+   "class": "AGGREGATE_STATS",
+   "rule": "aggregate",
+   "instances": 56
+  },
+  "native:printlayouttopdf": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "native:setlayerstyle": {
+   "class": "IO_MGMT",
+   "rule": "setlayerstyle",
+   "instances": 43
+  },
+  "native:creategrid": {
+   "class": "GEN_GEOMETRY",
+   "rule": "creategrid",
+   "instances": 75
+  },
+  "native:lineintersections": {
+   "class": "OVERLAY",
+   "rule": "intersection",
+   "instances": 40
+  },
+  "gdal:buildvirtualraster": {
+   "class": "RASTER_MERGE",
+   "rule": "buildvirtualraster",
+   "instances": 89
+  },
+  "grass7:r.reclass": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 5
+  },
+  "saga:sinkdrainageroutedetection": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "saga:sinkremoval": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "grass7:r.out.xyz": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "grass7:r.fill.stats": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "grass7:r.terraflow": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:createconstantrasterlayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 8
+  },
+  "grass7:v.net.steiner": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:addfieldtoattributestable": {
+   "class": "ATTR_TABLE",
+   "rule": "addfieldtoattributestable",
+   "instances": 14
+  },
+  "gdal:aspect": {
+   "class": "TERRAIN",
+   "rule": "aspect",
+   "instances": 9
+  },
+  "grass7:r.fill.dir": {
+   "class": "HYDRO",
+   "rule": "fill.dir",
+   "instances": 20
+  },
+  "saga:flowaccumulationtopdown": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "native:aspect": {
+   "class": "TERRAIN",
+   "rule": "aspect",
+   "instances": 30
+  },
+  "native:extractbyextent": {
+   "class": "SPATIAL_FILTER",
+   "rule": "extractbyextent",
+   "instances": 49
+  },
+  "native:pointsalonglines": {
+   "class": "GEOM_CONVERT",
+   "rule": "pointsalonglines",
+   "instances": 48
+  },
+  "saga:cliprasterwithpolygon": {
+   "class": "RASTER_CLIP",
+   "rule": "clipraster",
+   "instances": 5
+  },
+  "saga:proximityraster": {
+   "class": "PROXIMITY",
+   "rule": "proximity",
+   "instances": 1
+  },
+  "qgis:linestopolygons": {
+   "class": "GEOM_CONVERT",
+   "rule": "linestopolygons",
+   "instances": 13
+  },
+  "saga:rastervaluestopoints": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:convertmultipointstopoints": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "saga:polygonstoedgesandnodes": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:rasterlayeruniquevaluesreport": {
+   "class": "AGGREGATE_STATS",
+   "rule": "uniquevalues",
+   "instances": 11
+  },
+  "native:exporttospreadsheet": {
+   "class": "IO_MGMT",
+   "rule": "spreadsheet",
+   "instances": 23
+  },
+  "native:orientedminimumboundingbox": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "native:printlayouttoimage": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:filedownloader": {
+   "class": "IO_MGMT",
+   "rule": "filedownloader",
+   "instances": 54
+  },
+  "native:pointstopath": {
+   "class": "GEOM_CONVERT",
+   "rule": "pointstopath",
+   "instances": 31
+  },
+  "gdal:viewshed": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:extractwithindistance": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "qgis:joinbylocationsummary": {
+   "class": "JOIN",
+   "rule": "joinby",
+   "instances": 36
+  },
+  "native:condition": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:symmetricaldifference": {
+   "class": "OVERLAY",
+   "rule": "difference",
+   "instances": 12
+  },
+  "native:meshrasterize": {
+   "class": "RASTERIZE",
+   "rule": "rasterize",
+   "instances": 1
+  },
+  "native:extractvertices": {
+   "class": "GEOM_CONVERT",
+   "rule": "extractvertices",
+   "instances": 110
+  },
+  "native:wedgebuffers": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 5
+  },
+  "native:extenttolayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 14
+  },
+  "native:polygonize": {
+   "class": "POLYGONIZE",
+   "rule": "polygonize",
+   "instances": 29
+  },
+  "native:countpointsinpolygon": {
+   "class": "AGGREGATE_STATS",
+   "rule": "countpointsinpolygon",
+   "instances": 118
+  },
+  "native:deleteduplicategeometries": {
+   "class": "GEOM_MODIFY",
+   "rule": "deleteduplicate",
+   "instances": 40
+  },
+  "qgis:idwinterpolation": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 11
+  },
+  "native:dbscanclustering": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:shortestline": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "native:pointtolayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "qgis:definecurrentprojection": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 8
+  },
+  "native:assignprojection": {
+   "class": "REPROJECT",
+   "rule": "assignprojection",
+   "instances": 23
+  },
+  "native:cellstatistics": {
+   "class": "AGGREGATE_STATS",
+   "rule": "statistics",
+   "instances": 14
+  },
+  "native:promotetomulti": {
+   "class": "GEOM_CONVERT",
+   "rule": "promotetomulti",
+   "instances": 9
+  },
+  "native:removeduplicatesbyattribute": {
+   "class": "ATTR_TABLE",
+   "rule": "removeduplicatesbyattribute",
+   "instances": 20
+  },
+  "native:serviceareafromlayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "native:sumlinelengths": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 7
+  },
+  "native:joinbynearest": {
+   "class": "PROXIMITY",
+   "rule": "joinbynearest",
+   "instances": 27
+  },
+  "native:spatialiteexecutesql": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "native:createpointslayerfromtable": {
+   "class": "GEN_GEOMETRY",
+   "rule": "createpointslayer",
+   "instances": 15
+  },
+  "native:fillnodata": {
+   "class": "RASTER_CONVERT",
+   "rule": "fillnodata",
+   "instances": 13
+  },
+  "saga:fillsinkswangliu": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "grass7:r.flow": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:strahlerorder": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:channelnetworkanddrainagebasins": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "gdal:convertformat": {
+   "class": "RASTER_CONVERT",
+   "rule": "convertformat",
+   "instances": 32
+  },
+  "qgis:selectbyexpression": {
+   "class": "ATTRIBUTE_FILTER",
+   "rule": "selectbyexpression",
+   "instances": 17
+  },
+  "native:linesubstring": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:transect": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 10
+  },
+  "native:zonalstatistics": {
+   "class": "ZONAL_STATS",
+   "rule": "zonalstatistics",
+   "instances": 45
+  },
+  "grass7:v.extract": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "qgis:minimumboundinggeometry": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "native:rotatefeatures": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "native:extractzvalues": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "native:setzvalue": {
+   "class": "GEOM_MODIFY",
+   "rule": "setzvalue",
+   "instances": 11
+  },
+  "native:extendlines": {
+   "class": "GEOM_MODIFY",
+   "rule": "extendlines",
+   "instances": 23
+  },
+  "native:orderbyexpression": {
+   "class": "ATTR_TABLE",
+   "rule": "orderbyexpression",
+   "instances": 21
+  },
+  "grass7:r.rgb": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:fuzzifyrasterlinearmembership": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "qgis:basicstatisticsforfields": {
+   "class": "AGGREGATE_STATS",
+   "rule": "basicstatistics",
+   "instances": 6
+  },
+  "qgis:selectbyattribute": {
+   "class": "ATTRIBUTE_FILTER",
+   "rule": "selectbyattribute",
+   "instances": 16
+  },
+  "grass7:r.lake": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:rasterbooleanand": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:splitvectorlayer": {
+   "class": "SPLIT",
+   "rule": "split",
+   "instances": 20
+  },
+  "qgis:postgisexecuteandloadsql": {
+   "class": "IO_MGMT",
+   "rule": "postgis",
+   "instances": 2
+  },
+  "gdal:overviews": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:randomselection": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "saga:breachdepressions": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:channelnetwork": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "grass7:v.clean": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 14
+  },
+  "grass7:v.overlay": {
+   "class": "OVERLAY",
+   "rule": "overlay",
+   "instances": 9
+  },
+  "grass7:v.distance": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 8
+  },
+  "grass7:r.cost": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "grass7:v.to.points": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:stringconcatenation": {
+   "class": "ATTR_TABLE",
+   "rule": "stringconcatenation",
+   "instances": 17
+  },
+  "native:postgisexecutesql": {
+   "class": "IO_MGMT",
+   "rule": "postgis",
+   "instances": 5
+  },
+  "native:createdirectory": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "native:singlesidedbuffer": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 7
+  },
+  "native:renamelayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "native:importintopostgis": {
+   "class": "IO_MGMT",
+   "rule": "postgis",
+   "instances": 1
+  },
+  "native:raiseexception": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:convexhull": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "native:multidifference": {
+   "class": "OVERLAY",
+   "rule": "difference",
+   "instances": 1
+  },
+  "native:translategeometry": {
+   "class": "RASTER_CONVERT",
+   "rule": "translate",
+   "instances": 4
+  },
+  "grass7:v.to.lines": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:difference": {
+   "class": "OVERLAY",
+   "rule": "difference",
+   "instances": 6
+  },
+  "qgis:voronoipolygons": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "qgis:distancetonearesthubpoints": {
+   "class": "PROXIMITY",
+   "rule": "distancetonearesthub",
+   "instances": 2
+  },
+  "saga:morphologicalfilter": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:executesql": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "qgis:boxplot": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "qgis:barplot": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:slopeaspectcurvature": {
+   "class": "TERRAIN",
+   "rule": "slope",
+   "instances": 1
+  },
+  "native:forcerhr": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "qgis:convertgeometrytype": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "grass7:v.voronoi.skeleton": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:randomextract": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:checkvalidity": {
+   "class": "GEOM_MODIFY",
+   "rule": "checkvalidity",
+   "instances": 17
+  },
+  "qgis:randompointsalongline": {
+   "class": "GEN_GEOMETRY",
+   "rule": "randompoints",
+   "instances": 6
+  },
+  "qgis:tininterpolation": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:shortestpathpointtolayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "grass7:v.generalize": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "native:shortestpathpointtopoint": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 6
+  },
+  "saga:shrinkandexpand": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:resampling": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:boundary": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 10
+  },
+  "native:meancoordinates": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 5
+  },
+  "gdal:extractprojection": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "grass7:r.info": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:savelog": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:filterbygeometry": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "qgis:keepnbiggestparts": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:randompointsinextent": {
+   "class": "GEN_GEOMETRY",
+   "rule": "randompoints",
+   "instances": 2
+  },
+  "saga:profilesfromlines": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "saga:addrastervaluestopoints": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:createattributeindex": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "grass7:r.series": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "saga:mergelayers": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "gdal:gridinversedistancenearestneighbor": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "native:offsetline": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "grass7:r.stream.extract": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 11
+  },
+  "native:kmeansclustering": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:generatepointspixelcentroidsinsidepolygons": {
+   "class": "GEOM_CONVERT",
+   "rule": "centroids",
+   "instances": 4
+  },
+  "native:densifygeometriesgivenaninterval": {
+   "class": "GEOM_MODIFY",
+   "rule": "densify",
+   "instances": 10
+  },
+  "native:dropgeometries": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 5
+  },
+  "qgis:texttofloat": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "qgis:rasterlayerhistogram": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "gdal:triterrainruggednessindex": {
+   "class": "TERRAIN",
+   "rule": "ruggedness",
+   "instances": 2
+  },
+  "grass7:r.surf.idw": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "gdal:gridnearestneighbor": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "grass7:r.resamp.stats": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:multiunion": {
+   "class": "OVERLAY",
+   "rule": "union",
+   "instances": 3
+  },
+  "native:explodehstorefield": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "gdal:clipvectorbyextent": {
+   "class": "VECTOR_CLIP",
+   "rule": "gdal:clip",
+   "instances": 2
+  },
+  "gdal:fillnodata": {
+   "class": "RASTER_CONVERT",
+   "rule": "fillnodata",
+   "instances": 6
+  },
+  "native:rescaleraster": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "grass7:r.rescale.eq": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 13
+  },
+  "grass7:r.stats.zonal": {
+   "class": "ZONAL_STATS",
+   "rule": "zonal",
+   "instances": 2
+  },
+  "grass7:v.to.rast": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "grass7:v.rast.stats": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:addrastervaluestofeatures": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:highestpositioninrasterstack": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:mergelines": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "qgis:randompointsinlayerbounds": {
+   "class": "GEN_GEOMETRY",
+   "rule": "randompoints",
+   "instances": 2
+  },
+  "qgis:concavehull": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "native:writevectortiles_mbtiles": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:ruggednessindex": {
+   "class": "TERRAIN",
+   "rule": "ruggedness",
+   "instances": 8
+  },
+  "native:writevectortiles_xyz": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "grass7:r.buffer": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 1
+  },
+  "saga:crossprofiles": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:swapxy": {
+   "class": "GEOM_CONVERT",
+   "rule": "swapxy",
+   "instances": 1
+  },
+  "native:detectvectorchanges": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:pointonsurface": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "qgis:generatepointspixelcentroidsalongline": {
+   "class": "GEOM_CONVERT",
+   "rule": "centroids",
+   "instances": 1
+  },
+  "grass7:r.geomorphon": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:arrayoffsetlines": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:segmentizebymaxdistance": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:importphotos": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "grass7:v.net": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:selectwithindistance": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "saga:generatefeatures": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "gdal:roughness": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "gdal:gridinversedistance": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:hublines": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:convertpolygonstolines": {
+   "class": "GEOM_CONVERT",
+   "rule": "polygonstolines",
+   "instances": 1
+  },
+  "saga:triangulation": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:simplefilter": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:rastercalculator": {
+   "class": "RASTER_CALC",
+   "rule": "rastercalculator",
+   "instances": 2
+  },
+  "native:setprojectvariable": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "saga:intersect": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "qgis:randomselectionwithinsubsets": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:setstyleforvectorlayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 9
+  },
+  "gdal:rearrange_bands": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "grass7:r.walk.coords": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 4
+  },
+  "grass7:r.drain": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 5
+  },
+  "gdal:pansharp": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "grass7:v.split": {
+   "class": "SPLIT",
+   "rule": "split",
+   "instances": 2
+  },
+  "saga:slope": {
+   "class": "TERRAIN",
+   "rule": "slope",
+   "instances": 1
+  },
+  "native:densifygeometries": {
+   "class": "GEOM_MODIFY",
+   "rule": "densify",
+   "instances": 2
+  },
+  "qgis:saveselectedfeatures": {
+   "class": "IO_MGMT",
+   "rule": "saveselectedfeatures",
+   "instances": 1
+  },
+  "qgis:savefeatures": {
+   "class": "IO_MGMT",
+   "rule": "savefeatures",
+   "instances": 1
+  },
+  "native:countpointsinside": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "zhangxiaoxue4:p01:zhangxiaoxue4:p02:zhangxiaoxue4:p03:zhangxiaoxue4:p04:zhangxiaoxue4:p05:gdal:polygonize": {
+   "class": "POLYGONIZE",
+   "rule": "polygonize",
+   "instances": 1
+  },
+  "native:linestopolygons": {
+   "class": "GEOM_CONVERT",
+   "rule": "linestopolygons",
+   "instances": 2
+  },
+  "qgis:zonalhistogram": {
+   "class": "ZONAL_STATS",
+   "rule": "zonalhistogram",
+   "instances": 1
+  },
+  "native:servicelayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:field": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:diffute": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "gdal:interpolatevectortoring": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:fileimporter": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:pointslayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "gdal": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:histogram": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "qgis:buffer": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 7
+  },
+  "native:removeduplicatesbyfieldvalue": {
+   "class": "GEOM_MODIFY",
+   "rule": "removeduplicate",
+   "instances": 1
+  },
+  "qgis:zonalstatistics": {
+   "class": "ZONAL_STATS",
+   "rule": "zonalstatistics",
+   "instances": 3
+  },
+  "native:extractbyarea": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "buffer": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 2
+  },
+  "clip": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "difference": {
+   "class": "OVERLAY",
+   "rule": "difference",
+   "instances": 1
+  },
+  "mergevectorlayers": {
+   "class": "VECTOR_MERGE",
+   "rule": "mergevectorlayers",
+   "instances": 1
+  },
+  "native:translate": {
+   "class": "RASTER_CONVERT",
+   "rule": "translate",
+   "instances": 1
+  },
+  "qgis:polygonstolines": {
+   "class": "GEOM_CONVERT",
+   "rule": "polygonstolines",
+   "instances": 1
+  },
+  "qgis:rasterize": {
+   "class": "RASTERIZE",
+   "rule": "rasterize",
+   "instances": 1
+  },
+  "native:centroid": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:terrainslopeangulardirectioncurvature": {
+   "class": "TERRAIN",
+   "rule": "slope",
+   "instances": 1
+  },
+  "native:threepointvector": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "graphab:rasterizevector": {
+   "class": "RASTERIZE",
+   "rule": "rasterize",
+   "instances": 1
+  },
+  "graphab:extractuniquepixelvalues": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:minimumboundingcircle": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:distance": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "n": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 5
+  },
+  "native:lineworkssnap": {
+   "class": "GEOM_MODIFY",
+   "rule": "snap",
+   "instances": 1
+  },
+  "native:densifybyinterval": {
+   "class": "GEOM_MODIFY",
+   "rule": "densify",
+   "instances": 2
+  },
+  "native:countunique": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:sum": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:fixgeomet": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:concavehull": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "native:footprintlayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:featuresort": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:reclassifyby": {
+   "class": "RECLASSIFY",
+   "rule": "reclassify",
+   "instances": 1
+  },
+  "native:exportgeopackage": {
+   "class": "IO_MGMT",
+   "rule": "package",
+   "instances": 1
+  },
+  "native:selectbyattribute": {
+   "class": "ATTRIBUTE_FILTER",
+   "rule": "selectbyattribute",
+   "instances": 1
+  },
+  "native:minimumdistance": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:reclassifybyzvalues": {
+   "class": "RECLASSIFY",
+   "rule": "reclassify",
+   "instances": 1
+  },
+  "native:fix": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:slopeaspectandroughness": {
+   "class": "TERRAIN",
+   "rule": "slope",
+   "instances": 1
+  },
+  "saga:hillshade": {
+   "class": "TERRAIN",
+   "rule": "hillshade",
+   "instances": 1
+  },
+  "saga:ruggednessindex": {
+   "class": "TERRAIN",
+   "rule": "ruggedness",
+   "instances": 1
+  },
+  "native:fillnodataholes": {
+   "class": "RASTER_CONVERT",
+   "rule": "fillnodata",
+   "instances": 1
+  },
+  "native:contour": {
+   "class": "CONTOUR",
+   "rule": "contour",
+   "instances": 1
+  },
+  "native:incrementalautoincrementalfield": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "saga:profilesalonglines": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:renametable": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:renamemultilayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "native:forcecollectiveccw": {
+   "class": "GEOM_CONVERT",
+   "rule": "collect",
+   "instances": 1
+  },
+  "qgis:centroids": {
+   "class": "GEOM_CONVERT",
+   "rule": "centroids",
+   "instances": 2
+  },
+  "qgis:selectbylocation": {
+   "class": "SPATIAL_FILTER",
+   "rule": "selectbylocation",
+   "instances": 1
+  },
+  "native:selectfeaturesbyattribute": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:geometfromexpressions": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:polygonize": {
+   "class": "POLYGONIZE",
+   "rule": "polygonize",
+   "instances": 1
+  },
+  "qgis:intersection": {
+   "class": "OVERLAY",
+   "rule": "intersection",
+   "instances": 2
+  },
+  "gdal:warpreprojectvectorlayer": {
+   "class": "REPROJECT",
+   "rule": "reproject",
+   "instances": 1
+  },
+  "native:reproject": {
+   "class": "REPROJECT",
+   "rule": "reproject",
+   "instances": 1
+  },
+  "native:geometricdifference": {
+   "class": "OVERLAY",
+   "rule": "difference",
+   "instances": 1
+  },
+  "native:polygonfromlayerunion": {
+   "class": "OVERLAY",
+   "rule": "union",
+   "instances": 1
+  },
+  "qgis:concaveshull": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:tinterpolation": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "native:distancematrix": {
+   "class": "PROXIMITY",
+   "rule": "distancematrix",
+   "instances": 1
+  },
+  "native:reprojectlayers": {
+   "class": "REPROJECT",
+   "rule": "reproject",
+   "instances": 1
+  },
+  "native:pointstopolygon": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:extractvertices": {
+   "class": "GEOM_CONVERT",
+   "rule": "extractvertices",
+   "instances": 3
+  },
+  "gdal:contour_tool": {
+   "class": "CONTOUR",
+   "rule": "contour",
+   "instances": 2
+  },
+  "qgis:rasterlayerimporter": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "qgis:statistics": {
+   "class": "AGGREGATE_STATS",
+   "rule": "statistics",
+   "instances": 1
+  },
+  "qgis:deletecolumn": {
+   "class": "ATTR_TABLE",
+   "rule": "deletecolumn",
+   "instances": 2
+  },
+  "grass:v.clean": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "gdal:contour_polygonize": {
+   "class": "POLYGONIZE",
+   "rule": "polygonize",
+   "instances": 2
+  },
+  "native:aspectreclassify": {
+   "class": "TERRAIN",
+   "rule": "aspect",
+   "instances": 1
+  },
+  "grass7:r.aspect": {
+   "class": "TERRAIN",
+   "rule": "aspect",
+   "instances": 1
+  },
+  "native:extendlayers": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 3
+  },
+  "qgis:extractbyexpression": {
+   "class": "ATTRIBUTE_FILTER",
+   "rule": "extractbyexpression",
+   "instances": 1
+  },
+  "qgis:retainfields": {
+   "class": "ATTR_TABLE",
+   "rule": "retainfields",
+   "instances": 1
+  },
+  "native:pointsinlayer": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 2
+  },
+  "qgis:joinattributesbylocation": {
+   "class": "JOIN",
+   "rule": "joinattributes",
+   "instances": 1
+  },
+  "gdal:contour_polygon_to_lines": {
+   "class": "CONTOUR",
+   "rule": "contour",
+   "instances": 3
+  },
+  "gdal:buffer": {
+   "class": "BUFFER",
+   "rule": "buffer",
+   "instances": 1
+  },
+  "native:setlayerzvalue": {
+   "class": "OTHER_UNMAPPED",
+   "rule": null,
+   "instances": 1
+  },
+  "grass:r.mapcalc.simple": {
+   "class": "RASTER_CALC",
+   "rule": "mapcalc",
+   "instances": 2
+  },
+  "qgis:joinbynearest": {
+   "class": "PROXIMITY",
+   "rule": "joinbynearest",
+   "instances": 1
+  },
+  "native:cliprasterbyextent": {
+   "class": "RASTER_CLIP",
+   "rule": "clipraster",
+   "instances": 1
+  }
+ },
+ "audit": {
+  "by_class": {
+   "GEOM_CONVERT": 663,
+   "PROXIMITY": 95,
+   "RECLASSIFY": 150,
+   "POLYGONIZE": 219,
+   "TERRAIN": 180,
+   "OTHER_UNMAPPED": 639,
+   "VECTOR_MERGE": 227,
+   "BUFFER": 542,
+   "ATTR_TABLE": 1922,
+   "REPROJECT": 794,
+   "IO_MGMT": 586,
+   "GEOM_MODIFY": 1034,
+   "RASTER_CALC": 460,
+   "RASTERIZE": 204,
+   "ATTRIBUTE_FILTER": 383,
+   "SPATIAL_FILTER": 315,
+   "RASTER_CLIP": 303,
+   "JOIN": 474,
+   "SPLIT": 95,
+   "RASTER_SAMPLE": 79,
+   "DISSOLVE": 328,
+   "OVERLAY": 484,
+   "VECTOR_CLIP": 373,
+   "RASTER_MERGE": 152,
+   "ZONAL_STATS": 275,
+   "RASTER_CONVERT": 195,
+   "CONTOUR": 51,
+   "AGGREGATE_STATS": 272,
+   "GEN_GEOMETRY": 144,
+   "HYDRO": 98
+  },
+  "other": {
+   "native:rastersurfacevolume": 10,
+   "native:setzfromraster": 9,
+   "native:rasterlayerproperties": 6,
+   "native:setlayerencoding": 1,
+   "qgis:delaunaytriangulation": 9,
+   "grass7:r.grow.distance": 1,
+   "native:roundrastervalues": 2,
+   "grass7:r.neighbors": 12,
+   "native:removenullgeometries": 7,
+   "native:reverselinedirection": 5,
+   "grass7:v.to.3d": 2,
+   "native:dxfexport": 2,
+   "qgis:heatmapkerneldensityestimation": 7,
+   "qgis:eliminateselectedpolygons": 6,
+   "grass7:r.resample": 9,
+   "qgis:setstyleforrasterlayer": 6,
+   "native:calculatevectoroverlaps": 12,
+   "grass7:r.null": 9,
+   "saga:rastermasking": 6,
+   "grass7:v.net.centrality": 3,
+   "saga:fillsinksxxlwangliu": 5,
+   "grass7:r.thin": 10,
+   "qgis:regularpoints": 2,
+   "native:printlayouttopdf": 4,
+   "grass7:r.reclass": 5,
+   "saga:sinkdrainageroutedetection": 2,
+   "saga:sinkremoval": 2,
+   "grass7:r.out.xyz": 1,
+   "grass7:r.fill.stats": 3,
+   "grass7:r.terraflow": 1,
+   "native:createconstantrasterlayer": 8,
+   "grass7:v.net.steiner": 2,
+   "saga:flowaccumulationtopdown": 4,
+   "saga:rastervaluestopoints": 1,
+   "saga:convertmultipointstopoints": 2,
+   "saga:polygonstoedgesandnodes": 1,
+   "native:orientedminimumboundingbox": 9,
+   "native:printlayouttoimage": 2,
+   "gdal:viewshed": 2,
+   "native:extractwithindistance": 6,
+   "native:condition": 2,
+   "native:extenttolayer": 14,
+   "qgis:idwinterpolation": 11,
+   "native:dbscanclustering": 3,
+   "native:shortestline": 4,
+   "native:pointtolayer": 2,
+   "qgis:definecurrentprojection": 8,
+   "native:serviceareafromlayer": 9,
+   "native:sumlinelengths": 7,
+   "native:spatialiteexecutesql": 4,
+   "saga:fillsinkswangliu": 3,
+   "grass7:r.flow": 1,
+   "saga:strahlerorder": 1,
+   "saga:channelnetworkanddrainagebasins": 3,
+   "native:linesubstring": 1,
+   "native:transect": 10,
+   "grass7:v.extract": 4,
+   "qgis:minimumboundinggeometry": 6,
+   "native:rotatefeatures": 4,
+   "native:extractzvalues": 6,
+   "grass7:r.rgb": 2,
+   "native:fuzzifyrasterlinearmembership": 4,
+   "grass7:r.lake": 3,
+   "native:rasterbooleanand": 2,
+   "gdal:overviews": 1,
+   "qgis:randomselection": 4,
+   "saga:breachdepressions": 1,
+   "saga:channelnetwork": 2,
+   "grass7:v.clean": 14,
+   "grass7:v.distance": 8,
+   "grass7:r.cost": 4,
+   "grass7:v.to.points": 3,
+   "native:createdirectory": 4,
+   "native:renamelayer": 9,
+   "native:raiseexception": 3,
+   "native:convexhull": 9,
+   "grass7:v.to.lines": 1,
+   "qgis:voronoipolygons": 9,
+   "saga:morphologicalfilter": 1,
+   "qgis:executesql": 2,
+   "qgis:boxplot": 9,
+   "qgis:barplot": 1,
+   "native:forcerhr": 4,
+   "qgis:convertgeometrytype": 2,
+   "grass7:v.voronoi.skeleton": 2,
+   "native:randomextract": 1,
+   "qgis:tininterpolation": 3,
+   "native:shortestpathpointtolayer": 6,
+   "grass7:v.generalize": 9,
+   "native:shortestpathpointtopoint": 6,
+   "saga:shrinkandexpand": 1,
+   "saga:resampling": 1,
+   "native:boundary": 10,
+   "native:meancoordinates": 5,
+   "gdal:extractprojection": 2,
+   "grass7:r.info": 1,
+   "native:savelog": 1,
+   "native:filterbygeometry": 2,
+   "qgis:keepnbiggestparts": 2,
+   "saga:profilesfromlines": 2,
+   "saga:addrastervaluestopoints": 3,
+   "native:createattributeindex": 3,
+   "grass7:r.series": 3,
+   "saga:mergelayers": 1,
+   "gdal:gridinversedistancenearestneighbor": 4,
+   "native:offsetline": 3,
+   "grass7:r.stream.extract": 11,
+   "native:kmeansclustering": 2,
+   "native:dropgeometries": 5,
+   "qgis:texttofloat": 2,
+   "qgis:rasterlayerhistogram": 2,
+   "grass7:r.surf.idw": 1,
+   "gdal:gridnearestneighbor": 2,
+   "grass7:r.resamp.stats": 1,
+   "native:explodehstorefield": 4,
+   "native:rescaleraster": 1,
+   "grass7:r.rescale.eq": 13,
+   "grass7:v.to.rast": 3,
+   "grass7:v.rast.stats": 1,
+   "saga:addrastervaluestofeatures": 1,
+   "native:highestpositioninrasterstack": 1,
+   "native:mergelines": 4,
+   "qgis:concavehull": 4,
+   "native:writevectortiles_mbtiles": 3,
+   "native:writevectortiles_xyz": 1,
+   "saga:crossprofiles": 2,
+   "native:detectvectorchanges": 1,
+   "native:pointonsurface": 2,
+   "grass7:r.geomorphon": 1,
+   "native:arrayoffsetlines": 3,
+   "native:segmentizebymaxdistance": 2,
+   "native:importphotos": 1,
+   "grass7:v.net": 2,
+   "native:selectwithindistance": 2,
+   "saga:generatefeatures": 1,
+   "gdal:roughness": 2,
+   "gdal:gridinversedistance": 1,
+   "native:hublines": 1,
+   "saga:triangulation": 1,
+   "saga:simplefilter": 1,
+   "native:setprojectvariable": 2,
+   "saga:intersect": 2,
+   "qgis:randomselectionwithinsubsets": 1,
+   "qgis:setstyleforvectorlayer": 9,
+   "gdal:rearrange_bands": 1,
+   "grass7:r.walk.coords": 4,
+   "grass7:r.drain": 5,
+   "gdal:pansharp": 1,
+   "native:countpointsinside": 3,
+   "native:servicelayer": 1,
+   "native:field": 1,
+   "native:diffute": 1,
+   "gdal:interpolatevectortoring": 2,
+   "native:fileimporter": 1,
+   "native:pointslayer": 1,
+   "gdal": 1,
+   "saga:histogram": 2,
+   "native:extractbyarea": 1,
+   "clip": 1,
+   "native:centroid": 1,
+   "native:threepointvector": 1,
+   "graphab:extractuniquepixelvalues": 1,
+   "native:minimumboundingcircle": 1,
+   "native:distance": 2,
+   "n": 5,
+   "native:countunique": 1,
+   "native:sum": 1,
+   "native:fixgeomet": 1,
+   "native:concavehull": 1,
+   "native": 3,
+   "native:footprintlayer": 1,
+   "native:featuresort": 1,
+   "native:minimumdistance": 1,
+   "native:fix": 1,
+   "native:incrementalautoincrementalfield": 1,
+   "saga:profilesalonglines": 1,
+   "native:renametable": 2,
+   "native:renamemultilayer": 2,
+   "native:selectfeaturesbyattribute": 1,
+   "native:geometfromexpressions": 1,
+   "qgis:concaveshull": 1,
+   "qgis:tinterpolation": 1,
+   "native:pointstopolygon": 1,
+   "qgis:rasterlayerimporter": 1,
+   "grass:v.clean": 2,
+   "native:extendlayers": 3,
+   "native:pointsinlayer": 2,
+   "native:setlayerzvalue": 1
+  },
+  "rules_hit": {
+   "GEOM_CONVERT<centroids>": 79,
+   "PROXIMITY<distancematrix>": 40,
+   "RECLASSIFY<reclassify>": 150,
+   "POLYGONIZE<polygonize>": 148,
+   "TERRAIN<slope>": 100,
+   "VECTOR_MERGE<mergevectorlayers>": 227,
+   "BUFFER<buffer>": 542,
+   "ATTR_TABLE<fieldcalculator>": 1118,
+   "REPROJECT<reproject>": 753,
+   "IO_MGMT<package>": 24,
+   "IO_MGMT<saveselectedfeatures>": 97,
+   "IO_MGMT<savefeatures>": 86,
+   "GEOM_MODIFY<removeduplicate>": 21,
+   "RASTER_CALC<rastercalculator>": 435,
+   "RASTERIZE<rasterize>": 204,
+   "ATTRIBUTE_FILTER<extractbyexpression>": 232,
+   "GEOM_MODIFY<fixgeometries>": 671,
+   "ATTR_TABLE<addautoincrementalfield>": 56,
+   "ATTR_TABLE<deletecolumn>": 187,
+   "ATTR_TABLE<renametablefield>": 62,
+   "SPATIAL_FILTER<extractbylocation>": 205,
+   "RASTER_CLIP<clipraster>": 303,
+   "GEOM_CONVERT<pixelstopoints>": 27,
+   "IO_MGMT<createspatialindex>": 108,
+   "GEOM_CONVERT<multiparttosingleparts>": 156,
+   "JOIN<joinattributes>": 438,
+   "SPLIT<split>": 95,
+   "GEOM_CONVERT<extractspecificvertices>": 26,
+   "RASTER_SAMPLE<rastersampling>": 79,
+   "PROXIMITY<proximity>": 25,
+   "ATTRIBUTE_FILTER<extractbyattribute>": 117,
+   "DISSOLVE<dissolve>": 328,
+   "OVERLAY<difference>": 136,
+   "OVERLAY<intersection>": 289,
+   "ATTR_TABLE<refactorfields>": 286,
+   "VECTOR_CLIP<native:clip>": 348,
+   "RASTER_MERGE<gdal:merge>": 63,
+   "ZONAL_STATS<zonalstatistics>": 258,
+   "GEOM_CONVERT<polygonstolines>": 68,
+   "GEOM_CONVERT<explodelines>": 43,
+   "TERRAIN<hillshade>": 28,
+   "RASTER_CONVERT<translate>": 121,
+   "CONTOUR<contour>": 51,
+   "GEOM_MODIFY<smooth>": 41,
+   "RASTER_CONVERT<sieve>": 22,
+   "ATTR_TABLE<retainfields>": 63,
+   "GEOM_MODIFY<simplify>": 46,
+   "AGGREGATE_STATS<uniquevalues>": 17,
+   "IO_MGMT<postgis>": 121,
+   "ATTR_TABLE<addgeometrycolumns>": 60,
+   "GEN_GEOMETRY<randompoints>": 29,
+   "ATTR_TABLE<addxyfields>": 18,
+   "AGGREGATE_STATS<statisticsbycategories>": 36,
+   "SPATIAL_FILTER<selectbylocation>": 61,
+   "OVERLAY<union>": 50,
+   "IO_MGMT<loadlayer>": 30,
+   "REPROJECT<assignprojection>": 41,
+   "AGGREGATE_STATS<statistics>": 39,
+   "GEN_GEOMETRY<layerextent>": 23,
+   "GEOM_CONVERT<collect>": 23,
+   "GEOM_CONVERT<geometrybyexpression>": 24,
+   "GEOM_MODIFY<dropmzvalues>": 29,
+   "POLYGONIZE<pixelstopolygons>": 17,
+   "HYDRO<watershed>": 51,
+   "GEN_GEOMETRY<rectanglesovalsdiamonds>": 2,
+   "HYDRO<water.outlet>": 27,
+   "RASTER_CALC<mapcalc>": 25,
+   "POLYGONIZE<r.to.vect>": 54,
+   "GEOM_MODIFY<snap>": 73,
+   "GEOM_MODIFY<deleteholes>": 48,
+   "ZONAL_STATS<zonalhistogram>": 15,
+   "VECTOR_CLIP<gdal:clip>": 25,
+   "AGGREGATE_STATS<aggregate>": 56,
+   "IO_MGMT<setlayerstyle>": 43,
+   "GEN_GEOMETRY<creategrid>": 75,
+   "RASTER_MERGE<buildvirtualraster>": 89,
+   "ATTR_TABLE<addfieldtoattributestable>": 14,
+   "TERRAIN<aspect>": 41,
+   "HYDRO<fill.dir>": 20,
+   "SPATIAL_FILTER<extractbyextent>": 49,
+   "GEOM_CONVERT<pointsalonglines>": 48,
+   "GEOM_CONVERT<linestopolygons>": 15,
+   "IO_MGMT<spreadsheet>": 23,
+   "IO_MGMT<filedownloader>": 54,
+   "GEOM_CONVERT<pointstopath>": 31,
+   "JOIN<joinby>": 36,
+   "GEOM_CONVERT<extractvertices>": 113,
+   "AGGREGATE_STATS<countpointsinpolygon>": 118,
+   "GEOM_MODIFY<deleteduplicate>": 40,
+   "GEOM_CONVERT<promotetomulti>": 9,
+   "ATTR_TABLE<removeduplicatesbyattribute>": 20,
+   "PROXIMITY<joinbynearest>": 28,
+   "GEN_GEOMETRY<createpointslayer>": 15,
+   "RASTER_CONVERT<fillnodata>": 20,
+   "RASTER_CONVERT<convertformat>": 32,
+   "ATTRIBUTE_FILTER<selectbyexpression>": 17,
+   "GEOM_MODIFY<setzvalue>": 11,
+   "GEOM_MODIFY<extendlines>": 23,
+   "ATTR_TABLE<orderbyexpression>": 21,
+   "AGGREGATE_STATS<basicstatistics>": 6,
+   "ATTRIBUTE_FILTER<selectbyattribute>": 17,
+   "OVERLAY<overlay>": 9,
+   "ATTR_TABLE<stringconcatenation>": 17,
+   "PROXIMITY<distancetonearesthub>": 2,
+   "GEOM_MODIFY<checkvalidity>": 17,
+   "GEOM_MODIFY<densify>": 14,
+   "TERRAIN<ruggedness>": 11,
+   "ZONAL_STATS<zonal>": 2,
+   "GEOM_CONVERT<swapxy>": 1
+  }
+ }
+}
