@@ -1,0 +1,41 @@
+{
+  "protocol": "P0-6 one-shot test-111 (v2a_A_test.jsonl 111 rows), greedy, batch 2, fail-closed parse",
+  "checkpoints": {
+    "C0_ep20": "route2_C0/qgis_sft_ep20 on Qwen3.5-9B-Base",
+    "A1_ep15": "route2_A1/qgis_sft_ep15 on gee_dapt_merged",
+    "B1_ep18": "route2_B1/qgis_sft_ep18 on gee_semantic_merged"
+  },
+  "note": "B1 ran twice: first attempt died mid-run (transient CUBLAS_STATUS_NOT_SUPPORTED in bnb matmul); clean solo rerun produced these numbers. C0/A1 from the sequential chain, no retry.",
+  "results": {
+    "C0_ep20": {
+      "metrics": {
+        "n": 111,
+        "operator_set_f1": 0.5058564215684959,
+        "exact_graph_em": 0.13513513513513514,
+        "link_f1": 0.4355241651140191,
+        "parse_failure_rate": 0.02702702702702703
+      },
+      "predictions_sha256": "ec1cd4f7118e7cb5ff75f11576a5c4818e881ad1c038e56e80ad50ec3b24af73"
+    },
+    "A1_ep15": {
+      "metrics": {
+        "n": 111,
+        "operator_set_f1": 0.45840157093017475,
+        "exact_graph_em": 0.10810810810810811,
+        "link_f1": 0.37940728155831105,
+        "parse_failure_rate": 0.09009009009009009
+      },
+      "predictions_sha256": "bc68ac9cfbfa3fe0fff0d94b5ec5d971416dd2226a84ef8f8d893b8df0789da6"
+    },
+    "B1_ep18": {
+      "metrics": {
+        "n": 111,
+        "operator_set_f1": 0.47881104274293124,
+        "exact_graph_em": 0.14414414414414414,
+        "link_f1": 0.4607181769599041,
+        "parse_failure_rate": 0.06306306306306306
+      },
+      "predictions_sha256": "5f4ed5883f3bdb36999e2cdb479215becf88c78ef48a4719241e0423ee4924f4"
+    }
+  }
+}

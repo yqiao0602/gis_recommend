@@ -5,33 +5,38 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
-## Route-2 三臂完成：C0 > B1 > A1，全部在噪声带内（2026-09-17 → 09-23）
+## Route-2 三臂完成 + test-111 终评：GEE 两路径均无正迁移（2026-09-17 → 09-23）
 
-三臂全部完成（dev-120 op-set-F1，同协议，best-vs-best）：
+三臂全部完成（dev-120 选 checkpoint；test-111 一次性终评，预测 SHA 已锁
+`route2_p0_contract/test111_final_v1/RESULTS_LOCK_v1.json`）：
 
 ```
-C0（纯 QGIS SFT）        0.5611  best ep20
-B1（GEE 语义 SFT→QGIS）  0.5541  best ep18   B1−C0 = −0.007
-A1（GEE DAPT→QGIS）      0.5510  best ep15   A1−C0 = −0.010
+           dev opF1 (best)     test opF1    test EM    test linkF1   test parse失败
+C0 纯QGIS       0.5611 ep20     0.5059      0.1351      0.4355        2.7%
+B1 语义→QGIS    0.5541 ep18     0.4788      0.1441      0.4607        6.3%
+A1 DAPT→QGIS    0.5510 ep15     0.4584      0.1081      0.3794        9.0%
 ```
 
-**dev 归因（预注册框架内）**：三臂差异 ~0.010，与各自 epoch 间波动量级
-（±0.02-0.05）相当——dev-120 上的差异不足以提供稳定迁移优势的证据
-（未做形式显著性检验，不作"统计显著/不显著"表述），H1 预测的排序
-（B1 > C0）在 dev 上未出现。两点机制性观察：① A1 stage-1 loss 1.454→0.893、
-B1 stage-1 loss 1.020→0.336——两个 GEE 阶段都拟合成功，**迁移没有随
-拟合而来**；② 三臂 QGIS SFT 的后期跃升动力学（ep11-12 +0.05）几乎
-相同——stage-2 由 QGIS 数据主导，GEE 先验未改变收敛形态。B1−A1 =
-+0.003 为噪声。test-111 一次性终评（P0-6）是下一读数；dev 的统计
-不可分意味着 H1 判定的证据重心将落在 test 终评与后续 B2 设计讨论。
-**事故史**：服务器三天三重启；B1 死于 step 1050 后由精确状态断点
-续训零损失恢复（`[resume] stage checkpoint at step 1050`，实战验证）。
-运维闭环已用毕拆除：AUTOBOOT.enabled 已删（防重启重跑 B1 覆写
-dev_ep*.json），crontab 条目保留但成 no-op。账本：`run_ledger.json`
-（C0）、`run_ledger_A1.json`、`run_ledger_B1.json`（commits dd64280/
-d7b3180/8d785df）。checkpoint：`/home/qy/gee_llm_smoke/route2_{C0/
-A1/B1}/qgis_sft_ep{20/15/18}`。Gate-2 评测窗已开（C0/A1 的
-Protocol-v2 dev 重评，peer 会话承接）；test-111 终评仍未执行。
+**终版判读**：① test 排序与 dev 一致（C0 > B1 > A1）且差距拉大
+（B1−C0 = −0.027、A1−C0 = −0.048）——两个不相交行集方向一致，H1 在
+dev 与 test 上均未获支持；② parse 失败单调 C0 < B1 < A1 在 test 复现
+（GEE 阶段越多格式纪律越差，与 DAPT 自由文本倾向吻合）；③ 唯一反向
+信号：test 上 B1 linkF1 (0.4607) > C0 (0.4355)，拓扑维度混合；④ dev
+差异措辞 = 与 epoch 波动量级相当（无显著性检验，不作统计显著性表述）。
+机制结论：两个 GEE 阶段拟合均成功（loss 大幅下降）但迁移未随拟合而
+来——研究问题已从"是否需要更多 GEE 数据"推进到"GEE workflow
+knowledge 以何种接口进入 QGIS operator grounding"。
+
+**下一步（owner 已定序）**：先做 error audit（三臂 test 预测已全量落盘
+`test111_final_v1/*_predictions.jsonl`）+ Oracle Grounding Test（gold
+语义工作流→QGIS 图，不给任务文本，切分"任务→语义"与"语义→算子"
+两段），四块拼齐（dev+test+audit+oracle）再议 B2，不提前改设计。
+final-100/refusal-12（冻结 benchmark scorer）属 peer Gate-2 线。
+**事故史**：服务器三天三重启；B1 死于 step 1050 由精确断点续训零损失
+恢复；test 评测 B1 首跑遇瞬时 CUBLAS_STATUS_NOT_SUPPORTED，独占重跑
+干净通过。运维 autoboot 已用毕拆除（AUTOBOOT.enabled 删，crontab 留
+no-op）。账本：run_ledger{,_A1,_B1}.json + RESULTS_LOCK_v1.json
+（dd64280/d7b3180/8d785df/c77989a）。Gate-2 评测窗已开放。
 
 ## M1-R2 评测完成：结构性塌缩修复、任务映射未解（2026-09-16，Phase 2 收官）
 
