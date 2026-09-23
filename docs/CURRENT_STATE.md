@@ -5,36 +5,36 @@ Last updated: 2026-09-21
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
-## Route-2 three-arm experiment: C0/A1 done, B1 running (2026-09-17 -> 09-21)
+## Route-2 three arms complete: C0 > B1 > A1, all inside the noise band (2026-09-17 -> 09-23)
 
-Mainline. P0 contract frozen (33cc614), same base/data/protocol, dev-120
-op-set-F1 checkpoint selection. All arms output QGIS graphs.
+All three arms finished (dev-120 op-set-F1, same protocol, best-vs-best):
 
-- **C0 (done)**: QGIS SFT only, best ep20 dev opF1 **0.5611** (linkF1 0.5392,
-  EM 0.167, parse-fail 1.7%), curve 0.337 -> 0.561 unsaturated. Ledger
-  `docs/reports/route2_p0_contract/run_ledger.json`, ckpt
-  `/home/qy/gee_llm_smoke/route2_C0/qgis_sft_ep20`.
-- **A1 (done)**: GEE DAPT 23.6M tok (loss 1.454 -> 0.893) -> QGIS SFT, best
-  ep15 dev opF1 **0.5510**. A1 − C0 = −0.010 => plain causal-LM domain
-  exposure transfers nothing measurable (milder than M2-P2's negative);
-  H1 rests on B1. Ledger `run_ledger_A1.json`, ckpt `route2_A1/qgis_sft_ep15`.
-  Do NOT compare 0.561 with M2's 0.224 (different spaces/benchmarks).
-- **B1 (running, v4)**: semantic workflow SFT 17.4M tok -> QGIS SFT 20 ep.
-  Server rebooted three times in three days (latest 09-22 night; B1 died at
-  step 1050). The **exact-state mid-stage checkpoint/resume** was validated
-  live: the 09-22 relaunch logged `[resume] stage checkpoint at step 1050
-  (rows 33600)` and continued the same trajectory with zero step loss
-  (adapter+optimizer+scheduler+RNG+rows_consumed saved every 150 steps;
-  fixed-seed shuffle re-derivation). **Ops loop closed (09-22, owner
-  approved)**: `route2_training/b1_supervisor.sh` (idempotent pgrep guard,
-  gated by AUTOBOOT.enabled) + crontab `@reboot` (auto-launch 60s after
-  boot — reboots no longer need a manual ssh) + DONE.flag watcher. After
-  the B1 line finishes, delete
-  `/home/qy/gee_llm_smoke/route2_B1/AUTOBOOT.enabled` to permanently disarm
-  autoboot. ETA ~09-22 late / 09-23.
-- Next: B1 done -> core attribution B1−C0 / B1−A1 -> Gate-2 Protocol-v2 dev
-  re-evals of C0/A1 (peer session; window after B1 exits) -> test-111 final
-  eval once for all arms (P0-6) -> B2 design.
+```
+C0 (QGIS SFT only)          0.5611  best ep20
+B1 (GEE semantic SFT->QGIS) 0.5541  best ep18   B1-C0 = -0.007
+A1 (GEE DAPT->QGIS)         0.5510  best ep15   A1-C0 = -0.010
+```
+
+**Dev attribution (pre-registered frame)**: the three arms differ by ~0.010,
+inside each arm's epoch-level noise (+-0.02-0.05) — **on dev-120 the arms are
+statistically indistinguishable and H1's predicted ordering (B1 > C0) did not
+appear**. Two mechanistic observations: (1) both GEE stages fit well (A1 loss
+1.454->0.893, B1 loss 1.020->0.336) yet no transfer followed the fitting;
+(2) the late-surge dynamics of stage-2 (ep11-12, +0.05) are nearly identical
+across arms — QGIS data dominates stage-2, and the GEE prior did not change
+its convergence shape. B1-A1 = +0.003 is noise. The one-shot test-111 final
+eval (P0-6) is the next readout; with dev statistically inseparable, the
+H1 verdict's evidential weight now rests on that final eval and the B2
+design discussion. **Incident history**: three server reboots in three days;
+B1 died at step 1050 and was recovered with zero step loss by the
+exact-state resume (`[resume] stage checkpoint at step 1050`, validated
+live). The ops loop served its purpose and is disarmed: AUTOBOOT.enabled
+deleted (prevents a reboot from re-running B1 and overwriting dev_ep*.json);
+the crontab entry stays but is a no-op. Ledgers: `run_ledger.json` (C0),
+`run_ledger_A1.json`, `run_ledger_B1.json` (commits dd64280/d7b3180/8d785df).
+Checkpoints: `/home/qy/gee_llm_smoke/route2_{C0/A1/B1}/qgis_sft_ep{20/15/18}`.
+Gate-2 eval window open (Protocol-v2 dev re-evals of C0/A1, peer session);
+test-111 final eval still pending.
 
 ## M1-R2 evaluation complete: structural collapse fixed, task mapping not (2026-09-16, Phase 2 closed)
 
