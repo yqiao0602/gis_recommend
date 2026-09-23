@@ -5,37 +5,56 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
-## Route-2 三臂完成 + test-111 终评：GEE 两路径均无正迁移（2026-09-17 → 09-23）
+## Route-2 四块合璧：语义→算子接口断裂（2026-09-17 → 09-23）
 
-三臂全部完成（dev-120 选 checkpoint；test-111 一次性终评，预测 SHA 已锁
-`route2_p0_contract/test111_final_v1/RESULTS_LOCK_v1.json`）：
+dev + test + error audit + Oracle grounding 四块齐：
 
 ```
-           dev opF1 (best)     test opF1    test EM    test linkF1   test parse失败
-C0 纯QGIS       0.5611 ep20     0.5059      0.1351      0.4355        2.7%
-B1 语义→QGIS    0.5541 ep18     0.4788      0.1441      0.4607        6.3%
-A1 DAPT→QGIS    0.5510 ep15     0.4584      0.1081      0.3794        9.0%
+              dev opF1   test opF1   Oracle opF1   Oracle EM
+C0 纯QGIS      0.5611     0.5059      0.0771         0.000
+B1 语义→QGIS   0.5541     0.4788      0.0963         0.000
+A1 DAPT→QGIS   0.5510     0.4584      0.1165         0.000
 ```
 
-**终版判读**：① test 排序与 dev 一致（C0 > B1 > A1）且差距拉大
-（B1−C0 = −0.027、A1−C0 = −0.048）——两个不相交行集方向一致，H1 在
-dev 与 test 上均未获支持；② parse 失败单调 C0 < B1 < A1 在 test 复现
-（GEE 阶段越多格式纪律越差，与 DAPT 自由文本倾向吻合）；③ 唯一反向
-信号：test 上 B1 linkF1 (0.4607) > C0 (0.4355)，拓扑维度混合；④ dev
-差异措辞 = 与 epoch 波动量级相当（无显著性检验，不作统计显著性表述）。
-机制结论：两个 GEE 阶段拟合均成功（loss 大幅下降）但迁移未随拟合而
-来——研究问题已从"是否需要更多 GEE 数据"推进到"GEE workflow
-knowledge 以何种接口进入 QGIS operator grounding"。
+**Oracle 判决（情况 B）**：把 gold 语义工作流（B1 词表、148 算子映射、
+21 类在用）直接喂给三臂，**全部贴地**（opF1 0.077-0.117，EM 恰好全零）——
+包括在语义空间上训练过的 B1（stage-1 loss 1.020→0.336 学会了
+Task→语义）。**37 类语义抽象不足以决定 QGIS 算子选择：任务文本
+（0.479）携带的算子线索反而多于 gold 语义链（0.096）**。语义抽象在
+"落地图"这一步丢失了必要信息——粒度断层获得直接实验支持。
 
-**下一步（owner 已定序）**：先做 error audit（三臂 test 预测已全量落盘
-`test111_final_v1/*_predictions.jsonl`）+ Oracle Grounding Test（gold
-语义工作流→QGIS 图，不给任务文本，切分"任务→语义"与"语义→算子"
-两段），四块拼齐（dev+test+audit+oracle）再议 B2，不提前改设计。
-final-100/refusal-12（冻结 benchmark scorer）属 peer Gate-2 线。
-**事故史**：服务器三天三重启；B1 死于 step 1050 由精确断点续训零损失
-恢复；test 评测 B1 首跑遇瞬时 CUBLAS_STATUS_NOT_SUPPORTED，独占重跑
-干净通过。运维 autoboot 已用毕拆除（AUTOBOOT.enabled 删，crontab 留
-no-op）。账本：run_ledger{,_A1,_B1}.json + RESULTS_LOCK_v1.json
+**error audit 要点**：ops_mixed（部分算子对）占 55-58% 为主瓶颈；
+B1 linkF1 优势在 parse-ok 子集存活（0.4917 vs C0 0.4476）但"拓扑全对"
+行仅 8 vs C0 7（分布效应，非群体现象）；三臂每行欠生成 ~2.9 算子。
+
+**机制终定位**：H1 失败点在 semantic→operator grounding 这一环，而非
+Task→workflow 学习（B1 学会了）也非 QGIS grounding 本身（C0 有 0.51）。
+被训过两个方向（Task→语义、Task→QGIS）的模型不能零样本组合出第三
+个方向（语义→QGIS）。
+
+**B2 分支已由 owner 预注册且命中**：oracle 低 → 专门的 semantic→QGIS
+训练（Semantic Operation→Operator 与 Semantic Workflow→Graph 两个方向），
+而非继续普通 QGIS SFT。B2 设计待 owner 批准后开。
+产物：`test111_final_v1/`（RESULTS_LOCK_v1、ORACLE_RESULTS_LOCK_v1、
+error_audit_v1、oracle_semantic_input_v1、三臂 predictions+SHA）。
+audit/oracle 脚本：`scripts/audit_route2_test111_errors_v1.py`、
+`scripts/build_route2_semantic_oracle_v1.py`（29178fd）。
+
+test 明细（dev-120 选 checkpoint；test-111 一次性，SHA 已锁）：
+
+```
+           dev opF1 (best)   test opF1  test EM   test linkF1  test parse失败
+C0 纯QGIS       0.5611 ep20   0.5059     0.1351     0.4355       2.7%
+B1 语义→QGIS    0.5541 ep18   0.4788     0.1441     0.4607       6.3%
+A1 DAPT→QGIS    0.5510 ep15   0.4584     0.1081     0.3794       9.0%
+```
+
+补充判读：parse 失败单调 C0<B1<A1 在 dev/test 双复现；dev 差异措辞 =
+与 epoch 波动量级相当（无显著性检验）；GEE 两阶段拟合均成功但迁移
+未随拟合而来。final-100/refusal-12（冻结 benchmark scorer）属 peer
+Gate-2 线。事故史：服务器三天三重启（B1 断点续训零损失恢复实证）；
+test 评测 B1 首跑瞬时 CUBLAS 错、独占重跑通过；autoboot 用毕拆除。
+账本：run_ledger{,_A1,_B1}.json + RESULTS_LOCK_v1.json
 （dd64280/d7b3180/8d785df/c77989a）。Gate-2 评测窗已开放。
 
 ## M1-R2 评测完成：结构性塌缩修复、任务映射未解（2026-09-16，Phase 2 收官）

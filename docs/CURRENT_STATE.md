@@ -5,37 +5,63 @@ Last updated: 2026-09-21
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
-## Route-2 three arms complete: C0 > B1 > A1, all inside the noise band (2026-09-17 -> 09-23)
+## Route-2 four-block synthesis: the semantic->operator interface is broken (2026-09-17 -> 09-23)
 
-All three arms finished (dev-120 op-set-F1, same protocol, best-vs-best):
+dev + test + error audit + Oracle grounding, all four blocks:
 
 ```
-C0 (QGIS SFT only)          0.5611  best ep20
-B1 (GEE semantic SFT->QGIS) 0.5541  best ep18   B1-C0 = -0.007
-A1 (GEE DAPT->QGIS)         0.5510  best ep15   A1-C0 = -0.010
+              dev opF1   test opF1   Oracle opF1   Oracle EM
+C0 QGIS-only    0.5611     0.5059      0.0771         0.000
+B1 sem->QGIS    0.5541     0.4788      0.0963         0.000
+A1 DAPT->QGIS   0.5510     0.4584      0.1165         0.000
 ```
 
-**Dev attribution (pre-registered frame)**: the three arms differ by ~0.010,
-the same magnitude as their epoch-to-epoch fluctuation (+-0.02-0.05) — the
-dev-120 differences are insufficient evidence for a stable transfer
-advantage (no formal significance test performed; avoid significance
-wording), and H1's predicted ordering (B1 > C0) did not appear on dev. Two mechanistic observations: (1) both GEE stages fit well (A1 loss
-1.454->0.893, B1 loss 1.020->0.336) yet no transfer followed the fitting;
-(2) the late-surge dynamics of stage-2 (ep11-12, +0.05) are nearly identical
-across arms — QGIS data dominates stage-2, and the GEE prior did not change
-its convergence shape. B1-A1 = +0.003 is noise. The one-shot test-111 final
-eval (P0-6) is the next readout; with dev statistically inseparable, the
-H1 verdict's evidential weight now rests on that final eval and the B2
-design discussion. **Incident history**: three server reboots in three days;
-B1 died at step 1050 and was recovered with zero step loss by the
-exact-state resume (`[resume] stage checkpoint at step 1050`, validated
-live). The ops loop served its purpose and is disarmed: AUTOBOOT.enabled
-deleted (prevents a reboot from re-running B1 and overwriting dev_ep*.json);
-the crontab entry stays but is a no-op. Ledgers: `run_ledger.json` (C0),
-`run_ledger_A1.json`, `run_ledger_B1.json` (commits dd64280/d7b3180/8d785df).
-Checkpoints: `/home/qy/gee_llm_smoke/route2_{C0/A1/B1}/qgis_sft_ep{20/15/18}`.
-Gate-2 eval window open (Protocol-v2 dev re-evals of C0/A1, peer session);
-test-111 final eval still pending.
+**Oracle verdict (branch B)**: feeding the gold semantic workflow (B1
+vocabulary, 148 operators mapped, 21 categories in use) directly to all
+three arms puts everyone on the floor (opF1 0.077-0.117, EM exactly 0) -
+including B1, whose stage-1 fitted Task->semantic to loss 0.336. **The
+37-category semantic abstraction does not determine QGIS operator
+choice: task text (0.479) carries more operator evidence than the gold
+semantic chain (0.096).** The abstraction loses what grounding needs -
+the granularity-gap hypothesis now has direct experimental support.
+
+**Error audit headline**: ops_mixed (partially-correct operator sets)
+dominates at 55-58% of rows in every arm; B1's linkF1 edge survives the
+parse-ok restriction (0.4917 vs C0 0.4476) but the clean
+ops-wrong-links-right cell is 8 rows vs C0's 7 (a distributed effect,
+not a subpopulation); all arms under-generate ~2.9 operators/row.
+
+**Final mechanism**: H1 fails at the semantic->operator grounding link -
+not at Task->workflow learning (B1 learned it) and not at QGIS grounding
+itself (C0 reaches 0.51). A model trained on both directions
+(Task->semantic, Task->QGIS) does not compose the third (semantic->QGIS)
+zero-shot. B2 branch pre-registered by the owner and now hit: oracle-low
+-> dedicated semantic->QGIS training (Semantic Operation->Operator and
+Semantic Workflow->Graph), not more plain QGIS SFT. B2 design awaits
+owner approval. Artifacts: `test111_final_v1/` (RESULTS_LOCK_v1,
+ORACLE_RESULTS_LOCK_v1, error_audit_v1, oracle_semantic_input_v1,
+per-arm predictions + SHA). Scripts: `scripts/audit_route2_test111_errors_v1.py`,
+`scripts/build_route2_semantic_oracle_v1.py` (29178fd).
+
+Test detail (dev-120 checkpoint selection; one-shot test, SHA-locked):
+
+```
+           dev opF1 (best)   test opF1  test EM   test linkF1  test parse-fail
+C0 QGIS-only    0.5611 ep20   0.5059     0.1351     0.4355       2.7%
+B1 sem->QGIS    0.5541 ep18   0.4788     0.1441     0.4607       6.3%
+A1 DAPT->QGIS   0.5510 ep15   0.4584     0.1081     0.3794       9.0%
+```
+
+Additional readings: parse-failure monotonicity (C0<B1<A1) reproduces on
+dev and test; dev differences phrased as comparable-to-epoch-fluctuation
+(no significance test); both GEE stages fitted successfully yet transfer
+did not follow. final-100/refusal-12 (frozen benchmark scorer) belongs
+to the peer Gate-2 line. Incident history: three server reboots in three
+days (exact-state resume proven live on B1); B1's test eval hit a
+transient CUBLAS error and passed cleanly on a solo rerun; autoboot
+disarmed after use. Ledgers: run_ledger{,_A1,_B1}.json +
+RESULTS_LOCK_v1.json (dd64280/d7b3180/8d785df/c77989a). Gate-2 eval
+window open.
 
 ## M1-R2 evaluation complete: structural collapse fixed, task mapping not (2026-09-16, Phase 2 closed)
 
