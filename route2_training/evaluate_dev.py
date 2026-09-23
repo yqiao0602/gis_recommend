@@ -62,7 +62,7 @@ def parse_generation(text: str) -> tuple[list[dict], list[dict]]:
 @torch.no_grad()
 def evaluate_dev(base_model: str, adapter: str | None, dev_path: str,
                  out_json: str, max_new_tokens: int = 512,
-                 batch_size: int = 2) -> dict:
+                 batch_size: int = 2, dump_predictions: str | None = None) -> dict:
     from transformers import (AutoModelForCausalLM, AutoTokenizer,
                               BitsAndBytesConfig)
     from peft import PeftModel
@@ -82,6 +82,7 @@ def evaluate_dev(base_model: str, adapter: str | None, dev_path: str,
 
     rows = [json.loads(l) for l in open(dev_path, encoding="utf-8") if l.strip()]
     f1s, ems, link_f1s, parse_fail = [], [], [], 0
+    dump_rows = [] if dump_predictions else None
     for i in range(0, len(rows), batch_size):
         batch = rows[i:i + batch_size]
         prompts = [r["task_text"] + "\nQGIS workflow:" for r in batch]
@@ -106,6 +107,13 @@ def evaluate_dev(base_model: str, adapter: str | None, dev_path: str,
             f1s.append(op_set_f1(pred_ops, gold_ops))
             link_f1s.append(link_f1(pred_links, gold_links))
             ems.append(1.0 if (pred_ops == gold_ops and pred_links == gold_links) else 0.0)
+            if dump_rows is not None:
+                dump_rows.append({
+                    "wid": r.get("wid"), "task_text": r["task_text"],
+                    "raw_generation": text,
+                    "pred_processes": pred_p, "pred_links": pred_l,
+                    "parse_failed": not pred_p,
+                })
         print(f"[dev] {min(i + batch_size, len(rows))}/{len(rows)} "
               f"opF1={sum(f1s) / len(f1s):.4f}", flush=True)
 
@@ -118,6 +126,11 @@ def evaluate_dev(base_model: str, adapter: str | None, dev_path: str,
     }
     Path(out_json).parent.mkdir(parents=True, exist_ok=True)
     Path(out_json).write_text(json.dumps(metrics, indent=2), encoding="utf-8")
+    if dump_rows is not None:
+        Path(dump_predictions).parent.mkdir(parents=True, exist_ok=True)
+        with open(dump_predictions, "w", encoding="utf-8") as f:
+            for row in dump_rows:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
     print(json.dumps(metrics, indent=2))
     return metrics
 
@@ -129,9 +142,11 @@ def main() -> int:
     ap.add_argument("--dev", required=True, help="v2a_A_dev.jsonl (120 rows)")
     ap.add_argument("--out", required=True)
     ap.add_argument("--batch-size", type=int, default=2)
+    ap.add_argument("--dump-predictions", default=None,
+                    help="optional jsonl path for raw predictions (default off)")
     args = ap.parse_args()
     evaluate_dev(args.base_model, args.adapter, args.dev, args.out,
-                 batch_size=args.batch_size)
+                 batch_size=args.batch_size, dump_predictions=args.dump_predictions)
     return 0
 
 

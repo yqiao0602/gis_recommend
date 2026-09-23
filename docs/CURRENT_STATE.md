@@ -16,9 +16,10 @@ A1 (GEE DAPT->QGIS)         0.5510  best ep15   A1-C0 = -0.010
 ```
 
 **Dev attribution (pre-registered frame)**: the three arms differ by ~0.010,
-inside each arm's epoch-level noise (+-0.02-0.05) — **on dev-120 the arms are
-statistically indistinguishable and H1's predicted ordering (B1 > C0) did not
-appear**. Two mechanistic observations: (1) both GEE stages fit well (A1 loss
+the same magnitude as their epoch-to-epoch fluctuation (+-0.02-0.05) — the
+dev-120 differences are insufficient evidence for a stable transfer
+advantage (no formal significance test performed; avoid significance
+wording), and H1's predicted ordering (B1 > C0) did not appear on dev. Two mechanistic observations: (1) both GEE stages fit well (A1 loss
 1.454->0.893, B1 loss 1.020->0.336) yet no transfer followed the fitting;
 (2) the late-surge dynamics of stage-2 (ep11-12, +0.05) are nearly identical
 across arms — QGIS data dominates stage-2, and the GEE prior did not change
