@@ -142,7 +142,7 @@ def convert(chain: str) -> tuple:
         branch = False
         if pend_prov is not None:
             if tin and (pend_prov['type'] == tin or (isinstance(tin, (tuple, list)) and pend_prov['type'] in tin)):
-                inputs.append({'role': entry['roles'][0] if entry['roles'] else 'primary input',
+                inputs.append({'role': 'provisioned input',
                                'type': pend_prov['type'], 'provisioned': True})
                 rec['ctor_attached'] += 1
             else:
@@ -209,16 +209,17 @@ def convert(chain: str) -> tuple:
 def render_plan(plan: dict) -> str:
     parts = []
     for s in plan['steps']:
-        it = ', '.join((i['role'] + ' (' + i['type'] + ')') if i.get('provisioned')
-                       else i['type'] for i in s['input']) or 'unspecified'
+        it = ', '.join(f"provisioned {i['type']}" if i.get('provisioned')
+                       else str(i['type']) for i in s['input']) or 'unspecified'
         cons = ''
         if s['constraints']:
             cons = ' Constraints: ' + '; '.join(f'{k} = {v}' for k, v in s['constraints'].items()) + '.'
         br = ' [branch in the source workflow]' if s.get('branch') else ''
         dep = ('The step depends on the output of the preceding step.' if s['depends_on']
                else 'This is the provisioning first step.')
+        ot = s['output']['type'] if s['output']['type'] else 'unspecified'
         parts.append(f"Step {s['order']}: perform an operation that will {s['intent']}. "
-                     f"Input accepts: {it}. Produces: {s['output']['type']}.{cons} {dep}{br}")
+                     f"Input accepts: {it}. Produces: {ot}.{cons} {dep}{br}")
     return '\n'.join(parts)
 
 
