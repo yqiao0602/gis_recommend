@@ -5,6 +5,29 @@ Last updated: 2026-09-23
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
+## (3) Objective & interface v0 decision (2026-09-24, owner ruling)
+
+**Task -> Workflow Plan is the Stage-1 core objective** (W3 carrier);
+auxiliaries derive from the same plan (Dependency/Completion/
+Reconstruction; W4 <=25% tokens); raw chain LM is out (3-C, A1
+precedent); **Stage-2 interface = Task + Workflow Plan -> QGIS
+Grounding** (task-preserving — the Oracle showed task text carries more
+operator evidence than gold semantic chains; the Plan's job is to make
+the task's implicit structure explicit, not replace the task). Plan
+representation: only information constraints frozen (operation-level /
+ordered / dataflow / typed I/O / dependencies / subgoal relations) —
+**schema NOT frozen, no 37-class ontology, no QGIS API embedding**.
+Training organization = planning-centered multi-task (W1/W2 organized
+into the main objective, W4 as controlled auxiliary). Formal A1
+differentiation: learning pressure shifts from sequence continuation to
+task-conditioned workflow construction with explicit structural
+constraints. Answer-echo counter-design: accept only rewritten Task A'
+-> Workflow A plus novel operation combinations. See
+`route2_p0_contract/ROUTE2_V2_STAGE1_OBJECTIVE_INTERFACE_v1.md`.
+Order: (3) done (v0) -> **(4) interface concretization (fields /
+derivability / anti-bottleneck; next)** -> (5) Stage-2 info needs ->
+(6) B2 data -> (7) training protocol.
+
 ## Stage-1 capability definition frozen (2026-09-24, owner ruling)
 
 **W1-W4 frozen, W5 delegated**: W1 operation semantics (foundation) /

@@ -5,6 +5,23 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
+## ③ 训练目标与接口 v0 决策（2026-09-24，owner 裁定）
+
+**Task → Workflow Plan 为 Stage-1 核心目标**（W3 载体）；辅助目标从同一
+plan 派生（Dependency/Completion/Reconstruction，W4 ≤25% token）；原始
+chain LM 出局（③-C，A1 反例）；**Stage-2 接口 = Task + Workflow Plan →
+QGIS Grounding**（Task 保留原则——Oracle 证明任务文本算子线索反多于
+gold 语义链，Plan 的职责是把 Task 隐含的结构显式化而非取代 Task）。
+Plan 表示只冻结信息约束（操作级/有序/数据流/I-O 类型/依赖/子目标对应），
+**不冻结 schema、不建 37 类 ontology、不嵌 QGIS API**。训练组织 =
+planning-centered multi-task（W1/W2 组织进主任务、W4 受控辅助）。A1
+差异化正式回答：学习压力从 sequence continuation 转向 task-conditioned
+workflow construction + 显式结构约束。能力门 answer-echo 反制：改写
+Task A' → Workflow A + 新操作组合验收。详见
+`route2_p0_contract/ROUTE2_V2_STAGE1_OBJECTIVE_INTERFACE_v1.md`。
+执行顺序：③ ✅（v0）→ **④接口具体化（字段/可推导性/反瓶颈，下一步）**
+→ ⑤Stage-2 信息需求 → ⑥B2 数据 → ⑦训练协议。
+
 ## Stage-1 能力定义已冻结（2026-09-24，owner 裁定）
 
 **W1-W4 冻结、W5 下放**：W1 算子行为知识（基础）/ W2 数据流组合律（基础）/
