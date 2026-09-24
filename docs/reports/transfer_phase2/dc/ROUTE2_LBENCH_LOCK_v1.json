@@ -1,0 +1,42 @@
+{
+ "schema": "gis_recommend.route2.lbench.lock.v1",
+ "inference": {
+  "base": "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base",
+  "adapters": {
+   "C0": "/home/qy/gee_llm_smoke/route2_C0/qgis_sft_ep20",
+   "A1": "/home/qy/gee_llm_smoke/route2_A1/qgis_sft_ep15",
+   "B1": "/home/qy/gee_llm_smoke/route2_B1/qgis_sft_ep18"
+  },
+  "decoding": "greedy",
+  "max_new_tokens": 512,
+  "prompt": "task_text + '\\nQGIS workflow:'",
+  "parse": "route2_training.harness.text_to_graph first-line fail-closed",
+  "refusal_policy": "always-plan arms: decision=generate with parsed graph"
+ },
+ "predictions": {
+  "C0/final_100": {
+   "sha256": "49fb4f26c7036d7f040ba00c1406aa2850cbcd51f619906c31e445ef18a5cba1",
+   "n_rows": 100
+  },
+  "C0/refusal_12": {
+   "sha256": "378ba36f4adeed2c6613e81ba60f2a9c7946d8eea2ca91c5945ad4670cd10994",
+   "n_rows": 12
+  },
+  "A1/final_100": {
+   "sha256": "cb36ba46a42e836389f218567db9faba29d6557f6da879b925e68c98c2f89c09",
+   "n_rows": 100
+  },
+  "A1/refusal_12": {
+   "sha256": "0f8af392991cb4297dfaefc82024201273cdfe4746f229cadc615ef075a250fd",
+   "n_rows": 12
+  },
+  "B1/final_100": {
+   "sha256": "a6a38d5097478f27024e431ffad0cdbf097e47930b598c5472818860791f6669",
+   "n_rows": 100
+  },
+  "B1/refusal_12": {
+   "sha256": "42fa14731ab9d9e3238274a4f0eccad02ca5d2463f99ca04fbb8e0925ead02c5",
+   "n_rows": 12
+  }
+ }
+}
