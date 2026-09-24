@@ -5,6 +5,25 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
+## ⑤ Stage-2 Grounding 信息需求 v0（2026-09-24，owner 裁定）
+
+Stage 2 = Task + Plan + QGIS 知识（经后训练入参数，非输入文本）→
+QGIS Graph。**G1-G4 四类 grounding 信息**：I/O 约束 / 实现判别约束
+（Oracle 真缺口：raster vs vector、mask 类型、CRS 行为…）/ 参数语义
+（数据须含参数 schema↔任务约束对应）/ Graph realization（端口/fan-in-
+out——Stage1 线性 Stage2 DAG 分工落地处）。**三审计 benchmark 化**：
+Audit-A 判别性（148 映射组内选实现，**不过不训 B2**）/ Audit-B 信息
+充分性（逐字段 ablation 找 minimal sufficient interface）/ Audit-C 图
+realization（算子/连接/端口/扇入出分项）。三冻结：GEE API 禁入
+Stage 2；QGIS 知识不塞进 Plan（What should happen / How to implement
+分界）；QGIS plan 来源维持 open dependency（唯一约束：满足④合同+过
+审计）。**新资产立项：QGIS Operator Capability Profile（309 算子，
+建自 Neo4j QGIS_Operator 1291 节点 + processing 注册表，Stage-2 知识
+底座）**。详见
+`route2_p0_contract/ROUTE2_V2_STAGE2_GROUNDING_REQUIREMENTS_v1.md`。
+执行顺序：①-⑤ ✅ → **⑥B2 数据（悬题：1,334 条配 Plan 防循环泄漏）**
+→ ⑦训练协议。
+
 ## ④ Stage-1 接口信息合同 v0（2026-09-24，owner 裁定）
 
 只冻结**信息合同**不冻 schema：Plan = 五信息层（P1 开放词表操作意图、

@@ -5,6 +5,29 @@ Last updated: 2026-09-23
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
+## (5) Stage-2 grounding information requirements v0 (2026-09-24, owner ruling)
+
+Stage 2 = Task + Plan + QGIS knowledge (internalized via post-training,
+not input text) -> QGIS Graph. **Four grounding classes G1-G4**: I/O
+constraints / implementation-discriminating constraints (the true gap
+the Oracle exposed: raster vs vector, mask geometry, CRS behavior...) /
+parameter semantics (training data must carry parameter-schema <-> task-
+constraint correspondence) / graph realization (ports, fan-in-out —
+where the Stage-1 linear / Stage-2 DAG division lands). **Three audits
+become benchmarks**: Audit-A discriminability (pick the implementation
+within oracle mapping groups; **fail = do not train B2**) / Audit-B
+information sufficiency (per-field ablation toward the minimal
+sufficient interface) / Audit-C realization (operator/link/port/fan
+checks). Three freezes: GEE API never enters Stage 2; QGIS knowledge is
+not stuffed into the Plan (What-should-happen vs How-QGIS-implements
+boundary); QGIS-plan provenance stays an open dependency (sole rule:
+satisfy the 4-contract + pass audits). **New asset: QGIS Operator
+Capability Profile** (309 operators, from Neo4j QGIS_Operator 1,291
+nodes + the processing registry — Stage-2's knowledge base). See
+`route2_p0_contract/ROUTE2_V2_STAGE2_GROUNDING_REQUIREMENTS_v1.md`.
+Order: (1)-(5) done -> **(6) B2 data (open question: how the 1,334 QGIS
+workflows get Plans without circular leakage)** -> (7) protocol.
+
 ## (4) Stage-1 interface information contract v0 (2026-09-24, owner ruling)
 
 Only the **information contract** is frozen, not schema: Plan = five
