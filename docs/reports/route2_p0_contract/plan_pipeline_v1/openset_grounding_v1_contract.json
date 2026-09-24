@@ -1,0 +1,3109 @@
+{
+ "levels": {
+  "L0_closed": {
+   "UG_rate": 0.774,
+   "AMB_rate": 0.226,
+   "INS_rate": 0.0,
+   "reduction_median_start": 7,
+   "reduction_median_end": 1,
+   "amb_set_median": 2,
+   "amb_set_p90": 4,
+   "amb_set_max": 4
+  },
+  "L1_family": {
+   "UG_rate": 0.731,
+   "AMB_rate": 0.269,
+   "INS_rate": 0.0,
+   "reduction_median_start": 23,
+   "reduction_median_end": 1,
+   "amb_set_median": 3,
+   "amb_set_p90": 7,
+   "amb_set_max": 7
+  },
+  "L2_catalog": {
+   "UG_rate": 0.419,
+   "AMB_rate": 0.581,
+   "INS_rate": 0.0,
+   "reduction_median_start": 202,
+   "reduction_median_end": 2,
+   "amb_set_median": 5.5,
+   "amb_set_p90": 93,
+   "amb_set_max": 93
+  },
+  "L3_cross": {
+   "UG_rate": 0.419,
+   "AMB_rate": 0.581,
+   "INS_rate": 0.0,
+   "reduction_median_start": 27,
+   "reduction_median_end": 2,
+   "amb_set_median": 5.5,
+   "amb_set_p90": 93,
+   "amb_set_max": 93
+  }
+ },
+ "per_family_L2_UG": [
+  {
+   "family": "AGGREGATION",
+   "UG_rate_L2": 0.0,
+   "n": 2
+  },
+  {
+   "family": "BAND_SELECT",
+   "UG_rate_L2": 0.0,
+   "n": 2
+  },
+  {
+   "family": "VECTOR_LOAD",
+   "UG_rate_L2": 0.0,
+   "n": 4
+  },
+  {
+   "family": "BAND_ARITHMETIC",
+   "UG_rate_L2": 0.286,
+   "n": 7
+  },
+  {
+   "family": "COLLECTION_MGMT",
+   "UG_rate_L2": 0.286,
+   "n": 21
+  },
+  {
+   "family": "COMPOSITE",
+   "UG_rate_L2": 0.333,
+   "n": 3
+  },
+  {
+   "family": "EXPORT_OUTPUT",
+   "UG_rate_L2": 0.333,
+   "n": 3
+  },
+  {
+   "family": "GEOMETRY_DEFINE",
+   "UG_rate_L2": 0.333,
+   "n": 3
+  },
+  {
+   "family": "SPATIAL_FILTER",
+   "UG_rate_L2": 0.333,
+   "n": 3
+  },
+  {
+   "family": "THRESHOLD_LOGIC",
+   "UG_rate_L2": 0.333,
+   "n": 3
+  },
+  {
+   "family": "SPATIAL_CLIP",
+   "UG_rate_L2": 0.375,
+   "n": 8
+  },
+  {
+   "family": "RESAMPLE_REPROJECT",
+   "UG_rate_L2": 0.5,
+   "n": 4
+  },
+  {
+   "family": "SPATIAL_JOIN",
+   "UG_rate_L2": 0.6,
+   "n": 5
+  },
+  {
+   "family": "ATTRIBUTE_FILTER",
+   "UG_rate_L2": 0.667,
+   "n": 3
+  },
+  {
+   "family": "NEIGHBORHOOD",
+   "UG_rate_L2": 0.667,
+   "n": 6
+  },
+  {
+   "family": "REGIONAL_STATS",
+   "UG_rate_L2": 0.692,
+   "n": 13
+  },
+  {
+   "family": "VECTOR_TO_RASTER",
+   "UG_rate_L2": 1.0,
+   "n": 3
+  }
+ ],
+ "instances": [
+  {
+   "semantic_family": "AGGREGATION",
+   "target": "native:aggregate",
+   "L0_closed": {
+    "n_candidates": 2,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 4,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 95,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "AGGREGATION",
+   "target": "qgis:statisticsbycategories",
+   "L0_closed": {
+    "n_candidates": 2,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 4,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 95,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "ATTRIBUTE_FILTER",
+   "target": "native:extractbyattribute",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 37,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "ATTRIBUTE_FILTER",
+   "target": "native:extractbyexpression",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 37,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "ATTRIBUTE_FILTER",
+   "target": "qgis:selectbyattribute",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 4,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "gdal:rastercalculator",
+   "L0_closed": {
+    "n_candidates": 7,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 10,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 20,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 29,
+    "n_supporting": 20,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "grass7:r.rescale.eq",
+   "L0_closed": {
+    "n_candidates": 7,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 10,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 18,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 27,
+    "n_supporting": 18,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "native:cellstatistics",
+   "L0_closed": {
+    "n_candidates": 7,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 10,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 10,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "native:fieldcalculator",
+   "L0_closed": {
+    "n_candidates": 7,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 10,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 27,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "native:rasterbooleanand",
+   "L0_closed": {
+    "n_candidates": 7,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 10,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 8,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 11,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "qgis:advancedpythonfieldcalculator",
+   "L0_closed": {
+    "n_candidates": 7,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 10,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 27,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "qgis:rastercalculator",
+   "L0_closed": {
+    "n_candidates": 7,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 10,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 41,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 10,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_SELECT",
+   "target": "gdal:rearrange_bands",
+   "L0_closed": {
+    "n_candidates": 2,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 7,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 8,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "BAND_SELECT",
+   "target": "grass7:r.rgb",
+   "L0_closed": {
+    "n_candidates": 2,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 7,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 73,
+    "n_supporting": 41,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 45,
+    "n_supporting": 41,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "gdal:buildvirtualraster",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 41,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 66,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "gdal:convertformat",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 7,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 149,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "gdal:translate",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:addautoincrementalfield",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 78,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:addfieldtoattributestable",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 78,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:createspatialindex",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 64,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:deletecolumn",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 78,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:filedownloader",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 6,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:orderbyexpression",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 65,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:package",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 2,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:refactorfields",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 7,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 149,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:removeduplicatesbyattribute",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:renamelayer",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 3,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 64,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:renametablefield",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 78,
+    "n_supporting": 19,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:retainfields",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:setlayerstyle",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 3,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 64,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:spatialiteexecutesql",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 31,
+    "n_supporting": 14,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 76,
+    "n_supporting": 14,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:splitvectorlayer",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 1,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "qgis:exportaddgeometrycolumns",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 7,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 149,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "qgis:setstyleforrasterlayer",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 7,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 69,
+    "n_supporting": 7,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "qgis:setstyleforvectorlayer",
+   "L0_closed": {
+    "n_candidates": 21,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 63,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 64,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COMPOSITE",
+   "target": "gdal:merge",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 41,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COMPOSITE",
+   "target": "gdal:pansharp",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 10,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "COMPOSITE",
+   "target": "native:mergevectorlayers",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 29,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 9,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "EXPORT_OUTPUT",
+   "target": "gdal:importvectorintopostgisdatabaseavailableconnections",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 41,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 31,
+    "n_supporting": 7,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 45,
+    "n_supporting": 7,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "EXPORT_OUTPUT",
+   "target": "native:savefeatures",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 41,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 1,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 41,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "EXPORT_OUTPUT",
+   "target": "native:saveselectedfeatures",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 41,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 133,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "GEOMETRY_DEFINE",
+   "target": "native:creategrid",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "GEOMETRY_DEFINE",
+   "target": "native:extenttolayer",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 95,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "GEOMETRY_DEFINE",
+   "target": "native:polygonfromlayerextent",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 29,
+    "n_supporting": 10,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 12,
+    "n_supporting": 10,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "gdal:fillnodata",
+   "L0_closed": {
+    "n_candidates": 6,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "gdal:sieve",
+   "L0_closed": {
+    "n_candidates": 6,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 27,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "grass7:r.thin",
+   "L0_closed": {
+    "n_candidates": 6,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "native:fillnodata",
+   "L0_closed": {
+    "n_candidates": 6,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 11,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 34,
+    "n_supporting": 11,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "qgis:idwinterpolation",
+   "L0_closed": {
+    "n_candidates": 6,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "qgis:tininterpolation",
+   "L0_closed": {
+    "n_candidates": 6,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "grass7:v.distance",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 37,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:calculatevectoroverlaps",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 29,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:countpointsinpolygon",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 40,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:meancoordinates",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 130,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:rasterlayerstatistics",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:rasterlayeruniquevaluesreport",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 2,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:rastersampling",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 26,
+    "n_supporting": 5,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 42,
+    "n_supporting": 5,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:zonalhistogram",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 26,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:zonalstatistics",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 26,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:zonalstatisticsfb",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 26,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "qgis:basicstatisticsforfields",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 2,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "qgis:distancematrix",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 130,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "qgis:listuniquevalues",
+   "L0_closed": {
+    "n_candidates": 13,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 2,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 39,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "RESAMPLE_REPROJECT",
+   "target": "gdal:warpreproject",
+   "L0_closed": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "RESAMPLE_REPROJECT",
+   "target": "native:assignprojection",
+   "L0_closed": {
+    "n_candidates": 4,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 10,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "RESAMPLE_REPROJECT",
+   "target": "native:reprojectlayer",
+   "L0_closed": {
+    "n_candidates": 4,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 10,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "RESAMPLE_REPROJECT",
+   "target": "qgis:definecurrentprojection",
+   "L0_closed": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "gdal:cliprasterbyextent",
+   "L0_closed": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 23,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 23,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "gdal:cliprasterbymasklayer",
+   "L0_closed": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 23,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 23,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "gdal:clipvectorbyextent",
+   "L0_closed": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 23,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 24,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "gdal:clipvectorbypolygon",
+   "L0_closed": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 23,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 24,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "native:clip",
+   "L0_closed": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 23,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 23,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "native:difference",
+   "L0_closed": {
+    "n_candidates": 8,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 23,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 24,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "native:intersection",
+   "L0_closed": {
+    "n_candidates": 8,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 23,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 24,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "saga:intersect",
+   "L0_closed": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 23,
+    "n_supporting": 5,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 37,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 55,
+    "n_supporting": 37,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_FILTER",
+   "target": "native:extractbyextent",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 6,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_FILTER",
+   "target": "native:extractbylocation",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 6,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_FILTER",
+   "target": "native:selectbylocation",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 31,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "native:joinattributesbylocation",
+   "L0_closed": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 37,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "native:joinattributestable",
+   "L0_closed": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "native:joinbynearest",
+   "L0_closed": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "native:union",
+   "L0_closed": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 11,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "qgis:joinbylocationsummary",
+   "L0_closed": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 8,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 9,
+    "n_supporting": 2,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "THRESHOLD_LOGIC",
+   "target": "native:condition",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 18,
+    "n_supporting": 13,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 15,
+    "n_supporting": 13,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "THRESHOLD_LOGIC",
+   "target": "native:fuzzifyrasterlinearmembership",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 7,
+    "n_supporting": 6,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 8,
+    "n_supporting": 6,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "THRESHOLD_LOGIC",
+   "target": "native:reclassifybytable",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 202,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "VECTOR_LOAD",
+   "target": "native:createpointslayerfromtable",
+   "L0_closed": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 7,
+    "n_supporting": 4,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "VECTOR_LOAD",
+   "target": "native:loadlayer",
+   "L0_closed": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 3,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 6,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "VECTOR_LOAD",
+   "target": "qgis:randompointsinlayerbounds",
+   "L0_closed": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 96,
+    "n_supporting": 93,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "VECTOR_LOAD",
+   "target": "qgis:randompointsinsidepolygons",
+   "L0_closed": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 4,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 260,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 6,
+    "n_supporting": 3,
+    "ug": false,
+    "amb": true,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "VECTOR_TO_RASTER",
+   "target": "gdal:rasterize",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "VECTOR_TO_RASTER",
+   "target": "gdal:rasterize_over",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  },
+  {
+   "semantic_family": "VECTOR_TO_RASTER",
+   "target": "gdal:rasterize_over_fixed_value",
+   "L0_closed": {
+    "n_candidates": 3,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L1_family": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L2_catalog": {
+    "n_candidates": 24,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   },
+   "L3_cross": {
+    "n_candidates": 5,
+    "n_supporting": 1,
+    "ug": true,
+    "amb": false,
+    "ins": false
+   }
+  }
+ ]
+}
