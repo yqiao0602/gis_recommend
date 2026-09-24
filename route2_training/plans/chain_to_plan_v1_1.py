@@ -27,7 +27,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(BASE))
-from route2_training.plans.gee_op_knowledge_v1_1 import K  # noqa: E402
+from route2_training.plans.gee_op_knowledge_v1_2 import K  # noqa: E402
 
 SPLIT_RE = re.compile(r'\s*(?:->|>)\s*')
 GEE_ID_RE = re.compile(r'\bee\.[A-Za-z]')
@@ -153,6 +153,12 @@ def convert(chain: str) -> tuple:
             pend_prov = None
         elif tin and flow_type and not type_matches(flow_type, tin):
             rec['type_flow_breaks'] += 1
+            if steps and steps[-1].get('provision'):
+                rec.setdefault('break_ctor_induced', 0)
+                rec['break_ctor_induced'] += 1
+            else:
+                rec.setdefault('break_genuine_mismatch', 0)
+                rec['break_genuine_mismatch'] += 1
         constraints = {c['role']: c['value'] for c in mods}
         if mods:
             rec['modifier_blocks'] += 1

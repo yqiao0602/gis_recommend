@@ -12,13 +12,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from route2_training.plans.chain_to_plan_v1_1 import convert, leakage  # noqa: E402
 
 SRC = '/home/qy/system_redesign/outputs_v2/gee_b1_stage_data_v1/b1_gee_stage_train.jsonl'
-OUT = Path(__file__).resolve().parent / 'coverage_report_round1.json'
-SAMPLE_OUT = Path(__file__).resolve().parent / 'plan_samples_round1.jsonl'
+OUT = Path(__file__).resolve().parent / 'coverage_report_round2.json'
+SAMPLE_OUT = Path(__file__).resolve().parent / 'plan_samples_round2.jsonl'
 
 st = Counter()
 unknown_ops = Counter()
 fail_lens = Counter()
 flow_breaks = 0
+break_ctor = break_genuine = 0
 leak_gee = leak_qgis = 0
 ctor_att = ctor_st = mod_blocks = branch_marked = scalar_dem = unknown_host = 0
 typed_io_complete = slot_role_complete = total_steps = 0
@@ -46,6 +47,8 @@ with open(SRC, encoding='utf-8') as f:
         for u in rec['unknown_ops']:
             unknown_ops[u] += 1
         flow_breaks += rec['type_flow_breaks']
+        break_ctor += rec.get('break_ctor_induced', 0)
+        break_genuine += rec.get('break_genuine_mismatch', 0)
         ctor_att += rec['ctor_attached']; ctor_st += rec['ctor_standalone']
         mod_blocks += rec['modifier_blocks']; branch_marked += rec['branch_marked']
         scalar_dem += rec['scalar_demoted']
@@ -81,6 +84,7 @@ report = {
     'typed_io_complete_rate': round(typed_io_complete / total_steps, 4) if total_steps else None,
     'slot_role_complete_rate': round(slot_role_complete / total_steps, 4) if total_steps else None,
     'type_flow_breaks': flow_breaks,
+    'break_ctor_induced': break_ctor, 'break_genuine_mismatch': break_genuine,
     'ctor_attached': ctor_att, 'ctor_standalone': ctor_st,
     'modifier_blocks': mod_blocks, 'branch_marked_steps': branch_marked,
     'scalar_demoted': scalar_dem, 'unknown_host_failures': unknown_host,
@@ -90,7 +94,7 @@ report = {
     'failure_by_chain_len_bucket': {str(k): v for k, v in sorted(fail_lens.items())},
     'note': 'coverage_rate != plan quality (owner ruling); separate metrics',
 }
-report['newly_covered_vs_v1_1'] = report['plan_success'] - 41511
+report['newly_covered_vs_round1'] = report['plan_success'] - 48052
 report['op_coverage_rate_token'] = round(known_tokens / (known_tokens + sum(unknown_ops.values())), 4) if (known_tokens + sum(unknown_ops.values())) else None
 OUT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding='utf-8')
 SAMPLE_OUT.write_text('\n'.join(json.dumps(s, ensure_ascii=False) for s in samples), encoding='utf-8')
