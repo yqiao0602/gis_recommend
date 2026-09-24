@@ -5,6 +5,21 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
+## Stage-1 能力定义已冻结（2026-09-24，owner 裁定）
+
+**W1-W4 冻结、W5 下放**：W1 算子行为知识（基础）/ W2 数据流组合律（基础）/
+W3 目标分解规划（**核心**，能力门须防背模板——W1/W2 分项交叉印证）/
+W4 结构判别与修复（辅助，**token budget ≤25%、默认 ~20%**）。**W5 分支
+组合下放 Stage 2**——正式边界：Stage 1 = Sequential/Linear Workflow
+Reasoning，Stage 2 = QGIS-specific DAG Grounding（论文须明示）。术语
+冻结：废弃"Stage 1 输出 Semantic Workflow"，改为"Stage 1 形成并显式
+暴露 Workflow Reasoning representation/plan"——**只冻结能力，不冻结
+表示**。继承边界：A1（须有结构学习压力+回答"为何 A1 不会"）、
+B1/Oracle（禁降信息抽象）、非 API 记忆（held-out 词汇+重组验收）。
+详见 `route2_p0_contract/ROUTE2_V2_STAGE1_CAPABILITY_v1.md`。
+执行顺序：①架构 ✅ → ②能力定义 ✅ → **③Stage-1 输出/接口（下一步）**
+→ ④Stage-2 信息需求 → ⑤B2 数据 → ⑥训练协议。
+
 ## Route-2 v2 架构已定：两阶段能力形成训练（2026-09-23，owner 裁定）
 
 **当前主线最高决策**：新 Route-2 = 两阶段能力形成（Stage 1 GEE Workflow

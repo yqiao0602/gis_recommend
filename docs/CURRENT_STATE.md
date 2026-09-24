@@ -5,6 +5,27 @@ Last updated: 2026-09-23
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
+## Stage-1 capability definition frozen (2026-09-24, owner ruling)
+
+**W1-W4 frozen, W5 delegated**: W1 operation semantics (foundation) /
+W2 dataflow composition (foundation) / W3 goal-decomposition planning
+(**core**; gate must cross-check W1/W2 sub-scores to rule out template
+memorization) / W4 structural discrimination & repair (auxiliary,
+**token budget <=25%, default ~20%**). **W5 branching delegated to
+Stage 2** — formal boundary: Stage 1 = Sequential/Linear Workflow
+Reasoning, Stage 2 = QGIS-specific DAG Grounding (must be stated in the
+paper). Terminology frozen: retire "Stage 1 outputs Semantic Workflow";
+say "Stage 1 forms and explicitly exposes a Workflow Reasoning
+representation/plan" — **capability frozen, representation NOT frozen**.
+Inherited constraints: A1 boundary (structure-related learning pressure
+required + must answer "why A1 wouldn't"), B1/Oracle boundary (no
+information-losing abstraction), non-memorization (held-out vocabulary +
+recombination acceptance). See
+`route2_p0_contract/ROUTE2_V2_STAGE1_CAPABILITY_v1.md`. Order: (1)
+architecture done -> (2) capability definition done -> **(3) Stage-1
+output/interface (next)** -> (4) Stage-2 info needs -> (5) B2 data ->
+(6) training protocol.
+
 ## Route-2 v2 architecture decided: two-stage capability formation (2026-09-23, owner ruling)
 
 **Top mainline decision**: new Route-2 = two-stage capability formation
