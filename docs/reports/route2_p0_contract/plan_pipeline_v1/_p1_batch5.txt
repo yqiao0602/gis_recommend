@@ -1,0 +1,148 @@
+### #1 [FILL] tokens=19 flowbreaks=0
+CHAIN: ee.Number - > ee.ImageCollection - > ee.ImageCollection.select - > ee.List.sequence - > ee.List.map - > ee.List.sequence - > ee.List.map - > ee.List.sequence - > ee.Reducer.mean - > ee.List.map - > ee.List.sequence - > ee.Reducer.mean - > ee.List.map - > ee.List.sequence - > ee.Reducer.mean - > ee.List.map - > ee.List.sequence - > ee.Reducer.mean - > ee.List.map
+TASK : Task: Estimate monthly precipitation in WMAs
+Calculate monthly mean and count of precipitation days within buffered Wildlife Management Areas (WMAs) using PRISM climate data from 2
+Step 1: perform an operation that will provision a scalar value. Input accepts: unspecified. Produces: scalar. This is the provisioning first step.
+Step 2: perform an operation that will select bands from every image in the collection. Input accepts: provisioned raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 3: perform an operation that will apply an operation to every element of the list. Input accepts: provisioned list. Produces: list. The step depends on the output of the preceding step.
+Step 4: perform an operation that will apply an operation to every element of the list. Input accepts: provisioned list. Produces: list. The step depends on the output of the preceding step.
+Step 5: perform an operation that will apply an operation to every element of the list. Input accepts: provisioned list. Produces: list. Constraints: statistic = mean statistic. The step depends on the output of the preceding step.
+Step 6: perform an operation that will apply an operation to every element of the list. Input accepts: provisioned list. Produces: list. Constraints: statistic = mean statistic. The step depends on the output of the preceding step.
+Step 7: perform an operation that will apply an operation to every element of the list. Input accepts: provisioned list. Produces: list. Constraints: statistic = mean statistic. The step depends on the output of the preceding step.
+Step 8: perform an operation that will apply an operation to every element of the list. Input accepts: provisioned list. Produces: list. Constraints: statistic = mean statistic. The step depends on the output of the preceding step.
+
+### #2 [FILL] tokens=13 flowbreaks=0
+CHAIN: ee.Image.constant - > ee.Image.multiply - > ee.Image.constant - > ee.Filter.bounds - > ee.Filter.calendarRange - > ee.Filter.equals - > ee.Filter.lt - > ee.Filter.eq - > ee.Filter.or - > ee.Reducer.median - > ee.ImageCollection.fromImages - > ee.Reducer.median - > ee.Reducer.median
+TASK : Task: Analyze NBR time series
+Analyze the Normalized Burn Ratio (NBR) over the Lordegan region using Landsat surface reflectance imagery from 2000 to 2021. It harmonizes sensors (T
+Step 1: perform an operation that will provision a constant raster. Input accepts: unspecified. Produces: raster. This is the provisioning first step.
+Step 2: perform an operation that will combine rasters by multiply. Input accepts: raster, raster. Produces: raster. The step depends on the output of the preceding step.
+Step 3: perform an operation that will assemble an image collection from images. Input accepts: provisioned raster. Produces: raster_collection. Constraints: filter predicate = any predicate holds; statistic = median statistic; modifier.statistic = median statistic. The step depends on the output of the preceding step. [branch in the source workflow]
+
+### #3 [FILL] tokens=40 flowbreaks=0
+CHAIN: ee.Filter.eq - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.FeatureCollection - > ee.List.sequence - > ee.Date - > ee.Date.advance - > ee.Number - > ee.Number - > ee.Number.multiply - > ee.Number.add - > ee.Image - > ee.Reducer.mean - > ee.Feature - > ee.Feature.set - > ee.List.sequence - > ee.List.map - > ee.ImageCollection - > ee.Image - > ee.Reducer.mean - > ee.Feature - > ee.Feature.set
+TASK : Task: Extract LAI time series for regions and land cover classes
+Extract monthly and annual Leaf Area Index (LAI) time series from a high vegetation dataset (LAI_High_Veg) over 36 
+Step 1: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. This is the provisioning first step.
+Step 2: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 3: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 4: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 5: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 6: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 7: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 8: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 9: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 10: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 11: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 12: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 13: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 14: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 15: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 16: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 17: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 18: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 19: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 20: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 21: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 22: perform an operation that will generate a numeric sequence. Input accepts: unspecified. Produces: list. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 23: perform an operation that will advance the date by an offset. Input accepts: provisioned date. Produces: date. Constraints: filter predicate = property equals value. The step depends on the output of the preceding step.
+Step 24: perform an operation that will advance the date by an offset. Input accepts: unspecified. Produces: date. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 25: perform an operation that will provision a scalar value. Input accepts: unspecified. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 26: perform an operation that will multiply scalar values. Input accepts: provisioned scalar. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 27: perform an operation that will add scalar values. Input accepts: provisioned scalar. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 28: perform an operation that will add scalar values. Input accepts: unspecified. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 29: perform an operation that will provision a raster value. Input accepts: unspecified. Produces: raster. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 30: perform an operation that will set properties on a feature. Input accepts: provisioned feature. Produces: feature. Constraints: statistic = mean statistic. The step depends on the output of the preceding step.
+Step 31: perform an operation that will apply an operation to every element of the list. Input accepts: provisioned list. Produces: list. The step depends on the output of the preceding step.
+Step 32: perform an operation that will provision a raster_collection value. Input accepts: unspecified. Produces: raster_collection. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 33: perform an operation that will provision a raster value. Input accepts: unspecified. Produces: raster. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 34: perform an operation that will set properties on a feature. Input accepts: provisioned feature. Produces: feature. Constraints: statistic = mean statistic. The step depends on the output of the preceding step.
+
+### #4 [FILL] tokens=6 flowbreaks=0
+CHAIN: ee.ImageCollection - > ee.Filter.eq - > ee.ImageCollection.filter - > ee.Filter.eq - > ee.ImageCollection.filter - > ee.Feature
+TASK : Task: Classify land cover types
+Create a labeled feature collection for land cover classification using manually selected ground control points across six classes (Urban, Agricultu
+Step 1: perform an operation that will provision a raster_collection value. Input accepts: unspecified. Produces: raster_collection. This is the provisioning first step.
+Step 2: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = property equals value. The step depends on the output of the preceding step.
+Step 3: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = property equals value. The step depends on the output of the preceding step.
+Step 4: perform an operation that will provision a feature value. Input accepts: unspecified. Produces: feature. The step depends on the output of the preceding step. [branch in the source workflow]
+
+### #5 [FILL] tokens=13 flowbreaks=0
+CHAIN: ee.ImageCollection - > ee.Filter.eq - > ee.ImageCollection.filter - > ee.Filter.listContains - > ee.ImageCollection.filter - > ee.Filter.eq - > ee.ImageCollection.filter - > ee.Filter.eq - > ee.ImageCollection.filter - > ee.ImageCollection.filterBounds - > ee.Date - > ee.Image - > ee.Date
+TASK : Task: Detect flood-affected areas
+Detect flood-affected areas using Sentinel-1 SAR (VH polarization) imagery by computing a dB-scale difference between pre-flood and post-flood mos
+Step 1: perform an operation that will provision a raster_collection value. Input accepts: unspecified. Produces: raster_collection. This is the provisioning first step.
+Step 2: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = property equals value. The step depends on the output of the preceding step.
+Step 3: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = list property contains value. The step depends on the output of the preceding step.
+Step 4: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = property equals value. The step depends on the output of the preceding step.
+Step 5: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = property equals value. The step depends on the output of the preceding step.
+Step 6: perform an operation that will filter an image collection by spatial extent. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 7: perform an operation that will provision a date value. Input accepts: unspecified. Produces: date. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 8: perform an operation that will provision a raster value. Input accepts: unspecified. Produces: raster. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 9: perform an operation that will provision a date value. Input accepts: unspecified. Produces: date. The step depends on the output of the preceding step. [branch in the source workflow]
+
+### #6 [FILL] tokens=28 flowbreaks=0
+CHAIN: ee.ImageCollection - > ee.ImageCollection.filterBounds - > ee.Filter.date - > ee.ImageCollection.filter - > ee.ImageCollection - > ee.ImageCollection.filterBounds - > ee.Filter.date - > ee.ImageCollection.filter - > ee.Number - > ee.Date - > ee.Date.advance - > ee.Date - > ee.Date.advance - > ee.Reducer.mean - > ee.Number - > ee.Date - > ee.Date.advance - > ee.Date - > ee.Date.advance - > ee.Number - > ee.Date - > ee.Date.advance - > ee.Date - > ee.Date.advance - > ee.Reducer.mean - > ee.Reducer.toList - > ee.Filter.eq - > Export.image.toDrive
+TASK : Task: Generate 8-day vegetation indices
+Compute multiple vegetation indices (NDVI, EVI, NIRv, CCI, KNDVI, NDGI, SIPI, NDPI) from MODIS MCD43A4 surface reflectance data over the hig
+Step 1: perform an operation that will provision a raster_collection value. Input accepts: unspecified. Produces: raster_collection. This is the provisioning first step.
+Step 2: perform an operation that will filter an image collection by spatial extent. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 3: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = property within date range. The step depends on the output of the preceding step.
+Step 4: perform an operation that will filter an image collection by spatial extent. Input accepts: provisioned raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 5: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = property within date range. The step depends on the output of the preceding step.
+Step 6: perform an operation that will provision a scalar value. Input accepts: unspecified. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 7: perform an operation that will advance the date by an offset. Input accepts: provisioned date. Produces: date. The step depends on the output of the preceding step.
+Step 8: perform an operation that will advance the date by an offset. Input accepts: unspecified. Produces: date. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 9: perform an operation that will advance the date by an offset. Input accepts: provisioned date. Produces: date. The step depends on the output of the preceding step.
+Step 10: perform an operation that will advance the date by an offset. Input accepts: unspecified. Produces: date. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 11: perform an operation that will provision a scalar value. Input accepts: unspecified. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 12: perform an operation that will advance the date by an offset. Input accepts: provisioned date. Produces: date. Constraints: statistic = mean statistic. The step depends on the output of the preceding step.
+Step 13: perform an operation that will advance the date by an offset. Input accepts: unspecified. Produces: date. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 14: perform an operation that will advance the date by an offset. Input accepts: provisioned date. Produces: date. The step depends on the output of the preceding step.
+Step 15: perform an operation that will advance the date by an offset. Input accepts: unspecified. Produces: date. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 16: perform an operation that will provision a scalar value. Input accepts: unspecified. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 17: perform an operation that will advance the date by an offset. Input accepts: provisioned date. Produces: date. The step depends on the output of the preceding step.
+Step 18: perform an operation that will advance the date by an offset. Input accepts: unspecified. Produces: date. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 19: perform an operation that will advance the date by an offset. Input accepts: provisioned date. Produces: date. The step depends on the output of the preceding step.
+Step 20: perform an operation that will export the raster to cloud storage. Input accepts: provisioned date. Produces: unspecified. Constraints: statistic = toList statistic; filter predicate = property equals value. The step depends on the output of the preceding step. [branch in the source workflow]
+
+### #7 [FILL] tokens=36 flowbreaks=1
+CHAIN: ee.Number - > ee.Number.pow - > ee.Number - > ee.Number.pow - > ee.ImageCollection - > ee.ImageCollection.filterBounds - > ee.ImageCollection.filterDate - > ee.ImageCollection.map - > ee.Filter.lt - > ee.ImageCollection - > ee.ImageCollection.filterBounds - > ee.ImageCollection.filterDate - > ee.ImageCollection.map - > ee.Filter.lt - > ee.ImageCollection - > ee.ImageCollection.filterBounds - > ee.ImageCollection.filterDate - > ee.ImageCollection.map - > ee.Filter.lt - > ee.ImageCollection - > ee.ImageCollection.filterBounds - > ee.ImageCollection.filterDate - > ee.ImageCollection.map - > ee.Filter.lt - > ee.ImageCollection - > ee.ImageCollection.filterBounds - > ee.ImageCollection.filterDate - > ee.ImageCollection.map - > ee.Filter.lt - > ee.ImageCollection - > ee.ImageCollection.filterBounds - > ee.ImageCollection.filterDate - > ee.ImageCollection.map - > ee.Filter.lt - > ee.Image.cat - > ee.Classifier.smileRandomForest
+TASK : Task: Classify land cover types
+Classify land cover types using Sentinel-2 surface reflectance data from May to October 2018, computing vegetation and moisture indices (EVI, NDVI, 
+Step 1: perform an operation that will provision a scalar value. Input accepts: unspecified. Produces: scalar. This is the provisioning first step.
+Step 2: perform an operation that will raise to a power scalar values. Input accepts: unspecified. Produces: scalar. The step depends on the output of the preceding step.
+Step 3: perform an operation that will raise to a power scalar values. Input accepts: unspecified. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 4: perform an operation that will raise to a power scalar values. Input accepts: provisioned scalar. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 5: perform an operation that will raise to a power scalar values. Input accepts: unspecified. Produces: scalar. The step depends on the output of the preceding step. [branch in the source workflow]
+Step 6: perform an operation that will filter an image collection by spatial extent. Input accepts: provisioned raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 7: perform an operation that will filter an image collection by date range. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 8: perform an operation that will apply an operation to every element of the collection. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 9: perform an operation that will filter an image collection by spatial extent. Input accepts: provisioned raster_collection. Produces: raster_collection. Constraints: filter predicate = property less than value. The step depends on the output of the preceding step.
+Step 10: perform an operation that will filter an image collection by date range. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 11: perform an operation that will apply an operation to every element of the collection. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 12: perform an operation that will filter an image collection by spatial extent. Input accepts: provisioned raster_collection. Produces: raster_collection. Constraints: filter predicate = property less than value. The step depends on the output of the preceding step.
+Step 13: perform an operation that will filter an image collection by date range. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 14: perform an operation that will apply an operation to every element of the collection. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 15: perform an operation that will filter an image collection by spatial extent. Input accepts: provisioned raster_collection. Produces: raster_collection. Constraints: filter predicate = property less than value. The step depends on the output of the preceding step.
+Step 16: perform an operation that will filter an image collection by date range. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 17: perform an operation that will apply an operation to every element of the collection. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 18: perform an operation that will filter an image collection by spatial extent. Input accepts: provisioned raster_collection. Produces: raster_collection. Constraints: filter predicate = property less than value. The step depends on the output of the preceding step.
+Step 19: perform an operation that will filter an image collection by date range. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 20: perform an operation that will apply an operation to every element of the collection. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 21: perform an operation that will filter an image collection by spatial extent. Input accepts: provisioned raster_collection. Produces: raster_collection. Constraints: filter predicate = property less than value. The step depends on the output of the preceding step.
+Step 22: perform an operation that will filter an image collection by date range. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 23: perform an operation that will apply an operation to every element of the collection. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 24: perform an operation that will concatenate the bands of multiple rasters. Input accepts: raster, raster. Produces: raster. Constraints: filter predicate = property less than value. The step depends on the output of the preceding step.
+Step 25: perform an operation that will train a random-forest classifier. Input accepts: unspecified. Produces: classifier. The step depends on the output of the preceding step. [branch in the source workflow]
+
+### #8 [FILL] tokens=11 flowbreaks=1
+CHAIN: ee.FeatureCollection - > ee.Filter.eq - > ee.ImageCollection - > ee.ImageCollection.filterDate - > ee.Filter.lt - > ee.ImageCollection.filter - > ee.FeatureCollection - > ee.Filter.eq - > ee.FeatureCollection.filter - > ee.ImageCollection.filterBounds - > ee.ImageCollection.map
+TASK : Task: Analyze NDVI in study area
+Calculate the Normalized Difference Vegetation Index (NDVI) from Sentinel-2 surface reflectance data within a specific area of interest, applying c
+Step 1: perform an operation that will provision a vector value. Input accepts: unspecified. Produces: vector. This is the provisioning first step.
+Step 2: perform an operation that will filter an image collection by date range. Input accepts: provisioned raster_collection. Produces: raster_collection. Constraints: filter predicate = property equals value. The step depends on the output of the preceding step.
+Step 3: perform an operation that will filter an image collection by predicate. Input accepts: raster_collection. Produces: raster_collection. Constraints: filter predicate = property less than value. The step depends on the output of the preceding step.
+Step 4: perform an operation that will filter a feature collection by predicate. Input accepts: provisioned vector. Produces: vector. Constraints: filter predicate = property equals value. The step depends on the output of the preceding step.
+Step 5: perform an operation that will filter an image collection by spatial extent. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
+Step 6: perform an operation that will apply an operation to every element of the collection. Input accepts: raster_collection. Produces: raster_collection. The step depends on the output of the preceding step.
