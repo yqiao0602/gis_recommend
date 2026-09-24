@@ -1941,3 +1941,18 @@ Follow-up artifact:
 - Verification: 15 focused scorer/freeze tests passed, including full perfect-prediction smoke over final 120 plus refusal 12. No real model predictions were run. The legacy exclusion-ledger test remains environment-blocked because this worktree lacks the external Step8 quality-gate fixture; no old gate code was changed.
 - Any gold change after this freeze requires a new benchmark version. The next allowed work is prediction locking and evaluation handoff.
 
+## Route-2 v2 Phase R rehearsal (2026-09-24)
+
+Owner-authorized L1 rehearsal used `route2_training/configs/C0R_rehearsal.yaml`, a C0 recipe clone with only the rehearsal name/output directory and 3-epoch scale changed. Preflight hashes matched frozen v2a-A train/dev/test: `1199adb6…`, `8510c1f9…`, `8827b72f…`. Training/save completed 3/3 epochs, 4,002 sample exposures / 1,165,662 tokens, zero prompt/target truncations; ep1-3 checkpoints and `run_ledger.json` were written.
+
+**Phase R overall FAIL / incomplete**: the dev-120 evaluator subprocess OOMed after all three epochs (7.01 GiB requested vs 6.92 GiB free under shared GPU load). The ledger contains only infrastructure sentinels (`opF1=-1.0`, `n=0`, `best_checkpoint=None`), not model scores. No evaluator retry, recipe change, or retraining was performed. C0R PID 830260 exited. Phase F remains gated on Stage-1 capability PASS + Teacher Plan.
+
+Report and local audit bundle: `docs/reports/transfer_phase2/phase_r/phase_r_report.md` (config, preflight, log, ledger and hashes). Candidate same-process/serialized evaluator fix is not implemented or authorized; any rehearsal rerun requires a separate owner decision. The Route-2 v2 holder was notified; GPU work remains under their queue, with Ollama/SAM3 processes untouched.
+
+## Route-2 v2 Stage-2 Phase R rehearsal (2026-09-24)
+
+- Owner-approved Phase R used `route2_training/configs/C0R_rehearsal.yaml`, a C0 recipe clone with 3 rehearsal epochs and an isolated output directory. Preflight verified the frozen QGIS split SHAs. Training/save completed 3/3 epochs, 4,002 example exposures / 1,165,662 tokens, zero prompt/target truncation; epoch1-3 checkpoints and the run ledger were written.
+- **Phase R overall FAIL / incomplete**: the dev-120 evaluator subprocess OOMed after every epoch (requested 7.01 GiB with 6.92 GiB available). Ledger sentinel scores are `opF1=-1.0`, `n=0`, and `best_checkpoint=None`; these are infrastructure failures, not model measurements. No retry, recipe/config change, or further training was performed.
+- The C0R process exited and GPU was returned to the shared queue; remaining Ollama/SAM3 processes belong to other workloads and were not touched. Phase F remains gated on Stage-1 capability PASS + Teacher Plan.
+- Authoritative evidence: `docs/reports/transfer_phase2/phase_r/phase_r_report.md`, including config, preflight, log, and ledger hashes. A same-process/serialized dev-evaluation fix is only a candidate infrastructure remedy; it requires separate owner approval before any rerun.
+

@@ -1949,3 +1949,18 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - 验证：15 项 scorer/freeze focused tests 通过，包括 final 120 + refusal 12 的全量 perfect-prediction smoke；未运行真实模型预测。旧 exclusion-ledger 测试仍因本工作树缺少外部 Step8 quality-gate fixture 而受环境阻断，本阶段未修改旧 gate 代码。
 - Freeze 后任何 gold 变更都必须升级 benchmark 版本；下一步只允许 prediction lock 与 evaluation handoff。
 
+### 2026-09-24：Route-2 v2 Phase R 预演
+
+按 owner 批准，以 `route2_training/configs/C0R_rehearsal.yaml` 执行 C0 配方克隆（仅 rehearsal 名称/输出目录与 3-epoch 预演规模不同）。Preflight 核验冻结 v2a-A train/dev/test SHA：`1199adb6…`、`8510c1f9…`、`8827b72f…`。训练/保存分支完成 3/3 epochs，4,002 次样本曝光 / 1,165,662 tokens，prompt/target 截断均为 0；ep1-3 checkpoint 与 `run_ledger.json` 落盘。
+
+**Phase R 总判定 FAIL / 未闭环**：每个 epoch 后的 dev-120 evaluator 子进程均 CUDA OOM（共享 GPU 可用 6.92 GiB、请求 7.01 GiB）。ledger 仅有基础设施 sentinel（`opF1=-1.0`、`n=0`、`best_checkpoint=None`），不是模型分数。未重试 evaluator、未改配方、未继续训练。C0R PID 830260 已退出；Phase F 仍硬依赖 Stage-1 capability PASS + Teacher Plan。
+
+权威报告和本地审计包：`docs/reports/transfer_phase2/phase_r/phase_r_report.md`（含 config、preflight、log、ledger 与 hash）。同进程/串行释放 evaluator 仅为候选修复，尚未实现或获授权；重演须 owner 另批。Route-2 v2 持有线已收到状态；GPU 仍属共享队列，未触碰 Ollama/SAM3 等进程。
+
+### 2026-09-24：Route-2 v2 Stage-2 Phase R 预演
+
+- 按 owner 批准，以 `route2_training/configs/C0R_rehearsal.yaml` 运行 C0 配方克隆（3 个预演 epoch，独立输出目录）；preflight 核验冻结 QGIS train/dev/test SHA。训练/保存分支完成 3/3 epochs，共 4,002 次样本曝光 / 1,165,662 tokens，prompt/target 截断均为 0，epoch1-3 checkpoint 与 run ledger 落盘。
+- **Phase R 总判定 FAIL / 未闭环**：每个 epoch 后的 dev-120 evaluator 子进程均 CUDA OOM（请求 7.01 GiB、可用 6.92 GiB）。ledger 中 `opF1=-1.0`、`n=0`、`best_checkpoint=None` 是基础设施失败 sentinel，绝非模型测量值。未重试、未改配置、未继续训练。
+- C0R 进程已退出，GPU 已交还共享队列；Ollama/SAM3 等其余进程属其他工作负载，未触碰。Phase F 仍硬依赖 Stage-1 capability PASS + Teacher Plan。
+- 权威证据：`docs/reports/transfer_phase2/phase_r/phase_r_report.md`（含 config、preflight、log、ledger hash）。同进程/串行释放 evaluator 仅为候选基础设施修复；任何重演须另获 owner 批准。
+
