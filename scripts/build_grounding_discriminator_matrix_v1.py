@@ -26,7 +26,7 @@ BASE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE / 'scripts'))
 from build_route2_semantic_oracle_v1 import MAP  # noqa: E402  (the 148-op mapping)
 
-PROFILE = BASE / 'route2_training/profile/qgis_operator_capability_profile_v0_3.json'
+PROFILE = BASE / 'route2_training/profile/qgis_operator_capability_profile_v0_4.json'
 OUT = BASE / 'docs/reports/route2_p0_contract/test111_final_v1/grounding_discriminator_matrix_v1.json'
 
 # structured attributes comparable at A0 (profile level)
@@ -37,7 +37,7 @@ def attrs(op: dict) -> dict:
         'output_types': tuple(op.get('output_types_norm') or ()),
         'param_names': frozenset(p['name'] for p in b.get('parameters', [])) if b else None,
         'n_required': b.get('n_required') if b else None,
-        'output_slots': tuple(o['name'] for o in b.get('outputs', [])) if b else None,
+        'output_slot_count': len(b.get('outputs', [])) if b else None,
     }
 
 
@@ -52,8 +52,8 @@ def diffs(a: dict, b: dict) -> list:
         d.append('parameter_set')
     if a['n_required'] is not None and b['n_required'] is not None and a['n_required'] != b['n_required']:
         d.append('required_param_count')
-    if a['output_slots'] is not None and b['output_slots'] is not None and a['output_slots'] != b['output_slots']:
-        d.append('output_slots')
+    if a['output_slot_count'] is not None and b['output_slot_count'] is not None and a['output_slot_count'] != b['output_slot_count']:
+        d.append('output_slot_count')
     return d
 
 

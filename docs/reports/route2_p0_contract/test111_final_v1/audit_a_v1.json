@@ -1,0 +1,2804 @@
+{
+ "report": {
+  "groups_total": 21,
+  "G0_untestable": 1,
+  "G1_deferred_insufficient_profile": 3,
+  "G2_eligible": 17,
+  "instances_total": 93,
+  "uniquely_groundable_rate_G2": 0.7742,
+  "ambiguous_valid_rate_G2": 0.2258,
+  "insufficient_information_rate_G2": 0.0,
+  "note_INS": "zero by construction in closed candidate groups; open-set INS becomes measurable at 6-4",
+  "leakage_rate": 0.0,
+  "leakage_flags": [],
+  "degradation_unique_counts": {
+   "full": {
+    "ambiguous": 21,
+    "unique": 72
+   },
+   "-slots": {
+    "ambiguous": 60,
+    "unique": 33
+   },
+   "-io": {
+    "ambiguous": 34,
+    "unique": 59
+   }
+  },
+  "per_family": {
+   "AGGREGATION": {
+    "UG": 0,
+    "AMB": 2,
+    "UG_rate": 0.0
+   },
+   "ATTRIBUTE_FILTER": {
+    "UG": 3,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "BAND_ARITHMETIC": {
+    "UG": 5,
+    "AMB": 2,
+    "UG_rate": 0.714
+   },
+   "BAND_SELECT": {
+    "UG": 2,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "COLLECTION_MGMT": {
+    "UG": 10,
+    "AMB": 11,
+    "UG_rate": 0.476
+   },
+   "COMPOSITE": {
+    "UG": 3,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "EXPORT_OUTPUT": {
+    "UG": 3,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "GEOMETRY_DEFINE": {
+    "UG": 3,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "NEIGHBORHOOD": {
+    "UG": 6,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "REGIONAL_STATS": {
+    "UG": 11,
+    "AMB": 2,
+    "UG_rate": 0.846
+   },
+   "RESAMPLE_REPROJECT": {
+    "UG": 2,
+    "AMB": 2,
+    "UG_rate": 0.5
+   },
+   "SPATIAL_CLIP": {
+    "UG": 6,
+    "AMB": 2,
+    "UG_rate": 0.75
+   },
+   "SPATIAL_FILTER": {
+    "UG": 3,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "SPATIAL_JOIN": {
+    "UG": 5,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "THRESHOLD_LOGIC": {
+    "UG": 3,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "VECTOR_LOAD": {
+    "UG": 4,
+    "AMB": 0,
+    "UG_rate": 1.0
+   },
+   "VECTOR_TO_RASTER": {
+    "UG": 3,
+    "AMB": 0,
+    "UG_rate": 1.0
+   }
+  }
+ },
+ "instances": [
+  {
+   "semantic_family": "AGGREGATION",
+   "target": "native:aggregate",
+   "plan": "Perform an operation that will aggregate features or cell values into summary results. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:aggregate",
+    "qgis:statisticsbycategories"
+   ],
+   "supporting_candidates": [
+    "native:aggregate",
+    "qgis:statisticsbycategories"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "AGGREGATION",
+   "target": "qgis:statisticsbycategories",
+   "plan": "Perform an operation that will aggregate features or cell values into summary results. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:aggregate",
+    "qgis:statisticsbycategories"
+   ],
+   "supporting_candidates": [
+    "native:aggregate",
+    "qgis:statisticsbycategories"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "ATTRIBUTE_FILTER",
+   "target": "native:extractbyattribute",
+   "plan": "Perform an operation that will select features by attribute condition. Input accepts: vector. Produces 2 output(s) of type: image, vector. Configuration involves: attribute field, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:extractbyattribute",
+    "native:extractbyexpression",
+    "qgis:selectbyattribute"
+   ],
+   "supporting_candidates": [
+    "native:extractbyattribute"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "ATTRIBUTE_FILTER",
+   "target": "native:extractbyexpression",
+   "plan": "Perform an operation that will select features by attribute condition. Input accepts: vector. Produces 2 output(s) of type: image, vector. Configuration involves: filter expression, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:extractbyattribute",
+    "native:extractbyexpression",
+    "qgis:selectbyattribute"
+   ],
+   "supporting_candidates": [
+    "native:extractbyexpression"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "ATTRIBUTE_FILTER",
+   "target": "qgis:selectbyattribute",
+   "plan": "Perform an operation that will select features by attribute condition. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute field, computation method, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:extractbyattribute",
+    "native:extractbyexpression",
+    "qgis:selectbyattribute"
+   ],
+   "supporting_candidates": [
+    "qgis:selectbyattribute"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "gdal:rastercalculator",
+   "plan": "Perform an operation that will compute per-cell arithmetic across raster bands. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rastercalculator",
+    "grass7:r.rescale.eq",
+    "native:cellstatistics",
+    "native:fieldcalculator",
+    "native:rasterbooleanand",
+    "qgis:advancedpythonfieldcalculator",
+    "qgis:rastercalculator"
+   ],
+   "supporting_candidates": [
+    "gdal:rastercalculator"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "grass7:r.rescale.eq",
+   "plan": "Perform an operation that will compute per-cell arithmetic across raster bands. Input accepts: raster. Produces 0 output(s) of type: raster. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rastercalculator",
+    "grass7:r.rescale.eq",
+    "native:cellstatistics",
+    "native:fieldcalculator",
+    "native:rasterbooleanand",
+    "qgis:advancedpythonfieldcalculator",
+    "qgis:rastercalculator"
+   ],
+   "supporting_candidates": [
+    "grass7:r.rescale.eq"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "native:cellstatistics",
+   "plan": "Perform an operation that will compute per-cell arithmetic across raster bands. Input accepts: literal, raster. Produces 6 output(s) of type: literal, raster, string, table. Configuration involves: nodata handling, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rastercalculator",
+    "grass7:r.rescale.eq",
+    "native:cellstatistics",
+    "native:fieldcalculator",
+    "native:rasterbooleanand",
+    "qgis:advancedpythonfieldcalculator",
+    "qgis:rastercalculator"
+   ],
+   "supporting_candidates": [
+    "native:cellstatistics"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "native:fieldcalculator",
+   "plan": "Perform an operation that will compute per-cell arithmetic across raster bands. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute field, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rastercalculator",
+    "grass7:r.rescale.eq",
+    "native:cellstatistics",
+    "native:fieldcalculator",
+    "native:rasterbooleanand",
+    "qgis:advancedpythonfieldcalculator",
+    "qgis:rastercalculator"
+   ],
+   "supporting_candidates": [
+    "native:fieldcalculator",
+    "qgis:advancedpythonfieldcalculator"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "native:rasterbooleanand",
+   "plan": "Perform an operation that will compute per-cell arithmetic across raster bands. Input accepts: literal, raster. Produces 9 output(s) of type: literal, raster, string, table. Configuration involves: output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rastercalculator",
+    "grass7:r.rescale.eq",
+    "native:cellstatistics",
+    "native:fieldcalculator",
+    "native:rasterbooleanand",
+    "qgis:advancedpythonfieldcalculator",
+    "qgis:rastercalculator"
+   ],
+   "supporting_candidates": [
+    "native:rasterbooleanand"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "qgis:advancedpythonfieldcalculator",
+   "plan": "Perform an operation that will compute per-cell arithmetic across raster bands. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute field, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rastercalculator",
+    "grass7:r.rescale.eq",
+    "native:cellstatistics",
+    "native:fieldcalculator",
+    "native:rasterbooleanand",
+    "qgis:advancedpythonfieldcalculator",
+    "qgis:rastercalculator"
+   ],
+   "supporting_candidates": [
+    "native:fieldcalculator",
+    "qgis:advancedpythonfieldcalculator"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_ARITHMETIC",
+   "target": "qgis:rastercalculator",
+   "plan": "Perform an operation that will compute per-cell arithmetic across raster bands. Input accepts: literal, raster. Produces 1 output(s) of type: raster. Configuration involves: coordinate reference, extent constraint, filter expression, input layers, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rastercalculator",
+    "grass7:r.rescale.eq",
+    "native:cellstatistics",
+    "native:fieldcalculator",
+    "native:rasterbooleanand",
+    "qgis:advancedpythonfieldcalculator",
+    "qgis:rastercalculator"
+   ],
+   "supporting_candidates": [
+    "qgis:rastercalculator"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_SELECT",
+   "target": "gdal:rearrange_bands",
+   "plan": "Perform an operation that will select or reorder raster bands. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rearrange_bands",
+    "grass7:r.rgb"
+   ],
+   "supporting_candidates": [
+    "gdal:rearrange_bands"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "BAND_SELECT",
+   "target": "grass7:r.rgb",
+   "plan": "Perform an operation that will select or reorder raster bands. Input accepts: raster. Produces 0 output(s) of type: image, raster. Configuration involves: no additional named configuration. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rearrange_bands",
+    "grass7:r.rgb"
+   ],
+   "supporting_candidates": [
+    "grass7:r.rgb"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "gdal:buildvirtualraster",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: literal, raster. Produces 1 output(s) of type: raster. Configuration involves: computation method, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "gdal:buildvirtualraster"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "gdal:convertformat",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "gdal:convertformat",
+    "native:refactorfields",
+    "qgis:exportaddgeometrycolumns"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "gdal:translate",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: coordinate reference, nodata handling, output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "gdal:translate"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:addautoincrementalfield",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute field, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:deletecolumn",
+    "native:renametablefield"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:addfieldtoattributestable",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute field, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:deletecolumn",
+    "native:renametablefield"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:createspatialindex",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:createspatialindex",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:deletecolumn",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute field, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:deletecolumn",
+    "native:renametablefield"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:filedownloader",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: unspecified. Produces 1 output(s) of type: literal. Configuration involves: computation method, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:filedownloader"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:orderbyexpression",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: filter expression, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:orderbyexpression"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:package",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: literal. Produces 2 output(s) of type: image, literal. Configuration involves: input layers, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:package"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:refactorfields",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "gdal:convertformat",
+    "native:refactorfields",
+    "qgis:exportaddgeometrycolumns"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:removeduplicatesbyattribute",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 4 output(s) of type: image, table, vector. Configuration involves: attribute fields, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:removeduplicatesbyattribute"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:renamelayer",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: literal. Produces 1 output(s) of type: literal. Configuration involves: primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:renamelayer",
+    "native:setlayerstyle"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:renametablefield",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute field, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:deletecolumn",
+    "native:renametablefield"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:retainfields",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute fields, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:retainfields"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:setlayerstyle",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: literal. Produces 1 output(s) of type: literal. Configuration involves: primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:renamelayer",
+    "native:setlayerstyle"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:spatialiteexecutesql",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 0 output(s) of type: unspecified. Configuration involves: no additional named configuration. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:spatialiteexecutesql"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "native:splitvectorlayer",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 2 output(s) of type: image. Configuration involves: attribute field, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:splitvectorlayer"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "qgis:exportaddgeometrycolumns",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "gdal:convertformat",
+    "native:refactorfields",
+    "qgis:exportaddgeometrycolumns"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "qgis:setstyleforrasterlayer",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "qgis:setstyleforrasterlayer"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COLLECTION_MGMT",
+   "target": "qgis:setstyleforvectorlayer",
+   "plan": "Perform an operation that will manage layer, field, or dataset organisation. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:buildvirtualraster",
+    "gdal:convertformat",
+    "gdal:translate",
+    "native:addautoincrementalfield",
+    "native:addfieldtoattributestable",
+    "native:createspatialindex",
+    "native:deletecolumn",
+    "native:filedownloader",
+    "native:orderbyexpression",
+    "native:package",
+    "native:refactorfields",
+    "native:removeduplicatesbyattribute",
+    "native:renamelayer",
+    "native:renametablefield",
+    "native:retainfields",
+    "native:setlayerstyle",
+    "native:spatialiteexecutesql",
+    "native:splitvectorlayer",
+    "qgis:exportaddgeometrycolumns",
+    "qgis:setstyleforrasterlayer",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "supporting_candidates": [
+    "native:createspatialindex",
+    "qgis:setstyleforvectorlayer"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COMPOSITE",
+   "target": "gdal:merge",
+   "plan": "Perform an operation that will combine multiple inputs into one composite product. Input accepts: literal, raster. Produces 1 output(s) of type: raster. Configuration involves: output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:merge",
+    "gdal:pansharp",
+    "native:mergevectorlayers"
+   ],
+   "supporting_candidates": [
+    "gdal:merge"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COMPOSITE",
+   "target": "gdal:pansharp",
+   "plan": "Perform an operation that will combine multiple inputs into one composite product. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: computation method, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:merge",
+    "gdal:pansharp",
+    "native:mergevectorlayers"
+   ],
+   "supporting_candidates": [
+    "gdal:pansharp"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "COMPOSITE",
+   "target": "native:mergevectorlayers",
+   "plan": "Perform an operation that will combine multiple inputs into one composite product. Input accepts: literal, vector. Produces 1 output(s) of type: vector. Configuration involves: coordinate reference, input layers, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:merge",
+    "gdal:pansharp",
+    "native:mergevectorlayers"
+   ],
+   "supporting_candidates": [
+    "native:mergevectorlayers"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "EXPORT_OUTPUT",
+   "target": "gdal:importvectorintopostgisdatabaseavailableconnections",
+   "plan": "Perform an operation that will export or save workflow output. Input accepts: vector. Produces 0 output(s) of type: unspecified. Configuration involves: primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:importvectorintopostgisdatabaseavailableconnections",
+    "native:savefeatures",
+    "native:saveselectedfeatures"
+   ],
+   "supporting_candidates": [
+    "gdal:importvectorintopostgisdatabaseavailableconnections"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "EXPORT_OUTPUT",
+   "target": "native:savefeatures",
+   "plan": "Perform an operation that will export or save workflow output. Input accepts: raster, vector. Produces 3 output(s) of type: literal, string. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:importvectorintopostgisdatabaseavailableconnections",
+    "native:savefeatures",
+    "native:saveselectedfeatures"
+   ],
+   "supporting_candidates": [
+    "native:savefeatures"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "EXPORT_OUTPUT",
+   "target": "native:saveselectedfeatures",
+   "plan": "Perform an operation that will export or save workflow output. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:importvectorintopostgisdatabaseavailableconnections",
+    "native:savefeatures",
+    "native:saveselectedfeatures"
+   ],
+   "supporting_candidates": [
+    "native:saveselectedfeatures"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "GEOMETRY_DEFINE",
+   "target": "native:creategrid",
+   "plan": "Perform an operation that will define a geometry or grid construct. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: coordinate reference, extent constraint, output, output data type. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:creategrid",
+    "native:extenttolayer",
+    "native:polygonfromlayerextent"
+   ],
+   "supporting_candidates": [
+    "native:creategrid"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "GEOMETRY_DEFINE",
+   "target": "native:extenttolayer",
+   "plan": "Perform an operation that will define a geometry or grid construct. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:creategrid",
+    "native:extenttolayer",
+    "native:polygonfromlayerextent"
+   ],
+   "supporting_candidates": [
+    "native:extenttolayer"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "GEOMETRY_DEFINE",
+   "target": "native:polygonfromlayerextent",
+   "plan": "Perform an operation that will define a geometry or grid construct. Input accepts: literal, vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:creategrid",
+    "native:extenttolayer",
+    "native:polygonfromlayerextent"
+   ],
+   "supporting_candidates": [
+    "native:polygonfromlayerextent"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "gdal:fillnodata",
+   "plan": "Perform an operation that will compute neighbourhood-based raster values. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: band selector, distance value, iteration count, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:fillnodata",
+    "gdal:sieve",
+    "grass7:r.thin",
+    "native:fillnodata",
+    "qgis:idwinterpolation",
+    "qgis:tininterpolation"
+   ],
+   "supporting_candidates": [
+    "gdal:fillnodata"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "gdal:sieve",
+   "plan": "Perform an operation that will compute neighbourhood-based raster values. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: output, primary input, threshold value. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:fillnodata",
+    "gdal:sieve",
+    "grass7:r.thin",
+    "native:fillnodata",
+    "qgis:idwinterpolation",
+    "qgis:tininterpolation"
+   ],
+   "supporting_candidates": [
+    "gdal:sieve"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "grass7:r.thin",
+   "plan": "Perform an operation that will compute neighbourhood-based raster values. Input accepts: raster. Produces 0 output(s) of type: raster. Configuration involves: iteration count, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:fillnodata",
+    "gdal:sieve",
+    "grass7:r.thin",
+    "native:fillnodata",
+    "qgis:idwinterpolation",
+    "qgis:tininterpolation"
+   ],
+   "supporting_candidates": [
+    "grass7:r.thin"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "native:fillnodata",
+   "plan": "Perform an operation that will compute neighbourhood-based raster values. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: band selector, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:fillnodata",
+    "gdal:sieve",
+    "grass7:r.thin",
+    "native:fillnodata",
+    "qgis:idwinterpolation",
+    "qgis:tininterpolation"
+   ],
+   "supporting_candidates": [
+    "native:fillnodata"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "qgis:idwinterpolation",
+   "plan": "Perform an operation that will compute neighbourhood-based raster values. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: extent constraint, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:fillnodata",
+    "gdal:sieve",
+    "grass7:r.thin",
+    "native:fillnodata",
+    "qgis:idwinterpolation",
+    "qgis:tininterpolation"
+   ],
+   "supporting_candidates": [
+    "qgis:idwinterpolation"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "NEIGHBORHOOD",
+   "target": "qgis:tininterpolation",
+   "plan": "Perform an operation that will compute neighbourhood-based raster values. Input accepts: raster, vector. Produces 2 output(s) of type: image, raster. Configuration involves: computation method, extent constraint, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:fillnodata",
+    "gdal:sieve",
+    "grass7:r.thin",
+    "native:fillnodata",
+    "qgis:idwinterpolation",
+    "qgis:tininterpolation"
+   ],
+   "supporting_candidates": [
+    "qgis:tininterpolation"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "grass7:v.distance",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: vector. Produces 0 output(s) of type: image, vector. Configuration involves: attribute field, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "grass7:v.distance"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:calculatevectoroverlaps",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: literal, vector. Produces 1 output(s) of type: vector. Configuration involves: grid size, input layers, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:calculatevectoroverlaps"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:countpointsinpolygon",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: attribute field, output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:countpointsinpolygon"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:meancoordinates",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:meancoordinates",
+    "qgis:distancematrix"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:rasterlayerstatistics",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: raster. Produces 8 output(s) of type: literal, table. Configuration involves: band selector, primary input, report output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:rasterlayerstatistics"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:rasterlayeruniquevaluesreport",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: raster, vector. Produces 8 output(s) of type: image, literal, table. Configuration involves: band selector, primary input, report output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:rasterlayeruniquevaluesreport"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:rastersampling",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: raster, vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:rastersampling"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:zonalhistogram",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: raster, vector. Produces 1 output(s) of type: vector. Configuration involves: band selector, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:zonalhistogram"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:zonalstatistics",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: raster, vector. Produces 1 output(s) of type: vector. Configuration involves: band selector, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:zonalstatistics"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "native:zonalstatisticsfb",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: raster, vector. Produces 1 output(s) of type: vector. Configuration involves: band selector, output, primary input, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:zonalstatisticsfb"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "qgis:basicstatisticsforfields",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: raster, vector. Produces 21 output(s) of type: literal, table. Configuration involves: attribute field, primary input, report output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "qgis:basicstatisticsforfields"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "qgis:distancematrix",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "native:meancoordinates",
+    "qgis:distancematrix"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "REGIONAL_STATS",
+   "target": "qgis:listuniquevalues",
+   "plan": "Perform an operation that will compute statistics over zones or sampled regions. Input accepts: raster, vector. Produces 4 output(s) of type: image, literal, vector. Configuration involves: attribute fields, output, primary input, report output. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "grass7:v.distance",
+    "native:calculatevectoroverlaps",
+    "native:countpointsinpolygon",
+    "native:meancoordinates",
+    "native:rasterlayerstatistics",
+    "native:rasterlayeruniquevaluesreport",
+    "native:rastersampling",
+    "native:zonalhistogram",
+    "native:zonalstatistics",
+    "native:zonalstatisticsfb",
+    "qgis:basicstatisticsforfields",
+    "qgis:distancematrix",
+    "qgis:listuniquevalues"
+   ],
+   "supporting_candidates": [
+    "qgis:listuniquevalues"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "RESAMPLE_REPROJECT",
+   "target": "gdal:warpreproject",
+   "plan": "Perform an operation that will resample or reproject a raster layer. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: computation method, coordinate reference, nodata handling, output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:warpreproject",
+    "native:assignprojection",
+    "native:reprojectlayer",
+    "qgis:definecurrentprojection"
+   ],
+   "supporting_candidates": [
+    "gdal:warpreproject"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "RESAMPLE_REPROJECT",
+   "target": "native:assignprojection",
+   "plan": "Perform an operation that will resample or reproject a raster layer. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: coordinate reference, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:warpreproject",
+    "native:assignprojection",
+    "native:reprojectlayer",
+    "qgis:definecurrentprojection"
+   ],
+   "supporting_candidates": [
+    "native:assignprojection",
+    "native:reprojectlayer"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "RESAMPLE_REPROJECT",
+   "target": "native:reprojectlayer",
+   "plan": "Perform an operation that will resample or reproject a raster layer. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: coordinate reference, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:warpreproject",
+    "native:assignprojection",
+    "native:reprojectlayer",
+    "qgis:definecurrentprojection"
+   ],
+   "supporting_candidates": [
+    "native:assignprojection",
+    "native:reprojectlayer"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "RESAMPLE_REPROJECT",
+   "target": "qgis:definecurrentprojection",
+   "plan": "Perform an operation that will resample or reproject a raster layer. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: coordinate reference, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:warpreproject",
+    "native:assignprojection",
+    "native:reprojectlayer",
+    "qgis:definecurrentprojection"
+   ],
+   "supporting_candidates": [
+    "qgis:definecurrentprojection"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "gdal:cliprasterbyextent",
+   "plan": "Perform an operation that will restrict data spatially using a geometry or extent. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: nodata handling, output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:cliprasterbyextent",
+    "gdal:cliprasterbymasklayer",
+    "gdal:clipvectorbyextent",
+    "gdal:clipvectorbypolygon",
+    "native:clip",
+    "native:difference",
+    "native:intersection",
+    "saga:intersect"
+   ],
+   "supporting_candidates": [
+    "gdal:cliprasterbyextent"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "gdal:cliprasterbymasklayer",
+   "plan": "Perform an operation that will restrict data spatially using a geometry or extent. Input accepts: raster, vector. Produces 1 output(s) of type: raster. Configuration involves: coordinate reference, mask geometry, nodata handling, output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:cliprasterbyextent",
+    "gdal:cliprasterbymasklayer",
+    "gdal:clipvectorbyextent",
+    "gdal:clipvectorbypolygon",
+    "native:clip",
+    "native:difference",
+    "native:intersection",
+    "saga:intersect"
+   ],
+   "supporting_candidates": [
+    "gdal:cliprasterbymasklayer"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "gdal:clipvectorbyextent",
+   "plan": "Perform an operation that will restrict data spatially using a geometry or extent. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: extent constraint, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:cliprasterbyextent",
+    "gdal:cliprasterbymasklayer",
+    "gdal:clipvectorbyextent",
+    "gdal:clipvectorbypolygon",
+    "native:clip",
+    "native:difference",
+    "native:intersection",
+    "saga:intersect"
+   ],
+   "supporting_candidates": [
+    "gdal:clipvectorbyextent"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "gdal:clipvectorbypolygon",
+   "plan": "Perform an operation that will restrict data spatially using a geometry or extent. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: mask geometry, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:cliprasterbyextent",
+    "gdal:cliprasterbymasklayer",
+    "gdal:clipvectorbyextent",
+    "gdal:clipvectorbypolygon",
+    "native:clip",
+    "native:difference",
+    "native:intersection",
+    "saga:intersect"
+   ],
+   "supporting_candidates": [
+    "gdal:clipvectorbypolygon"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "native:clip",
+   "plan": "Perform an operation that will restrict data spatially using a geometry or extent. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, overlay geometry, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:cliprasterbyextent",
+    "gdal:cliprasterbymasklayer",
+    "gdal:clipvectorbyextent",
+    "gdal:clipvectorbypolygon",
+    "native:clip",
+    "native:difference",
+    "native:intersection",
+    "saga:intersect"
+   ],
+   "supporting_candidates": [
+    "native:clip"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "native:difference",
+   "plan": "Perform an operation that will restrict data spatially using a geometry or extent. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: grid size, output, overlay geometry, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:cliprasterbyextent",
+    "gdal:cliprasterbymasklayer",
+    "gdal:clipvectorbyextent",
+    "gdal:clipvectorbypolygon",
+    "native:clip",
+    "native:difference",
+    "native:intersection",
+    "saga:intersect"
+   ],
+   "supporting_candidates": [
+    "native:difference",
+    "native:intersection"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "native:intersection",
+   "plan": "Perform an operation that will restrict data spatially using a geometry or extent. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: grid size, output, overlay geometry, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:cliprasterbyextent",
+    "gdal:cliprasterbymasklayer",
+    "gdal:clipvectorbyextent",
+    "gdal:clipvectorbypolygon",
+    "native:clip",
+    "native:difference",
+    "native:intersection",
+    "saga:intersect"
+   ],
+   "supporting_candidates": [
+    "native:difference",
+    "native:intersection"
+   ],
+   "unique": false,
+   "ambiguity_type": "AMB",
+   "uniquely_groundable": false,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_CLIP",
+   "target": "saga:intersect",
+   "plan": "Perform an operation that will restrict data spatially using a geometry or extent. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: no additional named configuration. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:cliprasterbyextent",
+    "gdal:cliprasterbymasklayer",
+    "gdal:clipvectorbyextent",
+    "gdal:clipvectorbypolygon",
+    "native:clip",
+    "native:difference",
+    "native:intersection",
+    "saga:intersect"
+   ],
+   "supporting_candidates": [
+    "saga:intersect"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_FILTER",
+   "target": "native:extractbyextent",
+   "plan": "Perform an operation that will select features by spatial relationship. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: extent constraint, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:extractbyextent",
+    "native:extractbylocation",
+    "native:selectbylocation"
+   ],
+   "supporting_candidates": [
+    "native:extractbyextent"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_FILTER",
+   "target": "native:extractbylocation",
+   "plan": "Perform an operation that will select features by spatial relationship. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input, spatial predicate. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:extractbyextent",
+    "native:extractbylocation",
+    "native:selectbylocation"
+   ],
+   "supporting_candidates": [
+    "native:extractbylocation"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_FILTER",
+   "target": "native:selectbylocation",
+   "plan": "Perform an operation that will select features by spatial relationship. Input accepts: vector. Produces 0 output(s) of type: unspecified. Configuration involves: computation method, primary input, spatial predicate. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:extractbyextent",
+    "native:extractbylocation",
+    "native:selectbylocation"
+   ],
+   "supporting_candidates": [
+    "native:selectbylocation"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "native:joinattributesbylocation",
+   "plan": "Perform an operation that will join attributes or nearest features across layers. Input accepts: vector. Produces 3 output(s) of type: image, vector. Configuration involves: computation method, output, primary input, spatial predicate. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:joinattributesbylocation",
+    "native:joinattributestable",
+    "native:joinbynearest",
+    "native:union",
+    "qgis:joinbylocationsummary"
+   ],
+   "supporting_candidates": [
+    "native:joinattributesbylocation"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "native:joinattributestable",
+   "plan": "Perform an operation that will join attributes or nearest features across layers. Input accepts: vector. Produces 4 output(s) of type: image, table, vector. Configuration involves: attribute field, computation method, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:joinattributesbylocation",
+    "native:joinattributestable",
+    "native:joinbynearest",
+    "native:union",
+    "qgis:joinbylocationsummary"
+   ],
+   "supporting_candidates": [
+    "native:joinattributestable"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "native:joinbynearest",
+   "plan": "Perform an operation that will join attributes or nearest features across layers. Input accepts: vector. Produces 4 output(s) of type: image, table, vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:joinattributesbylocation",
+    "native:joinattributestable",
+    "native:joinbynearest",
+    "native:union",
+    "qgis:joinbylocationsummary"
+   ],
+   "supporting_candidates": [
+    "native:joinbynearest"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "native:union",
+   "plan": "Perform an operation that will join attributes or nearest features across layers. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: grid size, output, overlay geometry, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:joinattributesbylocation",
+    "native:joinattributestable",
+    "native:joinbynearest",
+    "native:union",
+    "qgis:joinbylocationsummary"
+   ],
+   "supporting_candidates": [
+    "native:union"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "SPATIAL_JOIN",
+   "target": "qgis:joinbylocationsummary",
+   "plan": "Perform an operation that will join attributes or nearest features across layers. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input, spatial predicate. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:joinattributesbylocation",
+    "native:joinattributestable",
+    "native:joinbynearest",
+    "native:union",
+    "qgis:joinbylocationsummary"
+   ],
+   "supporting_candidates": [
+    "qgis:joinbylocationsummary"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "THRESHOLD_LOGIC",
+   "target": "native:condition",
+   "plan": "Perform an operation that will reclassify values by threshold or membership rule. Input accepts: unspecified. Produces 0 output(s) of type: unspecified. Configuration involves: no additional named configuration. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:condition",
+    "native:fuzzifyrasterlinearmembership",
+    "native:reclassifybytable"
+   ],
+   "supporting_candidates": [
+    "native:condition"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "THRESHOLD_LOGIC",
+   "target": "native:fuzzifyrasterlinearmembership",
+   "plan": "Perform an operation that will reclassify values by threshold or membership rule. Input accepts: raster. Produces 6 output(s) of type: literal, string, table. Configuration involves: band selector, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:condition",
+    "native:fuzzifyrasterlinearmembership",
+    "native:reclassifybytable"
+   ],
+   "supporting_candidates": [
+    "native:fuzzifyrasterlinearmembership"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "THRESHOLD_LOGIC",
+   "target": "native:reclassifybytable",
+   "plan": "Perform an operation that will reclassify values by threshold or membership rule. Input accepts: raster. Produces 1 output(s) of type: raster. Configuration involves: band selector, output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:condition",
+    "native:fuzzifyrasterlinearmembership",
+    "native:reclassifybytable"
+   ],
+   "supporting_candidates": [
+    "native:reclassifybytable"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "VECTOR_LOAD",
+   "target": "native:createpointslayerfromtable",
+   "plan": "Perform an operation that will generate or load a vector source. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: coordinate reference, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:createpointslayerfromtable",
+    "native:loadlayer",
+    "qgis:randompointsinlayerbounds",
+    "qgis:randompointsinsidepolygons"
+   ],
+   "supporting_candidates": [
+    "native:createpointslayerfromtable"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "VECTOR_LOAD",
+   "target": "native:loadlayer",
+   "plan": "Perform an operation that will generate or load a vector source. Input accepts: literal. Produces 1 output(s) of type: literal. Configuration involves: primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:createpointslayerfromtable",
+    "native:loadlayer",
+    "qgis:randompointsinlayerbounds",
+    "qgis:randompointsinsidepolygons"
+   ],
+   "supporting_candidates": [
+    "native:loadlayer"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "VECTOR_LOAD",
+   "target": "qgis:randompointsinlayerbounds",
+   "plan": "Perform an operation that will generate or load a vector source. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:createpointslayerfromtable",
+    "native:loadlayer",
+    "qgis:randompointsinlayerbounds",
+    "qgis:randompointsinsidepolygons"
+   ],
+   "supporting_candidates": [
+    "qgis:randompointsinlayerbounds"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "VECTOR_LOAD",
+   "target": "qgis:randompointsinsidepolygons",
+   "plan": "Perform an operation that will generate or load a vector source. Input accepts: vector. Produces 1 output(s) of type: vector. Configuration involves: filter expression, output, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "native:createpointslayerfromtable",
+    "native:loadlayer",
+    "qgis:randompointsinlayerbounds",
+    "qgis:randompointsinsidepolygons"
+   ],
+   "supporting_candidates": [
+    "qgis:randompointsinsidepolygons"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "VECTOR_TO_RASTER",
+   "target": "gdal:rasterize",
+   "plan": "Perform an operation that will convert vector features into raster cells. Input accepts: raster, vector. Produces 1 output(s) of type: raster. Configuration involves: attribute field, extent constraint, nodata handling, output, output data type, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rasterize",
+    "gdal:rasterize_over",
+    "gdal:rasterize_over_fixed_value"
+   ],
+   "supporting_candidates": [
+    "gdal:rasterize"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "VECTOR_TO_RASTER",
+   "target": "gdal:rasterize_over",
+   "plan": "Perform an operation that will convert vector features into raster cells. Input accepts: raster, vector. Produces 1 output(s) of type: raster. Configuration involves: attribute field, primary input, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rasterize",
+    "gdal:rasterize_over",
+    "gdal:rasterize_over_fixed_value"
+   ],
+   "supporting_candidates": [
+    "gdal:rasterize_over"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  },
+  {
+   "semantic_family": "VECTOR_TO_RASTER",
+   "target": "gdal:rasterize_over_fixed_value",
+   "plan": "Perform an operation that will convert vector features into raster cells. Input accepts: raster, vector. Produces 1 output(s) of type: raster. Configuration involves: primary input, primary input. The step depends on the output of the preceding step.",
+   "level": "full",
+   "candidates": [
+    "gdal:rasterize",
+    "gdal:rasterize_over",
+    "gdal:rasterize_over_fixed_value"
+   ],
+   "supporting_candidates": [
+    "gdal:rasterize_over_fixed_value"
+   ],
+   "unique": true,
+   "ambiguity_type": "UG",
+   "uniquely_groundable": true,
+   "leakage": {
+    "L1_operator_id": false,
+    "L2_provider_identity": false,
+    "L3_rare_param_name": []
+   }
+  }
+ ]
+}
