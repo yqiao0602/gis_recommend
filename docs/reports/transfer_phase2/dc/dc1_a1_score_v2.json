@@ -1,0 +1,81 @@
+{
+  "schema": "gis_recommend.v2a.score.v2",
+  "predictions": "gate2_eval/v2a_dc1_a1_predictions.jsonl",
+  "parser": "route2",
+  "n": 111,
+  "reliability": {
+    "parse_ok_rate": 0.8018,
+    "hit_cap_rate": 0.3423,
+    "repetition_rate": 0.3243,
+    "empty_rate": 0.0,
+    "invalid_operator_rate": 0.0182,
+    "dag_valid_rate": 1.0,
+    "row_causes": {
+      "ok": 67,
+      "truncated": 38,
+      "repetition_runaway": 6
+    }
+  },
+  "operator_e2e": {
+    "tp": 215,
+    "fp": 938,
+    "fn": 624,
+    "precision": 0.1865,
+    "recall": 0.2563,
+    "f1": 0.2159
+  },
+  "link_e2e": {
+    "tp": 108,
+    "fp": 138,
+    "fn": 655,
+    "precision": 0.439,
+    "recall": 0.1415,
+    "f1": 0.2141
+  },
+  "operator_conditional": {
+    "tp": 215,
+    "fp": 938,
+    "fn": 469,
+    "precision": 0.1865,
+    "recall": 0.3143,
+    "f1": 0.2341,
+    "note": "optimistic; usable rows only"
+  },
+  "link_conditional": {
+    "tp": 108,
+    "fp": 138,
+    "fn": 530,
+    "precision": 0.439,
+    "recall": 0.1693,
+    "f1": 0.2443,
+    "note": "optimistic; usable rows only"
+  },
+  "pred_operator_instances": 1153,
+  "gold_operator_instances": 839,
+  "canonicalized": {
+    "note": "deterministic catalog lookup only (R1 exact/R2 provider/R3 separator/R4 unique-prefix); no similarity, no dedup",
+    "rules_applied": {
+      "R1_exact": 1132,
+      "R4_prefix": 11,
+      "unrepaired": 10
+    },
+    "operator_e2e": {
+      "tp": 216,
+      "fp": 937,
+      "fn": 623,
+      "precision": 0.1873,
+      "recall": 0.2574,
+      "f1": 0.2169
+    },
+    "operator_conditional": {
+      "tp": 216,
+      "fp": 937,
+      "fn": 468,
+      "precision": 0.1873,
+      "recall": 0.3158,
+      "f1": 0.2352,
+      "note": "optimistic; usable rows only"
+    },
+    "invalid_operator_rate": 0.0087
+  }
+}
