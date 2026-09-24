@@ -5,6 +5,21 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
+## ⑦ Stage-1 训练协议冻结（2026-09-24，owner 裁定，v1）
+
+单流混合（**token 比例**）：Task→Plan 60% / Dependency-Completion 10% /
+Reconstruction 10% / W4 20%（≤25% 顶）/**Chain LM 0%**（A1 归因清洁）。
+配方与 P0 同构（QLoRA r16α32 NF4 / 1e-4 cosine / batch 32 / max_len
+1024）。**截断修正**：Task 完整保护，超长截 Plan 尾，审计全记。Gate
+两级（dev 选点 / test 判定）+ 双条件阈值（绝对下限 AND 零样本+Δ，训练
+前用冻结 Base 预注册）+ **硬前置**（全单项过门才比加权分：W1 .20/W2
+.25/W3 .40/W4 .15——模板记忆无法靠平均晋级）。**W1 修正**：已知操作+
+新上下文/低频/词面变化（不用完全未见概念）；组合泛化主力 = W3 新操作
+组合。1 epoch 先行，FAIL 同协议续训。**成功标准 = 能力门通过，非 loss**。
+①→⑦ 全冻结。现在做：⑥三件 CPU 工程产物 + 按⑦备 Stage-1 实验（GPU
+训练未启动）。详见
+`route2_p0_contract/ROUTE2_V2_STAGE1_PROTOCOL_v1.md`。
+
 ## ⑥ B2 数据构造 v0（2026-09-24，owner 裁定）
 
 **工程顺序（一票否决）**：⑥-0 Operator Capability Profile → ⑥-1

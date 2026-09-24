@@ -5,6 +5,27 @@ Last updated: 2026-09-23
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
+## (7) Stage-1 training protocol frozen (2026-09-24, owner ruling, v1)
+
+Single mixed stream (**token-based**): Task->Plan 60% / Dependency-
+Completion 10% / Reconstruction 10% / W4 20% (<=25% cap) / **Chain LM
+0%** (A1 attribution cleanliness). Recipe identical to P0 (QLoRA r16
+a32 NF4 / 1e-4 cosine / batch 32 / max_len 1024). **Truncation
+correction**: Task fully protected, overflow truncates the Plan tail,
+all audited. Gate: two-level (dev selects, test judges) + dual-
+condition thresholds (absolute floor AND zero-shot + delta,
+pre-registered on the frozen base before training) + **hard pre-
+condition** (all single-capability thresholds pass before weighted
+comparison: W1 .20 / W2 .25 / W3 .40 / W4 .15 — template memorization
+cannot average its way through). **W1 correction**: known operation
+concepts + new contexts / low-frequency ops / surface variants (never
+unseen concepts); compositional generalization burden sits on W3 novel
+combinations. 1 epoch first; FAIL -> continue under the same protocol.
+**Success criterion = gate pass, not loss.** (1)->(7) fully frozen.
+Now: build 6's three CPU artifacts + prepare the Stage-1 experiment per
+(7) — GPU training not started. See
+`route2_p0_contract/ROUTE2_V2_STAGE1_PROTOCOL_v1.md`.
+
 ## (6) B2 data construction v0 (2026-09-24, owner ruling)
 
 **Order (veto-gated)**: 6-0 Operator Capability Profile -> 6-1 Audit-A
