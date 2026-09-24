@@ -5,6 +5,25 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
+## ⑥ B2 数据构造 v0（2026-09-24，owner 裁定）
+
+**工程顺序（一票否决）**：⑥-0 Operator Capability Profile → ⑥-1
+Audit-A（重定义为 Information Discriminability Test——测接口是否客观
+含区分信息，非测模型；148 映射组 → Grounding Discriminator Matrix；
+反作弊：gold 反推 Plan 不得天然 PASS）→ ⑥-2 chain→Plan → ⑥-3 Retention
+Audit → ⑥-4 配 Plan → ⑥-5 B2 包。**Plan 主来源 = Frozen Stage-1
+Model(QGIS Task) 的 Teacher Plan**；gold 反推线只做 de-grounded 诊断/
+上界（剥离 provider/算法 ID/QGIS 参数名 + Leakage Audit：能否从 Plan
+恢复 operator ID），两线绝对不混；gold 禁止用于生成/修正/选择/重写。
+**B2 双 family**：G1 Operation grounding（step+context→operator，
+grounding_unit=operation）/ G2 Workflow grounding（Task+Plan→Graph，
+unit=workflow），unit 标签显式入数据。三 split 同一接口路径
+（1334/120/111 全由同一冻结 Stage-1 生成 Plan，test 加 prediction
+lock）。**关键排序约束：Stage-1 训练+能力门 PASS 前不得批量蒸馏
+Plan**（Teacher Plan 质量差是实验设计的一部分）。三件产物+Audit-A
+PASS 后才进⑦。详见
+`route2_p0_contract/ROUTE2_V2_B2_DATA_CONSTRUCTION_v1.md`。
+
 ## ⑤ Stage-2 Grounding 信息需求 v0（2026-09-24，owner 裁定）
 
 Stage 2 = Task + Plan + QGIS 知识（经后训练入参数，非输入文本）→

@@ -5,6 +5,27 @@ Last updated: 2026-09-23
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
+## (6) B2 data construction v0 (2026-09-24, owner ruling)
+
+**Order (veto-gated)**: 6-0 Operator Capability Profile -> 6-1 Audit-A
+(redefined as an Information Discriminability Test — does the interface
+objectively contain the discriminators, not "can a model guess";
+148 mapping groups -> Grounding Discriminator Matrix; anti-cheat:
+gold-back-projected Plans do not pass by default) -> 6-2 chain->Plan ->
+6-3 Retention Audit -> 6-4 attach Plans -> 6-5 B2 package. **Plan main
+source = Teacher Plans from the frozen Stage-1 model**; the gold
+back-projection line is diagnostic/upper-bound only (strict de-grounding
++ Leakage Audit: can the operator ID be recovered from the Plan), the
+two lines never mix; gold may never generate/correct/select/rewrite
+Teacher Plans. **B2 dual families**: G1 operation grounding (unit=
+operation) / G2 workflow grounding (unit=workflow), explicitly labeled
+for separable analysis. One interface path across splits (1334/120/111
+all planned by the same frozen Stage-1; test adds prediction lock).
+**Key ordering constraint: no batch distillation before Stage-1 passes
+its capability gate** (poor Teacher Plans are part of the experimental
+design). 6's three artifacts + Audit-A PASS gate the step-7 protocol.
+See `route2_p0_contract/ROUTE2_V2_B2_DATA_CONSTRUCTION_v1.md`.
+
 ## (5) Stage-2 grounding information requirements v0 (2026-09-24, owner ruling)
 
 Stage 2 = Task + Plan + QGIS knowledge (internalized via post-training,
