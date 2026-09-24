@@ -27,7 +27,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(BASE))
-from route2_training.plans.gee_op_knowledge_v1 import K  # noqa: E402
+from route2_training.plans.gee_op_knowledge_v1_1 import K  # noqa: E402
 
 SPLIT_RE = re.compile(r'\s*(?:->|>)\s*')
 GEE_ID_RE = re.compile(r'\bee\.[A-Za-z]')

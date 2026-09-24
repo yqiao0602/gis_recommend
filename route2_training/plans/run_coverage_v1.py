@@ -12,8 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from route2_training.plans.chain_to_plan_v1_1 import convert, leakage  # noqa: E402
 
 SRC = '/home/qy/system_redesign/outputs_v2/gee_b1_stage_data_v1/b1_gee_stage_train.jsonl'
-OUT = Path(__file__).resolve().parent / 'coverage_report_v1_1.json'
-SAMPLE_OUT = Path(__file__).resolve().parent / 'plan_samples_v1_1.jsonl'
+OUT = Path(__file__).resolve().parent / 'coverage_report_round1.json'
+SAMPLE_OUT = Path(__file__).resolve().parent / 'plan_samples_round1.jsonl'
 
 st = Counter()
 unknown_ops = Counter()
@@ -90,6 +90,7 @@ report = {
     'failure_by_chain_len_bucket': {str(k): v for k, v in sorted(fail_lens.items())},
     'note': 'coverage_rate != plan quality (owner ruling); separate metrics',
 }
+report['newly_covered_vs_v1_1'] = report['plan_success'] - 41511
 report['op_coverage_rate_token'] = round(known_tokens / (known_tokens + sum(unknown_ops.values())), 4) if (known_tokens + sum(unknown_ops.values())) else None
 OUT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding='utf-8')
 SAMPLE_OUT.write_text('\n'.join(json.dumps(s, ensure_ascii=False) for s in samples), encoding='utf-8')
