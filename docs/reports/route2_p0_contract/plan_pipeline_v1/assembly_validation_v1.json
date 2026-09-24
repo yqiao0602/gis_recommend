@@ -1,0 +1,4223 @@
+{
+ "acceptance": {
+  "g1_assembly_pass": true,
+  "g2_assembly_pass": true,
+  "gold_target_integrity": true,
+  "plan_schema": true,
+  "provenance_complete": true,
+  "leakage_zero": true,
+  "mock_isolation": true,
+  "teacher_plans_generated": 0,
+  "production_samples": 0,
+  "counts": {
+   "g1_samples": 68,
+   "g2_samples": 10,
+   "g1_pass": 68,
+   "g2_pass": 10,
+   "leak_events": 0
+  },
+  "failures": {
+   "g1": [],
+   "g2": []
+  }
+ },
+ "samples": [
+  {
+   "sample_id": "b2g2-W000191",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000191",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Generate synthetic spatial phenomenon. The script generates a synthetic spatial phenomenon over a user-defined study area by creating a hexagonal grid, assigning initial integer values (0–100) to cells based on configurable continuity and smoothness constraints, iteratively adjusting cell values to achieve target 'suavidade' (smoothness) and 'continuidade' (continuity), and finally distributing random points inside grid cells proportional to their assigned values. Outputs include: (1) a vector layer of clipped hexagonal cells with synthetic values ('valor'), auto-incremented IDs, and derived topological attributes; (2) a point layer ('Pontos_aleatorios') where point density per cell reflects the synthetic value (scaled by 'val_max'); and (3) diagnostic results including achieved smoothness and status messages.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "define a geometry or grid construct",
+       "family": "GEOMETRY_DEFINE",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "select features by spatial relationship",
+       "family": "SPATIAL_FILTER",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 3,
+       "intent": "manage layer, field, or dataset organisation",
+       "family": "COLLECTION_MGMT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        2
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 4,
+       "intent": "manage layer, field, or dataset organisation",
+       "family": "COLLECTION_MGMT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        3
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 5,
+       "intent": "generate or load a vector source",
+       "family": "VECTOR_LOAD",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        4
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "native:creategrid",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "native:addfieldtoattributestable",
+      "process_id": "p1"
+     },
+     {
+      "operator_id": "native:extractbylocation",
+      "process_id": "p2"
+     },
+     {
+      "operator_id": "native:addautoincrementalfield",
+      "process_id": "p3"
+     },
+     {
+      "operator_id": "qgis:randompointsinsidepolygons",
+      "process_id": "p4"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p1"
+     },
+     {
+      "source_process_id": "p2",
+      "target_process_id": "p3"
+     },
+     {
+      "source_process_id": "p3",
+      "target_process_id": "p4"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "COLLECTION_MGMT",
+     "GEOMETRY_DEFINE",
+     "SPATIAL_FILTER",
+     "VECTOR_LOAD"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000191-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000191",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate synthetic spatial phenomenon. The script generates a synthetic spatial phenomenon over a user-defined study area by creating a hexagonal grid, assigning initial integer values (0–100) to cells based on configurable continuity and smoothness constraints, iteratively adjusting cell values to achieve target 'suavidade' (smoothness) and 'continuidade' (continuity), and finally distributing random points inside grid cells proportional to their assigned values. Outputs include: (1) a vector layer of clipped hexagonal cells with synthetic values ('valor'), auto-incremented IDs, and derived topological attributes; (2) a point layer ('Pontos_aleatorios') where point density per cell reflects the synthetic value (scaled by 'val_max'); and (3) diagnostic results including achieved smoothness and status messages.",
+   "plan_step": {
+    "intent": "define a geometry or grid construct",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:creategrid",
+   "difficulty_family": "GEOMETRY_DEFINE",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000191-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000191",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate synthetic spatial phenomenon. The script generates a synthetic spatial phenomenon over a user-defined study area by creating a hexagonal grid, assigning initial integer values (0–100) to cells based on configurable continuity and smoothness constraints, iteratively adjusting cell values to achieve target 'suavidade' (smoothness) and 'continuidade' (continuity), and finally distributing random points inside grid cells proportional to their assigned values. Outputs include: (1) a vector layer of clipped hexagonal cells with synthetic values ('valor'), auto-incremented IDs, and derived topological attributes; (2) a point layer ('Pontos_aleatorios') where point density per cell reflects the synthetic value (scaled by 'val_max'); and (3) diagnostic results including achieved smoothness and status messages.",
+   "plan_step": {
+    "intent": "select features by spatial relationship",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:addfieldtoattributestable",
+   "difficulty_family": "SPATIAL_FILTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000191-s3",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000191",
+    "teacher_plan_ref": "MOCK#step3",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate synthetic spatial phenomenon. The script generates a synthetic spatial phenomenon over a user-defined study area by creating a hexagonal grid, assigning initial integer values (0–100) to cells based on configurable continuity and smoothness constraints, iteratively adjusting cell values to achieve target 'suavidade' (smoothness) and 'continuidade' (continuity), and finally distributing random points inside grid cells proportional to their assigned values. Outputs include: (1) a vector layer of clipped hexagonal cells with synthetic values ('valor'), auto-incremented IDs, and derived topological attributes; (2) a point layer ('Pontos_aleatorios') where point density per cell reflects the synthetic value (scaled by 'val_max'); and (3) diagnostic results including achieved smoothness and status messages.",
+   "plan_step": {
+    "intent": "manage layer, field, or dataset organisation",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:extractbylocation",
+   "difficulty_family": "COLLECTION_MGMT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000191-s4",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000191",
+    "teacher_plan_ref": "MOCK#step4",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate synthetic spatial phenomenon. The script generates a synthetic spatial phenomenon over a user-defined study area by creating a hexagonal grid, assigning initial integer values (0–100) to cells based on configurable continuity and smoothness constraints, iteratively adjusting cell values to achieve target 'suavidade' (smoothness) and 'continuidade' (continuity), and finally distributing random points inside grid cells proportional to their assigned values. Outputs include: (1) a vector layer of clipped hexagonal cells with synthetic values ('valor'), auto-incremented IDs, and derived topological attributes; (2) a point layer ('Pontos_aleatorios') where point density per cell reflects the synthetic value (scaled by 'val_max'); and (3) diagnostic results including achieved smoothness and status messages.",
+   "plan_step": {
+    "intent": "manage layer, field, or dataset organisation",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:addautoincrementalfield",
+   "difficulty_family": "COLLECTION_MGMT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000191-s5",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000191",
+    "teacher_plan_ref": "MOCK#step5",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate synthetic spatial phenomenon. The script generates a synthetic spatial phenomenon over a user-defined study area by creating a hexagonal grid, assigning initial integer values (0–100) to cells based on configurable continuity and smoothness constraints, iteratively adjusting cell values to achieve target 'suavidade' (smoothness) and 'continuidade' (continuity), and finally distributing random points inside grid cells proportional to their assigned values. Outputs include: (1) a vector layer of clipped hexagonal cells with synthetic values ('valor'), auto-incremented IDs, and derived topological attributes; (2) a point layer ('Pontos_aleatorios') where point density per cell reflects the synthetic value (scaled by 'val_max'); and (3) diagnostic results including achieved smoothness and status messages.",
+   "plan_step": {
+    "intent": "generate or load a vector source",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "qgis:randompointsinsidepolygons",
+   "difficulty_family": "VECTOR_LOAD",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000408",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000408",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Convert ice-water boundaries to polylines. The script processes pre-classified raster files representing detected ice-water boundaries (stored in 'water_ice/*.tif') and converts them into vector polyline layers. It applies GDAL nodata masking (setting 0 as NoData), GRASS r.thin to skeletonize the binary boundary raster (200 iterations), GRASS r.to.vect to raster-to-vector conversion (line type, value column), and reprojects the resulting shapefiles from an unspecified input CRS to EPSG:3413 (NSIDC Polar Stereographic North, used for Arctic cryosphere applications). The final outputs are reprojected polyline shapefiles named 'wil_edge_line_{counter}.shp' → 'wil_line_repr_{counter}.shp', loaded as vector layers in QGIS. The study area is implied to be a glacier in Oregon (per Dropbox path), and the time range is indicated by the folder '2003/Classified/', confirming data from 2003. No satellite, sensor, or band information is present — the input rasters are already classified outputs ('Classified/edges/water_ice/'), so the script performs post-classification geometric processing only. Input CRS is not specified; output CRS is EPSG:3413 with explicit proj pipeline definition.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "manage layer, field, or dataset organisation",
+       "family": "COLLECTION_MGMT",
+       "input": [
+        {
+         "type": "raster"
+        }
+       ],
+       "output": {
+        "type": [
+         "raster"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "compute neighbourhood-based raster values",
+       "family": "NEIGHBORHOOD",
+       "input": [
+        {
+         "type": "raster"
+        }
+       ],
+       "output": {
+        "type": [
+         "raster"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 3,
+       "intent": "raster to vector",
+       "family": "RASTER_TO_VECTOR",
+       "input": [
+        {
+         "type": "raster"
+        },
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        2
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 4,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        3
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "gdal:translate",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "grass7:r.thin",
+      "process_id": "p1"
+     },
+     {
+      "operator_id": "grass7:r.to.vect",
+      "process_id": "p2"
+     },
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p3"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p1"
+     },
+     {
+      "source_process_id": "p1",
+      "target_process_id": "p2"
+     },
+     {
+      "source_process_id": "p2",
+      "target_process_id": "p3"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "COLLECTION_MGMT",
+     "NEIGHBORHOOD",
+     "RASTER_TO_VECTOR",
+     "RESAMPLE_REPROJECT"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000408-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000408",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Convert ice-water boundaries to polylines. The script processes pre-classified raster files representing detected ice-water boundaries (stored in 'water_ice/*.tif') and converts them into vector polyline layers. It applies GDAL nodata masking (setting 0 as NoData), GRASS r.thin to skeletonize the binary boundary raster (200 iterations), GRASS r.to.vect to raster-to-vector conversion (line type, value column), and reprojects the resulting shapefiles from an unspecified input CRS to EPSG:3413 (NSIDC Polar Stereographic North, used for Arctic cryosphere applications). The final outputs are reprojected polyline shapefiles named 'wil_edge_line_{counter}.shp' → 'wil_line_repr_{counter}.shp', loaded as vector layers in QGIS. The study area is implied to be a glacier in Oregon (per Dropbox path), and the time range is indicated by the folder '2003/Classified/', confirming data from 2003. No satellite, sensor, or band information is present — the input rasters are already classified outputs ('Classified/edges/water_ice/'), so the script performs post-classification geometric processing only. Input CRS is not specified; output CRS is EPSG:3413 with explicit proj pipeline definition.",
+   "plan_step": {
+    "intent": "manage layer, field, or dataset organisation",
+    "input_types": [
+     "raster"
+    ],
+    "output_types": [
+     [
+      "raster"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "gdal:translate",
+   "difficulty_family": "COLLECTION_MGMT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000408-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000408",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Convert ice-water boundaries to polylines. The script processes pre-classified raster files representing detected ice-water boundaries (stored in 'water_ice/*.tif') and converts them into vector polyline layers. It applies GDAL nodata masking (setting 0 as NoData), GRASS r.thin to skeletonize the binary boundary raster (200 iterations), GRASS r.to.vect to raster-to-vector conversion (line type, value column), and reprojects the resulting shapefiles from an unspecified input CRS to EPSG:3413 (NSIDC Polar Stereographic North, used for Arctic cryosphere applications). The final outputs are reprojected polyline shapefiles named 'wil_edge_line_{counter}.shp' → 'wil_line_repr_{counter}.shp', loaded as vector layers in QGIS. The study area is implied to be a glacier in Oregon (per Dropbox path), and the time range is indicated by the folder '2003/Classified/', confirming data from 2003. No satellite, sensor, or band information is present — the input rasters are already classified outputs ('Classified/edges/water_ice/'), so the script performs post-classification geometric processing only. Input CRS is not specified; output CRS is EPSG:3413 with explicit proj pipeline definition.",
+   "plan_step": {
+    "intent": "compute neighbourhood-based raster values",
+    "input_types": [
+     "raster"
+    ],
+    "output_types": [
+     [
+      "raster"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "grass7:r.thin",
+   "difficulty_family": "NEIGHBORHOOD",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000408-s3",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000408",
+    "teacher_plan_ref": "MOCK#step3",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Convert ice-water boundaries to polylines. The script processes pre-classified raster files representing detected ice-water boundaries (stored in 'water_ice/*.tif') and converts them into vector polyline layers. It applies GDAL nodata masking (setting 0 as NoData), GRASS r.thin to skeletonize the binary boundary raster (200 iterations), GRASS r.to.vect to raster-to-vector conversion (line type, value column), and reprojects the resulting shapefiles from an unspecified input CRS to EPSG:3413 (NSIDC Polar Stereographic North, used for Arctic cryosphere applications). The final outputs are reprojected polyline shapefiles named 'wil_edge_line_{counter}.shp' → 'wil_line_repr_{counter}.shp', loaded as vector layers in QGIS. The study area is implied to be a glacier in Oregon (per Dropbox path), and the time range is indicated by the folder '2003/Classified/', confirming data from 2003. No satellite, sensor, or band information is present — the input rasters are already classified outputs ('Classified/edges/water_ice/'), so the script performs post-classification geometric processing only. Input CRS is not specified; output CRS is EPSG:3413 with explicit proj pipeline definition.",
+   "plan_step": {
+    "intent": "raster to vector",
+    "input_types": [
+     "raster",
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "grass7:r.to.vect",
+   "difficulty_family": "RASTER_TO_VECTOR",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000408-s4",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000408",
+    "teacher_plan_ref": "MOCK#step4",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Convert ice-water boundaries to polylines. The script processes pre-classified raster files representing detected ice-water boundaries (stored in 'water_ice/*.tif') and converts them into vector polyline layers. It applies GDAL nodata masking (setting 0 as NoData), GRASS r.thin to skeletonize the binary boundary raster (200 iterations), GRASS r.to.vect to raster-to-vector conversion (line type, value column), and reprojects the resulting shapefiles from an unspecified input CRS to EPSG:3413 (NSIDC Polar Stereographic North, used for Arctic cryosphere applications). The final outputs are reprojected polyline shapefiles named 'wil_edge_line_{counter}.shp' → 'wil_line_repr_{counter}.shp', loaded as vector layers in QGIS. The study area is implied to be a glacier in Oregon (per Dropbox path), and the time range is indicated by the folder '2003/Classified/', confirming data from 2003. No satellite, sensor, or band information is present — the input rasters are already classified outputs ('Classified/edges/water_ice/'), so the script performs post-classification geometric processing only. Input CRS is not specified; output CRS is EPSG:3413 with explicit proj pipeline definition.",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000527",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 3,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        2
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 4,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        3
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 5,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        4
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 6,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        5
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 7,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        6
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 8,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        7
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 9,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        8
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 10,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        9
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 11,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        10
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 12,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        11
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 13,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        12
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 14,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        13
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 15,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        14
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 16,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        15
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 17,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        16
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 18,
+       "intent": "compute per-cell arithmetic across raster bands",
+       "family": "BAND_ARITHMETIC",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        17
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p1"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p2"
+     },
+     {
+      "operator_id": "native:fixgeometries",
+      "process_id": "p3"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p4"
+     },
+     {
+      "operator_id": "native:polygonstolines",
+      "process_id": "p5"
+     },
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p6"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p7"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p8"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p9"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p10"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p11"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p12"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p13"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p14"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p15"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p16"
+     },
+     {
+      "operator_id": "native:fieldcalculator",
+      "process_id": "p17"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p3"
+     },
+     {
+      "source_process_id": "p1",
+      "target_process_id": "p2"
+     },
+     {
+      "source_process_id": "p2",
+      "target_process_id": "p4"
+     },
+     {
+      "source_process_id": "p3",
+      "target_process_id": "p5"
+     },
+     {
+      "source_process_id": "p4",
+      "target_process_id": "p6"
+     },
+     {
+      "source_process_id": "p6",
+      "target_process_id": "p7"
+     },
+     {
+      "source_process_id": "p7",
+      "target_process_id": "p8"
+     },
+     {
+      "source_process_id": "p8",
+      "target_process_id": "p9"
+     },
+     {
+      "source_process_id": "p9",
+      "target_process_id": "p10"
+     },
+     {
+      "source_process_id": "p10",
+      "target_process_id": "p11"
+     },
+     {
+      "source_process_id": "p11",
+      "target_process_id": "p12"
+     },
+     {
+      "source_process_id": "p12",
+      "target_process_id": "p13"
+     },
+     {
+      "source_process_id": "p13",
+      "target_process_id": "p14"
+     },
+     {
+      "source_process_id": "p14",
+      "target_process_id": "p15"
+     },
+     {
+      "source_process_id": "p15",
+      "target_process_id": "p16"
+     },
+     {
+      "source_process_id": "p16",
+      "target_process_id": "p17"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "BAND_ARITHMETIC",
+     "RESAMPLE_REPROJECT",
+     "VECTOR_GEOMETRY"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s3",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step3",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s4",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step4",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fixgeometries",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s5",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step5",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s6",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step6",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:polygonstolines",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s7",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step7",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s8",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step8",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s9",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step9",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s10",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step10",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s11",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step11",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s12",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step12",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s13",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step13",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s14",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step14",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s15",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step15",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s16",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step16",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s17",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step17",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000527-s18",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000527",
+    "teacher_plan_ref": "MOCK#step18",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Score language overlap proximity. The script computes a linguistic proximity scoring metric for minor language points relative to major language polygons. It first identifies spatial overlaps between minor language points and three categories of major language polygons (both_ab_lng, type_a_lng, type_b_lng), then calculates distances from each point to the boundary of minimal circles enclosing matching type_a language polygons (D) and to the nearest line geometry of those same polygons (b), computes D-b differences, applies a logarithmic transformation (fxa = 21.6679 * ln(101 - 100*(D-b)/D)) per overlap, extracts up to three ISO codes from type_b overlaps (lngb1–lngb3), retrieves corresponding confidence scores ('confidenceB') from an external layer 'Danny_score_e1e6d035_60c8_4fb7_9c0a_da935ec21eea' filtered by country and code, and concatenates them into a final comma-separated 'fxb' field. Output is a vector layer with added scoring fields including 'fxb'.",
+   "plan_step": {
+    "intent": "compute per-cell arithmetic across raster bands",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fieldcalculator",
+   "difficulty_family": "BAND_ARITHMETIC",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000550",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000550",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Plot river transect WSE profiles. The script generates cross-sectional plots of Water Surface Elevation (WSE) along river centerline transects, overlaying multiple RAS (River Analysis System) WSE rasters (e.g., from different storm events or typhoon scenarios like 'Ty. Odette') against a baseline terrain elevation profile. For each input river centerline feature (named, e.g., 'Transect_1'), it samples elevation values at 1-meter intervals, extracts terrain and all matching WSE rasters (via glob pattern 'SB*/WSE*.tif'), constructs distance–elevation arrays, and saves a publication-ready PNG figure showing terrain (black line) and WSE curves (colored lines) with labeled legends (e.g., 'Ty. Odette', 'Ty. Odette-Post'), axis labels ('Station (m)', 'WSE (m)'), and tight layout.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "compute statistics over zones or sampled regions",
+       "family": "REGIONAL_STATS",
+       "input": [
+        {
+         "type": "raster"
+        },
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 3,
+       "intent": "aggregate features or cell values into summary results",
+       "family": "AGGREGATION",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        2
+       ],
+       "constraints": {
+        "statistic": true
+       }
+      },
+      {
+       "order": 4,
+       "intent": "aggregate features or cell values into summary results",
+       "family": "AGGREGATION",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        3
+       ],
+       "constraints": {
+        "statistic": true
+       }
+      },
+      {
+       "order": 5,
+       "intent": "compute statistics over zones or sampled regions",
+       "family": "REGIONAL_STATS",
+       "input": [
+        {
+         "type": "raster"
+        },
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        4
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "native:aggregate",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "native:aggregate",
+      "process_id": "p1"
+     },
+     {
+      "operator_id": "native:pointsalonglines",
+      "process_id": "p2"
+     },
+     {
+      "operator_id": "native:rastersampling",
+      "process_id": "p3"
+     },
+     {
+      "operator_id": "native:rastersampling",
+      "process_id": "p4"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p2",
+      "target_process_id": "p3"
+     },
+     {
+      "source_process_id": "p3",
+      "target_process_id": "p0"
+     },
+     {
+      "source_process_id": "p3",
+      "target_process_id": "p1"
+     },
+     {
+      "source_process_id": "p3",
+      "target_process_id": "p4"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "AGGREGATION",
+     "REGIONAL_STATS",
+     "VECTOR_GEOMETRY"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000550-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000550",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Plot river transect WSE profiles. The script generates cross-sectional plots of Water Surface Elevation (WSE) along river centerline transects, overlaying multiple RAS (River Analysis System) WSE rasters (e.g., from different storm events or typhoon scenarios like 'Ty. Odette') against a baseline terrain elevation profile. For each input river centerline feature (named, e.g., 'Transect_1'), it samples elevation values at 1-meter intervals, extracts terrain and all matching WSE rasters (via glob pattern 'SB*/WSE*.tif'), constructs distance–elevation arrays, and saves a publication-ready PNG figure showing terrain (black line) and WSE curves (colored lines) with labeled legends (e.g., 'Ty. Odette', 'Ty. Odette-Post'), axis labels ('Station (m)', 'WSE (m)'), and tight layout.",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:aggregate",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000550-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000550",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Plot river transect WSE profiles. The script generates cross-sectional plots of Water Surface Elevation (WSE) along river centerline transects, overlaying multiple RAS (River Analysis System) WSE rasters (e.g., from different storm events or typhoon scenarios like 'Ty. Odette') against a baseline terrain elevation profile. For each input river centerline feature (named, e.g., 'Transect_1'), it samples elevation values at 1-meter intervals, extracts terrain and all matching WSE rasters (via glob pattern 'SB*/WSE*.tif'), constructs distance–elevation arrays, and saves a publication-ready PNG figure showing terrain (black line) and WSE curves (colored lines) with labeled legends (e.g., 'Ty. Odette', 'Ty. Odette-Post'), axis labels ('Station (m)', 'WSE (m)'), and tight layout.",
+   "plan_step": {
+    "intent": "compute statistics over zones or sampled regions",
+    "input_types": [
+     "raster",
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:aggregate",
+   "difficulty_family": "REGIONAL_STATS",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000550-s3",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000550",
+    "teacher_plan_ref": "MOCK#step3",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Plot river transect WSE profiles. The script generates cross-sectional plots of Water Surface Elevation (WSE) along river centerline transects, overlaying multiple RAS (River Analysis System) WSE rasters (e.g., from different storm events or typhoon scenarios like 'Ty. Odette') against a baseline terrain elevation profile. For each input river centerline feature (named, e.g., 'Transect_1'), it samples elevation values at 1-meter intervals, extracts terrain and all matching WSE rasters (via glob pattern 'SB*/WSE*.tif'), constructs distance–elevation arrays, and saves a publication-ready PNG figure showing terrain (black line) and WSE curves (colored lines) with labeled legends (e.g., 'Ty. Odette', 'Ty. Odette-Post'), axis labels ('Station (m)', 'WSE (m)'), and tight layout.",
+   "plan_step": {
+    "intent": "aggregate features or cell values into summary results",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {
+     "statistic": true
+    }
+   },
+   "target_operator": "native:pointsalonglines",
+   "difficulty_family": "AGGREGATION",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000550-s4",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000550",
+    "teacher_plan_ref": "MOCK#step4",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Plot river transect WSE profiles. The script generates cross-sectional plots of Water Surface Elevation (WSE) along river centerline transects, overlaying multiple RAS (River Analysis System) WSE rasters (e.g., from different storm events or typhoon scenarios like 'Ty. Odette') against a baseline terrain elevation profile. For each input river centerline feature (named, e.g., 'Transect_1'), it samples elevation values at 1-meter intervals, extracts terrain and all matching WSE rasters (via glob pattern 'SB*/WSE*.tif'), constructs distance–elevation arrays, and saves a publication-ready PNG figure showing terrain (black line) and WSE curves (colored lines) with labeled legends (e.g., 'Ty. Odette', 'Ty. Odette-Post'), axis labels ('Station (m)', 'WSE (m)'), and tight layout.",
+   "plan_step": {
+    "intent": "aggregate features or cell values into summary results",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {
+     "statistic": true
+    }
+   },
+   "target_operator": "native:rastersampling",
+   "difficulty_family": "AGGREGATION",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000550-s5",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000550",
+    "teacher_plan_ref": "MOCK#step5",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Plot river transect WSE profiles. The script generates cross-sectional plots of Water Surface Elevation (WSE) along river centerline transects, overlaying multiple RAS (River Analysis System) WSE rasters (e.g., from different storm events or typhoon scenarios like 'Ty. Odette') against a baseline terrain elevation profile. For each input river centerline feature (named, e.g., 'Transect_1'), it samples elevation values at 1-meter intervals, extracts terrain and all matching WSE rasters (via glob pattern 'SB*/WSE*.tif'), constructs distance–elevation arrays, and saves a publication-ready PNG figure showing terrain (black line) and WSE curves (colored lines) with labeled legends (e.g., 'Ty. Odette', 'Ty. Odette-Post'), axis labels ('Station (m)', 'WSE (m)'), and tight layout.",
+   "plan_step": {
+    "intent": "compute statistics over zones or sampled regions",
+    "input_types": [
+     "raster",
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:rastersampling",
+   "difficulty_family": "REGIONAL_STATS",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000562",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000562",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Load SRTM DEM tiles. The script loads SRTM (Shuttle Radar Topography Mission) digital elevation model (DEM) raster tiles matching the current QGIS map canvas extent using a prebuilt grid vector layer (srtm_grid.gpkg). It extracts intersecting grid cells, resolves corresponding .hgt filenames, loads valid raster layers from a local folder, and either adds a single raster layer or builds and loads a GDAL virtual raster (VRT) mosaic when multiple tiles are required. Outputs include one or more loaded DEM raster layers named 'DEM' at the bottom of the layer tree, and optionally a missing-tiles vector layer if some SRTM tiles are absent.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "select features by spatial relationship",
+       "family": "SPATIAL_FILTER",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "manage layer, field, or dataset organisation",
+       "family": "COLLECTION_MGMT",
+       "input": [
+        {
+         "type": "literal"
+        },
+        {
+         "type": "raster"
+        }
+       ],
+       "output": {
+        "type": [
+         "raster"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "native:extractbyextent",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "gdal:buildvirtualraster",
+      "process_id": "p1"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p1"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "COLLECTION_MGMT",
+     "SPATIAL_FILTER"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000562-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000562",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Load SRTM DEM tiles. The script loads SRTM (Shuttle Radar Topography Mission) digital elevation model (DEM) raster tiles matching the current QGIS map canvas extent using a prebuilt grid vector layer (srtm_grid.gpkg). It extracts intersecting grid cells, resolves corresponding .hgt filenames, loads valid raster layers from a local folder, and either adds a single raster layer or builds and loads a GDAL virtual raster (VRT) mosaic when multiple tiles are required. Outputs include one or more loaded DEM raster layers named 'DEM' at the bottom of the layer tree, and optionally a missing-tiles vector layer if some SRTM tiles are absent.",
+   "plan_step": {
+    "intent": "select features by spatial relationship",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:extractbyextent",
+   "difficulty_family": "SPATIAL_FILTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000562-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000562",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Load SRTM DEM tiles. The script loads SRTM (Shuttle Radar Topography Mission) digital elevation model (DEM) raster tiles matching the current QGIS map canvas extent using a prebuilt grid vector layer (srtm_grid.gpkg). It extracts intersecting grid cells, resolves corresponding .hgt filenames, loads valid raster layers from a local folder, and either adds a single raster layer or builds and loads a GDAL virtual raster (VRT) mosaic when multiple tiles are required. Outputs include one or more loaded DEM raster layers named 'DEM' at the bottom of the layer tree, and optionally a missing-tiles vector layer if some SRTM tiles are absent.",
+   "plan_step": {
+    "intent": "manage layer, field, or dataset organisation",
+    "input_types": [
+     "literal",
+     "raster"
+    ],
+    "output_types": [
+     [
+      "raster"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "gdal:buildvirtualraster",
+   "difficulty_family": "COLLECTION_MGMT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000670",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "export or save workflow output",
+       "family": "EXPORT_OUTPUT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 3,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        2
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 4,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        3
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 5,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        4
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 6,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        5
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 7,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        6
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 8,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        7
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 9,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        8
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 10,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        9
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 11,
+       "intent": "select features by attribute condition",
+       "family": "ATTRIBUTE_FILTER",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "image",
+         "vector"
+        ]
+       },
+       "depends_on": [
+        10
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 12,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        11
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 13,
+       "intent": "select features by spatial relationship",
+       "family": "SPATIAL_FILTER",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        12
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 14,
+       "intent": "select features by spatial relationship",
+       "family": "SPATIAL_FILTER",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        13
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 15,
+       "intent": "select features by attribute condition",
+       "family": "ATTRIBUTE_FILTER",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "image",
+         "vector"
+        ]
+       },
+       "depends_on": [
+        14
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 16,
+       "intent": "select features by attribute condition",
+       "family": "ATTRIBUTE_FILTER",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "image",
+         "vector"
+        ]
+       },
+       "depends_on": [
+        15
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 17,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        16
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 18,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        17
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 19,
+       "intent": "restrict data spatially using a geometry or extent",
+       "family": "SPATIAL_CLIP",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        18
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 20,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        19
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 21,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        20
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "native:saveselectedfeatures",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "native:fixgeometries",
+      "process_id": "p1"
+     },
+     {
+      "operator_id": "native:dissolve",
+      "process_id": "p2"
+     },
+     {
+      "operator_id": "native:multiparttosingleparts",
+      "process_id": "p3"
+     },
+     {
+      "operator_id": "native:dissolve",
+      "process_id": "p4"
+     },
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p5"
+     },
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p6"
+     },
+     {
+      "operator_id": "native:extractbyextent",
+      "process_id": "p7"
+     },
+     {
+      "operator_id": "native:extractbyexpression",
+      "process_id": "p8"
+     },
+     {
+      "operator_id": "native:fixgeometries",
+      "process_id": "p9"
+     },
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p10"
+     },
+     {
+      "operator_id": "native:clip",
+      "process_id": "p11"
+     },
+     {
+      "operator_id": "native:fixgeometries",
+      "process_id": "p12"
+     },
+     {
+      "operator_id": "native:deleteholes",
+      "process_id": "p13"
+     },
+     {
+      "operator_id": "native:multiparttosingleparts",
+      "process_id": "p14"
+     },
+     {
+      "operator_id": "native:extractbylocation",
+      "process_id": "p15"
+     },
+     {
+      "operator_id": "native:extractbyexpression",
+      "process_id": "p16"
+     },
+     {
+      "operator_id": "native:fixgeometries",
+      "process_id": "p17"
+     },
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p18"
+     },
+     {
+      "operator_id": "native:fixgeometries",
+      "process_id": "p19"
+     },
+     {
+      "operator_id": "native:extractbyexpression",
+      "process_id": "p20"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p1"
+     },
+     {
+      "source_process_id": "p1",
+      "target_process_id": "p2"
+     },
+     {
+      "source_process_id": "p3",
+      "target_process_id": "p4"
+     },
+     {
+      "source_process_id": "p4",
+      "target_process_id": "p5"
+     },
+     {
+      "source_process_id": "p5",
+      "target_process_id": "p6"
+     },
+     {
+      "source_process_id": "p5",
+      "target_process_id": "p7"
+     },
+     {
+      "source_process_id": "p6",
+      "target_process_id": "p11"
+     },
+     {
+      "source_process_id": "p6",
+      "target_process_id": "p15"
+     },
+     {
+      "source_process_id": "p7",
+      "target_process_id": "p8"
+     },
+     {
+      "source_process_id": "p8",
+      "target_process_id": "p9"
+     },
+     {
+      "source_process_id": "p9",
+      "target_process_id": "p10"
+     },
+     {
+      "source_process_id": "p10",
+      "target_process_id": "p11"
+     },
+     {
+      "source_process_id": "p11",
+      "target_process_id": "p12"
+     },
+     {
+      "source_process_id": "p12",
+      "target_process_id": "p13"
+     },
+     {
+      "source_process_id": "p14",
+      "target_process_id": "p15"
+     },
+     {
+      "source_process_id": "p15",
+      "target_process_id": "p16"
+     },
+     {
+      "source_process_id": "p17",
+      "target_process_id": "p18"
+     },
+     {
+      "source_process_id": "p18",
+      "target_process_id": "p19"
+     },
+     {
+      "source_process_id": "p19",
+      "target_process_id": "p20"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "ATTRIBUTE_FILTER",
+     "EXPORT_OUTPUT",
+     "RESAMPLE_REPROJECT",
+     "SPATIAL_CLIP",
+     "SPATIAL_FILTER",
+     "VECTOR_GEOMETRY"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "export or save workflow output",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:saveselectedfeatures",
+   "difficulty_family": "EXPORT_OUTPUT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fixgeometries",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s3",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step3",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:dissolve",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s4",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step4",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:multiparttosingleparts",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s5",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step5",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:dissolve",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s6",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step6",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s7",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step7",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s8",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step8",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:extractbyextent",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s9",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step9",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:extractbyexpression",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s10",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step10",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fixgeometries",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s11",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step11",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "select features by attribute condition",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "image",
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "ATTRIBUTE_FILTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s12",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step12",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:clip",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s13",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step13",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "select features by spatial relationship",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fixgeometries",
+   "difficulty_family": "SPATIAL_FILTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s14",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step14",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "select features by spatial relationship",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:deleteholes",
+   "difficulty_family": "SPATIAL_FILTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s15",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step15",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "select features by attribute condition",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "image",
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:multiparttosingleparts",
+   "difficulty_family": "ATTRIBUTE_FILTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s16",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step16",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "select features by attribute condition",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "image",
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:extractbylocation",
+   "difficulty_family": "ATTRIBUTE_FILTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s17",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step17",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:extractbyexpression",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s18",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step18",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fixgeometries",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s19",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step19",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "restrict data spatially using a geometry or extent",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "SPATIAL_CLIP",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s20",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step20",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fixgeometries",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000670-s21",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000670",
+    "teacher_plan_ref": "MOCK#step21",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate estuary water area. The script produces a cleaned, filled water area for an estuary by intersecting a manually drawn polygon ('estuario_rascunho') with OpenStreetMap (OSM) water features (natural=water, landuse=reservoir, or waterway=riverbank) extracted from a Geofabrik Brazil South PBF file. It performs geometry cleaning (fix, dissolve, multipart-to-singlepart), reprojection to UTM 22S (EPSG:32722), spatial clipping and filtering by OSM tags, hole removal, and area-based filtering (MIN_WATER_AREA_M2). Outputs include GeoJSON, GeoPackage, Shapefile, and CSV files containing the final water polygons with attributes (id, name, source, method, area_m2, perim_m).",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:extractbyexpression",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000680",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000680",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Generate concave hull from points. The script computes a concave hull (alpha shape) from an input point layer using Delaunay triangulation, edge-length filtering based on an alpha threshold (0–1), removal of triangles with edges longer than alpha × maximum edge length, dissolution of remaining triangles, and optional hole removal and multipart geometry splitting. The output is a polygon vector layer representing the concave hull.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "qgis:delaunaytriangulation",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "native:dissolve",
+      "process_id": "p1"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p1"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "VECTOR_GEOMETRY"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000680-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000680",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate concave hull from points. The script computes a concave hull (alpha shape) from an input point layer using Delaunay triangulation, edge-length filtering based on an alpha threshold (0–1), removal of triangles with edges longer than alpha × maximum edge length, dissolution of remaining triangles, and optional hole removal and multipart geometry splitting. The output is a polygon vector layer representing the concave hull.",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "qgis:delaunaytriangulation",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000680-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000680",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Generate concave hull from points. The script computes a concave hull (alpha shape) from an input point layer using Delaunay triangulation, edge-length filtering based on an alpha threshold (0–1), removal of triangles with edges longer than alpha × maximum edge length, dissolution of remaining triangles, and optional hole removal and multipart geometry splitting. The output is a polygon vector layer representing the concave hull.",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:dissolve",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000692",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000692",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Identify contributing subcatchments. The script identifies the upstream contributing subcatchments for each gauging station by topologically traversing a river network (using NET_ID and NET_TO fields), collecting associated subcatchments via CATCH_ID, dissolving them into a single polygon per station, and attaching Mean Flow and Mean Low Flow attributes from the gauging station layer. It requires pre-processed inputs: a fixed river network with flow direction topology, ungaged subcatchment polygons, and point-based gauging stations with hydrological time-series summary fields (e.g., annual mean flow). Output is a polygon layer — one dissolved gauged subcatchment per station — enriched with flow metrics.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "select features by attribute condition",
+       "family": "ATTRIBUTE_FILTER",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "image",
+         "vector"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 3,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        2
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 4,
+       "intent": "join attributes or nearest features across layers",
+       "family": "SPATIAL_JOIN",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "image",
+         "vector"
+        ]
+       },
+       "depends_on": [
+        3
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 5,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        4
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "native:joinattributesbylocation",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "native:extractbyexpression",
+      "process_id": "p1"
+     },
+     {
+      "operator_id": "native:dissolve",
+      "process_id": "p2"
+     },
+     {
+      "operator_id": "native:fixgeometries",
+      "process_id": "p3"
+     },
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p4"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p4"
+     },
+     {
+      "source_process_id": "p1",
+      "target_process_id": "p2"
+     },
+     {
+      "source_process_id": "p3",
+      "target_process_id": "p0"
+     },
+     {
+      "source_process_id": "p3",
+      "target_process_id": "p1"
+     },
+     {
+      "source_process_id": "p4",
+      "target_process_id": "p0"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "ATTRIBUTE_FILTER",
+     "RESAMPLE_REPROJECT",
+     "SPATIAL_JOIN",
+     "VECTOR_GEOMETRY"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000692-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000692",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Identify contributing subcatchments. The script identifies the upstream contributing subcatchments for each gauging station by topologically traversing a river network (using NET_ID and NET_TO fields), collecting associated subcatchments via CATCH_ID, dissolving them into a single polygon per station, and attaching Mean Flow and Mean Low Flow attributes from the gauging station layer. It requires pre-processed inputs: a fixed river network with flow direction topology, ungaged subcatchment polygons, and point-based gauging stations with hydrological time-series summary fields (e.g., annual mean flow). Output is a polygon layer — one dissolved gauged subcatchment per station — enriched with flow metrics.",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:joinattributesbylocation",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000692-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000692",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Identify contributing subcatchments. The script identifies the upstream contributing subcatchments for each gauging station by topologically traversing a river network (using NET_ID and NET_TO fields), collecting associated subcatchments via CATCH_ID, dissolving them into a single polygon per station, and attaching Mean Flow and Mean Low Flow attributes from the gauging station layer. It requires pre-processed inputs: a fixed river network with flow direction topology, ungaged subcatchment polygons, and point-based gauging stations with hydrological time-series summary fields (e.g., annual mean flow). Output is a polygon layer — one dissolved gauged subcatchment per station — enriched with flow metrics.",
+   "plan_step": {
+    "intent": "select features by attribute condition",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "image",
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:extractbyexpression",
+   "difficulty_family": "ATTRIBUTE_FILTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000692-s3",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000692",
+    "teacher_plan_ref": "MOCK#step3",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Identify contributing subcatchments. The script identifies the upstream contributing subcatchments for each gauging station by topologically traversing a river network (using NET_ID and NET_TO fields), collecting associated subcatchments via CATCH_ID, dissolving them into a single polygon per station, and attaching Mean Flow and Mean Low Flow attributes from the gauging station layer. It requires pre-processed inputs: a fixed river network with flow direction topology, ungaged subcatchment polygons, and point-based gauging stations with hydrological time-series summary fields (e.g., annual mean flow). Output is a polygon layer — one dissolved gauged subcatchment per station — enriched with flow metrics.",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:dissolve",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000692-s4",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000692",
+    "teacher_plan_ref": "MOCK#step4",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Identify contributing subcatchments. The script identifies the upstream contributing subcatchments for each gauging station by topologically traversing a river network (using NET_ID and NET_TO fields), collecting associated subcatchments via CATCH_ID, dissolving them into a single polygon per station, and attaching Mean Flow and Mean Low Flow attributes from the gauging station layer. It requires pre-processed inputs: a fixed river network with flow direction topology, ungaged subcatchment polygons, and point-based gauging stations with hydrological time-series summary fields (e.g., annual mean flow). Output is a polygon layer — one dissolved gauged subcatchment per station — enriched with flow metrics.",
+   "plan_step": {
+    "intent": "join attributes or nearest features across layers",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "image",
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:fixgeometries",
+   "difficulty_family": "SPATIAL_JOIN",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000692-s5",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000692",
+    "teacher_plan_ref": "MOCK#step5",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Identify contributing subcatchments. The script identifies the upstream contributing subcatchments for each gauging station by topologically traversing a river network (using NET_ID and NET_TO fields), collecting associated subcatchments via CATCH_ID, dissolving them into a single polygon per station, and attaching Mean Flow and Mean Low Flow attributes from the gauging station layer. It requires pre-processed inputs: a fixed river network with flow direction topology, ungaged subcatchment polygons, and point-based gauging stations with hydrological time-series summary fields (e.g., annual mean flow). Output is a polygon layer — one dissolved gauged subcatchment per station — enriched with flow metrics.",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000734",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000734",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Convert points to polygons. The script converts an input point vector layer into polygon features by first reprojecting the points to EPSG:4326, then connecting them into closed paths (lines) using a grouping field and sequence ordering field, and finally polygonizing those lines into valid polygons. The output is a polygon vector layer ('refatorado') preserving original attributes, intended for representing enclosed areas (e.g., field boundaries, plot perimeters, or administrative zones) derived from ordered boundary points.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "resample or reproject a raster layer",
+       "family": "RESAMPLE_REPROJECT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "transform vector geometries in place",
+       "family": "VECTOR_GEOMETRY",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "string",
+         "vector"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 3,
+       "intent": "raster to vector",
+       "family": "RASTER_TO_VECTOR",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "literal",
+         "vector"
+        ]
+       },
+       "depends_on": [
+        2
+       ],
+       "constraints": {}
+      },
+      {
+       "order": 4,
+       "intent": "manage layer, field, or dataset organisation",
+       "family": "COLLECTION_MGMT",
+       "input": [
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [
+        3
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "native:reprojectlayer",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "native:pointstopath",
+      "process_id": "p1"
+     },
+     {
+      "operator_id": "native:polygonize",
+      "process_id": "p2"
+     },
+     {
+      "operator_id": "native:refactorfields",
+      "process_id": "p3"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p1"
+     },
+     {
+      "source_process_id": "p1",
+      "target_process_id": "p2"
+     },
+     {
+      "source_process_id": "p2",
+      "target_process_id": "p3"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "COLLECTION_MGMT",
+     "RASTER_TO_VECTOR",
+     "RESAMPLE_REPROJECT",
+     "VECTOR_GEOMETRY"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000734-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000734",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Convert points to polygons. The script converts an input point vector layer into polygon features by first reprojecting the points to EPSG:4326, then connecting them into closed paths (lines) using a grouping field and sequence ordering field, and finally polygonizing those lines into valid polygons. The output is a polygon vector layer ('refatorado') preserving original attributes, intended for representing enclosed areas (e.g., field boundaries, plot perimeters, or administrative zones) derived from ordered boundary points.",
+   "plan_step": {
+    "intent": "resample or reproject a raster layer",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:reprojectlayer",
+   "difficulty_family": "RESAMPLE_REPROJECT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000734-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000734",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Convert points to polygons. The script converts an input point vector layer into polygon features by first reprojecting the points to EPSG:4326, then connecting them into closed paths (lines) using a grouping field and sequence ordering field, and finally polygonizing those lines into valid polygons. The output is a polygon vector layer ('refatorado') preserving original attributes, intended for representing enclosed areas (e.g., field boundaries, plot perimeters, or administrative zones) derived from ordered boundary points.",
+   "plan_step": {
+    "intent": "transform vector geometries in place",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "string",
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:pointstopath",
+   "difficulty_family": "VECTOR_GEOMETRY",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000734-s3",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000734",
+    "teacher_plan_ref": "MOCK#step3",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Convert points to polygons. The script converts an input point vector layer into polygon features by first reprojecting the points to EPSG:4326, then connecting them into closed paths (lines) using a grouping field and sequence ordering field, and finally polygonizing those lines into valid polygons. The output is a polygon vector layer ('refatorado') preserving original attributes, intended for representing enclosed areas (e.g., field boundaries, plot perimeters, or administrative zones) derived from ordered boundary points.",
+   "plan_step": {
+    "intent": "raster to vector",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "literal",
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:polygonize",
+   "difficulty_family": "RASTER_TO_VECTOR",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000734-s4",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000734",
+    "teacher_plan_ref": "MOCK#step4",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Convert points to polygons. The script converts an input point vector layer into polygon features by first reprojecting the points to EPSG:4326, then connecting them into closed paths (lines) using a grouping field and sequence ordering field, and finally polygonizing those lines into valid polygons. The output is a polygon vector layer ('refatorado') preserving original attributes, intended for representing enclosed areas (e.g., field boundaries, plot perimeters, or administrative zones) derived from ordered boundary points.",
+   "plan_step": {
+    "intent": "manage layer, field, or dataset organisation",
+    "input_types": [
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:refactorfields",
+   "difficulty_family": "COLLECTION_MGMT",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g2-W000750",
+   "grounding_unit": "workflow",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000750",
+    "teacher_checkpoint_sha": "MOCK",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "input": {
+    "task": "Rasterize vector layers over output raster. The script merges multiple vector layers (e.g., administrative boundaries, land use polygons, or constraint zones) from a QGIS project into a single vector layer, then burns a fixed value (0) into the project’s existing output raster using those merged vectors as a mask—effectively restricting or masking the raster to areas covered by the vectors. The output is a modified raster where pixels under the vector geometries retain (or are overwritten with) the burn value, and the merged vector layer is also returned for reference.",
+    "teacher_plan": {
+     "steps": [
+      {
+       "order": 1,
+       "intent": "combine multiple inputs into one composite product",
+       "family": "COMPOSITE",
+       "input": [
+        {
+         "type": "literal"
+        },
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "vector"
+        ]
+       },
+       "depends_on": [],
+       "constraints": {}
+      },
+      {
+       "order": 2,
+       "intent": "convert vector features into raster cells",
+       "family": "VECTOR_TO_RASTER",
+       "input": [
+        {
+         "type": "raster"
+        },
+        {
+         "type": "vector"
+        }
+       ],
+       "output": {
+        "type": [
+         "raster"
+        ]
+       },
+       "depends_on": [
+        1
+       ],
+       "constraints": {}
+      }
+     ]
+    }
+   },
+   "target": {
+    "processes": [
+     {
+      "operator_id": "native:mergevectorlayers",
+      "process_id": "p0"
+     },
+     {
+      "operator_id": "gdal:rasterize_over_fixed_value",
+      "process_id": "p1"
+     }
+    ],
+    "links": [
+     {
+      "source_process_id": "p0",
+      "target_process_id": "p1"
+     }
+    ]
+   },
+   "metadata": {
+    "difficulty_families": [
+     "COMPOSITE",
+     "VECTOR_TO_RASTER"
+    ]
+   },
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000750-s1",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000750",
+    "teacher_plan_ref": "MOCK#step1",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Rasterize vector layers over output raster. The script merges multiple vector layers (e.g., administrative boundaries, land use polygons, or constraint zones) from a QGIS project into a single vector layer, then burns a fixed value (0) into the project’s existing output raster using those merged vectors as a mask—effectively restricting or masking the raster to areas covered by the vectors. The output is a modified raster where pixels under the vector geometries retain (or are overwritten with) the burn value, and the merged vector layer is also returned for reference.",
+   "plan_step": {
+    "intent": "combine multiple inputs into one composite product",
+    "input_types": [
+     "literal",
+     "vector"
+    ],
+    "output_types": [
+     [
+      "vector"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "native:mergevectorlayers",
+   "difficulty_family": "COMPOSITE",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  },
+  {
+   "sample_id": "b2g1-W000750-s2",
+   "grounding_unit": "operation",
+   "dataset_status": "assembly_test_only",
+   "provenance": {
+    "qgis_row_id": "W000750",
+    "teacher_plan_ref": "MOCK#step2",
+    "assembly_run": "assembly-v1-validation"
+   },
+   "task_context": "Rasterize vector layers over output raster. The script merges multiple vector layers (e.g., administrative boundaries, land use polygons, or constraint zones) from a QGIS project into a single vector layer, then burns a fixed value (0) into the project’s existing output raster using those merged vectors as a mask—effectively restricting or masking the raster to areas covered by the vectors. The output is a modified raster where pixels under the vector geometries retain (or are overwritten with) the burn value, and the merged vector layer is also returned for reference.",
+   "plan_step": {
+    "intent": "convert vector features into raster cells",
+    "input_types": [
+     "raster",
+     "vector"
+    ],
+    "output_types": [
+     [
+      "raster"
+     ]
+    ],
+    "roles": [],
+    "constraints": {}
+   },
+   "target_operator": "gdal:rasterize_over_fixed_value",
+   "difficulty_family": "VECTOR_TO_RASTER",
+   "audit": {
+    "leakage_checked": true,
+    "constraint_checklist_version": "b2-v1"
+   }
+  }
+ ]
+}
