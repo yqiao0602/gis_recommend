@@ -1,6 +1,14 @@
 # Current Project State
 
-Last updated: 2026-09-23
+Last updated: 2026-09-24
+
+## Active Route-2 v2 handoff
+
+Phase R (Stage-2 L1 rehearsal) is **FAIL / incomplete**: the C0-clone training path completed 3/3 epochs, saved checkpoints and ledger, with 0 prompt/target truncations; however, dev-120 checkpoint evaluation OOMed in all three epochs (7.01 GiB requested vs 6.92 GiB free), so `best_checkpoint=None`. Do not interpret `opF1=-1` as a model score. No retry, recipe change, or further training is authorized by this result. Report/artifacts: `docs/reports/transfer_phase2/phase_r/phase_r_report.md`.
+
+The Route-2 v2 holder has been notified. GPU remains occupied by Ollama and another user's SAM3 process; do not launch or terminate GPU work. Phase F remains gated on Stage-1 capability PASS + Teacher Plans. Immediate coordination: await the holder's Base zero-shot probe window; any Phase-R evaluator repair/rehearsal requires owner approval.
+
+Stage-1 protocol and B2 construction gates remain frozen; Stage-2 preregistration remains `docs/plans/transfer_phase2_stage2_prereg_v1.md`. See `docs/plans/transfer_phase2_roadmap.md` and `route2_p0_contract/` for live gate state.
 
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.

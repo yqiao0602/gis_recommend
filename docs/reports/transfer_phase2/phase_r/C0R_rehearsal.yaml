@@ -1,0 +1,18 @@
+# Stage-2 Phase R: L1 pipeline rehearsal (spec transfer_phase2_stage2_prereg_v1).
+# C0 recipe clone; ONLY diffs = name/output_dir/qgis_epochs(3, rehearsal scale).
+# Pipeline-validation only: effect numbers are sealed, never citable.
+name: "C0R_rehearsal"
+base_model: "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base"
+qgis_train: "/home/qy/gee_llm_smoke/v2a_A_train.jsonl"
+qgis_dev: "/home/qy/gee_llm_smoke/v2a_A_dev.jsonl"
+qgis_test: "/home/qy/gee_llm_smoke/v2a_A_test.jsonl"
+output_dir: "/home/qy/gee_llm_smoke/route2_l1_rehearsal"
+gee_stage: "none"
+gee_data: "/home/qy/system_redesign/outputs_v2/gee_b1_stage_data_v1/b1_gee_stage_train.jsonl"
+qgis_epochs: 3
+gee_epochs: 1
+max_lr: 1.0e-4
+batch_size: 2
+grad_accum: 16
+max_len: 1024
+seed: 20260917

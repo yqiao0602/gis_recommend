@@ -756,3 +756,42 @@
 - Phase 3 裁决：R3/R4 不开，M1 线收束于提交 5e3f818（评测记录）+ 本次收束提交。三路线（M1/M2/M3）一致信号：模型侧调整不改善 task→L3 映射——任务语义—算子映射监督不足为值得优先检验的主要候选瓶颈。
 - 下一阶段：paper_v2 数据侧（25.7 万描述库意图重写）。评测环境事故 2 起（legacy mapping 泄漏 / taxonomy 路径）独立归档于 docs/reports/m1_r2_eval_v1/。
 - 证据：docs/reports/m1_r2_eval_v1/、docs/reports/qgis_planner_eval_v1/SCORES_R2_v1.json + predictions_r2/。
+
+## 2026-09-17：外部文献补遗调研 v2 完成（通用工具链数据 + 意图合成方法 + 经典语义地理处理）
+
+- 只读调研，v1（`docs/reports/external_gis_training_data_survey_v1.md`）的补遗，报告 `docs/reports/external_gis_training_data_survey_v2.md`。补上 v1 未覆盖的四层：①结构同构的通用工具链数据集 ②意图式数据合成方法 ③地学 DAPT 先例 ④经典语义地理处理文献（OpenAlex 期刊侧）。
+- ①结构同构数据集（license 干净、量级大，但域不重叠，不作训练主粮）：TaskBench（Tool Graph + **back-instruct 从工具图反推指令**，HF microsoft/Taskbench）；WorkflowLLM/WorkflowBench（**106,763 样本**，真实工作流→代码转录→重写→验证三阶段）；ToolBench/ToolLLM（16,464 APIs / 126,486 指令，Apache-2.0）；APIGen/xLAM（**三段验证合成**，HF 37k 下载）；Gorilla/BFCL（V1-V4 评测体系）；WorfBench（图结构工作流 + subgraph 评测）。
+- ②意图合成方法（直接服务重写管线设计）：back-instruct、WorkflowLLM 三阶段重写+验证、APIGen 三段验证、Self-Instruct、Evol-Instruct、Magpie、PersonaHub——四臂重写实验（C0/A1/B1/B2）的每臂都有方法锚点。
+- ③DAPT 先例对照：K2（LLaMA-7B 5.5B tokens 地学 DAPT，正面）+ GeoGalactica——与 M2 负结果不矛盾（它们是领域知识任务，本项目是意图→结构化算子链），Discussion 现成对照。
+- ④经典文献（L3 理论根 + 意图谱系前身）：geooperator 形式化（2015）、服务链语义组合（2006, 93 cites）、**Finding and sharing GIS methods based on the questions they answer（2018，前 LLM 时代意图→方法工作）**、SHACL 参数约束（2021）等 7 条。
+- ⑤机制文献：shortcut learning（2208.11857，echo→copy 诊断挂靠）；constrained decoding 线（V2a"硬约束破坏输出意图"教训的文献支撑）。
+- 结论：v1"主粮在内部"不变；但重写管线的方法蓝本（back-instruct/三阶段验证/真实工作流转录）在通用域已被 10 万级规模验证，且论文每条内部结论都有文献对话对象。未覆盖：CNKI 中文文献（需 CDP，可另开一轮）。GitHub REST API 持续 IP 级限流（两天 remaining=0），仓库核验走 WebFetch HTML。
+
+## 2026-09-18：QGIS 数据与评测资源全景报告整合完成
+
+- 综合报告 `docs/reports/qgis_data_eval_landscape_v1.md`：整合 v1/v2 两轮调研与内部锁定状态，新增"评测资源对比"维度（v1/v2 以数据为主线，评测只在条目内附带）。只读整理，无新数据消费。
+- 评测对比新结论：benchmark v0.2.1 生态位独特——已知唯一以"结构化算子 DAG"（非代码/轨迹）为输出空间的 GIS 评测、唯一 refusal diagnostic + unsafe-planning 指标、唯一 prediction-lock + 冻结 scorer 纪律（M3 块重评分 0.1605 精确复现）、拓扑分级 gold。与外部标杆三个差距：执行级 GT（GISAgentBench 349 任务 GT 文件容差匹配，最强 agent 32.7%）、规模（AutoGEEval++ 千级 vs 我们 100）、动态/多轮（BFCL V4、GeoAgentBench 沙盒 PEA）。
+- 评测方法学三层整理：静态匹配（我们/WorfBench/GeoAnalystBench）vs 执行验证（AutoGEEval/GISAgentBench/GeoAgentBench）vs LLM judge（被 GISAgentBench 作者批评会混淆"形似"与"做对"，不采用）。parameter-free 设计取舍显式化：平台可移植+gold 可人工审计 vs 无执行证据（执行才能暴露的错误不可见）。
+- benchmark v0.3 四个候选（**全部未批准**）：a 执行增强层（抽样任务 catalog 默认参数填参 → QGIS 沙盒跑 gold 生成执行 GT → 预测比对）；b 规模扩充（四臂重写产物人工金标小批注入，source-disjoint）；c 拓扑细分报告（按 pure_branch/hybrid/multi_input_merge 分层重算，纯后处理）；d refusal 扩容 12→50（capability matrix 驱动）。
+- 对齐诊断定稿：benchmark 已是意图式（人工任务文本+泄漏审计），错位在训练侧（GEE 100% answer-echo）——修数据不修评测；评测侧真正短板 = 规模与执行验证。行动建议 P0-P4（四臂重写 → GeoAnalystBench 接 OOD dev → 联系作者 → 拓扑细分+执行层试点 → refusal 扩容）+ 两项暂缓，全部未批准待 owner 裁定。
+
+## 2026-09-20：外部数据与同类工作 Word 调研报告交付（内部存档版）
+
+- 交付物：`docs/reports/qgis_external_data_related_work_survey_v1.docx`（中文，内部调研存档风格，APA 作者-年份引用）。
+- 结构：引言与范围 → 数据资源盘点（表 1 GIS 专用 8 项 + 表 2 通用工具链 6 项）→ 五条"为何没有可直接可用资源" → 同类工作三代谱系与双方难点（含多解性/链式依赖与错误传播/可执行性三重难点与分层评价框架）→ 建议补充的工作（评价侧四项含首错位置统计、数据侧两项、论文侧三项）→ 参考文献 21 条。
+- 质量链：全部引用条目作者经 arXiv API / OpenAlex 当场核验（含 ToolLLM 正式标题=On the Tool Manipulation Capability，Xu et al.； classics：Lemmens 2006 IEEE Internet Computing、Scheider 2018 IJDE、Brauner 2015 Qucosa）；scipilot writing_lint（word/zh）最终 PASS（FAIL 0/WARN 0）；正文约 1,840 字（不含表格与文献）。
+- 诚实标注：et al. 简化引用已在文献节首声明；GeoAgentBench/Geo-FuB/WorfBench 可得性标"未核验"；TaskBench venue 未声明（仅 arXiv）；GIS Copilot 期刊版未声明。底稿与生成脚本：/tmp 下 report_body_v1.txt + gen_docx.py（scipilot 工作流产物）。
+
+## 2026-09-22：GISAgentBench 全文核验修正（价值升级）
+
+- owner 问"是否 QGIS 算子层面"，补 arXiv 全文核验（v1 调研原为摘要级、工具栈未点名）：128 个类型化 GIS API 固定 harness 中**约 2/3 经 qgis_process CLI 分发到 QGIS processing 算子**（含 GDAL 后端），1/3 为 GeoPandas/Rasterio/Shapely/pandas/SciPy Python 栈；不用 ArcGIS（arcpy 仅论坛过滤关键词，ArcPy 支持列为 future work）。
+- 层面判定：动作空间 = 算子级（ReAct 选算子+填类型化参数+排序，50 次调用预算，不写自由 Python）；评测标准 = 任务级（输出文件容差匹配为主指标，轨迹对比仅粗功能类别诊断）。金标轨迹 2-43 步（均值 11.7），由前沿模型生成 + 3 名 GIS 专家逐步手工复核。
+- 价值升级：349 任务 ≈ 4,000 步调用中约 2,700 步直接是 QGIS 算子——**外部最接近 QGIS 算子级监督的现成资源**，转化成本低于自由代码类基准（AutoGEEval）。转化四道工序：128 自定义 API↔原生算子 ID 映射 / 参数剥离至 parameter-free / Python 栈步骤映射缺口 / 仓库仍未公开（联系作者前提不变）。
+- 已同步：`external_gis_training_data_survey_v1.md`（GISAgentBench 行升级为全文核验）、`qgis_data_eval_landscape_v1.md`（§4.1 行）、记忆文件。Word 报告无失实表述，未重生成。
+
+## 2026-09-24：Stage-2 Phase R rehearsal completed — evaluator OOM, overall gate FAIL
+
+- Owner-authorized rehearsal used the C0 recipe clone `C0R_rehearsal.yaml` (3 epochs, separate output directory); preflight SHA checks passed against the frozen QGIS train/dev/test splits. Full details and hashes: `docs/reports/transfer_phase2/phase_r/phase_r_report.md`.
+- Training/save branch completed 3/3 epochs, 4,002 example exposures / 1,165,662 tokens, prompt/target truncation 0, epoch1-3 checkpoints and run ledger written. Training pipeline is verified through checkpoint persistence.
+- **Dev-120 evaluator failed on all three epochs with CUDA OOM**: needed 7.01 GiB, only 6.92 GiB was free under shared Ollama/SAM3 load; ledger sentinel opF1=-1 / n=0, `best_checkpoint=None`. Do not interpret sentinel as model performance; Phase R overall = **FAIL / incomplete** because evaluation/checkpoint selection did not validate.
+- Per frozen rehearsal discipline: no evaluator retry, no recipe/config adjustment, no retraining; C0R process exited and GPU returned to shared queue. Candidate infrastructure fix (same-process evaluation or serialized model release) is **not implemented/not authorized**; any rerun needs a separate owner decision. Route-2 v2 holder notified; no GPU work from this line while their Base zero-shot probe is pending.

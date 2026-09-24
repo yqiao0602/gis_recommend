@@ -1,6 +1,14 @@
 # 当前项目状态
 
-最后更新：2026-09-23
+最后更新：2026-09-24
+
+## Route-2 v2 当前交接
+
+Phase R（Stage-2 L1 预演）**FAIL / 未闭环**：C0 配方克隆训练完整跑完 3/3 epochs，checkpoint 与 run ledger 落盘，prompt/target 截断均为 0；但 dev-120 checkpoint evaluator 三个 epoch 全部 CUDA OOM（请求 7.01 GiB、当时仅余 6.92 GiB），因此 `best_checkpoint=None`。`opF1=-1` 是 OOM sentinel，**不是模型分数**。本次不重试、不改配方、不继续训练。报告与工件：`docs/reports/transfer_phase2/phase_r/phase_r_report.md`。
+
+Route-2 v2 持有线已获通知。GPU 仍被 Ollama 与 yyt 的 SAM3 进程占用；不得启动或终止 GPU 任务。Phase F 仍硬依赖 Stage-1 capability PASS + Teacher Plan。近期协调：等待持有线完成 Base zero-shot 探针窗口；Phase-R evaluator 修复/重演须 owner 另行批准。
+
+Stage-1 协议与 B2 门禁保持冻结；Stage-2 预注册见 `docs/plans/transfer_phase2_stage2_prereg_v1.md`。活跃路线看 `docs/plans/transfer_phase2_roadmap.md` 和 `route2_p0_contract/`。
 
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。

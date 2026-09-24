@@ -1,0 +1,54 @@
+Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:   0%|          | 1/427 [00:00<03:01,  2.35it/s]Loading weights:   0%|          | 2/427 [00:00<02:43,  2.60it/s]Loading weights:   3%|▎         | 13/427 [00:00<00:19, 21.39it/s]Loading weights:   7%|▋         | 28/427 [00:00<00:08, 46.89it/s]Loading weights:  10%|▉         | 42/427 [00:01<00:05, 64.98it/s]Loading weights:  12%|█▏        | 52/427 [00:01<00:05, 70.80it/s]Loading weights:  16%|█▌        | 67/427 [00:01<00:04, 88.18it/s]Loading weights:  18%|█▊        | 78/427 [00:01<00:03, 91.81it/s]Loading weights:  21%|██        | 90/427 [00:01<00:03, 95.58it/s]Loading weights:  24%|██▎       | 101/427 [00:01<00:03, 86.28it/s]Loading weights:  28%|██▊       | 119/427 [00:01<00:02, 106.63it/s]Loading weights:  31%|███▏      | 134/427 [00:01<00:02, 110.86it/s]Loading weights:  34%|███▍      | 147/427 [00:02<00:02, 114.48it/s]Loading weights:  37%|███▋      | 159/427 [00:02<00:02, 109.59it/s]Loading weights:  41%|████      | 174/427 [00:02<00:02, 117.67it/s]Loading weights:  46%|████▌     | 196/427 [00:02<00:01, 145.18it/s]Loading weights:  50%|████▉     | 212/427 [00:02<00:01, 118.99it/s]Loading weights:  53%|█████▎    | 226/427 [00:02<00:01, 119.55it/s]Loading weights:  56%|█████▋    | 241/427 [00:02<00:01, 123.84it/s]Loading weights:  60%|█████▉    | 255/427 [00:02<00:01, 121.83it/s]Loading weights:  63%|██████▎   | 268/427 [00:03<00:01, 120.91it/s]Loading weights:  68%|██████▊   | 289/427 [00:03<00:00, 141.95it/s]Loading weights:  71%|███████   | 304/427 [00:03<00:01, 70.36it/s] Loading weights:  74%|███████▍  | 316/427 [00:04<00:02, 48.23it/s]Loading weights:  76%|███████▌  | 325/427 [00:04<00:01, 51.15it/s]Loading weights:  78%|███████▊  | 333/427 [00:04<00:02, 37.16it/s]Loading weights:  81%|████████  | 344/427 [00:04<00:01, 44.79it/s]Loading weights:  82%|████████▏ | 351/427 [00:04<00:01, 47.15it/s]Loading weights:  85%|████████▍ | 361/427 [00:05<00:01, 55.92it/s]Loading weights:  87%|████████▋ | 373/427 [00:05<00:00, 68.03it/s]Loading weights:  91%|█████████ | 388/427 [00:05<00:00, 85.60it/s]Loading weights:  94%|█████████▎| 400/427 [00:05<00:00, 92.45it/s]Loading weights:  96%|█████████▋| 412/427 [00:05<00:00, 88.69it/s]Loading weights:  99%|█████████▉| 423/427 [00:05<00:00, 50.34it/s]Loading weights: 100%|██████████| 427/427 [00:06<00:00, 71.08it/s]
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+[dev] eval subprocess failed: n main
+    evaluate_dev(args.base_model, args.adapter, args.dev, args.out,
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/qy/system_redesign/route2_training/evaluate_dev.py", line 77, in evaluate_dev
+    model = AutoModelForCausalLM.from_pretrained(base_model, quantization_config=bnb,
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 402, in from_pretrained
+    return model_class.from_pretrained(
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 4393, in from_pretrained
+    loading_info, disk_offload_index = cls._load_pretrained_model(model, state_dict, checkpoint_files, load_config)
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 4473, in _load_pretrained_model
+    caching_allocator_warmup(model, expanded_device_map, load_config.hf_quantizer)
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 5136, in caching_allocator_warmup
+    _ = torch.empty(int(byte_count // 2), dtype=torch.float16, device=device, requires_grad=False)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 7.01 GiB. GPU 0 has a total capacity of 22.06 GiB of which 6.92 GiB is free. Process 2920303 has 6.52 GiB memory in use. Process 29081 has 904.00 MiB memory in use. Process 830260 has 7.50 GiB memory in use. Including non-PyTorch memory, this process has 228.00 MiB memory in use. Of the allocated memory 0 bytes is allocated by PyTorch, and 0 bytes is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+[epoch 1] dev opF1=-1.0000 (best -1.0000)
+[dev] eval subprocess failed: n main
+    evaluate_dev(args.base_model, args.adapter, args.dev, args.out,
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/qy/system_redesign/route2_training/evaluate_dev.py", line 77, in evaluate_dev
+    model = AutoModelForCausalLM.from_pretrained(base_model, quantization_config=bnb,
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 402, in from_pretrained
+    return model_class.from_pretrained(
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 4393, in from_pretrained
+    loading_info, disk_offload_index = cls._load_pretrained_model(model, state_dict, checkpoint_files, load_config)
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 4473, in _load_pretrained_model
+    caching_allocator_warmup(model, expanded_device_map, load_config.hf_quantizer)
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 5136, in caching_allocator_warmup
+    _ = torch.empty(int(byte_count // 2), dtype=torch.float16, device=device, requires_grad=False)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 7.01 GiB. GPU 0 has a total capacity of 22.06 GiB of which 6.92 GiB is free. Process 2920303 has 6.52 GiB memory in use. Process 29081 has 904.00 MiB memory in use. Process 830260 has 7.50 GiB memory in use. Including non-PyTorch memory, this process has 228.00 MiB memory in use. Of the allocated memory 0 bytes is allocated by PyTorch, and 0 bytes is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+[epoch 2] dev opF1=-1.0000 (best -1.0000)
+[dev] eval subprocess failed: n main
+    evaluate_dev(args.base_model, args.adapter, args.dev, args.out,
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/qy/system_redesign/route2_training/evaluate_dev.py", line 77, in evaluate_dev
+    model = AutoModelForCausalLM.from_pretrained(base_model, quantization_config=bnb,
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 402, in from_pretrained
+    return model_class.from_pretrained(
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 4393, in from_pretrained
+    loading_info, disk_offload_index = cls._load_pretrained_model(model, state_dict, checkpoint_files, load_config)
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 4473, in _load_pretrained_model
+    caching_allocator_warmup(model, expanded_device_map, load_config.hf_quantizer)
+  File "/home/qy/miniconda3/envs/qwen35/lib/python3.10/site-packages/transformers/modeling_utils.py", line 5136, in caching_allocator_warmup
+    _ = torch.empty(int(byte_count // 2), dtype=torch.float16, device=device, requires_grad=False)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 7.01 GiB. GPU 0 has a total capacity of 22.06 GiB of which 6.92 GiB is free. Process 2920303 has 6.52 GiB memory in use. Process 29081 has 904.00 MiB memory in use. Process 830260 has 7.50 GiB memory in use. Including non-PyTorch memory, this process has 228.00 MiB memory in use. Of the allocated memory 0 bytes is allocated by PyTorch, and 0 bytes is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+[epoch 3] dev opF1=-1.0000 (best -1.0000)
+done. best checkpoint: None (dev opF1 -1.0000)
