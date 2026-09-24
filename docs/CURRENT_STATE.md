@@ -5,6 +5,26 @@ Last updated: 2026-09-23
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
 
+## (4) Stage-1 interface information contract v0 (2026-09-24, owner ruling)
+
+Only the **information contract** is frozen, not schema: Plan = five
+layers (P1 open-vocabulary operation intent, P2 typed I/O [KG 1,425
+nodes hasInput/hasOutput as source — the 37-class defect was missing
+typed context, not category count], P3 order and P4 dependency as
+**separate fields** [adjacency != dependency; unknown when
+unextractable, never fabricated], P5 step-relevant constraints [no task
+text duplication]). GEE provenance two-tier isolation: API/AST/canonical
+chain stay on the training/audit side, **never exposed to Stage 2**
+(prevents regression to API translation). Forbidden as sole interface:
+37-class IDs, bare token sequences, GEE API chains; positioning = finer
+than 37 classes, more platform-neutral than GEE API. **Three formal
+anti-bottleneck audits** (defined now, benchmarked in 5): Plan Collision
+/ Information Retention / Grounding Discriminability. Not frozen:
+schema, serialization, plan language, W1-W4 weights, how QGIS-side plans
+are obtained (open dependency). Boundary: 4 = what to retain (done);
+**5 = what else is needed (next)**. See
+`route2_p0_contract/ROUTE2_V2_STAGE1_INTERFACE_CONTRACT_v1.md`.
+
 ## (3) Objective & interface v0 decision (2026-09-24, owner ruling)
 
 **Task -> Workflow Plan is the Stage-1 core objective** (W3 carrier);

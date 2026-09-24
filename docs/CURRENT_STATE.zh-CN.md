@@ -5,6 +5,21 @@
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
+## ④ Stage-1 接口信息合同 v0（2026-09-24，owner 裁定）
+
+只冻结**信息合同**不冻 schema：Plan = 五信息层（P1 开放词表操作意图、
+P2 typed I/O【KG 1425 节点 hasInput/hasOutput 为源——37 类的真正缺陷是
+缺 typed context，非类别数】、P3 顺序与 P4 依赖**分字段**【adjacency≠
+dependency，提不到标 unknown 禁伪造】、P5 步骤约束【不复制任务文本】）。
+GEE provenance 双层隔离：API/AST/canonical chain 留训练审计侧，
+**不暴露给 Stage 2**（防退化为 API 翻译）。禁止作唯一接口：37 类 ID/
+纯 token 序列/GEE API chain；定位 = 比 37 类细、比 GEE API 平台中立。
+**反 37 类瓶颈三类正式审计**（④定义⑤benchmark 化）：Plan Collision /
+Information Retention / Grounding Discriminability。不冻结：schema、
+序列化、Plan 语言形态、W1-W4 权重、QGIS plan 获取方式（open dependency）。
+边界：④=保留什么 ✅；**⑤=还需要什么（下一步）**。详见
+`route2_p0_contract/ROUTE2_V2_STAGE1_INTERFACE_CONTRACT_v1.md`。
+
 ## ③ 训练目标与接口 v0 决策（2026-09-24，owner 裁定）
 
 **Task → Workflow Plan 为 Stage-1 核心目标**（W3 载体）；辅助目标从同一
