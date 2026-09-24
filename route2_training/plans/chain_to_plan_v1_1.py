@@ -143,7 +143,7 @@ def convert(chain: str) -> tuple:
         if pend_prov is not None:
             if tin and (pend_prov['type'] == tin or (isinstance(tin, (tuple, list)) and pend_prov['type'] in tin)):
                 inputs.append({'role': entry['roles'][0] if entry['roles'] else 'primary input',
-                               'type': tin, 'provisioned': True})
+                               'type': pend_prov['type'], 'provisioned': True})
                 rec['ctor_attached'] += 1
             else:
                 inputs.append({'role': 'provisioned input (branch source)',
@@ -166,10 +166,15 @@ def convert(chain: str) -> tuple:
         if tin is None and not branch and steps and all(s['provision'] for s in steps):
             # utility op consuming provisions implicitly
             pass
+        tin_list = list(tin) if isinstance(tin, (tuple, list)) else ([tin] if tin else [])
+        if not inputs:
+            inputs = [{'role': (entry['roles'][i] if i < len(entry['roles'])
+                                else ('secondary input' if i else 'primary input')),
+                       'type': tt} for i, tt in enumerate(tin_list)]
         step = {
             'order': len(steps) + 1, 'intent': entry['intent'],
             'family': entry['family'],
-            'input': inputs or ([{'role': 'primary input', 'type': tin}] if tin else []),
+            'input': inputs,
             'output': {'type': entry['out']},
             'depends_on': [len(steps)] if steps else [],
             'constraints': constraints, 'roles': entry['roles'],
