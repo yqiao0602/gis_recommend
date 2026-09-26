@@ -1,5 +1,6 @@
-"""Gate evaluator v1.2 - the ONLY W1-W4 checkpoint scorer.
+"""Gate evaluator v1.3.1 - the ONLY W1-W4 checkpoint scorer.
 
+v1.3.1 passes batch_halvings to the report; scoring semantics are unchanged.
 Same code/config for Base zero-shot and Stage-1 checkpoints. Greedy NF4
 inference; fixed capability buckets; OOM batch-halving (single-item OOM
 is recorded invalid, not silently dropped).
@@ -23,7 +24,7 @@ sys.path.insert(0, str(BASE))
 sys.path.insert(0, str(BASE / 'scripts'))
 from build_audit_a_v1 import FAMILY_PHRASE  # noqa: E402
 
-EV_VERSION = 'gate-eval-v1.3'
+EV_VERSION = 'gate-eval-v1.3.1'
 PHRASES = sorted(((phrase.lower(), fam) for fam, phrase in FAMILY_PHRASE.items()),
                  key=lambda z: len(z[0]), reverse=True)
 
@@ -148,7 +149,7 @@ def generation_batches(model, tok, probes, batch_size, device='cuda:0', timeout_
                 torch.cuda.empty_cache()
                 timed_out.extend(chunk)
                 pos += len(chunk)
-    return preds, oom_single, timed_out
+    return preds, oom_single, timed_out, batch_halvings
 
 
 def score_items(probes, preds):
@@ -226,7 +227,7 @@ def main():
     psha=file_sha([a.probe_file]);cfg={'greedy':True,'quant':'NF4-double-bf16','padding':'left',
          'max_new_tokens':{'W1/W2':96,'W3/W4':560},'batch_size':a.batch_size,'eval_version':EV_VERSION}
     csha=hashlib.sha256(json.dumps(cfg,sort_keys=True).encode()).hexdigest()
-    t0=time.time();preds,oom,timed_out=generation_batches(model,tok,probes,a.batch_size)
+    t0=time.time();preds,oom,timed_out,batch_halvings=generation_batches(model,tok,probes,a.batch_size)
     scored=score_items(probes,preds)
     oom_set=set(oom); timeout_set=set(timed_out)
     for i,item in enumerate(scored['items']):

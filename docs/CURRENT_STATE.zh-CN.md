@@ -4,7 +4,7 @@
 
 ## Route-2 v2 当前交接
 
-**Stage-1 预检全链就绪（2026-09-26，等 GPU）**：数据构建器 v2 按 owner W4 裁定"恢复结构变体"重建出 **v2_2 候选数据集**——56,710 行 / 37,044 唯一 Tier A/B train 源行 / token 配比精确 60/10/10/20 / Task 截断 0 / Chain LM 0 / W4 子类型自然分布（delete 2723 / swap 2619 / insert 2645）；溯源审计 0 违规。**Gate-v3 探针已重建**：dev 3,236 / test 3,256，W4 修复子类型自然分布，冻结 legacy W3 基集逐字节保留、492 改写对 join，probe SHA 已锁。`gate_evaluator_v1`（EV v1.3）= Base 与 checkpoint 唯一评分器（OOM 减半、超时标记、probe+config SHA 全记录）；CPU 测试 6/6。**下一步（GPU 空闲后）**：Base zero-shot 跑 gate-dev+gate-test（--batch-size 1）→ 预注册 W1-W4 绝对下限与 Δ_i → **Stage-1 训练仍须 owner 显式放行**。工件：`docs/reports/route2_p0_contract/plan_pipeline_v1/`（`stage1_dataset_report_v2_2.json` / `stage1_dataset_provenance_audit_v2_2.json` / `gate_build_report_v3.json` + v3 探针）；150MB 数据文件只在服务器（`/home/qy/system_redesign/route2_training/plans/stage1_train_v2_2.jsonl`）。
+**Stage-1 = READY FOR BASELINE，非 READY FOR TRAINING（2026-09-26）**：数据构建器 v2 按 owner W4 裁定"恢复结构变体"重建出 **v2_2 候选数据集**——56,710 行 / 37,044 唯一 Tier A/B train 源行 / token 配比精确 60/10/10/20 / Task 截断 0 / Chain LM 0 / W4 子类型自然分布（delete 2723 / swap 2619 / insert 2645）；溯源审计 0 违规。**Gate-v3 探针冻结不变**：dev 3,236 / test 3,256，W4 修复子类型自然分布，冻结 legacy W3 基集逐字节保留、492 改写对 join，probe SHA 已锁。`gate_evaluator_v1` **EV v1.3.1** 修复 `batch_halvings` 返回值传递（report-path bugfix / no scoring-semantic change）；CPU 测试 9/9，包含真正写出最终报告的 0/1/2 次减半回归；同一评分器用于 Base 与 checkpoint。**下一步（GPU 窗口释放后）**：Base zero-shot 跑 gate-dev+gate-test（`--batch-size 1`）→ 冻结 Base baseline → 预注册 W1–W4 绝对下限与 Δ_i；**不得看结果后改探针，Stage-1 开训仍须 owner 显式放行**。W3 rewrite gap 仅作辅助诊断，非额外 Gate 条件。工件：`docs/reports/route2_p0_contract/plan_pipeline_v1/`（`gate_evaluator_freeze_v1_3_1.json` / `stage1_dataset_report_v2_2.json` / `stage1_dataset_provenance_audit_v2_2.json` / `gate_build_report_v3.json` + v3 探针）；150MB 数据文件只在服务器（`/home/qy/system_redesign/route2_training/plans/stage1_train_v2_2.jsonl`）。
 
 Phase R（Stage-2 L1 预演）**FAIL / 未闭环**：C0 配方克隆训练完整跑完 3/3 epochs，checkpoint 与 run ledger 落盘，prompt/target 截断均为 0；但 dev-120 checkpoint evaluator 三个 epoch 全部 CUDA OOM（请求 7.01 GiB、当时仅余 6.92 GiB），因此 `best_checkpoint=None`。`opF1=-1` 是 OOM sentinel，**不是模型分数**。本次不重试、不改配方、不继续训练。报告与工件：`docs/reports/transfer_phase2/phase_r/phase_r_report.md`。
 
@@ -27,7 +27,8 @@ Reconstruction 10% / W4 20%（≤25% 顶）/**Chain LM 0%**（A1 归因清洁）
 新上下文/低频/词面变化（不用完全未见概念）；组合泛化主力 = W3 新操作
 组合。1 epoch 先行，FAIL 同协议续训。**成功标准 = 能力门通过，非 loss**。
 ①→⑦ 全冻结。⑥三件 CPU 工程产物与 Stage-1 预检（数据 v2_2 + Gate-v3
-探针 + 评分器）已全部完成；开训只差 GPU 窗口与 owner 放行令。详见
+探针 + 评分器 v1.3.1）已全部完成。当前是 READY FOR BASELINE；须先完成
+Base zero-shot 与双条件阈值预注册，再经 owner 显式放行才能开训。详见
 `route2_p0_contract/ROUTE2_V2_STAGE1_PROTOCOL_v1.md`。
 
 ## ⑥ B2 数据构造 v0（2026-09-24，owner 裁定）

@@ -1,0 +1,45 @@
+{
+  "status": "READY_FOR_BASELINE",
+  "frozen_on": "2026-09-26",
+  "evaluator_version": "gate-eval-v1.3.1",
+  "change_classification": "report-path bugfix / no scoring-semantic change",
+  "change": "generation_batches returns batch_halvings; main receives and writes it to the report",
+  "unchanged": [
+    "probe content and probe SHA256",
+    "batch-size selection and inference policy",
+    "timeout policy",
+    "W1-W4 scoring formulas and Gate definition"
+  ],
+  "evaluator_file": "route2_training/plans/gate_evaluator_v1.py",
+  "evaluator_sha256": "c2e7d72515f7ff7c78a86f1cf4e79cd96f16c5c077f5e527110f3459cc7d89db",
+  "probes": {
+    "dev": {
+      "path": "docs/reports/route2_p0_contract/plan_pipeline_v1/gate_dev_probes_v3.jsonl",
+      "sha256": "c3d95f67f3c0dcfcbfc6c7c45c3d60bd5dcc7cab55f714bb2c3c5eaa8a877d99"
+    },
+    "test": {
+      "path": "docs/reports/route2_p0_contract/plan_pipeline_v1/gate_test_probes_v3.jsonl",
+      "sha256": "866c3762b99f78302e3156a233a98b8c6d1a0ce6e02cbbda57e37deb79fcd9dd"
+    }
+  },
+  "base_inference_config": {
+    "greedy": true,
+    "quant": "NF4-double-bf16",
+    "padding": "left",
+    "max_new_tokens": {"W1/W2": 96, "W3/W4": 560},
+    "batch_size": 1,
+    "eval_version": "gate-eval-v1.3.1"
+  },
+  "base_inference_config_sha256": "6355bab42dffa75a752ebce406c6098e6f9d510279da565698330504af2275af",
+  "validation": {
+    "cpu_test_command": "python -m pytest -q route2_training/tests/test_stage1_preflight.py",
+    "cpu_tests_passed": 9,
+    "report_path_batch_halving_cases": [0, 1, 2],
+    "undefined_name_check": "ruff check --select F821,F401 route2_training/plans/gate_evaluator_v1.py route2_training/tests/test_stage1_preflight.py",
+    "python_compile_on_server": "passed",
+    "local_server_evaluator_sha256_match": true
+  },
+  "base_baseline_recorded": false,
+  "thresholds_registered": false,
+  "stage1_training_authorized": false
+}
