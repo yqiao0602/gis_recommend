@@ -1964,3 +1964,13 @@ Phase 1（2026-05-27 至 2026-06-04）：完成 L3 模型的 DPO 偏好训练，
 - C0R 进程已退出，GPU 已交还共享队列；Ollama/SAM3 等其余进程属其他工作负载，未触碰。Phase F 仍硬依赖 Stage-1 capability PASS + Teacher Plan。
 - 权威证据：`docs/reports/transfer_phase2/phase_r/phase_r_report.md`（含 config、preflight、log、ledger hash）。同进程/串行释放 evaluator 仅为候选基础设施修复；任何重演须另获 owner 批准。
 
+
+## Route-2 v2 Stage-1 预检全链完成（2026-09-26）
+
+- **W4 生成规则终版（owner AskUserQuestion 裁定"恢复结构变体"）**：`route2_training/plans/stage1_dataset_v2.py::corrupt_plan` 每条源 Plan 恰做一次真实变异——删除任一真实步骤 / 交换语义签名不同的相邻步骤对（family+intent+typed I/O 签名不等才可交换）/ 插入显式 I/O 类型不兼容的合成步骤（`synthetic_corruption=True` 标记）；子类型自然混合，W4 总 token 仍锁 20%（≤25% 顶）。修复史：v1 insert 分支曾为无操作假损坏 → 修复；过度限制版（要求 delete/swap 也满足类型流断裂）使子类型塌缩为 insert 7479/delete 32/swap 11 → owner 裁定恢复结构变体。
+- **v2_2 候选数据集**（服务器 `/home/qy/system_redesign/route2_training/plans/stage1_train_v2_2.jsonl`，150MB 不入库）：56,710 行（core 37,044 / completion 7,876 / reconstruction 3,803 / w4 7,987）、37,044 唯一 Tier A/B train 源行、实际 token 配比 0.60001/0.10000/0.09999/0.20000、Task 截断 0、Chain LM 0、W4 子类型 delete 2723/swap 2619/insert 2645。溯源审计（`audit_stage1_dataset_v2_provenance.py`，输出 `stage1_dataset_provenance_audit_v2_2.json`）：池违规 0、全部源行 ∈ Tier A/B ∩ train。
+- **Gate-v3 探针重建**（`build_gate_probes_v3.py`，W4 变更后重生成）：dev 3,236 / test 3,256（W1 1690/1805、W2 783/658 平衡 Yes/No、W3 238/256 as-is + 236/256 改写、W4 289/281 自然子类型）；冻结 legacy W3 基集逐字节保留；492/494 改写对按 (split, task, rendered plan) 精确 join（2 条 dev 原生未改写）；probe SHA256 dev `c3d95f67…` / test `866c3762…`，v3 探针 jsonl 已入库（本地 sha256sum 复验一致）。
+- **唯一评分器冻结**：`gate_evaluator_v1.py` EV `gate-eval-v1.3`——Base zero-shot 与全部 Stage-1 checkpoint 共用同一代码/配置；贪心 NF4、左 padding、按能力分桶 max_new_tokens（W1/W2 96、W3/W4 560）、OOM 批减半（单项 OOM 记 invalid 不静默丢、`batch_halvings` 计数）、批级 SIGALRM 600s 超时（`timeout_probe_ids`）、W1 严格归一 role:type、W2 严格 Yes/No、W3 family-sequence F1 macro+micro（as-is / 改写独立 + rewrite_gap 双口径）、W4 严格修复后意图序列匹配；每报告附 probe_sha256 + inference_config_sha256。
+- CPU 测试 6/6（`route2_training/tests/test_stage1_preflight.py`）：Task 永不截断且 token 预算与 collator 精确一致、超长 Task fail-closed、W4 三子类型真实变异（100 seeds 覆盖）、W1 探针无 `ee.` 泄漏、W3 family sidecar 仅评分侧、W1-W4 评分往返。
+- 关键工程细节：`token_len`/`token_truncation` 逐 token 复刻 `Stage1PlanCollator` 的截断次序（BOS+task+separator 固定 → context 尾 → target 尾 → EOS 预留），保证报告口径 = 训练口径；core 60% 全量入选（每源行恰一条），completion/reconstruction 仅 ≥3 步链参与，W4 预算内贪心装箱。
+- 未启动任何 GPU 工作。下一步（GPU 空闲后）：Base zero-shot gate（dev+test，--batch-size 1）→ 预注册 W1-W4 绝对下限与 Δ_i → Stage-1 开训等 owner 显式放行。

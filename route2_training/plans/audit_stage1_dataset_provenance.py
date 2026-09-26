@@ -13,7 +13,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from route2_training.plans.chain_to_plan_v1_1 import convert, render_plan
-from route2_training.plans.stage1_dataset_v1 import corrupted_copy, SEED, MAX_PLAN_CHARS
+from route2_training.plans import stage1_dataset_v1 as builder
+SEED = builder.SEED
+MAX_PLAN_CHARS = builder.MAX_PLAN_CHARS
 
 SRC = '/home/qy/system_redesign/outputs_v2/gee_b1_stage_data_v1/b1_gee_stage_train.jsonl'
 TIER = '/home/qy/system_redesign/route2_training/plans/plan_pool_tiered_v2.jsonl'
@@ -28,7 +30,8 @@ def digest(row):
 def main():
     allowed = {r['row_id'] for line in open(TIER, encoding='utf-8')
                if (r := json.loads(line))['tier'] in ('A', 'B')}
-    rng = random.Random(SEED)
+    rng = builder.rng
+    rng.seed(SEED)
     core, completion, recon, w4 = [], [], [], []
     stats = collections.Counter()
     for row_id, line in enumerate(open(SRC, encoding='utf-8'), 1):
@@ -54,7 +57,7 @@ def main():
             i = rng.randrange(1, len(steps) - 1)
             swapped = steps[:i] + [steps[i + 1], steps[i]] + steps[i + 2:]
             recon.append({'cat': 'reconstruction', 'prompt': (task + '\nThe following workflow plan has two adjacent steps in the wrong order. Rewrite the full plan in the correct order.\n' + render_plan({'steps': swapped})[:MAX_PLAN_CHARS]), 'target': render_plan(plan)[:MAX_PLAN_CHARS]})
-        corrupted, answer = corrupted_copy(steps)
+        corrupted, answer = builder.corrupted_copy(steps)
         w4.append({'cat': 'w4', 'prompt': (task + '\nThe following workflow plan contains exactly one structural problem (a removed step, a swapped pair, or an inserted wrong operation). Identify the problem.\n' + render_plan({'steps': corrupted})[:MAX_PLAN_CHARS]), 'target': answer})
     rng.shuffle(core); rng.shuffle(completion); rng.shuffle(recon); rng.shuffle(w4)
     nchars = lambda xs: sum(len(r['prompt']) + len(r['target']) for r in xs)

@@ -802,3 +802,12 @@
 - Training/save branch completed 3/3 epochs, 4,002 example exposures / 1,165,662 tokens, prompt/target truncation 0; epoch1-3 checkpoints and `run_ledger.json` were written.
 - **Dev-120 evaluator failed on all three epochs with CUDA OOM**: 7.01 GiB requested, 6.92 GiB available under shared GPU load. Ledger values `opF1=-1.0`, `n=0`, `best_checkpoint=None` are infrastructure sentinels, not model results; Phase R overall = **FAIL / incomplete** because evaluator/checkpoint-selection pipeline did not validate.
 - Per the frozen rehearsal boundary: no evaluator retry, recipe adjustment, or retraining. C0R PID 830260 exited; GPU returned to the shared queue. Ollama/SAM3 processes were not touched. A same-process/serialized evaluator fix is only a candidate and requires separate owner approval before any rerun.
+
+## 2026-09-26：Stage-1 预检全链完成 — v2_2 候选数据集 + Gate-v3 探针 + 唯一评分器
+
+- Owner W4 裁定"恢复结构变体"落地：`stage1_dataset_v2.py` 的 `corrupt_plan` 改为删除任一真实步骤 / 交换语义不同的相邻步骤 / 插入 I/O 类型不兼容步骤，子类型自然混合，W4 总 token 仍锁 20% 顶（≤25%）。
+- **v2_2 候选数据集构建并审计全绿**：56,710 行（core 37,044 / completion 7,876 / reconstruction 3,803 / w4 7,987）、37,044 唯一 Tier A/B train 源行、token 配比精确 0.60001/0.10000/0.09999/0.20000、Task 截断 0、Chain LM 0、W4 子类型 delete 2723 / swap 2619 / insert 2645（v2_1 塌缩 32/11/7479 已修复）；溯源审计 pool 违规 0。报告 `docs/reports/route2_p0_contract/plan_pipeline_v1/stage1_dataset_report_v2_2.json` + `stage1_dataset_provenance_audit_v2_2.json`；150MB 数据只在服务器。
+- **Gate-v3 探针重建**（W4 变更后必须重生成）：dev 3,236 / test 3,256 探针（W1 1690/1805、W2 783/658、W3 238/256 as-is + 236/256 改写、W4 289/281 自然子类型分布）；冻结 legacy W3 基集逐字节保留，492/494 改写对按 (split, task, plan) 精确 join；probe SHA256 dev `c3d95f67…` / test `866c3762…` 已锁并入库（本地复验一致）。报告 `gate_build_report_v3.json`。
+- **`gate_evaluator_v1`（EV gate-eval-v1.3）冻结为 Base 与所有 checkpoint 的唯一评分器**：贪心 NF4、左 padding、按能力分桶 max_new_tokens（96/560）、OOM 批减半（单项 OOM 记 invalid 不静默丢弃）、批级 SIGALRM 超时标记、W1/W2 严格归一匹配、W3 family-sequence F1 macro+micro（as-is/改写独立 + gap）、W4 严格修复意图序列匹配、每报告附 probe+inference-config SHA。
+- CPU 测试 6/6（Task 永不截断 + 预算与 collator 精确一致、超长 Task fail-closed、W4 三子类型真实变异、W1 无 `ee.` 泄漏、W3 sidecar 仅评分侧、W1-W4 评分往返）。
+- **未启动任何 GPU 工作**（Ollama + yyt SAM3 占用纪律不变）。下一步：GPU 空闲 → Base zero-shot（gate-dev+gate-test，--batch-size 1）→ 预注册 W1-W4 绝对下限与 Δ_i → Stage-1 开训等 owner 显式放行令。
