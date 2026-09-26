@@ -1,8 +1,8 @@
-# Phase R 报告：v2a_A L1 管线预演 —— 部分通过、整体未通过
+# Phase R 报告：v2a_A L1 管线预演 —— CLOSED-FAIL（基础设施/evaluator 失败）
 
-日期：2026-09-24
+日期：2026-09-24（2026-09-26 owner 定性补记）
 规格：`docs/plans/transfer_phase2_stage2_prereg_v1.md` §0/§5
-**最终状态：Phase R FAIL / 未闭环。** 不作模型效果结论。训练/保存分支运行完成；dev-120 checkpoint-selection evaluator 三次均 CUDA OOM，无法验证评估/选点链。无重试、无配置修改、无 GPU 续跑。
+**Owner 官方处置（2026-09-26）：Phase R = CLOSED-FAIL（Infrastructure / evaluator failure），严格区别于 "Stage 2 = FAIL"。** 训练链五项 PASS；evaluator 链 FAIL 导致选点未验证。`opF1=-1.0 / n=0` 是 OOM sentinel，统计上不是模型观测值——禁止产生任何模型效果结论（不得写 C0R "效果不好"，也不得与 C0 比较好坏）。不重训、不改配方。
 
 ## 冻结输入身份
 
@@ -37,7 +37,9 @@
 - dev `-1.0` 是 OOM sentinel，不是模型得分；不得作为效果数字引用，也不得写"模型表现差"。
 - 本次是预演管线验证，不是 Stage 2 效果实验；所有潜在效果信息封存，不进入正式结论。
 - 不按当前日志重试，不改 Phase R 配方，不重训；C0R 进程已退出。
-- 最小技术风险定位：训练进程持有 4-bit Base + LoRA 时，`train.py` 再启动独立 `evaluate_dev.py` 重载第二份 4-bit Base；共享 GPU 可用 6.92 GiB < evaluator allocator warmup 请求 7.01 GiB。**候选修复（未批准、未实施）**：后续若 owner 批准恢复 Phase R，应评审同进程 dev eval / 显存串行释放方案；这属于 evaluator 基础设施修复，不可静默改训练配方。
-- 当前 GPU 排卡已交还 Route-2 v2 持有线；下一步等待其 Base zero-shot 探针窗口完成。之后是否修 evaluator 并补跑 R，由 owner 裁决；Phase F 仍硬依赖 Stage-1 gate PASS + Teacher Plan。
+- 最小技术风险定位：训练进程持有 4-bit Base + LoRA 时，`train.py` 再启动独立 `evaluate_dev.py` 重载第二份 4-bit Base；共享 GPU 可用 6.92 GiB < evaluator allocator warmup 请求 7.01 GiB。**这是 evaluator 资源生命周期问题，不是 Stage 2 训练配方问题。**
+- **恢复条件（owner 预注册，2026-09-26）**：若需恢复，注册为 **"Phase R evaluator-repair rerun"**，不是新实验。只允许修复"训练完成 → checkpoint 保留 → evaluator 串行执行/释放训练显存 → dev-120 scorer → checkpoint selection"这一链路。**禁止顺便改动**：LR / batch / LoRA / epoch / 数据 / prompt / target / EOS / loss。越界即从"管线修复"变成新实验。
+- **排程（owner 裁定）**：当前不立即修 R。顺序 = 等并行线 Base zero-shot → Stage-1 Gate builder → A/B Gate 判定 → 届时决定是否进入 Phase F（及是否需要 R 的 evaluator-repair rerun）。
+- checkpoint 不作为效果工件同步是正确处置：R 目的只是验证管线，selection 未完成；有价值工件 = recipe + preflight + ledger + log + failure report。
 
 工件目录：本目录下 `C0R_rehearsal.yaml`、`preflight_report.json`、`run_ledger.json`、`l1_rehearsal.log`；checkpoint 位于服务器 `/home/qy/gee_llm_smoke/route2_l1_rehearsal/`，尚未同步（Phase R 不作为效果工件提交）。
