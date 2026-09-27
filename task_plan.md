@@ -1,5 +1,12 @@
 # 任务计划：QGIS 工作流推荐系统 — 评测体系 + 矢量修复
 
+## 当前活跃状态（2026-09-27，Route-2 v2 主线）
+
+- **阻塞：无可用 GPU**。计算服务器 mdzhang (10.191.2.38) 已于 2026-09-27 关机（owner 方案 B：先保全、保全完立即关机）。延续性资产已双端 SHA 校验备份至仓库旁 `../server_backup_mdzhang_20260927/`（248 文件全一致，以 `BACKUP_README.md` 为准）。
+- Base zero-shot **dev** 完成（W1-W4 全 0、invalid 86.4%，锚点=地板）；**test** 半边改在租用 GPU 重跑（三冻结 SHA：evaluator v1.3.1 / 探针 / 推理配置）。
+- 待 owner 租用 GPU 后依次：test 复跑 → 预注册 W1-W4 绝对下限+Δ_i → Stage-1 开训（须 owner 显式放行）。Phase R evaluator-repair rerun 可复用已保全的 ep1/2/3 checkpoint（免重训）。
+- 详细交接看 `docs/CURRENT_STATE.md`。本文其余章节为历史工作流记录。
+
 ## 目标
 建立系统无关的多指标 QGIS 链评测体系（①②③），用 V4.6 模型实测并定位"矢量能力缺失"的根因，通过数据扩充+词汇扩展+模型重训，持续提升矢量规划能力。
 

@@ -1,14 +1,18 @@
 # Current Project State
 
-Last updated: 2026-09-26
+Last updated: 2026-09-27
 
 ## Active Route-2 v2 handoff
 
-**Stage-1 = READY FOR BASELINE, not READY FOR TRAINING (2026-09-26)**: dataset builder v2 rebuilt the **v2_2 candidate** under the owner's W4 ruling ("restored structural variants" — delete a real step / swap a semantically distinct adjacent pair / insert an I/O-incompatible step): 56,710 rows / 37,044 unique Tier A/B train source rows / exact 60/10/10/20 token shares / 0 Task truncations / 0 Chain-LM examples / natural W4 subtype mix (delete 2723 / swap 2619 / insert 2645). Provenance audit: 0 pool violations. **Gate-v3 probes remain frozen**: dev 3,236 / test 3,256, W4 repair subtypes naturally distributed, frozen legacy W3 base sets retained byte-for-byte with 492 rewrite pairs joined, probe SHA256 locked. `gate_evaluator_v1` **EV v1.3.1** passes `batch_halvings` into the report (report-path bugfix / no scoring-semantic change); CPU tests 9/9, including actual final-report writes for 0/1/2 batch-halving events; identical scorer for Base and checkpoints. **Next (after GPU window is released)**: Base zero-shot on gate-dev + gate-test (`--batch-size 1`) -> freeze Base baseline -> pre-register W1–W4 absolute floors and deltas; **do not change probes after seeing Base scores; Stage-1 training still requires an explicit owner release**. W3 rewrite gap is auxiliary diagnosis, not an extra Gate condition. Artifacts: `docs/reports/route2_p0_contract/plan_pipeline_v1/` (`gate_evaluator_freeze_v1_3_1.json` / `stage1_dataset_report_v2_2.json` / `stage1_dataset_provenance_audit_v2_2.json` / `gate_build_report_v3.json` + v3 probes); the 150MB data file stays server-side (`/home/qy/system_redesign/route2_training/plans/stage1_train_v2_2.jsonl`).
+**Compute server mdzhang (10.191.2.38) is POWERED OFF (2026-09-27, owner "plan B" ruling: preserve, then shut down immediately)**. All continuation-critical assets were preserved BEFORE shutdown with dual-end SHA256 verification (288 tar entries / 248 files, all match): archive `../server_backup_mdzhang_20260927.tar.gz` (sha256 6542ac1f5bee451a...) plus extracted tree and `BACKUP_README.md` (scope, explicit skips, next-use notes). Preserved: stage1_train_v2_2.jsonl (150MB frozen Stage-1 data), b1_gee_stage_train.jsonl (264MB, not present locally before), plan_pool_tiered_v2.jsonl (234MB frozen B2 pool), gate-v3 probes + gate_evaluator_v1 + plan_pipeline_v1, v2a_A train/dev/test (QGIS 1,334/120/111 SFT files), Phase R qgis_sft_ep1/2/3 checkpoints (evaluator-repair rerun can reuse them without retraining), route2_C0 checkpoint (enables the pending test-111 final eval), configs, Qwen3.5-9B-Base config/tokenizer fingerprints (weights NOT backed up - public model, re-download on the rented GPU).
 
-Phase R (Stage-2 L1 rehearsal) is **FAIL / incomplete**: the C0-clone training path completed 3/3 epochs, saved checkpoints and ledger, with 0 prompt/target truncations; however, dev-120 checkpoint evaluation OOMed in all three epochs (7.01 GiB requested vs 6.92 GiB free), so `best_checkpoint=None`. Do not interpret `opF1=-1` as a model score. No retry, recipe change, or further training is authorized by this result. Report/artifacts: `docs/reports/transfer_phase2/phase_r/phase_r_report.md`.
+**Base zero-shot dev result (2026-09-27, evaluator v1.3.1, zero OOM/timeout/batch-halving)**: W1/W2/W3(as-is,rewrite)/W4 all 0.0; invalid 2795/3236 (86.4%). Untrained Base sits at the floor -> absolute-floor thresholds are trivially satisfiable; the pre-registered W1-W4 judgment weight falls on the delta (zero-shot + Delta_i) conditions. Formal reading belongs to the owner. Dev artifacts committed by the holder line (0a41a6d) and mirrored in the backup.
 
-The Route-2 v2 holder has been notified. GPU remains occupied by Ollama and another user's SAM3 process; do not launch or terminate GPU work. Phase F remains gated on Stage-1 capability PASS + Teacher Plans. Immediate coordination: await the holder's Base zero-shot probe window; any Phase-R evaluator repair/rehearsal requires owner approval.
+**Base zero-shot test half: cancelled mid-run (owner decision), rerun on a rented GPU** under the frozen SHA trio: evaluator v1.3.1 / probes dev c3d95f67... test 866c3762... / inference config 6355bab4.... The mid-run silence (no disk/log writes for hours) was evaluator-by-design - reports are written once at completion (confirmed by the holder line); do not diagnose a hang from log silence again.
+
+Phase R remains **CLOSED-FAIL (infrastructure/evaluator failure), strictly NOT Stage-2 FAIL**: `docs/reports/transfer_phase2/phase_r/phase_r_report.md`.
+
+**Next actions (gated on the rented GPU + owner release)**: (1) rent GPU, restore env, re-download Qwen3.5-9B-Base -> (2) Base zero-shot gate-test rerun (~11h at dev pace, --batch-size 1) -> (3) pre-register W1-W4 absolute floors + Delta_i -> (4) Stage-1 training only on explicit owner release. The Route-2 v2 holder line was notified before shutdown and confirmed; their poweroff watcher was fail-safe and did not interfere.
 
 Stage-1 protocol and B2 construction gates remain frozen; Stage-2 preregistration remains `docs/plans/transfer_phase2_stage2_prereg_v1.md`. See `docs/plans/transfer_phase2_roadmap.md` and `route2_p0_contract/` for live gate state.
 
@@ -33,9 +37,8 @@ unseen concepts); compositional generalization burden sits on W3 novel
 combinations. 1 epoch first; FAIL -> continue under the same protocol.
 **Success criterion = gate pass, not loss.** (1)->(7) fully frozen.
 Build-6's three CPU artifacts and the Stage-1 preflight (v2_2 data +
-Gate-v3 probes + evaluator v1.3.1) are complete. Status is READY FOR
-BASELINE; Base zero-shot and dual-condition threshold preregistration
-must precede the owner's explicit training release. See
+Gate-v3 probes + evaluator) are all complete; training now waits only
+on a GPU window and the owner's explicit release. See
 `route2_p0_contract/ROUTE2_V2_STAGE1_PROTOCOL_v1.md`.
 
 ## (6) B2 data construction v0 (2026-09-24, owner ruling)

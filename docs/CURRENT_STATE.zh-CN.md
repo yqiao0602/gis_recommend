@@ -1,17 +1,23 @@
 # 当前项目状态
 
-最后更新：2026-09-26
+最后更新：2026-09-27
 
 ## Route-2 v2 当前交接
 
-**Stage-1 = READY FOR BASELINE，非 READY FOR TRAINING（2026-09-26）**：数据构建器 v2 按 owner W4 裁定"恢复结构变体"重建出 **v2_2 候选数据集**——56,710 行 / 37,044 唯一 Tier A/B train 源行 / token 配比精确 60/10/10/20 / Task 截断 0 / Chain LM 0 / W4 子类型自然分布（delete 2723 / swap 2619 / insert 2645）；溯源审计 0 违规。**Gate-v3 探针冻结不变**：dev 3,236 / test 3,256，W4 修复子类型自然分布，冻结 legacy W3 基集逐字节保留、492 改写对 join，probe SHA 已锁。`gate_evaluator_v1` **EV v1.3.1** 修复 `batch_halvings` 返回值传递（report-path bugfix / no scoring-semantic change）；CPU 测试 9/9，包含真正写出最终报告的 0/1/2 次减半回归；同一评分器用于 Base 与 checkpoint。**下一步（GPU 窗口释放后）**：Base zero-shot 跑 gate-dev+gate-test（`--batch-size 1`）→ 冻结 Base baseline → 预注册 W1–W4 绝对下限与 Δ_i；**不得看结果后改探针，Stage-1 开训仍须 owner 显式放行**。W3 rewrite gap 仅作辅助诊断，非额外 Gate 条件。工件：`docs/reports/route2_p0_contract/plan_pipeline_v1/`（`gate_evaluator_freeze_v1_3_1.json` / `stage1_dataset_report_v2_2.json` / `stage1_dataset_provenance_audit_v2_2.json` / `gate_build_report_v3.json` + v3 探针）；150MB 数据文件只在服务器（`/home/qy/system_redesign/route2_training/plans/stage1_train_v2_2.jsonl`）。
+**计算服务器 mdzhang (10.191.2.38) 已于 2026-09-27 关机**（owner "方案 B" 裁定：先保全、保全完立即关机，不等在跑的 Base zero-shot test 半边）。关机前已完成全部延续性资产的 SHA 校验备份（288 tar 条目 / 248 文件，双端 SHA256 全部一致）：压缩包 `../server_backup_mdzhang_20260927.tar.gz`（sha256 6542ac1f5bee451a…）+ 解包目录 + `BACKUP_README.md`（范围、显式不拉清单、复用说明）。已保全：`stage1_train_v2_2.jsonl`（150MB 冻结 Stage-1 训练数据）、`b1_gee_stage_train.jsonl`（264MB，本地原本没有）、`plan_pool_tiered_v2.jsonl`（234MB 冻结 B2 池）、gate-v3 探针 + `gate_evaluator_v1` + plan_pipeline_v1 全套、`v2a_A_train/dev/test.jsonl`（QGIS 1,334/120/111 SFT 文件）、**Phase R qgis_sft_ep1/2/3 checkpoint**（evaluator-repair rerun 可直接复用、免重训）、route2_C0 checkpoint（可做悬置的 test-111 终评）、configs、Qwen3.5-9B-Base config/tokenizer 指纹（权重未拉——公开模型，租卡机器上重新下载）。
 
-Phase R（Stage-2 L1 预演）**FAIL / 未闭环**：C0 配方克隆训练完整跑完 3/3 epochs，checkpoint 与 run ledger 落盘，prompt/target 截断均为 0；但 dev-120 checkpoint evaluator 三个 epoch 全部 CUDA OOM（请求 7.01 GiB、当时仅余 6.92 GiB），因此 `best_checkpoint=None`。`opF1=-1` 是 OOM sentinel，**不是模型分数**。本次不重试、不改配方、不继续训练。报告与工件：`docs/reports/transfer_phase2/phase_r/phase_r_report.md`。
+**Base zero-shot dev 结果（2026-09-27，evaluator v1.3.1，零 OOM/零超时/零批减半）**：W1/W2/W3(as-is,改写)/W4 全部 0.0；invalid 2,795/3,236（86.4%）。未训练 Base 就在地板上——绝对下限形同虚设，W1-W4 判读重心完全落在预注册的 Δ_i（零样本+提升量）条件上。正式判读归 owner。dev 工件已由持有线提交 git（0a41a6d），备份内有镜像。
 
-Route-2 v2 持有线已获通知。GPU 仍被 Ollama 与 yyt 的 SAM3 进程占用；不得启动或终止 GPU 任务。Phase F 仍硬依赖 Stage-1 capability PASS + Teacher Plan。近期协调：等待持有线完成 Base zero-shot 探针窗口；Phase-R evaluator 修复/重演须 owner 另行批准。
+**Base zero-shot test 半边：中途中止（owner 裁定），改在租用 GPU 上重跑**，三冻结 SHA 不变：evaluator v1.3.1 / 探针 dev `c3d95f67…`、test `866c3762…` / 推理配置 `6355bab4…`。运行中"数小时零落盘零日志"是评估器设计使然（报告只在全部探针完成后一次性写出，持有线已确认）——今后不要再用日志静默判断卡死。
+
+Phase R 维持 **CLOSED-FAIL（Infrastructure/evaluator failure），严格非 Stage-2 FAIL**：`docs/reports/transfer_phase2/phase_r/phase_r_report.md`。
+
+**下一步（全部等租用 GPU + owner 放行）**：① 租卡、恢复环境、重下 Qwen3.5-9B-Base → ② Base zero-shot gate-test 复跑（dev 节奏约 11h，--batch-size 1）→ ③ 预注册 W1-W4 绝对下限 + Δ_i → ④ Stage-1 开训须 owner 显式放行令。持有线已在关机前获通知并确认；其 poweroff watcher 为 fail-safe，未阻碍手动关机。
 
 Stage-1 协议与 B2 门禁保持冻结；Stage-2 预注册见 `docs/plans/transfer_phase2_stage2_prereg_v1.md`。活跃路线看 `docs/plans/transfer_phase2_roadmap.md` 和 `route2_p0_contract/`。
 
+本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
+`docs/PROJECT_CONTEXT.zh-CN.md`。
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。
 
@@ -27,8 +33,7 @@ Reconstruction 10% / W4 20%（≤25% 顶）/**Chain LM 0%**（A1 归因清洁）
 新上下文/低频/词面变化（不用完全未见概念）；组合泛化主力 = W3 新操作
 组合。1 epoch 先行，FAIL 同协议续训。**成功标准 = 能力门通过，非 loss**。
 ①→⑦ 全冻结。⑥三件 CPU 工程产物与 Stage-1 预检（数据 v2_2 + Gate-v3
-探针 + 评分器 v1.3.1）已全部完成。当前是 READY FOR BASELINE；须先完成
-Base zero-shot 与双条件阈值预注册，再经 owner 显式放行才能开训。详见
+探针 + 评分器）已全部完成；开训只差 GPU 窗口与 owner 放行令。详见
 `route2_p0_contract/ROUTE2_V2_STAGE1_PROTOCOL_v1.md`。
 
 ## ⑥ B2 数据构造 v0（2026-09-24，owner 裁定）
