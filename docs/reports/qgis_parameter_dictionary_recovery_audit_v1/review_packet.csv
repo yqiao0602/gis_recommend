@@ -1,0 +1,651 @@
+﻿call_sites,covered_dependency_edges,covered_operator_ids,dependency_edge_count,dependency_edge_evidence,dependency_edges,description_fidelity_passed,description_fidelity_reasons,description_fidelity_status,description_length,description_policy,description_source,fanin,feature_extractor_version,forward_edges,frozen_dependency_edges,frozen_l3_chain,frozen_operator_ids,frozen_parameter_facts,known_omissions,lexical_scope,local_risk_evidence,local_structure_reasons,local_structure_status,mapped_l3_chain,normalized_dag_key,operator_count,operator_ids,operator_semantic_coverage,parameter_facts,parent_call_indices,parent_record_id,parent_rule_id,parent_signature_hash,production_merge,recovery_rule_id,recovery_structure_status,root_indices,schema,sink_indices,source_path,source_root_id,source_sha256,source_snippet,split_class,splitter_version,task_description,task_name,test_eligible,training_admission,training_row_emitted,unit_id,validation_eligible,workflow_unit_scope,review_position,source_hash_verified,cluster_size,cluster_position,comparison_parent_record_id,comparison_source_path,comparison_source_snippet,review_status,human_dependency_correct,human_operator_order_correct,human_boundary_correct,human_fanin_semantics_correct,human_description_faithful,human_final_decision,human_notes
+"[{""line_end"": 74, ""line_start"": 74, ""operator_id"": ""native:buffer""}, {""line_end"": 84, ""line_start"": 84, ""operator_id"": ""native:buffer""}, {""line_end"": 92, ""line_start"": 92, ""operator_id"": ""native:intersection""}]","[[0, 2], [1, 2]]","[""native:buffer"", ""native:buffer"", ""native:intersection""]",2,"[{""consumer_index"": 2, ""kinds"": [""static_output_path""], ""producer_index"": 0}, {""consumer_index"": 2, ""kinds"": [""static_output_path""], ""producer_index"": 1}]","[[0, 2], [1, 2]]",True,[],candidate,75,deterministic_operator_dag_zh_v4,frozen_recovered_local_dag_only,True,qgis-conversion-features-v8,True,"[[0, 2], [1, 2]]","[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_01""]","[""native:buffer"", ""native:buffer"", ""native:intersection""]","[{}, {}, {}]","[""outside_recovered_local_dag_not_described""]",<module>,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""downstream_low_level_data_transform_roles"": [], ""downstream_processing_consumers"": [], ""intermediate_data_transform_calls"": [], ""processing_temporary_input_references"": [], ""provider_input_type_checks"": [{""actual_type"": ""unknown"", ""consumer_index"": 0, ""evidence"": """", ""operator_id"": ""native:buffer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""unknown""}, {""actual_type"": ""unknown"", ""consumer_index"": 1, ""evidence"": """", ""operator_id"": ""native:buffer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""unknown""}, {""actual_type"": ""unknown"", ""consumer_index"": 2, ""evidence"": """", ""operator_id"": ""native:intersection"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""unknown""}, {""actual_type"": ""unknown"", ""consumer_index"": 2, ""evidence"": """", ""operator_id"": ""native:intersection"", ""parameter"": ""OVERLAY"", ""required_type"": ""vector"", ""status"": ""unknown""}], ""provider_input_type_conflicts"": [], ""provider_input_type_status"": ""unknown"", ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}","[""missing_data_edges""]",deferred,"[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_01""]",477b3c7ea31dbf0f0dcb6dce06143036d6c541b0bf14a1240b1995188d3a9297,3,"[""native:buffer"", ""native:buffer"", ""native:intersection""]",3,"[{}, {}, {}]","[0, 1, 2]",0ead4a56b6b8d76bedeeb06d,recover-missing-data-edges-v1,72fce7217ca5d3118166f60e29331dea293daddccd0d0abc70897a79c90b9c58,not_granted,recovery-multi-root-fanin-dag-v1,eligible,"[0, 1]",gis_recommend.qgis_recovery_local_dag_audit.v1,[2],/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005061.py,textbook_strict,0ead4a56b6b8d76bedeeb06df75f31d89352a16a039262b6e525032a6725ba44,"70:     ""SEGMENTS"": 5,
+71:     ""DISSOLVE"": True,
+72:     ""OUTPUT"": os.path.join(work_dir, ""roads_buffer.shp"")
+73: }
+74: processing.run(""native:buffer"", buffer_params_roads)
+75: 
+76: # 学校缓冲区参数和执行
+77: buffer_params_schools = {
+78:     ""INPUT"": os.path.join(work_dir, ""schools.shp""),
+79:     ""DISTANCE"": 1000,
+80:     ""SEGMENTS"": 5,
+81:     ""DISSOLVE"": True,
+82:     ""OUTPUT"": os.path.join(work_dir, ""schools_buffer.shp"")
+83: }
+84: processing.run(""native:buffer"", buffer_params_schools)
+85: 
+86: # 计算两个缓冲区的交叉（重叠）区域
+87: intersection_params = {
+88:     ""INPUT"": os.path.join(work_dir, ""schools_buffer.shp""),
+89:     ""OVERLAY"": os.path.join(work_dir, ""roads_buffer.shp""),
+90:     ""OUTPUT"": os.path.join(work_dir, ""distance_of_schools_and_roads.shp"")
+91: }
+92: processing.run(""qgis:intersection"", intersection_params)
+93: 
+94: # 加载保存后的图层
+95: buffered_roads_layer = QgsVectorLayer(os.path.join(work_dir, ""roads_buffer.shp""), ""Buffered Roads"", ""ogr"")
+96: buffered_schools_layer = QgsVectorLayer(os.path.join(work_dir, ""schools_buffer.shp""), ""Buffered Schools"", ""ogr"")",multi_step_local_dag,qgis-local-subworkflow-splitter-v6,在该局部工作流中，对输入数据创建缓冲区；随后对输入数据创建缓冲区；随后使用前述步骤的处理结果计算图层相交结果，得到此 Processing 链的结果。,局部工作流：创建缓冲区并创建缓冲区并计算相交,False,not_granted_recovery_census_audit_only,False,local_e39a2a0ac05284c7a151,False,local_subworkflow,1,True,2,1,9d47eb425cb3119907974f93,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4219.py,"64:     ""SEGMENTS"": 5,
+65:     ""DISSOLVE"": True,
+66:     ""OUTPUT"": os.path.join(work_dir, ""roads_buffer.shp"")
+67: }
+68: processing.run(""native:buffer"", buffer_params_roads)
+69: 
+70: # 学校缓冲区参数和执行
+71: buffer_params_schools = {
+72:     ""INPUT"": os.path.join(work_dir, ""schools.shp""),
+73:     ""DISTANCE"": 1000,
+74:     ""SEGMENTS"": 5,
+75:     ""DISSOLVE"": True,
+76:     ""OUTPUT"": os.path.join(work_dir, ""schools_buffer.shp"")
+77: }
+78: processing.run(""native:buffer"", buffer_params_schools)
+79: 
+80: # 计算两个缓冲区的交叉（重叠）区域
+81: intersection_params = {
+82:     ""INPUT"": os.path.join(work_dir, ""schools_buffer.shp""),
+83:     ""OVERLAY"": os.path.join(work_dir, ""roads_buffer.shp""),
+84:     ""OUTPUT"": os.path.join(work_dir, ""distance_of_schools_and_roads.shp"")
+85: }
+86: processing.run(""qgis:intersection"", intersection_params)
+87: 
+88: # 加载保存后的图层
+89: buffered_roads_layer = QgsVectorLayer(os.path.join(work_dir, ""roads_buffer.shp""), ""Buffered Roads"", ""ogr"")
+90: buffered_schools_layer = QgsVectorLayer(os.path.join(work_dir, ""schools_buffer.shp""), ""Buffered Schools"", ""ogr"")",pending_human_review,,,,,,,
+"[{""line_end"": 68, ""line_start"": 68, ""operator_id"": ""native:buffer""}, {""line_end"": 78, ""line_start"": 78, ""operator_id"": ""native:buffer""}, {""line_end"": 86, ""line_start"": 86, ""operator_id"": ""native:intersection""}]","[[0, 2], [1, 2]]","[""native:buffer"", ""native:buffer"", ""native:intersection""]",2,"[{""consumer_index"": 2, ""kinds"": [""static_output_path""], ""producer_index"": 0}, {""consumer_index"": 2, ""kinds"": [""static_output_path""], ""producer_index"": 1}]","[[0, 2], [1, 2]]",True,[],candidate,75,deterministic_operator_dag_zh_v4,frozen_recovered_local_dag_only,True,qgis-conversion-features-v8,True,"[[0, 2], [1, 2]]","[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_01""]","[""native:buffer"", ""native:buffer"", ""native:intersection""]","[{}, {}, {}]","[""outside_recovered_local_dag_not_described""]",<module>,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""downstream_low_level_data_transform_roles"": [], ""downstream_processing_consumers"": [], ""intermediate_data_transform_calls"": [], ""processing_temporary_input_references"": [], ""provider_input_type_checks"": [{""actual_type"": ""unknown"", ""consumer_index"": 0, ""evidence"": """", ""operator_id"": ""native:buffer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""unknown""}, {""actual_type"": ""unknown"", ""consumer_index"": 1, ""evidence"": """", ""operator_id"": ""native:buffer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""unknown""}, {""actual_type"": ""unknown"", ""consumer_index"": 2, ""evidence"": """", ""operator_id"": ""native:intersection"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""unknown""}, {""actual_type"": ""unknown"", ""consumer_index"": 2, ""evidence"": """", ""operator_id"": ""native:intersection"", ""parameter"": ""OVERLAY"", ""required_type"": ""vector"", ""status"": ""unknown""}], ""provider_input_type_conflicts"": [], ""provider_input_type_status"": ""unknown"", ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}","[""missing_data_edges""]",deferred,"[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_01""]",477b3c7ea31dbf0f0dcb6dce06143036d6c541b0bf14a1240b1995188d3a9297,3,"[""native:buffer"", ""native:buffer"", ""native:intersection""]",3,"[{}, {}, {}]","[0, 1, 2]",9d47eb425cb3119907974f93,recover-missing-data-edges-v1,72fce7217ca5d3118166f60e29331dea293daddccd0d0abc70897a79c90b9c58,not_granted,recovery-multi-root-fanin-dag-v1,eligible,"[0, 1]",gis_recommend.qgis_recovery_local_dag_audit.v1,[2],/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4219.py,github_merge,9d47eb425cb3119907974f93323581ac8eb0c968502cdd7c3130c1f9b947f550,"64:     ""SEGMENTS"": 5,
+65:     ""DISSOLVE"": True,
+66:     ""OUTPUT"": os.path.join(work_dir, ""roads_buffer.shp"")
+67: }
+68: processing.run(""native:buffer"", buffer_params_roads)
+69: 
+70: # 学校缓冲区参数和执行
+71: buffer_params_schools = {
+72:     ""INPUT"": os.path.join(work_dir, ""schools.shp""),
+73:     ""DISTANCE"": 1000,
+74:     ""SEGMENTS"": 5,
+75:     ""DISSOLVE"": True,
+76:     ""OUTPUT"": os.path.join(work_dir, ""schools_buffer.shp"")
+77: }
+78: processing.run(""native:buffer"", buffer_params_schools)
+79: 
+80: # 计算两个缓冲区的交叉（重叠）区域
+81: intersection_params = {
+82:     ""INPUT"": os.path.join(work_dir, ""schools_buffer.shp""),
+83:     ""OVERLAY"": os.path.join(work_dir, ""roads_buffer.shp""),
+84:     ""OUTPUT"": os.path.join(work_dir, ""distance_of_schools_and_roads.shp"")
+85: }
+86: processing.run(""qgis:intersection"", intersection_params)
+87: 
+88: # 加载保存后的图层
+89: buffered_roads_layer = QgsVectorLayer(os.path.join(work_dir, ""roads_buffer.shp""), ""Buffered Roads"", ""ogr"")
+90: buffered_schools_layer = QgsVectorLayer(os.path.join(work_dir, ""schools_buffer.shp""), ""Buffered Schools"", ""ogr"")",multi_step_local_dag,qgis-local-subworkflow-splitter-v6,在该局部工作流中，对输入数据创建缓冲区；随后对输入数据创建缓冲区；随后使用前述步骤的处理结果计算图层相交结果，得到此 Processing 链的结果。,局部工作流：创建缓冲区并创建缓冲区并计算相交,False,not_granted_recovery_census_audit_only,False,local_9d66f22e9a46ca204320,False,local_subworkflow,2,True,2,2,0ead4a56b6b8d76bedeeb06d,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005061.py,"70:     ""SEGMENTS"": 5,
+71:     ""DISSOLVE"": True,
+72:     ""OUTPUT"": os.path.join(work_dir, ""roads_buffer.shp"")
+73: }
+74: processing.run(""native:buffer"", buffer_params_roads)
+75: 
+76: # 学校缓冲区参数和执行
+77: buffer_params_schools = {
+78:     ""INPUT"": os.path.join(work_dir, ""schools.shp""),
+79:     ""DISTANCE"": 1000,
+80:     ""SEGMENTS"": 5,
+81:     ""DISSOLVE"": True,
+82:     ""OUTPUT"": os.path.join(work_dir, ""schools_buffer.shp"")
+83: }
+84: processing.run(""native:buffer"", buffer_params_schools)
+85: 
+86: # 计算两个缓冲区的交叉（重叠）区域
+87: intersection_params = {
+88:     ""INPUT"": os.path.join(work_dir, ""schools_buffer.shp""),
+89:     ""OVERLAY"": os.path.join(work_dir, ""roads_buffer.shp""),
+90:     ""OUTPUT"": os.path.join(work_dir, ""distance_of_schools_and_roads.shp"")
+91: }
+92: processing.run(""qgis:intersection"", intersection_params)
+93: 
+94: # 加载保存后的图层
+95: buffered_roads_layer = QgsVectorLayer(os.path.join(work_dir, ""roads_buffer.shp""), ""Buffered Roads"", ""ogr"")
+96: buffered_schools_layer = QgsVectorLayer(os.path.join(work_dir, ""schools_buffer.shp""), ""Buffered Schools"", ""ogr"")",pending_human_review,,,,,,,
+"[{""line_end"": 62, ""line_start"": 62, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 66, ""line_start"": 66, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 97, ""line_start"": 95, ""operator_id"": ""native:buffer""}, {""line_end"": 101, ""line_start"": 100, ""operator_id"": ""native:difference""}]","[[0, 3], [1, 2], [2, 3]]","[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:buffer"", ""native:difference""]",3,"[{""consumer_index"": 3, ""kinds"": [""static_output_path""], ""producer_index"": 0}, {""consumer_index"": 2, ""kinds"": [""static_output_path""], ""producer_index"": 1}, {""consumer_index"": 3, ""kinds"": [""static_output_path""], ""producer_index"": 2}]","[[0, 3], [1, 2], [2, 3]]",True,[],candidate,119,deterministic_operator_dag_zh_v4,frozen_recovered_local_dag_only,True,qgis-conversion-features-v8,True,"[[0, 3], [1, 2], [2, 3]]","[""L3_01_10_01"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_02_02_04""]","[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:buffer"", ""native:difference""]","[{}, {}, {""DISSOLVE"": false, ""DISTANCE"": 50000, ""END_CAP_STYLE"": 0, ""JOIN_STYLE"": 0, ""SEGMENTS"": 5}, {}]","[""outside_recovered_local_dag_not_described""]",<module>,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""downstream_low_level_data_transform_roles"": [], ""downstream_processing_consumers"": [], ""intermediate_data_transform_calls"": [], ""processing_temporary_input_references"": [], ""provider_input_type_checks"": [{""actual_type"": ""vector"", ""consumer_index"": 0, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:reprojectlayer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""compatible""}, {""actual_type"": ""vector"", ""consumer_index"": 1, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:reprojectlayer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""compatible""}, {""actual_type"": ""vector"", ""consumer_index"": 2, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:buffer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""compatible""}, {""actual_type"": ""vector"", ""consumer_index"": 3, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:difference"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""compatible""}, {""actual_type"": ""vector"", ""consumer_index"": 3, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:difference"", ""parameter"": ""OVERLAY"", ""required_type"": ""vector"", ""status"": ""compatible""}], ""provider_input_type_conflicts"": [], ""provider_input_type_status"": ""compatible"", ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}","[""missing_data_edges""]",deferred,"[""L3_01_10_01"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_02_02_04""]",59ecb063701ad96f261ec4e094ab60955ee5b850730d327498b4b8c52c7607fc,4,"[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:buffer"", ""native:difference""]",4,"[{}, {}, {""DISSOLVE"": false, ""DISTANCE"": 50000, ""END_CAP_STYLE"": 0, ""JOIN_STYLE"": 0, ""SEGMENTS"": 5}, {}]","[3, 4, 5, 6]",2b44227185b5caf6d01f697f,recover-missing-data-edges-v1,f6137f837a9efda9e748820d8687c58bceec3336dc14fdd5b11ee9d05444faa3,not_granted,recovery-multi-root-fanin-dag-v1,eligible,"[0, 1]",gis_recommend.qgis_recovery_local_dag_audit.v1,[3],/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0004150.py,route_b,2b44227185b5caf6d01f697f48014ae141a1fd4ea41cab75123d6dec8ced14ba,"58: processing.run('qgis:reprojectlayer', parameter)
+59: 
+60: parameter = {'INPUT': r'out\country_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+61:                  'OUTPUT': r'out\country_poland_proj.shp'}
+62: processing.run('qgis:reprojectlayer', parameter)
+63: 
+64: parameter = {'INPUT': r'out\airports_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+65:                  'OUTPUT': r'out\airports_poland_proj.shp'}
+66: processing.run('qgis:reprojectlayer', parameter)
+67: 
+68: # Add columns and calculate value
+69: country_poland_proj = QgsVectorLayer(r'out\country_poland_proj.shp')
+70: layer_provider = country_poland_proj.dataProvider()
+71: layer_provider.addAttributes([QgsField(""ROADS_LENGTH_KM"", QVariant.Int)])
+72: layer_provider.addAttributes([QgsField(""APT_NUMBER"", QVariant.Int)])
+73: country_poland_proj.updateFields()
+74: 
+75: 
+76: roads_poland_proj = QgsVectorLayer(r'out\roads_poland_proj.shp')
+77: features = roads_poland_proj.getFeatures()
+78: 
+79: summed_total = 0
+80: for feat in features:
+81:     length = feat.geometry().length()
+82:     summed_total += length
+83: 
+84: airports_poland_proj = QgsVectorLayer(r'out\airports_poland_proj.shp')
+85: count = len([feat for feat in airports_poland_proj.getFeatures()])
+86: 
+87: 
+88: with edit(country_poland_proj):
+89:     for feat in country_poland_proj.getFeatures():
+90:         feat['ROADS_LENG'] = int(summed_total) / 1000
+91:         feat['APT_NUMBER'] = count
+92:         country_poland_proj.updateFeature(feat)
+93: 
+94: # Create buffer
+95: processing.run(""qgis:buffer"",
+96:     {'INPUT': r'out\airports_poland_proj.shp', 'DISTANCE': 50000, 'SEGMENTS': 5, 'END_CAP_STYLE': 0, 'JOIN_STYLE': 0, 'MITER_LIMIT': 2,
+97:     'DISSOLVE': False, 'OUTPUT': r'out\airports_poland_proj_buff.shp'})
+98: 
+99: # Erase buffer
+100: processing.run(""qgis:difference"", {'INPUT': r'out\country_poland_proj.shp', 'OVERLAY': r""out\airports_poland_proj_buff.shp"",
+101:                              'OUTPUT': r""out\country_poland_proj_erased.shp""})
+102: 
+103: # Map
+104: country_poland_proj_erased = QgsVectorLayer(r'out\country_poland_proj_erased.shp')
+105: settings = QgsMapSettings()",multi_step_local_dag,qgis-local-subworkflow-splitter-v6,在该局部工作流中，对输入数据重投影图层；随后对输入数据重投影图层；随后将前述重投影后的图层用于创建缓冲区（距离为 50000，分段数为 5，保留独立缓冲区）；随后使用前述步骤的处理结果计算空间差异，得到此 Processing 链的结果。,局部工作流：重投影图层、重投影图层等处理,False,not_granted_recovery_census_audit_only,False,local_9407c1b54cd5735a1008,False,local_subworkflow,3,True,2,1,f4b5f8eda5c6d80c031ccb85,/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0004151.py,"38: 
+39: # Change CRS ad write data
+40: parameter = {'INPUT': r'out\country_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+41:                  'OUTPUT': r'out\country_poland_proj.shp'}
+42: processing.run('qgis:reprojectlayer', parameter)
+43: 
+44: parameter = {'INPUT': r'out\airports_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+45:                  'OUTPUT': r'out\airports_poland_proj.shp'}
+46: processing.run('qgis:reprojectlayer', parameter)
+47: 
+48: 
+49: # Create buffer
+50: processing.run(""qgis:buffer"",
+51:     {'INPUT': r'out\airports_poland_proj.shp', 'DISTANCE': 50000, 'SEGMENTS': 5, 'END_CAP_STYLE': 0, 'JOIN_STYLE': 0, 'MITER_LIMIT': 2,
+52:     'DISSOLVE': False, 'OUTPUT': r'out\airports_poland_proj_buff.shp'})
+53: 
+54: # Erase buffer
+55: processing.run(""qgis:difference"", {'INPUT': r'out\country_poland_proj.shp', 'OVERLAY': r""out\airports_poland_proj_buff.shp"",
+56:                              'OUTPUT': r""out\country_poland_proj_erased.shp""})
+57: 
+58: # --- Create map PNG ---
+59: erased = QgsVectorLayer(r'out\country_poland_proj_erased.shp', 'Poland (excl. airport zones)', 'ogr')
+60: buffers = QgsVectorLayer(r'out\airports_poland_proj_buff.shp', 'Airport buffer 50km', 'ogr')",pending_human_review,,,,,,,
+"[{""line_end"": 42, ""line_start"": 42, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 46, ""line_start"": 46, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 52, ""line_start"": 50, ""operator_id"": ""native:buffer""}, {""line_end"": 56, ""line_start"": 55, ""operator_id"": ""native:difference""}]","[[0, 3], [1, 2], [2, 3]]","[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:buffer"", ""native:difference""]",3,"[{""consumer_index"": 3, ""kinds"": [""static_output_path""], ""producer_index"": 0}, {""consumer_index"": 2, ""kinds"": [""static_output_path""], ""producer_index"": 1}, {""consumer_index"": 3, ""kinds"": [""static_output_path""], ""producer_index"": 2}]","[[0, 3], [1, 2], [2, 3]]",True,[],candidate,119,deterministic_operator_dag_zh_v4,frozen_recovered_local_dag_only,True,qgis-conversion-features-v8,True,"[[0, 3], [1, 2], [2, 3]]","[""L3_01_10_01"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_02_02_04""]","[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:buffer"", ""native:difference""]","[{}, {}, {""DISSOLVE"": false, ""DISTANCE"": 50000, ""END_CAP_STYLE"": 0, ""JOIN_STYLE"": 0, ""SEGMENTS"": 5}, {}]","[""outside_recovered_local_dag_not_described""]",<module>,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""downstream_low_level_data_transform_roles"": [], ""downstream_processing_consumers"": [], ""intermediate_data_transform_calls"": [], ""processing_temporary_input_references"": [], ""provider_input_type_checks"": [{""actual_type"": ""vector"", ""consumer_index"": 0, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:reprojectlayer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""compatible""}, {""actual_type"": ""vector"", ""consumer_index"": 1, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:reprojectlayer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""compatible""}, {""actual_type"": ""vector"", ""consumer_index"": 2, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:buffer"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""compatible""}, {""actual_type"": ""vector"", ""consumer_index"": 3, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:difference"", ""parameter"": ""INPUT"", ""required_type"": ""vector"", ""status"": ""compatible""}, {""actual_type"": ""vector"", ""consumer_index"": 3, ""evidence"": ""literal_path:shp"", ""operator_id"": ""native:difference"", ""parameter"": ""OVERLAY"", ""required_type"": ""vector"", ""status"": ""compatible""}], ""provider_input_type_conflicts"": [], ""provider_input_type_status"": ""compatible"", ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}","[""missing_data_edges""]",deferred,"[""L3_01_10_01"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_02_02_04""]",59ecb063701ad96f261ec4e094ab60955ee5b850730d327498b4b8c52c7607fc,4,"[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:buffer"", ""native:difference""]",4,"[{}, {}, {""DISSOLVE"": false, ""DISTANCE"": 50000, ""END_CAP_STYLE"": 0, ""JOIN_STYLE"": 0, ""SEGMENTS"": 5}, {}]","[1, 2, 3, 4]",f4b5f8eda5c6d80c031ccb85,recover-missing-data-edges-v1,6da186ddfe3b926d7ab69134a31e118d6ad70ff50961e3cadad8f6c52ddecc94,not_granted,recovery-multi-root-fanin-dag-v1,eligible,"[0, 1]",gis_recommend.qgis_recovery_local_dag_audit.v1,[3],/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0004151.py,route_b,f4b5f8eda5c6d80c031ccb8531010971850759a58ec424a63a0aa53ec475a700,"38: 
+39: # Change CRS ad write data
+40: parameter = {'INPUT': r'out\country_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+41:                  'OUTPUT': r'out\country_poland_proj.shp'}
+42: processing.run('qgis:reprojectlayer', parameter)
+43: 
+44: parameter = {'INPUT': r'out\airports_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+45:                  'OUTPUT': r'out\airports_poland_proj.shp'}
+46: processing.run('qgis:reprojectlayer', parameter)
+47: 
+48: 
+49: # Create buffer
+50: processing.run(""qgis:buffer"",
+51:     {'INPUT': r'out\airports_poland_proj.shp', 'DISTANCE': 50000, 'SEGMENTS': 5, 'END_CAP_STYLE': 0, 'JOIN_STYLE': 0, 'MITER_LIMIT': 2,
+52:     'DISSOLVE': False, 'OUTPUT': r'out\airports_poland_proj_buff.shp'})
+53: 
+54: # Erase buffer
+55: processing.run(""qgis:difference"", {'INPUT': r'out\country_poland_proj.shp', 'OVERLAY': r""out\airports_poland_proj_buff.shp"",
+56:                              'OUTPUT': r""out\country_poland_proj_erased.shp""})
+57: 
+58: # --- Create map PNG ---
+59: erased = QgsVectorLayer(r'out\country_poland_proj_erased.shp', 'Poland (excl. airport zones)', 'ogr')
+60: buffers = QgsVectorLayer(r'out\airports_poland_proj_buff.shp', 'Airport buffer 50km', 'ogr')",multi_step_local_dag,qgis-local-subworkflow-splitter-v6,在该局部工作流中，对输入数据重投影图层；随后对输入数据重投影图层；随后将前述重投影后的图层用于创建缓冲区（距离为 50000，分段数为 5，保留独立缓冲区）；随后使用前述步骤的处理结果计算空间差异，得到此 Processing 链的结果。,局部工作流：重投影图层、重投影图层等处理,False,not_granted_recovery_census_audit_only,False,local_60dda62ce18342d17f2a,False,local_subworkflow,4,True,2,2,2b44227185b5caf6d01f697f,/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0004150.py,"58: processing.run('qgis:reprojectlayer', parameter)
+59: 
+60: parameter = {'INPUT': r'out\country_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+61:                  'OUTPUT': r'out\country_poland_proj.shp'}
+62: processing.run('qgis:reprojectlayer', parameter)
+63: 
+64: parameter = {'INPUT': r'out\airports_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+65:                  'OUTPUT': r'out\airports_poland_proj.shp'}
+66: processing.run('qgis:reprojectlayer', parameter)
+67: 
+68: # Add columns and calculate value
+69: country_poland_proj = QgsVectorLayer(r'out\country_poland_proj.shp')
+70: layer_provider = country_poland_proj.dataProvider()
+71: layer_provider.addAttributes([QgsField(""ROADS_LENGTH_KM"", QVariant.Int)])
+72: layer_provider.addAttributes([QgsField(""APT_NUMBER"", QVariant.Int)])
+73: country_poland_proj.updateFields()
+74: 
+75: 
+76: roads_poland_proj = QgsVectorLayer(r'out\roads_poland_proj.shp')
+77: features = roads_poland_proj.getFeatures()
+78: 
+79: summed_total = 0
+80: for feat in features:
+81:     length = feat.geometry().length()
+82:     summed_total += length
+83: 
+84: airports_poland_proj = QgsVectorLayer(r'out\airports_poland_proj.shp')
+85: count = len([feat for feat in airports_poland_proj.getFeatures()])
+86: 
+87: 
+88: with edit(country_poland_proj):
+89:     for feat in country_poland_proj.getFeatures():
+90:         feat['ROADS_LENG'] = int(summed_total) / 1000
+91:         feat['APT_NUMBER'] = count
+92:         country_poland_proj.updateFeature(feat)
+93: 
+94: # Create buffer
+95: processing.run(""qgis:buffer"",
+96:     {'INPUT': r'out\airports_poland_proj.shp', 'DISTANCE': 50000, 'SEGMENTS': 5, 'END_CAP_STYLE': 0, 'JOIN_STYLE': 0, 'MITER_LIMIT': 2,
+97:     'DISSOLVE': False, 'OUTPUT': r'out\airports_poland_proj_buff.shp'})
+98: 
+99: # Erase buffer
+100: processing.run(""qgis:difference"", {'INPUT': r'out\country_poland_proj.shp', 'OVERLAY': r""out\airports_poland_proj_buff.shp"",
+101:                              'OUTPUT': r""out\country_poland_proj_erased.shp""})
+102: 
+103: # Map
+104: country_poland_proj_erased = QgsVectorLayer(r'out\country_poland_proj_erased.shp')
+105: settings = QgsMapSettings()",pending_human_review,,,,,,,
+"[{""line_end"": 73, ""line_start"": 73, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 86, ""line_start"": 86, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 102, ""line_start"": 102, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 115, ""line_start"": 115, ""operator_id"": ""native:zonalstatistics""}]","[[0, 3], [1, 2], [2, 3]]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]",3,"[{""consumer_index"": 3, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}, {""consumer_index"": 2, ""kinds"": [""variable_or_alias""], ""producer_index"": 1}, {""consumer_index"": 3, ""kinds"": [""variable_or_alias""], ""producer_index"": 2}]","[[0, 3], [1, 2], [2, 3]]",True,[],candidate,113,deterministic_operator_dag_zh_v4,frozen_recovered_local_dag_only,True,qgis-conversion-features-v8,True,"[[0, 3], [1, 2], [2, 3]]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[{}, {}, {}, {}]","[""outside_recovered_local_dag_not_described""]",<module>,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""downstream_low_level_data_transform_roles"": [], ""downstream_processing_consumers"": [], ""intermediate_data_transform_calls"": [], ""processing_temporary_input_references"": [], ""provider_input_type_checks"": [{""actual_type"": ""unknown"", ""consumer_index"": 0, ""evidence"": """", ""operator_id"": ""gdal:warpreproject"", ""parameter"": ""INPUT"", ""required_type"": ""raster"", ""status"": ""unknown""}], ""provider_input_type_conflicts"": [], ""provider_input_type_status"": ""unknown"", ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}","[""missing_data_edges""]",deferred,"[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]",7bfbd8d1f053e83bb8d5fe25236f5d2a04c8f7c197f9f6ff3e844e9da35ab105,4,"[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]",4,"[{}, {}, {}, {}]","[0, 1, 2, 3]",1e9ec11b8e09f256b1eed4f0,recover-missing-data-edges-v1,52efdaee7924166dfce43fa9435e78b13afb07e783cf3455c19ab0a92e957b95,not_granted,recovery-multi-root-fanin-dag-v1,eligible,"[0, 1]",gis_recommend.qgis_recovery_local_dag_audit.v1,[3],/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_35494.py,github_merge,1e9ec11b8e09f256b1eed4f05b49974ee08370adaa53be5c0f5da55b46eb8253,"69:     'TARGET_EXTENT_CRS': None,
+70:     'TARGET_RESOLUTION': None,
+71:     'OUTPUT': junkfile
+72: }
+73: suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+74: 
+75: ##################################################################
+76: # Drop field(s)
+77: ##################################################################
+78: print('dropping fields from the county data')
+79: alg_params = {
+80:     'COLUMN': [' ISO','ID_0','NAME_0','ID_1','ID_2',
+81:                'HASC_2','CCN_2','CCA_2','TYPE_2',
+82:                'ENGTYPE_2','NL_NAME_2','VARNAME_2'],
+83:     'INPUT': adm2in,
+84:     'OUTPUT': 'memory:'
+85: }
+86: counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+87: 
+88: ###################################################################
+89: # Add autoincremental field
+90: ###################################################################
+91: print('adding unique ID to county data')
+92: alg_params = {
+93:     'FIELD_NAME': 'cid',
+94:     'GROUP_FIELDS': [''],
+95:     'INPUT': counties_fields_dropped,
+96:     'SORT_ASCENDING': True,
+97:     'SORT_EXPRESSION': '',
+98:     'SORT_NULLS_FIRST': False,
+99:     'START': 1,
+100:     'OUTPUT': 'memory:'
+101: }
+102: counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+103: 
+104: ###################################################################
+105: # Zonal statistics
+106: ###################################################################
+107: print('computing zonal stats')
+108: alg_params = {
+109:     'COLUMN_PREFIX': '_',
+110:     'INPUT_RASTER': suit_proj,
+111:     'INPUT_VECTOR': counties_fields_autoid,
+112:     'RASTER_BAND': 1,
+113:     'STATISTICS': 2
+114: }
+115: processing.run('native:zonalstatistics', alg_params)
+116: 
+117: ###################################################################
+118: # write to CSV
+119: ###################################################################",multi_step_local_dag,qgis-local-subworkflow-splitter-v6,在该局部工作流中，对输入数据重投影并对齐栅格；随后对输入数据删除指定字段；随后将前述删除字段后的图层用于添加自增整数字段；随后使用前述步骤的处理结果按多边形分区计算栅格统计量并更新图层，得到此 Processing 链的结果。,局部工作流：对齐栅格、删除字段等处理,False,not_granted_recovery_census_audit_only,False,local_8e94bff028f759a58ed0,False,local_subworkflow,5,True,4,1,61aa0d421d451f9563c78a0f,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4887.py,"68:     'TARGET_EXTENT_CRS': None,
+69:     'TARGET_RESOLUTION': None,
+70:     'OUTPUT': junkfile
+71: }
+72: suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+73: 
+74: ##################################################################
+75: # Drop field(s)
+76: ##################################################################
+77: print('dropping fields from the county data')
+78: alg_params = {
+79:     'COLUMN': [' ISO','ID_0','NAME_0','ID_1','ID_2',
+80:                'HASC_2','CCN_2','CCA_2','TYPE_2',
+81:                'ENGTYPE_2','NL_NAME_2','VARNAME_2'],
+82:     'INPUT': adm2in,
+83:     'OUTPUT': 'memory:'
+84: }
+85: counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+86: 
+87: ###################################################################
+88: # Add autoincremental field
+89: ###################################################################
+90: print('adding unique ID to county data')
+91: alg_params = {
+92:     'FIELD_NAME': 'cid',
+93:     'GROUP_FIELDS': [''],
+94:     'INPUT': counties_fields_dropped,
+95:     'SORT_ASCENDING': True,
+96:     'SORT_EXPRESSION': '',
+97:     'SORT_NULLS_FIRST': False,
+98:     'START': 1,
+99:     'OUTPUT': 'memory:'
+100: }
+101: counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+102: 
+103: ###################################################################
+104: # Zonal statistics
+105: ###################################################################
+106: print('computing zonal stats')
+107: alg_params = {
+108:     'COLUMN_PREFIX': '_',
+109:     'INPUT_RASTER': suit_proj,
+110:     'INPUT_VECTOR': counties_fields_autoid,
+111:     'RASTER_BAND': 1,
+112:     'STATISTICS': 2
+113: }
+114: processing.run('native:zonalstatistics', alg_params)
+115: 
+116: ###################################################################
+117: # write to CSV
+118: ###################################################################",pending_human_review,,,,,,,
+"[{""line_end"": 72, ""line_start"": 72, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 85, ""line_start"": 85, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 101, ""line_start"": 101, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 114, ""line_start"": 114, ""operator_id"": ""native:zonalstatistics""}]","[[0, 3], [1, 2], [2, 3]]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]",3,"[{""consumer_index"": 3, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}, {""consumer_index"": 2, ""kinds"": [""variable_or_alias""], ""producer_index"": 1}, {""consumer_index"": 3, ""kinds"": [""variable_or_alias""], ""producer_index"": 2}]","[[0, 3], [1, 2], [2, 3]]",True,[],candidate,113,deterministic_operator_dag_zh_v4,frozen_recovered_local_dag_only,True,qgis-conversion-features-v8,True,"[[0, 3], [1, 2], [2, 3]]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[{}, {}, {}, {}]","[""outside_recovered_local_dag_not_described""]",<module>,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""downstream_low_level_data_transform_roles"": [], ""downstream_processing_consumers"": [], ""intermediate_data_transform_calls"": [], ""processing_temporary_input_references"": [], ""provider_input_type_checks"": [{""actual_type"": ""unknown"", ""consumer_index"": 0, ""evidence"": """", ""operator_id"": ""gdal:warpreproject"", ""parameter"": ""INPUT"", ""required_type"": ""raster"", ""status"": ""unknown""}], ""provider_input_type_conflicts"": [], ""provider_input_type_status"": ""unknown"", ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}","[""missing_data_edges""]",deferred,"[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]",7bfbd8d1f053e83bb8d5fe25236f5d2a04c8f7c197f9f6ff3e844e9da35ab105,4,"[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]",4,"[{}, {}, {}, {}]","[0, 1, 2, 3]",61aa0d421d451f9563c78a0f,recover-missing-data-edges-v1,52efdaee7924166dfce43fa9435e78b13afb07e783cf3455c19ab0a92e957b95,not_granted,recovery-multi-root-fanin-dag-v1,eligible,"[0, 1]",gis_recommend.qgis_recovery_local_dag_audit.v1,[3],/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4887.py,github_merge,61aa0d421d451f9563c78a0fc4187f24470ea636f4001cc9ed0189413468fa74,"68:     'TARGET_EXTENT_CRS': None,
+69:     'TARGET_RESOLUTION': None,
+70:     'OUTPUT': junkfile
+71: }
+72: suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+73: 
+74: ##################################################################
+75: # Drop field(s)
+76: ##################################################################
+77: print('dropping fields from the county data')
+78: alg_params = {
+79:     'COLUMN': [' ISO','ID_0','NAME_0','ID_1','ID_2',
+80:                'HASC_2','CCN_2','CCA_2','TYPE_2',
+81:                'ENGTYPE_2','NL_NAME_2','VARNAME_2'],
+82:     'INPUT': adm2in,
+83:     'OUTPUT': 'memory:'
+84: }
+85: counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+86: 
+87: ###################################################################
+88: # Add autoincremental field
+89: ###################################################################
+90: print('adding unique ID to county data')
+91: alg_params = {
+92:     'FIELD_NAME': 'cid',
+93:     'GROUP_FIELDS': [''],
+94:     'INPUT': counties_fields_dropped,
+95:     'SORT_ASCENDING': True,
+96:     'SORT_EXPRESSION': '',
+97:     'SORT_NULLS_FIRST': False,
+98:     'START': 1,
+99:     'OUTPUT': 'memory:'
+100: }
+101: counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+102: 
+103: ###################################################################
+104: # Zonal statistics
+105: ###################################################################
+106: print('computing zonal stats')
+107: alg_params = {
+108:     'COLUMN_PREFIX': '_',
+109:     'INPUT_RASTER': suit_proj,
+110:     'INPUT_VECTOR': counties_fields_autoid,
+111:     'RASTER_BAND': 1,
+112:     'STATISTICS': 2
+113: }
+114: processing.run('native:zonalstatistics', alg_params)
+115: 
+116: ###################################################################
+117: # write to CSV
+118: ###################################################################",multi_step_local_dag,qgis-local-subworkflow-splitter-v6,在该局部工作流中，对输入数据重投影并对齐栅格；随后对输入数据删除指定字段；随后将前述删除字段后的图层用于添加自增整数字段；随后使用前述步骤的处理结果按多边形分区计算栅格统计量并更新图层，得到此 Processing 链的结果。,局部工作流：对齐栅格、删除字段等处理,False,not_granted_recovery_census_audit_only,False,local_6dc6f6390f0990f87ea2,False,local_subworkflow,6,True,4,2,6c9d3436dd9f9ea45cd63a3b,/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts/script_55528.py,"71:     'TARGET_EXTENT_CRS': None,
+72:     'TARGET_RESOLUTION': None,
+73:     'OUTPUT': junkfile
+74: }
+75: suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+76: 
+77: ##################################################################
+78: # Drop field(s)
+79: ##################################################################
+80: print('dropping fields from the county data')
+81: alg_params = {
+82:     'COLUMN': [' ISO','ID_0','NAME_0','ID_1','ID_2',
+83:                'HASC_2','CCN_2','CCA_2','TYPE_2',
+84:                'ENGTYPE_2','NL_NAME_2','VARNAME_2'],
+85:     'INPUT': adm2in,
+86:     'OUTPUT': 'memory:'
+87: }
+88: counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+89: 
+90: ###################################################################
+91: # Add autoincremental field
+92: ###################################################################
+93: print('adding unique ID to county data')
+94: alg_params = {
+95:     'FIELD_NAME': 'cid',
+96:     'GROUP_FIELDS': [''],
+97:     'INPUT': counties_fields_dropped,
+98:     'SORT_ASCENDING': True,
+99:     'SORT_EXPRESSION': '',
+100:     'SORT_NULLS_FIRST': False,
+101:     'START': 1,
+102:     'OUTPUT': 'memory:'
+103: }
+104: counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+105: 
+106: ###################################################################
+107: # Zonal statistics
+108: ###################################################################
+109: print('computing zonal stats')
+110: alg_params = {
+111:     'COLUMN_PREFIX': '_',
+112:     'INPUT_RASTER': suit_proj,
+113:     'INPUT_VECTOR': counties_fields_autoid,
+114:     'RASTER_BAND': 1,
+115:     'STATISTICS': 2
+116: }
+117: processing.run('native:zonalstatistics', alg_params)
+118: 
+119: ###################################################################
+120: # write to CSV
+121: ###################################################################",pending_human_review,,,,,,,
+"[{""line_end"": 75, ""line_start"": 75, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 88, ""line_start"": 88, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 104, ""line_start"": 104, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 117, ""line_start"": 117, ""operator_id"": ""native:zonalstatistics""}]","[[0, 3], [1, 2], [2, 3]]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]",3,"[{""consumer_index"": 3, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}, {""consumer_index"": 2, ""kinds"": [""variable_or_alias""], ""producer_index"": 1}, {""consumer_index"": 3, ""kinds"": [""variable_or_alias""], ""producer_index"": 2}]","[[0, 3], [1, 2], [2, 3]]",True,[],candidate,113,deterministic_operator_dag_zh_v4,frozen_recovered_local_dag_only,True,qgis-conversion-features-v8,True,"[[0, 3], [1, 2], [2, 3]]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[{}, {}, {}, {}]","[""outside_recovered_local_dag_not_described""]",<module>,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""downstream_low_level_data_transform_roles"": [], ""downstream_processing_consumers"": [], ""intermediate_data_transform_calls"": [], ""processing_temporary_input_references"": [], ""provider_input_type_checks"": [{""actual_type"": ""unknown"", ""consumer_index"": 0, ""evidence"": """", ""operator_id"": ""gdal:warpreproject"", ""parameter"": ""INPUT"", ""required_type"": ""raster"", ""status"": ""unknown""}], ""provider_input_type_conflicts"": [], ""provider_input_type_status"": ""unknown"", ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}","[""missing_data_edges""]",deferred,"[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]",7bfbd8d1f053e83bb8d5fe25236f5d2a04c8f7c197f9f6ff3e844e9da35ab105,4,"[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]",4,"[{}, {}, {}, {}]","[0, 1, 2, 3]",6c9d3436dd9f9ea45cd63a3b,recover-missing-data-edges-v1,52efdaee7924166dfce43fa9435e78b13afb07e783cf3455c19ab0a92e957b95,not_granted,recovery-multi-root-fanin-dag-v1,eligible,"[0, 1]",gis_recommend.qgis_recovery_local_dag_audit.v1,[3],/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts/script_55528.py,model_tutorial,6c9d3436dd9f9ea45cd63a3badf37eb506456e058cc51960d2545220ec49e0c7,"71:     'TARGET_EXTENT_CRS': None,
+72:     'TARGET_RESOLUTION': None,
+73:     'OUTPUT': junkfile
+74: }
+75: suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+76: 
+77: ##################################################################
+78: # Drop field(s)
+79: ##################################################################
+80: print('dropping fields from the county data')
+81: alg_params = {
+82:     'COLUMN': [' ISO','ID_0','NAME_0','ID_1','ID_2',
+83:                'HASC_2','CCN_2','CCA_2','TYPE_2',
+84:                'ENGTYPE_2','NL_NAME_2','VARNAME_2'],
+85:     'INPUT': adm2in,
+86:     'OUTPUT': 'memory:'
+87: }
+88: counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+89: 
+90: ###################################################################
+91: # Add autoincremental field
+92: ###################################################################
+93: print('adding unique ID to county data')
+94: alg_params = {
+95:     'FIELD_NAME': 'cid',
+96:     'GROUP_FIELDS': [''],
+97:     'INPUT': counties_fields_dropped,
+98:     'SORT_ASCENDING': True,
+99:     'SORT_EXPRESSION': '',
+100:     'SORT_NULLS_FIRST': False,
+101:     'START': 1,
+102:     'OUTPUT': 'memory:'
+103: }
+104: counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+105: 
+106: ###################################################################
+107: # Zonal statistics
+108: ###################################################################
+109: print('computing zonal stats')
+110: alg_params = {
+111:     'COLUMN_PREFIX': '_',
+112:     'INPUT_RASTER': suit_proj,
+113:     'INPUT_VECTOR': counties_fields_autoid,
+114:     'RASTER_BAND': 1,
+115:     'STATISTICS': 2
+116: }
+117: processing.run('native:zonalstatistics', alg_params)
+118: 
+119: ###################################################################
+120: # write to CSV
+121: ###################################################################",multi_step_local_dag,qgis-local-subworkflow-splitter-v6,在该局部工作流中，对输入数据重投影并对齐栅格；随后对输入数据删除指定字段；随后将前述删除字段后的图层用于添加自增整数字段；随后使用前述步骤的处理结果按多边形分区计算栅格统计量并更新图层，得到此 Processing 链的结果。,局部工作流：对齐栅格、删除字段等处理,False,not_granted_recovery_census_audit_only,False,local_acea958771fa46c5df3a,False,local_subworkflow,7,True,4,3,73faa981b08ba7bd0ca6ea34,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005539.py,"74:     'TARGET_EXTENT_CRS': None,
+75:     'TARGET_RESOLUTION': None,
+76:     'OUTPUT': junkfile
+77: }
+78: suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+79: 
+80: ##################################################################
+81: # Drop field(s)
+82: ##################################################################
+83: print('dropping fields from the county data')
+84: alg_params = {
+85:     'COLUMN': [' ISO','ID_0','NAME_0','ID_1','ID_2',
+86:                'HASC_2','CCN_2','CCA_2','TYPE_2',
+87:                'ENGTYPE_2','NL_NAME_2','VARNAME_2'],
+88:     'INPUT': adm2in,
+89:     'OUTPUT': 'memory:'
+90: }
+91: counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+92: 
+93: ###################################################################
+94: # Add autoincremental field
+95: ###################################################################
+96: print('adding unique ID to county data')
+97: alg_params = {
+98:     'FIELD_NAME': 'cid',
+99:     'GROUP_FIELDS': [''],
+100:     'INPUT': counties_fields_dropped,
+101:     'SORT_ASCENDING': True,
+102:     'SORT_EXPRESSION': '',
+103:     'SORT_NULLS_FIRST': False,
+104:     'START': 1,
+105:     'OUTPUT': 'memory:'
+106: }
+107: counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+108: 
+109: ###################################################################
+110: # Zonal statistics
+111: ###################################################################
+112: print('computing zonal stats')
+113: alg_params = {
+114:     'COLUMN_PREFIX': '_',
+115:     'INPUT_RASTER': suit_proj,
+116:     'INPUT_VECTOR': counties_fields_autoid,
+117:     'RASTER_BAND': 1,
+118:     'STATISTICS': 2
+119: }
+120: processing.run('native:zonalstatistics', alg_params)
+121: 
+122: ###################################################################
+123: # write to CSV
+124: ###################################################################",pending_human_review,,,,,,,
+"[{""line_end"": 78, ""line_start"": 78, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 91, ""line_start"": 91, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 107, ""line_start"": 107, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 120, ""line_start"": 120, ""operator_id"": ""native:zonalstatistics""}]","[[0, 3], [1, 2], [2, 3]]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]",3,"[{""consumer_index"": 3, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}, {""consumer_index"": 2, ""kinds"": [""variable_or_alias""], ""producer_index"": 1}, {""consumer_index"": 3, ""kinds"": [""variable_or_alias""], ""producer_index"": 2}]","[[0, 3], [1, 2], [2, 3]]",True,[],candidate,113,deterministic_operator_dag_zh_v4,frozen_recovered_local_dag_only,True,qgis-conversion-features-v8,True,"[[0, 3], [1, 2], [2, 3]]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[{}, {}, {}, {}]","[""outside_recovered_local_dag_not_described""]",<module>,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""downstream_low_level_data_transform_roles"": [], ""downstream_processing_consumers"": [], ""intermediate_data_transform_calls"": [], ""processing_temporary_input_references"": [], ""provider_input_type_checks"": [{""actual_type"": ""unknown"", ""consumer_index"": 0, ""evidence"": """", ""operator_id"": ""gdal:warpreproject"", ""parameter"": ""INPUT"", ""required_type"": ""raster"", ""status"": ""unknown""}], ""provider_input_type_conflicts"": [], ""provider_input_type_status"": ""unknown"", ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}","[""missing_data_edges""]",deferred,"[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]",7bfbd8d1f053e83bb8d5fe25236f5d2a04c8f7c197f9f6ff3e844e9da35ab105,4,"[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]",4,"[{}, {}, {}, {}]","[0, 1, 2, 3]",73faa981b08ba7bd0ca6ea34,recover-missing-data-edges-v1,52efdaee7924166dfce43fa9435e78b13afb07e783cf3455c19ab0a92e957b95,not_granted,recovery-multi-root-fanin-dag-v1,eligible,"[0, 1]",gis_recommend.qgis_recovery_local_dag_audit.v1,[3],/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005539.py,textbook_strict,73faa981b08ba7bd0ca6ea34f184549680f38520f0fd19902d00915441aee22b,"74:     'TARGET_EXTENT_CRS': None,
+75:     'TARGET_RESOLUTION': None,
+76:     'OUTPUT': junkfile
+77: }
+78: suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+79: 
+80: ##################################################################
+81: # Drop field(s)
+82: ##################################################################
+83: print('dropping fields from the county data')
+84: alg_params = {
+85:     'COLUMN': [' ISO','ID_0','NAME_0','ID_1','ID_2',
+86:                'HASC_2','CCN_2','CCA_2','TYPE_2',
+87:                'ENGTYPE_2','NL_NAME_2','VARNAME_2'],
+88:     'INPUT': adm2in,
+89:     'OUTPUT': 'memory:'
+90: }
+91: counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+92: 
+93: ###################################################################
+94: # Add autoincremental field
+95: ###################################################################
+96: print('adding unique ID to county data')
+97: alg_params = {
+98:     'FIELD_NAME': 'cid',
+99:     'GROUP_FIELDS': [''],
+100:     'INPUT': counties_fields_dropped,
+101:     'SORT_ASCENDING': True,
+102:     'SORT_EXPRESSION': '',
+103:     'SORT_NULLS_FIRST': False,
+104:     'START': 1,
+105:     'OUTPUT': 'memory:'
+106: }
+107: counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+108: 
+109: ###################################################################
+110: # Zonal statistics
+111: ###################################################################
+112: print('computing zonal stats')
+113: alg_params = {
+114:     'COLUMN_PREFIX': '_',
+115:     'INPUT_RASTER': suit_proj,
+116:     'INPUT_VECTOR': counties_fields_autoid,
+117:     'RASTER_BAND': 1,
+118:     'STATISTICS': 2
+119: }
+120: processing.run('native:zonalstatistics', alg_params)
+121: 
+122: ###################################################################
+123: # write to CSV
+124: ###################################################################",multi_step_local_dag,qgis-local-subworkflow-splitter-v6,在该局部工作流中，对输入数据重投影并对齐栅格；随后对输入数据删除指定字段；随后将前述删除字段后的图层用于添加自增整数字段；随后使用前述步骤的处理结果按多边形分区计算栅格统计量并更新图层，得到此 Processing 链的结果。,局部工作流：对齐栅格、删除字段等处理,False,not_granted_recovery_census_audit_only,False,local_3fb68a21dd7b27922e7d,False,local_subworkflow,8,True,4,4,1e9ec11b8e09f256b1eed4f0,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_35494.py,"69:     'TARGET_EXTENT_CRS': None,
+70:     'TARGET_RESOLUTION': None,
+71:     'OUTPUT': junkfile
+72: }
+73: suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+74: 
+75: ##################################################################
+76: # Drop field(s)
+77: ##################################################################
+78: print('dropping fields from the county data')
+79: alg_params = {
+80:     'COLUMN': [' ISO','ID_0','NAME_0','ID_1','ID_2',
+81:                'HASC_2','CCN_2','CCA_2','TYPE_2',
+82:                'ENGTYPE_2','NL_NAME_2','VARNAME_2'],
+83:     'INPUT': adm2in,
+84:     'OUTPUT': 'memory:'
+85: }
+86: counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+87: 
+88: ###################################################################
+89: # Add autoincremental field
+90: ###################################################################
+91: print('adding unique ID to county data')
+92: alg_params = {
+93:     'FIELD_NAME': 'cid',
+94:     'GROUP_FIELDS': [''],
+95:     'INPUT': counties_fields_dropped,
+96:     'SORT_ASCENDING': True,
+97:     'SORT_EXPRESSION': '',
+98:     'SORT_NULLS_FIRST': False,
+99:     'START': 1,
+100:     'OUTPUT': 'memory:'
+101: }
+102: counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+103: 
+104: ###################################################################
+105: # Zonal statistics
+106: ###################################################################
+107: print('computing zonal stats')
+108: alg_params = {
+109:     'COLUMN_PREFIX': '_',
+110:     'INPUT_RASTER': suit_proj,
+111:     'INPUT_VECTOR': counties_fields_autoid,
+112:     'RASTER_BAND': 1,
+113:     'STATISTICS': 2
+114: }
+115: processing.run('native:zonalstatistics', alg_params)
+116: 
+117: ###################################################################
+118: # write to CSV
+119: ###################################################################",pending_human_review,,,,,,,

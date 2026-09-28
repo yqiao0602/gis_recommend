@@ -1,0 +1,76 @@
+{
+  "schema": "gis_recommend.qwen_a10_qlora_smoke.v1",
+  "1_gguf_to_hf": {
+    "ok": true,
+    "seconds": 0.0,
+    "detail": "already-hf-format"
+  },
+  "2_tokenizer": {
+    "ok": true,
+    "seconds": 0.26,
+    "detail": {
+      "vocab_size": 151643,
+      "roundtrip_len": 17
+    }
+  },
+  "3_nf4_load": {
+    "ok": true,
+    "seconds": 7.13,
+    "detail": {
+      "peak_gb": 6.59,
+      "device": "cuda:0"
+    }
+  },
+  "4_forward": {
+    "ok": true,
+    "seconds": 0.41,
+    "detail": {
+      "logits_shape": [
+        1,
+        11,
+        152064
+      ]
+    }
+  },
+  "5_backward": {
+    "ok": true,
+    "seconds": 0.24,
+    "detail": {
+      "loss": 4.1937,
+      "grad_tensors": 143
+    }
+  },
+  "6_grad_accumulation": {
+    "ok": true,
+    "seconds": 0.58,
+    "detail": {
+      "grad_magnitude": 11576.4646
+    }
+  },
+  "7_checkpoint_save": {
+    "ok": true,
+    "seconds": 0.92,
+    "detail": {
+      "adapter_dir": "/home/qy/gee_llm_smoke/lora_smoke_adapter",
+      "trainable_params": 10092544,
+      "trainable_pct": 0.231
+    }
+  },
+  "8_checkpoint_reload": {
+    "ok": true,
+    "seconds": 7.54,
+    "detail": {
+      "compared": 112,
+      "identical": true
+    }
+  },
+  "9_generation": {
+    "ok": true,
+    "seconds": 1.37,
+    "detail": {
+      "generated_chars": 55
+    }
+  },
+  "peak_memory_gb": 12.86,
+  "all_ok": true
+}

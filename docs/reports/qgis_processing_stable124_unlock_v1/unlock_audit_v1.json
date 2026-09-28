@@ -1,0 +1,895 @@
+{
+  "summary": {
+    "schema": "gis_recommend.qgis_stable124_unlock_audit.v1",
+    "review_rows": 50,
+    "accepted_canonical": 6,
+    "correct_but_duplicate": 44,
+    "deferred_mapping_incomplete": 0,
+    "wrong_chain_or_truncation": 0,
+    "l3_baseline": "stable124_124_token_registry",
+    "mapping_baseline": "composed_stable124_v1_168_operators",
+    "audited_at": "2026-08-08",
+    "audit_method": "rule_level_source_snippet_chain_l3_parameter_description",
+    "review_seed": 20260807,
+    "source_disjoint_zero_overlap": true
+  },
+  "verdicts": [
+    {
+      "candidate_id": "qgis_blocker_direct_a373ecd73480f5d3d2ff7f72",
+      "review_split": "calibration",
+      "lane": "direct",
+      "operator_ids": [
+        "native:extractbyextent"
+      ],
+      "l3_chain": [
+        "L3_02_06_03"
+      ],
+      "source_sha256": "1546da932140e6c163d704c97b43e4d5940003e649f89381619207bdadcc0572",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据按指定范围提取要素（CLIP 为是，裁剪几何），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_8efe6a38fb7930de1981c224",
+      "review_split": "calibration",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "native:joinattributestable"
+      ],
+      "l3_chain": [
+        "L3_01_03_05"
+      ],
+      "source_sha256": "bff981617ddfb6ebc4378b3ccb84b375c7b74980dfe9affff609699049774c4c",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据按指定字段连接属性表（字段由调用输入指定，连接表字段由调用输入指定），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_multi_3c2f6b7ad3979c80798013a2",
+      "review_split": "calibration",
+      "lane": "operator_resolution_split_multi",
+      "operator_ids": [
+        "native:buffer",
+        "native:selectbylocation"
+      ],
+      "l3_chain": [
+        "L3_02_01_01",
+        "L3_02_06_03"
+      ],
+      "source_sha256": "84423ea31b2d24ba53e304b64cf7abe9bb31129cd35223558e6d70d0df831ce8",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据创建缓冲区（距离为 500）；随后将前述缓冲区结果用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_recovery_multistep_c3b299e4b0026c436e8a1b8e",
+      "review_split": "calibration",
+      "lane": "recovery_multistep",
+      "operator_ids": [
+        "native:mergevectorlayers",
+        "native:extractbyattribute"
+      ],
+      "l3_chain": [
+        "L3_01_03_04",
+        "L3_02_06_02"
+      ],
+      "source_sha256": "80edd60b54d63d84dff90366ac83bace3bf88e84b49abde55221a8796c801499",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据合并多个矢量图层；随后将前述合并后的矢量图层用于按属性条件筛选要素（字段为 ES，OPERATOR 为 1，比较值为 0），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_direct_7a66c3213c6fde19414f4603",
+      "review_split": "calibration",
+      "lane": "operator_resolution_direct",
+      "operator_ids": [
+        "qgis:rastercalculator",
+        "gdal:translate"
+      ],
+      "l3_chain": [
+        "L3_03_03_A",
+        "L3_07_04_05"
+      ],
+      "source_sha256": "d753428bdaa09d8332126b192c40760dc92d1076217c0bf2a98bf6d787bbc2a0",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据执行栅格计算（表达式由工作流计算指定）；随后将前述计算后的栅格用于转换栅格数据格式或范围（DATA_TYPE 为 None），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_36351adbba1c13dab19ef6e2",
+      "review_split": "calibration",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:snapgeometries",
+        "native:fixgeometries",
+        "native:multiparttosingleparts",
+        "native:deleteduplicategeometries",
+        "native:fixgeometries",
+        "native:multiparttosingleparts"
+      ],
+      "l3_chain": [
+        "L3_02_07_09",
+        "L3_01_05_02",
+        "L3_02_07_01",
+        "L3_01_05_04",
+        "L3_01_05_02",
+        "L3_02_07_01"
+      ],
+      "source_sha256": "f6b30cc94c3359352b4450604ce153d30857145206329dafc6c1978eca8db4e2",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据按容差将输入几何捕捉到参考图层；随后将前述已捕捉到参考图层的矢量要素用于修复无效几何；随后将前述修复后的图层用于拆分多部件要素为单部件；随后将前述单部件结果用于删除重复几何要素；随后将前述去除重复几何后的图层用于修复无效几何；随后将前述修复后的图层用于拆分多部件要素为单部件，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_29a450c1d10f6fd84758c91b",
+      "review_split": "calibration",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "gdal:rastercalculator"
+      ],
+      "l3_chain": [
+        "L3_03_03_A"
+      ],
+      "source_sha256": "be1e7374fe9c2ff8ab0ba552050687b53cb2aa936f2d008d22a16729c7ed2c95",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据执行栅格计算（计算公式由调用输入指定，无数据值为 None，输出数据类型由调用输入指定），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_fd6b2ea3fa69ba7852cb510e",
+      "review_split": "calibration",
+      "lane": "direct",
+      "operator_ids": [
+        "native:splitlinesbylength",
+        "native:setzfromraster",
+        "native:extractzvalues",
+        "native:fieldcalculator",
+        "native:fieldcalculator"
+      ],
+      "l3_chain": [
+        "L3_02_05_19",
+        "L3_02_05_18",
+        "L3_01_02_06",
+        "L3_01_02_06",
+        "L3_01_02_06"
+      ],
+      "source_sha256": "dde898329d05b48f524a7ee60bdbd1017f567dd343c055ac08ca42740d1bcb3a",
+      "verdict": "accepted_canonical",
+      "note": "链/L3/参数/描述核验一致（修正 L3 基准后 mapping 完整）",
+      "task_description": "在该 Processing 工作流中，对输入数据按最大长度将线要素切分为连续线段；随后将前述按指定长度切分后的线图层用于按栅格采样值设置要素几何的 Z 坐标；随后将前述带栅格高程 Z 值的要素图层用于提取要素几何的 Z 值；随后将前述带 Z 值属性的要素用于计算字段值（目标字段为 Length，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为  $length ）；随后将前述更新字段的图层用于计算字段值（目标字段为 Slope_%，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 (abs(\"z_first\" - \"z_last\") / \"length\" ) *100），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_b83d0513fd73845e40c75d9c",
+      "review_split": "calibration",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "gdal:rasterize"
+      ],
+      "l3_chain": [
+        "L3_01_09_03"
+      ],
+      "source_sha256": "6d2da67ce8d51d2c932e321db78d27fccc7d52913737a1fb489948674be72227",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据将矢量几何栅格化（字段由调用输入指定，栅格化值为 0，单位模式为 1），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_d27194422ef1226107efba98",
+      "review_split": "calibration",
+      "lane": "direct",
+      "operator_ids": [
+        "native:reprojectlayer",
+        "native:createspatialindex"
+      ],
+      "l3_chain": [
+        "L3_01_10_01",
+        "L3_01_07_01"
+      ],
+      "source_sha256": "fc06f0e84a135ee174e9d5c0f1c16e1c4299ab3e28a259f33c9c6447a0391ae1",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据重投影图层（目标坐标系由调用输入指定）；随后将前述重投影后的图层用于为矢量图层创建空间索引，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_recovery_multistep_c3b25a494518c2a3f7a67f03",
+      "review_split": "calibration",
+      "lane": "recovery_multistep",
+      "operator_ids": [
+        "qgis:minimumboundinggeometry",
+        "native:dissolve",
+        "native:multiparttosingleparts"
+      ],
+      "l3_chain": [
+        "L3_02_05_12",
+        "L3_02_03_05",
+        "L3_02_07_01"
+      ],
+      "source_sha256": "1fd31a5c9a16515c4e9d8874fbb0e152e6c7b5308e5e8d4ae13bb6b082fbc384",
+      "verdict": "accepted_canonical",
+      "note": "链/L3/参数/描述核验一致（修正 L3 基准后 mapping 完整）",
+      "task_description": "在该局部工作流中，对输入数据计算最小包围几何（包围几何类型为 3）；随后将前述最小包围几何结果用于融合矢量要素（不按字段分组）；随后将前述融合结果用于拆分多部件要素为单部件，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_90d56ea21b8df48baad590f8",
+      "review_split": "calibration",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:fixgeometries",
+        "native:dissolve"
+      ],
+      "l3_chain": [
+        "L3_01_05_02",
+        "L3_02_03_05"
+      ],
+      "source_sha256": "0bf066b512fb15d505873f26f7e3b43e834bc21be1516a2c37fe23284fa4b045",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据修复无效几何；随后将前述修复后的图层用于融合矢量要素，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_recovery_multistep_c4ac848740006bbcfddd3780",
+      "review_split": "calibration",
+      "lane": "recovery_multistep",
+      "operator_ids": [
+        "native:saveselectedfeatures",
+        "native:clip"
+      ],
+      "l3_chain": [
+        "L3_07_04_01",
+        "L3_02_02_06"
+      ],
+      "source_sha256": "74cda25cde4a06eff00507389b450ad81bbfed08a8c315fd7596cd3250c1b404",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据仅保存输入图层中已选中的矢量要素；随后将前述已保存的选中矢量要素用于使用多边形图层裁剪矢量要素，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_f85cf77f40b11d21dcedfa1d",
+      "review_split": "calibration",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "native:fixgeometries"
+      ],
+      "l3_chain": [
+        "L3_01_05_02"
+      ],
+      "source_sha256": "d212103935f6b9b8baa665851adec4a58ba60baf481bcee88fba21ebaf295f51",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据修复无效几何，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_cdbcfa53c49acd850ae4b5b2",
+      "review_split": "calibration",
+      "lane": "direct",
+      "operator_ids": [
+        "native:aggregate"
+      ],
+      "l3_chain": [
+        "L3_02_03_05"
+      ],
+      "source_sha256": "2c41f723d9049280ec4273e0bffe259176bc3362679c2b66f5085b86b971d0a3",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据按分组字段聚合要素几何和属性，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_29f3adf2b1ad4eaaf6456a4e",
+      "review_split": "calibration",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "gdal:fillnodata"
+      ],
+      "l3_chain": [
+        "L3_03_03_A"
+      ],
+      "source_sha256": "eea80efad5c0de5b82498009801d8a268c50aa510deb90e623f9c3e6163c92e9",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据插值填充栅格无数据区域，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_237aa572756537f4a3f90de6",
+      "review_split": "calibration",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:fixgeometries",
+        "native:extractbyexpression"
+      ],
+      "l3_chain": [
+        "L3_01_05_02",
+        "L3_02_06_02"
+      ],
+      "source_sha256": "117e0f3075536117941246e136e45c43df5a4564054e2c81cf0dd6585a50897e",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据修复无效几何；随后将前述修复后的图层用于按表达式筛选要素（表达式为 is_valid($geometry)），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_52892aa5db2785ee87025c64",
+      "review_split": "calibration",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "gdal:cliprasterbymasklayer"
+      ],
+      "l3_chain": [
+        "L3_03_01_01"
+      ],
+      "source_sha256": "3acec54749245641b2e77485aea102285634be7d959b0ca9db477ecee8f82de8",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据按矢量掩膜裁剪栅格，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_0b291f7c63534c05a2326a44",
+      "review_split": "calibration",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "gdal:cliprasterbymasklayer"
+      ],
+      "l3_chain": [
+        "L3_03_01_01"
+      ],
+      "source_sha256": "2aa0391ac5938a48dcfd51016d1d8e7b591d4b1146d885b0d80a3e1fd7ac308a",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据按矢量掩膜裁剪栅格，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_4070e8c3bf138a93d5a6c013",
+      "review_split": "calibration",
+      "lane": "direct",
+      "operator_ids": [
+        "native:mergevectorlayers"
+      ],
+      "l3_chain": [
+        "L3_01_03_04"
+      ],
+      "source_sha256": "b0ba4e87007e3cc10229d6f4ed4f439538048a03bc532b715d18da2942816283",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据合并多个矢量图层，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_ad321846efcc528cf7dd5f39",
+      "review_split": "calibration",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "native:explodelines"
+      ],
+      "l3_chain": [
+        "L3_02_05_16"
+      ],
+      "source_sha256": "9d300790ef1795ba48fb2fd5d6a9666ab357a2c4dae40086b0dc21b5ad8b631c",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据将线要素按顶点拆分为独立线段，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_d2985439338d9dec607b997c",
+      "review_split": "calibration",
+      "lane": "direct",
+      "operator_ids": [
+        "native:hillshade"
+      ],
+      "l3_chain": [
+        "L3_04_01_03"
+      ],
+      "source_sha256": "0d2e4affd21f7bc5a6bf4f77a7884839f1d56c4b8ac45b82057b9558bc4393cf",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据根据高程和光照参数生成阴影地形栅格，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_778cd070f94caf9653edf743",
+      "review_split": "calibration",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "native:deletecolumn"
+      ],
+      "l3_chain": [
+        "L3_01_02_02"
+      ],
+      "source_sha256": "0c0cc3b1658c0addbaf4512bfcc238f6a9afb177d94950777d1555bb9edf1f93",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据删除指定字段（字段由调用输入指定），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_af4f6d60a0a87b171d73e773",
+      "review_split": "calibration",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "native:dissolve"
+      ],
+      "l3_chain": [
+        "L3_02_03_05"
+      ],
+      "source_sha256": "41d3468b73051313790c504269e9fc306a921c0c48f51c67e485264c5a84192b",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据融合矢量要素（不按字段分组，SEPARATE_DISJOINT 为 否），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_16006a5bc1da1d80b233b942",
+      "review_split": "calibration",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "gdal:rastercalculator"
+      ],
+      "l3_chain": [
+        "L3_03_03_A"
+      ],
+      "source_sha256": "24a3b32fbdd9e27bd2cde5b5b5ea765ba0518baaec1c8b81364370da479b2a34",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据执行栅格计算（计算公式由调用输入指定，无数据值为 None，输出数据类型由调用输入指定），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_3849a57c81249daa091ce580",
+      "review_split": "holdout",
+      "lane": "direct",
+      "operator_ids": [
+        "native:extractbyexpression"
+      ],
+      "l3_chain": [
+        "L3_02_06_02"
+      ],
+      "source_sha256": "af12a73ac38d9fa9842746713b76bbcdc99a24c40949b4a868ef7c6cdd24d8b5",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据按表达式筛选要素（表达式为 \n    \"field_name\" = 'field_name' AND\n    \"value\" > 100\n    ），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_db7646cbae800e93ddb2aa1c",
+      "review_split": "holdout",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "gdal:warpreproject"
+      ],
+      "l3_chain": [
+        "L3_03_05_02"
+      ],
+      "source_sha256": "595bb022d0ccdb808bd444e6c190e771a431db0d7fa030b2807de303326ce4b2",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据重投影栅格（目标坐标系为 EPSG:4326，RESAMPLING 为 1，目标分辨率为 None），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_821a14d1576dda1244168d06",
+      "review_split": "holdout",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:creategrid",
+        "native:zonalstatistics",
+        "native:centroids"
+      ],
+      "l3_chain": [
+        "L3_02_03_06",
+        "L3_03_02_01",
+        "L3_02_05_11"
+      ],
+      "source_sha256": "5dd6693cd14f3cec4b8e9bd54517ac4999e42ed0a727b436d22536f4edce1a1e",
+      "verdict": "accepted_canonical",
+      "note": "链/L3/参数/描述核验一致（修正 L3 基准后 mapping 完整）",
+      "task_description": "在该局部工作流中，对输入数据创建规则矢量网格；随后将前述矢量网格用于按多边形分区计算栅格统计量并更新图层（统计量为 1）；随后将前述矢量网格用于提取质心（ALL_PARTS 为否，为每个要素生成单一质心），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_multi_fd0ca22a232ff367a0d0beb1",
+      "review_split": "holdout",
+      "lane": "operator_resolution_split_multi",
+      "operator_ids": [
+        "native:fillnodata",
+        "gdal:translate"
+      ],
+      "l3_chain": [
+        "L3_03_03_A",
+        "L3_07_04_05"
+      ],
+      "source_sha256": "2b24644598e691cee5f5a7454e3d373b333fb1b09e61c38d9c7b5baba345fe30",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据使用指定值填充栅格无数据单元；随后将前述无缺失单元的栅格用于转换栅格数据格式或范围（NODATA 为 None，DATA_TYPE 为 0，目标坐标系为 None），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_47c3800cd4b7a73a1535f405",
+      "review_split": "holdout",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:fixgeometries",
+        "native:setlayerstyle"
+      ],
+      "l3_chain": [
+        "L3_01_05_02",
+        "L3_07_01_01"
+      ],
+      "source_sha256": "c35bfd4be184d5f16d21bc40dc5cf770424ef5cffa070c88e81544263eb82057",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据修复无效几何；随后将前述修复后的图层用于为图层应用指定样式，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_ff024a60f31c65382c31dee8",
+      "review_split": "holdout",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "qgis:rastercalculator"
+      ],
+      "l3_chain": [
+        "L3_03_03_A"
+      ],
+      "source_sha256": "6fa55cf9641e390dac95387dfb67ba4d22f84f55cf6f3b535797d43a0b2d0780",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据执行栅格计算（表达式由工作流计算指定，CELLSIZE 为 None，坐标系为 None），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_d63b1992be0c6dcd5a9ea728",
+      "review_split": "holdout",
+      "lane": "direct",
+      "operator_ids": [
+        "native:reprojectlayer",
+        "native:clip",
+        "native:fieldcalculator",
+        "native:fieldcalculator",
+        "native:fieldcalculator"
+      ],
+      "l3_chain": [
+        "L3_01_10_01",
+        "L3_02_02_06",
+        "L3_01_02_06",
+        "L3_01_02_06",
+        "L3_01_02_06"
+      ],
+      "source_sha256": "17882a40c852ee945108ed40e6eb0c6915557656f4e802668fa7063a7d83c0bf",
+      "verdict": "accepted_canonical",
+      "note": "链/L3/参数/描述核验一致（修正 L3 基准后 mapping 完整）",
+      "task_description": "在该 Processing 工作流中，对输入数据重投影图层（目标坐标系为 EPSG:32632）；随后将前述重投影后的图层用于使用多边形图层裁剪矢量要素；随后将前述裁剪后的矢量图层用于计算字段值（目标字段为 area_cella，FIELD_TYPE 为 0，FIELD_LENGTH 为 20，计算公式为 area($geometry)）；随后将前述更新字段的图层用于计算字段值（目标字段为 area_bacino_const，FIELD_TYPE 为 0，FIELD_LENGTH 为 20，计算公式由工作流计算指定）；随后将前述更新字段的图层用于计算字段值（目标字段为 peso，FIELD_TYPE 为 0，FIELD_LENGTH 为 20，计算公式为 \"area_cella\" / \"area_bacino_const\"），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_multi_00a844064439ab89d0ebb9de",
+      "review_split": "holdout",
+      "lane": "operator_resolution_split_multi",
+      "operator_ids": [
+        "native:buffer",
+        "native:selectbylocation"
+      ],
+      "l3_chain": [
+        "L3_02_01_01",
+        "L3_02_06_03"
+      ],
+      "source_sha256": "b0d7253da47c11a0fe6777163a81d8c4c367fe6a00543b2bb5356c849f7c9414",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据创建缓冲区（距离为 500）；随后将前述缓冲区结果用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_2d567f6201c83d4741a7a941",
+      "review_split": "holdout",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "qgis:rastercalculator"
+      ],
+      "l3_chain": [
+        "L3_03_03_A"
+      ],
+      "source_sha256": "a74689750a580cf6f8428852780bae27bcdbe5d958b7a0ec11408aaab1f881a3",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据执行栅格计算（表达式由工作流计算指定，坐标系为 IGNF:ED50UTM31.IGN69），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_912a83fc6681af7a5e6f8a8c",
+      "review_split": "holdout",
+      "lane": "direct",
+      "operator_ids": [
+        "native:buffer",
+        "native:rasterize"
+      ],
+      "l3_chain": [
+        "L3_02_01_01",
+        "L3_01_09_03"
+      ],
+      "source_sha256": "84b9b5139a19899c61aa056de302670cd39a9b09eda9c002647ca9e5b2308781",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据创建缓冲区（距离由任务输入指定，分段数为 10，END_CAP_STYLE 为 0，JOIN_STYLE 为 0，DISSOLVE 为是，融合缓冲区）；随后将前述缓冲区结果用于将矢量要素转换为栅格单元，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_recovery_multistep_2c87f12635cd4096f1cb470e",
+      "review_split": "holdout",
+      "lane": "recovery_multistep",
+      "operator_ids": [
+        "native:mergevectorlayers",
+        "native:extractbyattribute"
+      ],
+      "l3_chain": [
+        "L3_01_03_04",
+        "L3_02_06_02"
+      ],
+      "source_sha256": "15346789f098d88e7e966da39b51ca29dcf791150eaeb63c3047160b4576d79a",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据合并多个矢量图层；随后将前述合并后的矢量图层用于按属性条件筛选要素（字段为 ES，OPERATOR 为 1，比较值为 0），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_79b4a4e0b98a3be104104c85",
+      "review_split": "holdout",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:saveselectedfeatures",
+        "native:mergevectorlayers"
+      ],
+      "l3_chain": [
+        "L3_07_04_01",
+        "L3_01_03_04"
+      ],
+      "source_sha256": "96c88ff68b6e9fec2dcfb67e731d0a0b99f5b7269aa22cc7ed3b7ad59a9ec6bc",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据仅保存输入图层中已选中的矢量要素；随后将前述已保存的选中矢量要素用于合并多个矢量图层，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_recovery_multistep_af386e399d9248283d44b782",
+      "review_split": "holdout",
+      "lane": "recovery_multistep",
+      "operator_ids": [
+        "native:difference",
+        "native:multiparttosingleparts"
+      ],
+      "l3_chain": [
+        "L3_02_02_04",
+        "L3_02_07_01"
+      ],
+      "source_sha256": "3aff99d803c3b205e4fbe581fe10c697e2586df9fe66abfa28610aa713f2a3f2",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据计算空间差异；随后将前述差异结果用于拆分多部件要素为单部件，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_dad59c3bcb8648f38f297d77",
+      "review_split": "holdout",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "native:explodelines"
+      ],
+      "l3_chain": [
+        "L3_02_05_16"
+      ],
+      "source_sha256": "bf6216c727c69222415d4975cadfc226083226ed17e1c118a0c4029b4e3dd6fc",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据将线要素按顶点拆分为独立线段，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_4118ecfb50af24251a8eaf6b",
+      "review_split": "holdout",
+      "lane": "direct",
+      "operator_ids": [
+        "gdal:slope",
+        "qgis:rastercalculator",
+        "qgis:rastercalculator",
+        "gdal:polygonize",
+        "native:extractbyexpression",
+        "native:reprojectlayer",
+        "native:extractbyexpression",
+        "gdal:polygonize",
+        "native:extractbyexpression",
+        "native:reprojectlayer",
+        "native:buffer",
+        "native:extractbylocation",
+        "grass7:r.neighbors",
+        "native:zonalstatistics",
+        "native:extractbyexpression"
+      ],
+      "l3_chain": [
+        "L3_04_01_01",
+        "L3_03_03_A",
+        "L3_03_03_A",
+        "L3_01_09_03",
+        "L3_02_06_02",
+        "L3_01_10_01",
+        "L3_02_06_02",
+        "L3_01_09_03",
+        "L3_02_06_02",
+        "L3_01_10_01",
+        "L3_02_01_01",
+        "L3_02_06_03",
+        "L3_03_02_03",
+        "L3_03_02_01",
+        "L3_02_06_02"
+      ],
+      "source_sha256": "1d6674adcc2b564b5351e8ef59531eab205241fcb72ec3cc32d2644ab39c2437",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据从高程栅格计算坡度；随后将前述坡度栅格用于执行栅格计算（表达式由工作流计算指定）；随后将前述坡度栅格用于执行栅格计算（表达式由工作流计算指定）；随后将前述计算后的栅格用于转换栅格为矢量面（栅格波段为 1，字段为 value）；随后将前述矢量面结果用于按表达式筛选要素（表达式为 \"value\" = 1）；随后将前述筛选结果用于重投影图层（目标坐标系为 EPSG:2154）；随后将前述重投影后的图层用于按表达式筛选要素（表达式由工作流计算指定）；随后将前述计算后的栅格用于转换栅格为矢量面（栅格波段为 1，字段为 value）；随后将前述矢量面结果用于按表达式筛选要素（表达式为 \"value\" = 1）；随后将前述筛选结果用于重投影图层（目标坐标系为 EPSG:2154）；随后将前述重投影后的图层用于创建缓冲区（距离为 20，DISSOLVE 为是，融合缓冲区）；随后使用前述步骤的处理结果按空间关系筛选要素（空间关系为 0）；随后将前述计算后的栅格用于按移动窗口计算栅格邻域统计量（处理方式为 0，SIZE由工作流计算指定）；随后使用前述步骤的处理结果按多边形分区计算栅格统计量并更新图层；随后将前述筛选结果用于按表达式筛选要素（表达式为 \"dens_mean\" >= 0.3 AND \"dens_mean\" <= 0.6），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_7697a61ac1a32f920ced3dd8",
+      "review_split": "holdout",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "native:extractbylocation"
+      ],
+      "l3_chain": [
+        "L3_02_06_03"
+      ],
+      "source_sha256": "6753baebf038545508dd0853ac204c3e32be86f74719c362cc5a8d45dc5232f2",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据按空间关系筛选要素（空间关系为 0），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_df8cbecf49f4db70812cbce9",
+      "review_split": "holdout",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:snapgeometries",
+        "native:fixgeometries",
+        "native:multiparttosingleparts",
+        "native:deleteduplicategeometries",
+        "native:fixgeometries",
+        "native:multiparttosingleparts"
+      ],
+      "l3_chain": [
+        "L3_02_07_09",
+        "L3_01_05_02",
+        "L3_02_07_01",
+        "L3_01_05_04",
+        "L3_01_05_02",
+        "L3_02_07_01"
+      ],
+      "source_sha256": "d6055c9598da9550eae544d3bc01bc7c911228f6fe4b08da23d4e9743c842d1e",
+      "verdict": "accepted_canonical",
+      "note": "链/L3/参数/描述核验一致（修正 L3 基准后 mapping 完整）",
+      "task_description": "在该局部工作流中，对输入数据按容差将输入几何捕捉到参考图层；随后将前述已捕捉到参考图层的矢量要素用于修复无效几何；随后将前述修复后的图层用于拆分多部件要素为单部件；随后将前述单部件结果用于删除重复几何要素；随后将前述去除重复几何后的图层用于修复无效几何；随后将前述修复后的图层用于拆分多部件要素为单部件，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_846f00dad49c08a3f2325a57",
+      "review_split": "holdout",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:creategrid",
+        "native:extractbyexpression",
+        "native:zonalstatistics",
+        "native:extractbyexpression",
+        "native:centroids"
+      ],
+      "l3_chain": [
+        "L3_02_03_06",
+        "L3_02_06_02",
+        "L3_03_02_01",
+        "L3_02_06_02",
+        "L3_02_05_11"
+      ],
+      "source_sha256": "7aa2f385d0a1d86a1ba3a2c909a5aa958efd4bcafccd8f44153eec301af69459",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据创建规则矢量网格；随后将前述矢量网格用于按表达式筛选要素（表达式为 true）；随后将前述筛选结果用于按多边形分区计算栅格统计量并更新图层（统计量为 1）；随后将前述筛选结果用于按表达式筛选要素（表达式为 true）；随后将前述筛选结果用于提取质心（ALL_PARTS 为否，为每个要素生成单一质心），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_3548540d976e3a365210965e",
+      "review_split": "holdout",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "qgis:rastercalculator"
+      ],
+      "l3_chain": [
+        "L3_03_03_A"
+      ],
+      "source_sha256": "665b8ebd82b5f15b82d451495cf6124475380d74aea8010cbca117962515610b",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据执行栅格计算（表达式由工作流计算指定，CELLSIZE 为 None，坐标系为 None），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_aa044978538f6619daf33adc",
+      "review_split": "holdout",
+      "lane": "direct",
+      "operator_ids": [
+        "native:lineintersections",
+        "native:mergevectorlayers",
+        "native:buffer",
+        "native:dissolve",
+        "native:centroids",
+        "native:extractwithindistance",
+        "native:fieldcalculator"
+      ],
+      "l3_chain": [
+        "L3_02_02_01",
+        "L3_01_03_04",
+        "L3_02_01_01",
+        "L3_02_03_05",
+        "L3_02_05_11",
+        "L3_02_06_03",
+        "L3_01_02_06"
+      ],
+      "source_sha256": "ffed454bf56200420f065dc33261f756bb05ecc8a882f72bb3564b40abf53bfc",
+      "verdict": "accepted_canonical",
+      "note": "链/L3/参数/描述核验一致（修正 L3 基准后 mapping 完整）",
+      "task_description": "在该 Processing 工作流中，对输入数据计算两个线图层的交点；随后将前述线交点用于合并多个矢量图层；随后将前述合并后的矢量图层用于创建缓冲区（距离为 2，分段数为 5，END_CAP_STYLE 为 0，JOIN_STYLE 为 0，DISSOLVE 为否，保留独立缓冲区）；随后将前述缓冲区结果用于融合矢量要素（按字段  分组，SEPARATE_DISJOINT 为 是）；随后将前述融合结果用于提取质心（ALL_PARTS 为否，为每个要素生成单一质心）；随后将前述质心结果用于提取距参考图层指定距离内的要素；随后将前述距离范围内的要素用于计算字段值（目标字段为 fid，FIELD_TYPE 为 1，FIELD_LENGTH 为 10，计算公式为  @row_number ），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_operator_resolution_split_single_d6921ad7af0330bdab462b83",
+      "review_split": "holdout",
+      "lane": "operator_resolution_split_single",
+      "operator_ids": [
+        "native:extractbyexpression"
+      ],
+      "l3_chain": [
+        "L3_02_06_02"
+      ],
+      "source_sha256": "f52857cb4a6dc4e0684cbee07c79ca40b7456e31ab88eb5cb31b69e2ef3f5a16",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据按表达式筛选要素（表达式由工作流计算指定），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_ffd310a79f03e086cfe7f7f1",
+      "review_split": "holdout",
+      "lane": "direct",
+      "operator_ids": [
+        "native:extractbylocation",
+        "native:deletecolumn",
+        "native:addxyfields"
+      ],
+      "l3_chain": [
+        "L3_02_06_03",
+        "L3_01_02_02",
+        "L3_01_02_01"
+      ],
+      "source_sha256": "a11285bdb08a0a0a857bd244bf7d19761be76d3f183a139331cbf29948bd0c22",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据按空间关系筛选要素（空间关系为 0）；随后将前述筛选结果用于删除指定字段（字段由任务输入指定）；随后将前述删除字段后的图层用于向要素添加 X 和 Y 坐标字段，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_multistep_8d1aafd4dad8ff598cb5fac9",
+      "review_split": "holdout",
+      "lane": "split_multistep",
+      "operator_ids": [
+        "native:fixgeometries",
+        "native:dissolve"
+      ],
+      "l3_chain": [
+        "L3_01_05_02",
+        "L3_02_03_05"
+      ],
+      "source_sha256": "5ff2afe0fb740243f5499a9d8edc0d8df6453bc9f96e89f645ececde065ee3cd",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据修复无效几何；随后将前述修复后的图层用于融合矢量要素，得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_split_single_step_c256bca9963b850fe67276fc",
+      "review_split": "holdout",
+      "lane": "split_single_step",
+      "operator_ids": [
+        "native:extractbyattribute"
+      ],
+      "l3_chain": [
+        "L3_02_06_02"
+      ],
+      "source_sha256": "753022a903921ceb403b0cacd3e42cdc9630c93fb8249afa6013b49d6dfe9a8a",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_training_pair，已在 baseline",
+      "task_description": "在该局部工作流中，对输入数据按属性条件筛选要素（字段为 CEDULA_CAT，OPERATOR 为 0，比较值由工作流计算指定），得到此 Processing 链的结果。"
+    },
+    {
+      "candidate_id": "qgis_blocker_direct_5c48ec17616060131140a090",
+      "review_split": "holdout",
+      "lane": "direct",
+      "operator_ids": [
+        "native:createpointslayerfromtable"
+      ],
+      "l3_chain": [
+        "L3_01_01_04"
+      ],
+      "source_sha256": "94c33261a2c23697749f49bd07a521a9d491506b0e85e31f06d82b47ebef7034",
+      "verdict": "correct_but_duplicate",
+      "note": "链正确、mapping 完整，dedup=duplicate_source_region，已在 baseline",
+      "task_description": "在该 Processing 工作流中，对输入数据从表格的 X、Y 坐标字段创建点图层，得到此 Processing 链的结果。"
+    }
+  ],
+  "audit_hash": "190eefbc020cda6e9b38a8c28ee20c6d6640319818354a2857b34b53a44f02be"
+}

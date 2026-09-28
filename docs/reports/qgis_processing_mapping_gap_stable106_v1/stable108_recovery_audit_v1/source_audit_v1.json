@@ -1,0 +1,73 @@
+{
+  "schema": "gis_recommend.qgis_stable108_recovery_audit.v1",
+  "input_recovery_rows": 2,
+  "source_sha_verified": 2,
+  "source_failures": 0,
+  "recovered_local_units": 2,
+  "structurally_eligible_units": 0,
+  "training_rows_emitted": 0,
+  "canonical_source_body_authority_support": 1,
+  "rule_support_requirement": 30,
+  "decision": "defer_fail_closed",
+  "decision_reasons": [
+    "control_flow:try",
+    "downstream_data_transform",
+    "source_body_duplicate",
+    "canonical_support_below_30"
+  ],
+  "duplicate_evidence": {
+    "comparison": "git diff --no-index",
+    "added_lines": 7,
+    "removed_lines": 0,
+    "difference_scope": "plugin harvest provenance header only",
+    "source_bodies_equal_after_header_removal": true
+  },
+  "records": [
+    {
+      "record_id": "5ff26c5558cf6742ffec332b",
+      "source_sha256": "5ff26c5558cf6742ffec332b5a3b2c742e8d609ace3d3009c36e2be5a9a119fd",
+      "operator_ids": [
+        "gdal:contour",
+        "native:smoothgeometry"
+      ],
+      "dependency_edges": [
+        [
+          0,
+          1
+        ]
+      ],
+      "structural_decision": "defer_fail_closed",
+      "structural_reasons": [
+        "control_flow:try",
+        "downstream_data_transform"
+      ],
+      "canonical_source_body": true
+    },
+    {
+      "record_id": "fa3d82b4ced68bd66a87edb9",
+      "source_sha256": "fa3d82b4ced68bd66a87edb9898e5a2d539f0621f3a2a53f3d71cc7c3380b8bb",
+      "operator_ids": [
+        "gdal:contour",
+        "native:smoothgeometry"
+      ],
+      "dependency_edges": [
+        [
+          0,
+          1
+        ]
+      ],
+      "structural_decision": "defer_fail_closed",
+      "structural_reasons": [
+        "control_flow:try",
+        "downstream_data_transform"
+      ],
+      "canonical_source_body": false,
+      "duplicate_of_record_id": "5ff26c5558cf6742ffec332b"
+    }
+  ],
+  "training_admission": "not_granted_stable108_recovery_sidecar_only",
+  "validation_eligible": false,
+  "test_eligible": false,
+  "production_merge": "not_granted",
+  "llm_called": false
+}

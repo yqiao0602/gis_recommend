@@ -1,0 +1,50 @@
+{
+  "schema": "gis_recommend.qgis_raw_candidate_gate_review.v1",
+  "record_id": "d8d9d4672d610dfd33a1b7df",
+  "candidate_only": true,
+  "semantic_review": {
+    "decision": "semantically_coherent_candidate",
+    "review_basis": [
+      "classify docstring states DEM reclassification purpose and GRASS algorithm",
+      "calc_stats returns MIN/MAX consumed by classify",
+      "equal-interval rule construction is explicit in source lines 132-140",
+      "classified.tiff output path and return value are explicit"
+    ],
+    "caveats": [
+      "the class also exposes export_uniques, but that independent method is excluded from this unit",
+      "the source calls the implementation a dummy/equal-interval plan and includes TODOs",
+      "provider availability for grass7 is runtime-dependent"
+    ],
+    "admission": "candidate_pending_l3_and_dedup"
+  },
+  "l3_authority": {
+    "decision": "deferred_strict_authority",
+    "operator_decisions": [
+      {"operator_id": "qgis:rasterlayerstatistics", "proposed_l3": "L3_03_02_05", "strict_status": "pending_review"},
+      {"operator_id": "grass7:r.reclass", "proposed_l3": "L3_03_04_01", "strict_status": "provider_binding_pending"}
+    ],
+    "reason": "Current crosswalk accepts the reclassification family but leaves raster statistics pending and has no frozen provider-specific authority for grass7:r.reclass."
+  },
+  "four_layer_dedup": {
+    "decision": "deferred_full_corpus_dedup",
+    "local_exact_operator_sequence_scan": "no_exact_match_observed",
+    "keys_checked": ["source_sha256", "operator_sequence", "task_intent_key", "implementation_parent_sha256"],
+    "source_group_split_required": true,
+    "reason": "The candidate is source-backed but not yet part of a frozen authority union; local observation is not a substitute for the full cross-pool ledger."
+  },
+  "tokenizer_v4_smoke": {
+    "tokenizer": "bert-base-uncased",
+    "local_files_only": true,
+    "max_length": 128,
+    "content_tokens": 38,
+    "sequence_tokens_with_specials": 40,
+    "truncated": false,
+    "status": "passed_text_only",
+    "v4_admission": "deferred_l3_mapping_and_authority"
+  },
+  "final_status": "deferred_candidate_only",
+  "training_rows_emitted": 0,
+  "validation_eligible": false,
+  "test_eligible": false,
+  "production_merge": "not_granted"
+}

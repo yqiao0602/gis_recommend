@@ -1,0 +1,79 @@
+{
+  "counts": {
+    "candidate_missing_authoritative_rows": 76884,
+    "candidate_rows": 76884,
+    "candidate_scope_counts": {
+      "core_analysis": 15800,
+      "io_or_presentation_declared_in_text": 61084
+    },
+    "candidate_tier_counts": {
+      "rejected": 4120,
+      "silver_a": 14362,
+      "silver_b": 58402
+    },
+    "held_out_rows": 15389,
+    "quarantined_rows": 30515,
+    "selected_missing_authoritative_rows": 11454,
+    "selected_rows": 11454,
+    "split_counts": {
+      "test": 7695,
+      "train": 61495,
+      "val": 7694
+    },
+    "train_non_silver_a_rows": 50041,
+    "train_rows": 61495,
+    "train_silver_a_core_rows": 11454,
+    "train_silver_a_non_core_rows": 0,
+    "train_silver_a_rows": 11454
+  },
+  "decision": {
+    "proposal_state": "bounded_train_only",
+    "recommended_next_gate": "graft replay-manifest source_hash and source identity before any validation/test promotion",
+    "test_eligible": false,
+    "training_admission": "not_granted",
+    "validation_eligible": false
+  },
+  "inputs": {
+    "audit_report": null,
+    "candidate": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\pipeline\\step8_quality_gate\\labeled_workflows_l3_v4_quality_gate.json",
+    "hierarchy": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\classification_hierarchy_v2.csv",
+    "quarantine": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\pipeline\\step8_quality_gate\\quarantined_workflows_l3_v4_quality_gate.json",
+    "splits": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\pipeline\\step8_quality_gate\\dataset_splits_v4_quality_gate.json"
+  },
+  "policy": {
+    "sample_weight": 0.5,
+    "selection_scope": "core_analysis",
+    "selection_tier": "silver_a",
+    "source_identity_requirement": "authoritative_identity_required_before_validation_or_test",
+    "test_eligible": false,
+    "train_only": true,
+    "validation_eligible": false
+  },
+  "schema": "gis_recommend.gee_raster_core_v1_proposal.v1",
+  "selection": {
+    "example_script_ids": [
+      "Workflowoutput1-5000_script_4364",
+      "Workflowoutput1-5000_script_1237",
+      "Workflowoutput1-5000_script_2252",
+      "Workflowoutput1-5000_script_4914",
+      "Workflowoutput1-5000_script_1469",
+      "Workflowoutput1-5000_script_4970",
+      "Workflowoutput1-5000_script_4202",
+      "Workflowoutput1-5000_script_1852",
+      "Workflowoutput1-5000_script_4913",
+      "Workflowoutput1-5000_script_4672"
+    ],
+    "held_out_excluded": 15389,
+    "selected_by_scope": {
+      "core_analysis": 11454
+    },
+    "selected_by_tier": {
+      "silver_a": 11454
+    }
+  },
+  "source_identity": {
+    "selected_authoritative_rows": 0,
+    "selected_missing_authoritative_rows": 11454,
+    "validation_gate": "blocked_until_authority_graft"
+  }
+}

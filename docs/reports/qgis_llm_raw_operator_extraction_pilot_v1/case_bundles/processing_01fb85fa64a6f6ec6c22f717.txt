@@ -1,0 +1,378 @@
+QGIS RAW-SOURCE OPERATOR EXTRACTION CASE
+record_id: 01fb85fa64a6f6ec6c22f717
+pool: processing
+source_sha256: 01fb85fa64a6f6ec6c22f717f971d1b9b061c49fe31a7f21783f6be942928b46
+source_chars: 4102
+catalog_options_count: 3
+
+===== COMPLETE SOURCE (sent to model) =====
+# Source: plugins.qgis.org
+# Plugin: H-RISK with noisemodelling
+# Version: 0.6.3
+# Download URL: https://plugins.qgis.org/plugins/hrisk-noisemodelling-master/version/0.6.3/download/
+# Source path in zip: hrisk-noisemodelling-master/algobsoleted/heightsalonglines.py
+# Harvested at: 2026-06-04T10:48:44
+
+from qgis.PyQt.QtCore import (QT_TRANSLATE_NOOP, QVariant)
+
+from qgis.core import (
+  QgsProcessing,
+  QgsProcessingAlgorithm,
+  QgsProcessingParameterFeatureSource,
+  QgsProcessingParameterDistance,
+  QgsProcessingParameterNumber,
+  QgsProcessingParameterFeatureSink,
+  QgsFeatureRequest
+  )
+
+from qgis import processing
+
+from ..algutil.hriskutil import HrUtil
+from ..algutil.hriskpostprocessor import HrPostProcessor
+from ..algutil.hriskvar import PostProcessors
+class heightsalonglines(QgsProcessingAlgorithm):
+  
+
+  PARAMETERS = {            
+    "INPUT": {
+      "crs_reference": True, # this parameter is used as CRS reference
+      "ui_func": QgsProcessingParameterFeatureSource,
+      "ui_args":{
+        "description": QT_TRANSLATE_NOOP("heightsalonglines","Input layer"),
+        "types": [QgsProcessing.TypeVectorLine]
+      }
+    },
+    "INTERVAL": {
+      "ui_func": QgsProcessingParameterDistance,
+      "ui_args": {
+        "description": QT_TRANSLATE_NOOP("heightsalonglines","Interval between points"),
+        "defaultValue": 10.0,
+        "parentParameterName": "INPUT"
+      }
+    },
+    "HEIGHT": {
+      "ui_func": QgsProcessingParameterNumber,
+      "ui_args": {
+        "description": QT_TRANSLATE_NOOP("heightsalonglines","Height (m)"),
+        "type": QgsProcessingParameterNumber.Double,
+        "minValue": -100.0, "defaultValue": 0.0, "maxValue": 10000.0
+      }
+    },
+    "OUTPUT": {
+      "ui_func": QgsProcessingParameterFeatureSink,
+      "ui_args": {
+        "description": QT_TRANSLATE_NOOP("heightsalonglines","Elevation points" )
+      },
+      "visibleByDefault": False
+    }
+  }
+  
+  def __init__(self) -> None:
+    super().__init__()
+    self.UTIL = HrUtil(self)
+  
+  def initAlgorithm(self, config):
+    self.UTIL.initParameters()
+    
+  def processAlgorithm(self, parameters, context, feedback):  
+    self.UTIL.registerProcessingParameters(parameters, context, feedback)
+    self.CURRENT_PROCESS = self.UTIL.parseCurrentProcess()
+
+    point_xy = processing.run(
+      "native:pointsalonglines",
+      {
+        "INPUT": self.parameterAsSource(parameters, "INPUT", context).materialize(QgsFeatureRequest(), feedback),
+        "INTERVAL": self.parameterAsDouble(parameters, "INTERVAL", context),
+        "OUTPUT": "TEMPORARY_OUTPUT"
+      },
+      context = context,
+      is_child_algorithm = True,
+    )["OUTPUT"]
+    
+    point_xyz = processing.run(
+      "native:setzvalue",
+      {
+        "INPUT": point_xy,
+        "Z_VALUE": self.parameterAsDouble(parameters, "HEIGHT", context),
+        "OUTPUT": "TEMPORARY_OUTPUT"
+      },
+      context = context,
+      is_child_algorithm = True,
+    )["OUTPUT"]
+        
+    point_elev = processing.run(
+      "hrisk:initelevationpoint",
+      {
+          "INPUT": point_xyz,
+          "TARGET_CRS": self.parameterAsCrs(parameters, "INPUT", context),
+          "OVERWRITE": True,
+          "OUTPUT": "TEMPORARY_OUTPUT"
+      },
+      context = context,
+      is_child_algorithm = True,
+    )["OUTPUT"]
+    
+    point_elev = context.getMapLayer(point_elev)
+    new_fields = self.UTIL.newFieldsWithHistory(point_elev.fields())
+    (sink, dest_id) = self.parameterAsSink(
+      parameters, "OUTPUT", context, 
+      new_fields, point_elev.wkbType(), point_elev.sourceCrs()
+    )
+    self.UTIL.addFeaturesWithHistoryToSink(
+      sink, point_elev, new_fields, self.CURRENT_PROCESS
+    )
+    
+    PostProcessors[dest_id] = HrPostProcessor(history = [self.CURRENT_PROCESS])
+    
+    return {"OUTPUT": dest_id}
+  
+  
+  def name(self):
+    return self.__class__.__name__
+  
+  def displayName(self):
+    return self.tr("Elevation points along lines")
+
+  def group(self):
+    return self.tr("Initialize features")
+
+  def groupId(self):
+    return "initfeature"
+
+  def createInstance(self):
+    return heightsalonglines()
+
+
+===== PROMPT (constructed for this source) =====
+You are extracting QGIS operators from ONE COMPLETE Python SOURCE FILE. Return JSON only. Do not produce L3 labels, descriptions, workflow boundaries, or training data. List every call that can be matched to one CATALOG OPTION, in source order. For Processing, use the exact provider:algorithm ID; a dynamic ID may be proposed only when this complete source proves one exact value. For API, use the semantic catalog ID matching the concrete method call. Abstain rather than inventing an ID. Every item needs call_line and evidence_lines. Return {operators:[{catalog_operator_id,source_operator_id,call_line,evidence_lines}],abstain_reason}.
+POOL: processing
+CATALOG OPTIONS: ["native:pointsalonglines", "native:setzvalue", "gdal:pointsalonglines"]
+COMPLETE SOURCE (original line numbers):
+1: # Source: plugins.qgis.org
+2: # Plugin: H-RISK with noisemodelling
+3: # Version: 0.6.3
+4: # Download URL: https://plugins.qgis.org/plugins/hrisk-noisemodelling-master/version/0.6.3/download/
+5: # Source path in zip: hrisk-noisemodelling-master/algobsoleted/heightsalonglines.py
+6: # Harvested at: 2026-06-04T10:48:44
+7: 
+8: from qgis.PyQt.QtCore import (QT_TRANSLATE_NOOP, QVariant)
+9: 
+10: from qgis.core import (
+11:   QgsProcessing,
+12:   QgsProcessingAlgorithm,
+13:   QgsProcessingParameterFeatureSource,
+14:   QgsProcessingParameterDistance,
+15:   QgsProcessingParameterNumber,
+16:   QgsProcessingParameterFeatureSink,
+17:   QgsFeatureRequest
+18:   )
+19: 
+20: from qgis import processing
+21: 
+22: from ..algutil.hriskutil import HrUtil
+23: from ..algutil.hriskpostprocessor import HrPostProcessor
+24: from ..algutil.hriskvar import PostProcessors
+25: class heightsalonglines(QgsProcessingAlgorithm):
+26:   
+27: 
+28:   PARAMETERS = {            
+29:     "INPUT": {
+30:       "crs_reference": True, # this parameter is used as CRS reference
+31:       "ui_func": QgsProcessingParameterFeatureSource,
+32:       "ui_args":{
+33:         "description": QT_TRANSLATE_NOOP("heightsalonglines","Input layer"),
+34:         "types": [QgsProcessing.TypeVectorLine]
+35:       }
+36:     },
+37:     "INTERVAL": {
+38:       "ui_func": QgsProcessingParameterDistance,
+39:       "ui_args": {
+40:         "description": QT_TRANSLATE_NOOP("heightsalonglines","Interval between points"),
+41:         "defaultValue": 10.0,
+42:         "parentParameterName": "INPUT"
+43:       }
+44:     },
+45:     "HEIGHT": {
+46:       "ui_func": QgsProcessingParameterNumber,
+47:       "ui_args": {
+48:         "description": QT_TRANSLATE_NOOP("heightsalonglines","Height (m)"),
+49:         "type": QgsProcessingParameterNumber.Double,
+50:         "minValue": -100.0, "defaultValue": 0.0, "maxValue": 10000.0
+51:       }
+52:     },
+53:     "OUTPUT": {
+54:       "ui_func": QgsProcessingParameterFeatureSink,
+55:       "ui_args": {
+56:         "description": QT_TRANSLATE_NOOP("heightsalonglines","Elevation points" )
+57:       },
+58:       "visibleByDefault": False
+59:     }
+60:   }
+61:   
+62:   def __init__(self) -> None:
+63:     super().__init__()
+64:     self.UTIL = HrUtil(self)
+65:   
+66:   def initAlgorithm(self, config):
+67:     self.UTIL.initParameters()
+68:     
+69:   def processAlgorithm(self, parameters, context, feedback):  
+70:     self.UTIL.registerProcessingParameters(parameters, context, feedback)
+71:     self.CURRENT_PROCESS = self.UTIL.parseCurrentProcess()
+72: 
+73:     point_xy = processing.run(
+74:       "native:pointsalonglines",
+75:       {
+76:         "INPUT": self.parameterAsSource(parameters, "INPUT", context).materialize(QgsFeatureRequest(), feedback),
+77:         "INTERVAL": self.parameterAsDouble(parameters, "INTERVAL", context),
+78:         "OUTPUT": "TEMPORARY_OUTPUT"
+79:       },
+80:       context = context,
+81:       is_child_algorithm = True,
+82:     )["OUTPUT"]
+83:     
+84:     point_xyz = processing.run(
+85:       "native:setzvalue",
+86:       {
+87:         "INPUT": point_xy,
+88:         "Z_VALUE": self.parameterAsDouble(parameters, "HEIGHT", context),
+89:         "OUTPUT": "TEMPORARY_OUTPUT"
+90:       },
+91:       context = context,
+92:       is_child_algorithm = True,
+93:     )["OUTPUT"]
+94:         
+95:     point_elev = processing.run(
+96:       "hrisk:initelevationpoint",
+97:       {
+98:           "INPUT": point_xyz,
+99:           "TARGET_CRS": self.parameterAsCrs(parameters, "INPUT", context),
+100:           "OVERWRITE": True,
+101:           "OUTPUT": "TEMPORARY_OUTPUT"
+102:       },
+103:       context = context,
+104:       is_child_algorithm = True,
+105:     )["OUTPUT"]
+106:     
+107:     point_elev = context.getMapLayer(point_elev)
+108:     new_fields = self.UTIL.newFieldsWithHistory(point_elev.fields())
+109:     (sink, dest_id) = self.parameterAsSink(
+110:       parameters, "OUTPUT", context, 
+111:       new_fields, point_elev.wkbType(), point_elev.sourceCrs()
+112:     )
+113:     self.UTIL.addFeaturesWithHistoryToSink(
+114:       sink, point_elev, new_fields, self.CURRENT_PROCESS
+115:     )
+116:     
+117:     PostProcessors[dest_id] = HrPostProcessor(history = [self.CURRENT_PROCESS])
+118:     
+119:     return {"OUTPUT": dest_id}
+120:   
+121:   
+122:   def name(self):
+123:     return self.__class__.__name__
+124:   
+125:   def displayName(self):
+126:     return self.tr("Elevation points along lines")
+127: 
+128:   def group(self):
+129:     return self.tr("Initialize features")
+130: 
+131:   def groupId(self):
+132:     return "initfeature"
+133: 
+134:   def createInstance(self):
+135:     return heightsalonglines()
+
+===== MODEL RETURN (parsed JSON recorded by runner) =====
+{
+  "operators": [
+    {
+      "call_line": 73,
+      "catalog_operator_id": "native:pointsalonglines",
+      "evidence_lines": [
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82
+      ],
+      "source_operator_id": "native:pointsalonglines"
+    },
+    {
+      "call_line": 84,
+      "catalog_operator_id": "native:setzvalue",
+      "evidence_lines": [
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93
+      ],
+      "source_operator_id": "native:setzvalue"
+    }
+  ],
+  "abstain_reason": ""
+}
+
+===== LOCAL VALIDATION =====
+{
+  "status": "validated_candidate",
+  "verified": [
+    {
+      "call_expression": "processing.run('native:pointsalonglines', {'INPUT': self.parameterAsSource(parameters, 'INPUT', context).materialize(QgsFeatureRequest(), feedback), 'INTERVAL': self.parameterAsDouble(parameters, 'INTERVAL', context), 'OUTPUT': 'TEMPORARY_OUTPUT'}, context=context, is_child_algorithm=True)",
+      "catalog_operator_id": "native:pointsalonglines",
+      "evidence_lines": [
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82
+      ],
+      "evidence_type": "literal_processing_id",
+      "line": 73,
+      "operator_id": "native:pointsalonglines",
+      "source_operator_id": "native:pointsalonglines",
+      "verification": "locally_confirmed"
+    },
+    {
+      "call_expression": "processing.run('native:setzvalue', {'INPUT': point_xy, 'Z_VALUE': self.parameterAsDouble(parameters, 'HEIGHT', context), 'OUTPUT': 'TEMPORARY_OUTPUT'}, context=context, is_child_algorithm=True)",
+      "catalog_operator_id": "native:setzvalue",
+      "evidence_lines": [
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93
+      ],
+      "evidence_type": "literal_processing_id",
+      "line": 84,
+      "operator_id": "native:setzvalue",
+      "source_operator_id": "native:setzvalue",
+      "verification": "locally_confirmed"
+    }
+  ],
+  "validation_errors": []
+}
+
+NOTE: historical ledger persisted parsed JSON, not raw HTTP response bytes.

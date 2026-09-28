@@ -1,0 +1,29 @@
+{
+  "alias_mappings": {},
+  "deferred_operators": {
+    "gdal:proximity": "defer_insufficient_support",
+    "native:createpointslayerfromtable": "defer_insufficient_support",
+    "native:shortestpathpointtopoint": "defer_insufficient_support_and_new_branch",
+    "native:splitvectorlayer": "defer_multi_output",
+    "qgis:eliminateselectedpolygons": "defer_insufficient_support"
+  },
+  "mapping_admission": "granted",
+  "mapping_exclusion_count": 1,
+  "mapping_exclusions": {
+    "native:lineintersections": {
+      "excluded_l3_code": "L3_02_05_06",
+      "reason": "operator_outputs_intersection_points_and_does_not_split_lines",
+      "resolution": "defer_unmapped_pending_taxonomy_authority"
+    }
+  },
+  "operator_count": 2,
+  "production_merge": "not_granted",
+  "restored_l3_mappings": {
+    "native:explodelines": "L3_02_05_16",
+    "native:splitwithlines": "L3_02_05_17"
+  },
+  "schema": "gis_recommend.qgis_mapping_authority_stable110_delta.v1",
+  "status": "granted_user_selected_option_a",
+  "taxonomy_admission": "granted_for_two_supported_classes",
+  "training_admission": "not_granted"
+}

@@ -9,12 +9,53 @@ from dataclasses import asdict, dataclass
 import hashlib
 import json
 from pathlib import Path
+import re
 from typing import Any, Iterable
 
 from gis_recommend.data.training_data_quality import audit_training_data_quality
 
 
 SPLIT_KEYS = ("train_indices", "val_indices", "test_indices")
+SOURCE_IDENTITY_FIELDS = (
+    "source_hash",
+    "source_sha256",
+    "content_sha256",
+    "code_sha256",
+    "source_group",
+    "repository_id",
+    "repository",
+    "template_group",
+)
+SOURCE_IDENTITY_NAMESPACES = {
+    "source_hash": "content_hash",
+    "source_sha256": "content_hash",
+    "content_sha256": "content_hash",
+    "code_sha256": "content_hash",
+    "repository_id": "repository",
+    "repository": "repository",
+    "source_group": "source_group",
+    "template_group": "template_group",
+}
+DESCRIPTION_CLAIMS = {
+    "export": {
+        "pattern": re.compile(r"\bexport(?:s|ed|ing)?\b|\bgoogle drive\b", re.IGNORECASE),
+        "operator_markers": ("export.",),
+        "missing_status": "declared_unlabeled_output",
+    },
+    "visualization": {
+        "pattern": re.compile(
+            r"\bvisuali[sz](?:e|es|ed|ing|ation)\b|\bdisplay(?:s|ed|ing)?\b|\bmap layers?\b",
+            re.IGNORECASE,
+        ),
+        "operator_markers": ("map.", "addlayer"),
+        "missing_status": "declared_out_of_scope_ui",
+    },
+    "chart": {
+        "pattern": re.compile(r"\bcharts?\b|\bplots?\b", re.IGNORECASE),
+        "operator_markers": ("chart", "plot"),
+        "missing_status": "declared_out_of_scope_ui",
+    },
+}
 
 
 @dataclass(frozen=True)
@@ -27,6 +68,8 @@ class QualityGatePolicy:
     low_confidence_threshold: float = 0.9
     low_confidence_sources: tuple[str, ...] = ("auto_remap",)
     low_confidence_policy: str = "quarantine"  # quarantine | keep
+    description_alignment_policy: str = "report"  # report | quarantine
+    source_identity_policy: str = "report"  # report | require | ignore
     group_duplicate_l3_sequence: bool = True
     train_ratio: float = 0.8
     val_ratio: float = 0.1
@@ -40,6 +83,8 @@ class QualityGateResult:
     splits: dict[str, list[int]]
     task_vocab: dict[str, Any]
     report: dict[str, Any]
+    provenance: dict[str, Any] | None = None
+    authority_validation: dict[str, Any] | None = None
 
 
 def _hash_json(value: Any) -> str:
@@ -55,6 +100,94 @@ def _task_type(workflow: dict[str, Any]) -> str:
 
 def _sequence_hash(workflow: dict[str, Any]) -> str:
     return _hash_json(workflow.get("l3_sequence", []))
+
+
+def _description_alignment(workflow: dict[str, Any]) -> dict[str, Any]:
+    task_meta = workflow.get("task_metadata", {}) or {}
+    text = " ".join(
+        str(task_meta.get(key, "") or "")
+        for key in ("task_name", "task_description")
+    )
+    operators = [
+        str(operator).lower().strip()
+        for operator in workflow.get("operator_sequence", [])
+        if isinstance(operator, str)
+    ]
+    claims: list[dict[str, Any]] = []
+    unsupported: list[dict[str, Any]] = []
+    for claim_name, rule in DESCRIPTION_CLAIMS.items():
+        if not rule["pattern"].search(text):
+            continue
+        matched_operators = sorted({
+            operator
+            for operator in operators
+            if any(marker in operator for marker in rule["operator_markers"])
+        })
+        claim = {
+            "claim": claim_name,
+            "status": "matched" if matched_operators else rule["missing_status"],
+            "matched_operators": matched_operators,
+        }
+        claims.append(claim)
+        if not matched_operators:
+            unsupported.append(claim)
+
+    metadata = workflow.get("metadata", {}) or {}
+    original_count = metadata.get("original_num_operators")
+    current_count = len(workflow.get("operator_sequence", []))
+    retention_ratio = None
+    if isinstance(original_count, int) and original_count > 0:
+        retention_ratio = current_count / original_count
+    return {
+        "claims": claims,
+        "unsupported_claims": unsupported,
+        "has_issue": bool(unsupported),
+        "current_operator_count": current_count,
+        "original_operator_count": original_count,
+        "operator_retention_ratio": retention_ratio,
+        "authority": "lexical_proxy",
+    }
+
+
+def _source_identities(workflow: dict[str, Any]) -> list[str]:
+    metadata = workflow.get("metadata", {}) or {}
+    identities: set[str] = set()
+    for field in SOURCE_IDENTITY_FIELDS:
+        value = metadata.get(field)
+        if isinstance(value, str) and value.strip():
+            identities.add(f"{SOURCE_IDENTITY_NAMESPACES[field]}:{value.strip()}")
+    nested = metadata.get("source_identity")
+    if isinstance(nested, dict):
+        for field in SOURCE_IDENTITY_FIELDS:
+            value = nested.get(field)
+            if isinstance(value, str) and value.strip():
+                identities.add(f"{SOURCE_IDENTITY_NAMESPACES[field]}:{value.strip()}")
+    return sorted(identities)
+
+
+def _authoritative_source_identities(workflow: dict[str, Any]) -> list[str]:
+    metadata = workflow.get("metadata", {}) or {}
+    authority = metadata.get("source_identity_authority")
+    identities = _source_identities(workflow)
+    if authority == "source_content_sha256":
+        return [
+            identity for identity in identities
+            if identity.startswith("content_hash:")
+            and re.fullmatch(r"[0-9a-fA-F]{64}", identity.split(":", 1)[1])
+        ]
+    if authority in {"repository_manifest", "reviewed_manifest"}:
+        return identities
+    return []
+
+
+def audit_description_alignment(workflow: dict[str, Any]) -> dict[str, Any]:
+    """Return the deterministic lexical description/chain proxy for one row."""
+    return _description_alignment(workflow)
+
+
+def extract_source_identities(workflow: dict[str, Any]) -> list[str]:
+    """Return trusted, explicitly supplied source identities for one row."""
+    return _source_identities(workflow)
 
 
 def _mapping_metadata_by_operator(id_mappings: dict[str, Any] | None) -> dict[str, dict]:
@@ -208,14 +341,40 @@ def _group_workflows(
     workflows: list[dict[str, Any]],
     *,
     group_duplicate_l3_sequence: bool,
+    group_source_identities: bool,
 ) -> list[dict[str, Any]]:
-    groups_by_key: dict[str, dict[str, Any]] = {}
+    parent = list(range(len(workflows)))
+
+    def find(index: int) -> int:
+        while parent[index] != index:
+            parent[index] = parent[parent[index]]
+            index = parent[index]
+        return index
+
+    def union(left: int, right: int) -> None:
+        left_root = find(left)
+        right_root = find(right)
+        if left_root != right_root:
+            parent[max(left_root, right_root)] = min(left_root, right_root)
+
+    first_by_evidence: dict[str, int] = {}
     for index, workflow in enumerate(workflows):
-        group_key = _sequence_hash(workflow) if group_duplicate_l3_sequence else f"row:{index}"
+        evidence_keys: list[str] = []
+        if group_duplicate_l3_sequence:
+            evidence_keys.append(f"sequence:{_sequence_hash(workflow)}")
+        if group_source_identities:
+            evidence_keys.extend(f"source:{identity}" for identity in _source_identities(workflow))
+        for evidence_key in evidence_keys:
+            previous = first_by_evidence.setdefault(evidence_key, index)
+            union(previous, index)
+
+    groups_by_key: dict[int, dict[str, Any]] = {}
+    for index, workflow in enumerate(workflows):
+        root = find(index)
         group = groups_by_key.setdefault(
-            group_key,
+            root,
             {
-                "group_key": group_key,
+                "group_key": "",
                 "indices": [],
                 "task_counts": Counter(),
                 "task_set": set(),
@@ -230,6 +389,7 @@ def _group_workflows(
 
     groups = list(groups_by_key.values())
     for group in groups:
+        group["group_key"] = "component:" + _hash_json(sorted(group["indices"]))
         primary_task, _ = group["task_counts"].most_common(1)[0]
         group["primary_task"] = primary_task
         group["task_list"] = sorted(group["task_set"])
@@ -362,9 +522,19 @@ def build_quality_gate_candidate(
     workflows: list[dict[str, Any]],
     id_mappings: dict[str, Any] | None,
     policy: QualityGatePolicy | None = None,
+    provenance: dict[str, Any] | None = None,
+    authority_validation: dict[str, Any] | None = None,
 ) -> QualityGateResult:
     """Build a quality-gated V4 training candidate and grouped split."""
     policy = policy or QualityGatePolicy()
+    if policy.description_alignment_policy not in {"report", "quarantine"}:
+        raise ValueError(
+            "description_alignment_policy must be 'report' or 'quarantine'"
+        )
+    if policy.source_identity_policy not in {"report", "require", "ignore"}:
+        raise ValueError(
+            "source_identity_policy must be 'report', 'require', or 'ignore'"
+        )
     op_metadata = _mapping_metadata_by_operator(id_mappings)
 
     retained: list[dict[str, Any]] = []
@@ -373,6 +543,10 @@ def build_quality_gate_candidate(
     low_confidence_quarantine_sources: Counter[str] = Counter()
     sparse_filtered: list[dict[str, Any]] = []
     sparse_merged = 0
+    alignment_claim_counts: Counter[str] = Counter()
+    alignment_status_counts: Counter[str] = Counter()
+    alignment_issue_workflows = 0
+    schema_issue_workflows = 0
 
     # First pass: quarantine low-confidence auto-remap workflows.
     for index, workflow in enumerate(workflows):
@@ -380,15 +554,64 @@ def build_quality_gate_candidate(
         seq_hash = _sequence_hash(wf)
         task_type_original = _task_type(wf)
         reasons: list[dict[str, Any]] = []
-        for operator, confidence in zip(
-            wf.get("operator_sequence", []),
-            wf.get("confidences", []),
-        ):
+        flags: list[str] = []
+        alignment = _description_alignment(wf)
+        for claim in alignment["claims"]:
+            alignment_claim_counts[claim["claim"]] += 1
+            alignment_status_counts[claim["status"]] += 1
+        if alignment["has_issue"]:
+            alignment_issue_workflows += 1
+            flags.append("description_alignment_issue")
+            if policy.description_alignment_policy == "quarantine":
+                reasons.extend(
+                    {
+                        "reason": "description_chain_mismatch",
+                        "claim": claim["claim"],
+                        "status": claim["status"],
+                    }
+                    for claim in alignment["unsupported_claims"]
+                )
+        operators = wf.get("operator_sequence", [])
+        confidences = wf.get("confidences", [])
+        ambiguity_flags = wf.get("ambiguity_flags", [])
+        content_codes = [
+            code for code in wf.get("l3_codes", [])
+            if not (isinstance(code, str) and code.startswith("<"))
+        ]
+        content_ids = [token for token in wf.get("l3_sequence", []) if isinstance(token, int) and token >= 0]
+        field_lengths = {
+            "operators": len(operators),
+            "confidences": len(confidences),
+            "ambiguity_flags": len(ambiguity_flags),
+            "l3_codes": len(content_codes),
+            "l3_ids": len(content_ids),
+        }
+        if len(set(field_lengths.values())) != 1:
+            reasons.append({
+                "reason": "schema_length_mismatch",
+                "field_lengths": field_lengths,
+            })
+        missing_mapping_operators = sorted({
+            operator
+            for operator in operators
+            if isinstance(operator, str) and operator.lower().strip() not in op_metadata
+        })
+        for operator in missing_mapping_operators:
+            reasons.append({
+                "reason": "mapping_metadata_missing",
+                "operator": operator,
+            })
+        if any(reason.get("reason") in {"schema_length_mismatch", "mapping_metadata_missing"} for reason in reasons):
+            schema_issue_workflows += 1
+        for operator_index, operator in enumerate(operators):
             if not isinstance(operator, str):
                 continue
             meta = op_metadata.get(operator.lower().strip())
             if not meta:
                 continue
+            if operator_index >= len(confidences):
+                continue
+            confidence = confidences[operator_index]
             source = meta.get("source", "unknown")
             if (
                 source in policy.low_confidence_sources
@@ -406,24 +629,47 @@ def build_quality_gate_candidate(
                 low_confidence_quarantine_operators[operator.lower().strip()] += 1
                 low_confidence_quarantine_sources[source] += 1
 
-        if reasons and policy.low_confidence_policy == "quarantine":
-            wf["quality_gate"] = _group_quality_annotation(
+        has_low_confidence_reasons = any(reason.get("operator") for reason in reasons)
+        has_description_reasons = any(
+            reason.get("reason") == "description_chain_mismatch" for reason in reasons
+        )
+        has_schema_reasons = any(
+            reason.get("reason") in {"schema_length_mismatch", "mapping_metadata_missing"}
+            for reason in reasons
+        )
+        should_quarantine = (
+            has_low_confidence_reasons and policy.low_confidence_policy == "quarantine"
+        ) or (
+            has_description_reasons
+            and policy.description_alignment_policy == "quarantine"
+        ) or has_schema_reasons
+        if should_quarantine:
+            annotation = _group_quality_annotation(
                 source_index=index,
                 sequence_hash=seq_hash,
                 task_type_original=task_type_original,
                 task_type_normalized=task_type_original,
+                flags=flags,
                 quarantine_reasons=reasons,
             )
+            annotation["description_alignment"] = alignment
+            annotation["source_identities"] = _source_identities(wf)
+            wf["quality_gate"] = annotation
             quarantined.append(wf)
             continue
 
-        wf["quality_gate"] = _group_quality_annotation(
+        if has_low_confidence_reasons:
+            flags.append("low_confidence_kept")
+        annotation = _group_quality_annotation(
             source_index=index,
             sequence_hash=seq_hash,
             task_type_original=task_type_original,
             task_type_normalized=task_type_original,
-            flags=["low_confidence_kept"] if reasons else [],
+            flags=flags,
         )
+        annotation["description_alignment"] = alignment
+        annotation["source_identities"] = _source_identities(wf)
+        wf["quality_gate"] = annotation
         retained.append(wf)
 
     pre_merge_task_counts = Counter(_task_type(workflow) for workflow in retained)
@@ -456,8 +702,28 @@ def build_quality_gate_candidate(
 
     candidate_task_counts = Counter(_task_type(workflow) for workflow in candidate)
     candidate_task_vocab = _build_task_vocab(candidate_task_counts.keys())
+    missing_declared_source_indices = [
+        index for index, workflow in enumerate(candidate)
+        if not _source_identities(workflow)
+    ]
+    missing_authoritative_source_indices = [
+        index for index, workflow in enumerate(candidate)
+        if not _authoritative_source_identities(workflow)
+    ]
+    if missing_authoritative_source_indices and policy.source_identity_policy == "require":
+        first = candidate[missing_authoritative_source_indices[0]]
+        script_id = (first.get("metadata", {}) or {}).get("script_id", "unknown")
+        raise ValueError(
+            "Authoritative source identity is required but missing for "
+            f"{len(missing_authoritative_source_indices)} candidate workflows; first={script_id}"
+        )
+    groups = _group_workflows(
+        candidate,
+        group_duplicate_l3_sequence=policy.group_duplicate_l3_sequence,
+        group_source_identities=policy.source_identity_policy != "ignore",
+    )
     splits = _assign_groups_to_splits(
-        _group_workflows(candidate, group_duplicate_l3_sequence=policy.group_duplicate_l3_sequence),
+        groups,
         task_counts=candidate_task_counts,
         policy=policy,
     )
@@ -477,13 +743,52 @@ def build_quality_gate_candidate(
         if len(split_names & {"train", "val", "test"}) > 1
     )
 
+    source_split_map: dict[str, set[str]] = defaultdict(set)
+    authoritative_source_split_map: dict[str, set[str]] = defaultdict(set)
+    source_field_counts: Counter[str] = Counter()
+    for index, workflow in enumerate(candidate):
+        for identity in _source_identities(workflow):
+            source_split_map[identity].add(split_lookup.get(index, "unsplit"))
+            source_field_counts[identity.split(":", 1)[0]] += 1
+        for identity in _authoritative_source_identities(workflow):
+            authoritative_source_split_map[identity].add(split_lookup.get(index, "unsplit"))
+    cross_split_source_identities = sum(
+        1 for split_names in source_split_map.values()
+        if len(split_names & {"train", "val", "test"}) > 1
+    )
+    cross_split_authoritative_source_identities = sum(
+        1 for split_names in authoritative_source_split_map.values()
+        if len(split_names & {"train", "val", "test"}) > 1
+    )
+
     quarantine_task_counts = Counter(_task_type(workflow) for workflow in quarantined)
     quarantine_operator_counts = Counter()
     quarantine_sources = Counter()
+    low_confidence_quarantined_workflows = 0
+    description_quarantined_workflows = 0
+    schema_quarantined_workflows = 0
     for workflow in quarantined:
+        has_low_confidence = False
+        has_description_issue = False
+        has_schema_issue = False
         for reason in workflow.get("quality_gate", {}).get("quarantine_reasons", []):
-            quarantine_operator_counts[reason.get("operator", "unknown")] += 1
-            quarantine_sources[reason.get("source", "unknown")] += 1
+            if reason.get("operator"):
+                has_low_confidence = True
+                quarantine_operator_counts[reason["operator"]] += 1
+                quarantine_sources[reason.get("source", "unknown")] += 1
+            if reason.get("reason") == "description_chain_mismatch":
+                has_description_issue = True
+            if reason.get("reason") in {"schema_length_mismatch", "mapping_metadata_missing"}:
+                has_schema_issue = True
+        low_confidence_quarantined_workflows += int(has_low_confidence)
+        description_quarantined_workflows += int(has_description_issue)
+        schema_quarantined_workflows += int(has_schema_issue)
+
+    split_sizes = {
+        key: len(splits[key])
+        for key in SPLIT_KEYS
+    }
+    total_split_rows = max(1, sum(split_sizes.values()))
 
     report = {
         "policy": asdict(policy),
@@ -508,11 +813,45 @@ def build_quality_gate_candidate(
             "threshold": policy.low_confidence_threshold,
             "policy_sources": list(policy.low_confidence_sources),
         },
+        "description_alignment": {
+            "policy": policy.description_alignment_policy,
+            "authority": "lexical_proxy",
+            "workflows_with_issues": alignment_issue_workflows,
+            "quarantined_workflows": description_quarantined_workflows,
+            "claims": dict(alignment_claim_counts),
+            "statuses": dict(alignment_status_counts),
+        },
+        "schema_quarantine": {
+            "workflows": schema_quarantined_workflows,
+            "detected_workflows": schema_issue_workflows,
+        },
+        "source_identity": {
+            "policy": policy.source_identity_policy,
+            "candidate_workflows": len(candidate),
+            "declared_workflows": len(candidate) - len(missing_declared_source_indices),
+            "declared_missing_workflows": len(missing_declared_source_indices),
+            "authoritative_workflows": len(candidate) - len(missing_authoritative_source_indices),
+            "missing_workflows": len(missing_authoritative_source_indices),
+            "identity_field_occurrences": dict(source_field_counts),
+            "unique_identities": len(source_split_map),
+            "source_disjoint_verified": (
+                policy.source_identity_policy != "ignore"
+                and not missing_authoritative_source_indices
+                and cross_split_authoritative_source_identities == 0
+            ),
+        },
         "splits": {
             "train_indices": len(splits["train_indices"]),
             "val_indices": len(splits["val_indices"]),
             "test_indices": len(splits["test_indices"]),
             "cross_split_sequence_hashes": cross_split_sequence_hashes,
+            "cross_split_source_identities": cross_split_source_identities,
+            "cross_split_authoritative_source_identities": cross_split_authoritative_source_identities,
+            "actual_ratios": {
+                key: split_sizes[key] / total_split_rows
+                for key in SPLIT_KEYS
+            },
+            "max_group_size": max((group["size"] for group in groups), default=0),
             "val_tasks_not_in_train": candidate_audit["split_quality"]["val_tasks_not_in_train"],
             "test_tasks_not_in_train": candidate_audit["split_quality"]["test_tasks_not_in_train"],
         },
@@ -520,7 +859,8 @@ def build_quality_gate_candidate(
         "notes": {
             "group_duplicate_l3_sequence": policy.group_duplicate_l3_sequence,
             "sparse_filtered_workflows": len(sparse_filtered),
-            "low_confidence_quarantined_workflows": len(quarantined),
+            "low_confidence_quarantined_workflows": low_confidence_quarantined_workflows,
+            "description_quarantined_workflows": description_quarantined_workflows,
         },
     }
 
@@ -530,6 +870,8 @@ def build_quality_gate_candidate(
         splits=splits,
         task_vocab=candidate_task_vocab,
         report=report,
+        provenance=provenance,
+        authority_validation=authority_validation,
     )
 
 
@@ -560,6 +902,10 @@ def _render_markdown_report(
         f"- Task types before: {report['counts']['task_types_before']}",
         f"- Task types after: {report['counts']['task_types_after']}",
         f"- Cross-split duplicate sequence hashes: {report['splits']['cross_split_sequence_hashes']}",
+        f"- Cross-split source identities: {report['splits']['cross_split_source_identities']}",
+        f"- Workflows missing trusted source identity: {report['source_identity']['missing_workflows']:,}",
+        f"- Source-disjoint verified: {report['source_identity']['source_disjoint_verified']}",
+        f"- Description alignment issues: {report['description_alignment']['workflows_with_issues']:,}",
         "",
         "## Candidate Audit",
         "",
@@ -576,6 +922,20 @@ def _render_markdown_report(
         lines.append(f"- `{operator}`: {count}")
     if not report["low_confidence_quarantine"]["operators"]:
         lines.append("- none")
+
+    lines.extend(["", "## Description Alignment Proxy", ""])
+    lines.append(f"- Policy: {report['description_alignment']['policy']}")
+    lines.append(f"- Authority: {report['description_alignment']['authority']}")
+    for claim, count in sorted(report["description_alignment"]["claims"].items()):
+        lines.append(f"- `{claim}` claims: {count:,}")
+
+    lines.extend(["", "## Source Identity", ""])
+    lines.append(f"- Policy: {report['source_identity']['policy']}")
+    lines.append(f"- Unique trusted identities: {report['source_identity']['unique_identities']:,}")
+    lines.append(f"- Missing workflows: {report['source_identity']['missing_workflows']:,}")
+    lines.append(
+        f"- Source-disjoint verified: {report['source_identity']['source_disjoint_verified']}"
+    )
 
     lines.extend(["", "## Split Tasks Not in Train", ""])
     if report["splits"]["val_tasks_not_in_train"]:
@@ -618,6 +978,8 @@ def write_quality_gate_outputs(
         "labeled_workflows": result.candidate_workflows,
         "statistics": result.report["counts"],
         "quality_gate": result.report,
+        "provenance": result.provenance,
+        "authority_validation": result.authority_validation,
     }
     quarantine_payload = {
         "num_workflows": len(result.quarantined_workflows),
@@ -630,6 +992,8 @@ def write_quality_gate_outputs(
             "policy": result.report["policy"],
             "sources": result.report["low_confidence_quarantine"]["sources"],
         },
+        "provenance": result.provenance,
+        "authority_validation": result.authority_validation,
     }
 
     with data_path.open("w", encoding="utf-8") as f:

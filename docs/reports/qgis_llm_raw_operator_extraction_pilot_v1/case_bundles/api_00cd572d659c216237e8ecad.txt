@@ -1,0 +1,225 @@
+QGIS RAW-SOURCE OPERATOR EXTRACTION CASE
+record_id: 00cd572d659c216237e8ecad
+pool: api
+source_sha256: 00cd572d659c216237e8ecaddb948f39c621e8ede5235330a24f6f5cc34736c3
+source_chars: 2199
+catalog_options_count: 4
+
+===== COMPLETE SOURCE (sent to model) =====
+"""
+    Scans a Minecraft .mca Anvil region file for blocks in TRACKED_ORES
+    then puts them in a new temporary layer in QGIS
+
+    Requires anvil-parser Python library
+    Tested in QGIS 3.8 with saves from Minecraft 1.14.4 and anvil-parser 0.1.1
+"""
+
+import anvil
+from qgis.PyQt.QtCore import QVariant
+
+TRACKED_ORES = ["diamond_ore"]  # list ores you want to track here by their namespaced ID
+MAX_HEIGHT = 16                 # maximum height in map to search for blocks, up to 256. Big values are slower.
+
+# create layer
+layer = QgsVectorLayer("Point", "ores", "memory")
+pr = layer.dataProvider()
+
+# add fields
+pr.addAttributes([QgsField("type", QVariant.String),
+                    QgsField("x",  QVariant.Int),
+                    QgsField("y",  QVariant.Int),
+                    QgsField("z",  QVariant.Int)])
+layer.updateFields() # tell the vector layer to fetch changes from the provider
+
+region = anvil.Region.from_file(QFileDialog.getOpenFileName()[0])
+for chunkx in range(32):
+    for chunkz in range(32):
+        try:
+            chunk = anvil.Chunk.from_region(region, chunkx, chunkz)
+            for y in range(MAX_HEIGHT):
+                for x in range(16):
+                    for z in range(16):
+                        block = chunk.get_block(x, y, z)
+                        if block.id in TRACKED_ORES:
+                            ore_x = chunk.x.value * 16 + x
+                            ore_z = chunk.z.value * 16 + z
+                            point = QgsFeature()
+                            point.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(ore_x, ore_z)))
+                            point.setAttributes([block.id, ore_x, y, ore_z])
+                            pr.addFeatures([point])
+                            print(block.id, "at", chunk.x.value*16+x, y, chunk.z.value*16+z)
+        except Exception as e:
+            if str(e) == "Unexistent chunk":
+                print("Can't load chunk at", chunkx, chunkz)
+
+# update layer's extent when new features have been added
+# because change of extent in provider is not propagated to the layer
+layer.updateExtents()
+
+# add the layer to the project canvas
+registry = QgsProject.instance()
+registry.addMapLayer(layer)
+
+===== PROMPT (constructed for this source) =====
+You are extracting QGIS operators from ONE COMPLETE Python SOURCE FILE. Return JSON only. Do not produce L3 labels, descriptions, workflow boundaries, or training data. List every call that can be matched to one CATALOG OPTION, in source order. For Processing, use the exact provider:algorithm ID; a dynamic ID may be proposed only when this complete source proves one exact value. For API, use the semantic catalog ID matching the concrete method call. Abstain rather than inventing an ID. Every item needs call_line and evidence_lines. Return {operators:[{catalog_operator_id,source_operator_id,call_line,evidence_lines}],abstain_reason}.
+POOL: api
+CATALOG OPTIONS: ["api:layer.dataprovider", "api:feature.setgeometry", "api:feature.setattributes", "api:sink.addfeature"]
+COMPLETE SOURCE (original line numbers):
+1: """
+2:     Scans a Minecraft .mca Anvil region file for blocks in TRACKED_ORES
+3:     then puts them in a new temporary layer in QGIS
+4: 
+5:     Requires anvil-parser Python library
+6:     Tested in QGIS 3.8 with saves from Minecraft 1.14.4 and anvil-parser 0.1.1
+7: """
+8: 
+9: import anvil
+10: from qgis.PyQt.QtCore import QVariant
+11: 
+12: TRACKED_ORES = ["diamond_ore"]  # list ores you want to track here by their namespaced ID
+13: MAX_HEIGHT = 16                 # maximum height in map to search for blocks, up to 256. Big values are slower.
+14: 
+15: # create layer
+16: layer = QgsVectorLayer("Point", "ores", "memory")
+17: pr = layer.dataProvider()
+18: 
+19: # add fields
+20: pr.addAttributes([QgsField("type", QVariant.String),
+21:                     QgsField("x",  QVariant.Int),
+22:                     QgsField("y",  QVariant.Int),
+23:                     QgsField("z",  QVariant.Int)])
+24: layer.updateFields() # tell the vector layer to fetch changes from the provider
+25: 
+26: region = anvil.Region.from_file(QFileDialog.getOpenFileName()[0])
+27: for chunkx in range(32):
+28:     for chunkz in range(32):
+29:         try:
+30:             chunk = anvil.Chunk.from_region(region, chunkx, chunkz)
+31:             for y in range(MAX_HEIGHT):
+32:                 for x in range(16):
+33:                     for z in range(16):
+34:                         block = chunk.get_block(x, y, z)
+35:                         if block.id in TRACKED_ORES:
+36:                             ore_x = chunk.x.value * 16 + x
+37:                             ore_z = chunk.z.value * 16 + z
+38:                             point = QgsFeature()
+39:                             point.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(ore_x, ore_z)))
+40:                             point.setAttributes([block.id, ore_x, y, ore_z])
+41:                             pr.addFeatures([point])
+42:                             print(block.id, "at", chunk.x.value*16+x, y, chunk.z.value*16+z)
+43:         except Exception as e:
+44:             if str(e) == "Unexistent chunk":
+45:                 print("Can't load chunk at", chunkx, chunkz)
+46: 
+47: # update layer's extent when new features have been added
+48: # because change of extent in provider is not propagated to the layer
+49: layer.updateExtents()
+50: 
+51: # add the layer to the project canvas
+52: registry = QgsProject.instance()
+53: registry.addMapLayer(layer)
+
+===== MODEL RETURN (parsed JSON recorded by runner) =====
+{
+  "operators": [
+    {
+      "call_line": 17,
+      "catalog_operator_id": "api:layer.dataprovider",
+      "evidence_lines": [
+        16,
+        17
+      ],
+      "source_operator_id": "layer.dataProvider()"
+    },
+    {
+      "call_line": 39,
+      "catalog_operator_id": "api:feature.setgeometry",
+      "evidence_lines": [
+        38,
+        39
+      ],
+      "source_operator_id": "point.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(ore_x, ore_z)))"
+    },
+    {
+      "call_line": 40,
+      "catalog_operator_id": "api:feature.setattributes",
+      "evidence_lines": [
+        38,
+        40
+      ],
+      "source_operator_id": "point.setAttributes([block.id, ore_x, y, ore_z])"
+    },
+    {
+      "call_line": 41,
+      "catalog_operator_id": "api:sink.addfeature",
+      "evidence_lines": [
+        17,
+        41
+      ],
+      "source_operator_id": "pr.addFeatures([point])"
+    }
+  ],
+  "abstain_reason": ""
+}
+
+===== LOCAL VALIDATION =====
+{
+  "status": "validated_candidate",
+  "verified": [
+    {
+      "call_expression": "layer.dataProvider()",
+      "catalog_operator_id": "api:layer.dataprovider",
+      "evidence_lines": [
+        16,
+        17
+      ],
+      "evidence_type": "api_method_call",
+      "line": 17,
+      "operator_id": "api:layer.dataprovider",
+      "source_operator_id": "layer.dataProvider()",
+      "verification": "locally_confirmed"
+    },
+    {
+      "call_expression": "point.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(ore_x, ore_z)))",
+      "catalog_operator_id": "api:feature.setgeometry",
+      "evidence_lines": [
+        38,
+        39
+      ],
+      "evidence_type": "api_method_call",
+      "line": 39,
+      "operator_id": "api:feature.setgeometry",
+      "source_operator_id": "point.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(ore_x, ore_z)))",
+      "verification": "locally_confirmed"
+    },
+    {
+      "call_expression": "point.setAttributes([block.id, ore_x, y, ore_z])",
+      "catalog_operator_id": "api:feature.setattributes",
+      "evidence_lines": [
+        38,
+        40
+      ],
+      "evidence_type": "api_method_call",
+      "line": 40,
+      "operator_id": "api:feature.setattributes",
+      "source_operator_id": "point.setAttributes([block.id, ore_x, y, ore_z])",
+      "verification": "locally_confirmed"
+    },
+    {
+      "call_expression": "pr.addFeatures([point])",
+      "catalog_operator_id": "api:sink.addfeature",
+      "evidence_lines": [
+        17,
+        41
+      ],
+      "evidence_type": "api_method_call",
+      "line": 41,
+      "operator_id": "api:sink.addfeature",
+      "source_operator_id": "pr.addFeatures([point])",
+      "verification": "locally_confirmed"
+    }
+  ],
+  "validation_errors": []
+}
+
+NOTE: historical ledger persisted parsed JSON, not raw HTTP response bytes.

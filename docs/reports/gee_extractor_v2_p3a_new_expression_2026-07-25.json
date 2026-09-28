@@ -1,0 +1,54 @@
+{
+  "schema": "gis_recommend.gee_extractor_p3a_repair_report.v1",
+  "date": "2026-07-25",
+  "repair_id": "p3a_new_expression_classifier_chain",
+  "changed_extractor_version": "gee-source-extractor-v2.0.3",
+  "changed_files": [
+    "src/gis_recommend/data/gee_source_extractor.py",
+    "tests/test_gee_source_extractor.py"
+  ],
+  "scope": {
+    "fixed_ast_node_type": "NewExpression",
+    "target_pattern": "new ee.Classifier.smileRandomForest(...).train(...)",
+    "preserves_existing_non_new_pattern": "ee.Classifier.smileRandomForest(...).train(...)"
+  },
+  "red_green_evidence": {
+    "red_test": "tests.test_gee_source_extractor.GeeSourceExtractorTests.test_new_classifier_factory_train_chain_is_not_dynamic",
+    "before_failure_observed": {
+      "ordered_calls": [
+        null,
+        "image.classify"
+      ],
+      "quality_flag": "dynamic_callee"
+    },
+    "after_expected": {
+      "ordered_calls": [
+        "ee.Classifier.smileRandomForest",
+        "ee.Classifier.smileRandomForest.train",
+        "image.classify"
+      ],
+      "core_operator_ordinals": [
+        0,
+        1,
+        2
+      ],
+      "quality_flag_removed": "dynamic_callee"
+    }
+  },
+  "current_50_row_impact_assessment": {
+    "direct_training_admission_change": false,
+    "reason": "The current 50-row GEE review pack remains governed by human review, chain completeness, source evidence, and P1/P2 gates. This narrow extractor repair only fixes a concrete AST coverage hole and does not re-extract or re-adjudicate deferred rows.",
+    "known_ml_deferred_rows": [
+      "gee_raster_core_review_007",
+      "gee_raster_core_review_010",
+      "gee_raster_core_review_026",
+      "gee_raster_core_review_050"
+    ],
+    "note": "Several current snippets use non-new classifier factory syntax that was already extractable. Their remaining gaps require source-grounded re-extraction/standardization comparison and possibly task-scope rewrite, not just NewExpression support."
+  },
+  "next_gate": {
+    "id": "p3b_deferred_source_grounded_reextract_impact",
+    "goal": "Re-extract the 28 extractor_repair_required rows with gee-source-extractor-v2.0.3 from full source/AST, compare recovered core calls against the old retained chains, and identify rows eligible for P4 rereview.",
+    "training_admission": "not_granted"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "schema": "gis_recommend.gee_p0_migration_audit.v1",
+  "inputs": {
+    "step7": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\pipeline\\step7\\labeled_workflows_l3_v4.json",
+    "step8": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\pipeline\\step8\\labeled_workflows_l3_v4_cleaned.json",
+    "quality_gate": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\pipeline\\step8_quality_gate\\labeled_workflows_l3_v4_quality_gate.json",
+    "id_mappings": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\id_mappings_v2.json",
+    "legacy_sample_limit": 1000
+  },
+  "counts": {
+    "step7_workflows": 108832,
+    "step8_workflows": 107399,
+    "quality_gate_workflows": 76884
+  },
+  "vocabulary": {
+    "authority_codes": 94,
+    "step7_codes": 69,
+    "legacy_sample_codes": 60,
+    "step8_codes": 60,
+    "quality_gate_codes": 47,
+    "legacy_missing_codes": [
+      "L3_01_02_01",
+      "L3_01_02_02",
+      "L3_05_03_03",
+      "L3_07_04_06",
+      "L3_08_02_01",
+      "L3_08_02_05",
+      "L3_09_05_02",
+      "L3_09_06_01",
+      "L3_10_06_01"
+    ],
+    "legacy_affected_workflows": 770,
+    "legacy_missing_tokens": 866,
+    "lost_step7_to_step8": [
+      "L3_01_02_01",
+      "L3_01_02_02",
+      "L3_05_03_03",
+      "L3_07_04_06",
+      "L3_08_02_01",
+      "L3_08_02_05",
+      "L3_09_05_02",
+      "L3_09_06_01",
+      "L3_10_06_01"
+    ],
+    "lost_step8_to_quality_gate": [
+      "L3_02_02_01",
+      "L3_02_05_11",
+      "L3_02_05_12",
+      "L3_02_06_02",
+      "L3_03_04_03",
+      "L3_03_08_03",
+      "L3_03_08_07",
+      "L3_04_01_01",
+      "L3_04_01_02",
+      "L3_04_01_03",
+      "L3_08_02_03",
+      "L3_08_02_04",
+      "L3_10_03_01"
+    ],
+    "step7_codes_missing_from_authority": []
+  },
+  "description_alignment": {
+    "authority": "lexical_proxy",
+    "workflows_with_issues": 61084,
+    "claims": {
+      "export": 30352,
+      "visualization": 38741,
+      "chart": 12103
+    },
+    "statuses": {
+      "declared_unlabeled_output": 30352,
+      "declared_out_of_scope_ui": 50844
+    },
+    "operator_retention_below_50_percent": 38507
+  },
+  "source_identity": {
+    "workflows_with_identity": 0,
+    "missing_workflows": 76884,
+    "identity_field_occurrences": {},
+    "source_disjoint_verified": false
+  },
+  "decision": {
+    "training_regeneration_authorized": false,
+    "large_dataset_overwrite_authorized": false,
+    "next_gate": "review audit before any GEE regeneration"
+  }
+}

@@ -1,0 +1,1432 @@
+﻿action,call_sites,confidence,dependency_edges,description_requirement,feature_extractor_version,feature_schema_version,intermediate_data_transform_calls,mapped_l3_chain,operator_ids,ordered_operator_ids,production_merge,reason,record_id,review_index,rule_id,schema,signature_hash,source_path,source_root_id,source_sha256,source_snippet,source_snippet_contains_all_ops,structure_class,task_text,task_text_admission,task_text_quality,test_eligible,training_admission,training_row_emitted,validation_eligible,workflow_unit_scope,review_position,risk_stratum,proposed_next_action,review_status,source_execution_decision,recovery_boundary_decision,dependency_decision,description_scope_decision,final_rule_decision,reviewer_notes,source_parameter_status,parameter_facts
+recover_call_graph,"[{""line_end"": 276, ""line_start"": 276, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 311, ""line_start"": 311, ""operator_id"": ""native:addfieldtoattributestable"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 322, ""line_start"": 322, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 339, ""line_start"": 339, ""operator_id"": ""native:buffer"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 356, ""line_start"": 356, ""operator_id"": ""native:addfieldtoattributestable"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 367, ""line_start"": 367, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 377, ""line_start"": 377, ""operator_id"": ""native:clip"", ""ordinal"": 7, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 391, ""line_start"": 391, ""operator_id"": ""native:addfieldtoattributestable"", ""ordinal"": 8, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 402, ""line_start"": 402, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 9, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 414, ""line_start"": 414, ""operator_id"": ""native:savefeatures"", ""ordinal"": 10, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}]",medium,[],local_subworkflow_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_06_02"", ""L3_01_02_01"", ""L3_01_02_06"", ""L3_02_01_01"", ""L3_01_02_01"", ""L3_01_02_06"", ""L3_02_02_06"", ""L3_01_02_01"", ""L3_01_02_06"", ""L3_07_04_01""]","[""native:extractbyexpression"", ""native:addfieldtoattributestable"", ""native:fieldcalculator"", ""native:buffer"", ""native:addfieldtoattributestable"", ""native:fieldcalculator"", ""native:clip"", ""native:addfieldtoattributestable"", ""native:fieldcalculator"", ""native:savefeatures""]","[""native:extractbyexpression"", ""native:addfieldtoattributestable"", ""native:fieldcalculator"", ""native:buffer"", ""native:addfieldtoattributestable"", ""native:fieldcalculator"", ""native:clip"", ""native:addfieldtoattributestable"", ""native:fieldcalculator"", ""native:savefeatures""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""for"", ""try""], ""dependency_edges"": [], ""description_requirement"": ""local_subworkflow_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 10, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""local_subworkflow""}",90869049df50ef7b80a352fd,147,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,d53af4ae57ac5731ce313fa2d999d4d89a880aace11f2446e0c32066d32db33e,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000402.py,standard_v2,823c6aa46b5f5a869d6dddfaa8ea212a2d49d21c44bd3a70c1f92aa8bda8472f," 273 |                 'OUTPUT':QgsProcessing.TEMPORARY_OUTPUT  # creating new selection
+ 274 |                 }
+ 275 |                 feedback.pushConsoleInfo(parameters['USECOST_COLUMN'])
+ 276 |                 outputs['ExtractByExpression'] = processing.run('native:extractbyexpression', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 277 |                 alg_params = {
+ 278 |                 '-g': False,
+ 279 |                 'GRASS_MIN_AREA_PARAMETER': 0.0001,
+...
+ 308 |                     'INPUT': outputs['Vnetsteiner']['output'],
+ 309 |                     'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+ 310 |                 }
+ 311 |                 outputs['AddFieldToAttributesTable_ROUTE'] = processing.run('native:addfieldtoattributestable', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 312 |                 # results['ActivitySpace']=outputs['AddFieldToAttributesTable']['OUTPUT']
+ 313 |                 alg_params = {
+ 314 |                     'FIELD_LENGTH': 100,
+...
+ 319 |                     'INPUT': outputs['AddFieldToAttributesTable_ROUTE']['OUTPUT'],
+ 320 |                     'OUTPUT': os.path.join(steiner_path,f""{respondent}.shp"")
+ 321 |                 }
+ 322 |                 outputs['FieldCalculator_ROUTE'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 323 | 
+ 324 |                 feedback.pushConsoleInfo(""Steiner Attribute added"")
+ 325 | 
+...
+ 336 |                     'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+ 337 |                 }
+ 338 | 
+ 339 |                 outputs['Buffer'] = processing.run('native:buffer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 340 |                 results['Buffer'] = outputs['Buffer']['OUTPUT']
+ 341 | 
+ 342 |                 feedback.pushConsoleInfo(""Buffer created"")
+...
+ 353 |                     'INPUT': outputs['Buffer']['OUTPUT'],
+ 354 |                     'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+ 355 |                 }
+ 356 |                 outputs['AddFieldToAttributesTable_BUFFER'] = processing.run('native:addfieldtoattributestable', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 357 |                 # results['ActivitySpace']=outputs['AddFieldToAttributesTable']['OUTPUT']
+ 358 |                 alg_params = {
+ 359 |                     'FIELD_LENGTH': 100,
+...
+ 364 |                     'INPUT': outputs['AddFieldToAttributesTable_BUFFER']['OUTPUT'],
+ 365 |                     'OUTPUT': os.path.join(buffer_path,f""{respondent}.shp"")
+ 366 |                 }
+ 367 |                 outputs['FieldCalculator_BUFFER'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 368 | 
+ 369 |                 feedback.pushConsoleInfo(""Buffer attribute added"")
+ 370 | 
+...
+ 374 |                     'OVERLAY': outputs['FieldCalculator_BUFFER']['OUTPUT'],
+ 375 |                     'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+ 376 |                 }
+ 377 |                 outputs['Clip'] = processing.run('native:clip', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 378 |                 # results['Clip'] = outputs['Clip']['OUTPUT']
+ 379 | 
+ 380 |                 # Add field to attributes table
+...
+ 388 |                     'INPUT': outputs['Clip']['OUTPUT'],
+ 389 |                     'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+ 390 |                 }
+ 391 |                 outputs['AddFieldToAttributesTable'] = processing.run('native:addfieldtoattributestable', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 392 |                 # results['ActivitySpace']=outputs['AddFieldToAttributesTable']['OUTPUT']
+ 393 |                 alg_params = {
+ 394 |                     'FIELD_LENGTH': 100,
+...
+ 399 |                     'INPUT': outputs['AddFieldToAttributesTable']['OUTPUT'],
+ 400 |                     'OUTPUT': os.path.join(activity_space_path,f""{respondent}.shp"")
+ 401 |                 }
+ 402 |                 outputs['FieldCalculator'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 403 |                 results['ActivitySpace'] = outputs['FieldCalculator']['OUTPUT']
+ 404 | 
+ 405 |                 # Save vector features to file
+...
+ 411 |                     'LAYER_OPTIONS': '',
+ 412 |                     'OUTPUT': os.path.join(csv_path,f""{respondent}.csv"")
+ 413 |                 }
+ 414 |                 outputs['SaveVectorFeaturesToFile'] = processing.run('native:savefeatures', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 415 |                 results['Csv'] = outputs['SaveVectorFeaturesToFile']['OUTPUT']
+ 416 |             
+ 417 |             return results",True,unresolved,/*************************************************************************** addMapLayer Source repo: Kevin-Kiprotich/QGIS-Automation,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,local_subworkflow,1,loop_cardinality,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]"
+recover_call_graph,"[{""line_end"": 254, ""line_start"": 254, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""reproject_result""}, ""param_keys"": []}, {""line_end"": 259, ""line_start"": 259, ""operator_id"": ""native:centroids"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""centroid_result""}, ""param_keys"": []}]",medium,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_10_01"", ""L3_02_05_11""]","[""native:reprojectlayer"", ""native:centroids""]","[""native:reprojectlayer"", ""native:centroids""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""if""], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",f6d3178407bde2bdc6374a12,931,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,b782a2a1f7af2cbb128aa88d111fd0c349d4726616949752a9108b8855ce1197,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0001520.py,workflow_A,de6795450187e16ec4031b349a58c5c326685c4176600c6d7c179f18350e11f4," 251 |         if source_layer.sourceCrs() != join_layer_vl.sourceCrs():
+ 252 |             feedback.setProgressText('Reprojecting Join Layer...')
+ 253 |             reproject_params = {'INPUT': join_layer_vl, 'TARGET_CRS': source_layer.sourceCrs(), 'OUTPUT': 'memory:Reprojected'}
+ 254 |             reproject_result = processing.run('native:reprojectlayer', reproject_params, context=context, feedback=feedback)
+ 255 |             join_layer_vl = reproject_result['OUTPUT']
+ 256 |         if method == 1:
+ 257 |             feedback.setProgressText('Creating centroids for Join Layer...')
+ 258 |             centroid_params = { 'ALL_PARTS' : False, 'INPUT' : join_layer_vl, 'OUTPUT' : 'memory:Centroids' }
+ 259 |             centroid_result = processing.run(""native:centroids"", centroid_params, context=context, feedback=feedback)
+ 260 |             join_layer_vl = centroid_result['OUTPUT']
+ 261 |         
+ 262 |         feedback.setProgressText('Building spatial index...')",True,unresolved,Author: Mario Königbauer (mkoenigb@gmx.de) initAlgorithm Source repo: mkoenigb/ProcessX,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,2,conditional_branch,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 56, ""line_start"": 56, ""operator_id"": ""native:joinattributesbylocation"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""partial""}, ""param_keys"": []}, {""line_end"": 65, ""line_start"": 65, ""operator_id"": ""native:savefeatures"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""output""}, ""param_keys"": []}]",medium,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_04_01"", ""L3_07_04_01""]","[""native:joinattributesbylocation"", ""native:savefeatures""]","[""native:joinattributesbylocation"", ""native:savefeatures""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""for""], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",cfc03c178e027e2b3b1fb33f,467,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,ded0e636480dbaa71f94dccf56152ba1e495451f8d9cc633f23b45c373c2aa6b,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0002589.py,workflow,c8317c7c0d3ae9d5d78ea674b22abd2837d03d0d50d7c3b691696f4d7d5f2d36,"  53 |                 'PREFIX': parameters['joined_prefix'],
+  54 |                 'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+  55 |             }
+  56 |             partial = processing.run('native:joinattributesbylocation', alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+  57 |         # Save vector features to file
+  58 |         alg_params = {
+  59 |             'DATASOURCE_OPTIONS': '',
+...
+  62 |             'LAYER_OPTIONS': '',
+  63 |             'OUTPUT': parameters['Joined']
+  64 |         }
+  65 |         output = processing.run('native:savefeatures', alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+  66 |         results['Joined'] = output
+  67 |         return results
+  68 | ",True,unresolved,Model exported as python. initAlgorithm Source repo: joaofauvel/QGIS-processing,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,3,loop_cardinality,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 174, ""line_start"": 164, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""EXPRESSION"", ""OUTPUT""]}, {""line_end"": 186, ""line_start"": 176, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""area""}, ""param_keys"": [""INPUT"", ""EXPRESSION"", ""OUTPUT""]}, {""line_end"": 199, ""line_start"": 188, ""operator_id"": ""native:difference"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT"", ""GRID_SIZE""]}, {""line_end"": 210, ""line_start"": 201, ""operator_id"": ""native:multiparttosingleparts"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""OUTPUT""]}]",medium,"[[0, 2], [1, 2], [2, 3]]",whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_06_02"", ""L3_02_06_02"", ""L3_02_02_04"", ""L3_02_07_01""]","[""native:extractbyexpression"", ""native:extractbyexpression"", ""native:difference"", ""native:multiparttosingleparts""]","[""native:extractbyexpression"", ""native:extractbyexpression"", ""native:difference"", ""native:multiparttosingleparts""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""for""], ""dependency_edges"": [[0, 2], [1, 2], [2, 3]], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 4, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",7048c2edb01b05ebad8105e3,895,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,2b8f41a2d08f0dda028102cab12365bbad26e0978f06cb42b195455292beb631,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0000555.py,workflow_A,9d0917c2a83d6b14111dda7da22f7ddd5b7c840ddb84485900bfbcef1cb65588," 161 |             process_source = process_source.replace(""'"", ""''"")
+ 162 | 
+ 163 |             for period in used_periods:
+ 164 |                 result = processing.run(
+ 165 |                     ""native:extractbyexpression"",
+ 166 |                     {
+ 167 |                         ""INPUT"": parameters[self.INTENSITY_LAYER],
+ 168 |                         ""EXPRESSION"": f'""{period_field}"" = {period} AND ""{intensity_process_source_field}"" = \'{process_source}\'',
+ 169 |                         ""OUTPUT"": ""memory:"",
+ 170 |                     },
+ 171 |                     context=context,
+ 172 |                     feedback=feedback,
+ 173 |                     is_child_algorithm=True,
+ 174 |                 )
+ 175 | 
+ 176 |                 area = processing.run(
+ 177 |                     ""native:extractbyexpression"",
+ 178 |                     {
+ 179 |                         ""INPUT"": parameters[self.AREA_LAYER],
+ 180 |                         ""EXPRESSION"": f""\""{area_process_source_field}\"" = '{process_source}'"",
+ 181 |                         ""OUTPUT"": ""memory:"",
+ 182 |                     },
+ 183 |                     context=context,
+ 184 |                     feedback=feedback,
+ 185 |                     is_child_algorithm=True,
+ 186 |                 )
+ 187 | 
+ 188 |                 result = processing.run(
+ 189 |                     ""native:difference"",
+ 190 |                     {
+ 191 |                         ""INPUT"": area[""OUTPUT""],
+ 192 |                         ""OVERLAY"": result[""OUTPUT""],
+ 193 |                         ""OUTPUT"": ""memory:"",
+ 194 |                         ""GRID_SIZE"": None,
+ 195 |                     },
+ 196 |                     context=context,
+ 197 |                     feedback=feedback,
+ 198 |                     is_child_algorithm=True,
+ 199 |                 )
+ 200 | 
+ 201 |                 result = processing.run(
+ 202 |                     ""native:multiparttosingleparts"",
+ 203 |                     {
+ 204 |                         ""INPUT"": result[""OUTPUT""],
+ 205 |                         ""OUTPUT"": ""memory:"",
+ 206 |                     },
+ 207 |                     context=context,
+ 208 |                     feedback=feedback,
+ 209 |                     # is_child_algorithm=True,
+ 210 |                 )
+ 211 | 
+ 212 |                 for feature in result[""OUTPUT""].getFeatures():
+ 213 |                     if feature.geometry().area() < 10:",True,unresolved,createInstance Source repo: opengisch/pzp,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,4,loop_cardinality,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}]"
+recover_call_graph,"[{""line_end"": 34, ""line_start"": 34, ""operator_id"": ""native:extractbyattribute"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""region_layer""}, ""param_keys"": [""INPUT"", ""FIELD"", ""OPERATOR"", ""VALUE"", ""OUTPUT""]}, {""line_end"": 37, ""line_start"": 37, ""operator_id"": ""native:clip"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""photos_by_region""}, ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}]",medium,"[[0, 1]]",whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_06_02"", ""L3_02_02_06""]","[""native:extractbyattribute"", ""native:clip""]","[""native:extractbyattribute"", ""native:clip""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""for"", ""try""], ""dependency_edges"": [[0, 1]], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",8c50aa03abe01dbd074112f3,192,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,90c1e936b6321cf0aec5e3869c7baa4fbb2089539ed6461a8afe61e5dc53ae85,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000524.py,standard_v2,4a497ba97140bdb335e1cc17613859cb5ff600435c5d367c7cba6095023e79b8,"  31 |       # extract the region
+  32 |       logit(""extract by attr"")
+  33 |       all_region_layer = instance.mapLayersByName(""regions"")[0]
+  34 |       region_layer = processing.run(""native:extractbyattribute"", {'INPUT':all_region_layer,'FIELD':'region','OPERATOR':0,'VALUE':region,'OUTPUT':'TEMPORARY_OUTPUT'})[""OUTPUT""]
+  35 |       # then use it on the photos layer 
+  36 |       logit(""clipping"")
+  37 |       photos_by_region = processing.run(""native:clip"", {'INPUT':photos,'OVERLAY':region_layer,'OUTPUT':'TEMPORARY_OUTPUT'})[""OUTPUT""]
+  38 |       # now we need to store the list of the features somehow
+  39 |       logit(""exporting"")
+  40 |       region_images =[p[""photo""] for p in photos_by_region.getFeatures()]",True,unresolved,stopped Source repo: DevinBayly/qgis_scripts,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,5,loop_cardinality,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{""FIELD"": ""region"", ""OPERATOR"": 0}, {}]"
+recover_call_graph,"[{""line_end"": 240, ""line_start"": 227, ""operator_id"": ""native:mergevectorlayers"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""center""}, ""param_keys"": [""LAYERS"", ""OUTPUT""]}, {""line_end"": 259, ""line_start"": 243, ""operator_id"": ""native:buffer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""_mic""}, ""param_keys"": [""INPUT"", ""OUTPUT"", ""DISTANCE"", ""SEGMENTS"", ""DISSOLVE"", ""END_CAP_STYLE"", ""JOIN_STYLE"", ""MITER_LIMIT""]}]",medium,"[[0, 1]]",whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_03_04"", ""L3_02_01_01""]","[""native:mergevectorlayers"", ""native:buffer""]","[""native:mergevectorlayers"", ""native:buffer""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""if""], ""dependency_edges"": [[0, 1]], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",4a8b5b71350df42474f18a0a,452,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,5224ad898d0d7ce72d70d53f67092b218fdd48f0f32253849d1526f787571b12,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0001730.py,workflow,5c5b08841e929130343af88befb358fcfb924fc0429f32b4bffdf276e691b890," 224 |                     return {}   
+ 225 |                 feedback.setProgress(int(count * total))             
+ 226 | 
+ 227 |             center = processing.run(
+ 228 |                 'native:mergevectorlayers',
+ 229 |                 {
+ 230 |                     'LAYERS': mem_layers,                
+ 231 |                     'OUTPUT' : parameters[self.CENTER]           
+ 232 |                 },
+ 233 |                 
+ 234 |                 is_child_algorithm=True,
+ 235 |                 #
+ 236 |                 # It's important to pass on the context and feedback objects to
+ 237 |                 # child algorithms, so that they can properly give feedback to
+ 238 |                 # users and handle cancelation requests.
+ 239 |                 context=context,
+ 240 |                 feedback=feedback)
+ 241 |             del(mem_layers)             
+ 242 | 
+ 243 |             _mic = processing.run(
+ 244 |             'native:buffer',
+ 245 |             {
+ 246 |                 # Here we pass on the original parameter values of INPUT
+ 247 |                 # and BUFFER_OUTPUT to the buffer algorithm.
+ 248 |                 'INPUT': center['OUTPUT'],
+ 249 |                 'OUTPUT': parameters[self.MIC],
+ 250 |                 'DISTANCE': QgsProperty.fromExpression('""dist_pole""') ,
+ 251 |                 'SEGMENTS': 64,
+ 252 |                 'DISSOLVE': False,
+ 253 |                 'END_CAP_STYLE': 0,
+ 254 |                 'JOIN_STYLE': 0,
+ 255 |                 'MITER_LIMIT': 2
+ 256 |             },          
+ 257 |             is_child_algorithm=True,           
+ 258 |             context=context,
+ 259 |             feedback=feedback)
+ 260 |             return {self.CENTER: center['OUTPUT'],
+ 261 |                     self.MIC: _mic['OUTPUT']}          ",True,unresolved,Vect_Mic.py translate Source repo: opengeoshub/becagis,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,6,conditional_branch,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{}, {""DISSOLVE"": false, ""DISTANCE"": ""\""dist_pole\"""", ""END_CAP_STYLE"": 0, ""JOIN_STYLE"": 0, ""SEGMENTS"": 64}]"
+recover_call_graph,"[{""line_end"": 45, ""line_start"": 43, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""filtered""}, ""param_keys"": []}, {""line_end"": 57, ""line_start"": 56, ""operator_id"": ""native:intersection"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""intersection""}, ""param_keys"": []}, {""line_end"": 67, ""line_start"": 66, ""operator_id"": ""native:dissolve"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""dissolve""}, ""param_keys"": []}, {""line_end"": 76, ""line_start"": 75, ""operator_id"": ""native:retainfields"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""retained""}, ""param_keys"": []}, {""line_end"": 88, ""line_start"": 86, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""reprojected""}, ""param_keys"": []}, {""line_end"": 102, ""line_start"": 99, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""calculated""}, ""param_keys"": []}, {""line_end"": 116, ""line_start"": 115, ""operator_id"": ""native:savefeatures"", ""ordinal"": 7, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]",medium,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_06_02"", ""L3_02_02_01"", ""L3_02_03_05"", ""L3_01_02_02"", ""L3_01_10_01"", ""L3_01_02_06"", ""L3_07_04_01""]","[""native:extractbyexpression"", ""native:intersection"", ""native:dissolve"", ""native:retainfields"", ""native:reprojectlayer"", ""native:fieldcalculator"", ""native:savefeatures""]","[""native:extractbyexpression"", ""native:intersection"", ""native:dissolve"", ""native:retainfields"", ""native:reprojectlayer"", ""native:fieldcalculator"", ""native:savefeatures""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""try""], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 7, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",18d29ca6ae43c5a4fed1a3fe,781,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,b8d32adf40ede99db3035c81da9651fd2e4083263088a7b363e91f59070dcc1d,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0007112.py,workflow,b858ab7f1de63c773c8cbfd72d7cc36a793d4a29386f79bbf28e24cbf9ea6abc,"  40 |             'INPUT': car_file_path,
+  41 |             'OUTPUT': 'memory:'
+  42 |         }
+  43 |         filtered = processing.run('native:extractbyexpression',
+  44 |                                   alg_params,
+  45 |                                   is_child_algorithm=False)['OUTPUT']
+  46 |         info('Intersection layers...')
+  47 |         alg_params = {
+  48 |             'GRID_SIZE': None,
+...
+  53 |             'OVERLAY_FIELDS_PREFIX': '',
+  54 |             'OUTPUT': 'memory:'
+  55 |         }
+  56 |         intersection = processing.run('native:intersection', alg_params,
+  57 |                                       is_child_algorithm=False)['OUTPUT']
+  58 | 
+  59 |         info('Dissolving...')
+  60 |         alg_params = {
+...
+  63 |             'SEPARATE_DISJOINT': False,
+  64 |             'OUTPUT': 'memory:'
+  65 |         }
+  66 |         dissolve = processing.run('native:dissolve', alg_params,
+  67 |                                   is_child_algorithm=False)['OUTPUT']
+  68 | 
+  69 |         info('Retain fields...')
+  70 |         alg_params = {
+...
+  72 |             'INPUT': dissolve,
+  73 |             'OUTPUT': 'memory:'
+  74 |         }
+  75 |         retained = processing.run('native:retainfields', alg_params,
+  76 |                                   is_child_algorithm=False)['OUTPUT']
+  77 | 
+  78 |         info('Transforming to UTM and calculating area...')
+  79 |         alg_params = {
+...
+  83 |             'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:31982'),
+  84 |             'OUTPUT': 'memory:Reprojected'
+  85 |         }
+  86 |         reprojected = processing.run('native:reprojectlayer',
+  87 |                                      alg_params,
+  88 |                                      is_child_algorithm=False)['OUTPUT']
+  89 | 
+  90 |         alg_params = {
+  91 |             'FIELD_LENGTH': 10,
+...
+  96 |             'INPUT': reprojected,
+  97 |             'OUTPUT': 'memory:'
+  98 |         }
+  99 |         calculated = processing.run(
+ 100 |             'native:fieldcalculator',
+ 101 |             alg_params,
+ 102 |             is_child_algorithm=False)['OUTPUT']
+ 103 | 
+ 104 |         info('Saving results...')
+ 105 |         file_results_path = Path(path_results, 'results_pyqgis.gpkg').__str__()
+...
+ 112 |             'LAYER_OPTIONS': '',
+ 113 |             'OUTPUT': file_results_path,
+ 114 |         }
+ 115 |         processing.run('native:savefeatures', alg_params,
+ 116 |                        is_child_algorithm=True)
+ 117 | 
+ 118 |         qgs.exitQgis()
+ 119 |         info_finished(start_time=start)",True,unresolved,Script using pyqgis Source repo: byander/geo_test_performance,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,7,guarded_execution,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}, {}, {}, {}]"
+recover_call_graph,"[{""line_end"": 221, ""line_start"": 216, ""operator_id"": ""native:extractbyattribute"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""feature_layer""}, ""param_keys"": [""INPUT"", ""FIELD"", ""OPERATOR"", ""VALUE"", ""OUTPUT""]}, {""line_end"": 232, ""line_start"": 228, ""operator_id"": ""native:extractbylocation"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""overlay_subset""}, ""param_keys"": [""INPUT"", ""PREDICATE"", ""INTERSECT"", ""OUTPUT""]}]",medium,"[[0, 1]]",whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_06_02"", ""L3_02_06_03""]","[""native:extractbyattribute"", ""native:extractbylocation""]","[""native:extractbyattribute"", ""native:extractbylocation""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""for""], ""dependency_edges"": [[0, 1]], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",de80dd491724a5971ef62a3a,1218,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,266db608da6a0ee70b03d378018acb47c57be3b7c1bb4a10cabdc2b7c4661174,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0005701.py,workflow_A,934f1814986073bd8d1804008c74abf9df51be45f2fe2181b06b3cf5cf670593," 213 | 
+ 214 |             # 1) Get the current feature in its own layer
+ 215 |             feedback.pushInfo('\nExtracting base polygon...')
+ 216 |             feature_layer = processing.run(""native:extractbyattribute"", {
+ 217 |                                            'INPUT':parameters[self.INPUT],
+ 218 |                                            'FIELD':id_field,
+ 219 |                                            'OPERATOR':0, # =
+ 220 |                                            'VALUE':id_value,
+ 221 |                                            'OUTPUT':'TEMPORARY_OUTPUT'}, context=context)['OUTPUT']
+ 222 | 
+ 223 |             if feedback.isCanceled():
+ 224 |                 break
+ 225 | 
+ 226 |             # 2) Extract all overlay polygons by location for the current feature
+ 227 |             feedback.pushInfo('Getting class features by location...')
+ 228 |             overlay_subset = processing.run(""native:extractbylocation"", {
+ 229 |                                             'INPUT':overlay,
+ 230 |                                             'PREDICATE':[0],  # Intersects
+ 231 |                                             'INTERSECT':feature_layer,
+ 232 |                                             'OUTPUT':'TEMPORARY_OUTPUT'}, context=context)['OUTPUT']
+ 233 | 
+ 234 |             if feedback.isCanceled():
+ 235 |                 break",True,unresolved,/*************************************************************************** Source repo: gacarrillor/QGIS-Resources,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,8,loop_cardinality,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{""OPERATOR"": 0}, {""PREDICATE"": [0]}]"
+recover_call_graph,"[{""line_end"": 187, ""line_start"": 170, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""SOURCE_CRS"", ""TARGET_CRS"", ""RESAMPLING"", ""NODATA"", ""TARGET_RESOLUTION"", ""OPTIONS"", ""DATA_TYPE"", ""TARGET_EXTENT"", ""TARGET_EXTENT_CRS"", ""MULTITHREADING"", ""EXTRA"", ""OUTPUT""]}, {""line_end"": 203, ""line_start"": 191, ""operator_id"": ""gdal:merge"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""PCT"", ""SEPARATE"", ""NODATA_INPUT"", ""NODATA_OUTPUT"", ""OPTIONS"", ""DATA_TYPE"", ""OUTPUT""]}]",medium,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_03_05_02"", ""L3_03_07_01""]","[""gdal:warpreproject"", ""gdal:merge""]","[""gdal:warpreproject"", ""gdal:merge""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""for""], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",01c1f67bc7a2d1b05fb57517,972,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,f140c39070f1bc0ee1852848751894485cf6a8ab3cbf0a2b9e44451f9863c286,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0003051.py,workflow_A,65e258b0ab58c32d0615dbbff0e3d8afc2676cd73171c476dcd882c52ae9e564," 167 |     for index, layer_path in enumerate(tiff_list):
+ 168 |         output = tiff_epsg_list[index]
+ 169 | 
+ 170 |         processing.run(
+ 171 |             ""gdal:warpreproject"",
+ 172 |             {
+ 173 |                 'INPUT': layer_path,
+ 174 |                 'SOURCE_CRS': appResources.qgis.core.QgsCoordinateReferenceSystem('EPSG:31256'),
+ 175 |                 'TARGET_CRS': appResources.qgis.core.QgsCoordinateReferenceSystem('EPSG:4326'),
+ 176 |                 'RESAMPLING': 0,
+ 177 |                 'NODATA': None,
+ 178 |                 'TARGET_RESOLUTION': None,
+ 179 |                 'OPTIONS': '',
+ 180 |                 'DATA_TYPE': 0,
+ 181 |                 'TARGET_EXTENT': None,
+ 182 |                 'TARGET_EXTENT_CRS': None,
+ 183 |                 'MULTITHREADING': False,
+ 184 |                 'EXTRA': '',
+ 185 |                 'OUTPUT': output
+ 186 |             }
+ 187 |         )
+ 188 | 
+ 189 |     result = f""{appContext.execution.raw_temp_folder}/dsm/dsm.tif""
+ 190 |     result = f""/Users/arthurrufhosangdacosta/qgis_data/temp/dsm/dsm.tif""
+ 191 |     processing.run(
+ 192 |         ""gdal:merge"",
+ 193 |         {
+ 194 |             'INPUT': tiff_epsg_list,
+ 195 |             'PCT': False,
+ 196 |             'SEPARATE': False,
+ 197 |             'NODATA_INPUT': None,
+ 198 |             'NODATA_OUTPUT': None,
+ 199 |             'OPTIONS': '',
+ 200 |             'DATA_TYPE': 5,
+ 201 |             'OUTPUT': result
+ 202 |         }
+ 203 |     )
+ 204 | 
+ 205 |     appContext.update_layer(
+ 206 |         appContext,",True,unresolved,/*************************************************************************** configure Source repo: arthurRuf/3dcitybuilder,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,9,loop_cardinality,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{""RESAMPLING"": 0}, {}]"
+recover_call_graph,"[{""line_end"": 182, ""line_start"": 182, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""resultado""}, ""param_keys"": []}, {""line_end"": 198, ""line_start"": 198, ""operator_id"": ""native:buffer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""buffer_result""}, ""param_keys"": []}]",medium,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_10_01"", ""L3_02_01_01""]","[""native:reprojectlayer"", ""native:buffer""]","[""native:reprojectlayer"", ""native:buffer""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""for"", ""if""], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",59de932a45b5ff94dd870635,206,recover-control-flow-v1,gis_recommend.qgis_recovery_split_rule_review.v1,6292aca567c4d3bc6afc2356dce1e69feb4166ef6e96bb7dc3f055a7cb847bcb,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000587.py,standard_v2,a2f544452635d3e77f108161712d948f296782e08999e2a325175c0a47ad59cf," 179 |                         'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:4674'),
+ 180 |                         'OUTPUT': 'memory:reprojetado'
+ 181 |                     }
+ 182 |                     resultado = processing.run('native:reprojectlayer', params)
+ 183 |                     camada = resultado['OUTPUT']
+ 184 |                 else:
+ 185 |                     camada = estrada
+...
+ 195 |                     'DISSOLVE': False,
+ 196 |                     'OUTPUT': 'memory:buffer_estrada'
+ 197 |                 }
+ 198 |                 buffer_result = processing.run('native:buffer', params_buffer, context=context, feedback=feedback)
+ 199 |                 buffer_layer = buffer_result['OUTPUT']
+ 200 |                 for feat_buff in buffer_layer.getFeatures():
+ 201 |                     pol_estrada = feat_buff.geometry()",True,unresolved,/*************************************************************************** initAlgorithm Source repo: OpenGeoOne/GeoINCRA,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,10,loop_cardinality,recover branch and loop-aware DAG; defer dynamic cardinality,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 23, ""line_start"": 19, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""results""}, ""param_keys"": [""INPUT"", ""METHOD"", ""OUTPUT""]}, {""line_end"": 35, ""line_start"": 28, ""operator_id"": ""native:zonalstatisticsfb"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""zonal_stats_result""}, ""param_keys"": [""INPUT_RASTER"", ""RASTER_BAND"", ""INPUT_VECTOR"", ""COLUMN_PREFIX"", ""STATISTICS"", ""OUTPUT""]}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_05_02"", ""L3_03_02_01""]","[""native:fixgeometries"", ""native:zonalstatisticsfb""]","[""native:fixgeometries"", ""native:zonalstatisticsfb""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",640c2c1ef78fa2aec82a657e,1186,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,be01025c9d7736a04604e2cc053ff7668b6c5d0f03ffc61337857374279a53f7,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004787.py,workflow_A,1e800cffd95f9c1f769a0ce332894ddcae2c233003539d3714f75c9f1696830e,"  16 | 
+  17 | # Input vector has invalid geometries
+  18 | # Fix them first
+  19 | results = processing.run(""native:fixgeometries"", {
+  20 |     'INPUT': vector_layer_path,
+  21 |     'METHOD': 0,
+  22 |     'OUTPUT': 'TEMPORARY_OUTPUT'
+  23 | })
+  24 | 
+  25 | fixed_vector_layer = results['OUTPUT']
+  26 | 
+  27 | # Run Zonal Statstics and load the resulting layer
+  28 | zonal_stats_result = processing.run(""native:zonalstatisticsfb"", {
+  29 |     'INPUT_RASTER': raster_layer_path,
+  30 |     'RASTER_BAND': 1,  # If your raster has multiple bands, adjust this accordingly
+  31 |     'INPUT_VECTOR': fixed_vector_layer,
+  32 |     'COLUMN_PREFIX': 'Avg_Elevation_',  # This prefix will be used for the new attribute containing the average elevation
+  33 |     'STATISTICS': [2],  # Use 2 for Mean (average) elevation
+  34 |     'OUTPUT': 'TEMPORARY_OUTPUT'
+  35 | })
+  36 | 
+  37 | zonal_stats_layer = QgsProject.instance().addMapLayer(zonal_stats_result['OUTPUT'])
+  38 | ",True,unresolved,Source repo: lindangulopez/SCGIS_23,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,11,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{""METHOD"": 0}, {}]"
+recover_call_graph,"[{""line_end"": 19, ""line_start"": 18, ""operator_id"": ""native:extractbyattribute"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""FIELD"", ""OPERATOR"", ""VALUE"", ""OUTPUT""]}, {""line_end"": 23, ""line_start"": 22, ""operator_id"": ""native:extractbyattribute"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""FIELD"", ""OPERATOR"", ""VALUE"", ""OUTPUT""]}, {""line_end"": 27, ""line_start"": 26, ""operator_id"": ""qgis:joinbylocationsummary"", ""ordinal"": 3, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""JOIN"", ""PREDICATE"", ""SUMMARIES"", ""OUTPUT""]}, {""line_end"": 31, ""line_start"": 30, ""operator_id"": ""qgis:joinbylocationsummary"", ""ordinal"": 4, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""JOIN"", ""PREDICATE"", ""SUMMARIES"", ""OUTPUT""]}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_06_02"", ""L3_02_06_02"", ""L3_02_04_01"", ""L3_02_04_01""]","[""native:extractbyattribute"", ""native:extractbyattribute"", ""qgis:joinbylocationsummary"", ""qgis:joinbylocationsummary""]","[""native:extractbyattribute"", ""native:extractbyattribute"", ""qgis:joinbylocationsummary"", ""qgis:joinbylocationsummary""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 4, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",1b88d4a8b60b431b252c6dc4,1374,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,2898a472c4fd41a62668d1b660e0451a15f419de85e041b9b2953397b9949814,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0006809.py,workflow_A,5a7ddf54bea5ddcd43481022f7f641375235be24c699b34cdb4ce084efb2455b,"  15 | crime = ""S:/682/Spring20/kilustre/Final/682_final_data/Crime_Incidents_in_2017.shp""
+  16 | iface.addVectorLayer(crime,""crime"",""ogr"")
+  17 | 
+  18 | processing.run(""native:extractbyattribute"",{'INPUT':crime,'FIELD':""METHOD"",'OPERATOR':0,\
+  19 | 'VALUE':""GUN"",'OUTPUT':""S:/682/Spring20/kilustre/guncrimes.shp""})
+  20 | guncrimes = ""S:/682/Spring20/kilustre/guncrimes.shp""
+  21 | 
+  22 | processing.run(""native:extractbyattribute"",{'INPUT':shootings,'FIELD':""DATETIME"",'OPERATOR':6,\
+  23 | 'VALUE':2017,'OUTPUT':""S:/682/Spring20/kilustre/shootings2017.shp""})
+  24 | shootings2017 = ""S:/682/Spring20/kilustre/shootings2017.shp""
+  25 | 
+  26 | processing.run(""qgis:joinbylocationsummary"",{'INPUT':wards,'JOIN':guncrimes,'PREDICATE':1,\
+  27 | 'SUMMARIES':0,'OUTPUT':""S:/682/Spring20/kilustre/join_crime.shp""})
+  28 | crime_join = ""S:/682/Spring20/kilustre/join_crime.shp""
+  29 | 
+  30 | processing.run(""qgis:joinbylocationsummary"",{'INPUT':wards,'JOIN':shootings2017,'PREDICATE':1,\
+  31 | 'SUMMARIES':0,'OUTPUT':""S:/682/Spring20/kilustre/join_shootings2017.shp""})
+  32 | shootings2017_join = ""S:/682/Spring20/kilustre/join_shootings2017.shp""
+  33 | 
+  34 | crimesjoin = iface.addVectorLayer(crime_join,""crime_join"",""ogr"")",True,unresolved,Source repo: kirstenilustre/682_Final,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,12,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{""FIELD"": ""METHOD"", ""OPERATOR"": 0, ""VALUE"": ""GUN""}, {""FIELD"": ""DATETIME"", ""OPERATOR"": 6, ""VALUE"": 2017}, {}, {}]"
+recover_call_graph,"[{""line_end"": 52, ""line_start"": 52, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 65, ""line_start"": 65, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 84, ""line_start"": 84, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 96, ""line_start"": 96, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 108, ""line_start"": 108, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 122, ""line_start"": 122, ""operator_id"": ""native:intersection"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 134, ""line_start"": 134, ""operator_id"": ""native:intersection"", ""ordinal"": 7, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 166, ""line_start"": 166, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 8, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 209, ""line_start"": 209, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 9, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 234, ""line_start"": 234, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 10, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 266, ""line_start"": 266, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 11, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 290, ""line_start"": 290, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 12, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 347, ""line_start"": 347, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 13, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 363, ""line_start"": 363, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 14, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""outputs[...]""}, ""param_keys"": []}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_05_02"", ""L3_01_05_02"", ""L3_01_05_02"", ""L3_02_02_01"", ""L3_02_02_01"", ""L3_01_02_06"", ""L3_01_02_06"", ""L3_01_02_06"", ""L3_01_02_06"", ""L3_01_02_06"", ""L3_01_02_06"", ""L3_01_02_06""]","[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:fixgeometries"", ""native:fixgeometries"", ""native:fixgeometries"", ""native:intersection"", ""native:intersection"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator""]","[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:fixgeometries"", ""native:fixgeometries"", ""native:fixgeometries"", ""native:intersection"", ""native:intersection"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 14, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",52cf115e35099c73708dd4fd,196,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,1519d6085fac9ab86e51ce784b8836bcefb6262554dae4b8bfdf7afc4890cfbe,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000540.py,standard_v2,fbd1c4077fe3479f7b9d38255c2d069dccf5336a13ee6419e52e6088cddd7ba0,"  49 |             'CONVERT_CURVED_GEOMETRIES':False,
+  50 |             'OUTPUT':'TEMPORARY_OUTPUT'
+  51 |         }
+  52 |         outputs['reprojected_lc'] = processing.run('native:reprojectlayer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  53 | 
+  54 |         # Reproject Soil Layer
+  55 |         feedback.setCurrentStep(2)
+...
+  62 |             'CONVERT_CURVED_GEOMETRIES':False,
+  63 |             'OUTPUT':'TEMPORARY_OUTPUT'
+  64 |         }
+  65 |         outputs['reprojected_soil'] = processing.run('native:reprojectlayer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  66 | 
+  67 |         # Reproject Outfall Layer
+  68 |         feedback.setCurrentStep(3)
+...
+  81 |              'METHOD': 0, 
+  82 |              'OUTPUT': 'TEMPORARY_OUTPUT'
+  83 |              }
+  84 |         outputs['fixed_subbasins'] = processing.run(""native:fixgeometries"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  85 | 
+  86 |         feedback.setCurrentStep(2)
+  87 |         if feedback.isCanceled():
+...
+  93 |              'METHOD': 0, 
+  94 |              'OUTPUT': 'TEMPORARY_OUTPUT'
+  95 |              }
+  96 |         outputs['fixed_lc'] = processing.run(""native:fixgeometries"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  97 | 
+  98 |         # fix soil
+  99 |         feedback.setCurrentStep(3)
+...
+ 105 |              'METHOD': 0, 
+ 106 |              'OUTPUT': 'TEMPORARY_OUTPUT'
+ 107 |              }
+ 108 |         outputs['fixed_soil'] = processing.run(""native:fixgeometries"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 109 | 
+ 110 |         #intersect basin - land cover
+ 111 |         feedback.setCurrentStep(4)
+...
+ 119 |             'OVERLAY_FIELDS':['name'], # This retains the `name` field in the basins vector
+ 120 |             'OVERLAY_FIELDS_PREFIX':'subbasin',
+ 121 |             'OUTPUT': 'TEMPORARY_OUTPUT'}
+ 122 |         outputs['scs'] = processing.run(""native:intersection"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 123 | 
+ 124 |         #intersect basin - land - soil
+ 125 |         feedback.setCurrentStep(5)
+...
+ 131 |             'OVERLAY': outputs['scs']['OUTPUT'],
+ 132 |             'INPUT_FIELDS':['descriptio','type'], # This retains the `descriptio` and ` type` in the soil layer input
+ 133 |             'OUTPUT': 'TEMPORARY_OUTPUT'}   
+ 134 |         outputs['scs'] = processing.run(""native:intersection"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+ 135 | 
+ 136 |         # add retardance coefficient
+ 137 |         feedback.setCurrentStep(6)
+...
+ 163 |             """""",
+ 164 |             'OUTPUT':'TEMPORARY_OUTPUT'}
+ 165 | 
+ 166 |         outputs['scs'] = processing.run(""native:fieldcalculator"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+ 167 | 
+ 168 |         # add runoff coefficient
+ 169 |         feedback.setCurrentStep(7)
+...
+ 206 |             """""",
+ 207 |             'OUTPUT':'TEMPORARY_OUTPUT'
+ 208 |         }
+ 209 |         outputs['scs'] = processing.run(""native:fieldcalculator"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+ 210 | 
+ 211 |         # assign HSG value
+ 212 |         feedback.setCurrentStep(8)
+...
+ 231 |                 """""",
+ 232 |             'OUTPUT':'TEMPORARY_OUTPUT'}
+ 233 | 
+ 234 |         outputs['scs'] = processing.run(""native:fieldcalculator"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+ 235 | 
+ 236 |         #add Manning's N Field
+ 237 |         feedback.setCurrentStep(9)
+...
+ 263 |                 """""",
+ 264 |             'OUTPUT':'TEMPORARY_OUTPUT'}
+ 265 | 
+ 266 |         outputs['scs'] = processing.run(""native:fieldcalculator"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+ 267 | 
+ 268 |         # add ret-c#
+ 269 |         feedback.setCurrentStep(10)
+...
+ 287 |             """""",
+ 288 |             'OUTPUT' : 'TEMPORARY_OUTPUT'
+ 289 |         }
+ 290 |         outputs['scs'] = processing.run(""native:fieldcalculator"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+ 291 | 
+ 292 |         # add curve number
+ 293 |         feedback.setCurrentStep(11)
+...
+ 344 |             """""",
+ 345 |             'OUTPUT':'TEMPORARY_OUTPUT'}
+ 346 |             
+ 347 |         outputs['scs'] = processing.run(""native:fieldcalculator"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+ 348 | 
+ 349 |         # calculate area of each vector
+ 350 |         feedback.setCurrentStep(12)
+...
+ 360 |             'FORMULA':'$area * 0.0001',
+ 361 |             'OUTPUT':'TEMPORARY_OUTPUT'
+ 362 |             }
+ 363 |         outputs['scs'] = processing.run(""native:fieldcalculator"", alg_params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+ 364 | 
+ 365 |         # Write to the final output
+ 366 |         (sink, dest_id) = self.parameterAsSink(",True,unresolved,"WHEN ""class_name"" = 'Built-up' THEN 'Concrete' initAlgorithm Source repo: rdtcamingawan/pyqgis_amh",not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,13,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]"
+recover_call_graph,"[{""line_end"": 51, ""line_start"": 51, ""operator_id"": ""qgis:rastercalculator"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 66, ""line_start"": 66, ""operator_id"": ""qgis:rastercalculator"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 92, ""line_start"": 92, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 108, ""line_start"": 108, ""operator_id"": ""qgis:rastercalculator"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 119, ""line_start"": 119, ""operator_id"": ""native:setlayerstyle"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 134, ""line_start"": 134, ""operator_id"": ""qgis:rastercalculator"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 149, ""line_start"": 149, ""operator_id"": ""qgis:rastercalculator"", ""ordinal"": 7, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 175, ""line_start"": 175, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 8, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}, {""line_end"": 187, ""line_start"": 187, ""operator_id"": ""native:setlayerstyle"", ""ordinal"": 9, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""outputs[...]""}, ""param_keys"": []}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_01"", ""L3_03_03_A"", ""L3_07_01_01"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_01"", ""L3_07_01_01""]","[""qgis:rastercalculator"", ""qgis:rastercalculator"", ""gdal:cliprasterbymasklayer"", ""qgis:rastercalculator"", ""native:setlayerstyle"", ""qgis:rastercalculator"", ""qgis:rastercalculator"", ""gdal:cliprasterbymasklayer"", ""native:setlayerstyle""]","[""qgis:rastercalculator"", ""qgis:rastercalculator"", ""gdal:cliprasterbymasklayer"", ""qgis:rastercalculator"", ""native:setlayerstyle"", ""qgis:rastercalculator"", ""qgis:rastercalculator"", ""gdal:cliprasterbymasklayer"", ""native:setlayerstyle""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 9, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",679e960ba6832b81c9d4caac,466,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,43caa7511b74c47f17101c186970b59384cc5aee27ee12d15b2f69b643f2be9a,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0002578.py,workflow,0634f3e883cd985f556187c0c9b9452b76c2c2a009257bbdfe515638471bb41c,"  48 |             'LAYERS': parameters['b10'],
+  49 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+  50 |         }
+  51 |         outputs['Toabt'] = processing.run('qgis:rastercalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  52 | 
+  53 |         feedback.setCurrentStep(1)
+  54 |         if feedback.isCanceled():
+...
+  63 |             'LAYERS': [parameters['b4'],parameters['b5']],
+  64 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+  65 |         }
+  66 |         outputs['Ndvi'] = processing.run('qgis:rastercalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  67 | 
+  68 |         feedback.setCurrentStep(2)
+  69 |         if feedback.isCanceled():
+...
+  89 |             'Y_RESOLUTION': None,
+  90 |             'OUTPUT': parameters['Ndvi']
+  91 |         }
+  92 |         outputs['ClipRasterByMaskLayer_ndvi'] = processing.run('gdal:cliprasterbymasklayer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  93 |         results['Ndvi'] = outputs['ClipRasterByMaskLayer_ndvi']['OUTPUT']
+  94 | 
+  95 |         feedback.setCurrentStep(3)
+...
+ 105 |             'LAYERS': outputs['Ndvi']['OUTPUT'],
+ 106 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+ 107 |         }
+ 108 |         outputs['Pv'] = processing.run('qgis:rastercalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 109 | 
+ 110 |         feedback.setCurrentStep(4)
+ 111 |         if feedback.isCanceled():
+...
+ 116 |             'INPUT': outputs['ClipRasterByMaskLayer_ndvi']['OUTPUT'],
+ 117 |             'STYLE': 'X:\\Master II GISience\\Project Work Finale\\QGIS\\NDVI_style_new.qml'
+ 118 |         }
+ 119 |         outputs['SetLayerStyle_ndvi'] = processing.run('native:setlayerstyle', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 120 | 
+ 121 |         feedback.setCurrentStep(5)
+ 122 |         if feedback.isCanceled():
+...
+ 131 |             'LAYERS': outputs['Pv']['OUTPUT'],
+ 132 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+ 133 |         }
+ 134 |         outputs['E'] = processing.run('qgis:rastercalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 135 | 
+ 136 |         feedback.setCurrentStep(6)
+ 137 |         if feedback.isCanceled():
+...
+ 146 |             'LAYERS': [outputs['E']['OUTPUT'],outputs['Toabt']['OUTPUT']],
+ 147 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+ 148 |         }
+ 149 |         outputs['Lst'] = processing.run('qgis:rastercalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 150 | 
+ 151 |         feedback.setCurrentStep(7)
+ 152 |         if feedback.isCanceled():
+...
+ 172 |             'Y_RESOLUTION': None,
+ 173 |             'OUTPUT': parameters['Lst']
+ 174 |         }
+ 175 |         outputs['ClipRasterByMaskLayer_lst'] = processing.run('gdal:cliprasterbymasklayer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 176 |         results['Lst'] = outputs['ClipRasterByMaskLayer_lst']['OUTPUT']
+ 177 | 
+ 178 |         feedback.setCurrentStep(8)
+...
+ 184 |             'INPUT': outputs['ClipRasterByMaskLayer_lst']['OUTPUT'],
+ 185 |             'STYLE': 'X:\\Master II GISience\\Project Work Finale\\QGIS\\LST_style_new.qml'
+ 186 |         }
+ 187 |         outputs['SetLayerStyle_lst'] = processing.run('native:setlayerstyle', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+ 188 |         return results
+ 189 | 
+ 190 |     def name(self):",True,unresolved,Model exported as python. initAlgorithm Source repo: EnMaga/LANDSAT_LST_Agro-Anomaies,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,14,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}, {}, {}, {}, {}, {}]"
+recover_call_graph,"[{""line_end"": 34, ""line_start"": 26, ""operator_id"": ""native:buffer"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""DISTANCE"", ""SEGMENTS"", ""END_CAP_STYLE"", ""JOIN_STYLE"", ""MITER_LIMIT"", ""DISSOLVE"", ""OUTPUT""]}, {""line_end"": 39, ""line_start"": 36, ""operator_id"": ""native:clip"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}, {""line_end"": 44, ""line_start"": 41, ""operator_id"": ""native:difference"", ""ordinal"": 3, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}, {""line_end"": 49, ""line_start"": 46, ""operator_id"": ""native:mergevectorlayers"", ""ordinal"": 4, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""LAYERS"", ""CRS"", ""OUTPUT""]}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_01_01"", ""L3_02_02_06"", ""L3_02_02_04"", ""L3_01_03_04""]","[""native:buffer"", ""native:clip"", ""native:difference"", ""native:mergevectorlayers""]","[""native:buffer"", ""native:clip"", ""native:difference"", ""native:mergevectorlayers""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 4, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",ee3d8bc89d4d04c70af58d06,150,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,0aa37d937839735af751016627eea8666b64358598e5c4d946e59b287a0bc0fd,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000409.py,standard_v2,38fd5890c80cd4053d21189595095071c27dc8b072742c49654a865000b77931,"  23 | 
+  24 | # run qgis functions
+  25 | 
+  26 | processing.run(""native:buffer"", 
+  27 | {'INPUT':os.path.join(myfolder,'input',fn_RV),
+  28 | 'DISTANCE':D,
+  29 | 'SEGMENTS':5,
+  30 | 'END_CAP_STYLE':0,
+  31 | 'JOIN_STYLE':0,
+  32 | 'MITER_LIMIT':2,
+  33 | 'DISSOLVE':True,
+  34 | 'OUTPUT':os.path.join(myfolder,'temp',fn_buffer)})
+  35 | 
+  36 | processing.run(""native:clip"", 
+  37 | {'INPUT':os.path.join(myfolder,'temp',fn_buffer),
+  38 | 'OVERLAY':os.path.join(myfolder,'input',fn_FGC),
+  39 | 'OUTPUT':os.path.join(myfolder,'temp',fn_interior)})
+  40 | 
+  41 | processing.run(""native:difference"", 
+  42 | {'INPUT':os.path.join(myfolder,'input',fn_FGC),
+  43 | 'OVERLAY':os.path.join(myfolder,'temp',fn_interior),
+  44 | 'OUTPUT':os.path.join(myfolder,'temp',fn_exterior)})
+  45 | 
+  46 | processing.run(""native:mergevectorlayers"", 
+  47 | {'LAYERS':[os.path.join(myfolder,'temp',fn_interior),os.path.join(myfolder,'temp',fn_exterior)],
+  48 | 'CRS':None,
+  49 | 'OUTPUT':os.path.join(myfolder,'temp',fn_output)})
+  50 | 
+  51 | ",True,unresolved,Source repo: manuelcampagnolo/PyQGIS_2nd_edition,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,15,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{""DISSOLVE"": true, ""END_CAP_STYLE"": 0, ""JOIN_STYLE"": 0, ""SEGMENTS"": 5}, {}, {}, {}]"
+recover_call_graph,"[{""line_end"": 254, ""line_start"": 254, ""operator_id"": ""native:reclassifybytable"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""reclass""}, ""param_keys"": []}, {""line_end"": 267, ""line_start"": 267, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_03_04_01"", ""L3_03_01_01""]","[""native:reclassifybytable"", ""gdal:cliprasterbymasklayer""]","[""native:reclassifybytable"", ""gdal:cliprasterbymasklayer""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",c99f71f0962cd875c83a1259,985,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,2f15665ff4cfa02bc107eefca5ac3410952950ced9fd299734bcb92bb885cc3c,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0003089.py,workflow_A,899098d0c2d0b7d1096654a800cb010ca92902c4beacfc42ce4d4e4ef1b51863," 251 |         }
+ 252 | 
+ 253 |         # Perform the reclassification using the raster calculator
+ 254 |         reclass = processing.run(""native:reclassifybytable"", params, feedback=QgsProcessingFeedback())[""OUTPUT""]
+ 255 | 
+ 256 |         clip_params = {
+ 257 |             ""INPUT"": reclass,
+...
+ 264 |             ""PROGRESS"": self.feedback,
+ 265 |         }
+ 266 | 
+ 267 |         processing.run(""gdal:cliprasterbymasklayer"", clip_params, feedback=QgsProcessingFeedback())
+ 268 |         log_message(
+ 269 |             f""Reclassification for area {index} complete. Saved to {reclassified_raster_path}"",
+ 270 |             tag=""GeoE3"",",True,unresolved,📦 Raster Reclassification Workflow module. init Source repo: worldbank/GeoE3,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,16,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 49, ""line_start"": 43, ""operator_id"": ""native:multiparttosingleparts"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""poi_layer""}, ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 56, ""line_start"": 50, ""operator_id"": ""native:multiparttosingleparts"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""network_layer""}, ""param_keys"": [""INPUT"", ""OUTPUT""]}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_07_01"", ""L3_02_07_01""]","[""native:multiparttosingleparts"", ""native:multiparttosingleparts""]","[""native:multiparttosingleparts"", ""native:multiparttosingleparts""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",867764971d75fec9711c1398,166,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,e569e65a9e361dd0eaa90b36fe682a02d774883ddfee8dac3101354a85e62eb3,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000455.py,standard_v2,5a71f26f58748d5ed736a4be9045baee22b3698c512fd166967ada5bdbb054a1,"  40 | 
+  41 |     ### First part: prepare data for the shortest path calculations, run the shortest path algorithm ###
+  42 |     # 0. Make sure we have single parts
+  43 |     poi_layer = processing.run(
+  44 |         ""native:multiparttosingleparts"",
+  45 |         {
+  46 |             'INPUT': poi_path,
+  47 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT,
+  48 |         },
+  49 |     )['OUTPUT']
+  50 |     network_layer = processing.run(
+  51 |         ""native:multiparttosingleparts"",
+  52 |         {
+  53 |             'INPUT': network_path,
+  54 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT,
+  55 |         },
+  56 |     )['OUTPUT']
+  57 |     origin_layer = clone_layer(QgsVectorLayer(origins_path, 'DESO centroids'))
+  58 | 
+  59 |     # 1. Creation of centroids for DeSO",True,unresolved,This code aims to do all the layer pre-processing (i.e. before calculating the shortest paths) main Source repo: trivectortraffic/qgis-bicycle-planner-plugin,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,17,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 28, ""line_start"": 28, ""operator_id"": ""native:clip"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""clipped""}, ""param_keys"": []}, {""line_end"": 42, ""line_start"": 42, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""selected_areas""}, ""param_keys"": []}, {""line_end"": 45, ""line_start"": 45, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""attached_areas""}, ""param_keys"": []}, {""line_end"": 48, ""line_start"": 48, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""detached_areas""}, ""param_keys"": []}, {""line_end"": 56, ""line_start"": 56, ""operator_id"": ""native:buffer"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""attached_buffer""}, ""param_keys"": []}, {""line_end"": 60, ""line_start"": 60, ""operator_id"": ""native:buffer"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""detached_buffer""}, ""param_keys"": []}, {""line_end"": 68, ""line_start"": 68, ""operator_id"": ""native:intersection"", ""ordinal"": 7, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""interesection""}, ""param_keys"": []}, {""line_end"": 73, ""line_start"": 73, ""operator_id"": ""native:difference"", ""ordinal"": 8, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""difference""}, ""param_keys"": []}, {""line_end"": 78, ""line_start"": 78, ""operator_id"": ""native:multiparttosingleparts"", ""ordinal"": 9, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""single""}, ""param_keys"": []}, {""line_end"": 84, ""line_start"": 84, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 10, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_02_06"", ""L3_02_06_02"", ""L3_02_06_02"", ""L3_02_06_02"", ""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_01"", ""L3_02_02_04"", ""L3_02_07_01"", ""L3_02_06_02""]","[""native:clip"", ""native:extractbyexpression"", ""native:extractbyexpression"", ""native:extractbyexpression"", ""native:buffer"", ""native:buffer"", ""native:intersection"", ""native:difference"", ""native:multiparttosingleparts"", ""native:extractbyexpression""]","[""native:clip"", ""native:extractbyexpression"", ""native:extractbyexpression"", ""native:extractbyexpression"", ""native:buffer"", ""native:buffer"", ""native:intersection"", ""native:difference"", ""native:multiparttosingleparts"", ""native:extractbyexpression""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 10, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",2009c97b9f655d181cbc2e63,1149,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,3981e748f28f4b80bfbf60a6354c0fb44e34d6a9c0a9d76741028d5c631572d6,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004454.py,workflow_A,42de9fb54c8a213f7cd291af35acd853837c066cee1607101734103eae27f2fa,"  25 | 'OVERLAY':""{}|layername={}"".format(source_file,mask_layer),
+  26 | 'OUTPUT':'TEMPORARY_OUTPUT'}
+  27 | 
+  28 | clipped = processing.run(""native:clip"", params)
+  29 | 
+  30 | # Jeżli utworzyliśmy temporary_output, wyniki są przechowywane w słowniku,w polu 'OUTPUT'
+  31 | # możemy go wyświelić, aby sprawdzić wyniki:
+...
+  39 | 'EXPRESSION':' ""code_2018"" IN ({})'.format(selected_areas_codes),
+  40 | 'OUTPUT':'TEMPORARY_OUTPUT'}
+  41 | 
+  42 | selected_areas = processing.run(""native:extractbyexpression"",params)
+  43 | 
+  44 | params['EXPRESSION'] = ' ""code_2018"" IN ({})'.format(attached_areas_codes)
+  45 | attached_areas = processing.run(""native:extractbyexpression"",params)
+  46 | 
+  47 | params['EXPRESSION'] = ' ""code_2018"" IN ({})'.format(detached_areas_codes)
+  48 | detached_areas = processing.run(""native:extractbyexpression"",params)
+  49 | 
+  50 | #Buforowanie.Ponownie słownik można użyć kilka razy
+  51 | 
+...
+  53 | 'DISTANCE':attached_buffer,
+  54 | 'DISSOLVE':True,
+  55 | 'OUTPUT':'TEMPORARY_OUTPUT'}
+  56 | attached_buffer = processing.run(""native:buffer"",params)
+  57 | 
+  58 | params['DISTANCE'] = detached_buffer
+  59 | params['INPUT'] = detached_areas['OUTPUT']
+  60 | detached_buffer = processing.run(""native:buffer"",params)
+  61 | 
+  62 | #overlays
+  63 | 
+...
+  65 | 'OVERLAY':attached_buffer['OUTPUT'],
+  66 | 'OUTPUT':'TEMPORARY_OUTPUT'}
+  67 | 
+  68 | interesection = processing.run(""native:intersection"",params)
+  69 | 
+  70 | params['INPUT'] = intersection['OUTPUT']
+  71 | params['OVERLAY'] = detached_buffer['OUTPUT']
+  72 | 
+  73 | difference = processing.run(""native:difference"",params)
+  74 | 
+  75 | params = {'INPUT':difference['OUTPUT'],
+  76 | 'OUTPUT':'TEMPORARY_OUTPUT'}
+  77 | 
+  78 | single = processing.run(""native:multiparttosingleparts"",params)
+  79 | 
+  80 | params =  {'INPUT':single['OUTPUT'],
+  81 | 'EXPRESSION':'($area/10000) > {}'.format(min_area),
+  82 | 'OUTPUT':'TEMPORARY_OUTPUT'}
+  83 | 
+  84 | result = processing.run(""native:extractbyexpression"",params)
+  85 | QgsProject.instance().addMapLayer(result['OUTPUT'])",True,unresolved,Source repo: jarekj71/skrypty_geoprzetwarzania,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,18,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]"
+recover_call_graph,"[{""line_end"": 29, ""line_start"": 26, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""results""}, ""param_keys"": [""INPUT"", ""METHOD"", ""OUTPUT""]}, {""line_end"": 45, ""line_start"": 39, ""operator_id"": ""native:zonalstatisticsfb"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""INPUT_RASTER"", ""RASTER_BAND"", ""COLUMN_PREFIX"", ""STATISTICS"", ""OUTPUT""]}]",high,[],whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_05_02"", ""L3_03_02_01""]","[""native:fixgeometries"", ""native:zonalstatisticsfb""]","[""native:fixgeometries"", ""native:zonalstatisticsfb""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",85a407c7ea09330e735c31db,24,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,93b0a2a57b5d0b1751e9d2bfbb09825918b1644faab4fd0dbd417e31b1ac5c0a,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000055.py,standard_v2,14a66511a461f310ec356bd032b780409b6c89e6b0ee1759eef0b7c898b63ba2,"  23 | 
+  24 | # Input vector has invalid geometries
+  25 | # Fix them first
+  26 | results = processing.run(""native:fixgeometries"", {
+  27 |   'INPUT':vector_layer_path,
+  28 |   'METHOD': 0,
+  29 |   'OUTPUT':'TEMPORARY_OUTPUT'})
+  30 | 
+  31 | fixed_vector_layer = results['OUTPUT']
+  32 | 
+...
+  36 | output_name = 'seismic_zones_with_elevation.gpkg'
+  37 | output_path = os.path.join(data_dir, output_name)
+  38 | 
+  39 | processing.run(""native:zonalstatisticsfb"", {
+  40 |   'INPUT': fixed_vector_layer,
+  41 |   'INPUT_RASTER': raster_layer_path,
+  42 |   'RASTER_BAND':1,
+  43 |   'COLUMN_PREFIX':'elevation_',
+  44 |   'STATISTICS':[2],
+  45 |   'OUTPUT':output_path})
+  46 | 
+  47 | print('Output Layer Created', output_path)
+  48 | qgs.exitQgis()",True,unresolved,Source repo: spatialthoughts/courses,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,19,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{""METHOD"": 0}, {}]"
+recover_call_graph,"[{""line_end"": 29, ""line_start"": 22, ""operator_id"": ""gdal:polygonize"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""BAND"", ""FIELD"", ""EIGHT_CONNECTEDNESS"", ""EXTRA"", ""OUTPUT""]}, {""line_end"": 41, ""line_start"": 32, ""operator_id"": ""native:buffer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""buffer_output""}, ""param_keys"": [""INPUT"", ""DISTANCE"", ""SEGMENTS"", ""END_CAP_STYLE"", ""JOIN_STYLE"", ""MITER_LIMIT"", ""DISSOLVE"", ""OUTPUT""]}, {""line_end"": 60, ""line_start"": 44, ""operator_id"": ""gdal:rasterize"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""rasterized_buffer""}, ""param_keys"": [""INPUT"", ""FIELD"", ""BURN"", ""USE_Z"", ""UNITS"", ""WIDTH"", ""HEIGHT"", ""EXTENT"", ""NODATA"", ""OPTIONS"", ""DATA_TYPE"", ""INIT"", ""INVERT"", ""EXTRA"", ""OUTPUT""]}]",high,"[[1, 2]]",whole_scope_task_description_required,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_09_03"", ""L3_02_01_01"", ""L3_01_09_03""]","[""gdal:polygonize"", ""native:buffer"", ""gdal:rasterize""]","[""gdal:polygonize"", ""native:buffer"", ""gdal:rasterize""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""single_scope"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [[1, 2]], ""description_requirement"": ""whole_scope_task_description_required"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 3, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""whole_processing_scope""}",dc6d75db18f5b47b654a5e90,657,recover-missing-data-edges-v1,gis_recommend.qgis_recovery_split_rule_review.v1,3ac001e9130e9f7c2ffda2c4e73990f732b0dd5d921f70943ab3b3a03d8248d2,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0005935.py,workflow,34674eff34e9c1d740ed985f79fdc63d68a5fa0607614a9356a8557e6f762cba,"  19 |     print(""Raster cargado correctamente."")
+  20 | 
+  21 | # Crear una capa temporal con las celdas de movimientos en masa (valor 1)
+  22 | processing.run(""gdal:polygonize"", {
+  23 |     'INPUT': raster_layer,
+  24 |     'BAND': 1,
+  25 |     'FIELD': 'value',
+  26 |     'EIGHT_CONNECTEDNESS': False,
+  27 |     'EXTRA': '',
+  28 |     'OUTPUT': 'memory:'
+  29 | })
+  30 | 
+  31 | # Buffer de 10 celdas alrededor de las celdas con movimientos en masa
+  32 | buffer_output = processing.run(""native:buffer"", {
+  33 |     'INPUT': raster_layer,
+  34 |     'DISTANCE': 10 * raster_layer.rasterUnitsPerPixelX(),  # Multiplicar por el tamaño de la celda
+  35 |     'SEGMENTS': 5,
+  36 |     'END_CAP_STYLE': 0,
+  37 |     'JOIN_STYLE': 0,
+  38 |     'MITER_LIMIT': 2,
+  39 |     'DISSOLVE': False,
+  40 |     'OUTPUT': 'memory:'
+  41 | })
+  42 | 
+  43 | # Rasterizar el buffer creado anteriormente para que coincida con la capa de inventario original
+  44 | rasterized_buffer = processing.run(""gdal:rasterize"", {
+  45 |     'INPUT': buffer_output['OUTPUT'],
+  46 |     'FIELD': 'value',
+  47 |     'BURN': 0,
+  48 |     'USE_Z': False,
+  49 |     'UNITS': 1,
+  50 |     'WIDTH': raster_layer.rasterUnitsPerPixelX(),
+  51 |     'HEIGHT': raster_layer.rasterUnitsPerPixelY(),
+  52 |     'EXTENT': raster_layer.extent(),
+  53 |     'NODATA': -9999,
+  54 |     'OPTIONS': '',
+  55 |     'DATA_TYPE': 5,  # Float32
+  56 |     'INIT': None,
+  57 |     'INVERT': False,
+  58 |     'EXTRA': '',
+  59 |     'OUTPUT': ""C:/Users/HOME/radar_antioquia_sentinel/raster/inventario_expandido.tif""
+  60 | })
+  61 | 
+  62 | # Cargar el nuevo raster en QGIS
+  63 | new_raster_layer = QgsRasterLayer(rasterized_buffer['OUTPUT'], ""Inventario Expandido"")",True,unresolved,Source repo: geodiegodrone/TFM_VIU,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,whole_processing_scope,20,missing_data_binding,prove implicit/path binding or split independent calls,pending_human_review,,,,,,,verified_source_ast,"[{""BAND"": 1, ""EIGHT_CONNECTEDNESS"": false, ""FIELD"": ""value""}, {""DISSOLVE"": false, ""END_CAP_STYLE"": 0, ""JOIN_STYLE"": 0, ""SEGMENTS"": 5}, {}]"
+recover_call_graph,"[{""line_end"": 420, ""line_start"": 420, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 434, ""line_start"": 434, ""operator_id"": ""native:intersection"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_10_01"", ""L3_02_02_01""]","[""native:reprojectlayer"", ""native:intersection""]","[""native:reprojectlayer"", ""native:intersection""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:CNCalculatorTool.run_calculation@330"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",3e033ccbb305dd50577c4ecf,325,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,bff0556c9906411c2f38c7be1a16da5fd2301560da6f1df21c1f49894520a77b,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000899.py,standard_v2,2b4a0082ad1d3edb1a040b2e0049c07b8b4df4021cabffe6ea7594b39ca42ec9," 417 |             'TARGET_CRS': self.target_crs,
+ 418 |             'OUTPUT': 'memory:'
+ 419 |         }
+ 420 |         result = processing.run(""native:reprojectlayer"", params, feedback=feedback)
+ 421 |         return result['OUTPUT']
+ 422 |         
+ 423 |     def intersect_layers(self, layer1: QgsVectorLayer, layer2: QgsVectorLayer, feedback) -> QgsVectorLayer:
+...
+ 431 |             'OVERLAY_FIELDS': [],
+ 432 |             'OUTPUT': 'memory:'
+ 433 |         }
+ 434 |         result = processing.run(""native:intersection"", params, feedback=feedback)
+ 435 |         intersection = result['OUTPUT']
+ 436 |         
+ 437 |         if intersection.featureCount() == 0:",True,unresolved,CN Calculator Tool for Hydro Suite init Source repo: Joeywoody124/hydro-suite,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,21,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 231, ""line_start"": 231, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}, {""line_end"": 251, ""line_start"": 251, ""operator_id"": ""gdal:buildvirtualraster"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_03_03_A"", ""L3_03_07_01""]","[""gdal:rastercalculator"", ""gdal:buildvirtualraster""]","[""gdal:rastercalculator"", ""gdal:buildvirtualraster""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:WEEByPopulationScoreProcessingTask.run@135"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""for""], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",2eb7881e52b4db7071dcb118,633,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,0fb9c192c7aae511f4c2ea59cdf382f85bba853fd1ae137c85ec56a054ed721a,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0005803.py,workflow,a98a2119abb5346ffbad8742c9b2cf8c821b29c2aa0e426b3e550ea3ac4c6741," 228 |                 ""OUTPUT"": output_path,
+ 229 |             }
+ 230 | 
+ 231 |             processing.run(""gdal:rastercalculator"", params)
+ 232 |             self.output_rasters.append(output_path)
+ 233 | 
+ 234 |             log_message(f""GeoE3 Score raster saved to {output_path}"")
+...
+ 248 |             ""OUTPUT"": vrt_path,
+ 249 |         }
+ 250 | 
+ 251 |         processing.run(""gdal:buildvirtualraster"", params)
+ 252 |         log_message(f""Generated VRT at {vrt_path}"")
+ 253 | 
+ 254 |         # Apply QML Style",True,unresolved,📦 Wee By Population Score Processor module. init Source repo: worldbank/GeoE3,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,22,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 77, ""line_start"": 77, ""operator_id"": ""native:buffer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 86, ""line_start"": 86, ""operator_id"": ""native:intersection"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 95, ""line_start"": 95, ""operator_id"": ""native:difference"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_01_01"", ""L3_02_02_01"", ""L3_02_02_04""]","[""native:buffer"", ""native:intersection"", ""native:difference""]","[""native:buffer"", ""native:intersection"", ""native:difference""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:Executor.execute@15"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 3, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",c2bff6bc6f950c1ea44e18ea,1079,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,6482ec65d1e362071120bba5c2a6fc5c49dc6380dd7bc256bfc809bd85651203,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0003986.py,workflow_A,1966e15d3d2f18dbf9d0af8aa2efd3dbd8e555414557bb47484c12c18d899c7b,"  74 |             'OUTPUT': 'TEMPORARY_OUTPUT'
+  75 |         }
+  76 |         # Run synchronous
+  77 |         result = processing.run(""native:buffer"", params)
+  78 |         return result['OUTPUT']
+  79 | 
+  80 |     def _intersect(self, input_layer, overlay_layer):
+...
+  83 |             'OVERLAY': overlay_layer,
+  84 |             'OUTPUT': 'TEMPORARY_OUTPUT'
+  85 |         }
+  86 |         result = processing.run(""native:intersection"", params)
+  87 |         return result['OUTPUT']
+  88 | 
+  89 |     def _difference(self, input_layer, overlay_layer):
+...
+  92 |             'OVERLAY': overlay_layer,
+  93 |             'OUTPUT': 'TEMPORARY_OUTPUT'
+  94 |         }
+  95 |         result = processing.run(""native:difference"", params)
+  96 |         return result['OUTPUT']",True,unresolved,Executes the GIS operations based on the structured query. init Source repo: habibullahbashar0/nl_gis_plugin,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,23,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}]"
+recover_call_graph,"[{""line_end"": 66, ""line_start"": 59, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""res""}, ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""OUTPUT""]}, {""line_end"": 84, ""line_start"": 77, ""operator_id"": ""native:mergevectorlayers"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""merge_result""}, ""param_keys"": [""LAYERS"", ""CRS"", ""OUTPUT""]}, {""line_end"": 97, ""line_start"": 90, ""operator_id"": ""native:clip"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""clip_result""}, ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_10_01"", ""L3_01_03_04"", ""L3_02_02_06""]","[""native:reprojectlayer"", ""native:mergevectorlayers"", ""native:clip""]","[""native:reprojectlayer"", ""native:mergevectorlayers"", ""native:clip""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:<module>"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 3, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",c781029ee71f293ac05cc11a,1161,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,c6eda58a6fad4d6b1396d924de5ee2dd1d7841fb39fb92fb6f045732955dd1f3,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004544.py,workflow_A,4f203efd448541ac6f70ab56de0f82df2272bf8c83508474c8fcbfb3bf82eaa3,"  56 | def ensure_crs(layer: QgsVectorLayer, crs) -> QgsVectorLayer:
+  57 |     if layer.crs() == crs:
+  58 |         return layer
+  59 |     res = processing.run(
+  60 |         ""native:reprojectlayer"",
+  61 |         {
+  62 |             ""INPUT"": layer,
+  63 |             ""TARGET_CRS"": crs,
+  64 |             ""OUTPUT"": ""memory:""
+  65 |         }
+  66 |     )
+  67 |     return res[""OUTPUT""]
+  68 | 
+  69 | national_fix = ensure_crs(national, target_crs)
+...
+  74 | # ---------------------------------------------------------
+  75 | # 4. Merge the four  road layers
+  76 | # ---------------------------------------------------------
+  77 | merge_result = processing.run(
+  78 |     ""native:mergevectorlayers"",
+  79 |     {
+  80 |         ""LAYERS"": [national_fix, state_fix, major_fix, corridor_fix],
+  81 |         ""CRS"": target_crs,
+  82 |         ""OUTPUT"": ""memory:""
+  83 |     }
+  84 | )
+  85 | merged_roads = merge_result[""OUTPUT""]
+  86 | 
+  87 | # ---------------------------------------------------------
+  88 | # 5. Clip merged roads by boundary
+  89 | # ---------------------------------------------------------
+  90 | clip_result = processing.run(
+  91 |     ""native:clip"",
+  92 |     {
+  93 |         ""INPUT"": merged_roads,
+  94 |         ""OVERLAY"": boundary_layer,
+  95 |         ""OUTPUT"": ""memory:""
+  96 |     }
+  97 | )
+  98 | clipped_roads = clip_result[""OUTPUT""]
+  99 | 
+ 100 | # ---------------------------------------------------------",True,unresolved,load road layer Source repo: CivicDataLab/flood-data-ecosystem-generic,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,24,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}]"
+recover_call_graph,"[{""line_end"": 122, ""line_start"": 122, ""operator_id"": ""native:clip"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}, {""line_end"": 154, ""line_start"": 154, ""operator_id"": ""gdal:cliprasterbyextent"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_02_06"", ""L3_03_01_02""]","[""native:clip"", ""gdal:cliprasterbyextent""]","[""native:clip"", ""gdal:cliprasterbyextent""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:ClipRunner.clip_candidates@46"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",22dd298936df2b01178ab973,1163,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,25f403d2772ed2baecd1c265ea99356f1912ca2c9723a60256a5ef5bdbfc5f3c,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004556.py,workflow_A,c98ea454b5daf9d9f91223c49c999c31504e56975cc7069faeb390c7626749fe," 119 |             ""OVERLAY"": polygon_layer,
+ 120 |             ""OUTPUT"": output_path,
+ 121 |         }
+ 122 |         processing.run(""native:clip"", params, feedback=self._feedback)
+ 123 | 
+ 124 |     @staticmethod
+ 125 |     def _vector_clip_input(layer):
+...
+ 151 |             ""EXTRA"": """",
+ 152 |             ""OUTPUT"": output_path,
+ 153 |         }
+ 154 |         processing.run(""gdal:cliprasterbyextent"", params, feedback=self._feedback)
+ 155 | 
+ 156 |     def _clip_pointcloud(
+ 157 |         self,",True,unresolved,init Source repo: raphaelsulzer/qgis-easy-clip,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,25,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 156, ""line_start"": 150, ""operator_id"": ""native:reclassifybytable"", ""ordinal"": 1, ""output_role"": {""role"": ""returned"", ""subscript"": null, ""target"": ""return""}, ""param_keys"": []}, {""line_end"": 174, ""line_start"": 168, ""operator_id"": ""native:cellstatistics"", ""ordinal"": 2, ""output_role"": {""role"": ""returned"", ""subscript"": null, ""target"": ""return""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_03_04_01"", ""L3_03_10_R""]","[""native:reclassifybytable"", ""native:cellstatistics""]","[""native:reclassifybytable"", ""native:cellstatistics""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:CurveNumber.generate_cn_raster@87"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",acac318a71fb29492608d4e8,650,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,0e9bcc1ccee8042358b617562a31ab8d4bca596819170d06c9625cef53613a9d,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0005911.py,workflow,dd52e7e1f36e6f0f2f4768b69605c6e807b4c05bf3dace502277a52038933284," 147 |             ""TABLE"": table,
+ 148 |             ""OUTPUT"": QgsProcessing.TEMPORARY_OUTPUT,
+ 149 |         }
+ 150 |         return processing.run(
+ 151 |             ""native:reclassifybytable"",
+ 152 |             alg_params,
+ 153 |             context=self.context,
+ 154 |             feedback=self.feedback,
+ 155 |             is_child_algorithm=True,
+ 156 |         )
+ 157 | 
+ 158 |     def average_rasters(self, rasters):
+ 159 |         # Cell statistics
+...
+ 165 |             ""STATISTIC"": 2,
+ 166 |             ""OUTPUT"": QgsProcessing.TEMPORARY_OUTPUT,
+ 167 |         }
+ 168 |         return processing.run(
+ 169 |             ""native:cellstatistics"",
+ 170 |             alg_params,
+ 171 |             context=self.context,
+ 172 |             feedback=self.feedback,
+ 173 |             is_child_algorithm=True,
+ 174 |         )",True,unresolved,/*************************************************************************** init Source repo: NOAA-OCM/QNSPECT,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,26,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 3501, ""line_start"": 3501, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 3545, ""line_start"": 3545, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""geo_lyr""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_10_01"", ""L3_01_10_01""]","[""native:reprojectlayer"", ""native:reprojectlayer""]","[""native:reprojectlayer"", ""native:reprojectlayer""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:<module>"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""if""], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",27e6dce300007011dfe5c944,1178,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,7b50fbb39a332d48b8141ff83922dea2062c752cafd8b9d2b771f9f2f43ae15d,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004696.py,workflow_A,7c16e12a976ca383fe981f32f760869bfade366f35339bd9c44b5de02ae56470,"3498 | 			'TARGET_CRS': target_crs,
+3499 | 			'OUTPUT': 'memory:'
+3500 | 		}
+3501 | 		result = processing.run(""native:reprojectlayer"", params)
+3502 | 		wgs_layer = result['OUTPUT']
+3503 | 	else:
+3504 | 		wgs_layer = extent_layer
+...
+3542 | 					""TARGET_CRS"": geographic_coordsys,
+3543 | 					""OUTPUT"": ""memory:dd_"",
+3544 | 			}
+3545 | 			geo_lyr = processing.run(""native:reprojectlayer"", params)[""OUTPUT""]
+3546 | 			if debug:
+3547 | 					QgsProject.instance().addMapLayer(geo_lyr)
+3548 | 			return geo_lyr",True,unresolved,Normalize product version into table suffix format. fGetExtentPolygonCoords Source repo: be9em0t/HoudiniElf,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,27,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 62, ""line_start"": 60, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""fixed_layer""}, ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 87, ""line_start"": 87, ""operator_id"": ""native:clip"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_01_05_02"", ""L3_02_02_06""]","[""native:fixgeometries"", ""native:clip""]","[""native:fixgeometries"", ""native:clip""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:get_wfs_layers@94"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",3e985dc97a48bde72ac00ae6,1270,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,c08296d86a5ee5b07f3786a8720930410830be4d68d2972885011573c910a7dc,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0006129.txt,workflow_A,e437524ca0790aaed26b62dcf1672f1c5977c7ef165ecea5c69e76f29aa65f49,"  57 |         fixed_layer: vector layer with valid geoms
+  58 |     """"""
+  59 | 
+  60 |     fixed_layer = processing.run(
+  61 |         ""native:fixgeometries"", {""INPUT"": input_layer, ""OUTPUT"": ""TEMPORARY_OUTPUT""}
+  62 |     )[""OUTPUT""]
+  63 | 
+  64 |     return fixed_layer
+  65 | 
+...
+  84 |     }
+  85 | 
+  86 |     # clip to study area polygon
+  87 |     processing.run(""native:clip"", clip_params)
+  88 | 
+  89 |     print(f""Saved layer {layer_name}"")
+  90 | ",True,unresolved,Fix invalid geometries in input layer and return temporary layer with valid geoms fix geometries Source repo: anastassiavybornova/bike-node-planner-data-denmark,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,28,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 381, ""line_start"": 375, ""operator_id"": ""native:multiparttosingleparts"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""singleparts_result""}, ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 397, ""line_start"": 389, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""CONVERT_CURVED_GEOMETRIES"", ""OUTPUT""]}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_07_01"", ""L3_01_10_01""]","[""native:multiparttosingleparts"", ""native:reprojectlayer""]","[""native:multiparttosingleparts"", ""native:reprojectlayer""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:download_osm_airport_data@269"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",bf7ae08fae71c3a196ef852e,373,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,178313d64071a93db1bbf03290c060d7bf26151c194d3c5aadf914452aaa2353,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000994.py,standard_v2,3b7945d0d0d506353b328fb223adbc0306e90b56f60c8206477a839c6e7baedb," 372 |     lines = reproject_layer(lines_layer)
+ 373 |     multipolygons = reproject_layer(multipolygons_layer)
+ 374 | 
+ 375 |     singleparts_result = processing.run(
+ 376 |         ""native:multiparttosingleparts"",
+ 377 |         {
+ 378 |             ""INPUT"": multipolygons,
+ 379 |             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+ 380 |         },
+ 381 |     )
+ 382 | 
+ 383 |     polygons = singleparts_result[""OUTPUT""]
+ 384 | 
+...
+ 386 | 
+ 387 | 
+ 388 | def reproject_layer(layer: QgsVectorLayer) -> QgsVectorLayer:
+ 389 |     result = processing.run(
+ 390 |         ""native:reprojectlayer"",
+ 391 |         {
+ 392 |             ""INPUT"": layer,
+ 393 |             ""TARGET_CRS"": QgsCoordinateReferenceSystem.fromEpsgId(3857),
+ 394 |             ""CONVERT_CURVED_GEOMETRIES"": False,
+ 395 |             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+ 396 |         },
+ 397 |     )
+ 398 | 
+ 399 |     return result[""OUTPUT""]",True,unresolved,POST an Overpass QL query to each mirror until one returns 2xx. overpass post Source repo: eurocontrol-asu/open_alaqs,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,29,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+recover_call_graph,"[{""line_end"": 143, ""line_start"": 137, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 1, ""output_role"": {""role"": ""returned"", ""subscript"": null, ""target"": ""return""}, ""param_keys"": []}, {""line_end"": 203, ""line_start"": 197, ""operator_id"": ""native:fillnodata"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""all_filled""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_03_03_A"", ""L3_03_03_A""]","[""gdal:rastercalculator"", ""native:fillnodata""]","[""gdal:rastercalculator"", ""native:fillnodata""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""connected_from:grass_material_transport@146"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",d69824df033aa0621a549bd6,647,recover-cross-scope-candidate-v1,gis_recommend.qgis_recovery_split_rule_review.v1,3215344898770eb17a591a9ef36292c82bacea94424f03a3d36f38330252afc1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0005908.py,workflow,aaae6786ce3baf2b6bce700ef064118653d853ad15d5d64e1f213cb9542fa418," 134 |         ""RTYPE"": 5,
+ 135 |         ""OUTPUT"": output,
+ 136 |     }
+ 137 |     return processing.run(
+ 138 |         ""gdal:rastercalculator"",
+ 139 |         alg_params,
+ 140 |         context=context,
+ 141 |         feedback=feedback,
+ 142 |         is_child_algorithm=True,
+ 143 |     )
+ 144 | 
+ 145 | 
+ 146 | def grass_material_transport(
+...
+ 194 |         ""INPUT"": grass_accumulation,
+ 195 |         ""OUTPUT"": QgsProcessing.TEMPORARY_OUTPUT,
+ 196 |     }
+ 197 |     all_filled = processing.run(
+ 198 |         ""native:fillnodata"",
+ 199 |         alg_params,
+ 200 |         context=context,
+ 201 |         feedback=feedback,
+ 202 |         is_child_algorithm=True,
+ 203 |     )[""OUTPUT""]
+ 204 | 
+ 205 |     # Get back original nodata cells
+ 206 |     input_dict = {",True,unresolved,Store common functions that are required by different QNSPECT Modules init Source repo: NOAA-OCM/QNSPECT,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,30,cross_scope_helper_expansion,expand helper call graph and recover invocation order,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+split_subworkflow,"[{""line_end"": 227, ""line_start"": 217, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""MASK"", ""CROP_TO_CUTLINE"", ""KEEP_RESOLUTION"", ""OUTPUT""]}, {""line_end"": 266, ""line_start"": 256, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""MASK"", ""CROP_TO_CUTLINE"", ""KEEP_RESOLUTION"", ""OUTPUT""]}, {""line_end"": 317, ""line_start"": 317, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_03_01_01"", ""L3_03_01_01"", ""L3_01_10_01""]","[""gdal:cliprasterbymasklayer"", ""gdal:cliprasterbymasklayer"", ""native:reprojectlayer""]","[""gdal:cliprasterbymasklayer"", ""gdal:cliprasterbymasklayer"", ""native:reprojectlayer""]",not_granted,"{""api_pattern_count"": 6, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 3, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",41a065acbf4a88bdec7bacbb,286,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,334c4a4c24348fd0e76f4637d44adf84d7309eb24274212e4d1b9bd82b0b7257,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000764.py,standard_v2,0eabccb05a6cb186f3290308697fdc76f457e7d5b06d92b5a684f053dc74988c," 214 | 
+ 215 |         out_path = os.path.join(out_folder, f""{base}_clip.tif"")
+ 216 | 
+ 217 |         processing.run(
+ 218 |             ""gdal:cliprasterbymasklayer"",
+ 219 |             {
+ 220 |                 ""INPUT"": raster_path,
+ 221 |                 ""MASK"": mask,
+ 222 |                 ""CROP_TO_CUTLINE"": True,
+ 223 |                 ""KEEP_RESOLUTION"": True,
+ 224 |                 ""OUTPUT"": out_path,
+ 225 |             },
+ 226 |             context=context,
+ 227 |         )
+ 228 | 
+ 229 |     def clip_raster_feature(
+ 230 |         self, raster, geom, feat_id, mask_layer, out_folder, buffer_fix, context
+...
+ 253 | 
+ 254 |         out_path = os.path.join(out_folder, f""{base}_feat_{feat_id}.tif"")
+ 255 | 
+ 256 |         processing.run(
+ 257 |             ""gdal:cliprasterbymasklayer"",
+ 258 |             {
+ 259 |                 ""INPUT"": raster_path,
+ 260 |                 ""MASK"": mem_layer,
+ 261 |                 ""CROP_TO_CUTLINE"": True,
+ 262 |                 ""KEEP_RESOLUTION"": True,
+ 263 |                 ""OUTPUT"": out_path,
+ 264 |             },
+ 265 |             context=context,
+ 266 |         )
+ 267 | 
+ 268 |     def reproject_geom(self, geom, src_crs, dst_crs):
+ 269 |         if geom is None:
+...
+ 314 |             ""OUTPUT"": ""memory:"",
+ 315 |         }
+ 316 | 
+ 317 |         result = processing.run(""native:reprojectlayer"", params)
+ 318 | 
+ 319 |         return result[""OUTPUT""]",True,unresolved,initAlgorithm Source repo: MartinelliNTZ/Cadmus_Dev,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,31,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}]"
+split_subworkflow,"[{""line_end"": 936, ""line_start"": 936, ""operator_id"": ""native:difference"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}, {""line_end"": 1371, ""line_start"": 1358, ""operator_id"": ""native:hillshade"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""BAND"", ""Z_FACTOR"", ""SCALE"", ""AZIMUTH"", ""ALTITUDE"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""COMBINED"", ""MULTIDIRECTIONAL"", ""OPTIONS"", ""EXTRA"", ""OUTPUT""]}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_02_04"", ""L3_04_01_03""]","[""native:difference"", ""native:hillshade""]","[""native:difference"", ""native:hillshade""]",not_granted,"{""api_pattern_count"": 20, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""if""], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",4bcf6a11d1e0eb8132b3a502,1352,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,240ce6858140cc34ba4f10cc7bbefd8830cdbdac8434f615f085fd132db24a04,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0006517.py,workflow_A,9cc12d68afca54431e5351e845d151e2e57550fecba06d1912af83f238467528," 933 |         subsNoLakes = os.path.split(self._gv.subbasinsFile)[0] + '/subsNoLakes.shp'
+ 934 |         QSWATUtils.tryRemoveLayerAndFiles(subsNoLakes, root)
+ 935 |         params = {'INPUT': self._gv.subbasinsFile, 'OVERLAY': self._gv.lakeFile, 'OUTPUT': subsNoLakes}
+ 936 |         processing.run('native:difference', params)
+ 937 |         if not os.path.isfile(subsNoLakes):
+ 938 |             QSWATUtils.error('Failed to create {0} file'.format(subsNoLakes), self._gv.isBatch)
+ 939 |             return False
+...
+1355 |         """""" Create hillshade layer and load.""""""
+1356 |         hillshadeFile = os.path.splitext(demFile)[0] + 'hillshade.tif'
+1357 |         if not QSWATUtils.isUpToDate(demFile, hillshadeFile):
+1358 |             processing.run(""native:hillshade"", 
+1359 |                            {'INPUT':demFile,
+1360 |                             'BAND':1,
+1361 |                             'Z_FACTOR':5,
+1362 |                             'SCALE':1,
+1363 |                             'AZIMUTH':315,
+1364 |                             'ALTITUDE':45,
+1365 |                             'COMPUTE_EDGES':False,
+1366 |                             'ZEVENBERGEN':False,
+1367 |                             'COMBINED':False,
+1368 |                             'MULTIDIRECTIONAL':False,
+1369 |                             'OPTIONS':'',
+1370 |                             'EXTRA':'',
+1371 |                             'OUTPUT':hillshadeFile})
+1372 | 
+1373 |             # run gdaldem to generate hillshade.tif
+1374 | #             if Parameters._ISWIN:",True,unresolved,/*************************************************************************** init Source repo: celray/swatplus-automatic-workflow,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,32,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+split_subworkflow,"[{""line_end"": 37, ""line_start"": 37, ""operator_id"": ""gdal:assignprojection"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""CRS""]}, {""line_end"": 57, ""line_start"": 54, ""operator_id"": ""native:assignprojection"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""output""}, ""param_keys"": [""INPUT"", ""CRS"", ""OUTPUT""]}, {""line_end"": 103, ""line_start"": 103, ""operator_id"": ""native:extractbyextent"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 158, ""line_start"": 158, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""fixed_features_layer""}, ""param_keys"": []}, {""line_end"": 175, ""line_start"": 167, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""reproject_result""}, ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""OUTPUT""]}, {""line_end"": 247, ""line_start"": 247, ""operator_id"": ""gdal:buildvirtualraster"", ""ordinal"": 6, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]",high,"[[3, 4]]",description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,"[""QgsVectorLayer"", ""crs"", ""log_message"", ""authid"", ""isValid""]","[""L3_01_02_03"", ""L3_01_02_03"", ""L3_02_06_03"", ""L3_01_05_02"", ""L3_01_10_01"", ""L3_03_07_01""]","[""gdal:assignprojection"", ""native:assignprojection"", ""native:extractbyextent"", ""native:fixgeometries"", ""native:reprojectlayer"", ""gdal:buildvirtualraster""]","[""gdal:assignprojection"", ""native:assignprojection"", ""native:extractbyextent"", ""native:fixgeometries"", ""native:reprojectlayer"", ""gdal:buildvirtualraster""]",not_granted,"{""api_pattern_count"": 7, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""if""], ""dependency_edges"": [[3, 4]], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [""QgsVectorLayer"", ""crs"", ""log_message"", ""authid"", ""isValid""], ""mapping_complete"": true, ""operator_count"": 6, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",bb6421c02fc6f8b717a8cf5e,235,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,1d58129b52f5ed4a9525d31f6c230e5a71a0f6c7d1fe66fa00f4c0333940ae28,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000644.py,standard_v2,f650830b231c18f5c913cb67c1c31b234f05ba4670d6217ec730792674ed091d,"  34 |     Returns:
+  35 |         The layer with the assigned CRS.
+  36 |     """"""
+  37 |     processing.run(""gdal:assignprojection"", {""INPUT"": layer, ""CRS"": crs})
+  38 |     return layer
+  39 | 
+  40 | 
+...
+  51 |     Returns:
+  52 |         The layer with the assigned CRS.
+  53 |     """"""
+  54 |     output = processing.run(
+  55 |         ""native:assignprojection"",
+  56 |         {""INPUT"": layer, ""CRS"": crs, ""OUTPUT"": ""TEMPORARY_OUTPUT""},
+  57 |     )[""OUTPUT""]
+  58 |     return output
+  59 | 
+  60 | 
+...
+ 100 |         ""EXTENT"": area_geom.boundingBox(),
+ 101 |         ""OUTPUT"": output_path,
+ 102 |     }
+ 103 |     result = processing.run(""native:extractbyextent"", params)
+ 104 |     return QgsVectorLayer(result[""OUTPUT""], output_prefix, ""ogr"")
+ 105 | 
+ 106 | 
+...
+ 155 |         ""METHOD"": 1,  # Structure method
+ 156 |         ""OUTPUT"": ""memory:"",  # Reproject in memory,
+ 157 |     }
+ 158 |     fixed_features_layer = processing.run(""native:fixgeometries"", params)[""OUTPUT""]
+ 159 |     log_message(""Fixed features layer geometries"")
+ 160 | 
+ 161 |     if fixed_features_layer.crs() != target_crs:
+...
+ 164 |             tag=""Geest"",
+ 165 |             level=Qgis.Info,
+ 166 |         )
+ 167 |         reproject_result = processing.run(
+ 168 |             ""native:reprojectlayer"",
+ 169 |             {
+ 170 |                 ""INPUT"": fixed_features_layer,
+ 171 |                 ""TARGET_CRS"": target_crs,
+ 172 |                 ""OUTPUT"": ""memory:"",  # Reproject in memory
+ 173 |             },
+ 174 |             feedback=QgsProcessingFeedback(),
+ 175 |         )
+ 176 |         reprojected_layer = reproject_result[""OUTPUT""]
+ 177 |         if not reprojected_layer.isValid():
+ 178 |             raise QgsProcessingException(""Reprojected layer is invalid."")
+...
+ 244 |     }
+ 245 | 
+ 246 |     # Run the gdal:buildvrt processing algorithm to create the VRT
+ 247 |     processing.run(""gdal:buildvirtualraster"", params)
+ 248 |     log_message(f""Created VRT: {vrt_filepath}"")
+ 249 | 
+ 250 |     # Copy the appropriate QML over too",True,unresolved,Assigns a CRS to a layer and returns the layer. assign crs to raster layer Source repo: kartoza/GEEST2,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,33,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}, {}, {}]"
+split_subworkflow,"[{""line_end"": 1356, ""line_start"": 1356, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 1592, ""line_start"": 1592, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 1629, ""line_start"": 1629, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 2466, ""line_start"": 2466, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 4, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}, {""line_end"": 2797, ""line_start"": 2797, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""result""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,"[""addMapLayer"", ""data_extents"", ""setCrs"", ""setSize"", ""symbol"", ""renderer"", ""colour_points"", ""triggerRepaint"", ""featureCount""]","[""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_03_05_02"", ""L3_01_10_01""]","[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""gdal:warpreproject"", ""native:reprojectlayer""]","[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""gdal:warpreproject"", ""native:reprojectlayer""]",not_granted,"{""api_pattern_count"": 40, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""if""], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [""addMapLayer"", ""data_extents"", ""setCrs"", ""setSize"", ""symbol"", ""renderer"", ""colour_points"", ""triggerRepaint"", ""featureCount""], ""mapping_complete"": true, ""operator_count"": 5, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",b8f3be30fcb9307cff976b08,494,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,b6a1d5de29592e371531cf224cf37118d1338d1731625a2bf1149210b81013f4,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0002947.py,workflow,8eb4bdc1856c91ce6500ceb40a5597cf8d8a5c1e7c44f5f64f64f614650aee0f,"1353 |                 ""TARGET_CRS"": proj,
+1354 |                 ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+1355 |             }
+1356 |             result = processing.run(""native:reprojectlayer"", parameter)[""OUTPUT""]
+1357 | 
+1358 |             QgsProject.instance().addMapLayer(result)
+1359 | 
+...
+1589 |                 ""TARGET_CRS"": target_crs,
+1590 |                 ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+1591 |             }
+1592 |             result = processing.run(""native:reprojectlayer"", parameter)[""OUTPUT""]
+1593 |             crs = layer.crs()
+1594 |             crs.createFromId(int(target_crs.split("":"")[1]))
+1595 |             QgsProject.instance().addMapLayer(result)
+...
+1626 |                 ""TARGET_CRS"": target_crs,
+1627 |                 ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+1628 |             }
+1629 |             result = processing.run(""native:reprojectlayer"", parameter)[""OUTPUT""]
+1630 |             crs = layer.crs()
+1631 |             crs.createFromId(int(target_crs.split("":"")[1]))
+1632 |             result.setCrs(crs)
+...
+2463 |             ""OUTPUT"": self.global_outputFolderPath + reprojDataName,
+2464 |         }
+2465 |         # Run the processing algorithm
+2466 |         processing.run(""gdal:warpreproject"", parameter)
+2467 | 
+2468 |         # sample raster data based on mesh locations
+2469 |         parameter = {
+...
+2794 |             ""TARGET_CRS"": targetCrs,
+2795 |             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+2796 |         }
+2797 |         result = processing.run(""native:reprojectlayer"", parameter)[""OUTPUT""]
+2798 | 
+2799 |     # add raster dtm or gridded flight height to data file
+2800 |     def add_dtm(self, dataType):",True,unresolved,/*************************************************************************** init Source repo: TOMOFAST/tomofast-x-q,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,34,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}, {}]"
+split_subworkflow,"[{""line_end"": 438, ""line_start"": 436, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""aoi""}, ""param_keys"": []}, {""line_end"": 446, ""line_start"": 446, ""operator_id"": ""native:fillnodata"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}, {""line_end"": 518, ""line_start"": 518, ""operator_id"": ""gdal:rasterize"", ""ordinal"": 3, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}, {""line_end"": 581, ""line_start"": 581, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 4, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_03_05_02"", ""L3_03_03_A"", ""L3_01_09_03"", ""L3_03_01_01""]","[""gdal:warpreproject"", ""native:fillnodata"", ""gdal:rasterize"", ""gdal:cliprasterbymasklayer""]","[""gdal:warpreproject"", ""native:fillnodata"", ""gdal:rasterize"", ""gdal:cliprasterbymasklayer""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 4, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",83054a716d9f38d45417ff55,239,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,ecb1b6cb52fc0114cd82ecf06523c6a20db7a6d64a2ca93b330cb87b9ba2987d,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000648.py,standard_v2,0d0f9e34cac37f5ceaae62c919c27f2cc03fd4a45d2f3dd7974730607fb15f72," 433 |             ""TARGET_EXTENT"": f""{bbox.xMinimum()},{bbox.xMaximum()},{bbox.yMinimum()},{bbox.yMaximum()} [{self.target_crs.authid()}]"",
+ 434 |         }
+ 435 | 
+ 436 |         aoi = processing.run(
+ 437 |             ""gdal:warpreproject"", params, feedback=QgsProcessingFeedback()
+ 438 |         )[""OUTPUT""]
+ 439 | 
+ 440 |         params = {
+ 441 |             ""INPUT"": aoi,
+...
+ 443 |             ""FILL_VALUE"": 0,
+ 444 |             ""OUTPUT"": reprojected_raster_path,
+ 445 |         }
+ 446 |         processing.run(""native:fillnodata"", params)
+ 447 |         return reprojected_raster_path
+ 448 | 
+ 449 |     def _rasterize(
+...
+ 515 | 
+ 516 |         #'OUTPUT':'TEMPORARY_OUTPUT'})
+ 517 | 
+ 518 |         processing.run(""gdal:rasterize"", params)
+ 519 |         log_message(f""Rasterize Parameter: {params}"")
+ 520 |         log_message(f""Rasterize complete for: {output_path}"")
+ 521 |         log_message(f""Created raster: {output_path}"")
+...
+ 578 |             ""DATA_TYPE"": GDAL_OUTPUT_DATA_TYPE,
+ 579 |             ""EXTRA"": """",
+ 580 |         }
+ 581 |         processing.run(""gdal:cliprasterbymasklayer"", params)
+ 582 |         log_message(f""Masked raster created: {output_path}"")
+ 583 |         return output_path
+ 584 | ",True,unresolved,Abstract base class for all workflows. init Source repo: kartoza/GEEST2,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,35,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}]"
+split_subworkflow,"[{""line_end"": 199, ""line_start"": 196, ""operator_id"": ""native:clip"", ""ordinal"": 1, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}, {""line_end"": 504, ""line_start"": 501, ""operator_id"": ""native:clip"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""output""}, ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_02_06"", ""L3_02_02_06""]","[""native:clip"", ""native:clip""]","[""native:clip"", ""native:clip""]",not_granted,"{""api_pattern_count"": 7, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 2, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",d11ab383c29441bd83a7a203,1035,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,469fc1f97c7ad55880091d17500a3d78aa5a7b579d1f670374c2d8474a4c51a3,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0003510.py,workflow_A,fa82f3ef023aab1bd0525370b82e7cdc11fd1f40a7a8174c71e7bfe2709ebceb," 193 |                 layer = layers
+ 194 |         
+ 195 |         # Run clip tool on original layer with largest area
+ 196 |         processing.run(""native:clip"", {'INPUT': layer.layer(),
+ 197 |                                         'OVERLAY':memory_layer,
+ 198 |                                         'OUTPUT': scope_path + name + '.shp'
+ 199 |                                         })
+ 200 |         # Write memory layer to disk in '/Original data/Scope/'
+ 201 |         QgsVectorFileWriter.writeAsVectorFormat(memory_layer, original_data_scope_path + name + '.shp', ""utf-8"", memory_layer.crs(), ""ESRI Shapefile"")
+ 202 |         #output = processing.runalg(""qgis:clip"", layer.layer(), original_layer, scope_path + name + '.shp')
+...
+ 498 |                 layer = layers
+ 499 |         
+ 500 |         # Run processing algorithm to clip original layer with largest area
+ 501 |         output = processing.run(""native:clip"", {'INPUT': layer.layer(),
+ 502 |                                         'OVERLAY':original_layer,
+ 503 |                                         'OUTPUT':constraint_path + name + '.shp'
+ 504 |                                         })
+ 505 | 
+ 506 |         output_layer = QgsVectorLayer(output['OUTPUT'], name, 'ogr')
+ 507 | ",True,unresolved,/*************************************************************************** init Source repo: ESRU-Strathclyde/GOMap,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,36,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{}, {}]"
+split_subworkflow,"[{""line_end"": 45, ""line_start"": 31, ""operator_id"": ""native:buffer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""DISSOLVE"", ""DISTANCE"", ""END_CAP_STYLE"", ""INPUT"", ""OUTPUT"", ""JOIN_STYLE"", ""MITER_LIMIT"", ""SEGMENTS""]}, {""line_end"": 78, ""line_start"": 67, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""with_area""}, ""param_keys"": [""INPUT"", ""OUTPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FORMULA""]}, {""line_end"": 88, ""line_start"": 81, ""operator_id"": ""qgis:selectbyattribute"", ""ordinal"": 3, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""FIELD"", ""OPERATOR"", ""VALUE"", ""METHOD""]}, {""line_end"": 153, ""line_start"": 141, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FORMULA"", ""OUTPUT""]}, {""line_end"": 189, ""line_start"": 178, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FIELD_PRECISION"", ""FORMULA"", ""OUTPUT""]}, {""line_end"": 203, ""line_start"": 192, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FIELD_PRECISION"", ""FORMULA"", ""OUTPUT""]}]",high,"[[1, 2], [4, 5]]",description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,[],"[""L3_02_01_01"", ""L3_01_02_06"", ""L3_02_06_01"", ""L3_01_02_06"", ""L3_01_02_06"", ""L3_01_02_06""]","[""native:buffer"", ""native:fieldcalculator"", ""qgis:selectbyattribute"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator""]","[""native:buffer"", ""native:fieldcalculator"", ""qgis:selectbyattribute"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:fieldcalculator""]",not_granted,"{""api_pattern_count"": 1, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [[1, 2], [4, 5]], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [], ""mapping_complete"": true, ""operator_count"": 6, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",81dd267226a8ade3fc559131,283,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,4f744861881ce89f65127f20e34d22074e8e36176ba8ab05d7010a5ee1f8351c,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000755.py,standard_v2,6376dc511b4afb9add4aa0614fe35464e65f89467beb1995bfa79c8bf1437bd8,"  28 |     """"""
+  29 |     logger = get_logger()
+  30 |     logger.info(f'Vectors buffering, with distance {distance} meters')
+  31 |     algresult = processing.run(
+  32 |         ""native:buffer"",
+  33 |         {
+  34 |             'DISSOLVE': False,
+  35 |             'DISTANCE': distance,
+  36 |             'END_CAP_STYLE': 2,
+  37 |             'INPUT': layer,
+  38 |             'OUTPUT': 'memory:',  # regarding 'memory:' use, see https://gis.stackexchange.com/questions/284064/using-memory-layer-for-processing-algorithms-in-qgis-3
+  39 |             'JOIN_STYLE': 1,
+  40 |             'MITER_LIMIT': 2,
+  41 |             'SEGMENTS': 5
+  42 |         },
+  43 |         context=context,
+  44 |         feedback=feedback,
+  45 |     )
+  46 |     return algresult['OUTPUT']
+  47 | 
+  48 | 
+...
+  64 |     """"""
+  65 |     # computing area: `with_area` is a shallow copy: different attributes but same geometry data/features
+  66 |     logger = get_logger()
+  67 |     with_area = processing.run(""native:fieldcalculator"",
+  68 |                                 {
+  69 |                                     'INPUT': layer,
+  70 |                                     'OUTPUT': 'memory:',
+  71 |                                     'FIELD_NAME': 'area',
+  72 |                                     'FIELD_TYPE': 0,     # double, yet of precision 0 hence int
+  73 |                                     'FIELD_LENGTH': 11,
+  74 |                                     'FORMULA': 'area(@geometry)',
+  75 |                                 },
+  76 |                                 context=context,
+  77 |                                 feedback=feedback,
+  78 |                                 )['OUTPUT']
+  79 | 
+  80 |     # selecting features with small areas
+  81 |     processing.run(""qgis:selectbyattribute"",
+  82 |                       {'INPUT': with_area,
+  83 |                        'FIELD': 'area',
+  84 |                        'OPERATOR': 5,   # lower or equal
+  85 |                        'VALUE': f'{min_area}',
+  86 |                        'METHOD': 0},
+  87 |                       feedback=feedback,
+  88 |                       context=context)
+  89 |     initial_buildings_number = with_area.featureCount()
+  90 |     unwanted_buildings_number = with_area.selectedFeatureCount()
+  91 | 
+...
+ 138 |     # field_length = 11 : # max 10 million buildings + 3 letters for zip code
+ 139 |     logger = get_logger()
+ 140 |     logger.info('Adding IDs')
+ 141 |     algresult = processing.run(""native:fieldcalculator"",
+ 142 |                     {
+ 143 |                     'INPUT': layer,
+ 144 |                     'FIELD_NAME': 'ID',
+ 145 |                     'FIELD_TYPE': 2,   # text
+ 146 |                     'FIELD_LENGTH': field_length, 
+ 147 |                     'FORMULA': f'concat(\'{prefix}\', to_string(@id-1))',
+ 148 |                     'OUTPUT': 'memory:',
+ 149 | 
+ 150 |                     },
+ 151 |                     context=context,
+ 152 |                     feedback=feedback,
+ 153 |                     )
+ 154 |     return algresult['OUTPUT'] # shallow copy of `layer`: 1) different attributes 1) same geometry and features
+ 155 | 
+ 156 | 
+...
+ 175 |     # x0 and y0 reference for Lambert-93: https://fr.wikipedia.org/wiki/Projection_conique_conforme_de_Lambert#/media/Fichier:Lambert_et_mercator_pour_wikipedia.svg
+ 176 |     logger = get_logger()
+ 177 |     logger.info(""Adding 'X' field"")
+ 178 |     algresult = processing.run(""native:fieldcalculator"",
+ 179 |                     {'INPUT': layer,
+ 180 |                     'FIELD_NAME':'X',
+ 181 |                     'FIELD_TYPE':0,   # double
+ 182 |                     'FIELD_LENGTH':10,
+ 183 |                     'FIELD_PRECISION':1,
+ 184 |                     'FORMULA': 'x(@geometry)',
+ 185 |                     'OUTPUT': 'memory:'
+ 186 |                     },
+ 187 |                     context=context,
+ 188 |                     feedback=feedback,
+ 189 |                     )
+ 190 | 
+ 191 |     logger.info(""Adding 'Y' field"")
+ 192 |     algresult = processing.run(""native:fieldcalculator"",
+ 193 |                     {'INPUT': algresult['OUTPUT'],
+ 194 |                     'FIELD_NAME':'Y',
+ 195 |                     'FIELD_TYPE':0,     # double
+ 196 |                     'FIELD_LENGTH':10,
+ 197 |                     'FIELD_PRECISION':1,
+ 198 |                     'FORMULA':'y(@geometry)',
+ 199 |                     'OUTPUT': 'memory:'
+ 200 |                     },
+ 201 |                     context=context,
+ 202 |                     feedback=feedback,
+ 203 |                     )
+ 204 |     return algresult['OUTPUT'] # shallow copy: different attributes but same geometry data/features as layer",True,unresolved,Increase the area of every feature of a layer by adding a buffer distance. add buffer distance Source repo: locie/sgis,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,37,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{""DISSOLVE"": false, ""END_CAP_STYLE"": 2, ""JOIN_STYLE"": 1, ""SEGMENTS"": 5}, {""FIELD_LENGTH"": 11, ""FIELD_NAME"": ""area"", ""FIELD_TYPE"": 0, ""FORMULA"": ""area(@geometry)""}, {}, {""FIELD_NAME"": ""ID"", ""FIELD_TYPE"": 2}, {""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""X"", ""FIELD_TYPE"": 0, ""FORMULA"": ""x(@geometry)""}, {""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""Y"", ""FIELD_TYPE"": 0, ""FORMULA"": ""y(@geometry)""}]"
+split_subworkflow,"[{""line_end"": 59, ""line_start"": 55, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""OPERATION"", ""OUTPUT""]}, {""line_end"": 71, ""line_start"": 63, ""operator_id"": ""native:joinattributesbylocation"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""PREDICATE"", ""JOIN"", ""JOIN_FIELDS"", ""METHOD"", ""DISCARD_NONMATCHING"", ""PREFIX"", ""OUTPUT""]}, {""line_end"": 245, ""line_start"": 241, ""operator_id"": ""native:multiintersection"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""OVERLAYS"", ""OVERLAY_FIELDS_PREFIX"", ""OUTPUT""]}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,"[""addAttributes"", ""dataProvider"", ""updateFields"", ""indexFromName"", ""fields"", ""getFeatures"", ""changeAttributeValues"", ""deleteAttributes""]","[""L3_01_10_01"", ""L3_02_04_01"", ""L3_02_02_01""]","[""native:reprojectlayer"", ""native:joinattributesbylocation"", ""native:multiintersection""]","[""native:reprojectlayer"", ""native:joinattributesbylocation"", ""native:multiintersection""]",not_granted,"{""api_pattern_count"": 7, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [""addAttributes"", ""dataProvider"", ""updateFields"", ""indexFromName"", ""fields"", ""getFeatures"", ""changeAttributeValues"", ""deleteAttributes""], ""mapping_complete"": true, ""operator_count"": 3, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",e49501a89996e642a18c9362,282,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,ce3a6d7a0563afaa7ed6446f069915ae884a7e42d763519ab6d4623a6edbfb6b,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000754.py,standard_v2,79a0bf01cd74af749760e12febf276bde6372fbf3705b71a3b13cd5175d9b8c4,"  52 |     logger = get_logger()
+  53 | 
+  54 |     logger.info(""Reprojecting protected buildings"")
+  55 |     result = processing.run(""native:reprojectlayer"",
+  56 |                                         {'INPUT': layer_protected_buildings,
+  57 |                                         'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:2154'),  # fixme: EPSGH:2154 is only valid if preprocessed layer is this one too
+  58 |                                         'OPERATION':'+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=lcc +lat_0=46.5 +lon_0=3 +lat_1=49 +lat_2=44 +x_0=700000 +y_0=6600000 +ellps=GRS80',
+  59 |                                         'OUTPUT': 'memory:'})
+  60 |     layer_protected_buildings_reprojected = result[""OUTPUT""]        # no garbage collection, see https://gis.stackexchange.com/questions/284064/using-memory-layer-for-processing-algorithms-in-qgis-3
+  61 | 
+  62 |     logger.info(""Joining by location"")
+  63 |     result = processing.run(""native:joinattributesbylocation"",   # doc: https://docs.qgis.org/3.34/en/docs/user_manual/processing_algs/qgis/vectorgeneral.html#join-attributes-by-location
+  64 |                                     {'INPUT': layer,
+  65 |                                     'PREDICATE':[0],
+  66 |                                     'JOIN': layer_protected_buildings_reprojected,
+  67 |                                     'JOIN_FIELDS':[],
+  68 |                                     'METHOD':1,
+  69 |                                     'DISCARD_NONMATCHING':False,
+  70 |                                     'PREFIX':'joint_',
+  71 |                                     'OUTPUT': 'memory:'})
+  72 |     joint_predictions = result[""OUTPUT""]
+  73 | 
+  74 |     logger.info(""Adding attribute"")
+...
+ 238 |         layer.setSubsetString(f'""{reference_field_name}"" >= {min_field_value}')
+ 239 | 
+ 240 |         
+ 241 |     result = processing.run(""native:multiintersection"",
+ 242 |                             {'INPUT': layer,
+ 243 |                                 'OVERLAYS': [layer],
+ 244 |                                 'OVERLAY_FIELDS_PREFIX': '',
+ 245 |                                 'OUTPUT': 'memory:'})
+ 246 |     
+ 247 |     if min_field_value is not None:
+ 248 |         layer.setSubsetString('')",True,unresolved,"Quite specific to the French case. Add a boolean attribute, for every building of a vector layer, that states whether add protected buildings Source repo: locie/sgis",not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,38,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{""OPERATION"": ""+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=lcc +lat_0=46.5 +lon_0=3 +lat_1=49 +lat_2=44 +x_0=700000 +y_0=6600000 +ellps=GRS80"", ""TARGET_CRS"": ""EPSG:2154""}, {""DISCARD_NONMATCHING"": false, ""JOIN_FIELDS"": [], ""METHOD"": 1, ""PREDICATE"": [0]}, {}]"
+split_subworkflow,"[{""line_end"": 83, ""line_start"": 83, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""prjResult""}, ""param_keys"": [""DATA_TYPE"", ""EXTRA"", ""INPUT"", ""MULTITHREADING"", ""NODATA"", ""OPTIONS"", ""OUTPUT"", ""RESAMPLING"", ""SOURCE_CRS"", ""TARGET_CRS"", ""TARGET_EXTENT"", ""TARGET_EXTENT_CRS"", ""TARGET_RESOLUTION""]}, {""line_end"": 99, ""line_start"": 99, ""operator_id"": ""gdal:aspect"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""aspectResult""}, ""param_keys"": [""BAND"", ""COMPUTE_EDGES"", ""EXTRA"", ""INPUT"", ""OPTIONS"", ""OUTPUT"", ""TRIG_ANGLE"", ""ZERO_FLAT"", ""ZEVENBERGEN""]}, {""line_end"": 115, ""line_start"": 115, ""operator_id"": ""gdal:slope"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""slopeResult""}, ""param_keys"": [""AS_PERCENT"", ""BAND"", ""COMPUTE_EDGES"", ""EXTRA"", ""INPUT"", ""OPTIONS"", ""OUTPUT"", ""SCALE"", ""ZEVENBERGEN""]}, {""line_end"": 132, ""line_start"": 132, ""operator_id"": ""native:polygonfromlayerextent"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""layerExtentResult""}, ""param_keys"": [""INPUT"", ""OUTPUT"", ""ROUND_TO""]}, {""line_end"": 158, ""line_start"": 158, ""operator_id"": ""gdal:merge"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""mergeResult""}, ""param_keys"": [""DATA_TYPE"", ""EXTRA"", ""INPUT"", ""NODATA_INPUT"", ""NODATA_OUTPUT"", ""OPTIONS"", ""OUTPUT"", ""PCT"", ""SEPARATE""]}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,"[""addRasterLayer""]","[""L3_03_05_02"", ""L3_04_01_02"", ""L3_04_01_01"", ""L3_02_05_12"", ""L3_03_07_01""]","[""gdal:warpreproject"", ""gdal:aspect"", ""gdal:slope"", ""native:polygonfromlayerextent"", ""gdal:merge""]","[""gdal:warpreproject"", ""gdal:aspect"", ""gdal:slope"", ""native:polygonfromlayerextent"", ""gdal:merge""]",not_granted,"{""api_pattern_count"": 0, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [""addRasterLayer""], ""mapping_complete"": true, ""operator_count"": 5, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",6a8f0b637d999d9d5e4486a4,1330,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,69ef8456e27ebd0a6efb36a269fcdf2f5c850e45f8bd5a1d7e2b50ecdb5c749e,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0006457.py,workflow_A,7e62b0059d257e34e8227ce7ee84e04e47b36d97fd05be76689c06a58b4fb10d,"  80 | #
+  81 | ##################################################################
+  82 | def warpProject(inLayer, idx, outFile):
+  83 | 	prjResult = processing.run(""gdal:warpreproject"", { 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : inLayer, 'MULTITHREADING' : False, 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : outFile, 'RESAMPLING' : 0, 'SOURCE_CRS' : None, 'TARGET_CRS' : QgsCoordinateReferenceSystem('EPSG:7791'), 'TARGET_EXTENT' : None, 'TARGET_EXTENT_CRS' : None, 'TARGET_RESOLUTION' : None })
+  84 | 
+  85 | 	""""""
+  86 | 	Add Leyer QGIS
+...
+  96 | #
+  97 | ##################################################################
+  98 | def compute_aspect(inLayer, idx, outFile):
+  99 | 	aspectResult = processing.run(""gdal:aspect"", { 'BAND' : 1, 'COMPUTE_EDGES' : False, 'EXTRA' : '', 'INPUT' : inLayer, 'OPTIONS' : '', 'OUTPUT' : outFile, 'TRIG_ANGLE' : False, 'ZERO_FLAT' : False, 'ZEVENBERGEN' : False })
+ 100 | 
+ 101 | 	""""""
+ 102 | 	Add Leyer QGIS
+...
+ 112 | #
+ 113 | ##################################################################
+ 114 | def compute_slope(inLayer, idx, outFile):
+ 115 | 	slopeResult = processing.run(""gdal:slope"", { 'AS_PERCENT' : False, 'BAND' : 1, 'COMPUTE_EDGES' : False, 'EXTRA' : '', 'INPUT' : inLayer, 'OPTIONS' : '', 'OUTPUT' : outFile, 'SCALE' : 1, 'ZEVENBERGEN' : False })
+ 116 | 
+ 117 | 	""""""
+ 118 | 	Add Leyer QGIS
+...
+ 129 | #
+ 130 | ##################################################################
+ 131 | def compute_layer_extent(inLayer, idx):
+ 132 | 	layerExtentResult = processing.run(""native:polygonfromlayerextent"", { 'INPUT' : inLayer, 'OUTPUT' : 'TEMPORARY_OUTPUT', 'ROUND_TO' : 0 })
+ 133 | 
+ 134 | 	""""""
+ 135 | 	Add Leyer QGIS
+...
+ 155 | 	""""""
+ 156 | 	merge layer
+ 157 | 	""""""
+ 158 | 	mergeResult = processing.run(""gdal:merge"", { 'DATA_TYPE' : 5, 'EXTRA' : '', 'INPUT' : layerList, 'NODATA_INPUT' : None, 'NODATA_OUTPUT' : None, 'OPTIONS' : '', 'OUTPUT' : outFile, 'PCT' : False, 'SEPARATE' : False })
+ 159 | 
+ 160 | 	return layerList
+ 161 | ",True,unresolved,Add Leyer QGIS import vectorLayer Source repo: rbeber/PV_ferrara,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,39,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{""RESAMPLING"": 0, ""TARGET_CRS"": ""EPSG:7791""}, {}, {}, {}, {}]"
+split_subworkflow,"[{""line_end"": 112, ""line_start"": 112, ""operator_id"": ""native:buffer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 127, ""line_start"": 127, ""operator_id"": ""native:buffer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": []}, {""line_end"": 201, ""line_start"": 196, ""operator_id"": ""native:extractbylocation"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""PREDICATE"", ""INTERSECT"", ""OUTPUT""]}, {""line_end"": 258, ""line_start"": 254, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""OUTPUT""]}, {""line_end"": 273, ""line_start"": 269, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""OUTPUT""]}]",high,[],description_scope_unresolved,qgis-conversion-features-v2,qgis-conversion-signature-v1,"[""dumps"", ""str"", ""isinstance"", ""_load_temp_layer"", ""getFeatures""]","[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_06_03"", ""L3_01_10_01"", ""L3_01_10_01""]","[""native:buffer"", ""native:buffer"", ""native:extractbylocation"", ""native:reprojectlayer"", ""native:reprojectlayer""]","[""native:buffer"", ""native:buffer"", ""native:extractbylocation"", ""native:reprojectlayer"", ""native:reprojectlayer""]",not_granted,"{""api_pattern_count"": 2, ""call_graph_status"": ""disconnected_candidate_scopes"", ""candidate_alignment_status"": ""candidate_alignment_matched"", ""control_flow_kinds"": [""if"", ""try""], ""dependency_edges"": [], ""description_requirement"": ""description_scope_unresolved"", ""intermediate_data_transform_calls"": [""dumps"", ""str"", ""isinstance"", ""_load_temp_layer"", ""getFeatures""], ""mapping_complete"": true, ""operator_count"": 5, ""parse_status"": ""parsed"", ""structure_class"": ""unresolved"", ""workflow_unit_scope"": ""cross_scope_candidate""}",55c7fc1dfc9b08cdadd94e43,1439,split-disconnected-scopes-v1,gis_recommend.qgis_recovery_split_rule_review.v1,f2d40b3136edee43fdeaa2ed794e2ac1313b63fd50b0c3983afa2b4e5d2777a0,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0007428.py,workflow_A,c047a1deb9ccdf3d7d6117284bd6785263d0c4139e705e757742e6638af73c4b," 109 | 
+ 110 |         if output_file:
+ 111 |             params[""OUTPUT""] = output_file
+ 112 |             result = processing.run(""native:buffer"", params)
+ 113 |             output_path = result[""OUTPUT""]
+ 114 |             return json.dumps({
+ 115 |                 ""output"": str(output_path),
+...
+ 124 | 
+ 125 |             try:
+ 126 |                 params[""OUTPUT""] = tmp_path
+ 127 |                 result = processing.run(""native:buffer"", params)
+ 128 | 
+ 129 |                 buffered_layer = result[""OUTPUT""]
+ 130 |                 if isinstance(buffered_layer, str):
+...
+ 193 |             tmp_path = tmp.name
+ 194 | 
+ 195 |         try:
+ 196 |             result = processing.run(""native:extractbylocation"", {
+ 197 |                 ""INPUT"": source,
+ 198 |                 ""PREDICATE"": [valid_predicates[predicate.lower()]],
+ 199 |                 ""INTERSECT"": ref,
+ 200 |                 ""OUTPUT"": tmp_path,
+ 201 |             })
+ 202 | 
+ 203 |             output_layer = _load_temp_layer(tmp_path)
+ 204 |             if output_layer:
+...
+ 251 |             return json.dumps({""error"": f""Invalid target CRS: {target_crs}""})
+ 252 | 
+ 253 |         if output_file:
+ 254 |             result = processing.run(""native:reprojectlayer"", {
+ 255 |                 ""INPUT"": layer,
+ 256 |                 ""TARGET_CRS"": target,
+ 257 |                 ""OUTPUT"": output_file,
+ 258 |             })
+ 259 |             return json.dumps({
+ 260 |                 ""output"": str(result[""OUTPUT""]),
+ 261 |                 ""source_crs"": layer.crs().authid() or ""unknown"",
+...
+ 266 |             tmp_path = tmp.name
+ 267 | 
+ 268 |         try:
+ 269 |             result = processing.run(""native:reprojectlayer"", {
+ 270 |                 ""INPUT"": layer,
+ 271 |                 ""TARGET_CRS"": target,
+ 272 |                 ""OUTPUT"": tmp_path,
+ 273 |             })
+ 274 | 
+ 275 |             out_layer = result[""OUTPUT""]
+ 276 |             if isinstance(out_layer, str):",True,unresolved,Spatial analysis tools for geometry operations and spatial queries. register tools Source repo: i7z00/qgis-mcp,not_granted_pending_fidelity_gate,,False,not_granted_rule_calibration_only,False,False,cross_scope_candidate,40,disconnected_scope_split,split lexical scopes into connected local DAG units,pending_human_review,,,,,,,verified_source_ast,"[{}, {}, {}, {}, {}]"

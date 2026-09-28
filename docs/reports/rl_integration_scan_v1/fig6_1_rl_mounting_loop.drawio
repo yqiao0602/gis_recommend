@@ -1,0 +1,54 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
+  <diagram name="RL-Mounting-Loop" id="0">
+    <mxGraphModel dx="1562" dy="909" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="自然语言任务" style="ellipse;whiteSpace=wrap;html=1;fontSize=15;" parent="1" vertex="1">
+          <mxGeometry x="330" y="40" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="GIS 模型（任一模型线）" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;" parent="1" vertex="1">
+          <mxGeometry x="310" y="150" width="280" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="语义算子链" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;" parent="1" vertex="1">
+          <mxGeometry x="310" y="300" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="奖励评审" style="swimlane;startSize=40;whiteSpace=wrap;html=1;fontSize=15;fontStyle=1;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=0;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="280" y="440" width="340" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="否决门：词表 / 格式 / 结构" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;" parent="5" vertex="1">
+          <mxGeometry y="40" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="正确性：set_f1 对参考链" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;" parent="5" vertex="1">
+          <mxGeometry y="100" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="落地性：知识图谱 I/O 契约" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;" parent="5" vertex="1">
+          <mxGeometry y="160" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="强化学习算法（RFT / DPO / GRPO）" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;" parent="1" vertex="1">
+          <mxGeometry x="310" y="740" width="280" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="2" target="3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="rollout：采样 K 条算子链" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;" parent="1" source="3" target="4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="4" target="5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="标量奖励" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;" parent="1" source="5" target="9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="参数更新" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;" parent="1" source="9" target="3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="775" />
+              <mxPoint x="780" y="185" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

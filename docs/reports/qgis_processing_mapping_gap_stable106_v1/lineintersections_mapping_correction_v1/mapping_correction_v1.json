@@ -1,0 +1,53 @@
+{
+  "schema": "gis_recommend.qgis_mapping_correction_authority.v1",
+  "status": "granted_source_reviewed_existing_l3_correction",
+  "base_mapping_authority": "stable110_authority_v1",
+  "operator_id": "native:lineintersections",
+  "correction_mappings": {
+    "native:lineintersections": {
+      "from_l3": null,
+      "to_l3": "L3_02_02_01"
+    }
+  },
+  "prior_exclusion": {
+    "excluded_l3_code": "L3_02_05_06",
+    "reason": "The operator creates intersection points and does not split input lines."
+  },
+  "catalog_evidence": {
+    "official_name": "Line intersections",
+    "description": "This algorithm creates point features where the lines in the Intersect layer intersect the lines in the Input layer.",
+    "input_contract": [
+      "INPUT:vector",
+      "INTERSECT:vector"
+    ],
+    "output_contract": "OUTPUT:vector intersection points",
+    "attribute_contract": "May retain selected fields from both input layers."
+  },
+  "taxonomy_evidence": {
+    "target_l3_code": "L3_02_02_01",
+    "target_l3_name": "Intersect",
+    "target_definition": "Computes geometric intersection of input features retaining only overlapping areas with attributes from all inputs.",
+    "rejected_l3_code": "L3_02_05_06",
+    "rejected_l3_name": "Split Line at Point",
+    "rejected_definition": "Splits line features at locations where they intersect point features."
+  },
+  "pool_evidence": {
+    "matched_rows": 59,
+    "unique_source_sha256": 59,
+    "unique_operator_chains": 31,
+    "fully_normalized_rows": 44,
+    "previously_mapping_complete_rows": 16,
+    "direct_record_ids": [
+      "9a7cdfe933736366640a4e1c",
+      "e452e53925dfe7c00eb2a1c4"
+    ]
+  },
+  "decision": "Map the point-producing line intersection operation to the existing Intersect capability; do not add a new L3 or broaden Split Line at Point.",
+  "taxonomy_change": false,
+  "token_change": false,
+  "mapping_admission": "granted_source_reviewed",
+  "training_admission": "not_granted_pending_replay_description_and_dedup",
+  "validation_eligible": false,
+  "test_eligible": false,
+  "production_merge": "not_granted"
+}

@@ -1,0 +1,1809 @@
+audit_split,audit_risk_stratum,aggregate_source_pool,sample_id,source_path,source_sha256,source_authority_key,task_name,task_description,operator_sequence,l3_code_sequence,n,evidence_snippet,human_boundary_decision,human_description_decision,human_l3_decision,human_notes
+calibration,local_macro_boundary,qgis_api_set_crs_train_only_v1,qgis_api_scrs_1e62ec1f3564b26f21ee0f917fca727e71900e1720a57132465166f13170de84_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_36575.py,90bd37a069f408a32cebf3bd745955a8abc6783a5b0eb863c06b256fdff2a5be,normalized_source_body_sha256:89e1e7ad3c48b7cb29e491cf06ad025f369f54f48a8ef2fee1f8b6e89d0c5eaf,为矢量图层定义 EPSG:26920 坐标系,将矢量图层的坐标参考系元数据定义为 EPSG:26920，不变换图层中的坐标值。,"[""pyqgis:set_layer_crs_metadata""]","[""L3_01_10_02""]",1,"74 |             # create the line layer
+75 | 
+76 |             line_layer = QgsVectorLayer('LineString', f'{tower_name}', 'memory')
+77 |             line_layer.setCrs(QgsCoordinateReferenceSystem('EPSG:26920'))  
+78 | 
+79 |             ",,,,
+calibration,local_macro_boundary,qgis_api_raster_calculator_train_only_v1,qgis_api_rc_409ec49005c6dde4bdccdf660a657116f7941cbcf2fb974a9832e936ac4a77d6_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_30385.py,4c7b3af9e57880a8384b7caab5ffcc5760b49e0b87a911e08b46a8e6e6883fb4,normalized_source_body_sha256:0ea9166a6564f6f71ecb7bfa8900d20ff68ce25ebce7de0e7e29ddb8839fb86a,按 Processing 参数表达式执行栅格计算,按 Processing 参数提供的栅格表达式计算输入栅格，并将计算结果写出为新的栅格数据。,"[""pyqgis:raster_calculator""]","[""L3_03_03_A""]",1,"117 |         return self.tr('Raster calculator')
+118 | 
+119 |     def processAlgorithm(self, parameters, context, feedback):
+120 |         expression = self.parameterAsString(parameters, self.EXPRESSION, context)
+121 |         layers = self.parameterAsLayerList(parameters, self.LAYERS, context)
+122 | 
+123 |         layersDict = {}
+124 |         if layers:
+125 |             layersDict = {os.path.basename(lyr.source().split(""."")[0]): lyr for lyr in layers}
+126 | 
+127 |         crs = self.parameterAsCrs(parameters, self.CRS, context)
+128 |         if not layers and not crs.isValid():
+129 |             raise QgsProcessingException(self.tr(""No reference layer selected nor CRS provided""))
+130 | 
+131 |         if not crs.isValid() and layers:
+132 |             crs = list(layersDict.values())[0].crs()
+133 | 
+134 |         bbox = self.parameterAsExtent(parameters, self.EXTENT, context)
+135 |         if not layers and bbox.isNull():
+136 |             raise QgsProcessingException(self.tr(""No reference layer selected nor extent box provided""))
+137 | 
+138 |         if not bbox.isNull():
+139 |             bboxCrs = self.parameterAsExtentCrs(parameters, self.EXTENT, context)
+140 |             if bboxCrs != crs:
+141 |                 transform = QgsCoordinateTransform(bboxCrs, crs, context.project())
+142 |                 bbox = transform.transformBoundingBox(bbox)
+143 | 
+144 |         if bbox.isNull() and layers:
+145 |             bbox = QgsProcessingUtils.combineLayerExtents(layers, crs)
+146 | 
+147 |         cellsize = self.parameterAsDouble(parameters, self.CELLSIZE, context)
+148 |         if not layers and cellsize == 0:
+149 |             raise QgsProcessingException(self.tr(""No reference layer selected nor cellsize value provided""))
+150 | 
+151 |         def _cellsize(layer):
+152 |             ext = layer.extent()
+153 |             if layer.crs() != crs:
+154 |                 transform = QgsCoordinateTransform(layer.crs(), crs, context.project())
+155 |                 ext = transform.transformBoundingBox(ext)
+156 |             return (ext.xMaximum() - ext.xMinimum()) / layer.width()
+157 |         if cellsize == 0:
+158 |             cellsize = min([_cellsize(lyr) for lyr in layersDict.values()])
+159 | 
+160 |         for lyr in QgsProcessingUtils.compatibleRasterLayers(context.project()):
+161 |             name = lyr.name()
+162 |             if (name + ""@"") in expression:
+163 |                 layersDict[name] = lyr
+164 | 
+165 |         entries = []
+166 |         for name, lyr in layersDict.items():
+167 |             for n in range(lyr.bandCount()):
+168 |                 ref = '{:s}@{:d}'.format(name, n + 1)
+169 |                 if ref in expression:
+170 |                     entry = QgsRasterCalculatorEntry()
+171 |                     entry.ref = ref
+172 |                     entry.raster = lyr
+173 |                     entry.bandNumber = n + 1
+174 |                     entries.append(entry)
+175 | 
+176 |         output = self.parameterAsOutputLayer(parameters, self.OUTPUT, context)
+177 | 
+178 |         width = math.floor((bbox.xMaximum() - bbox.xMinimum()) / cellsize)
+179 |         height = math.floor((bbox.yMaximum() - bbox.yMinimum()) / cellsize)
+180 |         driverName = GdalUtils.getFormatShortNameFromFilename(output)
+181 |         calc = QgsRasterCalculator(expression,
+182 |                                    output,
+183 |                                    driverName,
+184 |                                    bbox,
+185 |                                    crs,
+186 |                                    width,
+187 |                                    height,
+188 |                                    entries)
+189 | 
+190 |         res = calc.processCalculation(feedback)
+191 |         if res == QgsRasterCalculator.ParserError:
+192 |             raise QgsProcessingException(self.tr(""Error parsing formula""))
+193 | ",,,,
+calibration,local_macro_boundary,qgis_api_set_crs_train_only_v1,qgis_api_scrs_5f08f16d5790ef60c69ca033593c93dc6673334a804a96ecc944ce22cc53503a_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_52857.py,0238798e6090c50386df743cd0a2c883e5ba9d6b741abc7bb7cda3d04274139c,normalized_source_body_sha256:6a5d13ddfc7a7d5d079576caffb87205a1eb649bf69a60579ac7f67230ad7140,为栅格图层定义 EPSG:31468 坐标系,将栅格图层的坐标参考系元数据定义为 EPSG:31468，不变换图层中的坐标值。,"[""pyqgis:set_layer_crs_metadata""]","[""L3_01_10_02""]",1,"450 |                                             style_path = os.path.join(styles_dir, (rName+'.qml'))
+451 | 
+452 |                                             rLayer = QgsRasterLayer(filepath, rName)
+453 |                                             rLayer.setCrs( QgsCoordinateReferenceSystem(crs_number, QgsCoordinateReferenceSystem.EpsgCrsId) )
+454 |                                             try:
+455 |                                                 rLayer.loadNamedStyle(style_path)",,,,
+calibration,multistep_chain_2_4,qgis_processing_delivery_293_v1_source_verified,qgis_direct_ee3d8bc89d4d04c70af58d06_train_v1,/home/qy/system_redesign/爬取GithubQGIS/QGIS_standard_multi_operator_workflows_v2/downloaded_scripts/script_0000409.py,38fd5890c80cd4053d21189595095071c27dc8b072742c49654a865000b77931,source_sha256:38fd5890c80cd4053d21189595095071c27dc8b072742c49654a865000b77931,创建缓冲区、裁剪矢量图层等处理,在该 Processing 工作流中，对输入数据创建缓冲区（分段数为 5，融合缓冲区）；随后将前述缓冲区结果用于使用多边形图层裁剪矢量要素；随后将前述裁剪后的矢量图层用于计算空间差异；随后使用前述步骤的处理结果合并多个矢量图层，得到此 Processing 链的结果。,"[""native:buffer"", ""native:clip"", ""native:difference"", ""native:mergevectorlayers""]","[""L3_02_01_01"", ""L3_02_02_06"", ""L3_02_02_04"", ""L3_01_03_04""]",4,"  23 | 
+  24 | # run qgis functions
+  25 | 
+  26 | processing.run(""native:buffer"", 
+  27 | {'INPUT':os.path.join(myfolder,'input',fn_RV),
+  28 | 'DISTANCE':D,
+  29 | 'SEGMENTS':5,
+  30 | 'END_CAP_STYLE':0,
+  31 | 'JOIN_STYLE':0,
+  32 | 'MITER_LIMIT':2,
+  33 | 'DISSOLVE':True,
+  34 | 'OUTPUT':os.path.join(myfolder,'temp',fn_buffer)})
+  35 | 
+  36 | processing.run(""native:clip"", 
+  37 | {'INPUT':os.path.join(myfolder,'temp',fn_buffer),
+  38 | 'OVERLAY':os.path.join(myfolder,'input',fn_FGC),
+  39 | 'OUTPUT':os.path.join(myfolder,'temp',fn_interior)})
+  40 | 
+  41 | processing.run(""native:difference"", 
+  42 | {'INPUT':os.path.join(myfolder,'input',fn_FGC),
+  43 | 'OVERLAY':os.path.join(myfolder,'temp',fn_interior),
+  44 | 'OUTPUT':os.path.join(myfolder,'temp',fn_exterior)})
+  45 | 
+  46 | processing.run(""native:mergevectorlayers"", 
+  47 | {'LAYERS':[os.path.join(myfolder,'temp',fn_interior),os.path.join(myfolder,'temp',fn_exterior)],
+  48 | 'CRS':None,
+  49 | 'OUTPUT':os.path.join(myfolder,'temp',fn_output)})
+  50 | 
+  51 | ",,,,
+calibration,local_macro_boundary,qgis_api_vector_file_export_train_only_v1,qgis_api_vfe_7abaf5690969edfd9fa44dfe84a6966187f7388cee457c4d0f4bc9e97fff2857_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_50324.py,ef1dab921addca2e92da13be6be53302d002b74d44815f04c0817a6d8c7f5f54,normalized_source_body_sha256:1958c209f8873ef9ac2157ab89f74dcdbe3f76ed7f9bf5e3103c5b9ea5b81290,保存矢量图层为 GeoJSON,将已准备的矢量图层写入GeoJSON数据集。,"[""pyqgis:save_vector_features_to_file""]","[""L3_07_04_01""]",1,"234 |         )
+235 | 
+236 |         result = QgsVectorFileWriter.writeAsVectorFormat(
+237 |             layer,
+238 |             output_file,
+239 |             'utf-8',
+240 |             layer.crs(),
+241 |             'GeoJson'
+242 |         )
+243 | 
+244 |         if result == QgsVectorFileWriter.NoError:",,,,
+calibration,local_macro_boundary,qgis_api_create_feature_class_train_only_v1,qgis_api_cff_79cae70bf85f8efc25484efb140abb827a5eff7c966c7ad65333ce08b43bb672_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_17679.py,42437630451ce67d393a892d57ebc05116c6a8f1af7f7d0899f83227911719f1,normalized_source_body_sha256:48cd66145b1b9912f70be07ee7f89fff70f81e050b59327161d9ac0805541d27,创建点要素类,创建新的点要素类，定义字段：latitude、longitude、name，写入已准备的要素，并保存为矢量数据集。,"[""pyqgis:create_feature_class""]","[""L3_01_01_01""]",1,"10 |     csv_file = 'path/to/your/coordinates.csv'
+11 |     
+12 |     # Create a new memory layer for points
+13 |     point_layer = QgsVectorLayer(""Point?crs=EPSG:4326"", ""Marked_Locations"", ""memory"")
+14 |     pr = point_layer.dataProvider()
+15 |     
+16 |     # Add fields to the layer for name and coordinates
+17 |     pr.addAttributes([QgsField(""name"", QVariant.String), 
+18 |                       QgsField(""longitude"", QVariant.Double), 
+19 |                       QgsField(""latitude"", QVariant.Double)])
+20 |     point_layer.updateFields()
+21 |     
+22 |     # Read from CSV and add points to the layer
+23 |     with open(csv_file, newline='', encoding='utf-8') as csvfile:
+24 |         reader = csv.DictReader(csvfile)
+25 |         for row in reader:
+26 |             feat = QgsFeature()
+27 |             feat.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(float(row['longitude']), float(row['latitude']))))
+28 |             feat.setAttributes([row['name'], float(row['longitude']), float(row['latitude'])])
+29 |             pr.addFeatures([feat])
+30 |     
+31 |     # Add the new layer to the project
+32 |     QgsProject.instance().addMapLayer(point_layer)
+33 |     
+34 |     # Optionally, save the layer to a shapefile
+35 |     options = QgsVectorFileWriter.SaveVectorOptions()
+36 |     options.driverName = ""ESRI Shapefile""
+37 |     options.fileEncoding = ""UTF-8""
+38 |     
+39 |     QgsVectorFileWriter.writeAsVectorFormat(point_layer, ""marked_locations.shp"", options)
+40 | 
+41 | # Run the function
+42 | mark_locations()",,,,
+calibration,multistep_chain_2_4,qgis_api_add_calculate_field_train_only_v1,qgis_api_acf_51ada57a4cd6bce49f17f14cf036c1b38c6da7bd2b7c20952061826a85c4c49f_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_22064.py,f42cb449f8007f87d96a2324f9b745e3ce6ff9f3b1c2b0d1567f4553a3b57b95,normalized_source_body_sha256:f42cb449f8007f87d96a2324f9b745e3ce6ff9f3b1c2b0d1567f4553a3b57b95,新增并计算字段 TILE_NAME,向现有矢量图层新增字段 TILE_NAME，按已验证的计算表达式逐要素计算并写入该字段。,"[""pyqgis:add_field"", ""pyqgis:calculate_field""]","[""L3_01_02_01"", ""L3_01_02_06""]",2,"273 |     # Add the `TILE_NAME` field if it doesn't exist
+274 |     if 'TILE_NAME' not in [field.name() for field in layer.fields()]:
+275 |         print(""Adding TILE_NAME field to the layer."")
+276 |         layer.dataProvider().addAttributes([QgsField('TILE_NAME', QVariant.String)])
+277 |         layer.updateFields()
+278 | 
+279 |     # Update each feature with the new `TILE_NAME`
+280 |     for feature in layer.getFeatures():
+281 |         row_index = feature['row_index']
+282 |         col_index = feature['col_index']
+283 |         shifted_row = row_shift(row_index)
+284 |         shifted_col = col_shift(col_index)
+285 |         tile_name = f""{row_to_letter(shifted_row)}{int(shifted_col)}""
+286 | 
+287 |         print(f""Feature ID {feature.id()}: row_index={row_index}, col_index={col_index}, TILE_NAME={tile_name}"")
+288 | 
+289 |         # Update the feature
+290 |         feature['TILE_NAME'] = tile_name
+291 |         layer.updateFeature(feature)
+292 | 
+293 |     # Commit changes
+294 |     print(""Committing changes to the layer."")",,,,
+calibration,local_macro_boundary,qgis_api_vector_file_export_train_only_v1,qgis_api_vfe_89fce103fa51ec6859ee06821037420ceb0bd169a0c963bfffd9b084ab8790e2_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_44922.py,bef454811abb22db7d731ef82c3f448ed2a282ade8696361280b2d958911f943,normalized_source_body_sha256:2a5dc81c296ae7a125425d2fd77df1446f57fe11214ea9e7e22f3b01c7857447,保存矢量图层为 GPKG,将已准备的矢量图层写入GPKG数据集，目标图层名为“temp_layer”，并按源码指定策略覆盖已有目标。,"[""pyqgis:save_vector_features_to_file""]","[""L3_07_04_01""]",1,"144 |         temp_layer = QgsVectorLayer(""Point?crs=EPSG:4326"", ""temp_layer"", ""memory"")
+145 | 
+146 |         options = QgsVectorFileWriter.SaveVectorOptions()
+147 |         options.driverName = ""GPKG""
+148 |         options.layerName = ""temp_layer""
+149 |         options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteFile
+150 | 
+151 |         res, err = QgsVectorFileWriter.writeAsVectorFormatV2(
+152 |             temp_layer, project_path, QgsProject.instance().transformContext(), options
+153 |         )
+154 |         if res == QgsVectorFileWriter.NoError:
+155 |             print(""GeoPackage created (with dummy layer)"")",,,,
+calibration,local_macro_boundary,qgis_api_raster_calculator_train_only_v1,qgis_api_rc_021ac55b030ef2e2c1997edabeab42524819b3a2d13922e155e5e3ac6d344626_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_45291.py,b3b5238f914d2499992d4b7c6cdfc48892017dc6bbf74d8b11a741652082ce4d,normalized_source_body_sha256:9c5a0c77f1ede168596b28e653a14de7dedf2120a33698dcba57e8ca696417dc,按源码构造表达式执行栅格计算,按源码中确定构造的栅格表达式“'( ' + nirBand.ref + ' / (( ' + nirBand.ref + ' + ' + redBand.ref + ' ) / 2) ) * (( ' + nirBand.ref + ' - ' + redBand.ref + ' ) / ( ' + nirBand.ref + ' + ' + redBand.ref + ' ) + 1)'”计算输入栅格，并将计算结果写出为新的栅格数据。,"[""pyqgis:raster_calculator""]","[""L3_03_03_A""]",1,"84 |     hueTiff = imFileName.replace("".tif"", ""_H.tif"")
+85 |     ifTiff = imFileName.replace("".tif"", ""_IF.tif"")
+86 |     ioTiff = imFileName.replace("".tif"", ""_IO.tif"")
+87 |     ipviTiff = imFileName.replace("".tif"", ""_IPVI.tif"")
+88 |     intensityTiff = imFileName.replace("".tif"", ""_I.tif"")
+89 |     logRTiff = imFileName.replace("".tif"", ""_LogR.tif"")
+90 |     msrNirRedTiff = imFileName.replace("".tif"", ""_MSRNirRed.tif"")
+91 |     msaviTiff = imFileName.replace("".tif"",""_MSAVI.tif"")    
+92 |     ndviTiff = imFileName.replace("".tif"",""_NDVI.tif"")
+93 |     ndviRededgeTiff = imFileName.replace("".tif"", ""_NDVIrededge.tif"")
+94 |     ndreTiff = imFileName.replace("".tif"",""_NDRE.tif"")
+95 |     ngrdiTiff = imFileName.replace("".tif"",""_NGRDI.tif"")
+96 |     nirTiff = imFileName.replace("".tif"",""_NIR.tif"")
+97 |     normGTiff = imFileName.replace("".tif"", ""_NormG.tif"")
+98 |     normNIRTiff = imFileName.replace("".tif"", ""_NormNIR.tif"")
+99 |     normRTiff = imFileName.replace("".tif"", ""_NormR.tif"")
+100 |     osaviTiff = imFileName.replace("".tif"",""_OSAVI.tif"")
+101 |     pndviTiff = imFileName.replace("".tif"", ""_PNDVI.tif"")
+102 |     rbndviTiff = imFileName.replace("".tif"", ""_RBNDVI.tif"")
+103 |     redEdgeTiff = imFileName.replace("".tif"",""_RE.tif"")
+104 |     redTiff = imFileName.replace("".tif"",""_R.tif"")
+105 |     rgrTiff = imFileName.replace("".tif"", ""_RGR.tif"")
+106 |     riTiff = imFileName.replace("".tif"", ""_RI.tif"")
+107 |     rri1Tiff = imFileName.replace("".tif"", ""_RRI1.tif"")
+108 |     rri2Tiff = imFileName.replace("".tif"", ""_RRI2.tif"")
+109 |     sqrtIRRTiff = imFileName.replace("".tif"", ""_SQRTIRR.tif"")
+110 |     srNIRRedTiff = imFileName.replace("".tif"", ""_SRNIRRed.tif"")
+111 |     tndviTiff = imFileName.replace("".tif"", ""_TNDVI.tif"")
+112 |     wdrviTiff = imFileName.replace("".tif"", ""_WDRVI.tif"")
+113 |     
+114 |     # Define each band within the ortho raster layer
+115 |     entries = []
+116 |     
+117 |     # Define red band
+118 |     redBand = QgsRasterCalculatorEntry()
+119 |     redBand.ref = orthoTiffLayer.name()+'@3'
+120 |     redBand.raster = orthoTiffLayer
+121 |     redBand.bandNumber = 3
+122 |     entries.append(redBand)
+123 |     
+124 |     # Define green band
+125 |     greenBand = QgsRasterCalculatorEntry()
+126 |     greenBand.ref = orthoTiffLayer.name()+'@2'
+127 |     greenBand.raster = orthoTiffLayer
+128 |     greenBand.bandNumber = 2
+129 |     entries.append(greenBand)
+130 |     
+131 |     # Define blue band
+132 |     blueBand = QgsRasterCalculatorEntry()
+133 |     blueBand.ref = orthoTiffLayer.name()+'@1'
+134 |     blueBand.raster = orthoTiffLayer
+135 |     blueBand.bandNumber = 1
+136 |     entries.append(blueBand)
+137 |     
+138 |     # Define redEdge band
+139 |     redEdgeBand = QgsRasterCalculatorEntry()
+140 |     redEdgeBand.ref = orthoTiffLayer.name()+'@4'
+141 |     redEdgeBand.raster = orthoTiffLayer
+142 |     redEdgeBand.bandNumber = 4
+143 |     entries.append(redEdgeBand)
+144 |     
+145 |     # Define Nir band
+146 |     nirBand = QgsRasterCalculatorEntry()
+147 |     nirBand.ref = orthoTiffLayer.name()+'@5'
+148 |     nirBand.raster = orthoTiffLayer
+149 |     nirBand.bandNumber = 5
+150 |     entries.append(nirBand)
+151 |     
+152 |     # Generate red Tiff
+153 |     genRed = QgsRasterCalculator(redBand.ref,
+154 |         redTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+155 |     genRed.processCalculation()
+156 |     
+157 |     # Generate green Tiff
+158 |     genGreen = QgsRasterCalculator(greenBand.ref,
+159 |         greenTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+160 |     genGreen.processCalculation()
+161 |     
+162 |     # Generate blue Tiff
+163 |     genBlue = QgsRasterCalculator(blueBand.ref,
+164 |         blueTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+165 |     genBlue.processCalculation()
+166 |     
+167 |     # Generate redEdge Tiff
+168 |     genRedEdge = QgsRasterCalculator(redEdgeBand.ref,
+169 |         redEdgeTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+170 |     genRedEdge.processCalculation()
+171 |     
+172 |     # Generate Nir Tiff
+173 |     genNir = QgsRasterCalculator(nirBand.ref,
+174 |         nirTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+175 |     genNir.processCalculation()
+176 |     
+177 |     # Generate NDVI Tiff
+178 |     genNDVI = QgsRasterCalculator('( '+nirBand.ref+' - '+redBand.ref+' ) / ( '+nirBand.ref+' + '+redBand.ref+' )',
+179 |         ndviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+180 |     genNDVI.processCalculation()
+181 |     
+182 |     # Generate NDRE Tiff
+183 |     genNDRE = QgsRasterCalculator('( ' +nirBand.ref+ ' - ' +redEdgeBand.ref+ ' ) / ( ' +nirBand.ref+ ' + ' +redEdgeBand.ref+ ' )',
+184 |         ndreTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+185 |     genNDRE.processCalculation()
+186 |     
+187 |     # Generate CCCI Tiff
+188 |     genCCCI = QgsRasterCalculator(
+189 |         '( ' + nirBand.ref + ' - ' + redEdgeBand.ref + ' ) * ( ' +nirBand.ref+ ' + ' +redBand.ref+ ' ) / ( '
+190 |         + nirBand.ref + ' + ' + redEdgeBand.ref + ' ) / ( ' +nirBand.ref+ ' - ' +redBand.ref+ ' )' ,
+191 |         ccciTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries)
+192 |     genCCCI.processCalculation()
+193 | 
+194 |     # # Generate RVI Tiff
+195 |     # genMRVI = QgsRasterCalculator( '( ' + nirBand.ref+ ' ) / ( ' +redBand.ref+ ' )',
+196 |         # mrviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+197 |     # genMRVI.processCalculation()
+198 | 
+199 |     # Generate ExG Tiff (https://plantmethods.biomedcentral.com/articles/10.1186/s13007-019-0402-3/tables/6)
+200 |     genExG = QgsRasterCalculator('2 * ' +greenBand.ref+ ' - ' +redBand.ref+ ' - ' +blueBand.ref,
+201 |         exgTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+202 |     genExG.processCalculation()
+203 | 
+204 |     # Generate CIVE Tiff (https://www.redalyc.org/journal/4457/445758367004/html/)
+205 |     genCIVE = QgsRasterCalculator('0.441 * ' +redBand.ref+ ' - 0.811 * ' +greenBand.ref+ ' + 0.385 * ' +blueBand.ref+ ' + 18.78745',
+206 |         civeTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+207 |     genCIVE.processCalculation()
+208 | 
+209 |     # Generate ATSAVI Tiff (Adjusted transformed soil-adjusted VI)
+210 |     numerator_part1 = '1.22 * (' + nirBand.ref + ' - 1.22 * ' + redBand.ref + ' - 0.03)'
+211 |     denominator_part1 = '1.22 * ' + nirBand.ref + ' + ' + redBand.ref
+212 |     denominator_part2 = ' - 1.22 * 0.03 + 0.08 * (1 + 1.22 * 1.22)'
+213 | 
+214 |     formula = numerator_part1 + '/(' + denominator_part1 + denominator_part2 + ')'
+215 | 
+216 |     genATSAVI = QgsRasterCalculator(
+217 |         formula,
+218 |         atsaviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries
+219 |     )
+220 |     genATSAVI.processCalculation()
+221 |     
+222 |     # Generate OSAVI Tiff
+223 |     genOSAVI = QgsRasterCalculator(
+224 |         '( ' + nirBand.ref + ' - ' + redBand.ref + ' ) / ( ' + nirBand.ref + ' + ' + redBand.ref + ' + 0.16 ) * ( 1 + 0.16 )',
+225 |         osaviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries)
+226 |     genOSAVI.processCalculation()
+227 | 
+228 |     # Generate GDVI Tiff (Generalized Difference Vegetation Index )
+229 |     genGDVI = QgsRasterCalculator('( ' + nirBand.ref + ' - ' + greenBand.ref + ' )',    
+230 |         gdviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+231 |     genGDVI.processCalculation()
+232 | 
+233 |     # Generate GLI Tiff (Green leaf Index )
+234 |     genGLI = QgsRasterCalculator('(2 * ' + greenBand.ref + ' - ' + redBand.ref + ' - ' + blueBand.ref + ') / (2 * ' + greenBand.ref + ' + ' + redBand.ref + ' + ' + blueBand.ref + ')',   
+235 |         gliTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+236 |     genGLI.processCalculation()
+237 |     
+238 |     # Generate GSAVI Tiff (Green Soil Adjusted Vegetation Index)
+239 |     genGSAVI = QgsRasterCalculator('( ' + nirBand.ref + ' - ' + greenBand.ref + ' ) / ( ' + nirBand.ref + ' + ' + greenBand.ref + ' + 0.5 ) * (1.5)',   
+240 |         gsaviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+241 |     genGSAVI.processCalculation()    
+242 | 
+243 |     # Generate NGRDI Tiff (Normalized Difference Green/Red Normalized green red difference index)
+244 |     genNGRDI = QgsRasterCalculator('( ' + greenBand.ref + ' - ' + redBand.ref + ' ) / ( ' + greenBand.ref + ' + ' + redBand.ref + ' )',   
+245 |         ngrdiTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+246 |     genNGRDI.processCalculation()    
+247 | 
+248 |     # Generate ARI2 Tiff (Anthocyanin Reflectance Index 2)
+249 |     genARI2 = QgsRasterCalculator('(1 / (' + greenBand.ref + ') - 1 / (' + redEdgeBand.ref + ')) * ( ' + nirBand.ref + ')',
+250 |         ari2Tiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+251 |     genARI2.processCalculation()  
+252 | 
+253 | 	# Generate ARVI2 Tiff
+254 |     genARVI2 = QgsRasterCalculator('-0.18 + 1.17 * (( ' + nirBand.ref + ' - ' + redBand.ref + ' ) / ( ' + nirBand.ref + ' + ' + redBand.ref + ' ))',
+255 | 		arvi2Tiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries)
+256 |     genARVI2.processCalculation()
+257 | 
+258 | 	# Generate CI Tiff (Color Index)
+259 |     genCI = QgsRasterCalculator('( ' + redBand.ref + ' - ' + blueBand.ref + ' ) / ( ' + redBand.ref + ' )',
+260 |         ciTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+261 |     genCI.processCalculation()
+262 | 
+263 |     # Generate CIG Tiff (Chlorophyll Index Green)
+264 |     genCIG = QgsRasterCalculator('( ' + nirBand.ref + ' / ' + greenBand.ref + ' ) - 1',
+265 |         cigTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+266 |     genCIG.processCalculation()  
+267 | 
+268 |     # Generate CIRE Tiff (Chlorophyll Index Red Edge)
+269 |     genCIRE = QgsRasterCalculator('(' + nirBand.ref + ' / ' + redEdgeBand.ref + ') - 1',
+270 |         cireTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+271 |     genCIRE.processCalculation()
+272 |     
+273 |     # Generate CVI Tiff Chlorophyll vegetation index
+274 |     genCVI = QgsRasterCalculator('( ' + nirBand.ref + ' * ( ' + redBand.ref + ' ) / ( ' + greenBand.ref + ' * ' + greenBand.ref + ' ))',
+275 | 		cviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+276 |     genCVI.processCalculation()
+277 | 
+278 |     # Generate EVI Tiff (Enhanced Vegetation Index)
+279 |     genEVI = QgsRasterCalculator('2.5 * (( ' + nirBand.ref + ' - ' + redBand.ref + ' ) / (( ' + nirBand.ref + ' + 6 * ' + redBand.ref + ' - 7.5 * ' + blueBand.ref + ' ) + 1))',
+280 |         eviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+281 |     genEVI.processCalculation()
+282 | 
+283 | 	# Generate EVI2 Tiff (Enhanced Vegetation Index 2)
+284 |     genEVI2 = QgsRasterCalculator('2.4 * ( ' + nirBand.ref + ' - ' + redBand.ref + ' ) / ( ' + nirBand.ref + ' + ' + redBand.ref + ' + 1 )',
+285 |         evi2Tiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+286 |     genEVI2.processCalculation()
+287 | 
+288 | 	# Generate GARI Tiff (Green Atmospherically Resistant Vegetation Index)
+289 |     genGARI = QgsRasterCalculator('( ' + nirBand.ref + ' - (' + greenBand.ref + ' - (' + blueBand.ref + ' - ' + redBand.ref + ')) ) / ( ' + nirBand.ref + ' - (' + greenBand.ref + ' + (' + blueBand.ref + ' - ' + redBand.ref + ')) )',
+290 | 		gariTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+291 |     genGARI.processCalculation()
+292 | 
+293 | 	# Generate GBNDVI Tiff (Green-Blue NDVI)
+294 |     genGBNDVI = QgsRasterCalculator('( ' + nirBand.ref + ' - (' + greenBand.ref + ' + ' + blueBand.ref + ') ) / ( ' + nirBand.ref + ' + (' + greenBand.ref + ' + ' + blueBand.ref + ') )',
+295 | 		gbndviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+296 |     genGBNDVI.processCalculation()
+297 | 
+298 | 	# Generate GRNDVI Tiff (Green-Red NDVI)
+299 |     genGRNDVI = QgsRasterCalculator('( ' + nirBand.ref + ' - (' + greenBand.ref + ' + ' + redBand.ref + ') ) / ( ' + nirBand.ref + ' + (' + greenBand.ref + ' + ' + redBand.ref + ') )',
+300 | 		grndviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+301 |     genGRNDVI.processCalculation()
+302 | 
+303 | 	# Generate GEMI Tiff (Global Environmental Monitoring Index)
+304 |     part1 = '2 * ((' + nirBand.ref + ' ^ 2) - (' + redBand.ref + ' ^ 2))'
+305 |     part2 = '1.5 * ' + nirBand.ref + ' + 0.5 * ' + redBand.ref
+306 |     numerator = part1 + ' + ' + part2
+307 |     denominator = nirBand.ref + ' + ' + redBand.ref + ' + 0.5'
+308 |     fraction = '(' + numerator + ')/(' + denominator + ')'
+309 |     gemi_part1 = '(' + fraction + ')*(1 - 0.25*(' + fraction + '))'
+310 |     gemi_part2 = '(' + redBand.ref + ' - 0.125)/(1 - ' + redBand.ref + ')'
+311 |     gemi_formula = gemi_part1 + ' - ' + gemi_part2
+312 | 
+313 |     genGEMI = QgsRasterCalculator(
+314 |         gemi_formula,
+315 |         gemiTiff,
+316 |         'GTiff',
+317 |         orthoTiffLayer.extent(),
+318 |         orthoTiffLayer.width(),
+319 |         orthoTiffLayer.height(),
+320 |         entries
+321 |     )
+322 |     genGEMI.processCalculation()
+323 | 
+324 |     # Generate H Tiff (Hue)
+325 |     genH = QgsRasterCalculator('atan((2 * ' + redBand.ref + ' - ' + greenBand.ref + ' - ' + blueBand.ref + ') / (30.5 * (' + greenBand.ref + ' - ' + blueBand.ref + ')))',
+326 |         hueTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+327 |     genH.processCalculation()
+328 | 
+329 | 	# Generate IPVI Tiff (Infrared Percentage Vegetation Index)
+330 |     genIPVI = QgsRasterCalculator('( ' + nirBand.ref + ' / (( ' + nirBand.ref + ' + ' + redBand.ref + ' ) / 2) ) * (( ' + nirBand.ref + ' - ' + redBand.ref + ' ) / ( ' + nirBand.ref + ' + ' + redBand.ref + ' ) + 1)',
+331 | 		ipviTiff, 'GTiff', orthoTiffLayer.extent(), orthoTiffLayer.width(), orthoTiffLayer.height(), entries )
+332 |     genIPVI.processCalculation()
+333 | 
+334 | 	# Generate I Tiff (Intensity)
+335 |     genIntensity = QgsRasterCalculator('(1 / 30.5) * (' + redBand.ref + ' + ' + greenBand.ref + ' + ' + blueBand.ref + ')',",,,,
+calibration,long_chain_5_9,qgis_processing_delivery_293_v1_source_verified,qgis_stable106_2e23a1e4a1de4c20449b6778,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_6455.py,2e23a1e4a1de4c20449b67781f71cd531d0b2705b394015b9fa00ea97123307c,normalized_source_body_sha256:ef4265cc7f420df84adcc08ac90eddd9968b9b1dc369f979f2b9d3f79a9a4a56,面转线、线条面化等处理,在该 Processing 工作流中，对输入数据将面边界转换为线；随后将前述边界线结果用于转换线条为面；随后将前述面状结果用于计算图层联合；随后将前述联合结果用于按表达式筛选要素；随后将前述筛选结果用于计算字段值；随后将前述更新字段的图层用于计算字段值；随后将前述更新字段的图层用于融合矢量要素；随后将前述融合结果用于删除指定字段，得到此 Processing 链的结果。,"[""native:polygonstolines"", ""native:polygonize"", ""native:union"", ""native:extractbyexpression"", ""native:fieldcalculator"", ""native:fieldcalculator"", ""native:dissolve"", ""native:deletecolumn""]","[""L3_02_07_03"", ""L3_03_01_01"", ""L3_02_02_02"", ""L3_02_06_02"", ""L3_01_02_06"", ""L3_01_02_06"", ""L3_02_03_05"", ""L3_01_02_02""]",8,"27 |         outputs['DaPoligoniALinee'] = processing.run('native:polygonstolines', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+39 |         outputs['Poligonizza'] = processing.run('qgis:polygonize', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+52 |         outputs['Unione'] = processing.run('native:union', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+64 |         outputs['EstraiTramiteEspressione'] = processing.run('native:extractbyexpression', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+81 |         outputs['CalcolatoreCampiNro'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+98 |         outputs['CalcolatoreCampiIds'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+110 |         outputs['Dissolvi'] = processing.run('native:dissolve', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+122 |         outputs['EliminaCampoi'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)",,,,
+calibration,long_chain_5_9,qgis_processing_delivery_293_v1_source_verified,qgis_processing_qgis_blocker_split_multistep_36351adbba1c13dab19ef6e2_train_v1,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0003800.py,f6b30cc94c3359352b4450604ce153d30857145206329dafc6c1978eca8db4e2,normalized_source_body_sha256:126e610e738073d8fac0b11ae3469e0910677982b861524216792128f39eea79,局部工作流：捕捉矢量几何、修复几何等处理,在该局部工作流中，对输入数据按容差将输入几何捕捉到参考图层；随后将前述已捕捉到参考图层的矢量要素用于修复无效几何；随后将前述修复后的图层用于拆分多部件要素为单部件；随后将前述单部件结果用于删除重复几何要素；随后将前述去除重复几何后的图层用于修复无效几何；随后将前述修复后的图层用于拆分多部件要素为单部件，得到此 Processing 链的结果。,"[""native:snapgeometries"", ""native:fixgeometries"", ""native:multiparttosingleparts"", ""native:deleteduplicategeometries"", ""native:fixgeometries"", ""native:multiparttosingleparts""]","[""L3_02_07_09"", ""L3_01_05_02"", ""L3_02_07_01"", ""L3_01_05_04"", ""L3_01_05_02"", ""L3_02_07_01""]",6,"226 |                        'REFERENCE_LAYER': split_layer,
+227 |                        'TOLERANCE': 0.01}
+228 |     split_layer = processing.run('qgis:snapgeometries', paramaters_snap)['OUTPUT']
+229 | 
+230 |     parameters_fix = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+...
+229 | 
+230 |     parameters_fix = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+231 |     split_layer = processing.run('native:fixgeometries', parameters_fix)['OUTPUT']
+232 | 
+233 |     parameters_m2s = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+...
+232 | 
+233 |     parameters_m2s = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+234 |     split_layer = processing.run('native:multiparttosingleparts', parameters_m2s)['OUTPUT']
+235 | 
+236 |     parameters_fix = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+...
+235 | 
+236 |     parameters_fix = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+237 |     split_layer = processing.run('qgis:deleteduplicategeometries', parameters_fix)['OUTPUT']
+238 | 
+239 |     parameters_fix = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+...
+238 | 
+239 |     parameters_fix = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+240 |     split_layer = processing.run('native:fixgeometries', parameters_fix)['OUTPUT']
+241 | 
+242 |     parameters_m2s = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+...
+241 | 
+242 |     parameters_m2s = {'INPUT': split_layer, 'OUTPUT': 'memory:'}
+243 |     split_layer = processing.run('native:multiparttosingleparts', parameters_m2s)['OUTPUT']
+244 | 
+245 |     return split_layer",,,,
+calibration,multistep_chain_2_4,qgis_api_add_calculate_field_train_only_v1,qgis_api_acf_46f32246ed52cb68181989528c84e38cb0a35f25b2017ad5e5d6ad85e2a30baf_train_v1,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005055.py,e2f4be0967c885cd5a004d9e0976abf17f281a55d4442da2bfc2d9c70b631dbf,normalized_source_body_sha256:fecebbf5c7f282cd339e2327a77d32b409c2386db7343ed2b5f31f57e39d7c3a,新增并计算字段 calc、len_test_m,向现有矢量图层新增字段 calc、len_test_m，按已定义的 QGIS 表达式逐要素计算并写入相应字段。,"[""pyqgis:add_field"", ""pyqgis:calculate_field""]","[""L3_01_02_01"", ""L3_01_02_06""]",2,"8 | 
+9 | layer = QgsVectorLayer(fn, '', 'ogr')
+10 | pv = layer.dataProvider()
+11 | pv.addAttributes([QgsField('len_test_m', QVariant.Double), \
+12 | QgsField('calc', QVariant.Double)])
+13 | 
+14 | layer.updateFields()
+15 | 
+16 | expression1 = QgsExpression('$length')
+17 | expression2 = QgsExpression('""lengthm""/""len_test_m""')
+18 | 
+19 | context = QgsExpressionContext()
+20 | context.appendScopes(\
+21 | QgsExpressionContextUtils.globalProjectLayerScopes(layer))
+22 | 
+23 | with edit(layer):
+24 |     for f in layer.getFeatures():
+25 |         context.setFeature(f)
+26 |         f['len_test_m'] = expression1.evaluate(context)
+27 |         layer.updateFeature(f)
+28 |         
+29 | with edit(layer):
+30 |     for f in layer.getFeatures():
+31 |         context.setFeature(f)
+32 |         f['calc'] = expression2.evaluate(context)
+33 |         layer.updateFeature(f)
+34 |     ",,,,
+calibration,single_step_source_verified,qgis_api_random_point_train_only_v1,qgis_api_995409f839d2645f81e7f13c3f0955434b05ec17b9b5fe7dbc8dfe3b90a1d3c7_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_1160.py,b798c76182185593855ab392d0ef4ee5ef41523eaebbadd7a68c0af9f8a575d4,normalized_source_body_sha256:087a09910d9a291ff2e0cbb2f8d68c864bc03e3fd9625b8b6cbd0e7dc04c2e42,在输入图层内随机采样点,在输入图层覆盖范围内随机生成指定数量的候选点，仅保留位于要素几何内部且满足最小距离约束的点，并写入输出点图层。,"[""pyqgis-pattern:random_point_sampling""]","[""L3_02_06_06""]",1,"def processAlgorithm(self, parameters, context, feedback):
+        source = self.parameterAsSource(parameters, self.INPUT, context)
+        if source is None:
+            raise QgsProcessingException(self.invalidSourceError(parameters, self.INPUT))
+
+        pointCount = self.parameterAsDouble(parameters, self.POINTS_NUMBER, context)
+        minDistance = self.parameterAsDouble(parameters, self.MIN_DISTANCE, context)
+
+        bbox = source.sourceExtent()
+        sourceIndex = QgsSpatialIndex(source, feedback)
+
+        fields = QgsFields()
+        fields.append(QgsField('id', QVariant.Int, '', 10, 0))
+
+        (sink, dest_id) = self.parameterAsSink(parameters, self.OUTPUT, context,
+                                               fields, QgsWkbTypes.Point, source.sourceCrs(), QgsFeatureSink.RegeneratePrimaryKey)
+        if sink is None:
+            raise QgsProcessingException(self.invalidSinkError(parameters, self.OUTPUT))
+
+        nPoints = 0
+        nIterations = 0
+        maxIterations = pointCount * 200
+        total = 100.0 / pointCount if pointCount else 1
+
+        index = QgsSpatialIndex()
+        points = {}
+
+        random.seed()
+
+        while nIterations < maxIterations and nPoints < pointCount:
+            if feedback.isCanceled():
+                break
+
+            rx = bbox.xMinimum() + bbox.width() * random.random()
+            ry = bbox.yMinimum() + bbox.height() * random.random()
+
+            p = QgsPointXY(rx, ry)
+            geom = QgsGeometry.fromPointXY(p)
+            ids = sourceIndex.intersects(geom.buffer(5, 5).boundingBox())
+            if len(ids) > 0 and \
+                    vector.checkMinDistance(p, index, minDistance, points):
+                request = QgsFeatureRequest().setFilterFids(ids).setSubsetOfAttributes([])
+                for f in source.getFeatures(request):
+                    if feedback.isCanceled():
+                        break
+
+                    tmpGeom = f.geometry()
+                    if geom.within(tmpGeom):
+                        f = QgsFeature(nPoints)
+                        f.initAttributes(1)
+                        f.setFields(fields)
+                        f.setAttribute('id', nPoints)
+                        f.setGeometry(geom)
+                        sink.addFeature(f, QgsFeatureSink.FastInsert)
+                        index.addFeature(f)
+                        points[nPoints] = p
+                        nPoints += 1
+                        feedback.setProgress(int(nPoints * total))
+            nIterations += 1
+
+        if nPoints < pointCount:
+            feedback.pushInfo(self.tr('Could not generate requested number of random points. '
+                                      'Maximum number of attempts exceeded.'))
+
+        return {self.OUTPUT: dest_id}",,,,
+calibration,multistep_chain_2_4,qgis_processing_delivery_293_v1_source_verified,qgis_direct_d09a9b8c83a08efac2a074e6_train_v1,/home/qy/system_redesign/爬取GithubQGIS/QGIS_standard_multi_operator_workflows_v2/downloaded_scripts/script_0000102.py,73635ea0db27a213c50121d351b2db20b30cf3e6c370a149c834be7f8300be5d,source_sha256:73635ea0db27a213c50121d351b2db20b30cf3e6c370a149c834be7f8300be5d,拆分 RGB 波段、转换栅格等处理,在该 Processing 工作流中，对输入数据拆分栅格的红绿蓝波段；随后将前述红绿蓝波段栅格用于转换栅格数据格式或范围；随后将前述红绿蓝波段栅格用于转换栅格数据格式或范围；随后将前述红绿蓝波段栅格用于转换栅格数据格式或范围，得到此 Processing 链的结果。,"[""saga:splitrgbbands"", ""gdal:translate"", ""gdal:translate"", ""gdal:translate""]","[""L3_03_01_04"", ""L3_07_04_05"", ""L3_07_04_05"", ""L3_07_04_05""]",4,"  36 |             'G': parameters['Green'],
+  37 |             'R': parameters['Red']
+  38 |         }
+  39 |         outputs['SplitRgbBands'] = processing.run('saga:splitrgbbands', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  40 |         results['Blue'] = outputs['SplitRgbBands']['B']
+  41 |         results['Green'] = outputs['SplitRgbBands']['G']
+  42 |         results['Red'] = outputs['SplitRgbBands']['R']
+...
+  55 |             'TARGET_CRS': parameters['inputimage'],
+  56 |             'OUTPUT': parameters['R_conv']
+  57 |         }
+  58 |         outputs['TranslateConvertFormat'] = processing.run('gdal:translate', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  59 |         results['R_conv'] = outputs['TranslateConvertFormat']['OUTPUT']
+  60 | 
+  61 |         feedback.setCurrentStep(2)
+...
+  72 |             'TARGET_CRS': parameters['inputimage'],
+  73 |             'OUTPUT': parameters['B_conv']
+  74 |         }
+  75 |         outputs['TranslateConvertFormat'] = processing.run('gdal:translate', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  76 |         results['B_conv'] = outputs['TranslateConvertFormat']['OUTPUT']
+  77 | 
+  78 |         feedback.setCurrentStep(3)
+...
+  89 |             'TARGET_CRS': parameters['inputimage'],
+  90 |             'OUTPUT': parameters['G_conv']
+  91 |         }
+  92 |         outputs['TranslateConvertFormat'] = processing.run('gdal:translate', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+  93 |         results['G_conv'] = outputs['TranslateConvertFormat']['OUTPUT']
+  94 |         return results
+  95 | ",,,,
+calibration,local_macro_boundary,qgis_api_raster_calculator_train_only_v1,qgis_api_rc_982fb8e4a1b951d20bd8a7463a0d713945d905872fab78e6884b9fdffba222fe_train_v1,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/EcoVisioL8__1.1/eco_visiol8/eco_visiol8.py,3f24e879fa7166f32df31873e9b590af7d553492e6cba390ce0aee25054a6a07,normalized_source_body_sha256:ae4235b605684e40f01b0964b6292b12d907d94e8153bef4d61815a7f17b5b5f,按源码构造表达式执行栅格计算,"按源码中确定构造的栅格表达式“f""('{banda_corr_5}'-'{banda_corr_2}')/('{banda_corr_5}'-'{banda_corr_4}')""”计算输入栅格，并将计算结果写出为新的栅格数据。","[""pyqgis:raster_calculator""]","[""L3_03_03_A""]",1,"630 |         banda_2 = QgsRasterLayer(dirB2)
+631 |         banda_4 = QgsRasterLayer(dirB4)
+632 |         banda_5 = QgsRasterLayer(dirB5)
+633 |         salida = self.ruta_guardar[0] + nombre_salida
+634 |         entradas = []
+635 |         banda_22 = QgsRasterCalculatorEntry()
+636 |         banda_22.ref = banda_corr_2
+637 |         banda_22.raster = banda_2
+638 |         banda_22.bandNumber = 1
+639 |         entradas.append(banda_22)
+640 |         banda_44 = QgsRasterCalculatorEntry()
+641 |         banda_44.ref = banda_corr_4
+642 |         banda_44.raster = banda_4
+643 |         banda_44.bandNumber = 1
+644 |         entradas.append(banda_44)
+645 |         banda_55 = QgsRasterCalculatorEntry()
+646 |         banda_55.ref = banda_corr_5
+647 |         banda_55.raster = banda_5
+648 |         banda_55.bandNumber = 1
+649 |         entradas.append(banda_55)
+650 | 
+651 |         calc = QgsRasterCalculator(f""('{banda_corr_5}'-'{banda_corr_2}')/('{banda_corr_5}'-'{banda_corr_4}')"", salida, 'GTiff', banda_2.extent(), banda_2.width(), banda_2.height(), entradas)
+652 |         calc.processCalculation()
+653 | 
+654 |     def SAVI(self, path_4, path_5, nombre_salida,banda_corr_4,banda_corr_5):
+655 | ",,,,
+calibration,local_macro_boundary,qgis_api_add_field_existing_layer_train_only_v1,qgis_api_af_92b95bbd27d51086a4ba4340cdfbbc2a0a25b74dd856b1634bec4b0a1250a1eb_train_v1,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/QAD__3.0.4/qad/qad_multi_geom.py,3a9634a3a234af2fb9325f787c78976855859cd480256f9c9825a2c52501cb47,normalized_source_body_sha256:3beb0498dee9bd59f00e4a001687ac3325cf25f32437da0c2d0c792fde2cfb54,新增字段 geom_at、part_at、sub_geom_at,向现有矢量图层新增字段 geom_at、part_at、sub_geom_at，并提交字段结构更新。,"[""pyqgis:add_field""]","[""L3_01_02_01""]",1,"1179 |       self.cacheLayer = createMemoryLayer(""QadLayerCacheArea"", ""Polygon"", qgis.utils.iface.mapCanvas().mapSettings().destinationCrs())
+1180 |       
+1181 |       provider = self.cacheLayer.dataProvider()
+1182 |       provider.addAttributes([QgsField(""geom_at"", QVariant.Int, ""Int"")]) # codice della geometria
+1183 |       provider.addAttributes([QgsField(""sub_geom_at"", QVariant.Int, ""Int"")]) # codice della sotto geometria
+1184 |       provider.addAttributes([QgsField(""part_at"", QVariant.Int, ""Int"")]) # codice della parte
+1185 |       self.cacheLayer.updateFields()
+1186 |       
+1187 |       if provider.capabilities() & QgsVectorDataProvider.CreateSpatialIndex:
+1188 |          provider.createSpatialIndex()",,,,
+calibration,local_macro_boundary,qgis_api_create_feature_class_train_only_v1,qgis_api_cff_c33208ffd4f07bead57fa9a99cecc255aa641cb0a4107afdb7040bd9f6ed3757_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_16345.py,79d6255198f74557ec65717443a8760564d6838744e0ecc28252bd79d3916746,normalized_source_body_sha256:74ec6b1da421a13441c99dab2ab22c7fd2e08bce7d006d6130a257581bdc4304,创建多面要素类,创建新的多面要素类，定义字段：district、standard_land_value、type，写入已准备的要素，并保存为矢量数据集。,"[""pyqgis:create_feature_class""]","[""L3_01_01_01""]",1,"11 | csv_reader=csv.reader(file, delimiter=';',quoting=csv.QUOTE_NONE)
+12 | 
+13 | # create temporary layer
+14 | layer = QgsVectorLayer(""multipolygon"", ""temp_standard_land_value_muenster"", ""memory"")
+15 | layer.setCrs(QgsCoordinateReferenceSystem(25832))
+16 | 
+17 | # set fields
+18 | provider = layer.dataProvider()
+19 | field_1 = QgsField(""standard_land_value"", QVariant.Double)
+20 | field_2 = QgsField(""type"", QVariant.String)
+21 | field_3 = QgsField(""district"", QVariant.String)
+22 | provider.addAttributes([field_1, field_2,field_3])
+23 | layer.updateFields()
+24 | 
+25 | #skip header
+26 | next(csv_reader)
+27 | # put rows of csv into a new list
+28 | read_features= []
+29 | for row in csv_reader:
+30 |     read_features.append(row)
+31 | #transform rows into features
+32 | for row in read_features:
+33 |     # get attributes and geometry
+34 |     standard_land_value =row[0]
+35 |     type =row[1]
+36 |     district=row[2]
+37 |     geomWKT =row[3]
+38 |     geom = QgsGeometry.fromWkt(geomWKT)
+39 |     
+40 |     # create features and add
+41 |     feature_1 = QgsFeature(layer.fields())
+42 |     feature_1.setAttribute('standard_land_value', standard_land_value)
+43 |     feature_1.setGeometry(geom)
+44 |     provider.addFeatures([feature_1])
+45 |     
+46 | # set paramters for file writer
+47 | destCRS = QgsCoordinateReferenceSystem(25832)
+48 | fileEncoding = ""UTF-8""
+49 | driverName =""ESRI Shapefile""
+50 | onlySelected = False
+51 | 
+52 | # write layer 
+53 | QgsVectorFileWriter.writeAsVectorFormat(layer, path+""./final_standard_land_value_muenster.shp"",
+54 | fileEncoding,destCRS, driverName, onlySelected)
+55 | # final layer path
+56 | final_layer_path =path+""./final_standard_land_value_muenster.shp""",,,,
+calibration,single_step_source_verified,qgis_api_train_only_v1,qgis_api_294b3c3b1e18da89831a70d70a6f67ac31c6a3440e25887d30b74404f693cb76_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_1380.py,1871e5090ebb1bd7ff664795bb7497d9bfacf428b0105a2b157a13eb7dc59e85,normalized_source_body_sha256:b3fd12353ecbf33e96a473468b2dc9643d7971c67c072517b0520869bb862379,创建凸包几何,计算输入几何的最小凸包，并将凸包几何写入输出要素。,"[""pyqgis:convexhull""]","[""L3_02_05_12""]",1,"209 |                         index = i
+210 |                 clusters[index].append(point)
+211 |         #Create symbology and add features
+212 |         for id, cluster in enumerate(clusters):
+213 |             geom = QgsGeometry.fromMultiPointXY(cluster)
+214 |             cHull = geom.convexHull()
+215 |             buffer = cHull.buffer(10, 3)
+216 |             feat = QgsFeature()
+217 |             feat.setAttributes([id, cHull.area(), int(len(cluster))])
+218 |             feat.setGeometry(buffer)
+219 |             self.sink.addFeature(feat, QgsFeatureSink.FastInsert)
+220 |             # feedback.pushInfo('addFeature: {} / {} points'.format(cHull, len(cluster)))
+221 | 
+222 |     # Euclidian Distance
+223 |     def pointDist(self, p1, p2):
+224 |         return math.sqrt(math.pow(p1.x()-p2.x(), 2)+math.pow(p1.y()-p2.y(), 2))",,,,
+calibration,very_long_chain_ge_10,qgis_processing_delivery_293_v1_source_verified,qgis_processing_qgis_blocker_direct_4118ecfb50af24251a8eaf6b_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_6266.py,1d6674adcc2b564b5351e8ef59531eab205241fcb72ec3cc32d2644ab39c2437,normalized_source_body_sha256:6b1888c61f71b43662ffaa1bf5b60c2ca650c4d049a03e43d8e7acea14eb2e41,计算坡度、执行栅格计算等处理,"在该 Processing 工作流中，对输入数据从高程栅格计算坡度；随后将前述坡度栅格用于执行栅格计算（表达式由工作流计算指定）；随后将前述坡度栅格用于执行栅格计算（表达式由工作流计算指定）；随后将前述计算后的栅格用于转换栅格为矢量面（栅格波段为 1，字段为 value）；随后将前述矢量面结果用于按表达式筛选要素（表达式为 ""value"" = 1）；随后将前述筛选结果用于重投影图层（目标坐标系为 EPSG:2154）；随后将前述重投影后的图层用于按表达式筛选要素（表达式由工作流计算指定）；随后将前述计算后的栅格用于转换栅格为矢量面（栅格波段为 1，字段为 value）；随后将前述矢量面结果用于按表达式筛选要素（表达式为 ""value"" = 1）；随后将前述筛选结果用于重投影图层（目标坐标系为 EPSG:2154）；随后将前述重投影后的图层用于创建缓冲区（距离为 20，DISSOLVE 为是，融合缓冲区）；随后使用前述步骤的处理结果按空间关系筛选要素（空间关系为 0）；随后将前述计算后的栅格用于按移动窗口计算栅格邻域统计量（处理方式为 0，SIZE由工作流计算指定）；随后使用前述步骤的处理结果按多边形分区计算栅格统计量并更新图层；随后将前述筛选结果用于按表达式筛选要素（表达式为 ""dens_mean"" >= 0.3 AND ""dens_mean"" <= 0.6），得到此 Processing 链的结果。","[""gdal:slope"", ""qgis:rastercalculator"", ""qgis:rastercalculator"", ""gdal:polygonize"", ""native:extractbyexpression"", ""native:reprojectlayer"", ""native:extractbyexpression"", ""gdal:polygonize"", ""native:extractbyexpression"", ""native:reprojectlayer"", ""native:buffer"", ""native:extractbylocation"", ""grass7:r.neighbors"", ""native:zonalstatistics"", ""native:extractbyexpression""]","[""L3_04_01_01"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_09_03"", ""L3_02_06_02"", ""L3_01_10_01"", ""L3_02_06_02"", ""L3_01_09_03"", ""L3_02_06_02"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_02_06_03"", ""L3_03_02_03"", ""L3_03_02_01"", ""L3_02_06_02""]",15,"28 | # =========================
+29 | 
+30 | pente = processing.run(
+31 |     ""gdal:slope"",
+32 |     {
+33 |         'INPUT': MNT,
+34 |         'BAND': 1,
+35 |         'SCALE': 1,
+36 |         'AS_PERCENT': False,
+37 |         'COMPUTE_EDGES': True,
+38 |         'ZEVENBERGEN': False,
+39 |         'OUTPUT': WORKDIR + ""/sortie/pente_deg_meth3.tif""
+40 |     }
+41 | )['OUTPUT']
+42 | 
+43 | # =========================
+...
+46 | 
+47 | # --- PENTES FAIBLES ---
+48 | pente_faible = processing.run(
+49 |     ""qgis:rastercalculator"",
+50 |     {
+51 |         'EXPRESSION': f'(""{pente}@1"" <= {PENTE_FAIBLE_MAX}) * 1',
+52 |         'LAYERS': [pente],
+53 |         'OUTPUT': WORKDIR + ""/sortie/pente_faible_meth3.tif""
+54 |     }
+55 | )['OUTPUT']
+56 | 
+57 | # --- PENTES FORTES ---
+58 | pente_forte = processing.run(
+59 |     ""qgis:rastercalculator"",
+60 |     {
+61 |         'EXPRESSION': f'(""{pente}@1"" >= {PENTE_FORTE_MIN}) * 1',
+62 |         'LAYERS': [pente],
+63 |         'OUTPUT': WORKDIR + ""/sortie/pente_forte_meth3.tif""
+64 |     }
+65 | )['OUTPUT']
+66 | 
+67 | # =========================
+...
+69 | # =========================
+70 | 
+71 | patchs_faibles = processing.run(
+72 |     ""gdal:polygonize"",
+73 |     {
+74 |         'INPUT': pente_faible,
+75 |         'BAND': 1,
+76 |         'FIELD': 'value',
+77 |         'OUTPUT': WORKDIR + ""/sortie/patchs_pente_faible_meth3.gpkg""
+78 |     }
+79 | )['OUTPUT']
+80 | 
+81 | # =========================
+...
+89 | # pour ne garder QUE les vraies pentes faibles
+90 | 
+91 | patchs_faibles_only = processing.run(
+92 |     ""native:extractbyexpression"",
+93 |     {
+94 |         'INPUT': patchs_faibles,
+95 |         'EXPRESSION': '""value"" = 1',
+96 |         'OUTPUT': WORKDIR + ""/sortie/patchs_pente_faible_only_meth3.gpkg""
+97 |     }
+98 | )['OUTPUT']
+99 | 
+100 | # =========================
+101 | # 5B. REPRPOJECTION DE LA COUCHE pentfaible only
+102 | # =========================
+103 | patchs_faible_proj = processing.run(
+104 |     ""native:reprojectlayer"",
+105 |     {
+106 |         'INPUT': patchs_faibles_only,
+107 |         'TARGET_CRS': 'EPSG:2154',  # Lambert-93 (France, mètres)
+108 |         'OUTPUT': WORKDIR + ""/sortie/patchs_faible_proj_meth3.gpkg""
+109 |     }
+110 | )['OUTPUT']
+111 | 
+112 | # =========================
+...
+114 | # =========================
+115 | 
+116 | patchs_faibles_net = processing.run(
+117 |     ""native:extractbyexpression"",
+118 |     {
+119 |         'INPUT': patchs_faible_proj,   # 
+120 |         'EXPRESSION': f""$area >= {SURFACE_MIN}"",
+121 |         'OUTPUT': WORKDIR + ""/sortie/patchs_pente_faible_net_meth3.gpkg""
+122 |     }
+123 | )['OUTPUT']
+124 | 
+125 | 
+...
+128 | # =========================
+129 | 
+130 | pente_forte_vect = processing.run(
+131 |     ""gdal:polygonize"",
+132 |     {
+133 |         'INPUT': pente_forte,
+134 |         'BAND': 1,
+135 |         'FIELD': 'value',
+136 |         'OUTPUT': WORKDIR + ""/sortie/pente_forte_meth3.gpkg""
+137 |     }
+138 | )['OUTPUT']
+139 | 
+140 | # 6B. EXTRACTION DES PENTES FORTES UNIQUEMENT (value = 1)
+...
+143 | # pour ne garder QUE les vraies pentes fortes
+144 | 
+145 | patchs_forte_only = processing.run(
+146 |     ""native:extractbyexpression"",
+147 |     {
+148 |         'INPUT': pente_forte_vect,
+149 |         'EXPRESSION': '""value"" = 1',
+150 |         'OUTPUT': WORKDIR + ""/sortie/patchs_pente_forte_only_meth3.gpkg""
+151 |     }
+152 | )['OUTPUT']
+153 | 
+154 | # 6C. REPROJECTION DE LA COUCHE penteforte only
+155 | # =========================
+156 | patchs_fort_proj = processing.run(
+157 |     ""native:reprojectlayer"",
+158 |     {
+159 |         'INPUT': patchs_forte_only,
+160 |         'TARGET_CRS': 'EPSG:2154',  # Lambert-93 (France, mètres)
+161 |         'OUTPUT': WORKDIR + ""/sortie/patchs_fort_proj_meth3.gpkg""
+162 |     }
+163 | )['OUTPUT']
+164 | # =========================
+165 | # 7. BUFFER AUTOUR DES PENTES FORTES
+166 | # =========================
+167 | 
+168 | buffer_forte = processing.run(
+169 |     ""native:buffer"",
+170 |     {
+171 |         'INPUT': patchs_fort_proj,
+172 |         'DISTANCE': BUFFER_DISTANCE,
+173 |         'DISSOLVE': True,
+174 |         'OUTPUT': WORKDIR + ""/sortie/buffer_pente_forte_meth3.gpkg""
+175 |     }
+176 | )['OUTPUT']
+177 | 
+178 | # =========================
+...
+180 | # =========================
+181 | 
+182 | patchs_proches = processing.run(
+183 |     ""native:extractbylocation"",
+184 |     {
+185 |         'INPUT': patchs_faibles_net,
+186 |         'PREDICATE': [0],  # intersect
+187 |         'INTERSECT': buffer_forte,
+188 |         'OUTPUT': WORKDIR + ""/sortie/patchs_pente_faible_proches_meth3.gpkg""
+189 |     }
+190 | )['OUTPUT']
+191 | 
+192 | # =========================
+...
+205 |     taille += 1
+206 | 
+207 | densite = processing.run(
+208 |     ""grass7:r.neighbors"",
+209 |     {
+210 |         'input': pente_forte,
+211 |         'method': 0,   # 0 = average (moyenne)
+212 |         'size': taille,
+213 |         'output': WORKDIR + ""/sortie/densite_pente_forte_meth3.tif"",
+214 |         'GRASS_REGION_PARAMETER': None,
+215 |         'GRASS_REGION_CELLSIZE_PARAMETER': 0,
+216 |         'GRASS_RASTER_FORMAT_OPT': '',
+217 |         'GRASS_RASTER_FORMAT_META': ''
+218 |     }
+219 | )['output']
+220 | 
+221 | 
+...
+225 | # =========================
+226 | 
+227 | processing.run(
+228 |     ""qgis:zonalstatistics"",
+229 |     {
+230 |         'INPUT_VECTOR': patchs_proches,
+231 |         'INPUT_RASTER': densite,
+232 |         'RASTER_BAND': 1,
+233 |         'COLUMN_PREFIX': 'dens_'
+234 |     }
+235 | )
+236 | 
+237 | # 11. SÉLECTION DES PATCHS AVEC 0.3 ≤ dens_mean ≤ 0.6
+238 | # =========================
+239 | 
+240 | patchs_optimaux = processing.run(
+241 |     ""native:extractbyexpression"",
+242 |     {
+243 |         'INPUT': patchs_proches,
+244 |         'EXPRESSION': '""dens_mean"" >= 0.3 AND ""dens_mean"" <= 0.6',
+245 |         'OUTPUT': WORKDIR + ""/sortie/patchs_terrasses_optimaux_meth3.gpkg""
+246 |     }
+247 | )['OUTPUT']
+248 | 
+249 | # =========================",,,,
+calibration,local_macro_boundary,qgis_api_vector_file_export_train_only_v1,qgis_api_vfe_1b5a8d939db38b33a173eabd04832462472ba24dc13142ecc0271960add645b9_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_53920.py,e31839930ad88eb19749bd1279a74c5024e245085c7fb90666a9fd0693751c93,normalized_source_body_sha256:b619b63ce7d7164017613449419756d4beb3878478658f896510881369ebc0df,保存选中的矢量要素为 GeoJSON,将已准备矢量图层中选中的要素写入GeoJSON数据集。,"[""pyqgis:save_vector_features_to_file""]","[""L3_07_04_01""]",1,"19 |         # write geojson
+20 |         JSONpath = ""/home/user/git/ProjectPlugin/data/gemeenten_2014.geojson""
+21 |         QgsVectorFileWriter.writeAsVectorFormat(layer, JSONpath, ""utf-8"", None, ""GeoJSON"", onlySelected=True)
+22 |         
+23 |         # delete gemeenten wfs from qgis",,,,
+calibration,local_macro_boundary,qgis_api_add_field_existing_layer_train_only_v1,qgis_api_af_8aaf7750a14ac1c1969cdb8e34290bede36265b3e2e8c67f4cdb680dd28c43b4_train_v1,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0007719.py,9e1f7b3d0a2f09e3328797206d55c5693cbc7e47d244eb6a5a4603115745cccd,normalized_source_body_sha256:53b64f26efd27d8b5bc5c1dbbeecf1cff27f5b5f4548ebb801b13bce31070b0e,新增字段 Admission,向现有矢量图层新增字段 Admission，并提交字段结构更新。,"[""pyqgis:add_field""]","[""L3_01_02_01""]",1,"13 | vectorLyr =  QgsVectorLayer('/qgis_data/nyc/NYC_MUSEUMS_GEO.shp', 'Museums' , ""ogr"")
+14 | vectorLyr.isValid()
+15 | vpr = vectorLyr.dataProvider()
+16 | vpr.addAttributes([QgsField(""Admission"", QVariant.Double)])
+17 | vectorLyr.updateFields()",,,,
+calibration,local_macro_boundary,qgis_api_set_crs_train_only_v1,qgis_api_scrs_020ca97b3f078870d729614a5593be45f4f18c9ac2d2bde40d3d2cd6fc411810_train_v1,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0015759.py,c58eeec6767e63dbcc8081f021d2a53daa4d2e6c460afffd2a128bfa0f6ca509,normalized_source_body_sha256:d33316d2e55971de238c9d955fa858af3b5a95fbdcf9b3d680477d52906b2fa6,按源图层的坐标参考系定义矢量图层坐标系,将矢量图层的坐标参考系元数据设置为源图层的坐标参考系，不变换图层中的坐标值。,"[""pyqgis:set_layer_crs_metadata""]","[""L3_01_10_02""]",1,"213 |             geometry_type = self._get_geometry_type_string(template_layer.geometryType())
+214 |             uri = f""{geometry_type}?crs={template_layer.crs().authid()}""
+215 |             new_layer = QgsVectorLayer(uri, layer_name, 'memory')
+216 | 
+217 |             # Copy fields from template
+221 |                 new_layer.updateFields()
+222 |             if template_layer.crs():
+223 |                 new_layer.setCrs(template_layer.crs())
+224 | 
+225 |         else:",,,,
+calibration,single_step_source_verified,qgis_api_random_point_train_only_v1,qgis_api_bfefb655429a7b0a28cb72e4bcc513782203e0de689fa67874ec1988b90be16a_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3559.py,4e706ae929719ca8b25995efe70e5190a841650db9d7affbeb662c2ca09a22bb,normalized_source_body_sha256:3cdfa204347adffa67d3518e121e274bcce87047a7f0de8a56057d0d79eb39b4,按数量或密度在多边形内采样点,按指定数量或面积密度确定每个多边形的采样点数，在对应多边形内部随机生成满足最小距离约束的点，并写入输出点图层。,"[""pyqgis-pattern:random_point_sampling""]","[""L3_02_06_06""]",1,"def processAlgorithm(self, parameters, context, feedback):
+        source = self.parameterAsSource(parameters, self.INPUT, context)
+        if source is None:
+            raise QgsProcessingException(
+                self.invalidSourceError(parameters, self.INPUT)
+            )
+
+        strategy = self.parameterAsEnum(parameters, self.STRATEGY, context)
+        if (
+            self.MIN_DISTANCE in parameters
+            and parameters[self.MIN_DISTANCE] is not None
+        ):
+            minDistance = self.parameterAsDouble(parameters, self.MIN_DISTANCE, context)
+        else:
+            minDistance = None
+
+        expressionContext = self.createExpressionContext(parameters, context, source)
+        dynamic_value = QgsProcessingParameters.isDynamic(parameters, ""VALUE"")
+        value_property = None
+        if self.EXPRESSION in parameters and parameters[self.EXPRESSION] is not None:
+            expression = QgsExpression(
+                self.parameterAsString(parameters, self.EXPRESSION, context)
+            )
+            value = None
+            if expression.hasParserError():
+                raise QgsProcessingException(expression.parserErrorString())
+            expression.prepare(expressionContext)
+        else:
+            expression = None
+            if dynamic_value:
+                value_property = parameters[""VALUE""]
+            value = self.parameterAsDouble(parameters, self.VALUE, context)
+
+        fields = QgsFields()
+        fields.append(QgsField(""id"", QMetaType.Type.Int, """", 10, 0))
+
+        (sink, dest_id) = self.parameterAsSink(
+            parameters,
+            self.OUTPUT,
+            context,
+            fields,
+            QgsWkbTypes.Type.Point,
+            source.sourceCrs(),
+            QgsFeatureSink.SinkFlag.RegeneratePrimaryKey,
+        )
+        if sink is None:
+            raise QgsProcessingException(self.invalidSinkError(parameters, self.OUTPUT))
+
+        da = QgsDistanceArea()
+        da.setSourceCrs(source.sourceCrs(), context.transformContext())
+        da.setEllipsoid(context.ellipsoid())
+
+        total = 100.0 / source.featureCount() if source.featureCount() else 0
+        current_progress = 0
+        pointId = 0
+        for current, f in enumerate(source.getFeatures()):
+            if feedback.isCanceled():
+                break
+
+            if not f.hasGeometry():
+                continue
+
+            current_progress = total * current
+            feedback.setProgress(current_progress)
+
+            this_value = value
+            if value_property is not None or expression is not None:
+                expressionContext.setFeature(f)
+                if value_property:
+                    this_value, _ = value_property.valueAsDouble(
+                        expressionContext, value
+                    )
+                else:
+                    this_value = expression.evaluate(expressionContext)
+                    if expression.hasEvalError():
+                        feedback.pushInfo(
+                            self.tr(""Evaluation error for feature ID {}: {}"").format(
+                                f.id(), expression.evalErrorString()
+                            )
+                        )
+                        continue
+
+            fGeom = f.geometry()
+            engine = QgsGeometry.createGeometryEngine(fGeom.constGet())
+            engine.prepareGeometry()
+
+            bbox = fGeom.boundingBox()
+            if strategy == 0:
+                pointCount = int(this_value)
+            else:
+                pointCount = int(round(this_value * da.measureArea(fGeom)))
+
+            if pointCount == 0:
+                feedback.pushInfo(
+                    self.tr(""Skip feature {} as number of points for it is 0."").format(
+                        f.id()
+                    )
+                )
+                continue
+
+            index = None
+            if minDistance:
+                index = QgsSpatialIndex()
+            points = {}
+
+            nPoints = 0
+            nIterations = 0
+            maxIterations = pointCount * 200
+            feature_total = total / pointCount if pointCount else 1
+
+            random.seed()
+
+            while nIterations < maxIterations and nPoints < pointCount:
+                if feedback.isCanceled():
+                    break
+
+                rx = bbox.xMinimum() + bbox.width() * random.random()
+                ry = bbox.yMinimum() + bbox.height() * random.random()
+
+                p = QgsPointXY(rx, ry)
+                geom = QgsGeometry.fromPointXY(p)
+                if engine.contains(geom.constGet()) and (
+                    not minDistance
+                    or vector.checkMinDistance(p, index, minDistance, points)
+                ):
+                    f = QgsFeature(nPoints)
+                    f.initAttributes(1)
+                    f.setFields(fields)
+                    f.setAttribute(""id"", pointId)
+                    f.setGeometry(geom)
+                    sink.addFeature(f, QgsFeatureSink.Flag.FastInsert)
+                    if minDistance:
+                        index.addFeature(f)
+                    points[nPoints] = p
+                    nPoints += 1
+                    pointId += 1
+                    feedback.setProgress(
+                        current_progress + int(nPoints * feature_total)
+                    )
+                nIterations += 1
+
+            if nPoints < pointCount:
+                feedback.pushInfo(
+                    self.tr(
+                        ""Could not generate requested number of random ""
+                        ""points. Maximum number of attempts exceeded.""
+                    )
+                )
+
+        feedback.setProgress(100)
+        sink.finalize()
+        return {self.OUTPUT: dest_id}",,,,
+calibration,multistep_chain_2_4,qgis_api_add_calculate_field_train_only_v1,qgis_api_acf_6b75fb109f4518549ef62782d8eca572392720847617d9aa2da88db5497e035d_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4789.py,853c776ba2dab5063cefc024ce042134dab715b54cb7b0082d40a3b52506a9ea,normalized_source_body_sha256:816a645cf157b7f4c4a62e6c2dc2ee873cebb665e8a4ace3aaa796fdf4088365,新增并计算字段 env_value,向现有矢量图层新增字段 env_value，按已验证的计算表达式逐要素计算并写入该字段。,"[""pyqgis:add_field"", ""pyqgis:calculate_field""]","[""L3_01_02_01"", ""L3_01_02_06""]",2,"333 | 
+334 | # ---- code cell 20 ----
+335 | def calculateEnvValue(in_feat,weights):
+336 |     in_feat.dataProvider().addAttributes([QgsField(""env_value"",QVariant.Double)])
+337 |     in_feat.updateFields()
+338 | 
+339 |     with edit(in_feat):
+340 |         for feat in in_feat.getFeatures():
+341 |             feat['env_value'] = feat['biodn']*weights['BIO']+feat['pRetentn']*weights['NP']+feat['DTW_1n']*weights['DTW']+feat['dtreen']*weights['LP']
+342 |             
+343 |             #normalizeValue(in_feat,'env_value',None,False)
+344 |             in_feat.updateFeature(feat)
+345 | 
+346 | 
+347 | # ---- code cell 21 ----",,,,
+calibration,local_macro_boundary,qgis_api_add_field_existing_layer_train_only_v1,qgis_api_af_44780807916f6dfbcbd29d9233eabc66ef5181f7bc09b51df5e555f3de14c059_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_13592.py,85c89b21c578cbe8fa3557a8d8cebb95c8bbea4aeff155684105f719b943ba7f,normalized_source_body_sha256:3f60f1f7d1d59e2549d04d1176db858ca49b1d23f30bf22981020035559eb21a,新增字段 etiquetas,向现有矢量图层新增字段 etiquetas，并提交字段结构更新。,"[""pyqgis:add_field""]","[""L3_01_02_01""]",1,"116 |     # create label in field table
+117 |     def createLabels(self, layer):
+118 |         layer_provider = layer.dataProvider()
+119 |         layer_provider.addAttributes([QgsField(""etiquetas"",QVariant.Int)])
+120 |         layer.updateFields()
+121 |         #QgsMessageLog.logMessage(layer.name(), 'K-Means plugin', level=Qgis.Info)
+122 |         
+123 |     # update labels value in field table",,,,
+holdout,local_macro_boundary,qgis_api_create_feature_class_train_only_v1,qgis_api_cff_5d7cc5db693fd51584c6de3e27e94813531385d7640fa7abf606047de66ea752_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_7045.py,bc5253bd188c80ebe7d12f3bcca2467c845d589e28ae34e7c4085689b2868fcd,normalized_source_body_sha256:051bafc97fca4d79fc41d291625c9f67769aede79a3a17af4cdae00291139663,创建点要素类,创建新的点要素类，使用已准备的字段结构，写入已准备的要素，并保存为ESRI Shapefile 数据。,"[""pyqgis:create_feature_class""]","[""L3_01_01_01""]",1,"46 |             
+47 |             # Create a new memory layer for the current county
+48 |             crs = point_layer.crs()
+49 |             county_layer = QgsVectorLayer(f""Point?crs={crs.toWkt()}"", f""{county} County"", ""memory"")
+50 |             provider = county_layer.dataProvider()
+51 |             
+52 |             # Add fields to the new layer
+53 |             fields = point_layer.fields()
+54 |             provider.addAttributes(fields)
+55 |             county_layer.updateFields()
+56 |             
+57 |             # Add features to the new layer
+58 |             for feature in selected_features:
+59 |                 new_feature = QgsFeature()
+60 |                 new_feature.setGeometry(feature.geometry())
+61 |                 new_feature.setAttributes(feature.attributes())
+62 |                 provider.addFeature(new_feature)
+63 |             
+64 |             # Add the new layer to the map
+65 |             QgsProject.instance().addMapLayer(county_layer)
+66 |             
+67 |             # Save the new layer to a file
+68 |             save_path = f""{save_directory}/{county}_County.shp""
+69 |             QgsVectorFileWriter.writeAsVectorFormat(
+70 |                 county_layer,
+71 |                 save_path,
+72 |                 ""UTF-8"",",,,,
+holdout,long_chain_5_9,qgis_processing_delivery_293_v1_source_verified,qgis_existing_l3_15b7a3daba36741b02491fae,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0010892.py,15b7a3daba36741b02491fae5b1428b9b4e26bda8d3ca4ab582cb8b680715d77,normalized_source_body_sha256:62711d7f65a144e6ae215fa7436323dd766ab174340d0ca5dde4e300e6be13d5,按长度切分线、按栅格设置 Z 坐标等处理,"在该 Processing 工作流中，对输入数据按最大长度将线要素切分为连续线段；随后将前述按指定长度切分后的线图层用于按栅格采样值设置要素几何的 Z 坐标；随后将前述带栅格高程 Z 值的要素图层用于提取要素几何的 Z 值；随后将前述带 Z 值属性的要素用于计算字段值（目标字段为 Length，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为  $length ）；随后将前述更新字段的图层用于计算字段值（目标字段为 Slope_%，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 (abs(""z_first"" - ""z_last"") / ""length"" ) *100），得到此 Processing 链的结果。","[""native:splitlinesbylength"", ""native:setzfromraster"", ""native:extractzvalues"", ""native:fieldcalculator"", ""native:fieldcalculator""]","[""L3_02_05_19"", ""L3_02_05_18"", ""L3_01_02_06"", ""L3_01_02_06"", ""L3_01_02_06""]",5,"65 |         outputs['SplitLinesByMaximumLength'] = processing.run('native:splitlinesbylength', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+80 |         outputs['DrapeSetZValueFromRaster'] = processing.run('native:setzfromraster', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+93 |         outputs['ExtractZValues'] = processing.run('native:extractzvalues', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+109 |         outputs['FieldCalculator1'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+125 |         outputs['FieldCalculator2'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)",,,,
+holdout,local_macro_boundary,qgis_api_set_crs_train_only_v1,qgis_api_scrs_02069a0b6085adff85de6fb93bd0e59c7228252ffa3d0c69988d39266cd829d7_train_v1,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/Kartverket_adresse-API__1.1/kartverket_adresse/kartverket_adresse.py,30ff4c29c9cd5015281bbd98cdbdef376847f6e61465141777f10d587a915c13,normalized_source_body_sha256:e26b75a7bd30ed7aaa74a1c927bf813b9b593f9a298953b375a6087f39bc05f3,按源码或调用参数提供的 CRS 标识定义矢量图层坐标系,将矢量图层的坐标参考系元数据设置为源码或调用参数提供的 CRS 标识，不变换图层中的坐标值。,"[""pyqgis:set_layer_crs_metadata""]","[""L3_01_10_02""]",1,"265 |     def createlayer(self,crsstring,sok=''):
+266 |         # create layer to hold address information
+267 |         vl = QgsVectorLayer(""Point"", f""Adresseoppslag - {sok}"", ""memory"")
+268 |         pr = vl.dataProvider()
+269 |         crs = QgsCoordinateReferenceSystem(crsstring)
+270 |         vl.setCrs(crs)
+271 |         pr.addAttributes([
+272 |             QgsField(""adressenavn"", QVariant.String),",,,,
+holdout,local_macro_boundary,qgis_api_raster_calculator_train_only_v1,qgis_api_rc_ce58e17ae6dc388fb056239943a6e62c1b6b552595e972cefd6ac01d77c26489_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_29798.py,1a66581e4d63370e6bd1fb20510966b157aeb943e4f153f80ce126431d2a8e1c,normalized_source_body_sha256:2e9dea30775200bc0c02a12f8895afc9c1ab42c410d157b17aff464b59dbc9cd,按明确表达式执行栅格计算,"按栅格表达式“((""result1@1"">""result2@1"")*""result1@1"")+((""result2@1"">""result1@1"")*""result2@1"")”计算输入栅格，并将计算结果写出为新的栅格数据。","[""pyqgis:raster_calculator""]","[""L3_03_03_A""]",1,"286 |     # merge layers
+287 |     def merge_layer(self, result1, result2):
+288 |         map1 = QgsRasterLayer(result1, QFileInfo(result1).baseName())
+289 |         entries = []
+290 |         ras1 = QgsRasterCalculatorEntry()
+291 |         ras1.ref = 'result1@1'
+292 |         ras1.raster = map1
+293 |         ras1.bandNumber = 1
+294 |         entries.append(ras1)
+295 |         
+296 |         map2 = QgsRasterLayer(result2, QFileInfo(result2).baseName())
+297 |         ras2 = QgsRasterCalculatorEntry()
+298 |         ras2.ref = 'result2@1'
+299 |         ras2.raster = map2
+300 |         ras2.bandNumber = 1
+301 |         entries.append(ras2)
+302 |         
+303 |         output_dir = self.dlg.lineEdit_2.text() 
+304 |         sum_culc = QgsRasterCalculator('((""result1@1"">""result2@1"")*""result1@1"")+((""result2@1"">""result1@1"")*""result2@1"")', output_dir+'/cost_map.tif', 'GTiff', map1.extent(), map1.width(), map1.height(), entries)
+305 |         #sum_culc = QgsRasterCalculator('((""result1@1"">""result2@1"")*""result1@1"")+((""result2@1"">""result1@1"")*""result2@1"")', '/home/tera/maps/cost_map.tif', 'GTiff', map1.extent(), map1.width(), map1.height(), entries)
+306 |         sum_culc.processCalculation()
+307 |         out = QgsRasterLayer(output_dir + ""/cost_map.tif"", ""cost_map"")
+308 |         out_filePath = out.publicSource()
+309 |         return out_filePath",,,,
+holdout,multistep_chain_2_4,qgis_api_add_calculate_field_train_only_v1,qgis_api_acf_c23a430ec3978f1e4218cdbb18972c9a03854930398fa26c3f85e8c35a765329_train_v1,/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0005770.py,0b2f7fe17698a1c013d13c7fcf40b52167196a1cccc0be3030da7341785c882e,normalized_source_body_sha256:3df27ced33ae958ad9acceb771efecc715a8ea9fc1f328d3dcdfef25caf6df0e,新增并计算字段 Area_m2、Confid_Lev、NNMLF_1_Or、NNMLF_2_Or、NNMLF_3_Or,向现有矢量图层新增字段 Area_m2、Confid_Lev、NNMLF_1_Or、NNMLF_2_Or、NNMLF_3_Or，按已定义的 QGIS 表达式逐要素计算并写入相应字段。,"[""pyqgis:add_field"", ""pyqgis:calculate_field""]","[""L3_01_02_01"", ""L3_01_02_06""]",2,"577 |             layer_selec_dp = layer_selec.dataProvider()
+578 | 
+579 |            ##  Passo 2. Definir os campos de atributos e o seu tipo
+580 |             layer_selec_dp.addAttributes([QgsField(""NNMLF_1_Or"",  QVariant.String),
+581 |                                           QgsField(""NNMLF_2_Or"",  QVariant.String),
+582 |                                           QgsField(""NNMLF_3_Or"",  QVariant.String),
+583 |                                           QgsField(""Confid_Lev"",  QVariant.String),
+584 |                                           QgsField(""Area_m2"",  QVariant.Double)])
+585 |          
+586 |            ##  Passo 3. Atualizar os campos da tabela de atributos para o campo criado aparecer
+587 |             layer_selec.updateFields()      # ATENÇÃO: Atualiza o layer_selec
+588 |          
+589 |            ##  Passo 4. Preenche os campos criados
+590 |             expr_Area = QgsExpression('{}'.format(round(Area, 3)))
+591 |             context = QgsExpressionContext() # Cria o contexto
+592 |             context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer_selec)) # Cria o contexto
+593 |             string_Pri_Ord = str(Padrao_Pri_Ord)
+594 |             string_Seg_Ord = str(Padrao_Seg_Ord)
+595 |             string_Ter_Ord = str(Padrao_Ter_Ord)
+596 |             string_Confid_Lev = str(nivel_confianca)
+597 |             with edit(layer_selec): # Edita o campo criado e preenche com a expressão
+598 |               for f in layer_selec.getFeatures():
+599 |                 context.setFeature(f)
+600 |                 f['NNMLF_1_Or'] = string_Pri_Ord
+601 |                 f['NNMLF_2_Or'] = string_Seg_Ord
+602 |                 f['NNMLF_3_Or'] = string_Ter_Ord
+603 |                 f['Confid_Lev'] = string_Confid_Lev
+604 |                 f['Area_m2'] = expr_Area.evaluate(context)
+605 |                 layer_selec.updateFeature(f)
+606 | 
+607 |             QMessageBox.information(None, ""NNMLF Result"", f""Input Data: \n""
+608 |                                     f""   Layer: {str(nome_layer_selec)}           Area: {area:0.3f} {str(unidade_area)}           \n"" # Area",,,,
+holdout,local_macro_boundary,qgis_api_add_field_existing_layer_train_only_v1,qgis_api_af_c01e73f1477eaafbf90e3a8b88210fc0506e5be789637a3e4497b6d4ec98e7d8_train_v1,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/Wtyczka_GIS_Support__3.0/gissupport_plugin/modules/gugik_nmt/gui/gugik_nmt_plugin_dockwidget.py,1386c7f40c422029b01e9072761387b0e911e3a4e3c5f8e0d4edec14a8dcc415,normalized_source_body_sha256:91874e41bd4446b855fe9ea127af0bc433516aff48b584c8c15bb58b7677e6e6,新增字段 nmt_wys,向现有矢量图层新增字段 nmt_wys，并提交字段结构更新。,"[""pyqgis:add_field""]","[""L3_01_02_01""]",1,"192 |         """""" Utworzenie nowego pola i zwrócenie jego id """"""
+193 |         #Dodanie nowego pola o podanych parametrach
+194 |         data_provider = layer.dataProvider()
+195 |         data_provider.addAttributes([QgsField('nmt_wys', QVariant.Double)])
+196 |         layer.updateFields()
+197 |         #Znalezienie id pola
+198 |         field_id = data_provider.fields().indexFromName('nmt_wys')
+199 |         return field_id",,,,
+holdout,local_macro_boundary,qgis_api_vector_file_export_train_only_v1,qgis_api_vfe_03d3171b69e8b16779af8c6299dbbe26406e62f7e3fdd57d50863916394947a9_train_v1,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005444.py,a79484d9043b97208947fbe1bdbff2853d13f673e50a3c413c4902d128ea7585,normalized_source_body_sha256:31bdb42bc4214f98ebcf69527f517393654c56425a5e274422234e77259e716e,保存选中的矢量要素为 ESRI Shapefile,将已准备矢量图层中选中的要素写入ESRI Shapefile数据集。,"[""pyqgis:save_vector_features_to_file""]","[""L3_07_04_01""]",1,"29 |         in_layer.selectByIds([s.id() for s in selection])
+30 | 
+31 |         QgsVectorFileWriter.writeAsVectorFormat(in_layer, out_features,  ""utf-8"", in_layer.crs(), ""ESRI Shapefile"", onlySelected=True)
+32 | ",,,,
+holdout,multistep_chain_2_4,qgis_processing_delivery_293_v1_source_verified,qgis_existing_l3_02b86d787966cef28bfa6a2a,/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0004144.py,02b86d787966cef28bfa6a2a237670b28c34edae64711683371dcc80a39f34bc,normalized_source_body_sha256:8c323e8dc6e27a691b8c30919e6f8f5196bcc5be995133cb22d1f3bfda6af082,矢量栅格化、计算坡度等处理,在该 Processing 工作流中，对输入数据将矢量几何栅格化（字段由调用输入指定，栅格化值为 0，单位模式为 1）；随后将前述栅格化结果用于计算坡度栅格（高程缩放因子为 1）；随后将前述栅格化结果用于从高程栅格计算坡向；随后将前述栅格化结果用于从高程栅格计算地形崎岖度指数，得到此 Processing 链的结果。,"[""gdal:rasterize"", ""native:slope"", ""native:aspect"", ""native:ruggednessindex""]","[""L3_01_09_03"", ""L3_04_01_01"", ""L3_04_01_02"", ""L3_04_02_02""]",4,"1254 |             res = processing.run(""gdal:rasterize"", {'INPUT':v,'FIELD':field,'BURN':0,'UNITS':1,'WIDTH':xspacing,'HEIGHT':yspacing,'EXTENT':v.extent(),'NODATA':-9999,'OPTIONS':'','DATA_TYPE':5,'INIT':None,'INVERT':False,'EXTRA':'','OUTPUT':os.path.join(outDir, 'dem.tif')})
+...
+1255 |             processing.run(""qgis:slope"", {'INPUT':res['OUTPUT'],'Z_FACTOR':1,'OUTPUT':os.path.join(outDir, 'slope.tif')})
+...
+1256 |             processing.run(""qgis:aspect"", {'INPUT':res['OUTPUT'],'Z_FACTOR':1,'OUTPUT':os.path.join(outDir, 'aspect.tif')})
+...
+1257 |             processing.run(""qgis:ruggednessindex"", {'INPUT':res['OUTPUT'],'Z_FACTOR':1,'OUTPUT':os.path.join(outDir, 'ruggednessindex.tif')})",,,,
+holdout,local_macro_boundary,qgis_api_raster_calculator_train_only_v1,qgis_api_rc_2a0ffba62f061e57d861772992e75730a04048f85563f9ceb6709b6663dd030d_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_45479.py,01a9853acd6e8cf69972817d3347e2ccbf911bbfd3ab940b2e5d267f6e120266,normalized_source_body_sha256:4c3b84c850c3274e3e0abff851e51680604f115e83e16397ab7ab2f37d3b03af,按明确表达式执行栅格计算,按栅格表达式“-1 * (primitivo@1 - modificado@1)”计算输入栅格，并将计算结果写出为新的栅格数据。,"[""pyqgis:raster_calculator""]","[""L3_03_03_A""]",1,"620 |             return
+621 | 
+622 |         # Definir a extensão de interseção entre os dois rasters
+623 |         intersection_extent = raster_primitivo.extent().intersect(raster_modificado.extent())
+624 | 
+625 |         if intersection_extent.isEmpty():
+626 |             return
+627 | 
+628 |         # Calcular a resolução com base no raster primitivo
+629 |         resolution_x = raster_primitivo.rasterUnitsPerPixelX()
+630 |         resolution_y = raster_primitivo.rasterUnitsPerPixelY()
+631 | 
+632 |         # Calcular o número de colunas e linhas para a extensão de interseção
+633 |         width = int(intersection_extent.width() / resolution_x)
+634 |         height = int(intersection_extent.height() / resolution_y)
+635 | 
+636 |         # Definir o caminho de saída para o raster resultante
+637 |         temp_fd, temp_path = tempfile.mkstemp(suffix='.tif')
+638 |         os.close(temp_fd)  # Fechar o arquivo temporário
+639 | 
+640 |         # Criar as entradas para o QgsRasterCalculator
+641 |         entries = []
+642 | 
+643 |         entry_primitivo = QgsRasterCalculatorEntry()
+644 |         entry_primitivo.raster = raster_primitivo
+645 |         entry_primitivo.bandNumber = 1  # Usar a banda 1
+646 |         entry_primitivo.ref = 'primitivo@1'
+647 |         entries.append(entry_primitivo)
+648 | 
+649 |         entry_modificado = QgsRasterCalculatorEntry()
+650 |         entry_modificado.raster = raster_modificado
+651 |         entry_modificado.bandNumber = 1  # Usar a banda 1
+652 |         entry_modificado.ref = 'modificado@1'
+653 |         entries.append(entry_modificado)
+654 | 
+655 |         # Expressão de cálculo: -(primitivo - modificado)
+656 |         expression = '-1 * (primitivo@1 - modificado@1)'
+657 | 
+658 |         # Número total de etapas para o progresso
+659 |         total_steps = width * height
+660 | 
+661 |         # Inicializa a barra de progresso
+662 |         progress_bar, progress_message = self.iniciar_progress_bar(total_steps)
+663 | 
+664 |         # Criar o objeto QgsRasterCalculator para realizar a operação
+665 |         calculator = QgsRasterCalculator(expression, temp_path, 'GTiff', intersection_extent, width, height, entries)
+666 | 
+667 |         # Captura o tempo inicial
+668 |         start_time = time.time()
+669 | 
+670 |         # Inicia o cálculo e atualiza a barra de progresso a cada linha processada
+671 |         result = 0
+672 |         for i in range(height):
+673 |             progress_bar.setValue(i * width)  # Atualiza a barra de progresso
+674 |             QCoreApplication.processEvents()  # Permite a atualização da interface
+675 |             # Simula o cálculo parcial para cada linha do raster (exemplo fictício)
+676 |             # Este é apenas um exemplo e deve ser substituído pelo cálculo real
+677 |             if result != 0:
+678 |                 self.mostrar_mensagem(f""Erro ao calcular a diferença dos rasters: {result}"", ""Erro"", 5)
+679 |                 break
+680 | 
+681 |         # Finaliza o cálculo do raster
+682 |         result = calculator.processCalculation()
+683 | 
+684 |         # Calcula o tempo total gasto
+685 |         total_time = time.time() - start_time",,,,
+holdout,long_chain_5_9,qgis_processing_delivery_293_v1_source_verified,qgis_stable101_r6_processing_csv_train_v1,/home/qy/system_redesign/爬取GithubQGIS/QGIS_standard_multi_operator_workflows_v2/downloaded_scripts/script_0000872.py,7dd1ed85b18e93df4e0ffcc10b73e21c52fc137c5da04498cfa376cc3f487f54,source_sha256:7dd1ed85b18e93df4e0ffcc10b73e21c52fc137c5da04498cfa376cc3f487f54,清洗筛选矢量并按字段模板导出,先修复输入矢量几何；若设置筛选字段则可选地按属性条件筛选要素，若目标坐标系不同则可选地重投影；随后按两个字段模板依次重构属性，并保存整理后的矢量结果。,"[""native:fixgeometries"", ""native:extractbyattribute"", ""native:reprojectlayer"", ""native:refactorfields"", ""native:refactorfields"", ""native:savefeatures""]","[""L3_01_05_02"", ""L3_02_06_02"", ""L3_01_10_01"", ""L3_01_02_03"", ""L3_01_02_03"", ""L3_07_04_01""]",6," 118 |         }
+ 119 |         outputs['FixGeometries'] = processing.run(
+ 120 |             'native:fixgeometries', alg_params,
+ 121 |             context=context, feedback=feedback, is_child_algorithm=True
+ 122 |         )
+ 123 | 
+...
+ 147 |             }
+ 148 |             outputs['ExtractByAttribute'] = processing.run(
+ 149 |                 'native:extractbyattribute', alg_params,
+ 150 |                 context=context, feedback=feedback, is_child_algorithm=True
+ 151 |             )
+ 152 |             source_for_next = outputs['ExtractByAttribute']['OUTPUT']
+...
+ 169 |             }
+ 170 |             outputs['ReprojectLayer'] = processing.run(
+ 171 |                 'native:reprojectlayer', alg_params,
+ 172 |                 context=context, feedback=feedback, is_child_algorithm=True
+ 173 |             )
+ 174 |             source_for_next = outputs['ReprojectLayer']['OUTPUT']
+...
+ 204 |         }
+ 205 |         outputs['RefactorFields'] = processing.run(
+ 206 |             'native:refactorfields', alg_params,
+ 207 |             context=context, feedback=feedback, is_child_algorithm=True
+ 208 |         )
+ 209 | 
+...
+ 254 |         }
+ 255 |         outputs['PrepareForCSV'] = processing.run(
+ 256 |             'native:refactorfields', alg_params,
+ 257 |             context=context, feedback=feedback, is_child_algorithm=True
+ 258 |         )
+ 259 |         layer_for_csv = outputs['PrepareForCSV']['OUTPUT']
+...
+ 274 |         }
+ 275 |         outputs['SaveCSV'] = processing.run(
+ 276 |             'native:savefeatures', save_params,
+ 277 |             context=context, feedback=feedback, is_child_algorithm=True
+ 278 |         )
+ 279 | ",,,,
+holdout,local_macro_boundary,qgis_api_vector_file_export_train_only_v1,qgis_api_vfe_e9de81623243c58f67815a32788ac8d1a5e4a1836b6becb0c9d70e3a8f8cacec_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_25465.py,b9793a7e0b8b8708e9b3c6cfb550886f8aa1412a5ae5ecb4d628191f68772137,normalized_source_body_sha256:39c745ef297fa2c25c2b3060f20853e320f13186f9ff4be84c5043a605e97729,保存选中的矢量要素为 XLSX,将已准备矢量图层中选中的要素写入XLSX数据集。,"[""pyqgis:save_vector_features_to_file""]","[""L3_07_04_01""]",1,"53 |         layer = QgsProject.instance().mapLayersByName('locations shp')[0]
+54 |         excel = 'C:/Temp/layer.xlsx'
+55 |         QgsVectorFileWriter.writeAsVectorFormat(layer, excel, ""System"", layer.crs(), ""XLSX"", onlySelected=True)
+56 |         self.dlg.lbl_Message.setText('Excel exported!')
+57 |         ",,,,
+holdout,single_step_source_verified,qgis_api_train_only_v1,qgis_api_27c969d3286a04cedd32487699f1d3c5479aa5e4a5c8fc80cdca2f19ad896f95_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_52067.py,17972db2d1949c3412f5a138c0326f462b5f95626b12eb11c247ca151739e86d,normalized_source_body_sha256:2ce48475d37f9732b6b3b2f6844cd4d3e5e3189372b42c7e6b10987ff0a3e920,简化要素几何,按指定容差简化输入要素的几何，并将简化结果写入输出要素。,"[""pyqgis:simplify""]","[""L3_02_05_01""]",1,"283 |         for f in selection:
+284 |           featGeometry = QgsGeometry( f.geometry() )
+285 |           attrMap = f.attributes()
+286 | 
+287 |           pointsBefore += geomVertexCount( featGeometry )
+288 |           newGeometry = featGeometry.simplify( self.tolerance )
+289 |           pointsAfter += geomVertexCount( newGeometry )
+290 | 
+291 |           feature = QgsFeature()
+292 |           feature.setGeometry( newGeometry )
+293 |           feature.setAttributes( attrMap )
+294 |           shapeFileWriter.addFeature( feature )
+295 |           featureId += 1
+296 |           self.emit( SIGNAL( ""featureProcessed()"" ) )
+297 | 
+298 |           self.mutex.lock()
+299 |           s = self.stopMe",,,,
+holdout,very_long_chain_ge_10,qgis_processing_delivery_293_v1_source_verified,qgis_existing_l3_382ccad0fe1ed68fff180058,/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0004732.py,382ccad0fe1ed68fff18005815bc2cc46642aa0f97fb3099275a4752fbd69af3,normalized_source_body_sha256:095b08e5812672bd41780e9c1fe81b4e53714ef87bf51046072ed42de2151622,创建边界框、计算字段等处理,"在该 Processing 工作流中，对输入数据为输入要素创建边界框；随后将前述要素边界框用于计算字段值（目标字段为 Escala，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 case 
+
+when width > height then width/2
+else height/2
+
+end）；随后将前述更新字段的图层用于提取质心（ALL_PARTS 为否，为每个要素生成单一质心）；随后将前述质心结果用于按要素字段中的距离创建缓冲区；随后将前述可变距离缓冲区结果用于计算字段值（目标字段为 Nivel6，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 case 
+
+when width > height then width/64
+else height/64
+
+end）；随后将前述可变距离缓冲区结果用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0）；随后将前述可变距离缓冲区结果用于计算字段值（目标字段为 Nivel4，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 case 
+
+when width > height then width/16
+else height/16
+
+end）；随后将前述可变距离缓冲区结果用于按空间位置连接并汇总属性；随后将前述可变距离缓冲区结果用于计算字段值（目标字段为 Nivel2，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 case 
+
+when width > height then width/4
+else height/4
+
+end）；随后将前述可变距离缓冲区结果用于计算字段的基本统计量；随后使用前述步骤的处理结果创建规则矢量网格；随后将前述矢量网格用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0）；随后将前述更新字段的图层用于计算字段的基本统计量；随后将前述更新字段的图层用于计算字段的基本统计量；随后将前述可变距离缓冲区结果用于计算字段值（目标字段为 Nivel3，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 case 
+
+when width > height then width/8
+else height/8
+
+end）；随后将前述更新字段的图层用于计算字段的基本统计量；随后将前述可变距离缓冲区结果用于计算字段值（目标字段为 Nivel5，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 case 
+
+when width > height then width/32
+else height/32
+
+end）；随后使用前述步骤的处理结果创建规则矢量网格；随后将前述更新字段的图层用于计算字段的基本统计量；随后使用前述步骤的处理结果创建规则矢量网格；随后将前述空间连接汇总结果用于计算字段值（目标字段为 Tamaño，FIELD_TYPE 为 0，FIELD_LENGTH 为 10，计算公式为 width_min）；随后使用前述步骤的处理结果创建规则矢量网格；随后使用前述步骤的处理结果按空间位置连接并汇总属性；随后将前述矢量网格用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0）；随后将前述更新字段的图层用于计算字段的基本统计量；随后使用前述步骤的处理结果创建规则矢量网格；随后将前述矢量网格用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0）；随后将前述矢量网格用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0）；随后使用前述步骤的处理结果创建规则矢量网格；随后将前述空间连接汇总结果用于计算字段值（目标字段为 Nivel_0，FIELD_TYPE 为 1，FIELD_LENGTH 为 10，计算公式为 area_count）；随后将前述矢量网格用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0）；随后使用前述步骤的处理结果按空间位置连接并汇总属性；随后将前述矢量网格用于按空间关系选择矢量要素（空间关系为 0，选择方式为 0）；随后将前述空间连接汇总结果用于计算字段值（目标字段为 Nivel_1，FIELD_TYPE 为 1，FIELD_LENGTH 为 10，计算公式为 top_count）；随后使用前述步骤的处理结果按空间位置连接并汇总属性；随后将前述空间连接汇总结果用于计算字段值（目标字段为 Nivel_2，FIELD_TYPE 为 1，FIELD_LENGTH 为 10，计算公式为 top_count_2）；随后使用前述步骤的处理结果按空间位置连接并汇总属性；随后将前述空间连接汇总结果用于计算字段值（目标字段为 Nivel_3，FIELD_TYPE 为 1，FIELD_LENGTH 为 10，计算公式为 top_count_3）；随后使用前述步骤的处理结果按空间位置连接并汇总属性；随后将前述空间连接汇总结果用于计算字段值（目标字段为 Nivel_4，FIELD_TYPE 为 1，FIELD_LENGTH 为 10，计算公式为 top_count_4）；随后使用前述步骤的处理结果按空间位置连接并汇总属性；随后将前述空间连接汇总结果用于计算字段值（目标字段为 Nivel_5，FIELD_TYPE 为 1，FIELD_LENGTH 为 10，计算公式为 top_count_5）；随后使用前述步骤的处理结果按空间位置连接并汇总属性；随后将前述空间连接汇总结果用于计算字段值（目标字段为 Nivel_6，FIELD_TYPE 为 1，FIELD_LENGTH 为 10，计算公式为 top_count_6）；随后将前述更新字段的图层用于删除指定字段（字段为 area_count）；随后将前述删除字段后的图层用于删除指定字段（字段为 width_min）；随后将前述删除字段后的图层用于删除指定字段（字段为 top_count）；随后将前述删除字段后的图层用于删除指定字段（字段为 top_count_2）；随后将前述删除字段后的图层用于删除指定字段（字段为 top_count_3）；随后将前述删除字段后的图层用于删除指定字段（字段为 top_count_4）；随后将前述删除字段后的图层用于删除指定字段（字段为 top_count_5）；随后将前述删除字段后的图层用于删除指定字段（字段为 top_count_6），得到此 Processing 链的结果。","[""native:boundingboxes"", ""native:fieldcalculator"", ""native:centroids"", ""qgis:variabledistancebuffer"", ""native:fieldcalculator"", ""native:selectbylocation"", ""native:fieldcalculator"", ""qgis:joinbylocationsummary"", ""native:fieldcalculator"", ""qgis:basicstatisticsforfields"", ""native:creategrid"", ""native:selectbylocation"", ""qgis:basicstatisticsforfields"", ""qgis:basicstatisticsforfields"", ""native:fieldcalculator"", ""qgis:basicstatisticsforfields"", ""native:fieldcalculator"", ""native:creategrid"", ""qgis:basicstatisticsforfields"", ""native:creategrid"", ""native:fieldcalculator"", ""native:creategrid"", ""qgis:joinbylocationsummary"", ""native:selectbylocation"", ""qgis:basicstatisticsforfields"", ""native:creategrid"", ""native:selectbylocation"", ""native:selectbylocation"", ""native:creategrid"", ""native:fieldcalculator"", ""native:selectbylocation"", ""qgis:joinbylocationsummary"", ""native:selectbylocation"", ""native:fieldcalculator"", ""qgis:joinbylocationsummary"", ""native:fieldcalculator"", ""qgis:joinbylocationsummary"", ""native:fieldcalculator"", ""qgis:joinbylocationsummary"", ""native:fieldcalculator"", ""qgis:joinbylocationsummary"", ""native:fieldcalculator"", ""qgis:joinbylocationsummary"", ""native:fieldcalculator"", ""native:deletecolumn"", ""native:deletecolumn"", ""native:deletecolumn"", ""native:deletecolumn"", ""native:deletecolumn"", ""native:deletecolumn"", ""native:deletecolumn"", ""native:deletecolumn""]","[""L3_02_05_12"", ""L3_01_02_06"", ""L3_02_05_11"", ""L3_02_01_01"", ""L3_01_02_06"", ""L3_02_06_03"", ""L3_01_02_06"", ""L3_02_04_01"", ""L3_01_02_06"", ""L3_01_08_04"", ""L3_02_03_06"", ""L3_02_06_03"", ""L3_01_08_04"", ""L3_01_08_04"", ""L3_01_02_06"", ""L3_01_08_04"", ""L3_01_02_06"", ""L3_02_03_06"", ""L3_01_08_04"", ""L3_02_03_06"", ""L3_01_02_06"", ""L3_02_03_06"", ""L3_02_04_01"", ""L3_02_06_03"", ""L3_01_08_04"", ""L3_02_03_06"", ""L3_02_06_03"", ""L3_02_06_03"", ""L3_02_03_06"", ""L3_01_02_06"", ""L3_02_06_03"", ""L3_02_04_01"", ""L3_02_06_03"", ""L3_01_02_06"", ""L3_02_04_01"", ""L3_01_02_06"", ""L3_02_04_01"", ""L3_01_02_06"", ""L3_02_04_01"", ""L3_01_02_06"", ""L3_02_04_01"", ""L3_01_02_06"", ""L3_02_04_01"", ""L3_01_02_06"", ""L3_01_02_02"", ""L3_01_02_02"", ""L3_01_02_02"", ""L3_01_02_02"", ""L3_01_02_02"", ""L3_01_02_02"", ""L3_01_02_02"", ""L3_01_02_02""]",52,"100 |         outputs['RecuadroDelimitador'] = processing.run('native:boundingboxes', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+117 |         outputs['CalcularNivel0'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+129 |         outputs['CentroidesCalculado'] = processing.run('native:centroids', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+146 |         outputs['BufferDeDistanciaVariable'] = processing.run('qgis:variabledistancebuffer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+164 |         outputs['Nivel6'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+177 |         outputs['Localizacion_nivel_0'] = processing.run('native:selectbylocation', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+194 |         outputs['Nivel4'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+210 |         outputs['Longitud_cuadro'] = processing.run('qgis:joinbylocationsummary', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+227 |         outputs['Nivel2'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+238 |         outputs['ValorNivel1'] = processing.run('qgis:basicstatisticsforfields', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+255 |         outputs['GridNivel1'] = processing.run('native:creategrid', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+269 |         outputs['Localizacin_nivel_1'] = processing.run('native:selectbylocation', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+280 |         outputs['ValorNivel6'] = processing.run('qgis:basicstatisticsforfields', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+291 |         outputs['ValorNivel4'] = processing.run('qgis:basicstatisticsforfields', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+308 |         outputs['Nivel3'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+319 |         outputs['ValorNivel3'] = processing.run('qgis:basicstatisticsforfields', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+336 |         outputs['Nivel5'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+353 |         outputs['GridNivel6'] = processing.run('native:creategrid', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+365 |         outputs['ValorNivel2'] = processing.run('qgis:basicstatisticsforfields', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+382 |         outputs['GridNivel2'] = processing.run('native:creategrid', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+400 |         outputs['NombreTamao'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+417 |         outputs['GridNivel3'] = processing.run('native:creategrid', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+434 |         outputs['JoinNivel0'] = processing.run('qgis:joinbylocationsummary', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+447 |         outputs['Localizacin_nivel_3'] = processing.run('native:selectbylocation', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+458 |         outputs['ValorNivel5'] = processing.run('qgis:basicstatisticsforfields', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+475 |         outputs['GridNivel4'] = processing.run('native:creategrid', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+489 |         outputs['Localizacin_nivel_6'] = processing.run('native:selectbylocation', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+502 |         outputs['Localizacin_nivel_2'] = processing.run('native:selectbylocation', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+519 |         outputs['GridNivel5'] = processing.run('native:creategrid', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+537 |         outputs['Nombre_0'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+550 |         outputs['Localizacin_nivel_4'] = processing.run('native:selectbylocation', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+566 |         outputs['JoinNivel1'] = processing.run('qgis:joinbylocationsummary', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+579 |         outputs['Localizacin_nivel_5'] = processing.run('native:selectbylocation', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+596 |         outputs['Nombre_1'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+612 |         outputs['JoinNivel2'] = processing.run('qgis:joinbylocationsummary', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+629 |         outputs['Nombre_2'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+645 |         outputs['JoinNivel3'] = processing.run('qgis:joinbylocationsummary', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+662 |         outputs['Nombre_3'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+678 |         outputs['JoinNivel4'] = processing.run('qgis:joinbylocationsummary', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+695 |         outputs['Nombre_4'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+711 |         outputs['JoinNivel5'] = processing.run('qgis:joinbylocationsummary', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+728 |         outputs['Nombre_5'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+744 |         outputs['JoinNivel6'] = processing.run('qgis:joinbylocationsummary', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+761 |         outputs['Nombre_6'] = processing.run('qgis:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+773 |         outputs['Nivel_0'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+785 |         outputs['Tamao'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+797 |         outputs['Nivel_1'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+809 |         outputs['Nivel_2'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+821 |         outputs['Nivel_3'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+833 |         outputs['Nivel_4'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+845 |         outputs['Nivel_5'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+...
+857 |         outputs['Nivel_6'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)",,,,
+holdout,local_macro_boundary,qgis_api_set_crs_train_only_v1,qgis_api_scrs_b4918ce919dce32335351e12d81b63241d54929258f79011a8168e91714e2b22_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_35824.py,d1df0472ec2bd641c0f4b8bdf6563cba0813d374740f4c30b6b0a3ed3452420f,normalized_source_body_sha256:ef2ebb6c6ded90677d5e4ba364adf8515818fb49f3857e7fb7b278baf8597908,为栅格图层定义 EPSG:32633 坐标系,将栅格图层的坐标参考系元数据定义为 EPSG:32633，不变换图层中的坐标值。,"[""pyqgis:set_layer_crs_metadata""]","[""L3_01_10_02""]",1,"55 |     Create raster layer from tif file and add it to current QgsProject
+56 |     """"""
+57 |     rlayer = QgsRasterLayer(file_path, 'fotomap')
+58 |     if rlayer.width() == 0:
+59 |         raise Exception(""0 width - rlayer not loaded properly. Probably invalid file path?"")
+60 |     rlayer.setCrs(QgsCoordinateReferenceSystem(""EPSG:32633""))
+61 |     QgsProject.instance().addMapLayer(rlayer)
+62 |     return rlayer",,,,
+holdout,local_macro_boundary,qgis_api_set_crs_train_only_v1,qgis_api_scrs_1b494c8bd105b04a5ae8bc0d3b7228ded21fec1c946fd89cd1af3cdb5552c6d9_train_v1,/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0003506.py,155e52d0e520b5c83177fc2c47fc292baa5dcad8c8b7aacc9422dd55b6929f3e,normalized_source_body_sha256:c73a54723faad41f748e3b736a6e5182e23bb7ce9ec871b8476e8ec1418c6c2d,为矢量图层定义 EPSG:5514 坐标系,将矢量图层的坐标参考系元数据定义为 EPSG:5514，不变换图层中的坐标值。,"[""pyqgis:set_layer_crs_metadata""]","[""L3_01_10_02""]",1,"538 | 
+539 |             layer_name = ogr_layer.GetName()
+540 |             vlayer = QgsVectorLayer('{0}|layername={1}'.format(self.option['datasource'], layer_name),
+541 |                                     layer_alias, 'ogr')
+542 | 
+543 |             # force EPSG:5514 and UTF-8 encoding (make sense especially for Esri Shapefile)
+544 |             vlayer.setCrs(QgsCoordinateReferenceSystem(""EPSG:5514""))
+545 |             vlayer.setProviderEncoding('UTF-8')
+546 | ",,,,
+holdout,multistep_chain_2_4,qgis_api_add_calculate_field_train_only_v1,qgis_api_acf_2521a0b685e3423757d36d04dfe6f9064c2ab3370e6b2cdc983efe878106d32f_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_16190.py,20bcc6298070dd94377676702a2241a88efe142c737cbc27f8ceb1ea1b16f537,normalized_source_body_sha256:43a5481d5b5fa7be19c86e963363ddfb8671c231889a80e3d8e7b20810d7a931,新增并计算字段 value,向现有矢量图层新增字段 value，按已验证的条件分支逐要素计算并写入该字段。,"[""pyqgis:add_field"", ""pyqgis:calculate_field""]","[""L3_01_02_01"", ""L3_01_02_06""]",2,"30 |     with edit(layer):  # Allow editing of the layer
+31 |         # Check if the 'value' field exists, if not, create it
+32 |         if layer.fields().indexFromName(""value"") == -1:
+33 |             layer.dataProvider().addAttributes([QgsField(""value"", QVariant.Int)])
+34 |             layer.updateFields()
+35 |         for feature in layer.getFeatures():
+36 |             perimeter = (
+37 |                 feature.geometry().length()
+38 |             )  # Calculate the perimeter of the polygon
+39 | 
+40 |             log_message(
+41 |                 f""Perimeter of polygon {feature.id()}: {perimeter}"",
+42 |                 tag=""Geest"",
+43 |                 level=Qgis.Info,
+44 |             )
+45 | 
+46 |             # Assign reclassification value based on the perimeter
+47 |             if perimeter > 1000:  # Very large blocks
+48 |                 reclass_val = 1
+49 |             elif 751 <= perimeter <= 1000:  # Large blocks
+50 |                 reclass_val = 2
+51 |             elif 501 <= perimeter <= 750:  # Moderate blocks
+52 |                 reclass_val = 3
+53 |             elif 251 <= perimeter <= 500:  # Small blocks
+54 |                 reclass_val = 4
+55 |             elif 0 < perimeter <= 250:  # Very small blocks
+56 |                 reclass_val = 5
+57 |             else:
+58 |                 reclass_val = 0  # No valid perimeter or no intersection
+59 | 
+60 |             feature.setAttribute(""value"", reclass_val)  # Set the 'value' field
+61 |             layer.updateFeature(feature)  # Update the feature with the new attribute
+62 | 
+63 |     return layer",,,,
+holdout,local_macro_boundary,qgis_api_create_feature_class_train_only_v1,qgis_api_cff_b476162adde1d4f1e75a318c07085a4615adb944bcfe4c17a78a204ea66264f7_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_5059.py,0fcb881037d42c2f782e5112e051a7c38c8215bbfc8c9e8dc2c9a8ec263b0359,normalized_source_body_sha256:081af0bab79ad77b1b86099318771f3f1c2fa263b9c1b8bdb4e1fc39038a6118,创建线要素类,创建新的线要素类，定义字段：l，创建空要素类，并保存为矢量数据集。,"[""pyqgis:create_feature_class""]","[""L3_01_01_01""]",1,"51 |         gpkg_path = os.path.join(project_path, f""{name}.gpkg"")
+52 |         
+53 |         # Utworzenie tymczasowej warstwy do zapisu
+54 |         temp_layer = QgsVectorLayer(f""LineString?crs={project_crs.authid()}"", name, ""memory"")
+55 |         
+56 |         # Dodanie atrybutu 'l' dla warstwy wymiarowanie
+57 |         if name == ""wymiarowanie"" and temp_layer.isValid():
+58 |             # Rozpoczęcie edycji na tymczasowej warstwie
+59 |             temp_layer.startEditing()
+60 |             
+61 |             # Dodanie pola 'l' (długość)
+62 |             field_l = QgsField(""l"", QVariant.Double, ""double"", 10, 2)
+63 |             temp_layer.dataProvider().addAttributes([field_l])
+64 |             temp_layer.updateFields()
+65 |             
+66 |             # Zakończenie edycji tymczasowej warstwy
+67 |             temp_layer.commitChanges()
+68 |         
+69 |         if temp_layer.isValid():
+70 |             # Zapisanie warstwy jako GPKG
+71 |             options = QgsVectorFileWriter.SaveVectorOptions()
+72 |             options.driverName = ""GPKG""
+73 |             options.layerName = name
+74 |             
+75 |             error = QgsVectorFileWriter.writeAsVectorFormatV3(
+76 |                 temp_layer,
+77 |                 gpkg_path,
+78 |                 QgsProject.instance().transformContext(),",,,,
+holdout,single_step_source_verified,qgis_api_random_point_train_only_v1,qgis_api_d91c0dd579da24738f57698c5c89050f1fa9660882692011f93458b85236da00_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3101.py,271f4fabc9f7f12bfbf346fc354e860ef8d31d1e34644d5a289156dd52fc2bc1,normalized_source_body_sha256:014fdfdbd3dde63bf1b1587da13dbf9f5a27ed553585d884f324edfe73ad4c08,为每个多边形固定数量采样点,为输入图层中的每个多边形随机生成固定数量的点，仅保留位于对应多边形内部且满足最小距离约束的点，并写入输出点图层。,"[""pyqgis-pattern:random_point_sampling""]","[""L3_02_06_06""]",1,"def processAlgorithm(self, progress):
+        layer = dataobjects.getObjectFromUri(
+            self.getParameterValue(self.VECTOR))
+        value = float(self.getParameterValue(self.VALUE))
+        minDistance = float(self.getParameterValue(self.MIN_DISTANCE))
+        strategy = self.getParameterValue(self.STRATEGY)
+
+        fields = QgsFields()
+        fields.append(QgsField('id', QVariant.Int, '', 10, 0))
+        writer = self.getOutputFromName(self.OUTPUT).getVectorWriter(
+            fields, QGis.WKBPoint, layer.crs())
+
+        da = QgsDistanceArea()
+
+        features = vector.features(layer)
+        for current, f in enumerate(features):
+            fGeom = QgsGeometry(f.geometry())
+            bbox = fGeom.boundingBox()
+            if strategy == 0:
+                pointCount = int(value)
+            else:
+                pointCount = int(round(value * da.measure(fGeom)))
+
+            index = QgsSpatialIndex()
+            points = dict()
+
+            nPoints = 0
+            nIterations = 0
+            maxIterations = pointCount * 200
+            total = 100.0 / pointCount if pointCount > 0 else 1
+
+            random.seed()
+
+            while nIterations < maxIterations and nPoints < pointCount:
+                rx = bbox.xMinimum() + bbox.width() * random.random()
+                ry = bbox.yMinimum() + bbox.height() * random.random()
+
+                pnt = QgsPoint(rx, ry)
+                geom = QgsGeometry.fromPoint(pnt)
+                if geom.within(fGeom) and \
+                        vector.checkMinDistance(pnt, index, minDistance, points):
+                    f = QgsFeature(nPoints)
+                    f.initAttributes(1)
+                    f.setFields(fields)
+                    f.setAttribute('id', nPoints)
+                    f.setGeometry(geom)
+                    writer.addFeature(f)
+                    index.insertFeature(f)
+                    points[nPoints] = pnt
+                    nPoints += 1
+                    progress.setPercentage(int(nPoints * total))
+                nIterations += 1
+
+            if nPoints < pointCount:
+                ProcessingLog.addToLog(ProcessingLog.LOG_INFO,
+                                       self.tr('Can not generate requested number of random '
+                                               'points. Maximum number of attempts exceeded.'))
+
+            progress.setPercentage(0)
+
+        del writer",,,,
+holdout,local_macro_boundary,qgis_api_add_field_existing_layer_train_only_v1,qgis_api_af_5f034c041704f99f3bf72ca664712412ce259848ef9c7b7ea3854db15e1adb6e_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_6446.py,cbeb04f8bbae32eb533d8f6101e0cde76f8f02be0d01f163b0a97ad1ac91b0c7,normalized_source_body_sha256:0b6a10dd8e247c9000f269b86d03fbc712852e564cd6c66cd3def2f4caf03277,新增字段 between、closeness、degree,向现有矢量图层新增字段 between、closeness、degree，并提交字段结构更新。,"[""pyqgis:add_field""]","[""L3_01_02_01""]",1,"70 |         points_layer.startEditing()
+71 |         lines_layer.startEditing()
+72 | 
+73 |         points_layer.dataProvider().addAttributes([
+74 |             QgsField('degree', QVariant.Double),
+75 |             QgsField('between', QVariant.Double),
+76 |             QgsField('closeness', QVariant.Double)
+77 |         ])
+78 | 
+79 |         lines_layer.dataProvider().addAttributes([
+80 |             QgsField('edge_btw', QVariant.Double)
+81 |         ])
+82 | 
+83 |         points_layer.updateFields()
+84 |         lines_layer.updateFields()
+85 | 
+86 |     def calculate_centralities(self):",,,,
+holdout,local_macro_boundary,qgis_api_raster_calculator_train_only_v1,qgis_api_rc_d45b13dce7c7879eed7522e120a00ab4fb16b4d84e6eaa12e0bf7c5a6718b266_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_34153.py,13970fda0d6c7174e321069c976e8e29d8e03549feb0a4b13cf793229b00dfb0,normalized_source_body_sha256:a7e3524ade9b03a8de0a1638846b89a08e26fd80ee04e84247a3172bc0c17118,按明确表达式执行栅格计算,"按栅格表达式“""ras@1"" >150”计算输入栅格，并将计算结果写出为新的栅格数据。","[""pyqgis:raster_calculator""]","[""L3_03_03_A""]",1,"1 | path=os.getcwd()
+2 | output_raster_path = os.path.join(path, ""ideal_h.tif"")
+3 | 
+4 | ##if you want to take the raster froma different path uncomment the next line (and give the right path) and comment the one below
+5 | #rlayer = QgsRasterLayer(""your/input/raster/path/fileName"")
+6 | rlayer = QgsProject.instance().mapLayersByName('dtm_veneto')[0]
+7 | 
+8 | ##choose the target crs
+9 | crs_target = QgsCoordinateReferenceSystem(""EPSG:3003"")
+10 | 
+11 | #check id the input raster is valid
+12 | if rlayer.isValid():
+13 |     print(""The raster is valid"")
+14 | else:
+15 |     print(""The raster is not valid"")
+16 |     
+17 | ##QgsRasterCalculatorEntry
+18 | entries = []
+19 | ras = QgsRasterCalculatorEntry()
+20 | ras.ref = 'ras@1'
+21 | ras.raster = rlayer
+22 | ras.bandNumber = 1
+23 | entries.append(ras)
+24 | 
+25 | ##QgsRasterCalculator
+26 | expression = '\""ras@1\"" >150'
+27 | calculation = QgsRasterCalculator( expression, output_raster_path,'GTiff', rlayer.extent(), crs_target,rlayer.width(), \
+28 | rlayer.height(), entries, QgsCoordinateTransformContext() ) 
+29 | 
+30 | calculation.processCalculation()
+31 | 
+32 | ##add the output raster to the QGIS project
+33 | fin_res = iface.addRasterLayer(output_raster_path,""ideal_h"",""gdal"") ",,,,
+holdout,local_macro_boundary,qgis_api_create_feature_class_train_only_v1,qgis_api_cff_01ebb771d5d4b4ea7a58cbf3b4d7fc60b7f1a958efba5e27d0f25af19a79f6df_train_v1,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0003914.py,a702902f2dc6bf952c1a3c3df579f8048a27f72113f287e7deb29b192099e842,normalized_source_body_sha256:ff298bb229e4f2c03757b10f6df8a5c2804f7b26e31409dea4d861ec488034b5,创建面要素类,创建新的面要素类，定义字段：score，写入已准备的要素，并保存为ESRI Shapefile 数据。,"[""pyqgis:create_feature_class""]","[""L3_01_01_01""]",1,"194 |         output_prefix = f""{self.layer_id}_area_{index}""
+195 |         self.progressChanged.emit(20.0)  # We just use nominal intervals for progress updates
+196 |         # Create a new memory layer with the target CRS (EPSG:4326)
+197 |         subset_layer = QgsVectorLayer(""Polygon"", ""subset"", ""memory"")
+198 |         subset_layer.setCrs(self.target_crs)
+199 |         subset_layer_data = subset_layer.dataProvider()
+200 |         field = QgsField(""score"", QVariant.Double)
+201 |         fields = [field]
+202 |         # Add attributes (fields) from the point_layer
+203 |         subset_layer_data.addAttributes(fields)
+204 |         subset_layer.updateFields()
+205 |         self.progressChanged.emit(40.0)  # We just use nominal intervals for progress updates
+206 |         feature = QgsFeature(subset_layer.fields())
+207 |         feature.setGeometry(clip_area)
+208 |         score_field_index = subset_layer.fields().indexFromName(""score"")
+209 |         feature.setAttribute(score_field_index, self.index_score)
+210 |         features = [feature]
+211 |         # Add reprojected features to the new subset layer
+212 |         subset_layer_data.addFeatures(features)
+213 |         subset_layer.commitChanges()
+214 |         self.progressChanged.emit(60.0)  # We just use nominal intervals for progress updates
+215 |         shapefile_path = os.path.join(self.workflow_directory, f""{output_prefix}.shp"")
+216 |         # Use QgsVectorFileWriter to save the layer to a shapefile
+217 |         QgsVectorFileWriter.writeAsVectorFormat(
+218 |             subset_layer,
+219 |             shapefile_path,
+220 |             ""utf-8"",",,,,
+holdout,single_step_source_verified,qgis_api_train_only_v1,qgis_api_af7ba8c339669b2434d22022aa420b4d597a7626abbad22018bf57fca74415e9_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_52892.py,03a96e8a4bb526a0114d9a478751d599bf7293e8553b37b0238e21a521a16c06,normalized_source_body_sha256:898a56d031434ee8cf0e3c9a14d7153a1b013246711670548dda67211c43f667,创建几何缓冲区,为输入几何创建指定距离的缓冲区，并将缓冲结果写入输出要素。,"[""pyqgis:buffer""]","[""L3_02_01_01""]",1,"90 |                 continue
+91 |             if not inGeom.isGeosValid():
+92 |                 ProcessingLog.addToLog(ProcessingLog.LOG_WARNING, 'Feature {} has invalid geometry. Skipping...'.format(inFeat.id()))
+93 |                 continue
+94 | 
+95 |             outGeom = inGeom.buffer(float(value), segments)
+96 |             outFeat.setGeometry(outGeom)
+97 |             outFeat.setAttributes(attrs)
+98 |             writer.addFeature(outFeat)
+99 |             current += 1
+100 |             progress.setPercentage(int(current * total))
+101 | 
+102 |     del writer",,,,
+holdout,multistep_chain_2_4,qgis_processing_delivery_293_v1_source_verified,qgis_stable101_fc44c8e30fd51a7b01d583d4,/home/qy/system_redesign/爬取GithubQGIS/github_qgis_workflow_A类/downloaded_scripts/script_0007138.py,9c6cd955d919ad910906a6fb203560f04deb008bee4425c20ecf4089413b8c4b,source_sha256:9c6cd955d919ad910906a6fb203560f04deb008bee4425c20ecf4089413b8c4b,统一坐标系后按点采样栅格值,将栅格和采样点图层分别重投影到同一目标坐标系，再在重投影后的点位采样栅格值，并使用指定前缀写入采样字段。,"[""gdal:warpreproject"", ""native:reprojectlayer"", ""native:rastersampling""]","[""L3_03_05_02"", ""L3_01_10_01"", ""L3_08_01_01""]",3,"  35 |         'TARGET_RESOLUTION': None,
+  36 |         'OUTPUT': tmp_raster_file
+  37 |     }
+  38 |     processing.run('gdal:warpreproject', reproject_raster_params)
+  39 | 
+  40 |     # --- Step 2: Reproject Vector Layer ---
+  41 |     tmp_reprojected_vector = os.path.join(tempfile.gettempdir(), f""reprojected_vector_{last_folder_name}.gpkg"")
+...
+  46 |         'TARGET_CRS': target_crs.toWkt(),
+  47 |         'OUTPUT': tmp_reprojected_vector
+  48 |     }
+  49 |     processing.run('native:reprojectlayer', reproject_points_params)
+  50 |     reprojected_point_layer = QgsVectorLayer(tmp_reprojected_vector, ""ReprojectedPoints"", ""ogr"")
+  51 | 
+  52 |     if not reprojected_point_layer.isValid():
+...
+  63 |         'RASTERCOPY': tmp_raster_file,
+  64 |         'OUTPUT': tmp_sampled_output
+  65 |     }
+  66 |     processing.run('native:rastersampling', sample_params)
+  67 | 
+  68 |     # --- Step 4: Read Output into DataFrame ---
+  69 |     sampled_layer = QgsVectorLayer(tmp_sampled_output, ""SampledPoints"", ""ogr"")",,,,
+holdout,single_step_source_verified,qgis_api_random_point_train_only_v1,qgis_api_23376c9c59dddc335ece6139bf40a26ccb973cbda0c6138b7b438c3e0c18a244_train_v1,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/Survey_design_plugin__0.6/survey_design/pointsample.py,0eae897079c8e3609516625708f2e681c2e1107bfbba53c24afc188f20ee0600,normalized_source_body_sha256:ff9c311546160b02a6b8e00cc165a4c2d77a2bce6c2e297a9b486c540cfac6e8,在分层目标几何内随机采样点,在目标分层几何内部随机生成指定数量且满足最小距离约束的采样点，并将采样点及其分层标识写入输出图层。,"[""pyqgis-pattern:random_point_sampling""]","[""L3_02_06_06""]",1,"def addSamplePoints( self, fet, writer, outputFields, nPoints, minDistance ):
+        
+        geometry = fet.geometry()
+        if geometry is None:
+            return
+        bbox = geometry.boundingBox()
+        if bbox.isEmpty():
+            return
+        
+        sIndex = QgsSpatialIndex()
+        pointMapForFeatures = {} #feature id / QgsPoint
+        
+        nIterations = 0
+        maxIterations = nPoints * 200
+        points = 0
+        
+        randX = 0.0
+        randY = 0.0
+        
+        random.seed()
+        
+        while ( nIterations < maxIterations and points < nPoints ):
+            randX = random.random() * bbox.width() + bbox.xMinimum()
+            randY = random.random() * bbox.height() + bbox.yMinimum()
+            randomPoint = QgsPoint( randX, randY )
+            randomPointGeom = QgsGeometry.fromPointXY( QgsPointXY( randomPoint.x(), randomPoint.y() ) )
+            if randomPointGeom.within( geometry ) and self.checkMinDistance( randomPoint, sIndex, minDistance, pointMapForFeatures ):
+                f = QgsFeature( outputFields, self.nCreatedPoints )
+                f.setAttribute( 'id', self.nCreatedPoints )
+                f.setAttribute( 'station_id', points + 1 )
+                f.setAttribute( 'stratum_id', fet.id() )
+                f.setGeometry(  randomPointGeom )
+                writer.addFeature( f )
+                sIndex.insertFeature( f )
+                pointMapForFeatures[self.nCreatedPoints] = randomPoint
+                points += 1
+                self.nCreatedPoints += 1
+            nIterations += 1",,,,
+holdout,single_step_source_verified,qgis_api_train_only_v1,qgis_api_6d46a7ce38ac6cb71e297d797dc41a7cec27d8d07b50aa686759ab1938dca84e_train_v1,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3666.py,05bd8d41562e835633dd347b8b87143c436a35f108c4e4cc36e0b4c389d1f5a1,normalized_source_body_sha256:f751167a91f0e4905e4dd7648d86f361e4087bb5e87a502ccf5f02d78b1869ff,计算几何相交部分,计算输入几何与另一几何的相交部分，并将相交结果写入输出要素。,"[""pyqgis:intersection""]","[""L3_02_02_01""]",1,"109 |                     points = []
+110 |                     attrsA = inFeatA.attributes()
+111 |                     attrsB = inFeatB.attributes()
+112 | 
+113 |                     if inGeom.intersects(tmpGeom):
+114 |                         tempGeom = inGeom.intersection(tmpGeom)
+115 |                         if tempGeom.type() == QGis.Point:
+116 |                             if tempGeom.isMultipart():
+117 |                                 points = tempGeom.asMultiPoint()
+118 |                             else:
+119 |                                 points.append(tempGeom.asPoint())
+120 | 
+121 |                             for j in points:
+122 |                                 outFeat.setGeometry(tempGeom.fromPoint(j))
+123 |                                 outFeat.setAttributes([attrsA[idxA],
+124 |                                         attrsB[idxB]])
+125 |                                 writer.addFeature(outFeat)
+126 | 
+127 |             current += 1
+128 |             progress.setPercentage(int(current * total))
+129 | 
+130 |         del writer",,,,

@@ -1,0 +1,957 @@
+alg_id,freq,category,bridge_type,l3_code,official_name,data_type,in_official,in_dataset,has_l3,has_crosswalk,is_rejected,is_native_bridge
+native:fieldcalculator,2260,B_no_l3,dataset_no_bridge,,Field calculator,vector,True,True,False,False,False,False
+native:reprojectlayer,1712,B_no_l3,native_bridge,qgis_native:vector_crs_transform,Reproject layer,vector,True,True,False,False,False,True
+native:buffer,1631,B_no_l3,dataset_no_bridge,,Buffer,vector,True,True,False,False,False,False
+native:clip,1310,B_no_l3,dataset_no_bridge,,Clip,vector,True,True,False,False,False,False
+native:dissolve,1264,B_no_l3,dataset_no_bridge,,Dissolve,vector,True,True,False,False,False,False
+native:fixgeometries,1195,B_no_l3,dataset_no_bridge,,Fix geometries,vector,True,True,False,False,False,False
+gdal:cliprasterbymasklayer,1074,B_no_l3,dataset_no_bridge,,Clip raster by mask layer,raster,True,True,False,False,False,False
+native:mergevectorlayers,1055,A_l3_bridge,l3_bridge_crosswalk,L3_01_03_04,Merge vector layers,vector,True,True,False,True,False,False
+native:extractbyexpression,940,A_l3_bridge,l3_bridge_crosswalk,L3_02_06_02,Extract by expression,vector,True,True,False,True,False,False
+native:joinattributestable,801,B_no_l3,rejected,,Join attributes by field value,vector,True,True,False,False,True,False
+gdal:warpreproject,773,A_l3_bridge,l3_bridge_crosswalk,L3_03_05_02,Warp,raster,True,True,False,True,False,False
+gdal:rastercalculator,766,B_no_l3,dataset_no_bridge,,Raster calculator,raster,True,True,False,False,False,False
+native:multiparttosingleparts,718,B_no_l3,dataset_no_bridge,,Multipart to singleparts,vector,True,True,False,False,False,False
+native:extractbylocation,709,A_l3_bridge,l3_bridge_crosswalk,L3_02_06_03,Extract by location,vector,True,True,False,True,False,False
+qgis:fieldcalculator,696,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:createspatialindex,626,B_no_l3,rejected,,Create spatial index,vector,True,True,False,False,True,False
+native:reclassifybytable,611,B_no_l3,dataset_no_bridge,,Reclassify by table,raster,True,True,False,False,False,False
+native:zonalstatisticsfb,610,B_no_l3,dataset_no_bridge,,Zonal statisticsfb,vector,True,True,False,False,False,False
+gdal:rasterize,610,B_no_l3,rejected,,Rasterize,vector,True,True,False,False,True,False
+native:difference,600,B_no_l3,dataset_no_bridge,,Difference,vector,True,True,False,False,False,False
+native:intersection,583,B_no_l3,dataset_no_bridge,,Intersection,vector,True,True,False,False,False,False
+native:saveselectedfeatures,531,B_no_l3,dataset_no_bridge,,Extract selected features,vector,True,True,False,False,False,False
+gdal:polygonize,485,B_no_l3,rejected,,Polygonize,raster,True,True,False,False,True,False
+native:extractbyattribute,463,A_l3_bridge,l3_bridge_crosswalk,L3_02_06_02,Extract by attribute,vector,True,True,False,True,False,False
+native:joinattributesbylocation,438,A_l3_bridge,l3_bridge_crosswalk,L3_02_04_01,Join attributes by location,vector,True,True,False,True,False,False
+qgis:rastercalculator,396,B_no_l3,dataset_no_bridge,,Raster calculator,raster,True,True,False,False,False,False
+gdal:translate,394,A_l3_bridge,l3_bridge_crosswalk,L3_07_04_05,Translate,raster,True,True,False,True,False,False
+native:selectbylocation,384,A_l3_bridge,l3_bridge_crosswalk,L3_02_06_03,Select by location,vector,True,True,False,True,False,False
+native:savefeatures,343,B_no_l3,dataset_no_bridge,,Save vector features to file,vector,True,True,False,False,False,False
+qgis:extractbyexpression,331,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:centroids,316,B_no_l3,dataset_no_bridge,,Centroids,vector,True,True,False,False,False,False
+native:rastersampling,304,B_no_l3,dataset_no_bridge,,Sample raster values,vector,True,True,False,False,False,False
+native:refactorfields,297,A_l3_bridge,l3_bridge_crosswalk,L3_01_02_03,Refactor fields,vector,True,True,False,True,False,False
+qgis:deletecolumn,293,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:cliprasterbyextent,260,B_no_l3,dataset_no_bridge,,Clip raster by extent,raster,True,True,False,False,False,False
+native:deletecolumn,232,B_no_l3,dataset_no_bridge,,Drop field,vector,True,True,False,False,False,False
+native:renametablefield,232,B_no_l3,dataset_no_bridge,,Rename field,vector,True,True,False,False,False,False
+native:polygonstolines,232,B_no_l3,dataset_no_bridge,,Polygons to lines,vector,True,True,False,False,False,False
+native:creategrid,212,B_no_l3,rejected,,Create grid,vector,True,True,False,False,True,False
+native:snapgeometries,209,B_no_l3,dataset_no_bridge,,Snap geometries to layer,vector,True,True,False,False,False,False
+qgis:statisticsbycategories,202,B_no_l3,dataset_no_bridge,,Statistics by categories,vector,True,True,False,False,False,False
+qgis:heatmapkerneldensityestimation,195,B_no_l3,dataset_no_bridge,,Heatmap,vector,True,True,False,False,False,False
+native:union,192,B_no_l3,dataset_no_bridge,,Union,vector,True,True,False,False,False,False
+native:retainfields,188,B_no_l3,dataset_no_bridge,,Retain fields,vector,True,True,False,False,False,False
+native:splitwithlines,184,B_no_l3,dataset_no_bridge,,Split with lines,vector,True,True,False,False,False,False
+native:deleteduplicategeometries,179,B_no_l3,dataset_no_bridge,,Delete duplicate geometries,vector,True,True,False,False,False,False
+native:extractspecificvertices,174,B_no_l3,dataset_no_bridge,,Extract specific vertices,vector,True,True,False,False,False,False
+native:extractbyextent,171,B_no_l3,dataset_no_bridge,,Extract/clip by extent,vector,True,True,False,False,False,False
+qgis:exportaddgeometrycolumns,170,B_no_l3,dataset_no_bridge,,Add geometry attributes,vector,True,True,False,False,False,False
+native:filedownloader,165,B_no_l3,dataset_no_bridge,,Download file,unknown,True,True,False,False,False,False
+qgis:selectbyexpression,164,A_l3_bridge,l3_bridge_crosswalk,L3_02_06_01,Select by expression,vector,True,True,False,True,False,False
+native:extractvertices,153,B_no_l3,dataset_no_bridge,,Extract vertices,vector,True,True,False,False,False,False
+qgis:refactorfields,152,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:joinbynearest,151,B_no_l3,dataset_no_bridge,,Join attributes by nearest,vector,True,True,False,False,False,False
+native:aggregate,148,B_no_l3,dataset_no_bridge,,Aggregate,vector,True,True,False,False,False,False
+native:deleteholes,143,B_no_l3,dataset_no_bridge,,Delete holes,vector,True,True,False,False,False,False
+native:pointsalonglines,141,B_no_l3,dataset_no_bridge,,Points along geometry,vector,True,True,False,False,False,False
+gdal:merge,140,B_no_l3,dataset_no_bridge,,Merge,raster,True,True,False,False,False,False
+native:lineintersections,139,B_no_l3,dataset_no_bridge,,Line intersections,vector,True,True,False,False,False,False
+qgis:zonalstatistics,139,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:explodelines,132,B_no_l3,dataset_no_bridge,,Explode lines,vector,True,True,False,False,False,False
+native:simplifygeometries,126,B_no_l3,dataset_no_bridge,,Simplify,vector,True,True,False,False,False,False
+native:setlayerstyle,126,B_no_l3,dataset_no_bridge,,Set layer style,unknown,True,True,False,False,False,False
+gdal:slope,125,B_no_l3,dataset_no_bridge,,Slope,raster,True,True,False,False,False,False
+qgis:joinbylocationsummary,124,A_l3_bridge,l3_bridge_crosswalk,L3_02_04_01,Join attributes by location,vector,True,True,False,True,False,False
+gdal:buildvirtualraster,122,B_no_l3,dataset_no_bridge,,Build virtual raster,raster,True,True,False,False,False,False
+native:addautoincrementalfield,120,B_no_l3,dataset_no_bridge,,Add autoincremental field,vector,True,True,False,False,False,False
+gdal:importvectorintopostgisdatabaseavailableconnections,119,B_no_l3,dataset_no_bridge,,Export to PostgreSQL database available connections,vector,True,True,False,False,False,False
+gdal:proximity,116,B_no_l3,dataset_no_bridge,,Proximity,raster,True,True,False,False,False,False
+native:pixelstopoints,114,B_no_l3,dataset_no_bridge,,Raster pixels to points,raster,True,True,False,False,False,False
+native:exporttospreadsheet,107,B_no_l3,dataset_no_bridge,,Export to spreadsheet,raster,True,True,False,False,False,False
+qgis:selectbylocation,106,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:countpointsinpolygon,98,B_no_l3,dataset_no_bridge,,Count points in polygon,vector,True,True,False,False,False,False
+native:addfieldtoattributestable,95,B_no_l3,dataset_no_bridge,,Add field to attributes table,vector,True,True,False,False,False,False
+qgis:joinattributesbylocation,94,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:polygonfromlayerextent,93,B_no_l3,dataset_no_bridge,,Extract layer extent,vector,True,True,False,False,False,False
+qgis:buffer,92,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:smoothgeometry,89,B_no_l3,dataset_no_bridge,,Smooth,vector,True,True,False,False,False,False
+gdal:contour,87,B_no_l3,dataset_no_bridge,,Contour,raster,True,True,False,False,False,False
+native:rasterlayerstatistics,83,B_no_l3,dataset_no_bridge,,Raster layer statistics,raster,True,True,False,False,False,False
+native:offsetline,81,B_no_l3,dataset_no_bridge,,Offset lines,vector,True,True,False,False,False,False
+native:rastercalc,81,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:fillnodata,80,A_l3_bridge,l3_bridge_crosswalk,L3_03_03_A,Fill nodata,raster,True,True,False,True,False,False
+native:package,79,B_no_l3,dataset_no_bridge,,Package layers,unknown,True,True,False,False,False,False
+native:slope,78,B_no_l3,dataset_no_bridge,,Slope,raster,True,True,False,False,False,False
+native:geometrybyexpression,78,B_no_l3,dataset_no_bridge,,Geometry by expression,vector,True,True,False,False,False,False
+qgis:selectbyattribute,76,A_l3_bridge,l3_bridge_crosswalk,L3_02_06_01,Select by attribute,vector,True,True,False,True,False,False
+gdal:sieve,75,B_no_l3,dataset_no_bridge,,Sieve,raster,True,True,False,False,False,False
+gdal:aspect,75,B_no_l3,dataset_no_bridge,,Aspect,raster,True,True,False,False,False,False
+native:fillnodata,68,A_l3_bridge,l3_bridge_crosswalk,L3_03_03_A,Fill NoData cells,raster,True,True,False,True,False,False
+qgis:clip,67,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+etl_load:appendfeaturestolayer,67,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:hillshade,65,B_no_l3,dataset_no_bridge,,Hillshade,raster,True,True,False,False,False,False
+qgis:deleteduplicategeometries,65,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:pixelstopolygons,64,B_no_l3,rejected,,Raster pixels to polygons,raster,True,True,False,False,True,False
+native:dropmzvalues,63,B_no_l3,dataset_no_bridge,,Drop M/Z values,vector,True,True,False,False,False,False
+native:translategeometry,62,B_no_l3,dataset_no_bridge,,Translate,vector,True,True,False,False,False,False
+qgis:tilesxyzdirectory,61,B_no_l3,filtered,,Generate XYZ tiles,raster,True,False,False,False,False,False
+qgis:reprojectlayer,59,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:extractbylocation,59,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:assignprojection,57,B_no_l3,dataset_no_bridge,,Assign projection,raster,True,True,False,False,False,False
+qgis:advancedpythonfieldcalculator,57,B_no_l3,dataset_no_bridge,,Advanced Python field calculator,vector,True,True,False,False,False,False
+native:stringconcatenation,57,B_no_l3,filtered,,String concatenation,unknown,True,False,False,False,False,False
+native:orderbyexpression,56,B_no_l3,dataset_no_bridge,,Order by expression,vector,True,True,False,False,False,False
+native:polygonize,55,B_no_l3,dataset_no_bridge,,Polygonize,vector,True,True,False,False,False,False
+qgis:randompointsinsidepolygons,55,B_no_l3,dataset_no_bridge,,Random points inside polygons,vector,True,True,False,False,False,False
+native:removeduplicatesbyattribute,53,B_no_l3,dataset_no_bridge,,Delete duplicates by attribute,vector,True,True,False,False,False,False
+qgis:tininterpolation,52,B_no_l3,dataset_no_bridge,,TIN interpolation,raster,True,True,False,False,False,False
+gdal:convertformat,52,B_no_l3,dataset_no_bridge,,Convert format,vector,True,True,False,False,False,False
+native:loadlayer,51,B_no_l3,dataset_no_bridge,,Load layer into project,unknown,True,True,False,False,False,False
+native:assignprojection,50,B_no_l3,dataset_no_bridge,,Assign projection,vector,True,True,False,False,False,False
+native:pointstopath,50,B_no_l3,dataset_no_bridge,,Points to path,vector,True,True,False,False,False,False
+qgis:voronoipolygons,50,B_no_l3,dataset_no_bridge,,Voronoi polygons,vector,True,True,False,False,False,False
+qgis:multiparttosingleparts,49,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:zonalstatistics,48,B_no_l3,dataset_no_bridge,,Zonal statistics,raster,True,True,False,False,False,False
+qgis:linestopolygons,48,B_no_l3,dataset_no_bridge,,Lines to polygons,vector,True,True,False,False,False,False
+qgis:mergevectorlayers,47,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:polygonstolines,47,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:saveselectedfeatures,47,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:buildqueryextent,47,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:intersection,46,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:joinbylocationsummary,46,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:dissolve,45,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:checkvalidity,43,B_no_l3,dataset_no_bridge,,Check validity,vector,True,True,False,False,False,False
+native:extenttolayer,43,B_no_l3,dataset_no_bridge,,Create layer from extent,vector,True,True,False,False,False,False
+qgis:idwinterpolation,43,B_no_l3,dataset_no_bridge,,IDW interpolation,raster,True,True,False,False,False,False
+qgis:fixgeometries,43,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:extendlines,42,B_no_l3,dataset_no_bridge,,Extend lines,vector,True,True,False,False,False,False
+gdal:rasterize_over,41,B_no_l3,rejected,,Rasterize_over,vector,True,True,False,False,True,False
+native:splitvectorlayer,40,B_no_l3,dataset_no_bridge,,Split vector layer,vector,True,True,False,False,False,False
+native:addxyfields,37,B_no_l3,dataset_no_bridge,,Add X/Y fields to layer,vector,True,True,False,False,False,False
+native:boundary,37,B_no_l3,dataset_no_bridge,,Boundary,vector,True,True,False,False,False,False
+native:removeduplicatevertices,36,B_no_l3,dataset_no_bridge,,Remove duplicate vertices,vector,True,True,False,False,False,False
+qgis:eliminateselectedpolygons,36,B_no_l3,dataset_no_bridge,,Eliminate selected polygons,vector,True,True,False,False,False,False
+qgis:regularpoints,36,B_no_l3,dataset_no_bridge,,Regular points,vector,True,True,False,False,False,False
+qgis:creategrid,36,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:pointonsurface,35,B_no_l3,dataset_no_bridge,,Point on surface,vector,True,True,False,False,False,False
+qgis:joinattributestable,35,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:slope,35,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:splitlinesbylength,34,B_no_l3,dataset_no_bridge,,Split lines by maximum length,vector,True,True,False,False,False,False
+native:symmetricaldifference,34,A_l3_bridge,l3_bridge_crosswalk,L3_02_02_05,Symmetrical difference,vector,True,True,False,True,False,False
+native:createconstantrasterlayer,34,B_no_l3,dataset_no_bridge,,Create constant raster layer,raster,True,True,False,False,False,False
+native:shortestpathpointtopoint,34,B_no_l3,dataset_no_bridge,,Shortest path point to point,vector,True,True,False,False,False,False
+qgis:distancetonearesthubpoints,34,B_no_l3,filtered,,Distance to nearest hub,vector,True,False,False,False,False,False
+native:zonalhistogram,33,B_no_l3,dataset_no_bridge,,Zonal histogram,raster,True,True,False,False,False,False
+native:cellstatistics,33,B_no_l3,dataset_no_bridge,,Cell statistics,raster,True,True,False,False,False,False
+qgis:rastersampling,33,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:extractbyattribute,33,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:minimumboundinggeometry,32,A_l3_bridge,l3_bridge_crosswalk,L3_02_05_12,Minimum bounding geometry,vector,True,True,False,True,False,False
+native:shortestline,32,B_no_l3,dataset_no_bridge,,Shortest line between features,vector,True,True,False,False,False,False
+native:hublines,31,B_no_l3,filtered,,Join by lines,vector,True,False,False,False,False,False
+native:calculatevectoroverlaps,31,B_no_l3,dataset_no_bridge,,Overlap analysis,vector,True,True,False,False,False,False
+native:reverselinedirection,30,B_no_l3,dataset_no_bridge,,Reverse line direction,vector,True,True,False,False,False,False
+native:createpointslayerfromtable,30,B_no_l3,dataset_no_bridge,,Create points layer from table,vector,True,True,False,False,False,False
+qgis:explodelines,30,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:extractvertices,30,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:collect,29,B_no_l3,dataset_no_bridge,,Collect geometries,vector,True,True,False,False,False,False
+qgis:createspatialindex,29,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:ordinarykriging,29,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:delaunaytriangulation,28,B_no_l3,dataset_no_bridge,,Delaunay triangulation,vector,True,True,False,False,False,False
+gdal:rasterize_over_fixed_value,28,B_no_l3,dataset_no_bridge,,Rasterize_over_fixed_value,vector,True,True,False,False,False,False
+gdal:clipvectorbypolygon,28,B_no_l3,dataset_no_bridge,,Clip vector by mask layer,vector,True,True,False,False,False,False
+native:kmeansclustering,28,B_no_l3,dataset_no_bridge,,K-means clustering,vector,True,True,False,False,False,False
+qgis:union,28,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:snappointstogrid,27,B_no_l3,dataset_no_bridge,,Snap points to grid,vector,True,True,False,False,False,False
+qgis:importintopostgis,27,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:distancematrix,26,B_no_l3,dataset_no_bridge,,Distance matrix,vector,True,True,False,False,False,False
+native:orientedminimumboundingbox,26,B_no_l3,dataset_no_bridge,,Oriented minimum bounding box,vector,True,True,False,False,False,False
+native:aspect,26,B_no_l3,dataset_no_bridge,,Aspect,raster,True,True,False,False,False,False
+qgis:difference,26,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:cliprasterwithpolygon,25,B_no_l3,dataset_no_bridge,,Clip Raster with Polygon,vector,True,True,False,False,False,False
+native:removenullgeometries,25,B_no_l3,dataset_no_bridge,,Remove null geometries,vector,True,True,False,False,False,False
+gdal:contour_polygon,25,B_no_l3,dataset_no_bridge,,Contour Polygons,raster,True,True,False,False,False,False
+qgis:basicstatisticsforfields,25,B_no_l3,dataset_no_bridge,,Basic statistics for fields,vector,True,True,False,False,False,False
+native:rastersurfacevolume,24,B_no_l3,dataset_no_bridge,,Raster surface volume,raster,True,True,False,False,False,False
+native:extractwithindistance,24,B_no_l3,dataset_no_bridge,,Extract within distance,vector,True,True,False,False,False,False
+densityanalysis:graduatedstyle,24,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:simplifygeometries,24,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:polygonize,24,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:aspect,24,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:clipvectorbyextent,23,B_no_l3,dataset_no_bridge,,Clip vector by extent,vector,True,True,False,False,False,False
+qgis:countpointsinpolygon,23,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:executesql,23,B_no_l3,dataset_no_bridge,,Execute SQL,vector,True,True,False,False,False,False
+qgis:distancetonearesthublinetohub,22,B_no_l3,filtered,,Distance to nearest hub,vector,True,False,False,False,False,False
+native:hillshade,22,B_no_l3,dataset_no_bridge,,Hillshade,raster,True,True,False,False,False,False
+native:promotetomulti,22,B_no_l3,dataset_no_bridge,,Promote to multipart,vector,True,True,False,False,False,False
+qgis:executesql,22,B_no_l3,dataset_no_bridge,,Execute SQL,vector,True,True,False,False,False,False
+qgis:randomselection,22,B_no_l3,dataset_no_bridge,,Random selection,vector,True,True,False,False,False,False
+native:rasterlayerproperties,21,B_no_l3,dataset_no_bridge,,Raster layer properties,raster,True,True,False,False,False,False
+native:convexhull,21,B_no_l3,dataset_no_bridge,,Convex hull,vector,True,True,False,False,False,False
+native:mergelines,21,B_no_l3,dataset_no_bridge,,Merge lines,vector,True,True,False,False,False,False
+native:setprojectvariable,20,B_no_l3,dataset_no_bridge,,Set project variable,unknown,True,True,False,False,False,False
+qgis:pointstopath,20,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:fillsinksxxlwangliu,19,B_no_l3,dataset_no_bridge,,Fill Sinks XXL,raster,True,True,False,False,False,False
+saga:fillsinkswangliu,19,B_no_l3,dataset_no_bridge,,Fill Sinks,raster,True,True,False,False,False,False
+qgis:deleteholes,19,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:fillsinkswangliu,19,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:multiringconstantbuffer,18,A_l3_bridge,l3_bridge_crosswalk,L3_02_01_01,Multi-ring buffer,vector,True,True,False,True,False,False
+saga:flowaccumulationtopdown,17,B_no_l3,dataset_no_bridge,,Flow Accumulation,raster,True,True,False,False,False,False
+native:wedgebuffers,17,B_no_l3,dataset_no_bridge,,Create wedge buffers,vector,True,True,False,False,False,False
+native:densifygeometriesgivenaninterval,17,B_no_l3,dataset_no_bridge,,Densify by interval,vector,True,True,False,False,False,False
+qgis:pointsalonglines,17,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:polygonfromlayerextent,17,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:forcerhr,16,B_no_l3,dataset_no_bridge,,Force right-hand-rule,vector,True,True,False,False,False,False
+native:rectanglesovalsdiamonds,16,B_no_l3,dataset_no_bridge,,"Rectangles, ovals, diamonds",vector,True,True,False,False,False,False
+thematic:arrowslegend,16,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:simplefilter,16,B_no_l3,filtered,,Simple Filter,raster,True,False,False,False,False,False
+fusion:mergelasfiles,16,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:hypsometriccurves,16,B_no_l3,dataset_no_bridge,,Hypsometric curves,raster,True,True,False,False,False,False
+geodyntools:retainfields,16,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:raiseexception,16,B_no_l3,filtered,,Raise exception,unknown,True,False,False,False,False,False
+native:extractlabels,15,B_no_l3,dataset_no_bridge,,Extract labels,vector,True,True,False,False,False,False
+qgis:listuniquevalues,15,B_no_l3,dataset_no_bridge,,List unique values,vector,True,True,False,False,False,False
+native:randompointsinpolygons,15,B_no_l3,dataset_no_bridge,,Random points in polygons,vector,True,True,False,False,False,False
+native:selectwithindistance,15,B_no_l3,dataset_no_bridge,,Select within distance,vector,True,True,False,False,False,False
+native:dbscanclustering,15,B_no_l3,dataset_no_bridge,,DBSCAN clustering,vector,True,True,False,False,False,False
+qgis:definecurrentprojection,15,B_no_l3,dataset_no_bridge,,Define Shapefile projection,vector,True,True,False,False,False,False
+native:fuzzifyrasterlinearmembership,15,B_no_l3,dataset_no_bridge,,Fuzzify raster linear membership,raster,True,True,False,False,False,False
+qgis:splitvectorlayer,15,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:rasterize,15,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:snapgeometries,15,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:setzfromraster,14,B_no_l3,dataset_no_bridge,,Drape,vector,True,True,False,False,False,False
+native:rasterlayeruniquevaluesreport,14,B_no_l3,dataset_no_bridge,,Raster layer unique values report,raster,True,True,False,False,False,False
+saga:snappointstoraster,14,B_no_l3,dataset_no_bridge,,Snap Points to Raster,vector,True,True,False,False,False,False
+saga:flowaccumulationrecursive,14,B_no_l3,dataset_no_bridge,,Flow Accumulation,raster,True,True,False,False,False,False
+native:condition,14,B_no_l3,filtered,,Conditional branch,unknown,True,False,False,False,False,False
+native:transect,14,B_no_l3,dataset_no_bridge,,Transect,vector,True,True,False,False,False,False
+lftools:magicstyles,14,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:voronoipolygons,14,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:copernicusrastercalculator,14,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:rasterlayerstatistics,14,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:serviceareafromlayer,14,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:postgisexecutesql,14,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:spatialiteexecutesql,13,B_no_l3,dataset_no_bridge,,SpatiaLite execute SQL,vector,True,True,False,False,False,False
+saga:slopeaspectcurvature,13,A_l3_bridge,l3_bridge_crosswalk,L3_04_01_01,"Slope, Aspect, Curvature",raster,True,True,False,True,False,False
+native:meancoordinates,13,B_no_l3,dataset_no_bridge,,Mean coordinate,vector,True,True,False,False,False,False
+qgis:postgisexecuteandloadsql,13,B_no_l3,dataset_no_bridge,,PostgreSQL execute and load SQL,unknown,True,True,False,False,False,False
+qgis:aggregate,13,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+otb:imageenvelope,12,B_no_l3,dataset_no_bridge,,ImageEnvelope,raster,True,True,False,False,False,False
+otb:smoothing,12,B_no_l3,filtered,,Smoothing,raster,True,False,False,False,False,False
+native:multiintersection,12,B_no_l3,dataset_no_bridge,,Intersection,vector,True,True,False,False,False,False
+native:printlayouttoimage,12,B_no_l3,dataset_no_bridge,,Export print layout as image,raster,True,True,False,False,False,False
+native:serviceareafromlayer,12,B_no_l3,dataset_no_bridge,,Service area from layer,vector,True,True,False,False,False,False
+saga:transformvectorlayer,12,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:alignsingleraster,12,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:dissolve,12,B_no_l3,dataset_no_bridge,,Dissolve,vector,True,True,False,False,False,False
+saga:addrastervaluestopoints,12,B_no_l3,dataset_no_bridge,,Add Raster Values to Points,vector,True,True,False,False,False,False
+qgis:extractspecificvertices,12,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+provider:name,12,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:upslopearea,11,B_no_l3,dataset_no_bridge,,Upslope Area,raster,True,True,False,False,False,False
+gdal:roughness,11,B_no_l3,dataset_no_bridge,,Roughness,raster,True,True,False,False,False,False
+gdal:extractprojection,11,B_no_l3,dataset_no_bridge,,Extract projection,raster,True,True,False,False,False,False
+gdal:rearrange_bands,11,B_no_l3,dataset_no_bridge,,Rearrange bands,raster,True,True,False,False,False,False
+native:rotatefeatures,11,B_no_l3,dataset_no_bridge,,Rotate,vector,True,True,False,False,False,False
+native:pointtolayer,11,B_no_l3,dataset_no_bridge,,Create layer from point,vector,True,True,False,False,False,False
+native:boundingboxes,11,B_no_l3,dataset_no_bridge,,Bounding boxes,vector,True,True,False,False,False,False
+sagang:channelnetwork,11,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:upslopearea,11,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:ruggednessindex,11,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:gaussianfilter,10,B_no_l3,dataset_no_bridge,,Gaussian Filter,raster,True,True,False,False,False,False
+native:linesubstring,10,B_no_l3,dataset_no_bridge,,Line substring,vector,True,True,False,False,False,False
+native:setzvalue,10,B_no_l3,dataset_no_bridge,,Set Z value,vector,True,True,False,False,False,False
+native:multidifference,10,B_no_l3,dataset_no_bridge,,Difference,vector,True,True,False,False,False,False
+qgis:singlesidedbuffer,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:downloadosmdataextentquery,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:modelerrastercalc,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fusion:polyclipdata,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:overviews,10,B_no_l3,dataset_no_bridge,,Build overviews,raster,True,True,False,False,False,False
+native:importintopostgis,10,B_no_l3,dataset_no_bridge,,Export to PostgreSQL,vector,True,True,False,False,False,False
+sagang:gaussianfilter,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:assignprojection,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+brdrqprovider:brdrqautocorrectborders,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:postgisexecutesql,10,B_no_l3,filtered,,PostgreSQL execute SQL,unknown,True,False,False,False,False,False
+idragratools:idragrasaveascii,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pcraster:converttopcrasterformat,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:flowaccumulationtopdown,10,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:setstyleforvectorlayer,10,B_no_l3,filtered,,Set style for vector layer,vector,True,False,False,False,False,False
+otb:kmeansclassification,9,B_no_l3,dataset_no_bridge,,KMeansClassification,raster,True,True,False,False,False,False
+gdal:gdalinfo,9,B_no_l3,dataset_no_bridge,,Raster information,raster,True,True,False,False,False,False
+native:projectpointcartesian,9,B_no_l3,filtered,,Project points,vector,True,False,False,False,False,False
+native:sumlinelengths,9,B_no_l3,dataset_no_bridge,,Sum line lengths,vector,True,True,False,False,False,False
+saga:rastermasking,9,B_no_l3,dataset_no_bridge,,Raster Masking,raster,True,True,False,False,False,False
+native:shortestpathpointtolayer,9,B_no_l3,dataset_no_bridge,,Shortest path point to layer,vector,True,True,False,False,False,False
+native:serviceareafrompoint,9,B_no_l3,dataset_no_bridge,,Service area from point,vector,True,True,False,False,False,False
+native:extractzvalues,9,B_no_l3,dataset_no_bridge,,Extract Z values,vector,True,True,False,False,False,False
+native:randomextract,9,B_no_l3,dataset_no_bridge,,Random extract,vector,True,True,False,False,False,False
+sagang:fillsinksplanchondarboux2001,9,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:extractbyextent,9,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:buffervectors,9,B_no_l3,filtered,,Buffer vectors,vector,True,False,False,False,False,False
+qgis:zonalstatisticsfb,9,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:boxplot,9,B_no_l3,filtered,,Box plot,vector,True,False,False,False,False,False
+native:roundrastervalues,8,B_no_l3,dataset_no_bridge,,Round raster,raster,True,True,False,False,False,False
+saga:copyfeatures,8,B_no_l3,dataset_no_bridge,,Copy Features,vector,True,True,False,False,False,False
+qgis:concavehull,8,B_no_l3,dataset_no_bridge,,Concave hull,vector,True,True,False,False,False,False
+densityanalysis:rasterstyle,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:splitwithlines,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:singlesidedbuffer,8,B_no_l3,dataset_no_bridge,,Single sided buffer,vector,True,True,False,False,False,False
+tww:extractlabels_interlis,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idp_sites_mapping:computethresholdwithotsu,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idp_sites_mapping:segmentationusingthresholding,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifysmalllines,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:basicstatisticsforfields,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:inversedistanceweightedinterpolation,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fusion:canopymodel,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fusion:returndensity,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:cell2firesimulator,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:createattributeindex,8,B_no_l3,filtered,,Create attribute index,vector,True,False,False,False,False,False
+wbt:d8pointer,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:watershed,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:zonalhistogram,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+genswmminp:generateswmminpfile,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:filldepressions,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:concavehull,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:fillsinks,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:identifynetworknodes,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:convertlinestopoints,8,B_no_l3,filtered,,Convert Lines to Points,vector,True,False,False,False,False,False
+native:createrandomnormalrasterlayer,8,B_no_l3,filtered,,Create random normal raster layer,raster,True,False,False,False,False,False
+qgis:rasterlayeruniquevaluesreport,8,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:dropgeometries,7,B_no_l3,filtered,,Drop geometries,vector,True,False,False,False,False,False
+saga:rastercalculator,7,B_no_l3,dataset_no_bridge,,Raster Calculator,unknown,True,True,False,False,False,False
+3d:tessellate,7,C_non_standard,filtered,,,vector,False,False,False,False,False,False
+native:arrayoffsetlines,7,B_no_l3,dataset_no_bridge,,Array of offset,vector,True,True,False,False,False,False
+saga:polygondissolvebyattribute,7,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:detectvectorchanges,7,B_no_l3,dataset_no_bridge,,Detect dataset changes,vector,True,True,False,False,False,False
+sagang:catchmentarea,7,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+geovita:begrensskadeexcavation,7,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+visibility:viewshed,7,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:multilevelbspline,7,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:convertgeometrytype,7,B_no_l3,dataset_no_bridge,,Convert geometry type,vector,True,True,False,False,False,False
+qgis:reclassifybytable,7,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:resampling,7,B_no_l3,dataset_no_bridge,,Resampling,unknown,True,True,False,False,False,False
+qgis:package,7,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:explodehstorefield,6,B_no_l3,dataset_no_bridge,,Explode HStore Field,vector,True,True,False,False,False,False
+native:highestpositioninrasterstack,6,B_no_l3,filtered,,Highest position in raster stack,raster,True,False,False,False,False,False
+native:reclassifybylayer,6,B_no_l3,dataset_no_bridge,,Reclassify by layer,raster,True,True,False,False,False,False
+native:segmentizebymaxdistance,6,B_no_l3,dataset_no_bridge,,Segmentize by maximum distance,vector,True,True,False,False,False,False
+native:printlayouttopdf,6,B_no_l3,dataset_no_bridge,,Export print layout as PDF,raster,True,True,False,False,False,False
+native:randompointsinextent,6,B_no_l3,dataset_no_bridge,,Random points in extent,vector,True,True,False,False,False,False
+native:atlaslayouttomultiplepdf,6,B_no_l3,filtered,,Export atlas layout as PDF,vector,True,False,False,False,False,False
+native:rasterbooleanand,6,B_no_l3,dataset_no_bridge,,Raster boolean AND,raster,True,True,False,False,False,False
+qgis:hillshade,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:fixeddistancebuffer,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:addfieldtoattributestable,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:vectorisinggridclasses,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:centroids,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+h3:createh3gridinsidepolygons,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ladm_col:polygonstolines,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdalogr:polygonize,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+otb:radiometricindices,6,B_no_l3,filtered,,RadiometricIndices,raster,True,False,False,False,False,False
+otb:binarymorphologicaloperation,6,B_no_l3,filtered,,BinaryMorphologicalOperation,raster,True,False,False,False,False,False
+qgis:rectanglesovalsdiamondsvariable,6,B_no_l3,filtered,,"Rectangles, ovals, diamonds",vector,True,False,False,False,False,False
+qgis:generatepointspixelcentroidsinsidepolygons,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:inversedistanceweighted,6,B_no_l3,dataset_no_bridge,,Inverse Distance Weighted,vector,True,True,False,False,False,False
+fusion:catalog,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:simulationresultsprocessing,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+cafs:suitableroofs,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:polygonselfintersection,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:cliprastertopolygon,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:jensonsnappourpoints,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+otb:bandmath,6,B_no_l3,dataset_no_bridge,,BandMath,raster,True,True,False,False,False,False
+wbt:dinfmassflux,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+geodyntools:vervangnonevaluesmet0voorveldenlijst,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:multiunion,6,B_no_l3,filtered,,Union,vector,True,False,False,False,False,False
+script:filterstructures,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:extract_subwatershed,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:interpolatepoint,6,B_no_l3,filtered,,Interpolate point on line,vector,True,False,False,False,False,False
+sagang:morphologicalfilteropencv,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:shrinkandexpand,6,B_no_l3,filtered,,Shrink and Expand,raster,True,False,False,False,False,False
+r:ritaglio_raster,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:channelnetworkanddrainagebasins,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:fillsinksxxlwangliu,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:watershedbasins,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+stream_segmenter:batch_stream_segmenter,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sat:clonelayer,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:profilesfromlines,6,B_no_l3,dataset_no_bridge,,Profiles from Lines,raster,True,True,False,False,False,False
+shapetools:createpie,6,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:setstyleforrasterlayer,5,B_no_l3,filtered,,Set style for raster layer,raster,True,False,False,False,False,False
+qgis:knearestconcavehull,5,B_no_l3,dataset_no_bridge,,Concave hull,vector,True,True,False,False,False,False
+gdal:triterrainruggednessindex,5,B_no_l3,dataset_no_bridge,,Terrain Ruggedness Index,raster,True,True,False,False,False,False
+saga:rastervaluestopoints,5,B_no_l3,dataset_no_bridge,,Raster Values to Points,vector,True,True,False,False,False,False
+saga:convertmultipointstopoints,5,B_no_l3,dataset_no_bridge,,Convert Multipoints to Points,vector,True,True,False,False,False,False
+native:meshrasterize,5,B_no_l3,filtered,,Rasterize mesh dataset,raster,True,False,False,False,False,False
+gdal:pansharp,5,B_no_l3,dataset_no_bridge,,Pansharpening,raster,True,True,False,False,False,False
+qgis:createconstantrasterlayer,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pdal:exportraster,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:inversedistanceweightedinterpolation,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:longestflowpath,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qneat3:odmatrixfrompointsastable,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:convertnodatatozero,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:multiintersection,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:pointstatisticsforpolygons,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+stream_segmenter:stream_segment_filter,5,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:rasterlogicalor,4,B_no_l3,dataset_no_bridge,,Raster boolean OR,raster,True,True,False,False,False,False
+gdal:gridnearestneighbor,4,B_no_l3,dataset_no_bridge,,Grid nearest neighbor,vector,True,True,False,False,False,False
+native:atlaslayouttopdf,4,B_no_l3,dataset_no_bridge,,Export atlas layout as PDF,vector,True,True,False,False,False,False
+saga:crossprofiles,4,B_no_l3,filtered,,Cross Profiles,raster,True,False,False,False,False,False
+sagang:crossprofiles,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+densityanalysis:geohashdensity,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+densityanalysis:geohashmultidensity,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+densityanalysis:h3density,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+densityanalysis:h3multidensity,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+densityanalysis:polygondensity,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+densityanalysis:polygonvectordensity,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:smoothgeometry,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:detrenddem,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:swapxy,4,B_no_l3,filtered,,Swap X and Y coordinates,vector,True,False,False,False,False,False
+ferramentasedicao:insertroadmarker,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:placepointofchange,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:insertenergytower,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:sizetextriverline,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:highestspotontheframe,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+becagis:directionalmerge,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:randompointsinpolygons,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:kmeansclustering,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdalogr:rasterize,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idp_sites_mapping:rasterclassificationusingcomputedranges,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+thematic:proportionalsymbolslegend,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:donutholeextractor,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:cleangeometries,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifyduplicatedgeometries,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifyduplicatedfeatures,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifysmallpolygons,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:snaplayeronlayer,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifydangles,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:removeduplicatedfeatures,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:applystylesfromdatabasetolayersalgorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:matchandapplyqmlstylestolayersalgorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:removeduplicatedgeometries,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:deaggregategeometries,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:stringcsvtolayerlistalgorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifyunsharedvertexonintersectionsalgorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifyunsharedvertexonsharededgesalgorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:unbuildpolygonsalgorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifydrainageloops,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifydrainageflowissues,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:addunsharedvertexonsharededgesalgorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:densifygeometriesgivenaninterval,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:coveragesimplify,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:multilevelbsplineinterpolation,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:multilevelbspline,4,B_no_l3,filtered,,Multilevel B-Spline,vector,True,False,False,False,False,False
+fusion:dtm2ascii,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fusion:clipdata,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fusion:gridsurfacecreate,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fusion:intensityimage,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+choucas:observedpoint,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+choucas:visibilitepassive,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:filter,4,B_no_l3,filtered,,Feature filter,vector,True,False,False,False,False,False
+saga:interpolatecubicspline,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:spatialiteexecutesql,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+cafs:shadow,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+cafs:roofprocessor,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:d8flowaccumulation,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:extractstreams,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:rasterstreamstovector,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:rastertovectorpolygons,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:affinetransform,4,B_no_l3,dataset_no_bridge,,Affine transform,vector,True,True,False,False,False,False
+hrisk:initbuilding,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:initroad,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+otb:despeckle,4,B_no_l3,dataset_no_bridge,,Despeckle,raster,True,True,False,False,False,False
+visibility:createviewpoints,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:cliprasterwithpolygon,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+geodyntools:lis2graph,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:convertpolygonstolines,4,B_no_l3,dataset_no_bridge,,Convert Polygons to Lines,vector,True,True,False,False,False,False
+lastools:txt2laspro,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lastools:lasgridpro,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+precourlis:points_to_lines,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+precourlis:lines_to_points,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:fwdet_v21,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:lineintersections,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:fix_geometries,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:merge_by_area,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp:merge_by_area,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:computed8,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicea4,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicef2,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicef3,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicef4,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicef5,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:fillburn,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:breachdepressions,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:rasterizestreams,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:extractandsnapoutlets,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:randomselectionwithinsubsets,4,B_no_l3,dataset_no_bridge,,Random selection within subsets,vector,True,True,False,False,False,False
+saga:thiessenpolygons,4,B_no_l3,filtered,,Thiessen Polygons,vector,True,False,False,False,False,False
+wbt:minimumboundingbox,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:fixnetworkconnectivity,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:aggregatestreamsegments,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lftools:binarythresholding,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragragroupstats,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragracreatedb,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:addcoordinatestopoints,4,B_no_l3,filtered,,Add Coordinates to Points,vector,True,False,False,False,False,False
+saga:intersect,4,B_no_l3,dataset_no_bridge,,Intersect,vector,True,True,False,False,False,False
+gdal:buildvirtualvector,4,B_no_l3,filtered,,Build virtual vector,vector,True,False,False,False,False,False
+pcraster:spatial,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pcraster:cover,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:burndem,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:flowaccumulationparallelizable,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lastools:laszip,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:lidarpointdensity,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lastools:lasground,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:ritaglio_vettore,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+stl_generator:stlfromraster,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:snappointstogrid,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:computethresholdwithotsu,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:segmentationusingthresholding,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:catchmentarearecursive,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:create_plotplan,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:scar,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:propagationdigraph,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:createdirectory,4,B_no_l3,dataset_no_bridge,,Create directory,unknown,True,True,False,False,False,False
+saga:thinplatesplinetin,4,B_no_l3,dataset_no_bridge,,Thin Plate Spline,vector,True,True,False,False,False,False
+native:algorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+provider:algorithm,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:terrainruggednessindextri,4,B_no_l3,filtered,,Terrain Ruggedness Index,raster,True,False,False,False,False,False
+gdal:focalstatistics,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:repairshapefile,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:vectorizingrasterclasses,4,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:importintospatialite,3,B_no_l3,dataset_no_bridge,,Export to SpatiaLite,vector,True,True,False,False,False,False
+native:densifygeometries,3,B_no_l3,dataset_no_bridge,,Densify by count,vector,True,True,False,False,False,False
+native:setlayerencoding,3,B_no_l3,dataset_no_bridge,,Set layer encoding,vector,True,True,False,False,False,False
+saga:addrastervaluestofeatures,3,B_no_l3,dataset_no_bridge,,Add Raster Values to Features,vector,True,True,False,False,False,False
+native:filterbygeometry,3,B_no_l3,dataset_no_bridge,,Filter by geometry type,vector,True,True,False,False,False,False
+qgis:variabledistancebuffer,3,B_no_l3,dataset_no_bridge,,Variable distance buffer,vector,True,True,False,False,False,False
+saga:splitrgbbands,3,B_no_l3,dataset_no_bridge,,Split RGB bands,raster,True,True,False,False,False,False
+native:bufferbym,3,B_no_l3,dataset_no_bridge,,Variable width buffer,vector,True,True,False,False,False,False
+native:rescaleraster,3,B_no_l3,dataset_no_bridge,,Rescale raster,raster,True,True,False,False,False,False
+gdal:ogrinfo,3,B_no_l3,dataset_no_bridge,,Vector information,vector,True,True,False,False,False,False
+native:dxfexport,3,B_no_l3,filtered,,Export layers to DXF,unknown,True,False,False,False,False,False
+saga:rasterdifference,3,B_no_l3,dataset_no_bridge,,Raster Difference,raster,True,True,False,False,False,False
+saga:sinkdrainageroutedetection,3,B_no_l3,dataset_no_bridge,,Sink Drainage Route Detection,raster,True,True,False,False,False,False
+saga:sinkremoval,3,B_no_l3,dataset_no_bridge,,Sink Removal,raster,True,True,False,False,False,False
+saga:relativeheightsandslopepositions,3,B_no_l3,dataset_no_bridge,,Relative Heights and Slope Positions,raster,True,True,False,False,False,False
+saga:proximityraster,3,B_no_l3,filtered,,Proximity Raster,raster,True,False,False,False,False,False
+saga:polygonstoedgesandnodes,3,B_no_l3,dataset_no_bridge,,Polygons to Edges and Nodes,vector,True,True,False,False,False,False
+saga:surfacespecificpoints,3,B_no_l3,dataset_no_bridge,,Surface Specific Points,raster,True,True,False,False,False,False
+gdal:viewshed,3,B_no_l3,dataset_no_bridge,,Viewshed,raster,True,True,False,False,False,False
+gdal:rgbtopct,3,B_no_l3,dataset_no_bridge,,RGB to PCT,raster,True,True,False,False,False,False
+otb:bandmathx,3,B_no_l3,dataset_no_bridge,,BandMathX,raster,True,True,False,False,False,False
+saga:strahlerorder,3,B_no_l3,dataset_no_bridge,,Strahler Order,raster,True,True,False,False,False,False
+saga:channelnetworkanddrainagebasins,3,B_no_l3,dataset_no_bridge,,Channel Network and Drainage Basins,raster,True,True,False,False,False,False
+native:shortestpathlayertopoint,3,B_no_l3,filtered,,Shortest path layer to point,vector,True,False,False,False,False,False
+geovita:create_atlas_coverage,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+geovita:begrensskadeimpactmap,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+geovita:begrensskadetunnel,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:buildrawquery,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:buildquerybyattributeonly,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:buildqueryinsidearea,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:buildqueryaroundarea,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:downloadosmdatarawquery,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:downloadosmdatanotspatialquery,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ladm_col:fieldcalculatorforinputlayer,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ladm_col:insertfeaturestolayer,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+thtoolbox:points_bore_axis,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:polygonunion,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+visibility:create_viewpoints,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:boundary,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:filldepressionswangandliu,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:linedensity,3,B_no_l3,filtered,,Line density,vector,True,False,False,False,False,False
+native:virtualrastercalc,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lizsync:deploy_database_server_package,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:sinkdrainageroutedetection,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:sinkremoval,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:profilesfromlines,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:leastcostpaths,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:barplot,3,B_no_l3,dataset_no_bridge,,Bar plot,vector,True,True,False,False,False,False
+precourlis:import_layer_from_dem,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+brdrqprovider:brdrqautoupdateborders,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:sumlinelengths,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:checkvalidity,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:setzvalue,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:randompointsalongline,3,B_no_l3,filtered,,Random points along line,vector,True,False,False,False,False,False
+r:accatastamento,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:selezione_variabili_di_stima,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:gridstatisticsforpoints,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+stream_segmenter:stream_segmenter,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pdal:merge,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragrarasterizetimemap,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:unzipper,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:relief,3,B_no_l3,dataset_no_bridge,,Relief,raster,True,True,False,False,False,False
+native:calculateexpression,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:orderedweightedaveraging,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:flowaccumulation,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:curvature,3,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:gdal2tiles,2,B_no_l3,filtered,,gdal2tiles,raster,True,False,False,False,False,False
+qgis:filedownloader,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fluvialcorridortoolbox:splitlines,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:extractnodes,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:differentialrasterthreshold,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:binaryclosing,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:removesmallpolygonalobjects,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:disaggregatepolygon,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:segmentize,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:flowdirection,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:relativedem,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:valleybottom,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+tuflow:convertgpkgtoswmminp,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:loadmasks,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:buildelevationdiagram,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:elevationdiagrampointgeneralization,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:generalizenetworkedgeswithlengthalgorithm,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:mergelinesbyangle,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:changeattributeortho,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:setsobrepositionortho,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:changeattributetopo,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:setsobrepositiontopo,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:mergerivers,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ferramentasedicao:makegrid,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+topogeneralistion:converttotopo50,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:polygondissolveallpolygons,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sidewalkreator_algorithms_provider:osm_sidewalkreator_full_bbox,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gwat:nearby_meteo_stations,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gwat:inverse_dist_gage_weighting,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gwat:count_feats,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gwat:elongation_ratio,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gwat:watershed_attributes,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:contourlines,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gwat:watershed_statistics,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gwat:watershed_cn,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:polygonunion,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+kumoy:uploadvector,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:extendlines,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:poleofinaccessibility,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:decoratelayer,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:gridinversedistance,2,B_no_l3,dataset_no_bridge,,Grid inverse distance,vector,True,True,False,False,False,False
+ladm_col:copy_vector_layer,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+model:etl_cobol,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+model:etl_snc,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+model:etl_o_m_cobol,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+model:etl_omisiones_comisiones_snc,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+model:overlapping_boundaries,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+visualist:graduatedlinemap,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:convexehull,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+aerodromeutilities:taxiwaywidener,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+aerodromeutilities:polygontosinglepart,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:reclassifyvaluessingle,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:invertdatanodata,2,B_no_l3,filtered,,Invert Data/No-Data,raster,True,False,False,False,False,False
+saga:removesmallpixelclumpstonodata,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:majorityfilter,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+raepa:cancel_last_modification,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+raepa:execute_sql,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+raepa:get_network_to_vanne_from_point,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+raepa:get_network_to_vanne_ferme_from_point,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+raepa:get_downstream_route,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+raepa:get_upstream_route,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+raepa:get_orientation_appareil,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+raepa:get_network_to_vanne,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:importphotos,2,B_no_l3,filtered,,Import geotagged photos,vector,True,False,False,False,False,False
+saga:pointdistances,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+becagistools:directionalmerge,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:convexhull,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:symmetricaldifference,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hcmgistools:directionalmerge,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pdal:density,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pdal:exportrastertin,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:copyraster,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:rfmakemodel,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:rfpredict,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fusion:thindata,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+choucas:createptsaleatoireskm,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+choucas:createptsaleatoires,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:downstreamprotectionvaluepropagationmetric,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:rasterknapsack,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:merge,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+eis:descriptive_statistics_vector,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+eis:descriptive_statistics_raster,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+eis:summarize_label_metrics_binary,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+eis:summarize_probability_metrics,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ttp_v4:geocoding,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:addrastervaluestopoints,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+cafs:calculate,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+cafs:solar,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:subbasins,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:fetchjapop,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:fetchjaroad,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:fetchjabuilding,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:estimatepopulationofbuilding,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:fetchjadem,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:receiverfacade,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:receiverdelaunaygrid,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:estimatelevelofbuilding,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+hrisk:estimateriskofbuilding,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+otb:classificationmapregularization,2,B_no_l3,dataset_no_bridge,,ClassificationMapRegularization,raster,True,True,False,False,False,False
+qgis:rasterlayerhistogram,2,B_no_l3,filtered,,Raster layer histogram,raster,True,False,False,False,False,False
+gdal:gridinversedistancenearestneighbor,2,B_no_l3,filtered,,Grid inverse distance nearest neighbor,vector,True,False,False,False,False,False
+my_provider:my_algorithm,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:extractbymask,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:addpolygonattributestopoints,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lizsync:package_central_database,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:rasterstatisticsforpolygons,2,B_no_l3,filtered,,Raster Statistics for Polygons,vector,True,False,False,False,False,False
+native:rasterlayerzonalstats,2,B_no_l3,filtered,,Raster layer zonal statistics,raster,True,False,False,False,False,False
+qgis:terrainruggednessindex,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:topographicpositionindex,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:viewshed,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:shortestpathpointtopoint,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:kerneldensityestimation,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:addxyfieldstolayer,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:poleofinaccessibility,2,B_no_l3,filtered,,Pole of inaccessibility,vector,True,False,False,False,False,False
+qgis:pointonsurface,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:raisewarning,2,B_no_l3,filtered,,Raise warning,unknown,True,False,False,False,False,False
+geodyntools:sortfields,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+geodyntools:drop_empty_fields,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+integral_provider:fuzzifier,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+integral_provider:analyzer,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+integral_provider:indicator_adder2,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:cliprasterbymasklayer,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:reclass,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:clump,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:setnodatavalue,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:rastertovectorpoints,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:newrasterfrombase,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:costdistance,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:costallocation,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:resamplingfilter,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:vectorlayerscatterplot,2,B_no_l3,filtered,,Vector layer scatterplot,vector,True,False,False,False,False,False
+saga:featureextents,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:triangulation,2,B_no_l3,filtered,,Triangulation,vector,True,False,False,False,False,False
+precourlis:prepare_tracks,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+precourlis:pointsalonglines,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+precourlis:interpolate_points,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+precourlis:import_tracks,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:tilesxyz,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sdb_tools:sdb_phase1_preprocessing,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sdb_tools:sdb_02_filtering,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sdb_tools:sdb_03_initial_modeling,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sdb_tools:sdb_phase4_adaptive,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sdb_tools:sdb_05_reporting,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lftools:getpointvalue,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:propagation,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:remove_overlappings,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:apply_matrix,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:danger_zones,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:no_impact,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:merge_by_form_factor,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp_utils:remove_by_area,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pzp:remove_by_area,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicea1,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicea2,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicea3,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:indicef1,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:unnestbasins,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:geometrybyexpression,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:visibilityanalysis,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:joinbynearest,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:calcula123f1,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:breachdepressionsleastcost,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:convert3dtiles,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:minimumfilter,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:topographicpositionindextpi,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:simplefilter,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:adduniquevalueindexfield,2,B_no_l3,filtered,,Add unique value index field,vector,True,False,False,False,False,False
+gdal:warpresolution,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:multiringbuffer,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:renamelayer,2,B_no_l3,filtered,,Rename layer,unknown,True,False,False,False,False,False
+qgis:removeduplicatesbyattribute,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:flowpathlength,2,B_no_l3,filtered,,Flow Path Length,raster,True,False,False,False,False,False
+fct:measurenetworkfromoutlet,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:hackorder,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:strahlerorder,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:selectconnectedcomponents,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fct:principalstem,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:addxyfields,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:exportlayersinformation,2,B_no_l3,filtered,,Export layer,vector,True,False,False,False,False,False
+idragratools:idragraimportfromexistingdb,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragraexportcontrolpoints,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragraimportirrunitsresults,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragrastatserie,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:identifysegmenterrorsbetweenlines,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:mergelineswithsameattributeset,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:reclassifygroupsofpixelstonearestneighboralgorithm,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dsgtools:setlineorientation,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sailtools:windrouting,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sailtools:inverted_clip,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:applylayerstyle,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+burntareas:dissolveburntareas,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+burntareas:attributeburntareas,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+burntareas:rasteriseburntareas,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+burntareas:uploadburntareas,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:kmeansclusteringforrasters,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:kmeansclusteringforrasters,2,B_no_l3,filtered,,K-Means Clustering for Rasters,unknown,True,False,False,False,False,False
+saga:ordinarykriging,2,B_no_l3,filtered,,Ordinary Kriging,vector,True,False,False,False,False,False
+sagang:invertgrid,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:rankfilter,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:tilesxyzdirectory,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:waypoints_polygons_builder_v3_border,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:yield_map_filtering,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lpc:rmse,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lpc:calculateerrorcompensation,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lpc:filtertreatments,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lpc:simplerandomsampling,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lpc:histogramfromattribute,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:linestopolygons,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:randompointsonlines,2,B_no_l3,filtered,,Random points on lines,vector,True,False,False,False,False,False
+native:generatepointspixelcentroidsinsidepolygons,2,B_no_l3,filtered,,Generate points,raster,True,False,False,False,False,False
+qgis:shortestpathlayertopoint,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:lidartingridding,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:lidaridwinterpolation,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lastools:lasheight,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lastools:lasclassify,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lastools:lasnoise,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lastools:lasheightclassify,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+rvt:rvt_svf,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+rvt:rvt_blender,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+rvt:rvt_opns,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:difffrommeanelev,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:strahlerorder,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qsamaple_provider:accuracymetrics,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:accatastamento_ritaglio,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:userdefinedfilter,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:watershedsegmentation,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:basicstatisticsforfieldstocsv,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:rasterclassificationusingcomputedranges,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:watershedbasinsextended,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+wbt:snappourpoints,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:polygonselfintersection,2,B_no_l3,filtered,,Polygon Self-Intersection,vector,True,False,False,False,False,False
+pumaplus:creategridwithfaults,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:breachdepressions,2,B_no_l3,filtered,,Breach Depressions,raster,True,False,False,False,False,False
+saga:channelnetwork,2,B_no_l3,filtered,,Channel Network,raster,True,False,False,False,False,False
+stream_segmenter:batch_stream_segment_filter,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:ignitionpoints,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:statistic,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fire2a:rasterknapsackoptimization,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:removeduplicategeometries,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+genswmminp:importinpfile,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragrarasterizemap,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragrarasterizemaptable,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragracalcwaterdepth,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragrarasterizedomain,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:idwinterpolation,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:dtmslopebasedfilter,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+plugin_qgis_lpo:refreshdata,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+deeplearningtools:loadimages,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:skyviewfactor,2,B_no_l3,filtered,,Sky View Factor,raster,True,False,False,False,False,False
+qscout:droppins,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:thinplatespline,2,B_no_l3,dataset_no_bridge,,Thin Plate Spline,vector,True,True,False,False,False,False
+saga:watershedbasins,2,B_no_l3,filtered,,Watershed Basins,raster,True,False,False,False,False,False
+qgis:algorithm,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+3d:algorithm,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:algorithm,2,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+trendsearth:raster_clip,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+trendsearth:carbon_summary,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sidewalkreator_algorithms_provider:fullsidewalkreatorfrompolygon,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:openosmfile,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:downloadosmdatainareaquery,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+quickosm:downloadosmdataaroundareaquery,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dataplotly:dataplotly_scatterplot,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+model:etl_intermediate_structure,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+thtoolbox:raster_gradient,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+thtoolbox:line_baseline_intersections,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+thtoolbox:polygon_baseline_intersections,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+model:glaciers_model,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qneat3:shortestpathpointtopoint,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:nearestneighbour,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:randompointsinextent,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lizsync:send_projects_and_files_to_clone_ftp,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lizsync:build_mobile_project,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lizsync:create_database_structure,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lizsync:initialize_central_database,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+lizsync:synchronize_database,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:majorityfilterbycategory,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:rastervolume,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:rasterdifference,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:resampling,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:polygonskeleton,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:elenco_ritorni_classi,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:installlib,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gmlas:convertformat_gmlas,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+openspp:proximity_statistics,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+openspp:spatial_statistics,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+networks:indicators_by_od,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:reclassifybytable,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:retile,1,B_no_l3,filtered,,Retile,raster,True,False,False,False,False,False
+otb:computeimagesstatistics,1,B_no_l3,dataset_no_bridge,,ComputeImagesStatistics,unknown,True,True,False,False,False,False
+otb:trainimagesclassifier,1,B_no_l3,dataset_no_bridge,,TrainImagesClassifier,unknown,True,True,False,False,False,False
+otb:imageclassifier,1,B_no_l3,dataset_no_bridge,,ImageClassifier,raster,True,True,False,False,False,False
+idragratools:idragrasoilparams,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragracreatecaprisetable,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragracreateprehsgtable,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragracreatehsgmap,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragramakeslope,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+idragratools:idragraexportweights,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:grididw,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:writevectortiles_xyz,1,B_no_l3,filtered,,Write Vector Tiles_xyz,unknown,True,False,False,False,False,False
+r:stima_volume_formule_allometriche,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:massima_verosomiglianza,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:minima_distanza,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:support_vector_machine,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:individuazione_alberi,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:delimitazione_chiome,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:selezione_feature_classificazione,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:ritaglio_las,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:rasterizzazione_file_las,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:estrazione_feature_lidar,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:filtro_las,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:estrazione_chm,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:unione_las,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:stimatore_lineare,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+r:support_vector_regression,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+model:etl_survey_1_0_to_1_2,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+burntareas:fullburntareasprocess,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pg_metadata:reset_html_templates,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+dcascade:extract_river_network_dcascade,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:alignrasters,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+otb:largescalemeanshift,1,B_no_l3,filtered,,LargeScaleMeanShift,raster,True,False,False,False,False,False
+kmltools:importkml,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pdal:filter,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pdal:exportvector,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:mergevectorlayers,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:shpencodinginfo,1,B_no_l3,filtered,,Extract Shapefile encoding,unknown,True,False,False,False,False,False
+model:downloading_and_processing,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pub_ddr_processing:unpublish_service,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+pff:ceo_validation_export,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:clonelayer,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:kmeansclusteringforgrids,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:expressiontostringconverter,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:resourcenamevalidator,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+fdccost:flood_damage_create_system,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+slyr:lyrtoqml,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:contourlines,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:convertlinestopolygons,1,B_no_l3,filtered,,Convert Lines to Polygons,vector,True,False,False,False,False,False
+saga:polygonproperties,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+script:otsubinarization,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:morphologicalfilter,1,B_no_l3,filtered,,Morphological Filter,raster,True,False,False,False,False,False
+qgis:proximity,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:setmvalue,1,B_no_l3,filtered,,Set M value,vector,True,False,False,False,False,False
+gdal:pointsalonglines,1,B_no_l3,filtered,,Points along lines,vector,True,False,False,False,False,False
+native:filterverticesbyz,1,B_no_l3,filtered,,Filter vertices by Z value,vector,True,False,False,False,False,False
+qscout:locatepinsinfield,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:cellstatistics,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:setmfromraster,1,B_no_l3,filtered,,Set M value from raster,vector,True,False,False,False,False,False
+native:extractmvalues,1,B_no_l3,filtered,,Extract M values,vector,True,False,False,False,False,False
+fire2am:rasterknapsackoptimization,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:calculatevectoroverlaps,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:ruggednessindex,1,B_no_l3,dataset_no_bridge,,Ruggedness index,raster,True,True,False,False,False,False
+saga:flowdirection,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:streamnetwork,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+ctx_crs_toolbox:crs_checker,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:postgisexecuteandloadsql,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:sievecallback,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:cliprasterbymasklayer,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:realsurfacearea,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:kappaindex,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:convertmultipointstopoints,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:minimumenclosingcircle,1,B_no_l3,filtered,,Minimum enclosing circles,vector,True,False,False,False,False,False
+sagang:coordinatetransformationfeatures,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:mergelayers,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:wetnessimd,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+gdal:tpitri,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:joinattributesbylocationsummary,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:catchmentarea,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+qgis:fillnodata,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:morphometricfeatures,1,B_no_l3,filtered,,Morphometric Features,raster,True,False,False,False,False,False
+saga:topographicpositionindex,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+saga:flowdirectionfromdem,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+sagang:localminimaandmaxima,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+native:rasterizemeshdataset,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False
+tuflow_tools:restore_layer_name,1,C_non_standard,filtered,,,unknown,False,False,False,False,False,False

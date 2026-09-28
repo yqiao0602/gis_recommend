@@ -1,0 +1,26 @@
+{
+  "schema": "gis_recommend.gee_audit_adjudication_manifest.v1",
+  "old_audit_sha256": "bfe619a59f015e9e2c1092a2fe6b08ea0fb5e007526c6b22b9cb2c423ca39dfb",
+  "new_audit_sha256": "dde1140bf29719e9a72924b0ef44e101787fb057d49d817e49b4c32090179ca5",
+  "carried_pass_indices": [
+    1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23, 24, 26, 27, 28, 29, 30
+  ],
+  "changed_pass_reviews": [
+    {
+      "audit_index": 7,
+      "audit_row_authority_sha256": "e442504ec0c0cf5cb249b29163196cdf77a40e593090fe920a79656b13ad73ab",
+      "notes": "Full-source re-review confirms filterDate uses the literal start 2022-01-01 and the provable runtime endpoint ee.Date(Date.now()); the task text preserves the half-open interval without treating the endpoint as static."
+    },
+    {
+      "audit_index": 11,
+      "audit_row_authority_sha256": "55f2da030c878887bfb3e3c51818c7b5b5704dcee3cf38ae6231c8e85ae3a897",
+      "notes": "Full-source re-review confirms sort(CLOUD_COVER) is output-relevant between filter and median; the operator and L3 sequences now preserve that exact order through the exported NDBI chain."
+    },
+    {
+      "audit_index": 25,
+      "audit_row_authority_sha256": "37b95e06f1e2730588fa4c1b9944a86e65edd36e9858bce695b0585447362378",
+      "notes": "Full-source re-review confirms type is the static literal int and Export.image consumes imgtype[type]; the complete output-relevant chain is clip followed by toInt, with sibling conversion branches excluded."
+    }
+  ]
+}

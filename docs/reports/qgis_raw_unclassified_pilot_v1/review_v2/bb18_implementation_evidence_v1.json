@@ -1,0 +1,26 @@
+{
+  "schema": "gis_recommend.qgis_raw_implementation_evidence.v1",
+  "record_id": "bb18e19dcdbb7bac5897d5b9",
+  "candidate_only": true,
+  "implementation_only": true,
+  "source": {
+    "source_root_id": "official_plugins",
+    "source_path": "/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/CSV_Tools__0.7.2/csv_tools/other_csv_algorithms.py",
+    "source_sha256": "bb18e19dcdbb7bac5897d5b95f1eae927be63dfaa80089db43d16da91b11fc39"
+  },
+  "implementation_scope": "_layer_to_csv",
+  "operator_sequence": ["native:dropgeometries", "native:refactorfields", "native:orderbyexpression", "csvtools:exportlayertocsv"],
+  "operator_evidence": [
+    {"operator_id": "native:dropgeometries", "line_start": 157, "line_end": 161, "binding": "literal"},
+    {"operator_id": "native:refactorfields", "line_start": 167, "line_end": 177, "binding": "processing registry resolution; native/qgis alias"},
+    {"operator_id": "native:orderbyexpression", "line_start": 179, "line_end": 185, "binding": "literal"},
+    {"operator_id": "csvtools:exportlayertocsv", "line_start": 187, "line_end": 192, "binding": "literal"}
+  ],
+  "role": "plugin_support_implementation",
+  "workflow_corpus_admission": "not_granted_complete_workflow",
+  "training_admission": "not_granted_implementation_evidence_only",
+  "dedup": {"implementation_body_hash_required": true, "family_key": "csvtools_attribute_diff_layer_to_csv"},
+  "remaining_gates": ["run_algorithm alias verification", "registry binding authority", "input/output contract", "family dedup", "independent implementation review"],
+  "training_rows_emitted": 0,
+  "production_merge": "not_granted"
+}

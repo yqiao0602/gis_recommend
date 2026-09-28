@@ -1,0 +1,583 @@
+﻿admission_status,alternative_call_lines,ast_verification,branch_groups,call_graph_path,control_flow,dependency_edges,dependency_status,entrypoint,evidence_snippet,known_omissions,l3_code_sequence,l3_token_ids,mapping_status,operator_sequence,optional_operator_ordinals,record_id,recovery_method,relative_path,review_index,salvage_class,schema_version,source_calls,source_path,source_root_id,source_sha256,source_span,test_eligible,training_admission,unit_id,validation_eligible,workflow_scope,draft_task_name,draft_task_description,expansion_evidence_snippet,description_policy,unmapped_operator_ids,mapping_review_required,review_eligible,review_status,boundary_decision,dependency_decision,task_text_fidelity,final_decision,reviewer_notes
+recovered_review_required,[],passed,"[{""member_ordinals"": [2, 3], ""name"": ""per_chip_image_and_mask"", ""semantics"": ""same chip extent, separate image and rasterized-mask inputs""}]","[""run_chipping_pipeline -> reproject_layer_if_needed"", ""run_chipping_pipeline -> rasterize_building_layer"", ""run_chipping_pipeline -> clip_raster_to_chip (image)"", ""run_chipping_pipeline -> clip_raster_to_chip (mask)""]","[""loop: one image clip and one mask clip per chip extent""]","[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 2, ""dependency_kind"": ""control_order"", ""producer_ordinal"": 1}, {""consumer_ordinal"": 3, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}]",recovered_dag,run_chipping_pipeline," 255 |     log.info(f""Reprojecting '{layer.name()}' from {layer.crs().authid()} → {target_crs_str}..."")
+ 256 |     result = processing.run(
+ 257 |         ""native:reprojectlayer"",
+ 258 |         {
+ 259 |             ""INPUT"": layer,
+ 260 |             ""TARGET_CRS"": target_crs,
+ 261 |             ""OUTPUT"": ""memory:"",  # Keep in memory; write to disk only if chip count is large
+ 262 |         },
+ 263 |         feedback=QgsProcessingFeedback()
+ 264 |     )
+ 265 |     reprojected = result[""OUTPUT""]
+...
+ 315 |     # reprojection, polygon filling, and edge cases automatically.
+ 316 |     result = processing.run(
+ 317 |         ""gdal:rasterize"",
+ 318 |         {
+ 319 |             ""INPUT"": vector_layer,
+ 320 |             ""FIELD"": """",                  # No attribute field; use burn value
+ 321 |             ""BURN"": burn_value,           # Value for building pixels
+ 322 |             ""USE_Z"": False,
+ 323 |             ""UNITS"": 1,                   # 1 = georeferenced units (meters or degrees)
+ 324 |             ""WIDTH"": x_res,
+ 325 |             ""HEIGHT"": y_res,
+ 326 |             ""EXTENT"": f""{extent.xMinimum()},{extent.xMaximum()},""
+ 327 |                        f""{extent.yMinimum()},{extent.yMaximum()}""
+ 328 |                        f"" [{ref_raster.crs().authid()}]"",
+ 329 |             ""NODATA"": 0,
+ 330 |             ""OPTIONS"": ""COMPRESS=DEFLATE"",
+ 331 |             ""DATA_TYPE"": 0,               # Byte (uint8) — sufficient for binary mask
+ 332 |             ""INIT"": None,
+ 333 |             ""INVERT"": False,
+ 334 |             ""EXTRA"": """",
+ 335 |             ""OUTPUT"": output_mask_path,
+ 336 |         },
+ 337 |         feedback=QgsProcessingFeedback()
+ 338 |     )
+ 339 | 
+...
+ 477 |     try:
+ 478 |         result = processing.run(
+ 479 |             ""gdal:cliprasterbyextent"",
+ 480 |             {
+ 481 |                 ""INPUT"": raster_path,
+ 482 |                 ""PROJWIN"": extent_str,
+ 483 |                 ""NODATA"": None,
+ 484 |                 ""OPTIONS"": """",
+ 485 |                 ""DATA_TYPE"": 0,      # 0 = Use input layer data type
+ 486 |                 ""EXTRA"": """",
+ 487 |                 ""OUTPUT"": tmp_path,
+ 488 |             },
+ 489 |             feedback=QgsProcessingFeedback()
+ 490 |         )
+ 491 |     except Exception as e:","[""PNG conversion and building-coverage filtering remain side effects.""]","[""L3_01_10_01"", ""L3_01_09_03"", ""L3_03_01_02"", ""L3_03_01_02""]","[100, 99, 26, 26]",complete_stable101_report_only,"[""native:reprojectlayer"", ""gdal:rasterize"", ""gdal:cliprasterbyextent"", ""gdal:cliprasterbyextent""]",[],241d0983cef574f4baa30a72,curated_ast_call_graph_expansion_v1,script_0001000.py,3,recoverable_call_graph,qgis_stable101_recovered_subworkflow_v1,"[{""expansion_call_line"": 623, ""line_end"": 264, ""line_start"": 256, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 0, ""owner"": ""reproject_layer_if_needed"", ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""OUTPUT""]}, {""expansion_call_line"": 629, ""line_end"": 338, ""line_start"": 316, ""operator_id"": ""gdal:rasterize"", ""ordinal"": 1, ""owner"": ""rasterize_building_layer"", ""param_keys"": [""INPUT"", ""FIELD"", ""BURN"", ""USE_Z"", ""UNITS"", ""WIDTH"", ""HEIGHT"", ""EXTENT"", ""NODATA"", ""OPTIONS"", ""DATA_TYPE"", ""INIT"", ""INVERT"", ""EXTRA"", ""OUTPUT""]}, {""expansion_call_line"": 680, ""line_end"": 490, ""line_start"": 478, ""operator_id"": ""gdal:cliprasterbyextent"", ""ordinal"": 2, ""owner"": ""clip_raster_to_chip"", ""param_keys"": [""INPUT"", ""PROJWIN"", ""NODATA"", ""OPTIONS"", ""DATA_TYPE"", ""EXTRA"", ""OUTPUT""]}, {""expansion_call_line"": 694, ""line_end"": 490, ""line_start"": 478, ""operator_id"": ""gdal:cliprasterbyextent"", ""ordinal"": 3, ""owner"": ""clip_raster_to_chip"", ""param_keys"": [""INPUT"", ""PROJWIN"", ""NODATA"", ""OPTIONS"", ""DATA_TYPE"", ""EXTRA"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0001000.py,standard_v2,f51151d356c045789c43f42e712d2002f466b48ed1fc3cd786c110d4b7b404f5,"{""expansion_call_lines"": [623, 629, 680, 694], ""line_end"": 694, ""line_start"": 256, ""segments"": [{""line_end"": 264, ""line_start"": 256}, {""line_end"": 338, ""line_start"": 316}, {""line_end"": 490, ""line_start"": 478}, {""line_end"": 490, ""line_start"": 478}]}",False,not_granted,qgis_stable101_r3_chip_pair_dag,False,paired_raster_chip_generation,重投影标注矢量并成对裁剪影像与掩膜,将标注矢量重投影到目标坐标系并栅格化为掩膜，随后按同一范围分别裁剪原始影像和掩膜栅格，输出配对的影像切片与标签切片。," 622 |     # ------------------------------------------------------------------
+ 623 |     building_layer = reproject_layer_if_needed(building_layer, crs_str)
+ 624 | 
+...
+ 628 |     mask_geotiff_path = str(output_dir / ""building_mask_full.tif"")
+ 629 |     rasterize_building_layer(
+ 630 |         vector_layer=building_layer,
+...
+ 679 |         # --- Export satellite image chip ---
+ 680 |         img_ok = clip_raster_to_chip(
+ 681 |             raster_path=image_path,
+...
+ 693 |         # --- Export binary mask chip ---
+ 694 |         mask_ok = clip_raster_to_chip(
+ 695 |             raster_path=mask_geotiff_path,",deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""Model.processAlgorithm""]","[""optional ordinal 1 when filter field/value are valid"", ""optional ordinal 2 when target_crs is provided""]","[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 2, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}, {""consumer_ordinal"": 3, ""dependency_kind"": ""data"", ""producer_ordinal"": 2}, {""consumer_ordinal"": 4, ""dependency_kind"": ""data"", ""producer_ordinal"": 3}, {""consumer_ordinal"": 5, ""dependency_kind"": ""data"", ""producer_ordinal"": 4}]",recovered_conditional_dag,Model.processAlgorithm," 118 |         }
+ 119 |         outputs['FixGeometries'] = processing.run(
+ 120 |             'native:fixgeometries', alg_params,
+ 121 |             context=context, feedback=feedback, is_child_algorithm=True
+ 122 |         )
+ 123 | 
+...
+ 147 |             }
+ 148 |             outputs['ExtractByAttribute'] = processing.run(
+ 149 |                 'native:extractbyattribute', alg_params,
+ 150 |                 context=context, feedback=feedback, is_child_algorithm=True
+ 151 |             )
+ 152 |             source_for_next = outputs['ExtractByAttribute']['OUTPUT']
+...
+ 169 |             }
+ 170 |             outputs['ReprojectLayer'] = processing.run(
+ 171 |                 'native:reprojectlayer', alg_params,
+ 172 |                 context=context, feedback=feedback, is_child_algorithm=True
+ 173 |             )
+ 174 |             source_for_next = outputs['ReprojectLayer']['OUTPUT']
+...
+ 204 |         }
+ 205 |         outputs['RefactorFields'] = processing.run(
+ 206 |             'native:refactorfields', alg_params,
+ 207 |             context=context, feedback=feedback, is_child_algorithm=True
+ 208 |         )
+ 209 | 
+...
+ 254 |         }
+ 255 |         outputs['PrepareForCSV'] = processing.run(
+ 256 |             'native:refactorfields', alg_params,
+ 257 |             context=context, feedback=feedback, is_child_algorithm=True
+ 258 |         )
+ 259 |         layer_for_csv = outputs['PrepareForCSV']['OUTPUT']
+...
+ 274 |         }
+ 275 |         outputs['SaveCSV'] = processing.run(
+ 276 |             'native:savefeatures', save_params,
+ 277 |             context=context, feedback=feedback, is_child_algorithm=True
+ 278 |         )
+ 279 | ","[""The downstream custom Python AutoCAD SCR generation is outside the Processing chain."", ""GUI labeling side effects are excluded from the retained subworkflow.""]","[""L3_01_05_02"", ""L3_02_06_02"", ""L3_01_10_01"", ""L3_01_02_03"", ""L3_01_02_03"", ""L3_07_04_01""]","[98, 21, 100, 3, 3, 67]",complete_stable101_report_only,"[""native:fixgeometries"", ""native:extractbyattribute"", ""native:reprojectlayer"", ""native:refactorfields"", ""native:refactorfields"", ""native:savefeatures""]","[1, 2]",2a8cc51102ba2da91853ccfe,curated_ast_call_graph_expansion_v1,script_0000872.py,6,recoverable_call_graph,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 122, ""line_start"": 119, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""Model.processAlgorithm"", ""param_keys"": []}, {""line_end"": 151, ""line_start"": 148, ""operator_id"": ""native:extractbyattribute"", ""ordinal"": 1, ""owner"": ""Model.processAlgorithm"", ""param_keys"": []}, {""line_end"": 173, ""line_start"": 170, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 2, ""owner"": ""Model.processAlgorithm"", ""param_keys"": []}, {""line_end"": 208, ""line_start"": 205, ""operator_id"": ""native:refactorfields"", ""ordinal"": 3, ""owner"": ""Model.processAlgorithm"", ""param_keys"": []}, {""line_end"": 258, ""line_start"": 255, ""operator_id"": ""native:refactorfields"", ""ordinal"": 4, ""owner"": ""Model.processAlgorithm"", ""param_keys"": []}, {""line_end"": 278, ""line_start"": 275, ""operator_id"": ""native:savefeatures"", ""ordinal"": 5, ""owner"": ""Model.processAlgorithm"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000872.py,standard_v2,7dd1ed85b18e93df4e0ffcc10b73e21c52fc137c5da04498cfa376cc3f487f54,"{""expansion_call_lines"": [], ""line_end"": 278, ""line_start"": 119, ""segments"": [{""line_end"": 122, ""line_start"": 119}, {""line_end"": 151, ""line_start"": 148}, {""line_end"": 173, ""line_start"": 170}, {""line_end"": 208, ""line_start"": 205}, {""line_end"": 258, ""line_start"": 255}, {""line_end"": 278, ""line_start"": 275}]}",False,not_granted,qgis_stable101_r6_processing_csv,False,processing_only_csv_subworkflow,清洗筛选矢量并按字段模板导出,先修复输入矢量几何；若设置筛选字段则可选地按属性条件筛选要素，若目标坐标系不同则可选地重投影；随后按两个字段模板依次重构属性，并保存整理后的矢量结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""CNCalculatorTool.run -> reproject_layer (subbasin)"", ""CNCalculatorTool.run -> reproject_layer (landuse)"", ""CNCalculatorTool.run -> reproject_layer (soils)"", ""CNCalculatorTool.run -> intersect_layers (landuse, soils)"", ""CNCalculatorTool.run -> intersect_layers (subbasin, lu_soil)""]","[""each reproject call is conditional on source CRS != target CRS""]","[{""consumer_ordinal"": 3, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}, {""consumer_ordinal"": 3, ""dependency_kind"": ""data"", ""producer_ordinal"": 2}, {""consumer_ordinal"": 4, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 4, ""dependency_kind"": ""data"", ""producer_ordinal"": 3}]",recovered_dag,CNCalculatorTool.run," 419 |         }
+ 420 |         result = processing.run(""native:reprojectlayer"", params, feedback=feedback)
+ 421 |         return result['OUTPUT']
+...
+ 433 |         }
+ 434 |         result = processing.run(""native:intersection"", params, feedback=feedback)
+ 435 |         intersection = result['OUTPUT']","[""Low-level composite-CN calculation and CSV output remain outside this Processing subworkflow.""]","[""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_02_02_01"", ""L3_02_02_01""]","[100, 100, 100, 9, 9]",complete_stable101_report_only,"[""native:reprojectlayer"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""native:intersection"", ""native:intersection""]","[0, 1, 2]",3e033ccbb305dd50577c4ecf,curated_ast_call_graph_expansion_v1,script_0000899.py,42,recoverable_call_graph,qgis_stable101_recovered_subworkflow_v1,"[{""expansion_call_line"": 370, ""line_end"": 420, ""line_start"": 420, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 0, ""owner"": ""CNCalculatorTool.reproject_layer"", ""param_keys"": []}, {""expansion_call_line"": 371, ""line_end"": 420, ""line_start"": 420, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 1, ""owner"": ""CNCalculatorTool.reproject_layer"", ""param_keys"": []}, {""expansion_call_line"": 372, ""line_end"": 420, ""line_start"": 420, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 2, ""owner"": ""CNCalculatorTool.reproject_layer"", ""param_keys"": []}, {""expansion_call_line"": 376, ""line_end"": 434, ""line_start"": 434, ""operator_id"": ""native:intersection"", ""ordinal"": 3, ""owner"": ""CNCalculatorTool.intersect_layers"", ""param_keys"": []}, {""expansion_call_line"": 380, ""line_end"": 434, ""line_start"": 434, ""operator_id"": ""native:intersection"", ""ordinal"": 4, ""owner"": ""CNCalculatorTool.intersect_layers"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000899.py,standard_v2,2b4a0082ad1d3edb1a040b2e0049c07b8b4df4021cabffe6ea7594b39ca42ec9,"{""expansion_call_lines"": [370, 371, 372, 376, 380], ""line_end"": 434, ""line_start"": 370, ""segments"": [{""line_end"": 420, ""line_start"": 420}, {""line_end"": 420, ""line_start"": 420}, {""line_end"": 420, ""line_start"": 420}, {""line_end"": 434, ""line_start"": 434}, {""line_end"": 434, ""line_start"": 434}]}",False,not_granted,qgis_stable101_r42_cn_overlay_preprocess,False,cn_overlay_preprocessing,统一坐标系并叠加子流域、土地覆盖和土壤,必要时分别将子流域、土地覆盖和土壤图层重投影到共同坐标系，先相交土地覆盖与土壤图层，再将结果与子流域图层相交，输出三类属性的组合图层。," 369 |             progress_callback(20, ""Reprojecting layers..."")
+ 370 |             subbasin_reproj = self.reproject_layer(subbasin_layer, feedback)
+ 371 |             landuse_reproj = self.reproject_layer(landuse_layer, feedback)
+...
+ 370 |             subbasin_reproj = self.reproject_layer(subbasin_layer, feedback)
+ 371 |             landuse_reproj = self.reproject_layer(landuse_layer, feedback)
+ 372 |             soils_reproj = self.reproject_layer(soils_layer, feedback)
+...
+ 371 |             landuse_reproj = self.reproject_layer(landuse_layer, feedback)
+ 372 |             soils_reproj = self.reproject_layer(soils_layer, feedback)
+ 373 |             
+...
+ 375 |             progress_callback(40, ""Intersecting land use with soils..."")
+ 376 |             lu_soil = self.intersect_layers(landuse_reproj, soils_reproj, feedback)
+ 377 |             
+...
+ 379 |             progress_callback(60, ""Intersecting subbasins with land use/soils..."")
+ 380 |             final_intersection = self.intersect_layers(subbasin_reproj, lu_soil, feedback)
+ 381 |             ",deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""get_usda_soil_polygons""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}]",recovered_local_dataflow,get_usda_soil_polygons," 436 |         }
+ 437 |         result = processing.run(""native:fixgeometries"", fix_params, feedback=feedback)
+ 438 |         fixed_layer = result['OUTPUT']
+...
+ 452 |         }
+ 453 |         result = processing.run(""native:clip"", clip_params, feedback=feedback)
+ 454 |         final_layer = result['OUTPUT']","[""USDA API request, response parsing, and memory-layer construction are prerequisites.""]","[""L3_01_05_02"", ""L3_02_02_06""]","[98, 13]",complete_stable101_report_only,"[""native:fixgeometries"", ""native:clip""]",[],eaa06d641b09873bf416d810,curated_ast_subworkflow_split_v1,script_0007153.py,9,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 437, ""line_start"": 437, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""get_usda_soil_polygons"", ""param_keys"": []}, {""line_end"": 453, ""line_start"": 453, ""operator_id"": ""native:clip"", ""ordinal"": 1, ""owner"": ""get_usda_soil_polygons"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0007153.py,workflow_A,c55e8c43e56975782001d5f84f61297ab8d70873f30e9c68db43e44e34b78f6a,"{""expansion_call_lines"": [], ""line_end"": 453, ""line_start"": 437, ""segments"": [{""line_end"": 437, ""line_start"": 437}, {""line_end"": 453, ""line_start"": 453}]}",False,not_granted,qgis_stable101_r9_soil_fix_clip,False,post_api_soil_cleanup,修复并裁剪土壤面,修复已构建土壤面的无效几何，再按目标范围裁剪，输出范围内的土壤面。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""SoilDataProcessor.run -> get_soil_for_basin""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}]",recovered_local_dataflow,SoilDataProcessor.get_soil_for_basin," 546 |             }
+ 547 |             result = processing.run(""native:reprojectlayer"", reproject_params)
+ 548 |             basin_wgs84 = result['OUTPUT']
+...
+ 558 | 
+ 559 |         result = processing.run(""native:intersection"", intersect_params)
+ 560 |         return result['OUTPUT']","[""The soil layer is supplied by an earlier USDA API and feature-construction stage.""]","[""L3_01_10_01"", ""L3_02_02_01""]","[100, 9]",complete_stable101_report_only,"[""native:reprojectlayer"", ""native:intersection""]",[0],f749f7a21fe8b3f562b1d550,curated_ast_subworkflow_split_v1,script_0007151.py,10,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 547, ""line_start"": 547, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 0, ""owner"": ""MultiBasinCNRunner.get_soil_for_basin"", ""param_keys"": []}, {""line_end"": 559, ""line_start"": 559, ""operator_id"": ""native:intersection"", ""ordinal"": 1, ""owner"": ""MultiBasinCNRunner.get_soil_for_basin"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0007151.py,workflow_A,0904146c2045b65c439c6912a276326ef5401fa3bf0cb3250ad8953b2cce6b36,"{""expansion_call_lines"": [], ""line_end"": 559, ""line_start"": 547, ""segments"": [{""line_end"": 547, ""line_start"": 547}, {""line_end"": 559, ""line_start"": 559}]}",False,not_granted,qgis_stable101_r10_basin_overlay,False,per_basin_soil_overlay,将土壤图层叠加到流域范围,必要时将流域范围重投影到 WGS84，再与已获取的土壤图层相交，输出流域范围内的土壤要素。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""get_soil_data""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 2, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}, {""consumer_ordinal"": 3, ""dependency_kind"": ""data"", ""producer_ordinal"": 2}]",recovered_local_dataflow,get_soil_data," 155 |         print(""Fixing geometries..."")
+ 156 |         result = processing.run(""native:fixgeometries"", {
+ 157 |             'INPUT': soil_layer,
+ 158 |             'OUTPUT': 'TEMPORARY_OUTPUT'
+ 159 |         })
+ 160 |         fixed = result['OUTPUT']
+...
+ 163 |         print(""Clipping to AOI..."")
+ 164 |         result = processing.run(""native:clip"", {
+ 165 |             'INPUT': fixed,
+ 166 |             'OVERLAY': aoi_4326,
+ 167 |             'OUTPUT': 'TEMPORARY_OUTPUT'
+ 168 |         })
+ 169 |         clipped = result['OUTPUT']
+...
+ 172 |         print(f""Reprojecting to {layer.crs().authid()}..."")
+ 173 |         result = processing.run(""native:reprojectlayer"", {
+ 174 |             'INPUT': clipped,
+ 175 |             'TARGET_CRS': layer.crs(),
+ 176 |             'OUTPUT': 'TEMPORARY_OUTPUT'
+ 177 |         })
+ 178 |         reprojected = result['OUTPUT']
+...
+ 180 |         # Step 9: Final fix geometries
+ 181 |         result = processing.run(""native:fixgeometries"", {
+ 182 |             'INPUT': reprojected,
+ 183 |             'OUTPUT': 'TEMPORARY_OUTPUT'
+ 184 |         })
+ 185 |         final = result['OUTPUT']","[""USDA API acquisition and in-memory soil feature construction are prerequisites.""]","[""L3_01_05_02"", ""L3_02_02_06"", ""L3_01_10_01"", ""L3_01_05_02""]","[98, 13, 100, 98]",complete_stable101_report_only,"[""native:fixgeometries"", ""native:clip"", ""native:reprojectlayer"", ""native:fixgeometries""]",[],8418fd2e3471dc03f8b9a1f9,curated_ast_subworkflow_split_v1,script_0007152.py,11,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 159, ""line_start"": 156, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""get_soil_data"", ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 168, ""line_start"": 164, ""operator_id"": ""native:clip"", ""ordinal"": 1, ""owner"": ""get_soil_data"", ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}, {""line_end"": 177, ""line_start"": 173, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 2, ""owner"": ""get_soil_data"", ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""OUTPUT""]}, {""line_end"": 184, ""line_start"": 181, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 3, ""owner"": ""get_soil_data"", ""param_keys"": [""INPUT"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0007152.py,workflow_A,0f044519f78b2dec61be7a52fd8193dae18eac10a44510b7adf5cb1c01d9313f,"{""expansion_call_lines"": [], ""line_end"": 184, ""line_start"": 156, ""segments"": [{""line_end"": 159, ""line_start"": 156}, {""line_end"": 168, ""line_start"": 164}, {""line_end"": 177, ""line_start"": 173}, {""line_end"": 184, ""line_start"": 181}]}",False,not_granted,qgis_stable101_r11_soil_postprocess,False,post_api_soil_cleanup,修复裁剪并重投影土壤数据,先修复土壤面几何并按研究区裁剪，再将裁剪结果重投影到目标图层坐标系，最后再次修复几何。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,"[116, 137]",passed,[],"[""run -> _classify_raster (one of three mutually exclusive tables)"", ""run -> _raster_to_polygons""]","[""reclassify line 94 represents one of mutually exclusive lines 94/116/137""]","[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}]",recovered_local_dataflow,UrbanNeedIndexProcessor.run,"  93 |             # Simple classification: negative = 1, near zero = 2, positive = 3
+  94 |             result = processing.run(""native:reclassifybytable"", {
+  95 |                 'INPUT_RASTER': need_index,
+  96 |                 'RASTER_BAND': 1,
+  97 |                 'TABLE': [
+  98 |                     min_val, -0.1, 1,  # Overserved
+  99 |                     -0.1, 0.1, 2,       # Balanced
+ 100 |                     0.1, max_val, 3     # Underserved
+ 101 |                 ],
+ 102 |                 'NO_DATA': -9999,
+ 103 |                 'RANGE_BOUNDARIES': 0,  # min < value <= max
+ 104 |                 'NODATA_FOR_MISSING': True,
+ 105 |                 'DATA_TYPE': 1,  # Byte
+ 106 |                 'OUTPUT': 'TEMPORARY_OUTPUT'
+ 107 |             })
+ 108 |             
+...
+ 171 |         
+ 172 |         result = processing.run(""gdal:polygonize"", {
+ 173 |             'INPUT': class_raster,
+ 174 |             'BAND': 1,
+ 175 |             'FIELD': 'need_class',
+ 176 |             'EIGHT_CONNECTEDNESS': False,
+ 177 |             'OUTPUT': 'memory:'
+ 178 |         })
+ 179 |         ","[""Low-level category-field creation after polygonize remains a required sidecar.""]","[""L3_03_04_01"", ""L3_01_09_03""]","[36, 99]",complete_stable101_report_only,"[""native:reclassifybytable"", ""gdal:polygonize""]",[],fb570d80ee058f86a3f0caa3,curated_ast_subworkflow_split_v1,script_0000231.py,13,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 107, ""line_start"": 94, ""operator_id"": ""native:reclassifybytable"", ""ordinal"": 0, ""owner"": ""ClassificationModule._classify_raster"", ""param_keys"": [""INPUT_RASTER"", ""RASTER_BAND"", ""TABLE"", ""NO_DATA"", ""RANGE_BOUNDARIES"", ""NODATA_FOR_MISSING"", ""DATA_TYPE"", ""OUTPUT""]}, {""line_end"": 178, ""line_start"": 172, ""operator_id"": ""gdal:polygonize"", ""ordinal"": 1, ""owner"": ""ClassificationModule._raster_to_polygons"", ""param_keys"": [""INPUT"", ""BAND"", ""FIELD"", ""EIGHT_CONNECTEDNESS"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000231.py,standard_v2,301518a4fc20e7ac8dd2e006f188dd9384a581275d5801e451b2bf6e52524801,"{""expansion_call_lines"": [], ""line_end"": 178, ""line_start"": 94, ""segments"": [{""line_end"": 107, ""line_start"": 94}, {""line_end"": 178, ""line_start"": 172}]}",False,not_granted,qgis_stable101_r13_classification_polygonize,False,raster_classification_to_polygons,重分类栅格并转换为分类面,按重分类表转换栅格类别；随后将分类栅格转换为矢量面，输出该局部子流程的处理结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""run -> _compute_zonal_summary (optional)""]","[""optional when sub_boundaries is supplied""]",[],recovered_local_dataflow,UrbanNeedIndexProcessor._compute_zonal_summary," 224 |         # Compute zonal statistics
+ 225 |         result = processing.run(""native:zonalstatisticsfb"", {
+ 226 |             'INPUT': sub_boundaries,
+ 227 |             'INPUT_RASTER': need_index,
+ 228 |             'RASTER_BAND': 1,
+ 229 |             'COLUMN_PREFIX': 'need_',
+ 230 |             'STATISTICS': [2, 3, 5, 6],  # mean, median, min, max
+ 231 |             'OUTPUT': 'memory:'
+ 232 |         })
+ 233 |         ","[""Consumes the classified raster produced by a separate branch-aware unit.""]","[""L3_03_02_01""]",[31],complete_stable101_report_only,"[""native:zonalstatisticsfb""]",[],fb570d80ee058f86a3f0caa3,curated_ast_subworkflow_split_v1,script_0000231.py,13,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 232, ""line_start"": 225, ""operator_id"": ""native:zonalstatisticsfb"", ""ordinal"": 0, ""owner"": ""ClassificationModule._compute_zonal_summary"", ""param_keys"": [""INPUT"", ""INPUT_RASTER"", ""RASTER_BAND"", ""COLUMN_PREFIX"", ""STATISTICS"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000231.py,standard_v2,301518a4fc20e7ac8dd2e006f188dd9384a581275d5801e451b2bf6e52524801,"{""expansion_call_lines"": [], ""line_end"": 232, ""line_start"": 225, ""segments"": [{""line_end"": 232, ""line_start"": 225}]}",False,not_granted,qgis_stable101_r13_zonal_summary,False,optional_zonal_summary,计算分区栅格统计,以分区边界和需求指数栅格为输入，计算各分区的平均值、中位数、最小值和最大值。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""WorkflowBase.execute -> _subset_raster_layer""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}]",recovered_local_dataflow,WorkflowBase._subset_raster_layer," 708 | 
+ 709 |         aoi = processing.run(
+ 710 |             ""gdal:warpreproject"",
+ 711 |             params,
+ 712 |             context=self.context,
+ 713 |             feedback=QgsProcessingFeedback(),
+ 714 |         )[""OUTPUT""]
+ 715 | 
+...
+ 721 |         }
+ 722 |         processing.run(
+ 723 |             ""native:fillnodata"",
+ 724 |             params,
+ 725 |             context=self.context,
+ 726 |             feedback=QgsProcessingFeedback(),
+ 727 |         )
+ 728 |         return reprojected_raster_path",[],"[""L3_03_05_02"", ""L3_03_03_A""]","[39, 34]",complete_stable101_report_only,"[""gdal:warpreproject"", ""native:fillnodata""]",[],16a2b7463dd89748793cd690,curated_ast_subworkflow_split_v1,script_0000067.py,23,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 714, ""line_start"": 709, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 0, ""owner"": ""WorkflowBase._subset_raster_layer"", ""param_keys"": []}, {""line_end"": 727, ""line_start"": 722, ""operator_id"": ""native:fillnodata"", ""ordinal"": 1, ""owner"": ""WorkflowBase._subset_raster_layer"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000067.py,standard_v2,4ed030e48ff82003c415058dc47509d463496c23508be5e5175be05b2bca5404,"{""expansion_call_lines"": [], ""line_end"": 727, ""line_start"": 709, ""segments"": [{""line_end"": 714, ""line_start"": 709}, {""line_end"": 727, ""line_start"": 722}]}",False,not_granted,qgis_stable101_r23_raster_preprocess,False,raster_input_preprocessing,对齐栅格并填补无数据区域,将栅格重投影并对齐到目标网格；随后填补栅格中的无数据区域，输出该局部子流程的处理结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""subclass _process_features_for_area -> _rasterize -> _mask_raster""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}]",recovered_local_dataflow,WorkflowBase._process_features_for_area," 806 | 
+ 807 |         processing.run(
+ 808 |             ""gdal:rasterize"",
+ 809 |             params,
+ 810 |             context=self.context,
+ 811 |             feedback=QgsProcessingFeedback(),
+ 812 |         )
+ 813 |         log_message(f""Rasterize Parameter: {params}"")
+...
+ 873 |         }
+ 874 |         processing.run(
+ 875 |             ""gdal:cliprasterbymasklayer"",
+ 876 |             params,
+ 877 |             context=self.context,
+ 878 |             feedback=QgsProcessingFeedback(),
+ 879 |         )
+ 880 |         log_message(f""Masked raster created: {output_path}"")","[""Concrete subclass processing before rasterization is not represented by the abstract base.""]","[""L3_01_09_03"", ""L3_03_01_01""]","[99, 25]",complete_stable101_report_only,"[""gdal:rasterize"", ""gdal:cliprasterbymasklayer""]",[],16a2b7463dd89748793cd690,curated_ast_subworkflow_split_v1,script_0000067.py,23,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 812, ""line_start"": 807, ""operator_id"": ""gdal:rasterize"", ""ordinal"": 0, ""owner"": ""WorkflowBase._rasterize"", ""param_keys"": []}, {""line_end"": 879, ""line_start"": 874, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 1, ""owner"": ""WorkflowBase._mask_raster"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000067.py,standard_v2,4ed030e48ff82003c415058dc47509d463496c23508be5e5175be05b2bca5404,"{""expansion_call_lines"": [], ""line_end"": 879, ""line_start"": 807, ""segments"": [{""line_end"": 812, ""line_start"": 807}, {""line_end"": 879, ""line_start"": 874}]}",False,not_granted,qgis_stable101_r23_vector_mask,False,subclass_vector_result_mask,栅格化矢量范围并裁剪栅格,按指定字段和像元设置将矢量栅格化；随后使用掩膜图层裁剪栅格，输出该局部子流程的处理结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""_process_features_for_area -> _buffer_features (point mode only)"", ""_process_features_for_area -> _clip_features -> generate_mask_layer""]","[""buffer runs only in point mode; polygon/ghsl modes start at clip""]","[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 2, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}]",recovered_local_dataflow,OpportunitiesMaskProcessor._process_features_for_area," 484 |         output_path = os.path.join(self.workflow_directory, f""{output_name}.shp"")
+ 485 |         buffered_layer = processing.run(
+ 486 |             ""native:buffer"",
+ 487 |             {
+ 488 |                 ""INPUT"": layer,
+ 489 |                 ""DISTANCE"": self.buffer_distance_m,
+ 490 |                 ""SEGMENTS"": 15,
+ 491 |                 ""DISSOLVE"": True,
+ 492 |                 ""OUTPUT"": output_path,
+ 493 |             },
+ 494 |         )[""OUTPUT""]
+ 495 | 
+...
+ 514 |         params = {""INPUT"": layer, ""OVERLAY"": clip_layer, ""OUTPUT"": output_path}
+ 515 |         output = processing.run(""native:clip"", params)[""OUTPUT""]
+ 516 |         del output
+...
+ 553 | 
+ 554 |         output = processing.run(""gdal:rasterize"", params)[""OUTPUT""]
+ 555 |         del output",[],"[""L3_02_01_01"", ""L3_02_02_06"", ""L3_01_09_03""]","[8, 13, 99]",complete_stable101_report_only,"[""native:buffer"", ""native:clip"", ""gdal:rasterize""]",[0],d6fe2aea836f86990f5fc085,curated_ast_subworkflow_split_v1,script_0000058.py,24,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 494, ""line_start"": 485, ""operator_id"": ""native:buffer"", ""ordinal"": 0, ""owner"": ""OpportunitiesMaskProcessor._buffer_features"", ""param_keys"": [""INPUT"", ""DISTANCE"", ""SEGMENTS"", ""DISSOLVE"", ""OUTPUT""]}, {""line_end"": 515, ""line_start"": 515, ""operator_id"": ""native:clip"", ""ordinal"": 1, ""owner"": ""OpportunitiesMaskProcessor._clip_features"", ""param_keys"": []}, {""line_end"": 554, ""line_start"": 554, ""operator_id"": ""gdal:rasterize"", ""ordinal"": 2, ""owner"": ""OpportunitiesMaskProcessor.generate_mask_layer"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000058.py,standard_v2,fe13ddf509f3eae0696fe286d1e1d75b4b9147c4ed17eff49083ec00255ab4dd,"{""expansion_call_lines"": [], ""line_end"": 554, ""line_start"": 485, ""segments"": [{""line_end"": 494, ""line_start"": 485}, {""line_end"": 515, ""line_start"": 515}, {""line_end"": 554, ""line_start"": 554}]}",False,not_granted,qgis_stable101_r24_vector_mask,False,point_or_polygon_vector_mask,缓冲裁剪矢量并生成栅格掩膜,在点要素模式下先按给定距离创建缓冲区，其他矢量模式直接使用原要素；随后按当前区域裁剪，并将裁剪结果栅格化为掩膜。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""base execute -> _subset_raster_layer -> _process_raster_for_area""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}]",recovered_local_dataflow,OpportunitiesMaskProcessor._process_raster_for_area," 589 | 
+ 590 |         processing.run(""gdal:warpreproject"", params, feedback=QgsProcessingFeedback())
+ 591 |         return reprojected_raster_path
+...
+ 637 | 
+ 638 |         processing.run(""gdal:rastercalculator"", params)
+ 639 |         return opportunities_mask_path",[],"[""L3_03_05_02"", ""L3_03_03_A""]","[39, 34]",complete_stable101_report_only,"[""gdal:warpreproject"", ""gdal:rastercalculator""]",[],d6fe2aea836f86990f5fc085,curated_ast_subworkflow_split_v1,script_0000058.py,24,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 590, ""line_start"": 590, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 0, ""owner"": ""OpportunitiesMaskProcessor._subset_raster_layer"", ""param_keys"": []}, {""line_end"": 638, ""line_start"": 638, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 1, ""owner"": ""OpportunitiesMaskProcessor._process_raster_for_area"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000058.py,standard_v2,fe13ddf509f3eae0696fe286d1e1d75b4b9147c4ed17eff49083ec00255ab4dd,"{""expansion_call_lines"": [], ""line_end"": 638, ""line_start"": 590, ""segments"": [{""line_end"": 590, ""line_start"": 590}, {""line_end"": 638, ""line_start"": 638}]}",False,not_granted,qgis_stable101_r24_raster_mask,False,raster_mask,对齐栅格并计算机会掩膜,将输入栅格重投影并裁剪到目标网格，再通过栅格计算把有效像元设为 1、无数据像元设为 0，输出二值机会掩膜。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""createNDOMRaster DEM baseline branch""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 2, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}]",recovered_local_dataflow,VolumeCalculation.createNDOMRaster," 929 |                 target_crs = height_layer.crs().authid() if height_layer and height_layer.crs().isValid() else None
+ 930 |                 processing.run(""gdal:warpreproject"", {
+ 931 |                     'INPUT': base_layer.source().split('|')[0],
+ 932 |                     'SOURCE_CRS': source_crs,
+ 933 |                     'TARGET_CRS': target_crs,
+ 934 |                     'RESAMPLING': 1,
+ 935 |                     'NODATA': NODATA_VALUE,
+ 936 |                     'TARGET_RESOLUTION': abs(height_layer.rasterUnitsPerPixelX()),
+ 937 |                     'OPTIONS': GDAL_OPTIONS_LZW_FLOAT,
+ 938 |                     'DATA_TYPE': 6,
+ 939 |                     'TARGET_EXTENT': height_layer.extent(),
+ 940 |                     'TARGET_EXTENT_CRS': target_crs,
+ 941 |                     'MULTITHREADING': False,
+ 942 |                     'EXTRA': '',
+ 943 |                     'OUTPUT': temp_base,
+ 944 |                 })
+ 945 |                 calc_params['INPUT_B'] = temp_base
+...
+ 951 | 
+ 952 |             processing.run(""gdal:rastercalculator"", calc_params)
+ 953 |             self.dlg.progressBar.setValue(75)
+...
+ 959 | 
+ 960 |             processing.run(""gdal:cliprasterbymasklayer"", {
+ 961 |                 'INPUT': temp_diff,
+ 962 |                 'MASK': self.current_task_options.vector_layer,
+ 963 |                 'SOURCE_CRS': source_crs,
+ 964 |                 'TARGET_CRS': target_crs,
+ 965 |                 'NODATA': NODATA_VALUE,
+ 966 |                 'ALPHA_BAND': False,
+ 967 |                 'CROP_TO_CUTLINE': True,
+ 968 |                 'KEEP_RESOLUTION': True,
+ 969 |                 'SET_RESOLUTION': False,
+ 970 |                 'X_RESOLUTION': None,
+ 971 |                 'Y_RESOLUTION': None,
+ 972 |                 'MULTITHREADING': False,
+ 973 |                 'OPTIONS': GDAL_OPTIONS_LZW_FLOAT,
+ 974 |                 'DATA_TYPE': 6,
+ 975 |                 'EXTRA': '',
+ 976 |                 'OUTPUT': output_path,
+ 977 |             })
+ 978 |             self.dlg.progressBar.setValue(90)",[],"[""L3_03_05_02"", ""L3_03_03_A"", ""L3_03_01_01""]","[39, 34, 25]",complete_stable101_report_only,"[""gdal:warpreproject"", ""gdal:rastercalculator"", ""gdal:cliprasterbymasklayer""]",[],1057e892eca6e85edeea61fb,curated_ast_subworkflow_split_v1,script_0001027.py,29,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 944, ""line_start"": 930, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 0, ""owner"": ""VolumeCalculationTool.createNDOMRaster"", ""param_keys"": [""INPUT"", ""SOURCE_CRS"", ""TARGET_CRS"", ""RESAMPLING"", ""NODATA"", ""TARGET_RESOLUTION"", ""OPTIONS"", ""DATA_TYPE"", ""TARGET_EXTENT"", ""TARGET_EXTENT_CRS"", ""MULTITHREADING"", ""EXTRA"", ""OUTPUT""]}, {""line_end"": 952, ""line_start"": 952, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 1, ""owner"": ""VolumeCalculationTool.createNDOMRaster"", ""param_keys"": []}, {""line_end"": 977, ""line_start"": 960, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 2, ""owner"": ""VolumeCalculationTool.createNDOMRaster"", ""param_keys"": [""INPUT"", ""MASK"", ""SOURCE_CRS"", ""TARGET_CRS"", ""NODATA"", ""ALPHA_BAND"", ""CROP_TO_CUTLINE"", ""KEEP_RESOLUTION"", ""SET_RESOLUTION"", ""X_RESOLUTION"", ""Y_RESOLUTION"", ""MULTITHREADING"", ""OPTIONS"", ""DATA_TYPE"", ""EXTRA"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0001027.py,standard_v2,8488e98820f454205ebf450df990ed659ce5ffe3afdcb2546e2c94c4e90df4d0,"{""expansion_call_lines"": [], ""line_end"": 977, ""line_start"": 930, ""segments"": [{""line_end"": 944, ""line_start"": 930}, {""line_end"": 952, ""line_start"": 952}, {""line_end"": 977, ""line_start"": 960}]}",False,not_granted,qgis_stable101_r29_dem_baseline,False,dem_baseline_ndom,基于高程基准计算并裁剪高度差栅格,将基准高程栅格重投影并对齐到表面高程网格，计算表面高程减去基准高程，再按目标面掩膜裁剪高度差栅格。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""createNDOMRaster -> createBaselineRasterForNDOM polygon branch""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 2, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}]",recovered_local_dataflow,VolumeCalculation.createNDOMRaster," 871 |         baseline_raster = os.path.join(output_dir, ""_tmp_ndom_baseline.tif"")
+ 872 |         processing.run(""gdal:rasterize"", {
+ 873 |             'INPUT': baseline_layer,
+ 874 |             'FIELD': baseline_field,
+ 875 |             'BURN': 0,
+ 876 |             'USE_Z': False,
+ 877 |             'UNITS': 1,
+ 878 |             'WIDTH': pixel_x,
+ 879 |             'HEIGHT': pixel_y,
+ 880 |             'EXTENT': height_layer.extent(),
+ 881 |             'NODATA': NODATA_VALUE,
+ 882 |             'OPTIONS': 'COMPRESS=LZW',
+ 883 |             'DATA_TYPE': 6,
+ 884 |             'INIT': -9999,
+ 885 |             'INVERT': False,
+ 886 |             'EXTRA': '',
+ 887 |             'OUTPUT': baseline_raster,
+ 888 |         })
+ 889 |         return baseline_raster
+...
+ 951 | 
+ 952 |             processing.run(""gdal:rastercalculator"", calc_params)
+ 953 |             self.dlg.progressBar.setValue(75)
+...
+ 959 | 
+ 960 |             processing.run(""gdal:cliprasterbymasklayer"", {
+ 961 |                 'INPUT': temp_diff,
+ 962 |                 'MASK': self.current_task_options.vector_layer,
+ 963 |                 'SOURCE_CRS': source_crs,
+ 964 |                 'TARGET_CRS': target_crs,
+ 965 |                 'NODATA': NODATA_VALUE,
+ 966 |                 'ALPHA_BAND': False,
+ 967 |                 'CROP_TO_CUTLINE': True,
+ 968 |                 'KEEP_RESOLUTION': True,
+ 969 |                 'SET_RESOLUTION': False,
+ 970 |                 'X_RESOLUTION': None,
+ 971 |                 'Y_RESOLUTION': None,
+ 972 |                 'MULTITHREADING': False,
+ 973 |                 'OPTIONS': GDAL_OPTIONS_LZW_FLOAT,
+ 974 |                 'DATA_TYPE': 6,
+ 975 |                 'EXTRA': '',
+ 976 |                 'OUTPUT': output_path,
+ 977 |             })
+ 978 |             self.dlg.progressBar.setValue(90)",[],"[""L3_01_09_03"", ""L3_03_03_A"", ""L3_03_01_01""]","[99, 34, 25]",complete_stable101_report_only,"[""gdal:rasterize"", ""gdal:rastercalculator"", ""gdal:cliprasterbymasklayer""]",[],1057e892eca6e85edeea61fb,curated_ast_subworkflow_split_v1,script_0001027.py,29,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""expansion_call_line"": 948, ""line_end"": 888, ""line_start"": 872, ""operator_id"": ""gdal:rasterize"", ""ordinal"": 0, ""owner"": ""VolumeCalculationTool.createBaselineRasterForNDOM"", ""param_keys"": [""INPUT"", ""FIELD"", ""BURN"", ""USE_Z"", ""UNITS"", ""WIDTH"", ""HEIGHT"", ""EXTENT"", ""NODATA"", ""OPTIONS"", ""DATA_TYPE"", ""INIT"", ""INVERT"", ""EXTRA"", ""OUTPUT""]}, {""line_end"": 952, ""line_start"": 952, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 1, ""owner"": ""VolumeCalculationTool.createNDOMRaster"", ""param_keys"": []}, {""line_end"": 977, ""line_start"": 960, ""operator_id"": ""gdal:cliprasterbymasklayer"", ""ordinal"": 2, ""owner"": ""VolumeCalculationTool.createNDOMRaster"", ""param_keys"": [""INPUT"", ""MASK"", ""SOURCE_CRS"", ""TARGET_CRS"", ""NODATA"", ""ALPHA_BAND"", ""CROP_TO_CUTLINE"", ""KEEP_RESOLUTION"", ""SET_RESOLUTION"", ""X_RESOLUTION"", ""Y_RESOLUTION"", ""MULTITHREADING"", ""OPTIONS"", ""DATA_TYPE"", ""EXTRA"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0001027.py,standard_v2,8488e98820f454205ebf450df990ed659ce5ffe3afdcb2546e2c94c4e90df4d0,"{""expansion_call_lines"": [948], ""line_end"": 977, ""line_start"": 872, ""segments"": [{""line_end"": 888, ""line_start"": 872}, {""line_end"": 952, ""line_start"": 952}, {""line_end"": 977, ""line_start"": 960}]}",False,not_granted,qgis_stable101_r29_polygon_baseline,False,polygon_baseline_ndom,基于面基准计算并裁剪高度差栅格,按面要素的基准高程字段生成基准栅格，计算表面高程减去基准高程，再按目标面掩膜裁剪高度差栅格。," 947 |             else:
+ 948 |                 temp_base = self.createBaselineRasterForNDOM(output_dir)
+ 949 |                 calc_params['INPUT_B'] = temp_base",deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""fix_geometries""]",[],[],recovered_local_dataflow,fix_geometries,"   8 | def fix_geometries(input_filepath, output_filepath):
+   9 |     fixed_shp = processing.run(""native:fixgeometries"", 
+  10 |     {'INPUT': input_filepath,
+  11 |     'METHOD':1,
+  12 |     'OUTPUT':output_filepath
+  13 |     })['OUTPUT']
+  14 |     ",[],"[""L3_01_05_02""]",[98],complete_stable101_report_only,"[""native:fixgeometries""]",[],a10e0fe6a44dac01138a78cb,curated_ast_subworkflow_split_v1,script_0000817.py,34,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 13, ""line_start"": 9, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""fix_geometries"", ""param_keys"": [""INPUT"", ""METHOD"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000817.py,standard_v2,4e0d136abda1f570c10bad897966197136716495293a7e1607c171e94e4d4fe9,"{""expansion_call_lines"": [], ""line_end"": 13, ""line_start"": 9, ""segments"": [{""line_end"": 13, ""line_start"": 9}]}",False,not_granted,qgis_stable101_r34_fix_geometries,False,single_tool_function,修复矢量几何,修复无效矢量几何，输出该局部子流程的处理结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""multi_to_singlepart""]",[],[],recovered_local_dataflow,multi_to_singlepart,"  18 | def multi_to_singlepart(input_filepath, output_filepath): 
+  19 |     singlepart_shp = processing.run(""native:multiparttosingleparts"", {
+  20 |     'INPUT':input_filepath,
+  21 |     'OUTPUT':output_filepath
+  22 |     })['OUTPUT']
+  23 |     ",[],"[""L3_02_07_01""]",[24],complete_stable101_report_only,"[""native:multiparttosingleparts""]",[],a10e0fe6a44dac01138a78cb,curated_ast_subworkflow_split_v1,script_0000817.py,34,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 22, ""line_start"": 19, ""operator_id"": ""native:multiparttosingleparts"", ""ordinal"": 0, ""owner"": ""multi_to_singlepart"", ""param_keys"": [""INPUT"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000817.py,standard_v2,4e0d136abda1f570c10bad897966197136716495293a7e1607c171e94e4d4fe9,"{""expansion_call_lines"": [], ""line_end"": 22, ""line_start"": 19, ""segments"": [{""line_end"": 22, ""line_start"": 19}]}",False,not_granted,qgis_stable101_r34_singleparts,False,single_tool_function,将多部件要素拆分为单部件,将多部件要素拆分为单部件要素，输出该局部子流程的处理结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""clip""]",[],[],recovered_local_dataflow,clip,"  27 | def clip(input_shp, overlay_shp, output_filepath):
+  28 |     clipped_shp = processing.run(""native:clip"", {
+  29 |     'INPUT': input_shp,
+  30 |     'OVERLAY':overlay_shp,
+  31 |     'OUTPUT': output_filepath
+  32 |     })['OUTPUT']
+  33 |     ",[],"[""L3_02_02_06""]",[13],complete_stable101_report_only,"[""native:clip""]",[],a10e0fe6a44dac01138a78cb,curated_ast_subworkflow_split_v1,script_0000817.py,34,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 32, ""line_start"": 28, ""operator_id"": ""native:clip"", ""ordinal"": 0, ""owner"": ""clip"", ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000817.py,standard_v2,4e0d136abda1f570c10bad897966197136716495293a7e1607c171e94e4d4fe9,"{""expansion_call_lines"": [], ""line_end"": 32, ""line_start"": 28, ""segments"": [{""line_end"": 32, ""line_start"": 28}]}",False,not_granted,qgis_stable101_r34_clip,False,single_tool_function,按掩膜范围裁剪矢量,按掩膜范围裁剪矢量要素，输出该局部子流程的处理结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""extract_features_by_expression""]",[],[],recovered_local_dataflow,extract_features_by_expression," 279 |     # Run the extraction if the file does not exist
+ 280 |     extracted_features = processing.run(""native:extractbyexpression"", 
+ 281 |                                         {'INPUT': input_shp,
+ 282 |                                          'EXPRESSION': expression,
+ 283 |                                          'OUTPUT': output_shp
+ 284 |                                         })['OUTPUT']
+ 285 |     ","[""Dynamic GDAL helper calls elsewhere in the utility module are excluded.""]","[""L3_02_06_02""]",[21],complete_stable101_report_only,"[""native:extractbyexpression""]",[],a10e0fe6a44dac01138a78cb,curated_ast_subworkflow_split_v1,script_0000817.py,34,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 284, ""line_start"": 280, ""operator_id"": ""native:extractbyexpression"", ""ordinal"": 0, ""owner"": ""extract_features_by_expression"", ""param_keys"": [""INPUT"", ""EXPRESSION"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000817.py,standard_v2,4e0d136abda1f570c10bad897966197136716495293a7e1607c171e94e4d4fe9,"{""expansion_call_lines"": [], ""line_end"": 284, ""line_start"": 280, ""segments"": [{""line_end"": 284, ""line_start"": 280}]}",False,not_granted,qgis_stable101_r34_extract_expression,False,single_tool_function,按表达式筛选矢量要素,按表达式筛选矢量要素，输出该局部子流程的处理结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,"[{""member_ordinals"": [8, 9], ""name"": ""river_and_subbasin_clips"", ""semantics"": ""parallel outputs""}]","[""Model.processAlgorithm""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 2, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 3, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 4, ""dependency_kind"": ""data"", ""producer_ordinal"": 2}, {""consumer_ordinal"": 5, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}, {""consumer_ordinal"": 6, ""dependency_kind"": ""data"", ""producer_ordinal"": 3}, {""consumer_ordinal"": 7, ""dependency_kind"": ""data"", ""producer_ordinal"": 5}, {""consumer_ordinal"": 8, ""dependency_kind"": ""data"", ""producer_ordinal"": 4}, {""consumer_ordinal"": 8, ""dependency_kind"": ""data"", ""producer_ordinal"": 7}, {""consumer_ordinal"": 9, ""dependency_kind"": ""data"", ""producer_ordinal"": 6}, {""consumer_ordinal"": 9, ""dependency_kind"": ""data"", ""producer_ordinal"": 7}]",recovered_dag_review_required,Model.processAlgorithm,"  75 |         }
+  76 |         outputs['ElementosTotalesDeRed'] = processing.run('grass7:r.watershed', alg_params, context=context,
+  77 |                                                           feedback=feedback, is_child_algorithm=True)
+  78 | 
+...
+  93 |         }
+  94 |         outputs['AnalisisDeCuencaAfectada'] = processing.run('grass7:r.water.outlet', alg_params, context=context,
+  95 |                                                              feedback=feedback, is_child_algorithm=True)
+  96 | 
+...
+ 118 |         }
+ 119 |         outputs['VectorRios'] = processing.run('grass7:r.to.vect', alg_params, context=context, feedback=feedback,
+ 120 |                                                is_child_algorithm=True)
+ 121 | 
+...
+ 143 |         }
+ 144 |         outputs['VectorSubcuencastotal'] = processing.run('grass7:r.to.vect', alg_params, context=context,
+ 145 |                                                           feedback=feedback, is_child_algorithm=True)
+ 146 | 
+...
+ 155 |         }
+ 156 |         outputs['FixRios'] = processing.run('native:fixgeometries', alg_params, context=context, feedback=feedback,
+ 157 |                                             is_child_algorithm=True)
+ 158 | 
+...
+ 180 |         }
+ 181 |         outputs['VectorizacionDeCuencaTotal'] = processing.run('grass7:r.to.vect', alg_params, context=context,
+ 182 |                                                                feedback=feedback, is_child_algorithm=True)
+ 183 | 
+...
+ 192 |         }
+ 193 |         outputs['FixSubcuencas'] = processing.run('native:fixgeometries', alg_params, context=context,
+ 194 |                                                   feedback=feedback, is_child_algorithm=True)
+ 195 | 
+...
+ 204 |         }
+ 205 |         outputs['FixCuencatotal'] = processing.run('native:fixgeometries', alg_params, context=context,
+ 206 |                                                    feedback=feedback, is_child_algorithm=True)
+ 207 |         results['TotalWatershedAffected'] = outputs['FixCuencatotal']['OUTPUT']
+...
+ 218 |         }
+ 219 |         outputs['Clip'] = processing.run('native:clip', alg_params, context=context, feedback=feedback,
+ 220 |                                          is_child_algorithm=True)
+ 221 |         results['WatershedsAffected'] = outputs['Clip']['OUTPUT']
+...
+ 232 |         }
+ 233 |         outputs['Clip'] = processing.run('native:clip', alg_params, context=context, feedback=feedback,
+ 234 |                                          is_child_algorithm=True)
+ 235 |         results['HydroNetworkAffected'] = outputs['Clip']['OUTPUT']","[""GRASS operator mappings are unresolved in the stable101 review row.""]","[null, null, null, null, ""L3_01_05_02"", null, ""L3_01_05_02"", ""L3_01_05_02"", ""L3_02_02_06"", ""L3_02_02_06""]","[null, null, null, null, 98, null, 98, 98, 13, 13]",partial_mapping_gap,"[""grass7:r.watershed"", ""grass7:r.water.outlet"", ""grass7:r.to.vect"", ""grass7:r.to.vect"", ""native:fixgeometries"", ""grass7:r.to.vect"", ""native:fixgeometries"", ""native:fixgeometries"", ""native:clip"", ""native:clip""]",[],089af2ba22c84a5569b9203b,curated_ast_subworkflow_split_v1,script_0000349.py,36,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 77, ""line_start"": 76, ""operator_id"": ""grass7:r.watershed"", ""ordinal"": 0, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 95, ""line_start"": 94, ""operator_id"": ""grass7:r.water.outlet"", ""ordinal"": 1, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 120, ""line_start"": 119, ""operator_id"": ""grass7:r.to.vect"", ""ordinal"": 2, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 145, ""line_start"": 144, ""operator_id"": ""grass7:r.to.vect"", ""ordinal"": 3, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 157, ""line_start"": 156, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 4, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 182, ""line_start"": 181, ""operator_id"": ""grass7:r.to.vect"", ""ordinal"": 5, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 194, ""line_start"": 193, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 6, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 206, ""line_start"": 205, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 7, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 220, ""line_start"": 219, ""operator_id"": ""native:clip"", ""ordinal"": 8, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}, {""line_end"": 234, ""line_start"": 233, ""operator_id"": ""native:clip"", ""ordinal"": 9, ""owner"": ""HydroNetworkDispersion.processAlgorithm"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000349.py,standard_v2,7dd3858f144b3a22e5daf9499a4c44152bfaf8a63f6454a56c63506b803983bd,"{""expansion_call_lines"": [], ""line_end"": 234, ""line_start"": 76, ""segments"": [{""line_end"": 77, ""line_start"": 76}, {""line_end"": 95, ""line_start"": 94}, {""line_end"": 120, ""line_start"": 119}, {""line_end"": 145, ""line_start"": 144}, {""line_end"": 157, ""line_start"": 156}, {""line_end"": 182, ""line_start"": 181}, {""line_end"": 194, ""line_start"": 193}, {""line_end"": 206, ""line_start"": 205}, {""line_end"": 220, ""line_start"": 219}, {""line_end"": 234, ""line_start"": 233}]}",False,not_granted,qgis_stable101_r36_watershed_outputs,False,grass_watershed_and_vector_outputs,提取流域出口、河网和流域面,从高程栅格计算汇流结果，按指定出口提取上游流域，并把河网和流域栅格转换为矢量；修复生成几何后，分别按目标范围裁剪河网与流域面。,,deterministic_semantic_template_v1,"[""grass7:r.to.vect"", ""grass7:r.water.outlet"", ""grass7:r.watershed""]",True,False,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""getWebVectorLayer""]",[],[],recovered_local_dataflow,getWebVectorLayer," 138 |             else:
+ 139 |                 respo_layer = processing.run(""native:fixgeometries"",{'INPUT':respo_layer,'OUTPUT':'TEMPORARY_OUTPUT'})
+ 140 |                 respo_layer = respo_layer['OUTPUT']","[""Web-service fetch and response materialization are prerequisites.""]","[""L3_01_05_02""]",[98],complete_stable101_report_only,"[""native:fixgeometries""]",[],20aef03032f2e7087d292dea,curated_ast_subworkflow_split_v1,script_0000363.py,37,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 139, ""line_start"": 139, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""getWebVectorLayer"", ""param_keys"": [""INPUT"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000363.py,standard_v2,8984c64935069e009cf03b7cb6352f179a48228b26f05b43aa743b3e094e6b9d,"{""expansion_call_lines"": [], ""line_end"": 139, ""line_start"": 139, ""segments"": [{""line_end"": 139, ""line_start"": 139}]}",False,not_granted,qgis_stable101_r37_web_vector_fix,False,web_vector_geometry_cleanup,修复下载矢量的几何,对 Web 服务返回且包含要素的矢量图层修复无效几何，输出可继续处理的下载矢量。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""getProtectedSites loop -> fix each service result -> merge""]","[""fixgeometries repeats once per returned protected-site layer""]","[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}]",recovered_local_dataflow,getProtectedSites," 218 |         try:
+ 219 |             fix_ls = processing.run(""native:fixgeometries"",{'INPUT':tempd+'|geometrytype=Polygon','OUTPUT':'TEMPORARY_OUTPUT'})
+ 220 |             proS.append(fix_ls['OUTPUT'])
+...
+ 225 |         #fix_nat = processing.run(""native:fixgeometries"", {'INPUT':tempd+'|geometrytype=Polygon','OUTPUT':'TEMPORARY_OUTPUT'})
+ 226 |         fix = processing.run(""native:mergevectorlayers"", {'LAYERS':proS,'CRS':None,'OUTPUT':'TEMPORARY_OUTPUT'})
+ 227 |     ","[""Commented fix/dissolve calls are intentionally excluded.""]","[""L3_01_05_02"", ""L3_01_03_04""]","[98, 5]",complete_stable101_report_only,"[""native:fixgeometries"", ""native:mergevectorlayers""]",[],20aef03032f2e7087d292dea,curated_ast_subworkflow_split_v1,script_0000363.py,37,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 219, ""line_start"": 219, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""getProtectedSites"", ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 226, ""line_start"": 226, ""operator_id"": ""native:mergevectorlayers"", ""ordinal"": 1, ""owner"": ""getProtectedSites"", ""param_keys"": [""LAYERS"", ""CRS"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000363.py,standard_v2,8984c64935069e009cf03b7cb6352f179a48228b26f05b43aa743b3e094e6b9d,"{""expansion_call_lines"": [], ""line_end"": 226, ""line_start"": 219, ""segments"": [{""line_end"": 219, ""line_start"": 219}, {""line_end"": 226, ""line_start"": 226}]}",False,not_granted,qgis_stable101_r37_protected_sites_merge,False,protected_site_aggregation,修复并合并保护地矢量,对多个保护地 Web 服务返回的面图层逐个修复几何，再将修复后的图层集合合并为一个保护地矢量图层。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""CompletarCampoMedidas""]",[],[],recovered_local_dataflow,CompletarCampoMedidas," 296 |                 'OUTPUT':'TEMPORARY_OUTPUT'}
+ 297 |     capaClonada = processing.run('native:fixgeometries', params)['OUTPUT']
+ 298 |     capaClonada = LAY_Simplify(LAY_ForceRHR(capaClonada), 0.02)",[],"[""L3_01_05_02""]",[98],complete_stable101_report_only,"[""native:fixgeometries""]",[],50a596e6694875b3cd1a9a5f,curated_ast_subworkflow_split_v1,script_0006060.py,38,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 297, ""line_start"": 297, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""CompletarCampoMedidas"", ""param_keys"": []}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0006060.py,workflow,a0b2e7b8c9e94b581cb2057f026e422fa5448acec264383f479bb8d5374c086f,"{""expansion_call_lines"": [], ""line_end"": 297, ""line_start"": 297, ""segments"": [{""line_end"": 297, ""line_start"": 297}]}",False,not_granted,qgis_stable101_r38_complete_measure,False,registered_parcel_geometry_cleanup,修复测量结果几何,对用于计算边界测量值的选中地块先修复无效几何，输出供后续边界简化和测量字段计算使用的临时图层。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""GenerarManzanasDesdeSeleccion""]",[],[],recovered_local_dataflow,GenerarManzanasDesdeSeleccion," 362 |     if capa.selectedFeatures():
+ 363 |         capa = processing.run('native:fixgeometries', {'INPUT': QgsProcessingFeatureSourceDefinition(capa.id(), selectedFeaturesOnly=True, featureLimit=-1, geometryCheck=QgsFeatureRequest.GeometryAbortOnInvalid), 'OUTPUT':'TEMPORARY_OUTPUT'})['OUTPUT']
+ 364 |     GenerarShapeManzanas(capa, 'temp')",[],"[""L3_01_05_02""]",[98],complete_stable101_report_only,"[""native:fixgeometries""]",[0],50a596e6694875b3cd1a9a5f,curated_ast_subworkflow_split_v1,script_0006060.py,38,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 363, ""line_start"": 363, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""GenerarManzanasDesdeSeleccion"", ""param_keys"": [""INPUT"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0006060.py,workflow,a0b2e7b8c9e94b581cb2057f026e422fa5448acec264383f479bb8d5374c086f,"{""expansion_call_lines"": [], ""line_end"": 363, ""line_start"": 363, ""segments"": [{""line_end"": 363, ""line_start"": 363}]}",False,not_granted,qgis_stable101_r38_blocks_selection,False,selected_block_geometry_cleanup,修复选中街区的几何,当输入图层存在选中要素时，修复这些要素的无效几何，输出供后续街区文件生成使用的临时图层。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""GenerarRegistradosDesdeSeleccion""]",[],[],recovered_local_dataflow,GenerarRegistradosDesdeSeleccion," 379 |     if capa.selectedFeatures():
+ 380 |         capa = processing.run('native:fixgeometries', {'INPUT': QgsProcessingFeatureSourceDefinition(capa.id(), selectedFeaturesOnly=True, featureLimit=-1, geometryCheck=QgsFeatureRequest.GeometryAbortOnInvalid), 'OUTPUT':'TEMPORARY_OUTPUT'})['OUTPUT']
+ 381 |     GenerarShapeRegistrados([capa], 'temp')",[],"[""L3_01_05_02""]",[98],complete_stable101_report_only,"[""native:fixgeometries""]",[0],50a596e6694875b3cd1a9a5f,curated_ast_subworkflow_split_v1,script_0006060.py,38,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 380, ""line_start"": 380, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""GenerarRegistradosDesdeSeleccion"", ""param_keys"": [""INPUT"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0006060.py,workflow,a0b2e7b8c9e94b581cb2057f026e422fa5448acec264383f479bb8d5374c086f,"{""expansion_call_lines"": [], ""line_end"": 380, ""line_start"": 380, ""segments"": [{""line_end"": 380, ""line_start"": 380}]}",False,not_granted,qgis_stable101_r38_registered_selection,False,selected_registered_geometry_cleanup,修复选中登记要素的几何,当输入图层存在选中要素时，修复这些要素的无效几何，输出供后续登记要素文件生成使用的临时图层。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,"[{""member_ordinals"": [0, 1], ""name"": ""owner_and_occupant_layers"", ""semantics"": ""parallel independent inputs""}]","[""GenerarManzanero parallel owner/occupant cleanup""]",[],[],recovered_local_dataflow,GenerarManzanero," 530 |     poseedores = CANVAS_AddLayer(capas['POSEEDORES'])
+ 531 |     clonPropietarios = CANVAS_AddLayer(processing.run('native:fixgeometries', {'INPUT' : propietarios, 'METHOD' : 1, 'OUTPUT' : 'TEMPORARY_OUTPUT'})['OUTPUT'])
+ 532 |     clonPoseedores = CANVAS_AddLayer(processing.run('native:fixgeometries', {'INPUT' : poseedores, 'METHOD' : 1, 'OUTPUT' : 'TEMPORARY_OUTPUT'})['OUTPUT'])
+...
+ 531 |     clonPropietarios = CANVAS_AddLayer(processing.run('native:fixgeometries', {'INPUT' : propietarios, 'METHOD' : 1, 'OUTPUT' : 'TEMPORARY_OUTPUT'})['OUTPUT'])
+ 532 |     clonPoseedores = CANVAS_AddLayer(processing.run('native:fixgeometries', {'INPUT' : poseedores, 'METHOD' : 1, 'OUTPUT' : 'TEMPORARY_OUTPUT'})['OUTPUT'])
+ 533 |     radios = CANVAS_AddLayer(capas['RADIOS'])",[],"[""L3_01_05_02"", ""L3_01_05_02""]","[98, 98]",complete_stable101_report_only,"[""native:fixgeometries"", ""native:fixgeometries""]",[],50a596e6694875b3cd1a9a5f,curated_ast_subworkflow_split_v1,script_0006060.py,38,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 531, ""line_start"": 531, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""GenerarManzanero"", ""param_keys"": [""INPUT"", ""METHOD"", ""OUTPUT""]}, {""line_end"": 532, ""line_start"": 532, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 1, ""owner"": ""GenerarManzanero"", ""param_keys"": [""INPUT"", ""METHOD"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0006060.py,workflow,a0b2e7b8c9e94b581cb2057f026e422fa5448acec264383f479bb8d5374c086f,"{""expansion_call_lines"": [], ""line_end"": 532, ""line_start"": 531, ""segments"": [{""line_end"": 531, ""line_start"": 531}, {""line_end"": 532, ""line_start"": 532}]}",False,not_granted,qgis_stable101_r38_owner_layers,False,owner_and_occupant_geometry_cleanup,分别修复街区和权属图层几何,分别修复权属人图层和占有人图层的无效几何，输出两个相互独立的临时清理图层。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""dissolve_and_resolve_overlaps""]",[],[],recovered_local_dataflow,dissolve_and_resolve_overlaps," 108 |     # Dissolve by attribute
+ 109 |     dissolved = processing.run(
+ 110 |         'native:dissolve',
+ 111 |         {'INPUT': input_layer, 'FIELD': [controlling_attribute], 'OUTPUT': 'memory:dissolved'}
+ 112 |     )['OUTPUT']
+ 113 | ",[],"[""L3_02_03_05""]",[15],complete_stable101_report_only,"[""native:dissolve""]",[],c2d4b0c8080b0fff79db40c0,curated_ast_subworkflow_split_v1,script_0000819.py,40,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 112, ""line_start"": 109, ""operator_id"": ""native:dissolve"", ""ordinal"": 0, ""owner"": ""dissolve_and_resolve_overlaps"", ""param_keys"": [""INPUT"", ""FIELD"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000819.py,standard_v2,c236ca4433e782d7c92d0cb6152add3ee1d12a869eb40969cf0922283ca3c766,"{""expansion_call_lines"": [], ""line_end"": 112, ""line_start"": 109, ""segments"": [{""line_end"": 112, ""line_start"": 109}]}",False,not_granted,qgis_stable101_r40_dissolve_overlap,False,attribute_dissolve_helper,按控制属性融合矢量要素,按控制属性融合输入矢量要素；若融合结果为空，则保留原输入图层。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""LandUseProcessor.stack_layers priority loop""]","[""difference is skipped for the first layer; union branch starts after the first accumulated layer""]","[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}, {""consumer_ordinal"": 2, ""dependency_kind"": ""data"", ""producer_ordinal"": 1}, {""consumer_ordinal"": 4, ""dependency_kind"": ""data"", ""producer_ordinal"": 2}, {""consumer_ordinal"": 5, ""dependency_kind"": ""data"", ""producer_ordinal"": 3}, {""consumer_ordinal"": 5, ""dependency_kind"": ""data"", ""producer_ordinal"": 4}, {""consumer_ordinal"": 6, ""dependency_kind"": ""data"", ""producer_ordinal"": 5}, {""consumer_ordinal"": 7, ""dependency_kind"": ""collection"", ""producer_ordinal"": 2}]",recovered_loop_dag_review_required,LandUseProcessor.stack_layers," 639 |         for idx, lyr in enumerate(ordered):
+ 640 |             fixed_lyr_gpkg = processing.run(
+ 641 |                 ""native:fixgeometries"",
+ 642 |                 {'INPUT': lyr,
+ 643 |                  # 'OUTPUT': 'memory:fixed'
+ 644 |                  'OUTPUT': QgsProcessingUtils.generateTempFilename(f'fixed_{lyr.name()}.gpkg')
+ 645 |                  }
+ 646 |             )['OUTPUT']
+ 647 |             fixed_lyr = QgsVectorLayer(fixed_lyr_gpkg, ""fixed"", ""ogr"")
+...
+ 653 |                 # B) Subtract higher-priority areas
+ 654 |                 clipped_gpkg = processing.run(
+ 655 |                     ""native:difference"",
+ 656 |                     {
+ 657 |                         'INPUT': fixed_lyr,
+ 658 |                         'OVERLAY': accum_union,
+ 659 |                         # 'OUTPUT': 'memory:clipped'
+ 660 |                         'OUTPUT': QgsProcessingUtils.generateTempFilename(f'diff_{lyr.name()}.gpkg')
+ 661 |                     }
+ 662 |                 )['OUTPUT']
+ 663 |                 clipped = QgsVectorLayer(clipped_gpkg, ""clipped"", ""ogr"")
+...
+ 665 |             # C) Remove null & empty geometries (essential!)
+ 666 |             clipped_gpkg = processing.run(
+ 667 |                 ""native:removenullgeometries"",
+ 668 |                 {
+ 669 |                     'INPUT': clipped,
+ 670 |                     # 'OUTPUT': 'memory:clean_clipped'
+ 671 |                     'OUTPUT': QgsProcessingUtils.generateTempFilename(f'clean_clipped_{lyr.name()}.gpkg')
+ 672 |                 }
+ 673 |             )['OUTPUT']
+ 674 | 
+...
+ 684 |                 # 1) Fix geometries on both sides
+ 685 |                 fixed_acc_gpkg = processing.run(
+ 686 |                     ""native:fixgeometries"",
+ 687 |                     {'INPUT': accum_union,
+ 688 |                      # 'OUTPUT': 'memory:fixed_acc'
+ 689 |                      'OUTPUT': QgsProcessingUtils.generateTempFilename(f'fixed_acc_{lyr.name()}.gpkg')
+ 690 |                     }
+ 691 |                 )['OUTPUT']
+ 692 |                 fixed_acc = QgsVectorLayer(fixed_acc_gpkg, ""fixed_acc"", ""ogr"")
+...
+ 693 | 
+ 694 |                 fixed_clip_gpkg = processing.run(
+ 695 |                     ""native:fixgeometries"",
+ 696 |                     {'INPUT': clipped,
+ 697 |                      # 'OUTPUT': 'memory:fixed_clip'
+ 698 |                      'OUTPUT': QgsProcessingUtils.generateTempFilename(f'fixed_clip_{lyr.name()}.gpkg')
+ 699 |                     }
+ 700 |                 )['OUTPUT']
+ 701 |                 fixed_clip = QgsVectorLayer(fixed_clip_gpkg, ""fixed_clip"", ""ogr"")
+...
+ 704 |                 try:
+ 705 |                     accum_union_gpkg = processing.run(
+ 706 |                         ""native:union"",
+ 707 |                         {
+ 708 |                             'INPUT': fixed_acc,
+ 709 |                             'OVERLAY': fixed_clip,
+ 710 |                             # https://github.com/qgis/QGIS/issues/57279
+ 711 |                             'OUTPUT': QgsProcessingUtils.generateTempFilename(f'accum_union_{lyr.name()}.gpkg')
+ 712 |                             # 'OUTPUT': 'memory:accum_union'
+ 713 |                         }
+ 714 |                     )['OUTPUT']
+ 715 |                     del fixed_acc
+...
+ 718 | 
+ 719 |                     fixed_accum_union = processing.run(
+ 720 |                         ""native:fixgeometries"",
+ 721 |                         {'INPUT': accum_union_tmp,
+ 722 |                          # 'OUTPUT': 'memory:fixed'
+ 723 |                          'OUTPUT': QgsProcessingUtils.generateTempFilename(f'fixed_accum_union_{lyr.name()}.gpkg')
+ 724 |                          }
+ 725 |                     )['OUTPUT']
+ 726 |                     accum_union = QgsVectorLayer(fixed_lyr_gpkg, ""fixed_accum_union"", ""ogr"")
+...
+ 737 |         # 4) Merge all non-overlapping pieces
+ 738 |         final_gpkg = processing.run(
+ 739 |             ""native:mergevectorlayers"",
+ 740 |             {
+ 741 |                 'LAYERS': processed,
+ 742 |                 'CRS': processed[0].crs().toWkt(),
+ 743 |                 #'OUTPUT': 'memory:Stacked_NoOverlap'
+ 744 |                 'OUTPUT': QgsProcessingUtils.generateTempFilename(f'stacked_nooverlap.gpkg')
+ 745 |             }
+ 746 |         )['OUTPUT']
+ 747 |         final = QgsVectorLayer(final_gpkg, ""final"", ""ogr"")","[""Exception fallback may skip a failed union iteration.""]","[""L3_01_05_02"", ""L3_02_02_04"", ""L3_02_06_02"", ""L3_01_05_02"", ""L3_01_05_02"", ""L3_02_02_02"", ""L3_01_05_02"", ""L3_01_03_04""]","[98, 11, 21, 98, 98, 10, 98, 5]",complete_stable101_report_only,"[""native:fixgeometries"", ""native:difference"", ""native:removenullgeometries"", ""native:fixgeometries"", ""native:fixgeometries"", ""native:union"", ""native:fixgeometries"", ""native:mergevectorlayers""]","[1, 3, 4, 5, 6]",c2d4b0c8080b0fff79db40c0,curated_ast_subworkflow_split_v1,script_0000819.py,40,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 646, ""line_start"": 640, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 0, ""owner"": ""LayerEditor.stack_layers"", ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 662, ""line_start"": 654, ""operator_id"": ""native:difference"", ""ordinal"": 1, ""owner"": ""LayerEditor.stack_layers"", ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}, {""line_end"": 673, ""line_start"": 666, ""operator_id"": ""native:removenullgeometries"", ""ordinal"": 2, ""owner"": ""LayerEditor.stack_layers"", ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 691, ""line_start"": 685, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 3, ""owner"": ""LayerEditor.stack_layers"", ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 700, ""line_start"": 694, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 4, ""owner"": ""LayerEditor.stack_layers"", ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 714, ""line_start"": 705, ""operator_id"": ""native:union"", ""ordinal"": 5, ""owner"": ""LayerEditor.stack_layers"", ""param_keys"": [""INPUT"", ""OVERLAY"", ""OUTPUT""]}, {""line_end"": 725, ""line_start"": 719, ""operator_id"": ""native:fixgeometries"", ""ordinal"": 6, ""owner"": ""LayerEditor.stack_layers"", ""param_keys"": [""INPUT"", ""OUTPUT""]}, {""line_end"": 746, ""line_start"": 738, ""operator_id"": ""native:mergevectorlayers"", ""ordinal"": 7, ""owner"": ""LayerEditor.stack_layers"", ""param_keys"": [""LAYERS"", ""CRS"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000819.py,standard_v2,c236ca4433e782d7c92d0cb6152add3ee1d12a869eb40969cf0922283ca3c766,"{""expansion_call_lines"": [], ""line_end"": 746, ""line_start"": 640, ""segments"": [{""line_end"": 646, ""line_start"": 640}, {""line_end"": 662, ""line_start"": 654}, {""line_end"": 673, ""line_start"": 666}, {""line_end"": 691, ""line_start"": 685}, {""line_end"": 700, ""line_start"": 694}, {""line_end"": 714, ""line_start"": 705}, {""line_end"": 725, ""line_start"": 719}, {""line_end"": 746, ""line_start"": 738}]}",False,not_granted,qgis_stable101_r40_priority_stack,False,priority_layer_stack,按优先级消除重叠并合并土地利用图层,依照图层优先级逐层处理土地利用范围：必要时修复几何，从当前图层扣除已占用区域并移除空几何，再更新累计覆盖范围，最后合并保留下来的各层结果。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""add_protected_buildings""]",[],"[{""consumer_ordinal"": 1, ""dependency_kind"": ""data"", ""producer_ordinal"": 0}]",recovered_local_dataflow,add_protected_buildings,"  54 |     logger.info(""Reprojecting protected buildings"")
+  55 |     result = processing.run(""native:reprojectlayer"",
+  56 |                                         {'INPUT': layer_protected_buildings,
+  57 |                                         'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:2154'),  # fixme: EPSGH:2154 is only valid if preprocessed layer is this one too
+  58 |                                         'OPERATION':'+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=lcc +lat_0=46.5 +lon_0=3 +lat_1=49 +lat_2=44 +x_0=700000 +y_0=6600000 +ellps=GRS80',
+  59 |                                         'OUTPUT': 'memory:'})
+  60 |     layer_protected_buildings_reprojected = result[""OUTPUT""]        # no garbage collection, see https://gis.stackexchange.com/questions/284064/using-memory-layer-for-processing-algorithms-in-qgis-3
+...
+  62 |     logger.info(""Joining by location"")
+  63 |     result = processing.run(""native:joinattributesbylocation"",   # doc: https://docs.qgis.org/3.34/en/docs/user_manual/processing_algs/qgis/vectorgeneral.html#join-attributes-by-location
+  64 |                                     {'INPUT': layer,
+  65 |                                     'PREDICATE':[0],
+  66 |                                     'JOIN': layer_protected_buildings_reprojected,
+  67 |                                     'JOIN_FIELDS':[],
+  68 |                                     'METHOD':1,
+  69 |                                     'DISCARD_NONMATCHING':False,
+  70 |                                     'PREFIX':'joint_',
+  71 |                                     'OUTPUT': 'memory:'})
+  72 |     joint_predictions = result[""OUTPUT""]","[""Low-level boolean attribute assignment follows the join.""]","[""L3_01_10_01"", ""L3_02_04_01""]","[100, 16]",complete_stable101_report_only,"[""native:reprojectlayer"", ""native:joinattributesbylocation""]",[],e49501a89996e642a18c9362,curated_ast_subworkflow_split_v1,script_0000754.py,48,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 59, ""line_start"": 55, ""operator_id"": ""native:reprojectlayer"", ""ordinal"": 0, ""owner"": ""add_protected_buildings"", ""param_keys"": [""INPUT"", ""TARGET_CRS"", ""OPERATION"", ""OUTPUT""]}, {""line_end"": 71, ""line_start"": 63, ""operator_id"": ""native:joinattributesbylocation"", ""ordinal"": 1, ""owner"": ""add_protected_buildings"", ""param_keys"": [""INPUT"", ""PREDICATE"", ""JOIN"", ""JOIN_FIELDS"", ""METHOD"", ""DISCARD_NONMATCHING"", ""PREFIX"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000754.py,standard_v2,79a0bf01cd74af749760e12febf276bde6372fbf3705b71a3b13cd5175d9b8c4,"{""expansion_call_lines"": [], ""line_end"": 71, ""line_start"": 55, ""segments"": [{""line_end"": 59, ""line_start"": 55}, {""line_end"": 71, ""line_start"": 63}]}",False,not_granted,qgis_stable101_r48_protected_join,False,protected_area_spatial_join,重投影保护区并连接建筑属性,将保护区图层重投影到 EPSG:2154，再按相交关系把保护区属性连接到建筑图层，输出包含空间匹配字段的建筑图层。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,
+recovered_review_required,[],passed,[],"[""merge_overlapped_buildings""]",[],[],recovered_local_dataflow,merge_overlapped_buildings," 240 |         
+ 241 |     result = processing.run(""native:multiintersection"",
+ 242 |                             {'INPUT': layer,
+ 243 |                                 'OVERLAYS': [layer],
+ 244 |                                 'OVERLAY_FIELDS_PREFIX': '',
+ 245 |                                 'OUTPUT': 'memory:'})
+ 246 |     ","[""Low-level grouping and geometry merge logic is required after multiintersection.""]","[""L3_02_02_01""]",[9],complete_stable101_report_only,"[""native:multiintersection""]",[],e49501a89996e642a18c9362,curated_ast_subworkflow_split_v1,script_0000754.py,48,split_subworkflow,qgis_stable101_recovered_subworkflow_v1,"[{""line_end"": 245, ""line_start"": 241, ""operator_id"": ""native:multiintersection"", ""ordinal"": 0, ""owner"": ""merge_overlapped_buildings"", ""param_keys"": [""INPUT"", ""OVERLAYS"", ""OVERLAY_FIELDS_PREFIX"", ""OUTPUT""]}]",E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000754.py,standard_v2,79a0bf01cd74af749760e12febf276bde6372fbf3705b71a3b13cd5175d9b8c4,"{""expansion_call_lines"": [], ""line_end"": 245, ""line_start"": 241, ""segments"": [{""line_end"": 245, ""line_start"": 241}]}",False,not_granted,qgis_stable101_r48_overlap_groups,False,building_overlap_pairs,计算建筑自相交关系,对建筑图层执行自相交并保留不同要素之间的相交关系，输出供后续重叠分组和几何合并使用的中间图层。,,deterministic_semantic_template_v1,[],False,True,pending_human_review,,,,,

@@ -1,0 +1,601 @@
+[
+  {
+    "l3_name": "Repair Geometry",
+    "l3_proposal": "L3_01_05_02",
+    "mapping_evidence": "PyQGIS engine of native:fixgeometries",
+    "mapping_kind": "native_operator_slug_equivalence",
+    "operator_id_equivalence": "native:fixgeometries",
+    "proposal_rows": 24,
+    "review_item": "native_operator_slug_equivalence|L3_01_05_02|geometry_transform:makevalid",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [],
+      "positional_count": 0
+    },
+    "sample_call_text": "line_geom.makeValid()",
+    "sample_enclosing_scope": {
+      "class": "FastOptimalPathAlgorithm",
+      "function": "processAlgorithm",
+      "function_lineno": 525,
+      "kind": "function"
+    },
+    "sample_receiver": "QgsGeometry.fromPolylineXY",
+    "sample_record_id": "397cc5079863573b069eb60d",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "line_geom = line_geom.makeValid()",
+      "target": "line_geom"
+    },
+    "sample_source_sha256": "397cc5079863573b069eb60da68ae55abc00cd755bb46186f7b026e00e32a3c7",
+    "standalone_breakdown": {
+      "function_local_assignment": 23,
+      "standalone_operation_result": 1
+    }
+  },
+  {
+    "l3_name": "Buffer",
+    "l3_proposal": "L3_02_01_01",
+    "mapping_evidence": "PyQGIS engine of native:buffer",
+    "mapping_kind": "native_operator_slug_equivalence",
+    "operator_id_equivalence": "native:buffer",
+    "proposal_rows": 92,
+    "review_item": "native_operator_slug_equivalence|L3_02_01_01|geometry_transform:buffer",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "distance",
+          "kind": "expression",
+          "literal_value": null
+        },
+        {
+          "expression": "10",
+          "kind": "literal",
+          "literal_value": 10
+        }
+      ],
+      "positional_count": 2
+    },
+    "sample_call_text": "geom.buffer(distance, 10)",
+    "sample_enclosing_scope": {
+      "class": "BufferFromAttributeAlgorithm",
+      "function": "processAlgorithm",
+      "function_lineno": 114,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "037894f797b15c1546bd4a34",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "buffer_geom = geom.buffer(distance, 10)",
+      "target": "buffer_geom"
+    },
+    "sample_source_sha256": "037894f797b15c1546bd4a342149503ee75ce2886508cc1a3dfab5502bf5ed4b",
+    "standalone_breakdown": {
+      "function_local_assignment": 68,
+      "intermediate_implementation_step": 3,
+      "standalone_operation_result": 21
+    }
+  },
+  {
+    "l3_name": "Intersect",
+    "l3_proposal": "L3_02_02_01",
+    "mapping_evidence": "PyQGIS engine of native:intersection",
+    "mapping_kind": "native_operator_slug_equivalence",
+    "operator_id_equivalence": "native:intersection",
+    "proposal_rows": 57,
+    "review_item": "native_operator_slug_equivalence|L3_02_02_01|geometry_transform:intersection",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "frame_geometry",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 1
+    },
+    "sample_call_text": "building_geometry.intersection(frame_geometry)",
+    "sample_enclosing_scope": {
+      "class": "IntersectionAlgorithm",
+      "function": "processAlgorithm",
+      "function_lineno": 36,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "037008eb6522e44279026c9c",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "intersection = building_geometry.intersection(frame_geometry)",
+      "target": "intersection"
+    },
+    "sample_source_sha256": "037008eb6522e44279026c9ca1cedae6f108befcf869a310e7fa25ae592e43ed",
+    "standalone_breakdown": {
+      "function_local_assignment": 50,
+      "standalone_operation_result": 7
+    }
+  },
+  {
+    "l3_name": "Erase",
+    "l3_proposal": "L3_02_02_04",
+    "mapping_evidence": "PyQGIS engine of native:difference",
+    "mapping_kind": "native_operator_slug_equivalence",
+    "operator_id_equivalence": "native:difference",
+    "proposal_rows": 1,
+    "review_item": "native_operator_slug_equivalence|L3_02_02_04|geometry_transform:difference",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "geom_overlay",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 1
+    },
+    "sample_call_text": "geom_input.difference(geom_overlay)",
+    "sample_enclosing_scope": {
+      "class": null,
+      "function": "cg_difference",
+      "function_lineno": 21,
+      "kind": "function"
+    },
+    "sample_receiver": "QgsGeometry_to_SFCGAL",
+    "sample_record_id": "74bd025616d7dbfe2539145b",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "result_geom = geom_input.difference(geom_overlay)",
+      "target": "result_geom"
+    },
+    "sample_source_sha256": "74bd025616d7dbfe2539145bc74ce7e96887e76268ad03eed566378e704cbbdf",
+    "standalone_breakdown": {
+      "function_local_assignment": 1
+    }
+  },
+  {
+    "l3_name": "Symmetrical Difference",
+    "l3_proposal": "L3_02_02_05",
+    "mapping_evidence": "PyQGIS engine of native:symdifference",
+    "mapping_kind": "native_operator_slug_equivalence",
+    "operator_id_equivalence": "native:symdifference",
+    "proposal_rows": 1,
+    "review_item": "native_operator_slug_equivalence|L3_02_02_05|geometry_transform:symdifference",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "new_geom",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 1
+    },
+    "sample_call_text": "old_geom.symDifference(new_geom)",
+    "sample_enclosing_scope": {
+      "class": null,
+      "function": "run_full_diff",
+      "function_lineno": 331,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "68818f73780f58f7ba530cb2",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "diff_geom = old_geom.symDifference(new_geom)",
+      "target": "diff_geom"
+    },
+    "sample_source_sha256": "68818f73780f58f7ba530cb22d99771c21062751ed256ad7dd82bb366e9a087d",
+    "standalone_breakdown": {
+      "function_local_assignment": 1
+    }
+  },
+  {
+    "l3_name": "Simplify",
+    "l3_proposal": "L3_02_05_01",
+    "mapping_evidence": "PyQGIS engine of native:simplifygeometries",
+    "mapping_kind": "native_operator_slug_equivalence",
+    "operator_id_equivalence": "native:simplifygeometries",
+    "proposal_rows": 28,
+    "review_item": "native_operator_slug_equivalence|L3_02_05_01|geometry_transform:simplify",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "s",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 1
+    },
+    "sample_call_text": "geomType.simplify(s)",
+    "sample_enclosing_scope": {
+      "class": "Centerlines",
+      "function": "processAlgorithm",
+      "function_lineno": 115,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "add69dc0ec7e974e29b22dd0",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "geomType = geomType.simplify(s)",
+      "target": "geomType"
+    },
+    "sample_source_sha256": "add69dc0ec7e974e29b22dd08b6f6e81ff1d9d67931696af763fb987886c8f43",
+    "standalone_breakdown": {
+      "function_local_assignment": 20,
+      "standalone_operation_result": 8
+    }
+  },
+  {
+    "l3_name": "Smooth",
+    "l3_proposal": "L3_02_05_02",
+    "mapping_evidence": "PyQGIS engine of native:smoothgeometry",
+    "mapping_kind": "native_operator_slug_equivalence",
+    "operator_id_equivalence": "native:smoothgeometry",
+    "proposal_rows": 10,
+    "review_item": "native_operator_slug_equivalence|L3_02_05_02|geometry_transform:smooth",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [],
+      "positional_count": 0
+    },
+    "sample_call_text": "geometry.smooth()",
+    "sample_enclosing_scope": {
+      "class": null,
+      "function": null,
+      "function_lineno": null,
+      "kind": "module"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "138e69d7b068f49f72ab7944",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "smoothened = geometry.smooth()",
+      "target": "smoothened"
+    },
+    "sample_source_sha256": "138e69d7b068f49f72ab79448c7e4fd1bc64080244ca14b1dc75147374b7a28e",
+    "standalone_breakdown": {
+      "function_local_assignment": 5,
+      "standalone_operation_result": 5
+    }
+  },
+  {
+    "l3_name": "Feature to Point",
+    "l3_proposal": "L3_02_05_11",
+    "mapping_evidence": "PyQGIS engine of native:centroids",
+    "mapping_kind": "native_operator_slug_equivalence",
+    "operator_id_equivalence": "native:centroids",
+    "proposal_rows": 174,
+    "review_item": "native_operator_slug_equivalence|L3_02_05_11|geometry_transform:centroid",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [],
+      "positional_count": 0
+    },
+    "sample_call_text": "f.geometry().centroid()",
+    "sample_enclosing_scope": {
+      "class": "UpdateRunwayAltitudeAlgorithm",
+      "function": "updateLyrs",
+      "function_lineno": 65,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "11706049c4664eace3a82410",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "c = f.geometry().centroid().asPoint()",
+      "target": "c"
+    },
+    "sample_source_sha256": "11706049c4664eace3a824101a8a78e6e19f8de8ee79333d5ee3515244deaa45",
+    "standalone_breakdown": {
+      "function_local_assignment": 146,
+      "intermediate_implementation_step": 3,
+      "standalone_operation_result": 25
+    }
+  },
+  {
+    "l3_name": "Collect Features",
+    "l3_proposal": "L3_02_03_05",
+    "mapping_evidence": "semantic equality with taxonomy class description",
+    "mapping_kind": "taxonomy_class_equivalence",
+    "operator_id_equivalence": null,
+    "proposal_rows": 19,
+    "review_item": "taxonomy_class_equivalence|L3_02_03_05|geometry_transform:combine",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "g",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 1
+    },
+    "sample_call_text": "f.geometry().combine(g)",
+    "sample_enclosing_scope": {
+      "class": null,
+      "function": "get_ref_geom",
+      "function_lineno": 96,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "0167535bb2c972295383cf73",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "g = f.geometry().combine(g)",
+      "target": "g"
+    },
+    "sample_source_sha256": "0167535bb2c972295383cf734deaae152a10d6de13c7219109cf5b5365478879",
+    "standalone_breakdown": {
+      "function_local_assignment": 15,
+      "standalone_operation_result": 4
+    }
+  },
+  {
+    "l3_name": "Minimum Bounding Geometry",
+    "l3_proposal": "L3_02_05_12",
+    "mapping_evidence": "semantic equality with taxonomy class description",
+    "mapping_kind": "taxonomy_class_equivalence",
+    "operator_id_equivalence": null,
+    "proposal_rows": 33,
+    "review_item": "taxonomy_class_equivalence|L3_02_05_12|geometry_transform:convexhull",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [],
+      "positional_count": 0
+    },
+    "sample_call_text": "ptgeom.convexHull()",
+    "sample_enclosing_scope": {
+      "class": "ThiessenPolygonsAlgorithm",
+      "function": "processAlgorithm",
+      "function_lineno": 89,
+      "kind": "function"
+    },
+    "sample_receiver": "QgsGeometry.fromMultiPointXY",
+    "sample_record_id": "7e15a1643a34a07366dfcd8c",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "geom = QgsGeometry(ptgeom.convexHull())",
+      "target": "geom"
+    },
+    "sample_source_sha256": "7e15a1643a34a07366dfcd8cb59181105482a21f7b31cf571c06f2a956a87782",
+    "standalone_breakdown": {
+      "function_local_assignment": 32,
+      "standalone_operation_result": 1
+    }
+  },
+  {
+    "l3_name": "Project/Reproject",
+    "l3_proposal": "L3_01_10_01",
+    "mapping_evidence": "QgsCoordinateTransform.transform reprojects coordinates by type contract",
+    "mapping_kind": "transform_crs_receiver",
+    "operator_id_equivalence": null,
+    "proposal_rows": 558,
+    "review_item": "transform_crs_receiver|L3_01_10_01|crs_or_geometry_transform:transform",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "feature.geometry().asPoint()",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 1
+    },
+    "sample_call_text": "transform.transform(feature.geometry().asPoint())",
+    "sample_enclosing_scope": {
+      "class": "EnhancedClassificationAlgorithm",
+      "function": "processAlgorithm",
+      "function_lineno": 277,
+      "kind": "function"
+    },
+    "sample_receiver": "QgsCoordinateTransform",
+    "sample_record_id": "026017ff3517ac1160bb8790",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "point = transform.transform(feature.geometry().asPoint())",
+      "target": "point"
+    },
+    "sample_source_sha256": "026017ff3517ac1160bb879062b809bb8ab24fc8a31531bd4e4a18561f92b104",
+    "standalone_breakdown": {
+      "function_local_assignment": 482,
+      "intermediate_implementation_step": 11,
+      "standalone_operation_result": 65
+    }
+  },
+  {
+    "l3_name": null,
+    "l3_proposal": "none",
+    "mapping_evidence": "geometry_flavored_transform_needs_review",
+    "mapping_kind": "unresolved_action",
+    "operator_id_equivalence": null,
+    "proposal_rows": 16,
+    "review_item": "unresolved_action|none|crs_or_geometry_transform:transform",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "transform",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 1
+    },
+    "sample_call_text": "geom.transform(transform)",
+    "sample_enclosing_scope": {
+      "class": "ExportToDJI_KML",
+      "function": "processAlgorithm",
+      "function_lineno": 116,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "6cd29aca2ce367ff081ae008",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "ok = geom.transform(transform)",
+      "target": "ok"
+    },
+    "sample_source_sha256": "6cd29aca2ce367ff081ae0089127c29d75a7931dcecddb5cd480078620da985d",
+    "standalone_breakdown": {
+      "function_local_assignment": 16
+    }
+  },
+  {
+    "l3_name": null,
+    "l3_proposal": "none",
+    "mapping_evidence": "action_not_yet_decided:interpolate",
+    "mapping_kind": "unresolved_action",
+    "operator_id_equivalence": null,
+    "proposal_rows": 40,
+    "review_item": "unresolved_action|none|geometry_transform:interpolate",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "sampling_progress",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 1
+    },
+    "sample_call_text": "feature_geom.interpolate(sampling_progress)",
+    "sample_enclosing_scope": {
+      "class": "ProfileExtractor",
+      "function": "processAlgorithm",
+      "function_lineno": 142,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "2d8329d884fba79c156ede0d",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "sample_point = feature_geom.interpolate(sampling_progress).asPoint()",
+      "target": "sample_point"
+    },
+    "sample_source_sha256": "2d8329d884fba79c156ede0dac2d37ea95f9784f855c66502515efb2471d270c",
+    "standalone_breakdown": {
+      "function_local_assignment": 29,
+      "standalone_operation_result": 11
+    }
+  },
+  {
+    "l3_name": null,
+    "l3_proposal": "none",
+    "mapping_evidence": "action_not_yet_decided:offsetcurve",
+    "mapping_kind": "unresolved_action",
+    "operator_id_equivalence": null,
+    "proposal_rows": 3,
+    "review_item": "unresolved_action|none|geometry_transform:offsetcurve",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "offset_distance",
+          "kind": "expression",
+          "literal_value": null
+        },
+        {
+          "expression": "8",
+          "kind": "literal",
+          "literal_value": 8
+        },
+        {
+          "expression": "Qgis.JoinStyle.Bevel",
+          "kind": "expression",
+          "literal_value": null
+        },
+        {
+          "expression": "0.0",
+          "kind": "literal",
+          "literal_value": 0.0
+        }
+      ],
+      "positional_count": 4
+    },
+    "sample_call_text": "channel_geom.offsetCurve(\n                offset_distance, 8, Qgis.JoinStyle.Bevel, 0.0\n            )",
+    "sample_enclosing_scope": {
+      "class": "GenerateExchangeLines",
+      "function": "processAlgorithm",
+      "function_lineno": 121,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "2582caa2fa73e4e389e980cf",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "offset_geom = channel_geom.offsetCurve(\n                offset_distance, 8, Qgis.JoinStyle.Bevel, 0.0\n            )",
+      "target": "offset_geom"
+    },
+    "sample_source_sha256": "2582caa2fa73e4e389e980cfee544884d673d4a71c6cf6028eea4138d773e988",
+    "standalone_breakdown": {
+      "function_local_assignment": 3
+    }
+  },
+  {
+    "l3_name": null,
+    "l3_proposal": "none",
+    "mapping_evidence": "action_not_yet_decided:splitgeometry",
+    "mapping_kind": "unresolved_action",
+    "operator_id_equivalence": null,
+    "proposal_rows": 2,
+    "review_item": "unresolved_action|none|geometry_transform:splitgeometry",
+    "sample_argument_facts": {
+      "all_literal": false,
+      "keyword": {},
+      "positional": [
+        {
+          "expression": "self.capturedPoints",
+          "kind": "expression",
+          "literal_value": null
+        },
+        {
+          "expression": "proj.topologicalEditing()",
+          "kind": "expression",
+          "literal_value": null
+        }
+      ],
+      "positional_count": 2
+    },
+    "sample_call_text": "geometry.splitGeometry( self.capturedPoints, proj.topologicalEditing() )",
+    "sample_enclosing_scope": {
+      "class": "SplitSuoliTool",
+      "function": "doOperation",
+      "function_lineno": 59,
+      "kind": "function"
+    },
+    "sample_receiver": "geometry",
+    "sample_record_id": "1c076907b893726bc79ddd0d",
+    "sample_return_target": {
+      "kind": "assignment",
+      "statement": "result, newGeometries, topoPoints = geometry.splitGeometry( self.capturedPoints, proj.topologicalEditing() )",
+      "target": "result, newGeometries, topoPoints"
+    },
+    "sample_source_sha256": "1c076907b893726bc79ddd0da92eb16eb90810d3b4d08eda38b4506eec1c249b",
+    "standalone_breakdown": {
+      "function_local_assignment": 2
+    }
+  }
+]

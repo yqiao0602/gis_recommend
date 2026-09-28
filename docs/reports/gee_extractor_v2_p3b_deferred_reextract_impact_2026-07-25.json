@@ -1,0 +1,39 @@
+{
+  "counts": {
+    "core_chain_changed_rows": 28,
+    "extraction_ok_rows": 28,
+    "fail_closed_rows": 0,
+    "hash_verified_rows": 28,
+    "p4_rereview_candidates": 28,
+    "repair_rows": 28
+  },
+  "date": "2026-07-25",
+  "decision": {
+    "next_gate": "P4 human rereview of p4_rereview_candidate rows; no automatic admission",
+    "test_eligible": false,
+    "training_admission": "not_granted",
+    "validation_eligible": false
+  },
+  "extractor_version": "gee-source-extractor-v2.0.3",
+  "inputs": {
+    "ast_dir": ".tmp_gee_p3b_ast_20260725",
+    "salvage_csv": "docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_salvage_50_v1.csv",
+    "source_dir": ".tmp_gee_p3b_sources_20260725"
+  },
+  "policy": {
+    "fail_closed_on_missing_source_or_ast": true,
+    "llm_used": false,
+    "operator_chain_source": "v2.0.3 deterministic extractor over hash-verified full source AST",
+    "p4_candidate_is_not_training_admission": true
+  },
+  "recovered_signal_categories": {
+    "evaluation_vector_aggregation": 10,
+    "index_mask": 24,
+    "ml_classification": 6,
+    "sampling_regional_statistics": 17
+  },
+  "schema": "gis_recommend.gee_p3b_deferred_reextract_impact.v1",
+  "statuses": {
+    "ok": 28
+  }
+}

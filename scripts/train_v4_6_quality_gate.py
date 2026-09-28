@@ -97,6 +97,12 @@ from gis_recommend.training.train_v4_5 import compute_training_sample_weights  #
 from gis_recommend.training.train_v4_4 import load_warmstart_checkpoint  # noqa: E402
 from gis_recommend.training.train_v4_6 import ScheduledSamplingTrainerV4_6  # noqa: E402
 
+# M1-R1: optional frozen-protocol trainer override (platform-stratified sampler).
+# Set GIS_V4_TRAINER=platform_r1 to load scripts/m1_r1_trainer.py's subclass.
+import os as _os  # noqa: E402
+if _os.environ.get("GIS_V4_TRAINER") == "platform_r1":
+    from scripts.m1_r1_trainer import PlatformStratifiedTrainerV4_6_R1 as ScheduledSamplingTrainerV4_6  # noqa: E402,F811
+
 
 # 从头训练 schedule
 SCRATCH_TF_PHASE_EPOCHS = 10       # 前 10 epoch 纯 TF
@@ -668,6 +674,7 @@ def train_quality_gate_v4_6(
     mr_registry_path: Optional[Path] = None,
     mr_ratio: float = 0.0,
     length_stats_path: Optional[Path] = None,
+    transition_path: Optional[Path] = None,
     length_bucket_loss_weight: float = 0.0,
     bucket_cls_loss_weight: float = 0.0,
     qgis_unmappable_penalty: float = 0.0,
@@ -901,6 +908,7 @@ def train_quality_gate_v4_6(
         # QGIS mapping constraint
         qgis_unmappable_token_ids=unmappable_token_ids,
         qgis_unmappable_penalty=qgis_unmappable_penalty,
+        transition_path=transition_path,
     )
 
     if task_cls_state is not None:
@@ -999,6 +1007,10 @@ def main(argv: list[str] | None = None) -> dict:
     parser.add_argument(
         "--length-stats", type=str, default=None,
         help="Path to task_type_length_stats.json for task-type length bucket auxiliary training.",
+    )
+    parser.add_argument(
+        "--transition-matrix", type=str, default=None,
+        help="Path to the transition_allowed_next.json constraint for this experiment.",
     )
     parser.add_argument(
         "--allow-tf-only-smoke",
@@ -1113,6 +1125,7 @@ def main(argv: list[str] | None = None) -> dict:
         mr_registry_path=Path(args.mr_registry) if args.mr_registry else None,
         mr_ratio=args.mr_ratio,
         length_stats_path=length_stats_path,
+        transition_path=Path(args.transition_matrix) if args.transition_matrix else None,
         length_bucket_loss_weight=args.length_bucket_loss_weight,
         bucket_cls_loss_weight=args.bucket_cls_loss_weight,
         qgis_unmappable_penalty=args.qgis_unmappable_penalty,

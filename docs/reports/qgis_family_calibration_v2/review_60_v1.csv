@@ -1,0 +1,2414 @@
+﻿schema,family,rule_id,rule_text,record_id,source_authority_key,source_authority_basis,source_sha256,source_path,source_snippet,source_snippet_contains_all_ops,call_sites,ordered_operator_ids,mapped_l3_chain,dependency_edges,family_evidence_counts,multi_step_local_unit_count,current_eligible_unit_count,review_status,training_admission,training_row_emitted,validation_eligible,test_eligible,production_merge,source_execution_decision,recovery_boundary_decision,dependency_decision,rule_precision_decision,final_rule_decision,reviewer_notes,source_verification
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",0f186e3c76a2c7cfbc3d71f6,normalized_source_body_sha256:60d783456c7c7c6571e5a30088065f709b84fa415a5e67f958598e2780bfb0c0,normalized_source_body_sha256,0f186e3c76a2c7cfbc3d71f67679655445d101cf0debac2e3df40490aeaa1883,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0001798.py,"50 |     if (input.geometryType() in [QgsWkbTypes.Polygon, QgsWkbTypes.MultiPolygon]):
+51 |         # Buffer that polygon by 0 distance to fix common geometry areas
+52 |         fixedInput = processing.run('qgis:buffer', {
+53 |             'DISSOLVE': False,
+54 |             'DISTANCE': 0,
+55 |             'END_CAP_STYLE': 0,
+56 |             'INPUT': input,
+57 |             'JOIN_STYLE': 0,
+58 |             'MITER_LIMIT': 2,
+59 |             'OUTPUT': 'TEMPORARY_OUTPUT',
+60 |             'SEGMENTS': 5}
+61 |         )
+62 | 
+63 |         input = fixedInput['OUTPUT']
+...
+71 |         zones.removeSelection()
+72 |         zones.select(zone.id())
+73 |         o = processing.run(""qgis:selectbylocation"", {
+74 |             'INPUT': input,
+75 |             'INTERSECT': QgsProcessingFeatureSourceDefinition(zones.id(), True),
+76 |             'METHOD': 0,
+77 |             'PREDICATE': [0, 4, 5]}
+78 |         )
+79 | 
+80 |         zoneOutput = []
+...
+112 | 
+113 |     # Calculate nodata areas, 1 = data 0 = nodata
+114 |     o = processing.run(""gdal:rastercalculator"", {
+115 |         ""INPUT_A"": input,
+116 |         ""BAND_A"": 1,
+117 |         ""FORMULA"": ""A != {nodata}"".format(nodata=nodata),
+118 |         ""OUTPUT"": ""TEMPORARY_OUTPUT""}
+119 |     )
+120 | 
+121 |     # Polygonize the output to get a coverage of all areas of data in the original raster
+122 |     o = processing.run('gdal:polygonize', {
+123 |         'BAND': 1,
+124 |         'EIGHT_CONNECTEDNESS': False,
+125 |         'FIELD': 'DN',
+126 |         'INPUT': o['OUTPUT'],
+127 |         'OUTPUT': 'TEMPORARY_OUTPUT'}
+128 |     )
+129 | 
+130 |     # Buffer that polygon by 0 distance to fix common geometry areas
+131 |     o = processing.run('qgis:buffer', {
+132 |         'DISSOLVE': False,
+133 |         'DISTANCE': 0,
+134 |         'END_CAP_STYLE': 0,
+135 |         'INPUT': o['OUTPUT'],
+136 |         'JOIN_STYLE': 0,
+137 |         'MITER_LIMIT': 2,
+138 |         'OUTPUT': 'TEMPORARY_OUTPUT',
+139 |         'SEGMENTS': 5}
+140 |     )
+141 | 
+142 |     # Select the zones that overlap with the generated polygon
+143 |     o = processing.run(""qgis:selectbylocation"", {
+144 |         'INPUT': zones,
+145 |         'INTERSECT': o['OUTPUT'],
+146 |         'METHOD': 0,
+147 |         'PREDICATE': [0, 4, 5]}
+148 |     )
+149 | 
+150 |     # Materialize the selected matching zones as a temporary file to provide the matching zones
+...
+156 |     # Run the QGIS zonal statistics processing tool to find the min/max for areas overalpping
+157 |     # each grid that covers the raster data
+158 |     o = processing.run(""qgis:zonalstatistics"", {
+159 |         'COLUMN_PREFIX': '_',
+160 |         'INPUT_RASTER': input,
+161 |         'INPUT_VECTOR': zones_output,
+162 |         'RASTER_BAND': 1,
+163 |         'STATISTICS': [5, 6]}
+164 |     )
+165 |     output = {}
+166 | ",True,"[{""line_end"": 61, ""line_start"": 52, ""operator_id"": ""native:buffer""}, {""line_end"": 78, ""line_start"": 73, ""operator_id"": ""native:selectbylocation""}, {""line_end"": 119, ""line_start"": 114, ""operator_id"": ""gdal:rastercalculator""}, {""line_end"": 128, ""line_start"": 122, ""operator_id"": ""gdal:polygonize""}, {""line_end"": 140, ""line_start"": 131, ""operator_id"": ""native:buffer""}, {""line_end"": 148, ""line_start"": 143, ""operator_id"": ""native:selectbylocation""}, {""line_end"": 164, ""line_start"": 158, ""operator_id"": ""native:zonalstatistics""}]","[""native:buffer"", ""native:selectbylocation"", ""gdal:rastercalculator"", ""gdal:polygonize"", ""native:buffer"", ""native:selectbylocation"", ""native:zonalstatistics""]","[""L3_02_01_01"", ""L3_02_06_03"", ""L3_03_03_A"", ""L3_01_09_03"", ""L3_02_01_01"", ""L3_02_06_03"", ""L3_03_02_01""]","[[0, 1], [2, 3], [3, 4], [4, 5]]","{""helper_function_call"": 3, ""output_alias"": 1, ""result_dictionary"": 7}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",145626001e04020e0db55c3c,normalized_source_body_sha256:63435374ca9e2f5b5be80dd8b2270f8f5d8fcf395072b2270df59669e2d36458,normalized_source_body_sha256,145626001e04020e0db55c3c68fc43e32490378623d6dc32a0c8bc63ccc4ae03,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005540.py,"50 |             'OUTPUT': parameters['Agrisuit']
+51 |         }
+52 |         outputs['WarpReproject'] = processing.run('gdal:warpreproject', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+53 |         results['Agrisuit'] = outputs['WarpReproject']['OUTPUT']
+54 | 
+...
+63 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+64 |         }
+65 |         outputs['DropFields'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+66 | 
+67 |         feedback.setCurrentStep(2)
+...
+80 |             'OUTPUT': parameters['Counties']
+81 |         }
+82 |         outputs['AddAutoincrementalField'] = processing.run('native:addautoincrementalfield', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+83 |         results['Counties'] = outputs['AddAutoincrementalField']['OUTPUT']
+84 | 
+...
+95 |             'STATISTICS': [2]
+96 |         }
+97 |         outputs['ZonalStatistics'] = processing.run('native:zonalstatistics', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+98 |         return results
+99 | ",True,"[{""line_end"": 52, ""line_start"": 52, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 65, ""line_start"": 65, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 82, ""line_start"": 82, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 97, ""line_start"": 97, ""operator_id"": ""native:zonalstatistics""}]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[[0, 3], [1, 2], [2, 3]]","{""backward_slice_alias"": 1, ""output_alias"": 2, ""parameter_dictionary"": 4, ""result_dictionary"": 4}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",2044cad906a23c4a63081157,normalized_source_body_sha256:2044cad906a23c4a63081157399436b91ad03304d3dc1d6e8c432f0456397774,normalized_source_body_sha256,2044cad906a23c4a63081157399436b91ad03304d3dc1d6e8c432f0456397774,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_6549.py,"77 |         if layer.crs() != self.target_crs:
+78 |             params = {'INPUT': layer, 'TARGET_CRS': self.target_crs, 'OUTPUT': 'memory:'}
+79 |             result = processing.run('qgis:reprojectlayer', params)
+80 |             layer = result['OUTPUT']
+81 |             layer.setName(base_name + ""_proj"")
+...
+84 |         if layer.featureCount() > 1:
+85 |             params = {'INPUT': layer, 'FIELD': [], 'OUTPUT': 'memory:'}
+86 |             result = processing.run('native:dissolve', params)
+87 |             layer = result['OUTPUT']
+88 |             layer.setName(base_name + ""_dissolve"")
+...
+251 |                     original_selection = layer.selectedFeatureIds()
+252 |                     params = {'INPUT': layer,'PREDICATE': [0],'INTERSECT': self.geopackage_layer,'METHOD': 0}
+253 |                     processing.run('native:selectbylocation', params)
+254 |                     selected_features = layer.selectedFeatures()
+255 |                     if selected_features:
+...
+480 |                 if self.geopackage_layer.crs() != layer.crs():
+481 |                     params = {'INPUT': self.geopackage_layer, 'TARGET_CRS': layer.crs(), 'OUTPUT': 'memory:'}
+482 |                     res = processing.run('qgis:reprojectlayer', params)
+483 |                     intersect_layer_for_select = res['OUTPUT']
+484 |                     reprojected_temp = intersect_layer_for_select  # marcar para posible limpieza (no es estrictamente necesario)
+...
+494 |                     'METHOD': 0
+495 |                 }
+496 |                 processing.run('native:selectbylocation', params_sel)
+497 |             except Exception as e:
+498 |                 print(f""Error en selectbylocation para {layer.name()}: {e}"")",True,"[{""line_end"": 79, ""line_start"": 79, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 86, ""line_start"": 86, ""operator_id"": ""native:dissolve""}, {""line_end"": 253, ""line_start"": 253, ""operator_id"": ""native:selectbylocation""}, {""line_end"": 482, ""line_start"": 482, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 496, ""line_start"": 496, ""operator_id"": ""native:selectbylocation""}]","[""native:reprojectlayer"", ""native:dissolve"", ""native:selectbylocation"", ""native:reprojectlayer"", ""native:selectbylocation""]","[""L3_01_10_01"", ""L3_02_03_05"", ""L3_02_06_03"", ""L3_01_10_01"", ""L3_02_06_03""]","[[0, 1]]","{""backward_slice_alias"": 2, ""output_alias"": 3, ""parameter_dictionary"": 5, ""result_dictionary"": 3}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",26616c418e2d23f29f63f18a,normalized_source_body_sha256:2b14c3b47c067dcebbfba9386f78fb90641f76c40a4a68af5eae6ff83450aa7c,normalized_source_body_sha256,26616c418e2d23f29f63f18adabead4a4dd8f188d3e8877de11e65d0f6153882,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_53690.py,"44 |     if (input.geometryType() in [QgsWkbTypes.Polygon, QgsWkbTypes.MultiPolygon]):
+45 |         # Buffer that polygon by 0 distance to fix common geometry areas
+46 |         fixedInput = processing.run('qgis:buffer', {
+47 |             'DISSOLVE': False,
+48 |             'DISTANCE': 0,
+49 |             'END_CAP_STYLE': 0,
+50 |             'INPUT': input,
+51 |             'JOIN_STYLE': 0,
+52 |             'MITER_LIMIT': 2,
+53 |             'OUTPUT': 'TEMPORARY_OUTPUT',
+54 |             'SEGMENTS': 5}
+55 |         )
+56 | 
+57 |         input = fixedInput['OUTPUT']
+...
+65 |         zones.removeSelection()
+66 |         zones.select(zone.id())
+67 |         o = processing.run(""qgis:selectbylocation"", {
+68 |             'INPUT': input,
+69 |             'INTERSECT': QgsProcessingFeatureSourceDefinition(zones.id(), True),
+70 |             'METHOD': 0,
+71 |             'PREDICATE': [0, 4, 5]}
+72 |         )
+73 | 
+74 |         zoneOutput = []
+...
+106 | 
+107 |     # Calculate nodata areas, 1 = data 0 = nodata
+108 |     o = processing.run(""gdal:rastercalculator"", {
+109 |         ""INPUT_A"": input,
+110 |         ""BAND_A"": 1,
+111 |         ""FORMULA"": ""A != {nodata}"".format(nodata=nodata),
+112 |         ""OUTPUT"": ""TEMPORARY_OUTPUT""}
+113 |     )
+114 | 
+115 |     # Polygonize the output to get a coverage of all areas of data in the original raster
+116 |     o = processing.run('gdal:polygonize', {
+117 |         'BAND': 1,
+118 |         'EIGHT_CONNECTEDNESS': False,
+119 |         'FIELD': 'DN',
+120 |         'INPUT': o['OUTPUT'],
+121 |         'OUTPUT': 'TEMPORARY_OUTPUT'}
+122 |     )
+123 | 
+124 |     # Buffer that polygon by 0 distance to fix common geometry areas
+125 |     o = processing.run('qgis:buffer', {
+126 |         'DISSOLVE': False,
+127 |         'DISTANCE': 0,
+128 |         'END_CAP_STYLE': 0,
+129 |         'INPUT': o['OUTPUT'],
+130 |         'JOIN_STYLE': 0,
+131 |         'MITER_LIMIT': 2,
+132 |         'OUTPUT': 'TEMPORARY_OUTPUT',
+133 |         'SEGMENTS': 5}
+134 |     )
+135 | 
+136 |     # Select the zones that overlap with the generated polygon
+137 |     o = processing.run(""qgis:selectbylocation"", {
+138 |         'INPUT': zones,
+139 |         'INTERSECT': o['OUTPUT'],
+140 |         'METHOD': 0,
+141 |         'PREDICATE': [0, 4, 5]}
+142 |     )
+143 | 
+144 |     # Materialize the selected matching zones as a temporary file to provide the matching zones
+...
+150 |     # Run the QGIS zonal statistics processing tool to find the min/max for areas overalpping
+151 |     # each grid that covers the raster data
+152 |     o = processing.run(""qgis:zonalstatistics"", {
+153 |         'COLUMN_PREFIX': '_',
+154 |         'INPUT_RASTER': input,
+155 |         'INPUT_VECTOR': zones_output,
+156 |         'RASTER_BAND': 1,
+157 |         'STATISTICS': [5, 6]}
+158 |     )
+159 |     output = {}
+160 | ",True,"[{""line_end"": 55, ""line_start"": 46, ""operator_id"": ""native:buffer""}, {""line_end"": 72, ""line_start"": 67, ""operator_id"": ""native:selectbylocation""}, {""line_end"": 113, ""line_start"": 108, ""operator_id"": ""gdal:rastercalculator""}, {""line_end"": 122, ""line_start"": 116, ""operator_id"": ""gdal:polygonize""}, {""line_end"": 134, ""line_start"": 125, ""operator_id"": ""native:buffer""}, {""line_end"": 142, ""line_start"": 137, ""operator_id"": ""native:selectbylocation""}, {""line_end"": 158, ""line_start"": 152, ""operator_id"": ""native:zonalstatistics""}]","[""native:buffer"", ""native:selectbylocation"", ""gdal:rastercalculator"", ""gdal:polygonize"", ""native:buffer"", ""native:selectbylocation"", ""native:zonalstatistics""]","[""L3_02_01_01"", ""L3_02_06_03"", ""L3_03_03_A"", ""L3_01_09_03"", ""L3_02_01_01"", ""L3_02_06_03"", ""L3_03_02_01""]","[[0, 1], [2, 3], [3, 4], [4, 5]]","{""helper_function_call"": 3, ""output_alias"": 1, ""result_dictionary"": 7}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",3f673e98ebf83e4dcf5f3b05,normalized_source_body_sha256:7428e2c718d27485443bcfca032710fd63d81a102c939c7ff8f7d5d9b8e59c2c,normalized_source_body_sha256,3f673e98ebf83e4dcf5f3b05e428a77c7019916f183ff867d65cc83282275a9e,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0006117.py,"602 |             # Run the algorithm synchronously
+603 |             feedback_goog = QgsProcessingFeedback()
+604 |             processing.run(""gdal:warpreproject"", params, feedback=feedback_goog)
+605 | 
+606 |         # Get extents and export clipped GeoTIFF
+...
+639 | 
+640 |         if selected_raster_status[""2022 NAIP Aerial""] and self.do_naip:
+641 |             reprojected_mask = processing.run(
+642 |                 ""native:reprojectlayer"",
+643 |                 {
+644 |                     'INPUT': self.mask_layer,
+645 |                     'TARGET_CRS': crs_dst,
+646 |                     'OUTPUT': 'memory:'
+647 |                 },
+648 |                 feedback=feedback_mask
+649 |             )['OUTPUT']
+650 | 
+651 |             # Set input and output CRS
+...
+668 |                 'OUTPUT': self.naip_temp
+669 |             }
+670 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_naip_clip)
+671 | 
+672 |             # Reproject clipped raster to 'EPSG:2225'
+...
+676 |                 'OUTPUT': self.naip_dst
+677 |             }
+678 |             processing.run(""gdal:warpreproject"", params_warp, feedback=feedback_naip_reproject)
+679 | 
+680 |         if dem1m and self.do_dem:
+681 |             reprojected_mask = processing.run(
+682 |                 ""native:reprojectlayer"",
+683 |                 {
+684 |                     'INPUT': self.mask_layer,
+685 |                     'TARGET_CRS': crs_dst,
+686 |                     'OUTPUT': 'memory:'
+687 |                 },
+688 |                 feedback=feedback_mask
+689 |             )['OUTPUT']
+690 | 
+691 |             crs_src = QgsCoordinateReferenceSystem(self.dem_layer.crs())  # EPSG of Google Earth Satellite (3857)
+...
+708 |                 'OUTPUT': self.dem_dst
+709 |             }
+710 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_dem_clip)
+711 | 
+712 | 
+...
+722 |                 'OUTPUT': flow_accumulation_dst
+723 |             }
+724 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_flow_clip)
+725 | 
+726 |         return True
+...
+1027 |             'OUTPUT': 'memory:'
+1028 |         }
+1029 |         buffer_result = processing.run(""native:buffer"", params, feedback=self.feedback)
+1030 |         buffer_layer = buffer_result['OUTPUT']
+1031 | 
+...
+1041 |                 'OUTPUT': output_shp_path
+1042 |             }
+1043 |             processing.run(""qgis:extractbylocation"", params, feedback=self.feedback)
+1044 | 
+1045 |         # Use QgsVectorLayer to load the shapefile
+...
+1292 |             'OUTPUT': 'memory:'
+1293 |         }
+1294 |         buffer_result = processing.run(""native:buffer"", params, feedback=self.feedback)
+1295 |         buffer_layer = buffer_result['OUTPUT']
+1296 | 
+...
+1305 |                 'OUTPUT': output_shp_path
+1306 |             }
+1307 |             processing.run(""qgis:extractbylocation"", params, feedback=self.feedback)
+1308 | 
+1309 |         road_point_layer = QgsVectorLayer(output_shp_path, ""Road Points"", ""ogr"")",True,"[{""line_end"": 604, ""line_start"": 604, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 649, ""line_start"": 641, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 670, ""line_start"": 670, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 678, ""line_start"": 678, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 689, ""line_start"": 681, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 710, ""line_start"": 710, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 724, ""line_start"": 724, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 1029, ""line_start"": 1029, ""operator_id"": ""native:buffer""}, {""line_end"": 1043, ""line_start"": 1043, ""operator_id"": ""native:extractbylocation""}, {""line_end"": 1294, ""line_start"": 1294, ""operator_id"": ""native:buffer""}, {""line_end"": 1307, ""line_start"": 1307, ""operator_id"": ""native:extractbylocation""}]","[""gdal:warpreproject"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:cliprasterbymasklayer"", ""native:buffer"", ""native:extractbylocation"", ""native:buffer"", ""native:extractbylocation""]","[""L3_03_05_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_01_01"", ""L3_02_01_01"", ""L3_02_06_03"", ""L3_02_01_01"", ""L3_02_06_03""]","[[1, 2], [2, 3], [4, 5], [4, 6], [7, 8], [9, 10]]","{""backward_slice_alias"": 3, ""immediate_output_extract"": 2, ""output_alias"": 2, ""parameter_dictionary"": 9, ""result_dictionary"": 2}",4,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",4145030fad3432ba9dc8f667,normalized_source_body_sha256:5b5d097c0d0d632b4e6950c143413bc584138aa4f84effb295d3b1c4f4ba5ec6,normalized_source_body_sha256,4145030fad3432ba9dc8f6678f7fd5c72bb526ea8745c3187be9e4c7326890f9,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_50375.py,"154 |             feedback.pushInfo(f""[{i}/{len(raster_files)}] Processing {raster_name} -> date part {suffix}"")
+155 | 
+156 |             result = processing.run(
+157 |                 ""native:zonalstatisticsfb"",
+158 |                 {
+159 |                     ""INPUT"": result_layer,
+160 |                     ""INPUT_RASTER"": raster_path,
+161 |                     ""RASTER_BAND"": 1,
+162 |                     ""COLUMN_PREFIX"": f""{suffix}_"",
+163 |                     ""STATISTICS"": [stat_code],
+164 |                     ""OUTPUT"": ""memory:"",
+165 |                 },
+166 |                 context=context,
+167 |                 feedback=feedback,
+168 |             )
+169 |             zonal_layer = result[""OUTPUT""]
+170 | 
+...
+180 |             area_field = f""{prefix}{suffix}_km2""
+181 | 
+182 |             zonal_with_area = processing.run(
+183 |                 ""qgis:fieldcalculator"",
+184 |                 {
+185 |                     ""INPUT"": zonal_layer,
+186 |                     ""FIELD_NAME"": area_field,
+187 |                     ""FIELD_TYPE"": 0,
+188 |                     ""FIELD_LENGTH"": 20,
+189 |                     ""FIELD_PRECISION"": 4,
+190 |                     ""FORMULA"": f'""{stat_field}"" * {pixel_area} / 1000000',
+191 |                     ""OUTPUT"": ""memory:"",
+192 |                 },
+193 |                 context=context,
+194 |                 feedback=feedback,
+195 |             )[""OUTPUT""]
+196 | 
+197 |             result_layer = zonal_with_area
+198 | 
+199 |         processing.run(
+200 |             ""native:savefeatures"",
+201 |             {""INPUT"": result_layer, ""OUTPUT"": output_vector},
+202 |             context=context,
+203 |             feedback=feedback,
+204 |         )
+205 | 
+206 |         final_layer = QgsVectorLayer(output_vector, ""Monthly Zonal Stats"", ""ogr"")",True,"[{""line_end"": 168, ""line_start"": 156, ""operator_id"": ""native:zonalstatisticsfb""}, {""line_end"": 195, ""line_start"": 182, ""operator_id"": ""native:fieldcalculator""}, {""line_end"": 204, ""line_start"": 199, ""operator_id"": ""native:savefeatures""}]","[""native:zonalstatisticsfb"", ""native:fieldcalculator"", ""native:savefeatures""]","[""L3_03_02_01"", ""L3_01_02_06"", ""L3_07_04_01""]","[[0, 1], [1, 2]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 1, ""output_alias"": 1, ""result_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",550c01e6c5008064608459ea,normalized_source_body_sha256:9dfa0fc9781dbd472a3a5c88904bdf922dcb5b7c4129ffea0040d03fc572c0e7,normalized_source_body_sha256,550c01e6c5008064608459ea9d261342f1d86d3a8701e7ec8693011177cfab26,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4109.py,"329 |                 }
+330 | 
+331 |         result = processing.run('qgis:addfieldtoattributestable', parameters)
+332 | 
+333 |         catLayer = result['OUTPUT']
+...
+718 |                         'OUTPUT': clipRaster}
+719 |                             
+720 |         processing.run('gdal:cliprasterbyextent', parameterClip)
+721 |         """""" one more resample to make sure Xcount and Y are alway same, e.g for municipal Budget""""""
+722 |     
+...
+1189 |             parameterReproject = { 'INPUT': layerIn,\
+1190 |                             'OUTPUT': 'memory:'}
+1191 |             result = processing.run('native:fixgeometries', parameterReproject)
+1192 |             print (""Geometry Fixed."")
+1193 |             return result['OUTPUT']
+...
+1200 |                             'TARGET_CRS': 'EPSG:4326' ,\
+1201 |                             'OUTPUT': 'memory:'}
+1202 |         result = processing.run('qgis:reprojectlayer', parameterReproject)
+1203 |         reprojectedVector = result['OUTPUT']
+1204 |         
+...
+1210 |                                     'TARGET_CRS': 'EPSG:4326',\
+1211 |                                     'OUTPUT': 'memory:'}
+1212 |         result = processing.run('qgis:reprojectlayer', parameterReprojectExtent)
+1213 |         reprojectedExtent = result['OUTPUT']
+1214 |         
+...
+1259 |                       'OUTPUT':reprojectedRaster }
+1260 |         try:
+1261 |             processing.run(""gdal:rasterize"",parameterRasterize)  
+1262 |         except:
+1263 |             processing.run(""gdal:rasterize"",parameterRasterize)
+1264 |             print(""A bug has been detected in QGIS. No action required for now."")
+1265 |         
+...
+1287 |                         'MULTITHREADING':False,\
+1288 |                         'OUTPUT':reprojectedRaster}
+1289 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1290 |         
+1291 |         if not QgsRasterLayer(reprojectedRaster,""Reprojected Raster"").isValid():
+...
+1318 |                     'OUTPUT': rasterDegress}
+1319 |          
+1320 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1321 |         
+1322 |         if debuggingMode:
+...
+1333 |                             'TARGET_CRS': 'EPSG:4326',\
+1334 |                             'OUTPUT': ""memory:rp""}
+1335 |         rp = processing.run('qgis:reprojectlayer', parameterReproject)
+1336 |         pl = rp[""OUTPUT""]
+1337 | 
+...
+1481 |               'OUTPUT': ""memory:separateCat"" ,\
+1482 |                 }
+1483 |         SeparateCat = processing.run('qgis:addfieldtoattributestable', parameters)
+1484 | 
+1485 |         """"""chnage name for index"""""" ",True,"[{""line_end"": 331, ""line_start"": 331, ""operator_id"": ""native:addfieldtoattributestable""}, {""line_end"": 720, ""line_start"": 720, ""operator_id"": ""gdal:cliprasterbyextent""}, {""line_end"": 1191, ""line_start"": 1191, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 1202, ""line_start"": 1202, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1212, ""line_start"": 1212, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1261, ""line_start"": 1261, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1263, ""line_start"": 1263, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1289, ""line_start"": 1289, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1320, ""line_start"": 1320, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1335, ""line_start"": 1335, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1483, ""line_start"": 1483, ""operator_id"": ""native:addfieldtoattributestable""}]","[""native:addfieldtoattributestable"", ""gdal:cliprasterbyextent"", ""native:fixgeometries"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""gdal:rasterize"", ""gdal:rasterize"", ""gdal:warpreproject"", ""gdal:warpreproject"", ""native:reprojectlayer"", ""native:addfieldtoattributestable""]","[""L3_01_02_01"", ""L3_03_01_02"", ""L3_01_05_02"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_09_03"", ""L3_01_09_03"", ""L3_03_05_02"", ""L3_03_05_02"", ""L3_01_10_01"", ""L3_01_02_01""]","[[4, 5], [4, 6]]","{""backward_slice_alias"": 1, ""output_alias"": 4, ""parameter_dictionary"": 11, ""result_dictionary"": 6}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",552367c622982bddea99eeb0,normalized_source_body_sha256:aadf0a383a48aa191ad4e8feb41ebeb92c98b76631d31eb68efce8cade8b27de,normalized_source_body_sha256,552367c622982bddea99eeb0cf2bc6d74dca6e304f986838846fc8a6653a2a44,/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0010892.py,"726 |         if poi_src is not None:
+727 |             try:
+728 |                 res = processing.run(
+729 |                     ""qgis:countpointsinpolygon"",
+730 |                     {
+731 |                         ""POLYGONS"": zones_vl,
+732 |                         ""POINTS"": parameters[self.POI],
+733 |                         ""WEIGHT"": None,
+734 |                         ""CLASSFIELD"": None,
+735 |                         ""FIELD"": ""poi_n"",
+736 |                         ""OUTPUT"": ""memory:""
+737 |                     },
+738 |                     context=context,
+739 |                     feedback=feedback
+740 |                 )
+741 |                 zones_vl = res[""OUTPUT""]
+742 |             except Exception as e:
+...
+747 |         if pop_ras is not None:
+748 |             try:
+749 |                 res = processing.run(
+750 |                     ""qgis:zonalstatisticsfb"",
+751 |                     {
+752 |                         ""INPUT"": zones_vl,
+753 |                         ""INPUT_RASTER"": pop_ras,
+754 |                         ""RASTER_BAND"": 1,
+755 |                         ""COLUMN_PREFIX"": ""pop_"",
+756 |                         ""STATISTICS"": [1],
+757 |                         ""OUTPUT"": ""memory:""
+758 |                     },
+759 |                     context=context,
+760 |                     feedback=feedback
+761 |                 )
+762 |                 zones_vl = res[""OUTPUT""]
+763 |             except Exception:
+764 |                 try:
+765 |                     processing.run(
+766 |                         ""qgis:zonalstatistics"",
+767 |                         {
+768 |                             ""INPUT"": zones_vl,
+769 |                             ""RASTER"": pop_ras,
+770 |                             ""BAND"": 1,
+771 |                             ""COLUMN_PREFIX"": ""pop_"",
+772 |                             ""STATISTICS"": [1]
+773 |                         },
+774 |                         context=context,
+775 |                         feedback=feedback
+776 |                     )
+777 |                 except Exception as e:
+778 |                     feedback.pushInfo(f""Gagal zonal pop. Detail: {e}"")",True,"[{""line_end"": 740, ""line_start"": 728, ""operator_id"": ""native:countpointsinpolygon""}, {""line_end"": 761, ""line_start"": 749, ""operator_id"": ""native:zonalstatisticsfb""}, {""line_end"": 776, ""line_start"": 765, ""operator_id"": ""native:zonalstatistics""}]","[""native:countpointsinpolygon"", ""native:zonalstatisticsfb"", ""native:zonalstatistics""]","[""L3_02_04_01"", ""L3_03_02_01"", ""L3_03_02_01""]","[[0, 1], [1, 2]]","{""output_alias"": 2, ""result_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",65c088f31d73b93c8f2904e5,normalized_source_body_sha256:2cde35f1e1deaa44f416153105abc81c307e65ecbb3678895949484c5d17f0db,normalized_source_body_sha256,65c088f31d73b93c8f2904e53e78e4b8a90002b35702a6d458df7ad3e13eecfa,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_37649.py,"42 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+43 |         }
+44 |         outputs['MBuffer'] = processing.run('native:buffer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+45 | 
+46 |         feedback.setCurrentStep(1)
+...
+55 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+56 |         }
+57 |         outputs['ReprojectLayer'] = processing.run('native:reprojectlayer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+58 | 
+59 |         feedback.setCurrentStep(2)
+...
+72 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+73 |         }
+74 |         outputs['MBuffer'] = processing.run('native:buffer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+75 | 
+76 |         feedback.setCurrentStep(3)
+...
+85 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+86 |         }
+87 |         outputs['MBuffer'] = processing.run('native:symmetricaldifference', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+88 | 
+89 |         feedback.setCurrentStep(4)
+...
+96 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+97 |         }
+98 |         outputs['FixGeometries'] = processing.run('native:fixgeometries', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+99 | 
+100 |         feedback.setCurrentStep(5)
+...
+108 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+109 |         }
+110 |         outputs['MClip'] = processing.run('native:clip', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+111 | 
+112 |         feedback.setCurrentStep(6)
+...
+125 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+126 |         }
+127 |         outputs['MCalculation'] = processing.run('qgis:advancedpythonfieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+128 | 
+129 |         feedback.setCurrentStep(7)
+...
+137 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+138 |         }
+139 |         outputs['MDropped'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+140 | 
+141 |         feedback.setCurrentStep(8)
+...
+149 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+150 |         }
+151 |         outputs['MClip'] = processing.run('native:clip', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+152 | 
+153 |         feedback.setCurrentStep(9)
+...
+166 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+167 |         }
+168 |         outputs['MCalculation'] = processing.run('qgis:advancedpythonfieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+169 | 
+170 |         feedback.setCurrentStep(10)
+...
+178 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+179 |         }
+180 |         outputs['MDropped'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+181 | 
+182 |         feedback.setCurrentStep(11)
+...
+190 |             'OUTPUT': parameters['MPaCoverage']
+191 |         }
+192 |         outputs['MergeVectorLayers'] = processing.run('native:mergevectorlayers', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+193 |         results['MPaCoverage'] = outputs['MergeVectorLayers']['OUTPUT']
+194 |         return results",True,"[{""line_end"": 44, ""line_start"": 44, ""operator_id"": ""native:buffer""}, {""line_end"": 57, ""line_start"": 57, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 74, ""line_start"": 74, ""operator_id"": ""native:buffer""}, {""line_end"": 87, ""line_start"": 87, ""operator_id"": ""native:symmetricaldifference""}, {""line_end"": 98, ""line_start"": 98, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 110, ""line_start"": 110, ""operator_id"": ""native:clip""}, {""line_end"": 127, ""line_start"": 127, ""operator_id"": ""qgis:advancedpythonfieldcalculator""}, {""line_end"": 139, ""line_start"": 139, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 151, ""line_start"": 151, ""operator_id"": ""native:clip""}, {""line_end"": 168, ""line_start"": 168, ""operator_id"": ""qgis:advancedpythonfieldcalculator""}, {""line_end"": 180, ""line_start"": 180, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 192, ""line_start"": 192, ""operator_id"": ""native:mergevectorlayers""}]","[""native:buffer"", ""native:reprojectlayer"", ""native:buffer"", ""native:symmetricaldifference"", ""native:fixgeometries"", ""native:clip"", ""qgis:advancedpythonfieldcalculator"", ""native:deletecolumn"", ""native:clip"", ""qgis:advancedpythonfieldcalculator"", ""native:deletecolumn"", ""native:mergevectorlayers""]","[""L3_02_01_01"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_02_02_05"", ""L3_01_05_02"", ""L3_02_02_06"", ""L3_01_02_06"", ""L3_01_02_02"", ""L3_02_02_06"", ""L3_01_02_06"", ""L3_01_02_02"", ""L3_01_03_04""]","[[1, 4], [2, 3], [3, 5], [3, 8], [4, 5], [4, 8], [5, 6], [6, 7], [8, 9], [9, 10], [10, 11]]","{""backward_slice_alias"": 1, ""output_alias"": 1, ""parameter_dictionary"": 12, ""result_dictionary"": 12}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",72d2eb2f0d04e90293853f34,normalized_source_body_sha256:6599f71cf0d28fc0c439854e148ef8c619a6fedaa429bc71fc81c479d33ffebb,normalized_source_body_sha256,72d2eb2f0d04e90293853f34d4572e920a46774ec183d640b003aec54d5ff86a,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41822.py,"25 | 
+26 |     # run the clip tool
+27 |     clipped = processing.run(""native:clip"", parameters)        
+28 |     
+29 |     clippedlayer = clipped['OUTPUT']
+30 |     
+31 |     processing.run('qgis:multiparttosingleparts', {'INPUT': clippedlayer, 'OUTPUT': destination})
+32 | 
+33 | ",True,"[{""line_end"": 27, ""line_start"": 27, ""operator_id"": ""native:clip""}, {""line_end"": 31, ""line_start"": 31, ""operator_id"": ""native:multiparttosingleparts""}]","[""native:clip"", ""native:multiparttosingleparts""]","[""L3_02_02_06"", ""L3_02_07_01""]","[[0, 1]]","{""output_alias"": 1, ""parameter_dictionary"": 1, ""result_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",7e141fa3a017b668693d48d7,normalized_source_body_sha256:8f5fecf011bf83ef3dd45f3a4f7e9f91d8f97dac3723d98d4ddfed3383a72639,normalized_source_body_sha256,7e141fa3a017b668693d48d707a1002f9bccbd65e85276ea5578cf9b6093daed,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_1698.py,"596 |             # Run the algorithm synchronously
+597 |             feedback_goog = QgsProcessingFeedback()
+598 |             processing.run(""gdal:warpreproject"", params, feedback=feedback_goog)
+599 | 
+600 |         # Get extents and export clipped GeoTIFF
+...
+633 | 
+634 |         if selected_raster_status[""2022 NAIP Aerial""] and self.do_naip:
+635 |             reprojected_mask = processing.run(
+636 |                 ""native:reprojectlayer"",
+637 |                 {
+638 |                     'INPUT': self.mask_layer,
+639 |                     'TARGET_CRS': crs_dst,
+640 |                     'OUTPUT': 'memory:'
+641 |                 },
+642 |                 feedback=feedback_mask
+643 |             )['OUTPUT']
+644 | 
+645 |             # Set input and output CRS
+...
+662 |                 'OUTPUT': self.naip_temp
+663 |             }
+664 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_naip_clip)
+665 | 
+666 |             # Reproject clipped raster to 'EPSG:2225'
+...
+670 |                 'OUTPUT': self.naip_dst
+671 |             }
+672 |             processing.run(""gdal:warpreproject"", params_warp, feedback=feedback_naip_reproject)
+673 | 
+674 |         if dem1m and self.do_dem:
+675 |             reprojected_mask = processing.run(
+676 |                 ""native:reprojectlayer"",
+677 |                 {
+678 |                     'INPUT': self.mask_layer,
+679 |                     'TARGET_CRS': crs_dst,
+680 |                     'OUTPUT': 'memory:'
+681 |                 },
+682 |                 feedback=feedback_mask
+683 |             )['OUTPUT']
+684 | 
+685 |             crs_src = QgsCoordinateReferenceSystem(self.dem_layer.crs())  # EPSG of Google Earth Satellite (3857)
+...
+702 |                 'OUTPUT': self.dem_dst
+703 |             }
+704 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_dem_clip)
+705 | 
+706 | 
+...
+716 |                 'OUTPUT': flow_accumulation_dst
+717 |             }
+718 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_flow_clip)
+719 | 
+720 |         return True
+...
+1021 |             'OUTPUT': 'memory:'
+1022 |         }
+1023 |         buffer_result = processing.run(""native:buffer"", params, feedback=self.feedback)
+1024 |         buffer_layer = buffer_result['OUTPUT']
+1025 | 
+...
+1035 |                 'OUTPUT': output_shp_path
+1036 |             }
+1037 |             processing.run(""qgis:extractbylocation"", params, feedback=self.feedback)
+1038 | 
+1039 |         # Use QgsVectorLayer to load the shapefile
+...
+1286 |             'OUTPUT': 'memory:'
+1287 |         }
+1288 |         buffer_result = processing.run(""native:buffer"", params, feedback=self.feedback)
+1289 |         buffer_layer = buffer_result['OUTPUT']
+1290 | 
+...
+1299 |                 'OUTPUT': output_shp_path
+1300 |             }
+1301 |             processing.run(""qgis:extractbylocation"", params, feedback=self.feedback)
+1302 | 
+1303 |         road_point_layer = QgsVectorLayer(output_shp_path, ""Road Points"", ""ogr"")",True,"[{""line_end"": 598, ""line_start"": 598, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 643, ""line_start"": 635, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 664, ""line_start"": 664, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 672, ""line_start"": 672, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 683, ""line_start"": 675, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 704, ""line_start"": 704, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 718, ""line_start"": 718, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 1023, ""line_start"": 1023, ""operator_id"": ""native:buffer""}, {""line_end"": 1037, ""line_start"": 1037, ""operator_id"": ""native:extractbylocation""}, {""line_end"": 1288, ""line_start"": 1288, ""operator_id"": ""native:buffer""}, {""line_end"": 1301, ""line_start"": 1301, ""operator_id"": ""native:extractbylocation""}]","[""gdal:warpreproject"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:cliprasterbymasklayer"", ""native:buffer"", ""native:extractbylocation"", ""native:buffer"", ""native:extractbylocation""]","[""L3_03_05_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_01_01"", ""L3_02_01_01"", ""L3_02_06_03"", ""L3_02_01_01"", ""L3_02_06_03""]","[[1, 2], [2, 3], [4, 5], [4, 6], [7, 8], [9, 10]]","{""backward_slice_alias"": 3, ""immediate_output_extract"": 2, ""output_alias"": 2, ""parameter_dictionary"": 9, ""result_dictionary"": 2}",4,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",7e78dd37cfba91eb657536f5,normalized_source_body_sha256:19de92305ed494153adb2fe929df64c206bd158145cdc87ba05517fef2040829,normalized_source_body_sha256,7e78dd37cfba91eb657536f5d7f7161d7e8c506dcc176852ceb98c17cf42a578,/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0008434.py,"336 |                 }
+337 | 
+338 |         result = processing.run('qgis:addfieldtoattributestable', parameters)
+339 | 
+340 |         catLayer = result['OUTPUT']
+...
+725 |                         'OUTPUT': clipRaster}
+726 |                             
+727 |         processing.run('gdal:cliprasterbyextent', parameterClip)
+728 |         """""" one more resample to make sure Xcount and Y are alway same, e.g for municipal Budget""""""
+729 |     
+...
+1196 |             parameterReproject = { 'INPUT': layerIn,\
+1197 |                             'OUTPUT': 'memory:'}
+1198 |             result = processing.run('native:fixgeometries', parameterReproject)
+1199 |             print (""Geometry Fixed."")
+1200 |             return result['OUTPUT']
+...
+1207 |                             'TARGET_CRS': 'EPSG:4326' ,\
+1208 |                             'OUTPUT': 'memory:'}
+1209 |         result = processing.run('qgis:reprojectlayer', parameterReproject)
+1210 |         reprojectedVector = result['OUTPUT']
+1211 |         
+...
+1217 |                                     'TARGET_CRS': 'EPSG:4326',\
+1218 |                                     'OUTPUT': 'memory:'}
+1219 |         result = processing.run('qgis:reprojectlayer', parameterReprojectExtent)
+1220 |         reprojectedExtent = result['OUTPUT']
+1221 |         
+...
+1266 |                       'OUTPUT':reprojectedRaster }
+1267 |         try:
+1268 |             processing.run(""gdal:rasterize"",parameterRasterize)  
+1269 |         except:
+1270 |             processing.run(""gdal:rasterize"",parameterRasterize)
+1271 |             print(""A bug has been detected in QGIS. No action required for now."")
+1272 |         
+...
+1294 |                         'MULTITHREADING':False,\
+1295 |                         'OUTPUT':reprojectedRaster}
+1296 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1297 |         
+1298 |         if not QgsRasterLayer(reprojectedRaster,""Reprojected Raster"").isValid():
+...
+1325 |                     'OUTPUT': rasterDegress}
+1326 |          
+1327 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1328 |         
+1329 |         if debuggingMode:
+...
+1340 |                             'TARGET_CRS': 'EPSG:4326',\
+1341 |                             'OUTPUT': ""memory:rp""}
+1342 |         rp = processing.run('qgis:reprojectlayer', parameterReproject)
+1343 |         pl = rp[""OUTPUT""]
+1344 | 
+...
+1488 |               'OUTPUT': ""memory:separateCat"" ,\
+1489 |                 }
+1490 |         SeparateCat = processing.run('qgis:addfieldtoattributestable', parameters)
+1491 | 
+1492 |         """"""chnage name for index"""""" ",True,"[{""line_end"": 338, ""line_start"": 338, ""operator_id"": ""native:addfieldtoattributestable""}, {""line_end"": 727, ""line_start"": 727, ""operator_id"": ""gdal:cliprasterbyextent""}, {""line_end"": 1198, ""line_start"": 1198, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 1209, ""line_start"": 1209, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1219, ""line_start"": 1219, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1268, ""line_start"": 1268, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1270, ""line_start"": 1270, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1296, ""line_start"": 1296, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1327, ""line_start"": 1327, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1342, ""line_start"": 1342, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1490, ""line_start"": 1490, ""operator_id"": ""native:addfieldtoattributestable""}]","[""native:addfieldtoattributestable"", ""gdal:cliprasterbyextent"", ""native:fixgeometries"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""gdal:rasterize"", ""gdal:rasterize"", ""gdal:warpreproject"", ""gdal:warpreproject"", ""native:reprojectlayer"", ""native:addfieldtoattributestable""]","[""L3_01_02_01"", ""L3_03_01_02"", ""L3_01_05_02"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_09_03"", ""L3_01_09_03"", ""L3_03_05_02"", ""L3_03_05_02"", ""L3_01_10_01"", ""L3_01_02_01""]","[[4, 5], [4, 6]]","{""backward_slice_alias"": 1, ""output_alias"": 4, ""parameter_dictionary"": 11, ""result_dictionary"": 6}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",8d0ccf50084165b3d9599db5,normalized_source_body_sha256:2b05f9c3f11f96738621261f7364f23241f124bd4de1a96a8da5867a13fd5b7e,normalized_source_body_sha256,8d0ccf50084165b3d9599db589a76df28d2a06287669f181a87055619818e88a,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0006120.py,"50 | bc_output_path = os.path.join(base_dir, 'Map_of_Canada/BC_boundary.shp')
+51 | 
+52 | processing.run(""native:extractbyattribute"", {
+53 |     'INPUT': canada_layer,
+54 |     'FIELD': 'PREABBR', 
+55 |     'OPERATOR': 0,  # '='
+56 |     'VALUE': 'B.C.', 
+57 |     'OUTPUT': bc_output_path
+58 | })
+59 | print(""✅ BC boundary extracted and saved to:"", bc_output_path)
+60 | 
+...
+69 | reprojected_bc_boundary = os.path.join(base_dir, 'Map_of_Canada/BC_boundary_epsg3347.shp')
+70 | 
+71 | processing.run(""native:reprojectlayer"", {
+72 |     'INPUT': bc_output_path,
+73 |     'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:3347'),
+74 |     'OUTPUT': reprojected_bc_boundary
+75 | })
+76 | print(""✅ Reprojected BC boundary to EPSG:3347"")
+77 | 
+...
+90 | 
+91 | # Clip raster to BC
+92 | processing.run(""gdal:cliprasterbymasklayer"", {
+93 |     'INPUT': fuel_raster_path,
+94 |     'MASK': reprojected_bc_boundary,
+95 |     'SOURCE_CRS': None,
+96 |     'TARGET_CRS': None,
+97 |     'NODATA': -9999,
+98 |     'ALPHA_BAND': False,
+99 |     'CROP_TO_CUTLINE': True,
+100 |     'KEEP_RESOLUTION': True,
+101 |     'OPTIONS': '',
+102 |     'DATA_TYPE': 0,
+103 |     'EXTRA': '',
+104 |     'OUTPUT': clipped_raster_temp
+105 | })
+106 | print(""✅ Temporary clipped fuel raster created."")
+107 | 
+108 | # Check and reproject if the clipped raster exists
+109 | if os.path.exists(clipped_raster_temp):
+110 |     processing.run(""gdal:warpreproject"", {
+111 |         'INPUT': clipped_raster_temp,
+112 |         'SOURCE_CRS': None,
+113 |         'TARGET_CRS': 'EPSG:3347',
+114 |         'RESAMPLING': 0,  # Nearest neighbor
+115 |         'NODATA': None,
+116 |         'TARGET_RESOLUTION': None,
+117 |         'OPTIONS': '',
+118 |         'DATA_TYPE': 0,
+119 |         'TARGET_EXTENT': None,
+120 |         'TARGET_EXTENT_CRS': None,
+121 |         'MULTITHREADING': False,
+122 |         'OUTPUT': final_clipped_raster
+123 |     })
+124 |     print(""✅ Reprojected raster to EPSG:3347 successfully."")
+125 | 
+...
+201 |     # Build and run the expression to filter by month and year
+202 |     expression = f""month(\""{date_field}\"") = {month_num} AND year(\""{date_field}\"") = {year}""
+203 |     result = processing.run(""native:extractbyexpression"", {
+204 |         'INPUT': hotspot_layer,
+205 |         'EXPRESSION': expression,
+206 |         'OUTPUT': 'memory:'
+207 |     })
+208 | 
+209 |     filtered_layer = result['OUTPUT']
+...
+216 | 
+217 |     # Clip to BC
+218 |     result = processing.run(""native:clip"", {
+219 |         'INPUT': filtered_layer,
+220 |         'OVERLAY': bc_output_path,
+221 |         'OUTPUT': 'memory:'
+222 |     })
+223 | 
+224 |     clipped_layer = result['OUTPUT']
+...
+231 | 
+232 |     # Reproject to EPSG:3347
+233 |     result = processing.run(""native:reprojectlayer"", {
+234 |         'INPUT': clipped_layer,
+235 |         'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:3347'),
+236 |         'OUTPUT': 'memory:'
+237 |     })
+238 | 
+239 |     hotspot_layer_3347 = result['OUTPUT']
+...
+322 | 
+323 |     # Step 4: Clip raster
+324 |     processing.run(""gdal:cliprasterbymasklayer"", {
+325 |         'INPUT': output_tif,
+326 |         'MASK': bc_boundary_layer_3347,
+327 |         'SOURCE_CRS': None,
+328 |         'TARGET_CRS': None,
+329 |         'NODATA': -9999,
+330 |         'ALPHA_BAND': False,
+331 |         'CROP_TO_CUTLINE': True,
+332 |         'KEEP_RESOLUTION': True,
+333 |         'OPTIONS': '',
+334 |         'DATA_TYPE': 0,
+335 |         'EXTRA': '',
+336 |         'OUTPUT': bc_climate_temp
+337 |     })
+338 | 
+339 |     # Step 5: Reproject raster
+340 |     if os.path.exists(bc_climate_temp):
+341 |         processing.run(""gdal:warpreproject"", {
+342 |             'INPUT': bc_climate_temp,
+343 |             'SOURCE_CRS': None,
+344 |             'TARGET_CRS': 'EPSG:3347',
+345 |             'RESAMPLING': 0,
+346 |             'NODATA': None,
+347 |             'TARGET_RESOLUTION': None,
+348 |             'OPTIONS': '',
+349 |             'DATA_TYPE': 0,
+350 |             'TARGET_EXTENT': None,
+351 |             'TARGET_EXTENT_CRS': None,
+352 |             'MULTITHREADING': False,
+353 |             'OUTPUT': bc_climate_final
+354 |         })
+355 |         print(""✅ Reprojected raster to EPSG:3347 successfully."")
+356 | 
+...
+390 |         print(f""🌀 Filling NoData for Band {i}..."")
+391 |     
+392 |         processing.run(""gdal:fillnodata"", {
+393 |             'INPUT': bc_climate_final,
+394 |             'BAND': i,
+395 |             'MASK_LAYER': None,
+396 |             'DISTANCE': 10,
+397 |             'ITERATIONS': 0,
+398 |             'NO_MASK': False,
+399 |             'OUTPUT': output_band
+400 |         })
+401 |     
+402 |         if os.path.exists(output_band):
+...
+675 |         print(f""🔄 Sampling from: {output_field} (Band {band})"")
+676 | 
+677 |         result = processing.run(""qgis:rastersampling"", {
+678 |             'INPUT': temp_layer,
+679 |             'RASTERCOPY': raster_path,
+680 |             'RASTER_BAND': band,
+681 |             'COLUMN_PREFIX': 'tmp_',
+682 |             'OUTPUT': 'memory:'
+683 |         })
+684 | 
+685 |         sampled = result['OUTPUT']",True,"[{""line_end"": 58, ""line_start"": 52, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 75, ""line_start"": 71, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 105, ""line_start"": 92, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 123, ""line_start"": 110, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 207, ""line_start"": 203, ""operator_id"": ""native:extractbyexpression""}, {""line_end"": 222, ""line_start"": 218, ""operator_id"": ""native:clip""}, {""line_end"": 237, ""line_start"": 233, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 337, ""line_start"": 324, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 354, ""line_start"": 341, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 400, ""line_start"": 392, ""operator_id"": ""gdal:fillnodata""}, {""line_end"": 683, ""line_start"": 677, ""operator_id"": ""native:rastersampling""}]","[""native:extractbyattribute"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""native:extractbyexpression"", ""native:clip"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""gdal:fillnodata"", ""native:rastersampling""]","[""L3_02_06_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_02_06_02"", ""L3_02_02_06"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_03_03_A"", ""L3_08_01_01""]","[[0, 1], [0, 5], [1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9]]","{""backward_slice_alias"": 1, ""helper_function_call"": 4, ""output_alias"": 4, ""result_dictionary"": 4}",3,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",91f5a7e77eaf5cacc7976ab5,normalized_source_body_sha256:008446da9d31de36bd594e29f89faa2c8cf1beb908ce9e4ddf367ec7b14a7490,normalized_source_body_sha256,91f5a7e77eaf5cacc7976ab5f90e5460c834b5dd2fc31d0d96674c44cc9b02ac,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41821.py,"26 | 
+27 |         # run the clip tool
+28 |         clipped = processing.run(""native:clip"", parameters)        
+29 |         # processing.run(""native:clip"", parameters)
+30 |         
+31 |         clippedlayer = clipped['OUTPUT']
+32 |         
+33 |         singleparts = processing.run('qgis:multiparttosingleparts', {'INPUT': clippedlayer, 'OUTPUT': 'TEMPORARY_OUTPUT'})
+34 |         
+35 |         points = singleparts['OUTPUT']",True,"[{""line_end"": 28, ""line_start"": 28, ""operator_id"": ""native:clip""}, {""line_end"": 33, ""line_start"": 33, ""operator_id"": ""native:multiparttosingleparts""}]","[""native:clip"", ""native:multiparttosingleparts""]","[""L3_02_02_06"", ""L3_02_07_01""]","[[0, 1]]","{""output_alias"": 2, ""parameter_dictionary"": 1, ""result_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",9a00d6daeeba5694fbacc339,normalized_source_body_sha256:9c4d07ee25bebc41da49fa9d21418ccecab2000d8c4012d301752dd8be093958,normalized_source_body_sha256,9a00d6daeeba5694fbacc33997a5f4f3c4cd3e20704dc7164c9a1a382b5dc2e2,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41850.py,"28 | 
+29 |         # run the clip tool
+30 |         clipped = processing.run(""native:clip"", parameters)        
+31 |         # processing.run(""native:clip"", parameters)
+32 |         
+33 |         clippedlayer = clipped['OUTPUT']
+34 |         
+35 |         singleparts = processing.run('qgis:multiparttosingleparts', {'INPUT': clippedlayer, 'OUTPUT': 'TEMPORARY_OUTPUT'})
+36 |         
+37 |         points = singleparts['OUTPUT']",True,"[{""line_end"": 30, ""line_start"": 30, ""operator_id"": ""native:clip""}, {""line_end"": 35, ""line_start"": 35, ""operator_id"": ""native:multiparttosingleparts""}]","[""native:clip"", ""native:multiparttosingleparts""]","[""L3_02_02_06"", ""L3_02_07_01""]","[[0, 1]]","{""output_alias"": 2, ""parameter_dictionary"": 1, ""result_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",a1471761cfa2a3223d7b08b1,normalized_source_body_sha256:ce81cf6107a3eef16195bc2934f008c69c0028854bfef13328b1d6eafcb9376a,normalized_source_body_sha256,a1471761cfa2a3223d7b08b16fc252846332582d613fb141bdad027afbd8b6ae,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41832.py,"22 |                   'OUTPUT': 'TEMPORARY_OUTPUT'}
+23 |      
+24 |     clipped = processing.run(""native:clip"", parameters)
+25 |     
+26 |     clippedlayer = clipped['OUTPUT']
+27 |     
+28 |     processing.run('qgis:multiparttosingleparts', {'INPUT': clippedlayer, 'OUTPUT': destination})
+29 | 
+30 | ",True,"[{""line_end"": 24, ""line_start"": 24, ""operator_id"": ""native:clip""}, {""line_end"": 28, ""line_start"": 28, ""operator_id"": ""native:multiparttosingleparts""}]","[""native:clip"", ""native:multiparttosingleparts""]","[""L3_02_02_06"", ""L3_02_07_01""]","[[0, 1]]","{""output_alias"": 1, ""parameter_dictionary"": 1, ""result_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",a236b79e6bb811ee7ae4a7d5,normalized_source_body_sha256:3a4d2f3d378ad403b0de311b0fa8f348f52f0ee643f980c75121159024bf0f6d,normalized_source_body_sha256,a236b79e6bb811ee7ae4a7d5d78a8a7556d34d3c2393080f6c54bb1dd8e66396,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/BPEJ_a_R_IAN_pro_SWAT__0.4/bpej_ruian_swat/BPEJ_RUIAN_SWAT_dialog.py,"103 | 
+104 |         # Run the fix geometries algorithm
+105 |         result = processing.run('native:fixgeometries', {
+106 |             'INPUT': layer,
+107 |             'OUTPUT': 'memory:'
+108 |         })
+109 |         fixed_layer = result['OUTPUT']
+110 |         clip_layer = QgsVectorLayer(clip_file, 'layer_name', 'ogr')
+...
+115 |         # Clip the fixed layer with the clip layer
+116 |         try:
+117 |             processing.run('native:clip', {
+118 |                 'INPUT': fixed_layer,
+119 |                 'OVERLAY': clip_layer,
+120 |                 'OUTPUT': output_file,
+121 |             })
+122 |         except Exception as e:
+123 |             QMessageBox.critical(None, ""Error"", f""Error during clipping: {e}"")
+...
+161 |             'OUTPUT': unique_output_file,
+162 |         }
+163 |         processing.run(""qgis:union"", params, feedback=QgsProcessingFeedback())
+164 | 
+165 |         # Load the merged layer",True,"[{""line_end"": 108, ""line_start"": 105, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 121, ""line_start"": 117, ""operator_id"": ""native:clip""}, {""line_end"": 163, ""line_start"": 163, ""operator_id"": ""native:union""}]","[""native:fixgeometries"", ""native:clip"", ""native:union""]","[""L3_01_05_02"", ""L3_02_02_06"", ""L3_02_02_02""]","[[0, 1]]","{""output_alias"": 1, ""parameter_dictionary"": 1, ""result_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",b7fbcaf3d2e5a2b1bb007907,normalized_source_body_sha256:421990c937b933a02e1a33d5348e41d6ef7c39584206e022b5f21de5a84f05e8,normalized_source_body_sha256,b7fbcaf3d2e5a2b1bb007907dc1cfa947021e27d3b9de69019d0bda782053480,/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0004169.py,"38 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+39 |         }
+40 |         outputs['Dissolve'] = processing.run('native:dissolve', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+41 | 
+42 |         feedback.setCurrentStep(1)
+...
+50 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+51 |         }
+52 |         outputs['MergeVectorLayers'] = processing.run('native:mergevectorlayers', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+53 | 
+54 |         feedback.setCurrentStep(2)
+...
+65 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+66 |         }
+67 |         outputs['LineIntersections'] = processing.run('native:lineintersections', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+68 | 
+69 |         feedback.setCurrentStep(3)
+...
+82 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+83 |         }
+84 |         outputs['Buffer'] = processing.run('native:buffer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+85 | 
+86 |         feedback.setCurrentStep(4)
+...
+97 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+98 |         }
+99 |         outputs['Intersection'] = processing.run('native:intersection', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+100 | 
+101 |         feedback.setCurrentStep(5)
+...
+109 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+110 |         }
+111 |         outputs['RefactorFields1'] = processing.run('qgis:refactorfields', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+112 | 
+113 |         feedback.setCurrentStep(6)
+...
+121 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+122 |         }
+123 |         outputs['ReprojectLayer'] = processing.run('native:reprojectlayer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+124 | 
+125 |         feedback.setCurrentStep(7)
+...
+133 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+134 |         }
+135 |         outputs['RefactorFields2'] = processing.run('qgis:refactorfields', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+136 | 
+137 |         feedback.setCurrentStep(8)
+...
+148 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+149 |         }
+150 |         outputs['Intersection'] = processing.run('native:intersection', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+151 | 
+152 |         feedback.setCurrentStep(9)
+...
+160 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+161 |         }
+162 |         outputs['ReprojectLayer'] = processing.run('native:reprojectlayer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+163 | 
+164 |         feedback.setCurrentStep(10)
+...
+177 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+178 |         }
+179 |         outputs['Buffer'] = processing.run('native:buffer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+180 | 
+181 |         feedback.setCurrentStep(11)
+...
+189 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+190 |         }
+191 |         outputs['ReprojectLayer'] = processing.run('native:reprojectlayer', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+192 | 
+193 |         feedback.setCurrentStep(12)
+...
+200 |             'OUTPUT': parameters['Road_intersections_imagery']
+201 |         }
+202 |         outputs['MultipartToSingleparts'] = processing.run('native:multiparttosingleparts', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+203 |         results['Road_intersections_imagery'] = outputs['MultipartToSingleparts']['OUTPUT']
+204 |         return results",True,"[{""line_end"": 40, ""line_start"": 40, ""operator_id"": ""native:dissolve""}, {""line_end"": 52, ""line_start"": 52, ""operator_id"": ""native:mergevectorlayers""}, {""line_end"": 67, ""line_start"": 67, ""operator_id"": ""native:lineintersections""}, {""line_end"": 84, ""line_start"": 84, ""operator_id"": ""native:buffer""}, {""line_end"": 99, ""line_start"": 99, ""operator_id"": ""native:intersection""}, {""line_end"": 111, ""line_start"": 111, ""operator_id"": ""native:refactorfields""}, {""line_end"": 123, ""line_start"": 123, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 135, ""line_start"": 135, ""operator_id"": ""native:refactorfields""}, {""line_end"": 150, ""line_start"": 150, ""operator_id"": ""native:intersection""}, {""line_end"": 162, ""line_start"": 162, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 179, ""line_start"": 179, ""operator_id"": ""native:buffer""}, {""line_end"": 191, ""line_start"": 191, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 202, ""line_start"": 202, ""operator_id"": ""native:multiparttosingleparts""}]","[""native:dissolve"", ""native:mergevectorlayers"", ""native:lineintersections"", ""native:buffer"", ""native:intersection"", ""native:refactorfields"", ""native:reprojectlayer"", ""native:refactorfields"", ""native:intersection"", ""native:reprojectlayer"", ""native:buffer"", ""native:reprojectlayer"", ""native:multiparttosingleparts""]","[""L3_02_03_05"", ""L3_01_03_04"", ""L3_02_05_06"", ""L3_02_01_01"", ""L3_02_02_01"", ""L3_01_02_03"", ""L3_01_10_01"", ""L3_01_02_03"", ""L3_02_02_01"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_01_10_01"", ""L3_02_07_01""]","[[0, 2], [1, 3], [2, 4], [3, 6], [4, 5], [5, 8], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 12]]","{""backward_slice_alias"": 1, ""output_alias"": 1, ""parameter_dictionary"": 13, ""result_dictionary"": 13}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",bbca0394ca8a9b04781d6f08,normalized_source_body_sha256:2d9ce4feae73b9821d84d6355b9425814bbe3d297d1b83130b10e240d6855684,normalized_source_body_sha256,bbca0394ca8a9b04781d6f08d1f5fdbbb4ed9d9ea43d12e441383e5e6aa5336e,/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts/script_56172.py,"47 | bc_output_path = os.path.join(base_dir, 'Map_of_Canada/BC_boundary.shp')
+48 | 
+49 | processing.run(""native:extractbyattribute"", {
+50 |     'INPUT': canada_layer,
+51 |     'FIELD': 'PREABBR', 
+52 |     'OPERATOR': 0,  # '='
+53 |     'VALUE': 'B.C.', 
+54 |     'OUTPUT': bc_output_path
+55 | })
+56 | print(""✅ BC boundary extracted and saved to:"", bc_output_path)
+57 | 
+...
+66 | reprojected_bc_boundary = os.path.join(base_dir, 'Map_of_Canada/BC_boundary_epsg3347.shp')
+67 | 
+68 | processing.run(""native:reprojectlayer"", {
+69 |     'INPUT': bc_output_path,
+70 |     'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:3347'),
+71 |     'OUTPUT': reprojected_bc_boundary
+72 | })
+73 | print(""✅ Reprojected BC boundary to EPSG:3347"")
+74 | 
+...
+87 | 
+88 | # Clip raster to BC
+89 | processing.run(""gdal:cliprasterbymasklayer"", {
+90 |     'INPUT': fuel_raster_path,
+91 |     'MASK': reprojected_bc_boundary,
+92 |     'SOURCE_CRS': None,
+93 |     'TARGET_CRS': None,
+94 |     'NODATA': -9999,
+95 |     'ALPHA_BAND': False,
+96 |     'CROP_TO_CUTLINE': True,
+97 |     'KEEP_RESOLUTION': True,
+98 |     'OPTIONS': '',
+99 |     'DATA_TYPE': 0,
+100 |     'EXTRA': '',
+101 |     'OUTPUT': clipped_raster_temp
+102 | })
+103 | print(""✅ Temporary clipped fuel raster created."")
+104 | 
+105 | # Check and reproject if the clipped raster exists
+106 | if os.path.exists(clipped_raster_temp):
+107 |     processing.run(""gdal:warpreproject"", {
+108 |         'INPUT': clipped_raster_temp,
+109 |         'SOURCE_CRS': None,
+110 |         'TARGET_CRS': 'EPSG:3347',
+111 |         'RESAMPLING': 0,  # Nearest neighbor
+112 |         'NODATA': None,
+113 |         'TARGET_RESOLUTION': None,
+114 |         'OPTIONS': '',
+115 |         'DATA_TYPE': 0,
+116 |         'TARGET_EXTENT': None,
+117 |         'TARGET_EXTENT_CRS': None,
+118 |         'MULTITHREADING': False,
+119 |         'OUTPUT': final_clipped_raster
+120 |     })
+121 |     print(""✅ Reprojected raster to EPSG:3347 successfully."")
+122 | 
+...
+198 |     # Build and run the expression to filter by month and year
+199 |     expression = f""month(\""{date_field}\"") = {month_num} AND year(\""{date_field}\"") = {year}""
+200 |     result = processing.run(""native:extractbyexpression"", {
+201 |         'INPUT': hotspot_layer,
+202 |         'EXPRESSION': expression,
+203 |         'OUTPUT': 'memory:'
+204 |     })
+205 | 
+206 |     filtered_layer = result['OUTPUT']
+...
+213 | 
+214 |     # Clip to BC
+215 |     result = processing.run(""native:clip"", {
+216 |         'INPUT': filtered_layer,
+217 |         'OVERLAY': bc_output_path,
+218 |         'OUTPUT': 'memory:'
+219 |     })
+220 | 
+221 |     clipped_layer = result['OUTPUT']
+...
+228 | 
+229 |     # Reproject to EPSG:3347
+230 |     result = processing.run(""native:reprojectlayer"", {
+231 |         'INPUT': clipped_layer,
+232 |         'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:3347'),
+233 |         'OUTPUT': 'memory:'
+234 |     })
+235 | 
+236 |     hotspot_layer_3347 = result['OUTPUT']
+...
+319 | 
+320 |     # Step 4: Clip raster
+321 |     processing.run(""gdal:cliprasterbymasklayer"", {
+322 |         'INPUT': output_tif,
+323 |         'MASK': bc_boundary_layer_3347,
+324 |         'SOURCE_CRS': None,
+325 |         'TARGET_CRS': None,
+326 |         'NODATA': -9999,
+327 |         'ALPHA_BAND': False,
+328 |         'CROP_TO_CUTLINE': True,
+329 |         'KEEP_RESOLUTION': True,
+330 |         'OPTIONS': '',
+331 |         'DATA_TYPE': 0,
+332 |         'EXTRA': '',
+333 |         'OUTPUT': bc_climate_temp
+334 |     })
+335 | 
+336 |     # Step 5: Reproject raster
+337 |     if os.path.exists(bc_climate_temp):
+338 |         processing.run(""gdal:warpreproject"", {
+339 |             'INPUT': bc_climate_temp,
+340 |             'SOURCE_CRS': None,
+341 |             'TARGET_CRS': 'EPSG:3347',
+342 |             'RESAMPLING': 0,
+343 |             'NODATA': None,
+344 |             'TARGET_RESOLUTION': None,
+345 |             'OPTIONS': '',
+346 |             'DATA_TYPE': 0,
+347 |             'TARGET_EXTENT': None,
+348 |             'TARGET_EXTENT_CRS': None,
+349 |             'MULTITHREADING': False,
+350 |             'OUTPUT': bc_climate_final
+351 |         })
+352 |         print(""✅ Reprojected raster to EPSG:3347 successfully."")
+353 | 
+...
+387 |         print(f""🌀 Filling NoData for Band {i}..."")
+388 |     
+389 |         processing.run(""gdal:fillnodata"", {
+390 |             'INPUT': bc_climate_final,
+391 |             'BAND': i,
+392 |             'MASK_LAYER': None,
+393 |             'DISTANCE': 10,
+394 |             'ITERATIONS': 0,
+395 |             'NO_MASK': False,
+396 |             'OUTPUT': output_band
+397 |         })
+398 |     
+399 |         if os.path.exists(output_band):
+...
+672 |         print(f""🔄 Sampling from: {output_field} (Band {band})"")
+673 | 
+674 |         result = processing.run(""qgis:rastersampling"", {
+675 |             'INPUT': temp_layer,
+676 |             'RASTERCOPY': raster_path,
+677 |             'RASTER_BAND': band,
+678 |             'COLUMN_PREFIX': 'tmp_',
+679 |             'OUTPUT': 'memory:'
+680 |         })
+681 | 
+682 |         sampled = result['OUTPUT']",True,"[{""line_end"": 55, ""line_start"": 49, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 72, ""line_start"": 68, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 102, ""line_start"": 89, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 120, ""line_start"": 107, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 204, ""line_start"": 200, ""operator_id"": ""native:extractbyexpression""}, {""line_end"": 219, ""line_start"": 215, ""operator_id"": ""native:clip""}, {""line_end"": 234, ""line_start"": 230, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 334, ""line_start"": 321, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 351, ""line_start"": 338, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 397, ""line_start"": 389, ""operator_id"": ""gdal:fillnodata""}, {""line_end"": 680, ""line_start"": 674, ""operator_id"": ""native:rastersampling""}]","[""native:extractbyattribute"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""native:extractbyexpression"", ""native:clip"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""gdal:fillnodata"", ""native:rastersampling""]","[""L3_02_06_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_02_06_02"", ""L3_02_02_06"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_03_03_A"", ""L3_08_01_01""]","[[0, 1], [0, 5], [1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9]]","{""backward_slice_alias"": 1, ""helper_function_call"": 4, ""output_alias"": 4, ""result_dictionary"": 4}",3,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",c546f6ba3eedc025c586640d,normalized_source_body_sha256:4808f406dbebb5cc10b87c15f0b52ebe33c0ad7049090fe4a4f27639bdb5d263,normalized_source_body_sha256,c546f6ba3eedc025c586640d0985810570afe58444c803d02033b9585f0ede91,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_7127.py,"50 |             
+51 |             # Executar select by location
+52 |             result = processing.run(""qgis:selectbylocation"", {
+53 |                 'INPUT': layer,
+54 |                 'PREDICATE': [0],  # Intersects
+55 |                 'INTERSECT': area_layer_fixed,
+56 |                 'METHOD': 0
+57 |             })
+58 |             
+59 |             saida = os.path.join(self.download_path, f""{nome_saida}_select.shp"")
+...
+85 |             
+86 |             # Usar algoritmo de correção de geometrias
+87 |             result = processing.run(""native:fixgeometries"", {
+88 |                 'INPUT': layer,
+89 |                 'OUTPUT': 'memory:fixed_geometry'
+90 |             })
+91 |             
+92 |             fixed_layer = result['OUTPUT']
+...
+103 |             QgsMessageLog.logMessage(f""🗺️ Reprojetando camada para {target_crs.authid()}..."", ""GeoBaseBR"", Qgis.Info)
+104 |             
+105 |             result = processing.run(""native:reprojectlayer"", {
+106 |                 'INPUT': layer,
+107 |                 'TARGET_CRS': target_crs,
+108 |                 'OUTPUT': 'memory:reprojected'
+109 |             })
+110 |             
+111 |             reprojected_layer = result['OUTPUT']
+...
+134 |             
+135 |             try:
+136 |                 result = processing.run(""native:clip"", {
+137 |                     'INPUT': layer,
+138 |                     'OVERLAY': area_layer_fixed,
+139 |                     'OUTPUT': saida
+140 |                 })
+141 |                 
+142 |                 if os.path.exists(saida):
+...
+152 |                     
+153 |                     # Criar buffer pequeno na área de interesse
+154 |                     buffer_result = processing.run(""native:buffer"", {
+155 |                         'INPUT': area_layer_fixed,
+156 |                         'DISTANCE': 0.0001,  # Buffer muito pequeno
+157 |                         'OUTPUT': 'memory:buffer_area'
+158 |                     })
+159 |                     
+160 |                     buffer_layer = buffer_result['OUTPUT']
+161 |                     
+162 |                     result = processing.run(""native:clip"", {
+163 |                         'INPUT': layer,
+164 |                         'OVERLAY': buffer_layer,
+165 |                         'OUTPUT': saida
+166 |                     })
+167 |                     
+168 |                     if os.path.exists(saida):
+...
+177 |                         QgsMessageLog.logMessage(f""🔄 Tentando intersection..."", ""GeoBaseBR"", Qgis.Info)
+178 |                         
+179 |                         result = processing.run(""native:intersection"", {
+180 |                             'INPUT': layer,
+181 |                             'OVERLAY': area_layer_fixed,
+182 |                             'OUTPUT': saida
+183 |                         })
+184 |                         
+185 |                         if os.path.exists(saida):",True,"[{""line_end"": 57, ""line_start"": 52, ""operator_id"": ""native:selectbylocation""}, {""line_end"": 90, ""line_start"": 87, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 109, ""line_start"": 105, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 140, ""line_start"": 136, ""operator_id"": ""native:clip""}, {""line_end"": 158, ""line_start"": 154, ""operator_id"": ""native:buffer""}, {""line_end"": 166, ""line_start"": 162, ""operator_id"": ""native:clip""}, {""line_end"": 183, ""line_start"": 179, ""operator_id"": ""native:intersection""}]","[""native:selectbylocation"", ""native:fixgeometries"", ""native:reprojectlayer"", ""native:clip"", ""native:buffer"", ""native:clip"", ""native:intersection""]","[""L3_02_06_03"", ""L3_01_05_02"", ""L3_01_10_01"", ""L3_02_02_06"", ""L3_02_01_01"", ""L3_02_02_06"", ""L3_02_02_01""]","[[4, 5]]","{""output_alias"": 3, ""result_dictionary"": 7}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",ca4c58da9bc7c2fc09be3237,normalized_source_body_sha256:4e75048a2d29a6cfbdc5f1781030580ebb529e81df3dd49e866343d2bc01fee4,normalized_source_body_sha256,ca4c58da9bc7c2fc09be32374aef01f00be94a28f1f42933d0ccf809710e75cd,/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts/script_55529.py,"47 |             'OUTPUT': parameters['Agrisuit']
+48 |         }
+49 |         outputs['WarpReproject'] = processing.run('gdal:warpreproject', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+50 |         results['Agrisuit'] = outputs['WarpReproject']['OUTPUT']
+51 | 
+...
+60 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+61 |         }
+62 |         outputs['DropFields'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+63 | 
+64 |         feedback.setCurrentStep(2)
+...
+77 |             'OUTPUT': parameters['Counties']
+78 |         }
+79 |         outputs['AddAutoincrementalField'] = processing.run('native:addautoincrementalfield', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+80 |         results['Counties'] = outputs['AddAutoincrementalField']['OUTPUT']
+81 | 
+...
+92 |             'STATISTICS': [2]
+93 |         }
+94 |         outputs['ZonalStatistics'] = processing.run('native:zonalstatistics', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+95 |         return results
+96 | ",True,"[{""line_end"": 49, ""line_start"": 49, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 62, ""line_start"": 62, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 79, ""line_start"": 79, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 94, ""line_start"": 94, ""operator_id"": ""native:zonalstatistics""}]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[[0, 3], [1, 2], [2, 3]]","{""backward_slice_alias"": 1, ""output_alias"": 2, ""parameter_dictionary"": 4, ""result_dictionary"": 4}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",ce7abb6ec4d56a04abb59e2e,normalized_source_body_sha256:ee63076adc4c05ee9841d8c43749bfe2fcb8f3102bead5c736cf79594ea49553,normalized_source_body_sha256,ce7abb6ec4d56a04abb59e2ecc799e50b007bb679dc04243bfe77c85975de6d2,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_50240.py,"337 |                 }
+338 | 
+339 |         result = processing.run('qgis:addfieldtoattributestable', parameters)
+340 | 
+341 |         catLayer = result['OUTPUT']
+...
+725 |                         'OUTPUT': clipRaster}
+726 |                             
+727 |         processing.run('gdal:cliprasterbyextent', parameterClip)
+728 |         """""" one more resample to make sure Xcount and Y are alway same, e.g for municipal Budget""""""
+729 |     
+...
+1192 |             parameterReproject = { 'INPUT': layerIn,\
+1193 |                             'OUTPUT': 'memory:'}
+1194 |             result = processing.run('native:fixgeometries', parameterReproject)
+1195 |             print (""Geometry Fixed."")
+1196 |             return result['OUTPUT']
+...
+1203 |                             'TARGET_CRS': 'EPSG:4326' ,\
+1204 |                             'OUTPUT': 'memory:'}
+1205 |         result = processing.run('qgis:reprojectlayer', parameterReproject)
+1206 |         reprojectedVector = result['OUTPUT']
+1207 |         
+...
+1213 |                                     'TARGET_CRS': 'EPSG:4326',\
+1214 |                                     'OUTPUT': 'memory:'}
+1215 |         result = processing.run('qgis:reprojectlayer', parameterReprojectExtent)
+1216 |         reprojectedExtent = result['OUTPUT']
+1217 |         
+...
+1262 |                       'OUTPUT':reprojectedRaster }
+1263 |         try:
+1264 |             processing.run(""gdal:rasterize"",parameterRasterize)  
+1265 |         except:
+1266 |             processing.run(""gdal:rasterize"",parameterRasterize)
+1267 |             print(""Bug in QGIS after opening, but we've fixed it..."")
+1268 |         
+...
+1290 |                         'MULTITHREADING':False,\
+1291 |                         'OUTPUT':reprojectedRaster}
+1292 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1293 |         
+1294 |         if not QgsRasterLayer(reprojectedRaster,""Reprojected Raster"").isValid():
+...
+1321 |                     'OUTPUT': rasterDegress}
+1322 |          
+1323 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1324 |         
+1325 |         if debuggingMode:
+...
+1336 |                             'TARGET_CRS': 'EPSG:4326',\
+1337 |                             'OUTPUT': ""memory:rp""}
+1338 |         rp = processing.run('qgis:reprojectlayer', parameterReproject)
+1339 |         pl = rp[""OUTPUT""]
+1340 | 
+...
+1484 |               'OUTPUT': ""memory:separateCat"" ,\
+1485 |                 }
+1486 |         SeparateCat = processing.run('qgis:addfieldtoattributestable', parameters)
+1487 | 
+1488 |         """"""chnage name for index"""""" ",True,"[{""line_end"": 339, ""line_start"": 339, ""operator_id"": ""native:addfieldtoattributestable""}, {""line_end"": 727, ""line_start"": 727, ""operator_id"": ""gdal:cliprasterbyextent""}, {""line_end"": 1194, ""line_start"": 1194, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 1205, ""line_start"": 1205, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1215, ""line_start"": 1215, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1264, ""line_start"": 1264, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1266, ""line_start"": 1266, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1292, ""line_start"": 1292, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1323, ""line_start"": 1323, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1338, ""line_start"": 1338, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1486, ""line_start"": 1486, ""operator_id"": ""native:addfieldtoattributestable""}]","[""native:addfieldtoattributestable"", ""gdal:cliprasterbyextent"", ""native:fixgeometries"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""gdal:rasterize"", ""gdal:rasterize"", ""gdal:warpreproject"", ""gdal:warpreproject"", ""native:reprojectlayer"", ""native:addfieldtoattributestable""]","[""L3_01_02_01"", ""L3_03_01_02"", ""L3_01_05_02"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_09_03"", ""L3_01_09_03"", ""L3_03_05_02"", ""L3_03_05_02"", ""L3_01_10_01"", ""L3_01_02_01""]","[[4, 5], [4, 6]]","{""backward_slice_alias"": 1, ""output_alias"": 4, ""parameter_dictionary"": 11, ""result_dictionary"": 6}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",d0b131fbff67067cfaf3f85a,normalized_source_body_sha256:b6774e3bb847b472bfe606f9d10befa4f6e385a0ddb90c510e87c4d82b56eb72,normalized_source_body_sha256,d0b131fbff67067cfaf3f85a611f67319b35725bc60f7223b0f4121f1fc8ac39,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4248.py,"44 | bc_output_path = os.path.join(base_dir, 'Map_of_Canada/BC_boundary.shp')
+45 | 
+46 | processing.run(""native:extractbyattribute"", {
+47 |     'INPUT': canada_layer,
+48 |     'FIELD': 'PREABBR', 
+49 |     'OPERATOR': 0,  # '='
+50 |     'VALUE': 'B.C.', 
+51 |     'OUTPUT': bc_output_path
+52 | })
+53 | print(""✅ BC boundary extracted and saved to:"", bc_output_path)
+54 | 
+...
+63 | reprojected_bc_boundary = os.path.join(base_dir, 'Map_of_Canada/BC_boundary_epsg3347.shp')
+64 | 
+65 | processing.run(""native:reprojectlayer"", {
+66 |     'INPUT': bc_output_path,
+67 |     'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:3347'),
+68 |     'OUTPUT': reprojected_bc_boundary
+69 | })
+70 | print(""✅ Reprojected BC boundary to EPSG:3347"")
+71 | 
+...
+84 | 
+85 | # Clip raster to BC
+86 | processing.run(""gdal:cliprasterbymasklayer"", {
+87 |     'INPUT': fuel_raster_path,
+88 |     'MASK': reprojected_bc_boundary,
+89 |     'SOURCE_CRS': None,
+90 |     'TARGET_CRS': None,
+91 |     'NODATA': -9999,
+92 |     'ALPHA_BAND': False,
+93 |     'CROP_TO_CUTLINE': True,
+94 |     'KEEP_RESOLUTION': True,
+95 |     'OPTIONS': '',
+96 |     'DATA_TYPE': 0,
+97 |     'EXTRA': '',
+98 |     'OUTPUT': clipped_raster_temp
+99 | })
+100 | print(""✅ Temporary clipped fuel raster created."")
+101 | 
+102 | # Check and reproject if the clipped raster exists
+103 | if os.path.exists(clipped_raster_temp):
+104 |     processing.run(""gdal:warpreproject"", {
+105 |         'INPUT': clipped_raster_temp,
+106 |         'SOURCE_CRS': None,
+107 |         'TARGET_CRS': 'EPSG:3347',
+108 |         'RESAMPLING': 0,  # Nearest neighbor
+109 |         'NODATA': None,
+110 |         'TARGET_RESOLUTION': None,
+111 |         'OPTIONS': '',
+112 |         'DATA_TYPE': 0,
+113 |         'TARGET_EXTENT': None,
+114 |         'TARGET_EXTENT_CRS': None,
+115 |         'MULTITHREADING': False,
+116 |         'OUTPUT': final_clipped_raster
+117 |     })
+118 |     print(""✅ Reprojected raster to EPSG:3347 successfully."")
+119 | 
+...
+195 |     # Build and run the expression to filter by month and year
+196 |     expression = f""month(\""{date_field}\"") = {month_num} AND year(\""{date_field}\"") = {year}""
+197 |     result = processing.run(""native:extractbyexpression"", {
+198 |         'INPUT': hotspot_layer,
+199 |         'EXPRESSION': expression,
+200 |         'OUTPUT': 'memory:'
+201 |     })
+202 | 
+203 |     filtered_layer = result['OUTPUT']
+...
+210 | 
+211 |     # Clip to BC
+212 |     result = processing.run(""native:clip"", {
+213 |         'INPUT': filtered_layer,
+214 |         'OVERLAY': bc_output_path,
+215 |         'OUTPUT': 'memory:'
+216 |     })
+217 | 
+218 |     clipped_layer = result['OUTPUT']
+...
+225 | 
+226 |     # Reproject to EPSG:3347
+227 |     result = processing.run(""native:reprojectlayer"", {
+228 |         'INPUT': clipped_layer,
+229 |         'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:3347'),
+230 |         'OUTPUT': 'memory:'
+231 |     })
+232 | 
+233 |     hotspot_layer_3347 = result['OUTPUT']
+...
+316 | 
+317 |     # Step 4: Clip raster
+318 |     processing.run(""gdal:cliprasterbymasklayer"", {
+319 |         'INPUT': output_tif,
+320 |         'MASK': bc_boundary_layer_3347,
+321 |         'SOURCE_CRS': None,
+322 |         'TARGET_CRS': None,
+323 |         'NODATA': -9999,
+324 |         'ALPHA_BAND': False,
+325 |         'CROP_TO_CUTLINE': True,
+326 |         'KEEP_RESOLUTION': True,
+327 |         'OPTIONS': '',
+328 |         'DATA_TYPE': 0,
+329 |         'EXTRA': '',
+330 |         'OUTPUT': bc_climate_temp
+331 |     })
+332 | 
+333 |     # Step 5: Reproject raster
+334 |     if os.path.exists(bc_climate_temp):
+335 |         processing.run(""gdal:warpreproject"", {
+336 |             'INPUT': bc_climate_temp,
+337 |             'SOURCE_CRS': None,
+338 |             'TARGET_CRS': 'EPSG:3347',
+339 |             'RESAMPLING': 0,
+340 |             'NODATA': None,
+341 |             'TARGET_RESOLUTION': None,
+342 |             'OPTIONS': '',
+343 |             'DATA_TYPE': 0,
+344 |             'TARGET_EXTENT': None,
+345 |             'TARGET_EXTENT_CRS': None,
+346 |             'MULTITHREADING': False,
+347 |             'OUTPUT': bc_climate_final
+348 |         })
+349 |         print(""✅ Reprojected raster to EPSG:3347 successfully."")
+350 | 
+...
+384 |         print(f""🌀 Filling NoData for Band {i}..."")
+385 |     
+386 |         processing.run(""gdal:fillnodata"", {
+387 |             'INPUT': bc_climate_final,
+388 |             'BAND': i,
+389 |             'MASK_LAYER': None,
+390 |             'DISTANCE': 10,
+391 |             'ITERATIONS': 0,
+392 |             'NO_MASK': False,
+393 |             'OUTPUT': output_band
+394 |         })
+395 |     
+396 |         if os.path.exists(output_band):
+...
+669 |         print(f""🔄 Sampling from: {output_field} (Band {band})"")
+670 | 
+671 |         result = processing.run(""qgis:rastersampling"", {
+672 |             'INPUT': temp_layer,
+673 |             'RASTERCOPY': raster_path,
+674 |             'RASTER_BAND': band,
+675 |             'COLUMN_PREFIX': 'tmp_',
+676 |             'OUTPUT': 'memory:'
+677 |         })
+678 | 
+679 |         sampled = result['OUTPUT']",True,"[{""line_end"": 52, ""line_start"": 46, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 69, ""line_start"": 65, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 99, ""line_start"": 86, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 117, ""line_start"": 104, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 201, ""line_start"": 197, ""operator_id"": ""native:extractbyexpression""}, {""line_end"": 216, ""line_start"": 212, ""operator_id"": ""native:clip""}, {""line_end"": 231, ""line_start"": 227, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 331, ""line_start"": 318, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 348, ""line_start"": 335, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 394, ""line_start"": 386, ""operator_id"": ""gdal:fillnodata""}, {""line_end"": 677, ""line_start"": 671, ""operator_id"": ""native:rastersampling""}]","[""native:extractbyattribute"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""native:extractbyexpression"", ""native:clip"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""gdal:fillnodata"", ""native:rastersampling""]","[""L3_02_06_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_02_06_02"", ""L3_02_02_06"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_03_03_A"", ""L3_08_01_01""]","[[0, 1], [0, 5], [1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9]]","{""backward_slice_alias"": 1, ""helper_function_call"": 4, ""output_alias"": 4, ""result_dictionary"": 4}",3,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",d95df6aa465c1e2b87c0efb2,normalized_source_body_sha256:d4fc8ad89744bae9704ede1cf22df14a6260ae231fa61894dddfa7b6521ace29,normalized_source_body_sha256,d95df6aa465c1e2b87c0efb2f6be7e7462b87187f908243adc9250c8204589e0,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0004307.py,"335 |                 }
+336 | 
+337 |         result = processing.run('qgis:addfieldtoattributestable', parameters)
+338 | 
+339 |         catLayer = result['OUTPUT']
+...
+724 |                         'OUTPUT': clipRaster}
+725 |                             
+726 |         processing.run('gdal:cliprasterbyextent', parameterClip)
+727 |         """""" one more resample to make sure Xcount and Y are alway same, e.g for municipal Budget""""""
+728 |     
+...
+1195 |             parameterReproject = { 'INPUT': layerIn,\
+1196 |                             'OUTPUT': 'memory:'}
+1197 |             result = processing.run('native:fixgeometries', parameterReproject)
+1198 |             print (""Geometry Fixed."")
+1199 |             return result['OUTPUT']
+...
+1206 |                             'TARGET_CRS': 'EPSG:4326' ,\
+1207 |                             'OUTPUT': 'memory:'}
+1208 |         result = processing.run('qgis:reprojectlayer', parameterReproject)
+1209 |         reprojectedVector = result['OUTPUT']
+1210 |         
+...
+1216 |                                     'TARGET_CRS': 'EPSG:4326',\
+1217 |                                     'OUTPUT': 'memory:'}
+1218 |         result = processing.run('qgis:reprojectlayer', parameterReprojectExtent)
+1219 |         reprojectedExtent = result['OUTPUT']
+1220 |         
+...
+1265 |                       'OUTPUT':reprojectedRaster }
+1266 |         try:
+1267 |             processing.run(""gdal:rasterize"",parameterRasterize)  
+1268 |         except:
+1269 |             processing.run(""gdal:rasterize"",parameterRasterize)
+1270 |             print(""A bug has been detected in QGIS. No action required for now."")
+1271 |         
+...
+1293 |                         'MULTITHREADING':False,\
+1294 |                         'OUTPUT':reprojectedRaster}
+1295 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1296 |         
+1297 |         if not QgsRasterLayer(reprojectedRaster,""Reprojected Raster"").isValid():
+...
+1324 |                     'OUTPUT': rasterDegress}
+1325 |          
+1326 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1327 |         
+1328 |         if debuggingMode:
+...
+1339 |                             'TARGET_CRS': 'EPSG:4326',\
+1340 |                             'OUTPUT': ""memory:rp""}
+1341 |         rp = processing.run('qgis:reprojectlayer', parameterReproject)
+1342 |         pl = rp[""OUTPUT""]
+1343 | 
+...
+1487 |               'OUTPUT': ""memory:separateCat"" ,\
+1488 |                 }
+1489 |         SeparateCat = processing.run('qgis:addfieldtoattributestable', parameters)
+1490 | 
+1491 |         """"""chnage name for index"""""" ",True,"[{""line_end"": 337, ""line_start"": 337, ""operator_id"": ""native:addfieldtoattributestable""}, {""line_end"": 726, ""line_start"": 726, ""operator_id"": ""gdal:cliprasterbyextent""}, {""line_end"": 1197, ""line_start"": 1197, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 1208, ""line_start"": 1208, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1218, ""line_start"": 1218, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1267, ""line_start"": 1267, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1269, ""line_start"": 1269, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1295, ""line_start"": 1295, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1326, ""line_start"": 1326, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1341, ""line_start"": 1341, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1489, ""line_start"": 1489, ""operator_id"": ""native:addfieldtoattributestable""}]","[""native:addfieldtoattributestable"", ""gdal:cliprasterbyextent"", ""native:fixgeometries"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""gdal:rasterize"", ""gdal:rasterize"", ""gdal:warpreproject"", ""gdal:warpreproject"", ""native:reprojectlayer"", ""native:addfieldtoattributestable""]","[""L3_01_02_01"", ""L3_03_01_02"", ""L3_01_05_02"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_09_03"", ""L3_01_09_03"", ""L3_03_05_02"", ""L3_03_05_02"", ""L3_01_10_01"", ""L3_01_02_01""]","[[4, 5], [4, 6]]","{""backward_slice_alias"": 1, ""output_alias"": 4, ""parameter_dictionary"": 11, ""result_dictionary"": 6}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",d97dbdc5ca9d2fe35c12cd0b,normalized_source_body_sha256:240051da81baa125c318f57763430b0b14b2f925ec62328033d4feab3c35a510,normalized_source_body_sha256,d97dbdc5ca9d2fe35c12cd0ba8fef3aa56175895e581b25db2d327b8d55d3ef7,/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0013521.py,"333 |                 }
+334 | 
+335 |         result = processing.run('qgis:addfieldtoattributestable', parameters)
+336 | 
+337 |         catLayer = result['OUTPUT']
+...
+722 |                         'OUTPUT': clipRaster}
+723 |                             
+724 |         processing.run('gdal:cliprasterbyextent', parameterClip)
+725 |         """""" one more resample to make sure Xcount and Y are alway same, e.g for municipal Budget""""""
+726 |     
+...
+1189 |             parameterReproject = { 'INPUT': layerIn,\
+1190 |                             'OUTPUT': 'memory:'}
+1191 |             result = processing.run('native:fixgeometries', parameterReproject)
+1192 |             print (""Geometry Fixed."")
+1193 |             return result['OUTPUT']
+...
+1200 |                             'TARGET_CRS': 'EPSG:4326' ,\
+1201 |                             'OUTPUT': 'memory:'}
+1202 |         result = processing.run('qgis:reprojectlayer', parameterReproject)
+1203 |         reprojectedVector = result['OUTPUT']
+1204 |         
+...
+1210 |                                     'TARGET_CRS': 'EPSG:4326',\
+1211 |                                     'OUTPUT': 'memory:'}
+1212 |         result = processing.run('qgis:reprojectlayer', parameterReprojectExtent)
+1213 |         reprojectedExtent = result['OUTPUT']
+1214 |         
+...
+1259 |                       'OUTPUT':reprojectedRaster }
+1260 |         try:
+1261 |             processing.run(""gdal:rasterize"",parameterRasterize)  
+1262 |         except:
+1263 |             processing.run(""gdal:rasterize"",parameterRasterize)
+1264 |             print(""A bug has been detected in QGIS. No action required for now."")
+1265 |         
+...
+1287 |                         'MULTITHREADING':False,\
+1288 |                         'OUTPUT':reprojectedRaster}
+1289 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1290 |         
+1291 |         if not QgsRasterLayer(reprojectedRaster,""Reprojected Raster"").isValid():
+...
+1318 |                     'OUTPUT': rasterDegress}
+1319 |          
+1320 |         processing.run(""gdal:warpreproject"", parameterWarp)
+1321 |         
+1322 |         if debuggingMode:
+...
+1333 |                             'TARGET_CRS': 'EPSG:4326',\
+1334 |                             'OUTPUT': ""memory:rp""}
+1335 |         rp = processing.run('qgis:reprojectlayer', parameterReproject)
+1336 |         pl = rp[""OUTPUT""]
+1337 | 
+...
+1481 |               'OUTPUT': ""memory:separateCat"" ,\
+1482 |                 }
+1483 |         SeparateCat = processing.run('qgis:addfieldtoattributestable', parameters)
+1484 | 
+1485 |         """"""chnage name for index"""""" ",True,"[{""line_end"": 335, ""line_start"": 335, ""operator_id"": ""native:addfieldtoattributestable""}, {""line_end"": 724, ""line_start"": 724, ""operator_id"": ""gdal:cliprasterbyextent""}, {""line_end"": 1191, ""line_start"": 1191, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 1202, ""line_start"": 1202, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1212, ""line_start"": 1212, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1261, ""line_start"": 1261, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1263, ""line_start"": 1263, ""operator_id"": ""gdal:rasterize""}, {""line_end"": 1289, ""line_start"": 1289, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1320, ""line_start"": 1320, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 1335, ""line_start"": 1335, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 1483, ""line_start"": 1483, ""operator_id"": ""native:addfieldtoattributestable""}]","[""native:addfieldtoattributestable"", ""gdal:cliprasterbyextent"", ""native:fixgeometries"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""gdal:rasterize"", ""gdal:rasterize"", ""gdal:warpreproject"", ""gdal:warpreproject"", ""native:reprojectlayer"", ""native:addfieldtoattributestable""]","[""L3_01_02_01"", ""L3_03_01_02"", ""L3_01_05_02"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_09_03"", ""L3_01_09_03"", ""L3_03_05_02"", ""L3_03_05_02"", ""L3_01_10_01"", ""L3_01_02_01""]","[[4, 5], [4, 6]]","{""backward_slice_alias"": 1, ""output_alias"": 4, ""parameter_dictionary"": 11, ""result_dictionary"": 6}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",dc3966854074fa4d9f50adde,normalized_source_body_sha256:8d44a32648778090ac14ebd2a95ea426fb0b7cef53b018b777aac11c08c1d2a1,normalized_source_body_sha256,dc3966854074fa4d9f50addeccfe05e2dbf1e7cc5df04707c92bba2fa7702473,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41823.py,"21 |                   'OUTPUT': 'TEMPORARY_OUTPUT'}
+22 |                   
+23 |     clipped = processing.run(""native:clip"", parameters)
+24 |     
+25 |     clippedlayer = clipped['OUTPUT']
+26 |                   
+27 |     processing.run('qgis:multiparttosingleparts', {'INPUT': clippedlayer, 'OUTPUT': destination})
+28 |         ",True,"[{""line_end"": 23, ""line_start"": 23, ""operator_id"": ""native:clip""}, {""line_end"": 27, ""line_start"": 27, ""operator_id"": ""native:multiparttosingleparts""}]","[""native:clip"", ""native:multiparttosingleparts""]","[""L3_02_02_06"", ""L3_02_07_01""]","[[0, 1]]","{""output_alias"": 1, ""parameter_dictionary"": 1, ""result_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",dfc9d81f8acd3268cc631138,normalized_source_body_sha256:c2c5f9f55881f7f1f280c06d9fb43cdb0cdcad6ef4e531beed1758d1b3908cbd,normalized_source_body_sha256,dfc9d81f8acd3268cc631138b886c91e43c20d353d1dad219a8a419d0b606ec4,/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts/script_56169.py,"599 |             # Run the algorithm synchronously
+600 |             feedback_goog = QgsProcessingFeedback()
+601 |             processing.run(""gdal:warpreproject"", params, feedback=feedback_goog)
+602 | 
+603 |         # Get extents and export clipped GeoTIFF
+...
+636 | 
+637 |         if selected_raster_status[""2022 NAIP Aerial""] and self.do_naip:
+638 |             reprojected_mask = processing.run(
+639 |                 ""native:reprojectlayer"",
+640 |                 {
+641 |                     'INPUT': self.mask_layer,
+642 |                     'TARGET_CRS': crs_dst,
+643 |                     'OUTPUT': 'memory:'
+644 |                 },
+645 |                 feedback=feedback_mask
+646 |             )['OUTPUT']
+647 | 
+648 |             # Set input and output CRS
+...
+665 |                 'OUTPUT': self.naip_temp
+666 |             }
+667 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_naip_clip)
+668 | 
+669 |             # Reproject clipped raster to 'EPSG:2225'
+...
+673 |                 'OUTPUT': self.naip_dst
+674 |             }
+675 |             processing.run(""gdal:warpreproject"", params_warp, feedback=feedback_naip_reproject)
+676 | 
+677 |         if dem1m and self.do_dem:
+678 |             reprojected_mask = processing.run(
+679 |                 ""native:reprojectlayer"",
+680 |                 {
+681 |                     'INPUT': self.mask_layer,
+682 |                     'TARGET_CRS': crs_dst,
+683 |                     'OUTPUT': 'memory:'
+684 |                 },
+685 |                 feedback=feedback_mask
+686 |             )['OUTPUT']
+687 | 
+688 |             crs_src = QgsCoordinateReferenceSystem(self.dem_layer.crs())  # EPSG of Google Earth Satellite (3857)
+...
+705 |                 'OUTPUT': self.dem_dst
+706 |             }
+707 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_dem_clip)
+708 | 
+709 | 
+...
+719 |                 'OUTPUT': flow_accumulation_dst
+720 |             }
+721 |             processing.run(""gdal:cliprasterbymasklayer"", params_clip, feedback=feedback_flow_clip)
+722 | 
+723 |         return True
+...
+1024 |             'OUTPUT': 'memory:'
+1025 |         }
+1026 |         buffer_result = processing.run(""native:buffer"", params, feedback=self.feedback)
+1027 |         buffer_layer = buffer_result['OUTPUT']
+1028 | 
+...
+1038 |                 'OUTPUT': output_shp_path
+1039 |             }
+1040 |             processing.run(""qgis:extractbylocation"", params, feedback=self.feedback)
+1041 | 
+1042 |         # Use QgsVectorLayer to load the shapefile
+...
+1289 |             'OUTPUT': 'memory:'
+1290 |         }
+1291 |         buffer_result = processing.run(""native:buffer"", params, feedback=self.feedback)
+1292 |         buffer_layer = buffer_result['OUTPUT']
+1293 | 
+...
+1302 |                 'OUTPUT': output_shp_path
+1303 |             }
+1304 |             processing.run(""qgis:extractbylocation"", params, feedback=self.feedback)
+1305 | 
+1306 |         road_point_layer = QgsVectorLayer(output_shp_path, ""Road Points"", ""ogr"")",True,"[{""line_end"": 601, ""line_start"": 601, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 646, ""line_start"": 638, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 667, ""line_start"": 667, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 675, ""line_start"": 675, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 686, ""line_start"": 678, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 707, ""line_start"": 707, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 721, ""line_start"": 721, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 1026, ""line_start"": 1026, ""operator_id"": ""native:buffer""}, {""line_end"": 1040, ""line_start"": 1040, ""operator_id"": ""native:extractbylocation""}, {""line_end"": 1291, ""line_start"": 1291, ""operator_id"": ""native:buffer""}, {""line_end"": 1304, ""line_start"": 1304, ""operator_id"": ""native:extractbylocation""}]","[""gdal:warpreproject"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:warpreproject"", ""native:reprojectlayer"", ""gdal:cliprasterbymasklayer"", ""gdal:cliprasterbymasklayer"", ""native:buffer"", ""native:extractbylocation"", ""native:buffer"", ""native:extractbylocation""]","[""L3_03_05_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_05_02"", ""L3_01_10_01"", ""L3_03_01_01"", ""L3_03_01_01"", ""L3_02_01_01"", ""L3_02_06_03"", ""L3_02_01_01"", ""L3_02_06_03""]","[[1, 2], [2, 3], [4, 5], [4, 6], [7, 8], [9, 10]]","{""backward_slice_alias"": 3, ""immediate_output_extract"": 2, ""output_alias"": 2, ""parameter_dictionary"": 9, ""result_dictionary"": 2}",4,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",e7e62a4c52dad414e6bdd01c,normalized_source_body_sha256:5fefd55a5e122fcf68df11a30e75349e2c087e748356defe759306c6c011c3bf,normalized_source_body_sha256,e7e62a4c52dad414e6bdd01c336f72458dd61e0dd3acc18e02b1a3fc109889e2,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_50368.py,"132 | 
+133 |             # run zonal statistics
+134 |             result = processing.run(
+135 |                 ""native:zonalstatisticsfb"",
+136 |                 {
+137 |                     ""INPUT"": result_layer,
+138 |                     ""INPUT_RASTER"": raster_path,
+139 |                     ""RASTER_BAND"": 1,
+140 |                     ""COLUMN_PREFIX"": f""{suffix}_"",
+141 |                     ""STATISTICS"": [stat_code],
+142 |                     ""OUTPUT"": ""memory:"",
+143 |                 },
+144 |                 context=context,
+145 |                 feedback=feedback,
+146 |             )
+147 |             zonal_layer = result[""OUTPUT""]
+148 | 
+...
+163 |             area_field = f""{prefix}{suffix}_km2""
+164 | 
+165 |             zonal_with_area = processing.run(
+166 |                 ""qgis:fieldcalculator"",
+167 |                 {
+168 |                     ""INPUT"": zonal_layer,
+169 |                     ""FIELD_NAME"": area_field,
+170 |                     ""FIELD_TYPE"": 0,  # Double
+171 |                     ""FIELD_LENGTH"": 20,
+172 |                     ""FIELD_PRECISION"": 4,
+173 |                     ""FORMULA"": f'""{stat_field}"" * {pixel_area} / 1000000',
+174 |                     ""OUTPUT"": ""memory:"",
+175 |                 },
+176 |                 context=context,
+177 |                 feedback=feedback,
+178 |             )[""OUTPUT""]
+179 | 
+180 |             # update working layer for next join
+...
+182 | 
+183 |         # Save final result
+184 |         processing.run(
+185 |             ""native:savefeatures"",
+186 |             {""INPUT"": result_layer, ""OUTPUT"": output_vector},
+187 |             context=context,
+188 |             feedback=feedback,
+189 |         )
+190 | 
+191 |         final_layer = QgsVectorLayer(output_vector, ""Zonal Stats Area"", ""ogr"")",True,"[{""line_end"": 146, ""line_start"": 134, ""operator_id"": ""native:zonalstatisticsfb""}, {""line_end"": 178, ""line_start"": 165, ""operator_id"": ""native:fieldcalculator""}, {""line_end"": 189, ""line_start"": 184, ""operator_id"": ""native:savefeatures""}]","[""native:zonalstatisticsfb"", ""native:fieldcalculator"", ""native:savefeatures""]","[""L3_03_02_01"", ""L3_01_02_06"", ""L3_07_04_01""]","[[0, 1], [1, 2]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 1, ""output_alias"": 1, ""result_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",fe1d351f9070b2692f7b503c,normalized_source_body_sha256:567d30d4179ba1961d887787f7c0dd5cb94099df797859a2f7d66b1c392fc1c9,normalized_source_body_sha256,fe1d351f9070b2692f7b503c6cb441007a56d06e0ac012abe4a700ee5c8c4b94,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4888.py,"44 |             'OUTPUT': parameters['Agrisuit']
+45 |         }
+46 |         outputs['WarpReproject'] = processing.run('gdal:warpreproject', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+47 |         results['Agrisuit'] = outputs['WarpReproject']['OUTPUT']
+48 | 
+...
+57 |             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+58 |         }
+59 |         outputs['DropFields'] = processing.run('qgis:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+60 | 
+61 |         feedback.setCurrentStep(2)
+...
+74 |             'OUTPUT': parameters['Counties']
+75 |         }
+76 |         outputs['AddAutoincrementalField'] = processing.run('native:addautoincrementalfield', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+77 |         results['Counties'] = outputs['AddAutoincrementalField']['OUTPUT']
+78 | 
+...
+89 |             'STATISTICS': [2]
+90 |         }
+91 |         outputs['ZonalStatistics'] = processing.run('native:zonalstatistics', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+92 |         return results
+93 | ",True,"[{""line_end"": 46, ""line_start"": 46, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 59, ""line_start"": 59, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 76, ""line_start"": 76, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 91, ""line_start"": 91, ""operator_id"": ""native:zonalstatistics""}]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[[0, 3], [1, 2], [2, 3]]","{""backward_slice_alias"": 1, ""output_alias"": 2, ""parameter_dictionary"": 4, ""result_dictionary"": 4}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,output_alias,propagate-single-scope-output-alias-v1,"Propagate result['OUTPUT'] through a same-scope single-assignment alias into a later Processing parameter; fail on dynamic output keys, ambiguous writes, cross-scope flow, or data-transforming reassignment.",ff365c505b107b70daed1a8b,normalized_source_body_sha256:5125f589b1d70f2091fba9ee0774729b5e7cf779f674f8a593d24640e5f211ae,normalized_source_body_sha256,ff365c505b107b70daed1a8b332b055d8cb63a1e08ad171dd988497d5fd68465,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41819.py,"23 |                   'OUTPUT': 'TEMPORARY_OUTPUT'}
+24 |      
+25 |     clipped = processing.run(""native:clip"", parameters)
+26 |     
+27 |     clippedlayer = clipped['OUTPUT']
+28 |     
+29 |     processing.run('qgis:multiparttosingleparts', {'INPUT': clippedlayer, 'OUTPUT': destination})
+30 | 
+31 | ",True,"[{""line_end"": 25, ""line_start"": 25, ""operator_id"": ""native:clip""}, {""line_end"": 29, ""line_start"": 29, ""operator_id"": ""native:multiparttosingleparts""}]","[""native:clip"", ""native:multiparttosingleparts""]","[""L3_02_02_06"", ""L3_02_07_01""]","[[0, 1]]","{""output_alias"": 1, ""parameter_dictionary"": 1, ""result_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",0ead4a56b6b8d76bedeeb06d,normalized_source_body_sha256:bded79c370d665c77c74f9816423e94d1eec7fca7d8fa492fd0b69203ea0d7ba,normalized_source_body_sha256,0ead4a56b6b8d76bedeeb06df75f31d89352a16a039262b6e525032a6725ba44,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005061.py,"72 |     ""OUTPUT"": os.path.join(work_dir, ""roads_buffer.shp"")
+73 | }
+74 | processing.run(""native:buffer"", buffer_params_roads)
+75 | 
+76 | # 学校缓冲区参数和执行
+...
+82 |     ""OUTPUT"": os.path.join(work_dir, ""schools_buffer.shp"")
+83 | }
+84 | processing.run(""native:buffer"", buffer_params_schools)
+85 | 
+86 | # 计算两个缓冲区的交叉（重叠）区域
+...
+90 |     ""OUTPUT"": os.path.join(work_dir, ""distance_of_schools_and_roads.shp"")
+91 | }
+92 | processing.run(""qgis:intersection"", intersection_params)
+93 | 
+94 | # 加载保存后的图层",True,"[{""line_end"": 74, ""line_start"": 74, ""operator_id"": ""native:buffer""}, {""line_end"": 84, ""line_start"": 84, ""operator_id"": ""native:buffer""}, {""line_end"": 92, ""line_start"": 92, ""operator_id"": ""native:intersection""}]","[""native:buffer"", ""native:buffer"", ""native:intersection""]","[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_01""]","[[0, 2], [1, 2]]","{""parameter_dictionary"": 3}",1,1,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",17c72cd6d4eadd92a2890ec7,normalized_source_body_sha256:08b3af3f8ae2a7b21599c5bc667f8d930b7766d18ac6da7e4dd38a7d6da06f7b,normalized_source_body_sha256,17c72cd6d4eadd92a2890ec7d139d5eaf1af46807ab3ea149d6cd3b0b461fbf3,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005555.py,"79 |     'OUTPUT': 'memory:'
+80 | }
+81 | fixgeo_vcwithlangs = processing.run('native:fixgeometries', fg1_dict)['OUTPUT']
+82 | 
+83 | print('fixing geometries, vcs without languages')
+...
+86 |     'OUTPUT': 'memory:'
+87 | }
+88 | fixgeo_vcwithoutlangs = processing.run('native:fixgeometries', fg2_dict)['OUTPUT']
+89 | 
+90 | # here we loop over the rasters
+...
+106 | 	    'STATS': [2]
+107 | 	}
+108 | 	processing.run('qgis:zonalstatistics', zs1_dict)
+109 | 
+110 | 	print('computing zonal stats for no language areas {}'.format(pref))
+...
+116 | 	    'STATS': [2]
+117 | 	}
+118 | 	processing.run('qgis:zonalstatistics', zs2_dict)	
+119 | 
+120 | ###################################################################",True,"[{""line_end"": 81, ""line_start"": 81, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 88, ""line_start"": 88, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 108, ""line_start"": 108, ""operator_id"": ""native:zonalstatistics""}, {""line_end"": 118, ""line_start"": 118, ""operator_id"": ""native:zonalstatistics""}]","[""native:fixgeometries"", ""native:fixgeometries"", ""native:zonalstatistics"", ""native:zonalstatistics""]","[""L3_01_05_02"", ""L3_01_05_02"", ""L3_03_02_01"", ""L3_03_02_01""]","[[0, 2], [1, 3]]","{""backward_slice_alias"": 2, ""immediate_output_extract"": 2, ""parameter_dictionary"": 4}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",1d5c510227a46eba701be3af,normalized_source_body_sha256:9c7911c7eb61f57e3b39c6b4866edeaecbdb58a8b4f8b4d5f3eeb56ecbb66253,normalized_source_body_sha256,1d5c510227a46eba701be3af5337cf16965dcafe083147aaf9c6433df1d52f6d,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0006075.py,"71 |         }
+72 | 
+73 |         emprisedir = processing.run(
+74 |             'qgis:polygonfromlayerextent', alg_params)['OUTPUT']
+75 |         #vemprise = iface.addVectorLayer(emprisedir,'emprise','ogr')
+76 |        
+...
+84 |             'OVERLAY_FIELDS': [],
+85 |             'OVERLAY_FIELDS_PREFIX': ''}
+86 |         interdir = processing.run('native:intersection', alg_params)['OUTPUT']
+87 |         vinter = iface.addVectorLayer(interdir, 'intersection', 'ogr')
+88 | ",True,"[{""line_end"": 74, ""line_start"": 73, ""operator_id"": ""native:polygonfromlayerextent""}, {""line_end"": 86, ""line_start"": 86, ""operator_id"": ""native:intersection""}]","[""native:polygonfromlayerextent"", ""native:intersection""]","[""L3_02_05_12"", ""L3_02_02_01""]","[[0, 1]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 2, ""parameter_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",1e9ec11b8e09f256b1eed4f0,normalized_source_body_sha256:4e88eec0bb8faf11e40e74df75c32a0fe776d7fa91410f8c2c78ba27f08c8b5b,normalized_source_body_sha256,1e9ec11b8e09f256b1eed4f05b49974ee08370adaa53be5c0f5da55b46eb8253,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_35494.py,"71 |     'OUTPUT': junkfile
+72 | }
+73 | suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+74 | 
+75 | ##################################################################
+...
+84 |     'OUTPUT': 'memory:'
+85 | }
+86 | counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+87 | 
+88 | ###################################################################
+...
+100 |     'OUTPUT': 'memory:'
+101 | }
+102 | counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+103 | 
+104 | ###################################################################
+...
+113 |     'STATISTICS': 2
+114 | }
+115 | processing.run('native:zonalstatistics', alg_params)
+116 | 
+117 | ###################################################################",True,"[{""line_end"": 73, ""line_start"": 73, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 86, ""line_start"": 86, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 102, ""line_start"": 102, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 115, ""line_start"": 115, ""operator_id"": ""native:zonalstatistics""}]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[[0, 3], [1, 2], [2, 3]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 3, ""parameter_dictionary"": 4}",1,1,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",2b44227185b5caf6d01f697f,normalized_source_body_sha256:9da4234e374bc81955e373abd3af9d03822c3eb286a825afcd83daf27fd52214,normalized_source_body_sha256,2b44227185b5caf6d01f697f48014ae141a1fd4ea41cab75123d6dec8ced14ba,/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0004150.py,"44 | out = r'out\airports_poland.shp'
+45 | 
+46 | processing.run(""qgis:intersection"", {'INPUT': airports, 'OVERLAY': country, 'OUTPUT': out})
+47 | 
+48 | # Select lines and write data
+...
+51 | out = r'out\roads_poland.shp'
+52 | 
+53 | processing.run(""qgis:clip"", {'INPUT': roads, 'OVERLAY': country, 'OUTPUT': out})
+54 | 
+55 | # Change CRS ad write data
+56 | parameter = {'INPUT': r'out\roads_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+57 |                  'OUTPUT': r'out\roads_poland_proj.shp'}
+58 | processing.run('qgis:reprojectlayer', parameter)
+59 | 
+60 | parameter = {'INPUT': r'out\country_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+61 |                  'OUTPUT': r'out\country_poland_proj.shp'}
+62 | processing.run('qgis:reprojectlayer', parameter)
+63 | 
+64 | parameter = {'INPUT': r'out\airports_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+65 |                  'OUTPUT': r'out\airports_poland_proj.shp'}
+66 | processing.run('qgis:reprojectlayer', parameter)
+67 | 
+68 | # Add columns and calculate value
+...
+93 | 
+94 | # Create buffer
+95 | processing.run(""qgis:buffer"",
+96 |     {'INPUT': r'out\airports_poland_proj.shp', 'DISTANCE': 50000, 'SEGMENTS': 5, 'END_CAP_STYLE': 0, 'JOIN_STYLE': 0, 'MITER_LIMIT': 2,
+97 |     'DISSOLVE': False, 'OUTPUT': r'out\airports_poland_proj_buff.shp'})
+98 | 
+99 | # Erase buffer
+100 | processing.run(""qgis:difference"", {'INPUT': r'out\country_poland_proj.shp', 'OVERLAY': r""out\airports_poland_proj_buff.shp"",
+101 |                              'OUTPUT': r""out\country_poland_proj_erased.shp""})
+102 | 
+103 | # Map",True,"[{""line_end"": 46, ""line_start"": 46, ""operator_id"": ""native:intersection""}, {""line_end"": 53, ""line_start"": 53, ""operator_id"": ""native:clip""}, {""line_end"": 58, ""line_start"": 58, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 62, ""line_start"": 62, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 66, ""line_start"": 66, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 97, ""line_start"": 95, ""operator_id"": ""native:buffer""}, {""line_end"": 101, ""line_start"": 100, ""operator_id"": ""native:difference""}]","[""native:intersection"", ""native:clip"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""native:buffer"", ""native:difference""]","[""L3_02_02_01"", ""L3_02_02_06"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_02_02_04""]","[[3, 6], [4, 5], [5, 6]]","{""parameter_dictionary"": 3}",1,1,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",2d3e0eda41e3246589dad5b4,normalized_source_body_sha256:3ff9822a3247b4b721e01b4f337fee5c73075fbefd830afd7deea008c32fb53e,normalized_source_body_sha256,2d3e0eda41e3246589dad5b4a530416d1eb5b278c4ff96ce35e7259ea3745b75,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4194.py,"65 |         }
+66 | 
+67 |         emprisedir = processing.run(
+68 |             'qgis:polygonfromlayerextent', alg_params)['OUTPUT']
+69 |         #vemprise = iface.addVectorLayer(emprisedir,'emprise','ogr')
+70 |        
+...
+78 |             'OVERLAY_FIELDS': [],
+79 |             'OVERLAY_FIELDS_PREFIX': ''}
+80 |         interdir = processing.run('native:intersection', alg_params)['OUTPUT']
+81 |         vinter = iface.addVectorLayer(interdir, 'intersection', 'ogr')
+82 | ",True,"[{""line_end"": 68, ""line_start"": 67, ""operator_id"": ""native:polygonfromlayerextent""}, {""line_end"": 80, ""line_start"": 80, ""operator_id"": ""native:intersection""}]","[""native:polygonfromlayerextent"", ""native:intersection""]","[""L3_02_05_12"", ""L3_02_02_01""]","[[0, 1]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 2, ""parameter_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",48d3f07b2b7f5c7d584dae20,normalized_source_body_sha256:119e792ffa4f11716e04c405d227b76549351cfd342c460128afbf8eb259b6a9,normalized_source_body_sha256,48d3f07b2b7f5c7d584dae2018d47c36fefbd847d6a49e4b063a9a4d326401ee,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3864.py,"39 | atbn = QgsProject.instance().mapLayersByName(""Autobahn"")[0] """"""
+40 | param = { 'INPUT' : atbn, 'DISTANCE' : 20, 'SEGMENTS' : 5, 'END_CAP_STYLE' : 0, 'JOIN_STYLE' : 0, 'MITER_LIMIT' : 2, 'DISSOLVE' : False, 'OUTPUT' : 'memory:' }
+41 | algoOutput = processing.run(""qgis:buffer"", param)
+42 | autobahn20 = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+43 | autobahn20.setName(""Autobahn 20"")
+...
+45 | """""" 2.4. Creating 2 more Buffers """"""
+46 | param = { 'INPUT' : autobahn20, 'DISTANCE' : 100, 'SEGMENTS' : 5, 'END_CAP_STYLE' : 0, 'JOIN_STYLE' : 0, 'MITER_LIMIT' : 2, 'DISSOLVE' : False, 'OUTPUT' : 'memory:' }
+47 | algoOutput = processing.run(""qgis:buffer"", param)
+48 | autobahn100 = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+49 | autobahn100.setName(""Autobahn 100"")
+50 | 
+51 | param = { 'INPUT' : autobahn100, 'DISTANCE' : 200, 'SEGMENTS' : 5, 'END_CAP_STYLE' : 0, 'JOIN_STYLE' : 0, 'MITER_LIMIT' : 2, 'DISSOLVE' : False, 'OUTPUT' : 'memory:' }
+52 | algoOutput = processing.run(""qgis:buffer"", param)
+53 | autobahn300 = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+54 | autobahn300.setName(""Autobahn 300"")
+...
+57 | """""" Task 3. Performing Union on the Buffer Areas """"""
+58 | param = { 'INPUT' : autobahn20, 'OVERLAY' : autobahn100, 'OUTPUT' : 'memory:' }
+59 | algoOutput = processing.run(""qgis:union"", param)
+60 | innerImpactArea = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+61 | innerImpactArea.setName(""Inner Impact Area"")
+62 | 
+63 | param = { 'INPUT' : innerImpactArea, 'OVERLAY' : autobahn300, 'OUTPUT' : 'memory:' }
+64 | algoOutput = processing.run(""qgis:union"", param)
+65 | impactArea = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+66 | impactArea.setName(""Impact Area"")
+...
+73 | def intersect_layers(layer1, layer2, outputName):
+74 |     param = param = { 'INPUT' : layer1, 'OVERLAY' : layer2, 'INPUT_FIELDS' : [], 'OVERLAY_FIELDS' : [], 'OUTPUT' : 'memory:' }
+75 |     intxnOp = QgsProject.instance().addMapLayer(processing.run(""qgis:intersection"", param)['OUTPUT'])
+76 |     intxnOp.setName(outputName)
+77 |     ",True,"[{""line_end"": 41, ""line_start"": 41, ""operator_id"": ""native:buffer""}, {""line_end"": 47, ""line_start"": 47, ""operator_id"": ""native:buffer""}, {""line_end"": 52, ""line_start"": 52, ""operator_id"": ""native:buffer""}, {""line_end"": 59, ""line_start"": 59, ""operator_id"": ""native:union""}, {""line_end"": 64, ""line_start"": 64, ""operator_id"": ""native:union""}, {""line_end"": 75, ""line_start"": 75, ""operator_id"": ""native:intersection""}]","[""native:buffer"", ""native:buffer"", ""native:buffer"", ""native:union"", ""native:union"", ""native:intersection""]","[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_02"", ""L3_02_02_02"", ""L3_02_02_01""]","[[0, 1], [1, 2], [2, 3], [3, 4]]","{""backward_slice_alias"": 1, ""cross_function_dataflow"": 1, ""helper_function_call"": 1, ""parameter_dictionary"": 6, ""result_dictionary"": 5}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",4eeb90736f34f960237b6e9d,normalized_source_body_sha256:7614113104b56120425a9cbf05feddef8709d0b0a22ba8c2cde3e872dc86a66f,normalized_source_body_sha256,4eeb90736f34f960237b6e9d6c597230f7370fc41fc9f27091df50d546fc41ac,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3977.py,"36 |         tile_recl_path = os.path.join(vhm_clipped_path, name_tile_recl)
+37 |         vhm_temp = QgsRasterLayer(os.path.join(vhm_clipped_path, name_tile))
+38 |         raster_reclass = processing.run(""native:reclassifybytable"",
+39 |             {'INPUT_RASTER':vhm_temp, 'TABLE':reclass_table, 'RASTER_BAND':1, 'DATA_TYPE':1, 'OUTPUT':'TEMPORARY_OUTPUT'})['OUTPUT']
+40 |         
+41 |         par = {'FIELD': 'id', 'INPUT': perimeter_dissolve, 'OPERATOR': 0, 'OUTPUT': 'TEMPORARY_OUTPUT', 'VALUE': id}
+42 |         mask = processing.run(""qgis:extractbyattribute"", par)
+43 | 
+44 |         par = {'INPUT': raster_reclass, 'MASK': mask['OUTPUT'], 'NODATA': None, 'ALPHA_BAND': True, 'CROP_TO_CUTLINE' : True, 'KEEP_RESOLUTION': False,
+45 |         'SET_RESOLUTION' : False, 'OPTIONS': '', 'DATA_TYPE': 1, 'OUTPUT': tile_recl_path}
+46 |         processing.run(""gdal:cliprasterbymasklayer"", par)['OUTPUT']
+47 | 
+48 | 
+...
+57 |         par = {'FIELD': 'id', 'INPUT': perimeter_dissolve, 'OPERATOR': 0, 'OUTPUT': 'TEMPORARY_OUTPUT', 'VALUE': id}
+58 |         
+59 |         mask = processing.run(""qgis:extractbyattribute"", par)
+60 |         name_tile = vhm_prefix + str(id) + '.tif'
+61 |         par = {'INPUT': vhm, 'MASK': mask['OUTPUT'], 'NODATA': None, 'ALPHA_BAND': True, 'CROP_TO_CUTLINE' : True, 'KEEP_RESOLUTION': False,
+62 |         'SET_RESOLUTION' : False, 'OPTIONS': '', 'DATA_TYPE': 0, 'OUTPUT': os.path.join(vhm_clipped_path, name_tile)}
+63 |         
+64 |         clip = processing.run('gdal:cliprasterbymasklayer', par)
+65 | 
+66 | 
+...
+171 |         shp_out_path = os.path.join(shape_path, name_shp)
+172 | 
+173 |         processing.run('gdal:polygonize', {'INPUT': vhm_temp, 'BAND':1, 'FIELD':""ES"", 'OUTPUT':shp_out_path})",True,"[{""line_end"": 39, ""line_start"": 38, ""operator_id"": ""native:reclassifybytable""}, {""line_end"": 42, ""line_start"": 42, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 46, ""line_start"": 46, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 59, ""line_start"": 59, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 64, ""line_start"": 64, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 173, ""line_start"": 173, ""operator_id"": ""gdal:polygonize""}]","[""native:reclassifybytable"", ""native:extractbyattribute"", ""gdal:cliprasterbymasklayer"", ""native:extractbyattribute"", ""gdal:cliprasterbymasklayer"", ""gdal:polygonize""]","[""L3_03_04_01"", ""L3_02_06_02"", ""L3_03_01_01"", ""L3_02_06_02"", ""L3_03_01_01"", ""L3_01_09_03""]","[[0, 2], [1, 2], [3, 4]]","{""backward_slice_alias"": 2, ""immediate_output_extract"": 1, ""parameter_dictionary"": 4, ""result_dictionary"": 3}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",4f256e110e70e86a3bb6633f,normalized_source_body_sha256:94e64e4baec3f1d3b3e2c92ca28f05a388b2d2bfe8b708ea5836750d49959314,normalized_source_body_sha256,4f256e110e70e86a3bb6633fee4d1aa6dedaef92fe907388c91ee080bc016bc3,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4538.py,"40 | 	print('Extracting vertices: upstream all')
+41 | 	cmd_dict = {'INPUT':streamnetpath,'VERTICES':'-1','OUTPUT':upall}
+42 | 	processing.run('qgis:extractspecificvertices',cmd_dict)
+43 | 
+44 | nextdownfile = os.path.join(streamnetdir,'strn_network_'+resname+'_next-to-downstream.shp')
+...
+46 | 	print('Extracting vertices: next-to-downstream')
+47 | 	cmd_dict = {'INPUT':streamnetpath,'VERTICES':'1','OUTPUT':nextdownfile}
+48 | 	processing.run('qgis:extractspecificvertices',cmd_dict)
+49 | 
+50 | ###########################################################################
+...
+55 | 	print('Sampling accumulation values: upstream all')
+56 | 	cmd_dict = {'INPUT':upall,'RASTERCOPY':accpath,'COLUMN_PREFIX':'ACC','OUTPUT':acc_upall_file}
+57 | 	processing.run('qgis:rastersampling',cmd_dict)
+58 | 
+59 | acc_ntd_file = os.path.join(streamnetdir,'strn_network_'+resname+'_acc_next-to-downstream.shp')
+...
+61 | 	print('Sampling accumulation values: next-to-downstream')
+62 | 	cmd_dict = {'INPUT':nextdownfile,'RASTERCOPY':accpath,'COLUMN_PREFIX':'ACC','OUTPUT':acc_ntd_file}
+63 | 	processing.run('qgis:rastersampling',cmd_dict)
+64 | 
+65 | acc_ds_file = os.path.join(streamnetdir,clipname+'_acc_downstream.shp')
+...
+67 | 	print('Sampling accumulation values: downstream')
+68 | 	cmd_dict = {'INPUT':downfile,'RASTERCOPY':accpath,'COLUMN_PREFIX':'ACC','OUTPUT':acc_ds_file}
+69 | 	processing.run('qgis:rastersampling',cmd_dict)
+70 | 
+71 | ###########################################################################
+...
+76 | 	print('Creating points (vertices) file')
+77 | 	cmd_dict = {'INPUT':streamnetpath,'OUTPUT':vertices_file}
+78 | 	processing.run('native:extractvertices',cmd_dict)",True,"[{""line_end"": 42, ""line_start"": 42, ""operator_id"": ""native:extractspecificvertices""}, {""line_end"": 48, ""line_start"": 48, ""operator_id"": ""native:extractspecificvertices""}, {""line_end"": 57, ""line_start"": 57, ""operator_id"": ""native:rastersampling""}, {""line_end"": 63, ""line_start"": 63, ""operator_id"": ""native:rastersampling""}, {""line_end"": 69, ""line_start"": 69, ""operator_id"": ""native:rastersampling""}, {""line_end"": 78, ""line_start"": 78, ""operator_id"": ""native:extractvertices""}]","[""native:extractspecificvertices"", ""native:extractspecificvertices"", ""native:rastersampling"", ""native:rastersampling"", ""native:rastersampling"", ""native:extractvertices""]","[""L3_02_05_11"", ""L3_02_05_11"", ""L3_08_01_01"", ""L3_08_01_01"", ""L3_08_01_01"", ""L3_02_05_11""]","[[0, 2], [1, 3]]","{""parameter_dictionary"": 6}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",553825df1b103301534678bd,normalized_source_body_sha256:043b48d0bb3d9c9516e8fe662f0edae39d26f4fd65bbd2021310a2d6da9cb838,normalized_source_body_sha256,553825df1b103301534678bd860ca0b173c9c3a7357f5c6ff64267e5d2999722,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_6932.py,"28 | {'OUTPUT': filepath + rasterProject}
+29 | ###Runs process to create algorithm
+30 | processing.run(""gdal:warpreproject"", reprojDict)
+31 | ###Adds reprojection file
+32 | projLayer = iface.addRasterLayer((filepath + rasterProject), rasterProject[:-4])
+...
+36 | cellStatsParam = { 'IGNORE_NODATA' : True, 'INPUT' : [filepath + rasterProject], 'OUTPUT' : filepath + cellStatsLayer, 'OUTPUT_NODATA_VALUE' : -9999, 'REFERENCE_LAYER' : filepath + rasterProject, 'STATISTIC' : 2 }
+37 | ###runs algorithm process to create cell stats layer
+38 | processing.run(""qgis:cellstatistics"", cellStatsParam)
+39 | ###add layer to QGIS to debug
+40 | cellStatsLayer = iface.addRasterLayer((filepath + cellStatsLayer), netCDF_raster[:-4])
+...
+55 | {'OUTPUT': filepath + zonalRaster}
+56 | ###Run algorithm of zonal statistics
+57 | processing.run(""qgis:zonalstatisticsfb"", zonalDict)
+58 | ###Add zonal stats vector layer
+59 | zonalVector = iface.addVectorLayer((filepath + zonalRaster), vectorLga[:-4], ""ogr"")",True,"[{""line_end"": 30, ""line_start"": 30, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 38, ""line_start"": 38, ""operator_id"": ""native:cellstatistics""}, {""line_end"": 57, ""line_start"": 57, ""operator_id"": ""native:zonalstatisticsfb""}]","[""gdal:warpreproject"", ""native:cellstatistics"", ""native:zonalstatisticsfb""]","[""L3_03_05_02"", ""L3_03_10_R"", ""L3_03_02_01""]","[[0, 1]]","{""parameter_dictionary"": 3}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",61aa0d421d451f9563c78a0f,normalized_source_body_sha256:0907b6177a7d7e3961b87227f04b64612bfd81f489b4354eed5b5f5868643d44,normalized_source_body_sha256,61aa0d421d451f9563c78a0fc4187f24470ea636f4001cc9ed0189413468fa74,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4887.py,"70 |     'OUTPUT': junkfile
+71 | }
+72 | suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+73 | 
+74 | ##################################################################
+...
+83 |     'OUTPUT': 'memory:'
+84 | }
+85 | counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+86 | 
+87 | ###################################################################
+...
+99 |     'OUTPUT': 'memory:'
+100 | }
+101 | counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+102 | 
+103 | ###################################################################
+...
+112 |     'STATISTICS': 2
+113 | }
+114 | processing.run('native:zonalstatistics', alg_params)
+115 | 
+116 | ###################################################################",True,"[{""line_end"": 72, ""line_start"": 72, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 85, ""line_start"": 85, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 101, ""line_start"": 101, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 114, ""line_start"": 114, ""operator_id"": ""native:zonalstatistics""}]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[[0, 3], [1, 2], [2, 3]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 3, ""parameter_dictionary"": 4}",1,1,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",6ba5d801d6f3151d0ac0ef17,normalized_source_body_sha256:9ceec94d800b8b990445197217447a31f131640ebdde75b90d6783bd9b769bb7,normalized_source_body_sha256,6ba5d801d6f3151d0ac0ef1741e672a066968ee10681c582cd9f0177abf9579a,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4195.py,"64 |         }
+65 | 
+66 |         emprisedir = processing.run(
+67 |             'qgis:polygonfromlayerextent', alg_params)['OUTPUT']
+68 |         #vemprise = iface.addVectorLayer(emprisedir,'emprise','ogr')
+69 |        
+...
+77 |             'OVERLAY_FIELDS': [],
+78 |             'OVERLAY_FIELDS_PREFIX': ''}
+79 |         interdir = processing.run('native:intersection', alg_params)['OUTPUT']
+80 |         vinter = iface.addVectorLayer(interdir, 'intersection', 'ogr')
+81 | ",True,"[{""line_end"": 67, ""line_start"": 66, ""operator_id"": ""native:polygonfromlayerextent""}, {""line_end"": 79, ""line_start"": 79, ""operator_id"": ""native:intersection""}]","[""native:polygonfromlayerextent"", ""native:intersection""]","[""L3_02_05_12"", ""L3_02_02_01""]","[[0, 1]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 2, ""parameter_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",73faa981b08ba7bd0ca6ea34,normalized_source_body_sha256:53f0f6d9a8ce3042a8704ec3d86b5cb6e154fccf8259d6ffc0f4b4265863b971,normalized_source_body_sha256,73faa981b08ba7bd0ca6ea34f184549680f38520f0fd19902d00915441aee22b,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005539.py,"76 |     'OUTPUT': junkfile
+77 | }
+78 | suit_proj = processing.run('gdal:warpreproject', alg_params)['OUTPUT']
+79 | 
+80 | ##################################################################
+...
+89 |     'OUTPUT': 'memory:'
+90 | }
+91 | counties_fields_dropped = processing.run('qgis:deletecolumn', alg_params)['OUTPUT']
+92 | 
+93 | ###################################################################
+...
+105 |     'OUTPUT': 'memory:'
+106 | }
+107 | counties_fields_autoid = processing.run('native:addautoincrementalfield', alg_params)['OUTPUT']
+108 | 
+109 | ###################################################################
+...
+118 |     'STATISTICS': 2
+119 | }
+120 | processing.run('native:zonalstatistics', alg_params)
+121 | 
+122 | ###################################################################",True,"[{""line_end"": 78, ""line_start"": 78, ""operator_id"": ""gdal:warpreproject""}, {""line_end"": 91, ""line_start"": 91, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 107, ""line_start"": 107, ""operator_id"": ""native:addautoincrementalfield""}, {""line_end"": 120, ""line_start"": 120, ""operator_id"": ""native:zonalstatistics""}]","[""gdal:warpreproject"", ""native:deletecolumn"", ""native:addautoincrementalfield"", ""native:zonalstatistics""]","[""L3_03_05_02"", ""L3_01_02_02"", ""L3_01_02_01"", ""L3_03_02_01""]","[[0, 3], [1, 2], [2, 3]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 3, ""parameter_dictionary"": 4}",1,1,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",763478ddd4794bb32ddb4780,normalized_source_body_sha256:d55c0fd7badcfd0564df32217d9fec8d78e2dfd729d9bc58bf086811c314f7b5,normalized_source_body_sha256,763478ddd4794bb32ddb4780d7781ec9c5a7d742fb722f08f3723f36e86a8a83,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_5038.py,"182 |         'OUTPUT': irrig_mf_s,
+183 |     }
+184 |     processing.run(""qgis:joinattributesbylocation"", params)
+185 | 
+186 |     # Join sub id
+...
+198 |         'OUTPUT': irrig_mf_f,
+199 |     }
+200 |     processing.run(""qgis:joinattributesbylocation"", params02)
+201 | 
+202 |     # delete unnecessary fields
+...
+372 |             'OUTPUT':drn_chn_f
+373 |             }
+374 |         processing.run(
+375 |                         ""qgis:joinattributesbylocation"",
+376 |                         parmas)
+377 | 
+378 |         # delete unnecessary fields
+...
+520 |         'METHOD': 0,
+521 |     }
+522 |     processing.run('qgis:selectbylocation', params)
+523 | 
+524 |     # processing.run('qgis:selectbylocation', input1, input2, ['intersects'], 0, 0)
+...
+603 |         'OUTPUT': irrig_swat_grid_s,
+604 |     }
+605 |     processing.run(""qgis:joinattributesbylocation"", params)
+606 | 
+607 | 
+...
+628 |         'OUTPUT': irrig_swat_grid_f,
+629 |     }
+630 |     processing.run(""qgis:joinattributesbylocation"", params02)
+631 | 
+632 | ",True,"[{""line_end"": 184, ""line_start"": 184, ""operator_id"": ""native:joinattributesbylocation""}, {""line_end"": 200, ""line_start"": 200, ""operator_id"": ""native:joinattributesbylocation""}, {""line_end"": 376, ""line_start"": 374, ""operator_id"": ""native:joinattributesbylocation""}, {""line_end"": 522, ""line_start"": 522, ""operator_id"": ""native:selectbylocation""}, {""line_end"": 605, ""line_start"": 605, ""operator_id"": ""native:joinattributesbylocation""}, {""line_end"": 630, ""line_start"": 630, ""operator_id"": ""native:joinattributesbylocation""}]","[""native:joinattributesbylocation"", ""native:joinattributesbylocation"", ""native:joinattributesbylocation"", ""native:selectbylocation"", ""native:joinattributesbylocation"", ""native:joinattributesbylocation""]","[""L3_02_04_01"", ""L3_02_04_01"", ""L3_02_04_01"", ""L3_02_06_03"", ""L3_02_04_01"", ""L3_02_04_01""]","[[0, 1], [4, 5]]","{""parameter_dictionary"": 6}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",9b18d127b528f3eb1a54cd48,normalized_source_body_sha256:cb8b658448610b33078c7147a2f2de4ce7ee5fe390914046793ad3ed03e51b86,normalized_source_body_sha256,9b18d127b528f3eb1a54cd484fae94e0729df01904ac1ebcbe62729be59d2abb,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0001575.py,"42 |         tile_recl_path = os.path.join(vhm_clipped_path, name_tile_recl)
+43 |         vhm_temp = QgsRasterLayer(os.path.join(vhm_clipped_path, name_tile))
+44 |         raster_reclass = processing.run(""native:reclassifybytable"",
+45 |             {'INPUT_RASTER':vhm_temp, 'TABLE':reclass_table, 'RASTER_BAND':1, 'DATA_TYPE':1, 'OUTPUT':'TEMPORARY_OUTPUT'})['OUTPUT']
+46 |         
+47 |         par = {'FIELD': 'id', 'INPUT': perimeter_dissolve, 'OPERATOR': 0, 'OUTPUT': 'TEMPORARY_OUTPUT', 'VALUE': id}
+48 |         mask = processing.run(""qgis:extractbyattribute"", par)
+49 | 
+50 |         par = {'INPUT': raster_reclass, 'MASK': mask['OUTPUT'], 'NODATA': None, 'ALPHA_BAND': True, 'CROP_TO_CUTLINE' : True, 'KEEP_RESOLUTION': False,
+51 |         'SET_RESOLUTION' : False, 'OPTIONS': '', 'DATA_TYPE': 1, 'OUTPUT': tile_recl_path}
+52 |         processing.run(""gdal:cliprasterbymasklayer"", par)['OUTPUT']
+53 | 
+54 | 
+...
+63 |         par = {'FIELD': 'id', 'INPUT': perimeter_dissolve, 'OPERATOR': 0, 'OUTPUT': 'TEMPORARY_OUTPUT', 'VALUE': id}
+64 |         
+65 |         mask = processing.run(""qgis:extractbyattribute"", par)
+66 |         name_tile = vhm_prefix + str(id) + '.tif'
+67 |         par = {'INPUT': vhm, 'MASK': mask['OUTPUT'], 'NODATA': None, 'ALPHA_BAND': True, 'CROP_TO_CUTLINE' : True, 'KEEP_RESOLUTION': False,
+68 |         'SET_RESOLUTION' : False, 'OPTIONS': '', 'DATA_TYPE': 0, 'OUTPUT': os.path.join(vhm_clipped_path, name_tile)}
+69 |         
+70 |         clip = processing.run('gdal:cliprasterbymasklayer', par)
+71 | 
+72 | 
+...
+177 |         shp_out_path = os.path.join(shape_path, name_shp)
+178 | 
+179 |         processing.run('gdal:polygonize', {'INPUT': vhm_temp, 'BAND':1, 'FIELD':""ES"", 'OUTPUT':shp_out_path})",True,"[{""line_end"": 45, ""line_start"": 44, ""operator_id"": ""native:reclassifybytable""}, {""line_end"": 48, ""line_start"": 48, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 52, ""line_start"": 52, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 65, ""line_start"": 65, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 70, ""line_start"": 70, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 179, ""line_start"": 179, ""operator_id"": ""gdal:polygonize""}]","[""native:reclassifybytable"", ""native:extractbyattribute"", ""gdal:cliprasterbymasklayer"", ""native:extractbyattribute"", ""gdal:cliprasterbymasklayer"", ""gdal:polygonize""]","[""L3_03_04_01"", ""L3_02_06_02"", ""L3_03_01_01"", ""L3_02_06_02"", ""L3_03_01_01"", ""L3_01_09_03""]","[[0, 2], [1, 2], [3, 4]]","{""backward_slice_alias"": 2, ""immediate_output_extract"": 1, ""parameter_dictionary"": 4, ""result_dictionary"": 3}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",9d47eb425cb3119907974f93,normalized_source_body_sha256:9d47eb425cb3119907974f93323581ac8eb0c968502cdd7c3130c1f9b947f550,normalized_source_body_sha256,9d47eb425cb3119907974f93323581ac8eb0c968502cdd7c3130c1f9b947f550,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4219.py,"66 |     ""OUTPUT"": os.path.join(work_dir, ""roads_buffer.shp"")
+67 | }
+68 | processing.run(""native:buffer"", buffer_params_roads)
+69 | 
+70 | # 学校缓冲区参数和执行
+...
+76 |     ""OUTPUT"": os.path.join(work_dir, ""schools_buffer.shp"")
+77 | }
+78 | processing.run(""native:buffer"", buffer_params_schools)
+79 | 
+80 | # 计算两个缓冲区的交叉（重叠）区域
+...
+84 |     ""OUTPUT"": os.path.join(work_dir, ""distance_of_schools_and_roads.shp"")
+85 | }
+86 | processing.run(""qgis:intersection"", intersection_params)
+87 | 
+88 | # 加载保存后的图层",True,"[{""line_end"": 68, ""line_start"": 68, ""operator_id"": ""native:buffer""}, {""line_end"": 78, ""line_start"": 78, ""operator_id"": ""native:buffer""}, {""line_end"": 86, ""line_start"": 86, ""operator_id"": ""native:intersection""}]","[""native:buffer"", ""native:buffer"", ""native:intersection""]","[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_01""]","[[0, 2], [1, 2]]","{""parameter_dictionary"": 3}",1,1,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",a3ec98e24fe2ad79a5dc182f,normalized_source_body_sha256:a826f37dda7baa26005c4462cec8d1ac801239d37707359361e5f554b5489995,normalized_source_body_sha256,a3ec98e24fe2ad79a5dc182fd3449a0811b26dfd1a6ed2495b0852d182cafd64,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_53758.py,"16 | def ensure_crs(layer, target_crs):
+17 |     if layer.crs() != target_crs:
+18 |         return processing.run(""qgis:reprojectlayer"", {'INPUT': layer, 'TARGET_CRS': target_crs, 'OUTPUT': 'memory:'})['OUTPUT']
+19 |     return layer
+20 | 
+...
+85 |     bg_layer = ensure_crs(bg_layer, nlcd_crs)
+86 | 
+87 |     precincts_layer = processing.run(""qgis:fixgeometries"", {
+88 |         'INPUT': precincts_layer,
+89 |         'OUTPUT': 'memory:'  # Output the fixed geometries to memory
+90 |     })['OUTPUT']
+91 | 
+92 |     bg_layer = processing.run(""qgis:fixgeometries"", {
+93 |         'INPUT': bg_layer,
+94 |         'OUTPUT': 'memory:'  # Output the fixed geometries to memory
+95 |     })['OUTPUT']
+96 | 
+97 | 
+...
+126 |     }
+127 | 
+128 |     intersect_layer = processing.run(""qgis:multiintersection"", params)['OUTPUT']
+129 | 
+130 | 
+...
+159 | 
+160 | 
+161 |     intersect_layer = processing.run(""qgis:fixgeometries"", {
+162 |         'INPUT': intersect_layer,
+163 |         'OUTPUT': 'memory:'  # Output the fixed geometries to memory
+164 |         })['OUTPUT']
+165 | 
+166 |     print(""Step 4"")
+...
+171 |     state_extent = bg_layer.extent()
+172 | 
+173 |     fractional_raster_clipped = processing.run(""gdal:cliprasterbyextent"", {'INPUT':fractional_raster,'PROJWIN':f""{state_extent.xMinimum()},{state_extent.xMaximum()},{state_extent.yMinimum()},{state_extent.yMaximum()}"",'OUTPUT':temp_1})['OUTPUT']
+174 | 
+175 |     descriptor_raster_clipped = processing.run(""gdal:cliprasterbyextent"", {'INPUT':descriptor_raster,'PROJWIN':f""{state_extent.xMinimum()},{state_extent.xMaximum()},{state_extent.yMinimum()},{state_extent.yMaximum()}"",'OUTPUT':temp_2})['OUTPUT']
+176 |     
+177 |     # Create inhabited raster: pixel is 1 if fractional > 1 and descriptor != 1 (non-road), otherwise 0
+178 |     calculated_descriptor_fractional_raster = processing.run(""gdal:rastercalculator"", {
+179 |         'INPUT_A': fractional_raster_clipped,
+180 |         'BAND_A': 1,
+181 |         'INPUT_B': descriptor_raster_clipped,
+182 |         'BAND_B': 1,
+183 |         'FORMULA': '(A > 1) * (A <= 100) * (B != 1) * (B != 250) * A', #250 means no data
+184 |         'OUTPUT':  temp_3 # f'/Users/amir/Downloads/Data/StateExtensionInhabited/inhabited-temp.tif'
+185 |     })['OUTPUT']
+186 | 
+187 |     print(""Step 5"")
+188 | 
+189 | 
+190 |     intersect_imperv = processing.run(""native:zonalstatisticsfb"", {
+191 |         'INPUT': intersect_layer,  # The vector layer defining zones
+192 |         'INPUT_RASTER': calculated_descriptor_fractional_raster,   # The raster layer containing values to sum
+193 |         'RASTER_BAND': 1,                   # Specify the raster band (usually 1 if single-band)
+194 |         'STATISTICS': [1],                  # 1 represents 'Sum' in QGIS
+195 |         'OUTPUT': 'memory:',
+196 |         'COLUMN_PREFIX': 'habitability_'       # Prefix for the new field in vector layer
+197 |     })['OUTPUT']
+198 | 
+199 |     print(""Step 6"")
+200 | 
+201 | 
+202 |     landcover_raster_clipped = processing.run(""gdal:cliprasterbyextent"", {'INPUT':landcover_raster,'PROJWIN':f""{state_extent.xMinimum()},{state_extent.xMaximum()},{state_extent.yMinimum()},{state_extent.yMaximum()}"",'OUTPUT':temp_4})['OUTPUT']
+203 | 
+204 |     intersect_imperv_landcover = processing.run(""native:zonalhistogram"", {
+205 |         'INPUT_RASTER': landcover_raster_clipped,
+206 |         'INPUT_VECTOR': intersect_imperv,
+207 |         'COLUMN_PREFIX': 'lc_',
+208 |         'OUTPUT': 'memory:'
+209 |     })['OUTPUT']
+210 | 
+211 |     print(""Step 7"")",True,"[{""line_end"": 18, ""line_start"": 18, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 90, ""line_start"": 87, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 95, ""line_start"": 92, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 128, ""line_start"": 128, ""operator_id"": ""native:multiintersection""}, {""line_end"": 164, ""line_start"": 161, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 173, ""line_start"": 173, ""operator_id"": ""gdal:cliprasterbyextent""}, {""line_end"": 175, ""line_start"": 175, ""operator_id"": ""gdal:cliprasterbyextent""}, {""line_end"": 185, ""line_start"": 178, ""operator_id"": ""gdal:rastercalculator""}, {""line_end"": 197, ""line_start"": 190, ""operator_id"": ""native:zonalstatisticsfb""}, {""line_end"": 202, ""line_start"": 202, ""operator_id"": ""gdal:cliprasterbyextent""}, {""line_end"": 209, ""line_start"": 204, ""operator_id"": ""native:zonalhistogram""}]","[""native:reprojectlayer"", ""native:fixgeometries"", ""native:fixgeometries"", ""native:multiintersection"", ""native:fixgeometries"", ""gdal:cliprasterbyextent"", ""gdal:cliprasterbyextent"", ""gdal:rastercalculator"", ""native:zonalstatisticsfb"", ""gdal:cliprasterbyextent"", ""native:zonalhistogram""]","[""L3_01_10_01"", ""L3_01_05_02"", ""L3_01_05_02"", ""L3_02_02_01"", ""L3_01_05_02"", ""L3_03_01_02"", ""L3_03_01_02"", ""L3_03_03_A"", ""L3_03_02_01"", ""L3_03_01_02"", ""L3_03_02_01""]","[[1, 3], [2, 3], [2, 5], [2, 6], [2, 9], [3, 4], [4, 8], [5, 7], [6, 7], [7, 8], [8, 10], [9, 10]]","{""backward_slice_alias"": 5, ""cross_function_dataflow"": 2, ""helper_function_call"": 3, ""immediate_output_extract"": 10, ""parameter_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",a4b062fd088922cdf6fc1868,normalized_source_body_sha256:153204bf2281bbf1067bf43c792bc338c7bc665b6cfb609f8aace315ecf55602,normalized_source_body_sha256,a4b062fd088922cdf6fc18684f0997dc12fb950727ce2fa0cf1850d5b7995160,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4899.py,"73 |     'OUTPUT': 'memory:'
+74 | }
+75 | fixgeo_vcwithlangs = processing.run('native:fixgeometries', fg1_dict)['OUTPUT']
+76 | 
+77 | print('fixing geometries, vcs without languages')
+...
+80 |     'OUTPUT': 'memory:'
+81 | }
+82 | fixgeo_vcwithoutlangs = processing.run('native:fixgeometries', fg2_dict)['OUTPUT']
+83 | 
+84 | # here we loop over the rasters
+...
+100 | 	    'STATS': [2]
+101 | 	}
+102 | 	processing.run('qgis:zonalstatistics', zs1_dict)
+103 | 
+104 | 	print('computing zonal stats for no language areas {}'.format(pref))
+...
+110 | 	    'STATS': [2]
+111 | 	}
+112 | 	processing.run('qgis:zonalstatistics', zs2_dict)	
+113 | 
+114 | ###################################################################",True,"[{""line_end"": 75, ""line_start"": 75, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 82, ""line_start"": 82, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 102, ""line_start"": 102, ""operator_id"": ""native:zonalstatistics""}, {""line_end"": 112, ""line_start"": 112, ""operator_id"": ""native:zonalstatistics""}]","[""native:fixgeometries"", ""native:fixgeometries"", ""native:zonalstatistics"", ""native:zonalstatistics""]","[""L3_01_05_02"", ""L3_01_05_02"", ""L3_03_02_01"", ""L3_03_02_01""]","[[0, 2], [1, 3]]","{""backward_slice_alias"": 2, ""immediate_output_extract"": 2, ""parameter_dictionary"": 4}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",aad1a9ec92bac56bd661b3b6,normalized_source_body_sha256:0eecb32edbf8c1b7486ef766294aa60982edce484d811c31178eda8e32efc82b,normalized_source_body_sha256,aad1a9ec92bac56bd661b3b6935a9b61b83806d556f59481dfe0703c32c56287,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0005560.py,"77 |     'OUTPUT': 'memory:'
+78 | }
+79 | dropfields_cents = processing.run('qgis:deletecolumn', drop_dict)['OUTPUT']
+80 | 
+81 | # here we loop over the rasters
+...
+98 | 	    'RESULT': auxout
+99 | 	}
+100 | 	processing.run('saga:addrastervaluestopoints', rvtp_dict)
+101 | 
+102 | ",True,"[{""line_end"": 79, ""line_start"": 79, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 100, ""line_start"": 100, ""operator_id"": ""saga:addrastervaluestopoints""}]","[""native:deletecolumn"", ""saga:addrastervaluestopoints""]","[""L3_01_02_02"", ""L3_02_04_01""]","[[0, 1]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 1, ""parameter_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",acd7d7a9929277b0826acf17,normalized_source_body_sha256:ac0d1c4b732919a574b60190cbaf847ad24a28b8868db7b8dabb39ecc6ba803b,normalized_source_body_sha256,acd7d7a9929277b0826acf173399992aa883b5c18a40ee7ac48075c0948b8693,/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts/script_55543.py,"76 |     'OUTPUT': 'memory:'
+77 | }
+78 | fixgeo_vcwithlangs = processing.run('native:fixgeometries', fg1_dict)['OUTPUT']
+79 | 
+80 | print('fixing geometries, vcs without languages')
+...
+83 |     'OUTPUT': 'memory:'
+84 | }
+85 | fixgeo_vcwithoutlangs = processing.run('native:fixgeometries', fg2_dict)['OUTPUT']
+86 | 
+87 | # here we loop over the rasters
+...
+103 | 	    'STATS': [2]
+104 | 	}
+105 | 	processing.run('qgis:zonalstatistics', zs1_dict)
+106 | 
+107 | 	print('computing zonal stats for no language areas {}'.format(pref))
+...
+113 | 	    'STATS': [2]
+114 | 	}
+115 | 	processing.run('qgis:zonalstatistics', zs2_dict)	
+116 | 
+117 | ###################################################################",True,"[{""line_end"": 78, ""line_start"": 78, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 85, ""line_start"": 85, ""operator_id"": ""native:fixgeometries""}, {""line_end"": 105, ""line_start"": 105, ""operator_id"": ""native:zonalstatistics""}, {""line_end"": 115, ""line_start"": 115, ""operator_id"": ""native:zonalstatistics""}]","[""native:fixgeometries"", ""native:fixgeometries"", ""native:zonalstatistics"", ""native:zonalstatistics""]","[""L3_01_05_02"", ""L3_01_05_02"", ""L3_03_02_01"", ""L3_03_02_01""]","[[0, 2], [1, 3]]","{""backward_slice_alias"": 2, ""immediate_output_extract"": 2, ""parameter_dictionary"": 4}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",b7efaa046fd809f6df3f5ed8,normalized_source_body_sha256:8732889b21f3432eddd8cf424cb5b9909893afaffbd7b407a98aff5aa7809c5c,normalized_source_body_sha256,b7efaa046fd809f6df3f5ed8241726072823328814ed62a1f93ea40334fe1f23,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4904.py,"71 |     'OUTPUT': 'memory:'
+72 | }
+73 | dropfields_cents = processing.run('qgis:deletecolumn', drop_dict)['OUTPUT']
+74 | 
+75 | # here we loop over the rasters
+...
+92 | 	    'RESULT': auxout
+93 | 	}
+94 | 	processing.run('saga:addrastervaluestopoints', rvtp_dict)
+95 | 
+96 | ",True,"[{""line_end"": 73, ""line_start"": 73, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 94, ""line_start"": 94, ""operator_id"": ""saga:addrastervaluestopoints""}]","[""native:deletecolumn"", ""saga:addrastervaluestopoints""]","[""L3_01_02_02"", ""L3_02_04_01""]","[[0, 1]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 1, ""parameter_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",c165cd85caeeaec4d5959c74,normalized_source_body_sha256:6d9632ca3773e10a335226efa5fcd0a707621eb7cbf59503106ae71f558f2e92,normalized_source_body_sha256,c165cd85caeeaec4d5959c7412de227fbb2c9b9700920591e3725892804f9dd7,/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts/script_55548.py,"74 |     'OUTPUT': 'memory:'
+75 | }
+76 | dropfields_cents = processing.run('qgis:deletecolumn', drop_dict)['OUTPUT']
+77 | 
+78 | # here we loop over the rasters
+...
+95 | 	    'RESULT': auxout
+96 | 	}
+97 | 	processing.run('saga:addrastervaluestopoints', rvtp_dict)
+98 | 
+99 | ",True,"[{""line_end"": 76, ""line_start"": 76, ""operator_id"": ""native:deletecolumn""}, {""line_end"": 97, ""line_start"": 97, ""operator_id"": ""saga:addrastervaluestopoints""}]","[""native:deletecolumn"", ""saga:addrastervaluestopoints""]","[""L3_01_02_02"", ""L3_02_04_01""]","[[0, 1]]","{""backward_slice_alias"": 1, ""immediate_output_extract"": 1, ""parameter_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",c732ca0162eb72c4706434f4,normalized_source_body_sha256:8d2942b135bc444253136f365f53c9811ddbe55fde4763f049c64d92c7561f85,normalized_source_body_sha256,c732ca0162eb72c4706434f40798f1b7f816219c10f77715c3eaad4c88e9c021,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0016060.py,"188 |         'OUTPUT': irrig_mf_s,
+189 |     }
+190 |     processing.run(""qgis:joinattributesbylocation"", params)
+191 | 
+192 |     # Join sub id
+...
+204 |         'OUTPUT': irrig_mf_f,
+205 |     }
+206 |     processing.run(""qgis:joinattributesbylocation"", params02)
+207 | 
+208 |     # delete unnecessary fields
+...
+378 |             'OUTPUT':drn_chn_f
+379 |             }
+380 |         processing.run(
+381 |                         ""qgis:joinattributesbylocation"",
+382 |                         parmas)
+383 | 
+384 |         # delete unnecessary fields
+...
+526 |         'METHOD': 0,
+527 |     }
+528 |     processing.run('qgis:selectbylocation', params)
+529 | 
+530 |     # processing.run('qgis:selectbylocation', input1, input2, ['intersects'], 0, 0)
+...
+609 |         'OUTPUT': irrig_swat_grid_s,
+610 |     }
+611 |     processing.run(""qgis:joinattributesbylocation"", params)
+612 | 
+613 | 
+...
+634 |         'OUTPUT': irrig_swat_grid_f,
+635 |     }
+636 |     processing.run(""qgis:joinattributesbylocation"", params02)
+637 | 
+638 | ",True,"[{""line_end"": 190, ""line_start"": 190, ""operator_id"": ""native:joinattributesbylocation""}, {""line_end"": 206, ""line_start"": 206, ""operator_id"": ""native:joinattributesbylocation""}, {""line_end"": 382, ""line_start"": 380, ""operator_id"": ""native:joinattributesbylocation""}, {""line_end"": 528, ""line_start"": 528, ""operator_id"": ""native:selectbylocation""}, {""line_end"": 611, ""line_start"": 611, ""operator_id"": ""native:joinattributesbylocation""}, {""line_end"": 636, ""line_start"": 636, ""operator_id"": ""native:joinattributesbylocation""}]","[""native:joinattributesbylocation"", ""native:joinattributesbylocation"", ""native:joinattributesbylocation"", ""native:selectbylocation"", ""native:joinattributesbylocation"", ""native:joinattributesbylocation""]","[""L3_02_04_01"", ""L3_02_04_01"", ""L3_02_04_01"", ""L3_02_06_03"", ""L3_02_04_01"", ""L3_02_04_01""]","[[0, 1], [4, 5]]","{""parameter_dictionary"": 6}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",c745f7bd9a790e315a387a6d,normalized_source_body_sha256:1e08a391b9fbcf290f18150017cb0f0ebf1f0032f49a26d956e808d64d7ba2a1,normalized_source_body_sha256,c745f7bd9a790e315a387a6d09abde25e17acbb40b68b139923c37a48f1bac5f,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4536.py,"63 | 	print('Clipping streamnet')
+64 | 	cmd_dict = {'INPUT':streamnetpath,'EXTENT':extentstr,'OUTPUT':clipfile}
+65 | 	processing.run('gdal:clipvectorbyextent',cmd_dict)
+66 | 
+67 | 
+...
+78 | 	print('Extracting vertices: upstream all')
+79 | 	cmd_dict = {'INPUT':streamnetpath,'VERTICES':'-1','OUTPUT':upall}
+80 | 	processing.run('qgis:extractspecificvertices',cmd_dict)
+81 | 
+82 | 
+...
+85 | 	print('Extracting vertices: upstream domain')
+86 | 	cmd_dict = {'INPUT':clipfile,'VERTICES':'-1','OUTPUT':upfile}
+87 | 	processing.run('qgis:extractspecificvertices',cmd_dict)
+88 | 
+89 | downfile = os.path.join(outdir,clipname+'_downstream.shp')
+...
+91 | 	print('Extracting vertices: downstream')
+92 | 	cmd_dict = {'INPUT':clipfile,'VERTICES':'0','OUTPUT':downfile}
+93 | 	processing.run('qgis:extractspecificvertices',cmd_dict)
+94 | 
+95 | nextdownfile = os.path.join(outdir,clipname+'_next-to-downstream.shp')
+...
+97 | 	print('Extracting vertices: next-to-downstream')
+98 | 	cmd_dict = {'INPUT':clipfile,'VERTICES':'1','OUTPUT':nextdownfile}
+99 | 	processing.run('qgis:extractspecificvertices',cmd_dict)
+100 | 
+101 | ###########################################################################
+...
+106 | 	print('Sampling accumulation values: upstream domain')
+107 | 	cmd_dict = {'INPUT':upfile,'RASTERCOPY':accpath,'COLUMN_PREFIX':'ACC','OUTPUT':acc_up_file}
+108 | 	processing.run('qgis:rastersampling',cmd_dict)
+109 | 
+110 | acc_upall_file = os.path.join(outdir,'strn_network_'+resname+'_acc_upstream.shp')
+...
+112 | 	print('Sampling accumulation values: upstream all')
+113 | 	cmd_dict = {'INPUT':upall,'RASTERCOPY':accpath,'COLUMN_PREFIX':'ACC','OUTPUT':acc_upall_file}
+114 | 	processing.run('qgis:rastersampling',cmd_dict)
+115 | 
+116 | acc_ntd_file = os.path.join(outdir,clipname+'_acc_next-to-downstream.shp')
+...
+118 | 	print('Sampling accumulation values: next-to-downstream')
+119 | 	cmd_dict = {'INPUT':nextdownfile,'RASTERCOPY':accpath,'COLUMN_PREFIX':'ACC','OUTPUT':acc_ntd_file}
+120 | 	processing.run('qgis:rastersampling',cmd_dict)
+121 | 
+122 | acc_ds_file = os.path.join(outdir,clipname+'_acc_downstream.shp')
+...
+124 | 	print('Sampling accumulation values: downstream')
+125 | 	cmd_dict = {'INPUT':downfile,'RASTERCOPY':accpath,'COLUMN_PREFIX':'ACC','OUTPUT':acc_ds_file}
+126 | 	processing.run('qgis:rastersampling',cmd_dict)",True,"[{""line_end"": 65, ""line_start"": 65, ""operator_id"": ""gdal:clipvectorbyextent""}, {""line_end"": 80, ""line_start"": 80, ""operator_id"": ""native:extractspecificvertices""}, {""line_end"": 87, ""line_start"": 87, ""operator_id"": ""native:extractspecificvertices""}, {""line_end"": 93, ""line_start"": 93, ""operator_id"": ""native:extractspecificvertices""}, {""line_end"": 99, ""line_start"": 99, ""operator_id"": ""native:extractspecificvertices""}, {""line_end"": 108, ""line_start"": 108, ""operator_id"": ""native:rastersampling""}, {""line_end"": 114, ""line_start"": 114, ""operator_id"": ""native:rastersampling""}, {""line_end"": 120, ""line_start"": 120, ""operator_id"": ""native:rastersampling""}, {""line_end"": 126, ""line_start"": 126, ""operator_id"": ""native:rastersampling""}]","[""gdal:clipvectorbyextent"", ""native:extractspecificvertices"", ""native:extractspecificvertices"", ""native:extractspecificvertices"", ""native:extractspecificvertices"", ""native:rastersampling"", ""native:rastersampling"", ""native:rastersampling"", ""native:rastersampling""]","[""L3_02_06_03"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_08_01_01"", ""L3_08_01_01"", ""L3_08_01_01"", ""L3_08_01_01""]","[[0, 2], [0, 3], [0, 4], [1, 6], [2, 5], [3, 8], [4, 7]]","{""parameter_dictionary"": 9}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",d6b4a4b7058a3807ed928450,normalized_source_body_sha256:35deb00ec609400d25f79a723d521d5b43160cef8a43c579139b7b337fe690e3,normalized_source_body_sha256,d6b4a4b7058a3807ed9284509b668094c908c88fa11b64214faa278252f32a99,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_49399.py,"25 | else:
+26 |     parameters = {'INPUT': input_layer, 'OVERLAY': overlay_layer, 'OUTPUT': output_file_clip_path}
+27 |     clip = processing.run('qgis:clip', parameters)
+28 |     parameters = {'INPUT': output_file_clip_path, 'FIELD': [dissolve_field], 'OUTPUT': output_file_dissolve_path}
+29 |     processing.run(""native:dissolve"", parameters)
+30 |     if os.path.exists(output_file_dissolve_path):
+31 |         dissolved_layer = QgsVectorLayer(output_file_dissolve_path, f'{output_file_clip_name}Dissolve', 'ogr')",True,"[{""line_end"": 27, ""line_start"": 27, ""operator_id"": ""native:clip""}, {""line_end"": 29, ""line_start"": 29, ""operator_id"": ""native:dissolve""}]","[""native:clip"", ""native:dissolve""]","[""L3_02_02_06"", ""L3_02_03_05""]","[[0, 1]]","{""parameter_dictionary"": 2, ""result_dictionary"": 1}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",eb51fbefee2ec6810d2e1b00,normalized_source_body_sha256:c1feb8c57678971e3149343c92a28ab01bd7a358e0fa77fab69801aeca3adf37,normalized_source_body_sha256,eb51fbefee2ec6810d2e1b006eacd38290f021931f828001f80bf0d5905dc3b4,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0001797.py,"45 | atbn = QgsProject.instance().mapLayersByName(""Autobahn"")[0] """"""
+46 | param = { 'INPUT' : atbn, 'DISTANCE' : 20, 'SEGMENTS' : 5, 'END_CAP_STYLE' : 0, 'JOIN_STYLE' : 0, 'MITER_LIMIT' : 2, 'DISSOLVE' : False, 'OUTPUT' : 'memory:' }
+47 | algoOutput = processing.run(""qgis:buffer"", param)
+48 | autobahn20 = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+49 | autobahn20.setName(""Autobahn 20"")
+...
+51 | """""" 2.4. Creating 2 more Buffers """"""
+52 | param = { 'INPUT' : autobahn20, 'DISTANCE' : 100, 'SEGMENTS' : 5, 'END_CAP_STYLE' : 0, 'JOIN_STYLE' : 0, 'MITER_LIMIT' : 2, 'DISSOLVE' : False, 'OUTPUT' : 'memory:' }
+53 | algoOutput = processing.run(""qgis:buffer"", param)
+54 | autobahn100 = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+55 | autobahn100.setName(""Autobahn 100"")
+56 | 
+57 | param = { 'INPUT' : autobahn100, 'DISTANCE' : 200, 'SEGMENTS' : 5, 'END_CAP_STYLE' : 0, 'JOIN_STYLE' : 0, 'MITER_LIMIT' : 2, 'DISSOLVE' : False, 'OUTPUT' : 'memory:' }
+58 | algoOutput = processing.run(""qgis:buffer"", param)
+59 | autobahn300 = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+60 | autobahn300.setName(""Autobahn 300"")
+...
+63 | """""" Task 3. Performing Union on the Buffer Areas """"""
+64 | param = { 'INPUT' : autobahn20, 'OVERLAY' : autobahn100, 'OUTPUT' : 'memory:' }
+65 | algoOutput = processing.run(""qgis:union"", param)
+66 | innerImpactArea = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+67 | innerImpactArea.setName(""Inner Impact Area"")
+68 | 
+69 | param = { 'INPUT' : innerImpactArea, 'OVERLAY' : autobahn300, 'OUTPUT' : 'memory:' }
+70 | algoOutput = processing.run(""qgis:union"", param)
+71 | impactArea = QgsProject.instance().addMapLayer(algoOutput['OUTPUT'])
+72 | impactArea.setName(""Impact Area"")
+...
+79 | def intersect_layers(layer1, layer2, outputName):
+80 |     param = param = { 'INPUT' : layer1, 'OVERLAY' : layer2, 'INPUT_FIELDS' : [], 'OVERLAY_FIELDS' : [], 'OUTPUT' : 'memory:' }
+81 |     intxnOp = QgsProject.instance().addMapLayer(processing.run(""qgis:intersection"", param)['OUTPUT'])
+82 |     intxnOp.setName(outputName)
+83 |     ",True,"[{""line_end"": 47, ""line_start"": 47, ""operator_id"": ""native:buffer""}, {""line_end"": 53, ""line_start"": 53, ""operator_id"": ""native:buffer""}, {""line_end"": 58, ""line_start"": 58, ""operator_id"": ""native:buffer""}, {""line_end"": 65, ""line_start"": 65, ""operator_id"": ""native:union""}, {""line_end"": 70, ""line_start"": 70, ""operator_id"": ""native:union""}, {""line_end"": 81, ""line_start"": 81, ""operator_id"": ""native:intersection""}]","[""native:buffer"", ""native:buffer"", ""native:buffer"", ""native:union"", ""native:union"", ""native:intersection""]","[""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_01_01"", ""L3_02_02_02"", ""L3_02_02_02"", ""L3_02_02_01""]","[[0, 1], [1, 2], [2, 3], [3, 4]]","{""backward_slice_alias"": 1, ""cross_function_dataflow"": 1, ""helper_function_call"": 1, ""parameter_dictionary"": 6, ""result_dictionary"": 5}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",eb68c40bc9725c14c8dd8d72,normalized_source_body_sha256:ddaa466440c97f1ed9a02c09c5d4bcf4dfc9748503fd61672875d137ee67c71d,normalized_source_body_sha256,eb68c40bc9725c14c8dd8d72ed3952aa080d3b12136c74671c55238493499b96,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_32044.py,"24 |     }
+25 |     
+26 |     mask = processing.run(""qgis:extractbyattribute"", mask_par)
+27 |     
+28 |     clip_par = {
+...
+38 |     }
+39 |     
+40 |     clip = processing.run('gdal:cliprasterbymasklayer', clip_par)
+41 |     
+42 | print('Processo finalizado.')",True,"[{""line_end"": 26, ""line_start"": 26, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 40, ""line_start"": 40, ""operator_id"": ""gdal:cliprasterbymasklayer""}]","[""native:extractbyattribute"", ""gdal:cliprasterbymasklayer""]","[""L3_02_06_02"", ""L3_03_01_01""]","[[0, 1]]","{""backward_slice_alias"": 1, ""parameter_dictionary"": 2, ""result_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",efe75a965eba2638051b207b,normalized_source_body_sha256:a23ae281b94125c118444ad35a5822b5ce4a888927c49a8906b63af3b94259ca,normalized_source_body_sha256,efe75a965eba2638051b207be29f3840197cfa6368e08e10f9b3160bae5969da,/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts/script_55490.py,"39 |         tile_recl_path = os.path.join(vhm_clipped_path, name_tile_recl)
+40 |         vhm_temp = QgsRasterLayer(os.path.join(vhm_clipped_path, name_tile))
+41 |         raster_reclass = processing.run(""native:reclassifybytable"",
+42 |             {'INPUT_RASTER':vhm_temp, 'TABLE':reclass_table, 'RASTER_BAND':1, 'DATA_TYPE':1, 'OUTPUT':'TEMPORARY_OUTPUT'})['OUTPUT']
+43 |         
+44 |         par = {'FIELD': 'id', 'INPUT': perimeter_dissolve, 'OPERATOR': 0, 'OUTPUT': 'TEMPORARY_OUTPUT', 'VALUE': id}
+45 |         mask = processing.run(""qgis:extractbyattribute"", par)
+46 | 
+47 |         par = {'INPUT': raster_reclass, 'MASK': mask['OUTPUT'], 'NODATA': None, 'ALPHA_BAND': True, 'CROP_TO_CUTLINE' : True, 'KEEP_RESOLUTION': False,
+48 |         'SET_RESOLUTION' : False, 'OPTIONS': '', 'DATA_TYPE': 1, 'OUTPUT': tile_recl_path}
+49 |         processing.run(""gdal:cliprasterbymasklayer"", par)['OUTPUT']
+50 | 
+51 | 
+...
+60 |         par = {'FIELD': 'id', 'INPUT': perimeter_dissolve, 'OPERATOR': 0, 'OUTPUT': 'TEMPORARY_OUTPUT', 'VALUE': id}
+61 |         
+62 |         mask = processing.run(""qgis:extractbyattribute"", par)
+63 |         name_tile = vhm_prefix + str(id) + '.tif'
+64 |         par = {'INPUT': vhm, 'MASK': mask['OUTPUT'], 'NODATA': None, 'ALPHA_BAND': True, 'CROP_TO_CUTLINE' : True, 'KEEP_RESOLUTION': False,
+65 |         'SET_RESOLUTION' : False, 'OPTIONS': '', 'DATA_TYPE': 0, 'OUTPUT': os.path.join(vhm_clipped_path, name_tile)}
+66 |         
+67 |         clip = processing.run('gdal:cliprasterbymasklayer', par)
+68 | 
+69 | 
+...
+174 |         shp_out_path = os.path.join(shape_path, name_shp)
+175 | 
+176 |         processing.run('gdal:polygonize', {'INPUT': vhm_temp, 'BAND':1, 'FIELD':""ES"", 'OUTPUT':shp_out_path})",True,"[{""line_end"": 42, ""line_start"": 41, ""operator_id"": ""native:reclassifybytable""}, {""line_end"": 45, ""line_start"": 45, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 49, ""line_start"": 49, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 62, ""line_start"": 62, ""operator_id"": ""native:extractbyattribute""}, {""line_end"": 67, ""line_start"": 67, ""operator_id"": ""gdal:cliprasterbymasklayer""}, {""line_end"": 176, ""line_start"": 176, ""operator_id"": ""gdal:polygonize""}]","[""native:reclassifybytable"", ""native:extractbyattribute"", ""gdal:cliprasterbymasklayer"", ""native:extractbyattribute"", ""gdal:cliprasterbymasklayer"", ""gdal:polygonize""]","[""L3_03_04_01"", ""L3_02_06_02"", ""L3_03_01_01"", ""L3_02_06_02"", ""L3_03_01_01"", ""L3_01_09_03""]","[[0, 2], [1, 2], [3, 4]]","{""backward_slice_alias"": 2, ""immediate_output_extract"": 1, ""parameter_dictionary"": 4, ""result_dictionary"": 3}",2,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",f0e260bc52a24b379c668c60,normalized_source_body_sha256:5d21ce16b457d29b95fc7e49b23bdc0fae6a7010ee525db18b9816827c9db75c,normalized_source_body_sha256,f0e260bc52a24b379c668c602225503246f3ecc42f2f81a99ebfc66118235507,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_36707.py,"71 |                           'COLUMN_PREFIX': 'ENV_F_',
+72 |                           'OUTPUT': 'TEMPORARY_OUTPUT'}
+73 |                 result = processing.run(""native:rastersampling"",
+74 |                                         params,
+75 |                                         feedback=feedback)
+76 |                 raster_log.info(feedback.textLog())
+77 |                 # feedback object to collect logs
+...
+85 |                           'FORMULA': str(start_date),
+86 |                           'OUTPUT': 'TEMPORARY_OUTPUT'}
+87 |                 result = processing.run('qgis:fieldcalculator',
+88 |                                         params,
+89 |                                         feedback=feedback)
+90 |                 raster_log.info(feedback.textLog())
+91 |                 # write final file as a csv file",True,"[{""line_end"": 75, ""line_start"": 73, ""operator_id"": ""native:rastersampling""}, {""line_end"": 89, ""line_start"": 87, ""operator_id"": ""native:fieldcalculator""}]","[""native:rastersampling"", ""native:fieldcalculator""]","[""L3_08_01_01"", ""L3_01_02_06""]","[[0, 1]]","{""backward_slice_alias"": 1, ""helper_function_call"": 1, ""parameter_dictionary"": 2, ""result_dictionary"": 2}",1,0,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256
+gis_recommend.qgis_family_calibration_row.v1,parameter_dictionary,resolve-single-scope-parameter-dictionary-v1,"Resolve one same-scope reaching parameter dictionary for processing.run; retain only literal keys and statically resolved value references; fail on ambiguous writes, dynamic keys, or conditional mutations.",f4b5f8eda5c6d80c031ccb85,normalized_source_body_sha256:32fddec217f46410863e7add40c754865c4c0a1eaba18c5c38f49e16aea5d305,normalized_source_body_sha256,f4b5f8eda5c6d80c031ccb8531010971850759a58ec424a63a0aa53ec475a700,/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0004151.py,"34 | out = r'out\airports_poland.shp'
+35 | 
+36 | processing.run(""qgis:intersection"", {'INPUT': airports, 'OVERLAY': country, 'OUTPUT': out})
+37 | 
+38 | 
+...
+40 | parameter = {'INPUT': r'out\country_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+41 |                  'OUTPUT': r'out\country_poland_proj.shp'}
+42 | processing.run('qgis:reprojectlayer', parameter)
+43 | 
+44 | parameter = {'INPUT': r'out\airports_poland.shp', 'TARGET_CRS': 'EPSG:2180',
+45 |                  'OUTPUT': r'out\airports_poland_proj.shp'}
+46 | processing.run('qgis:reprojectlayer', parameter)
+47 | 
+48 | 
+49 | # Create buffer
+50 | processing.run(""qgis:buffer"",
+51 |     {'INPUT': r'out\airports_poland_proj.shp', 'DISTANCE': 50000, 'SEGMENTS': 5, 'END_CAP_STYLE': 0, 'JOIN_STYLE': 0, 'MITER_LIMIT': 2,
+52 |     'DISSOLVE': False, 'OUTPUT': r'out\airports_poland_proj_buff.shp'})
+53 | 
+54 | # Erase buffer
+55 | processing.run(""qgis:difference"", {'INPUT': r'out\country_poland_proj.shp', 'OVERLAY': r""out\airports_poland_proj_buff.shp"",
+56 |                              'OUTPUT': r""out\country_poland_proj_erased.shp""})
+57 | 
+58 | # --- Create map PNG ---",True,"[{""line_end"": 36, ""line_start"": 36, ""operator_id"": ""native:intersection""}, {""line_end"": 42, ""line_start"": 42, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 46, ""line_start"": 46, ""operator_id"": ""native:reprojectlayer""}, {""line_end"": 52, ""line_start"": 50, ""operator_id"": ""native:buffer""}, {""line_end"": 56, ""line_start"": 55, ""operator_id"": ""native:difference""}]","[""native:intersection"", ""native:reprojectlayer"", ""native:reprojectlayer"", ""native:buffer"", ""native:difference""]","[""L3_02_02_01"", ""L3_01_10_01"", ""L3_01_10_01"", ""L3_02_01_01"", ""L3_02_02_04""]","[[1, 4], [2, 3], [3, 4]]","{""parameter_dictionary"": 2}",1,1,pending_human_review,not_granted_rule_calibration_only,False,False,False,not_granted,,,,,,,verified_sha256

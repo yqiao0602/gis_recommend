@@ -1,0 +1,49 @@
+{
+  "schema": "gis_recommend.qgis_full_pool_batch_census.v1",
+  "input_rows": 8466,
+  "verified_source_rows": 8466,
+  "primary_layers": {
+    "dynamic_or_blank_processing_id": 445,
+    "explicit_processing_catalog_miss": 3163,
+    "processing_algorithm_implementation_or_custom": 4858
+  },
+  "recovery_opportunities": {
+    "custom_embedded_multistep": 2,
+    "dynamic_id_fully_resolved": 106,
+    "dynamic_id_partially_resolved": 15,
+    "helper_cross_function": 110,
+    "output_alias": 1836,
+    "parameter_dict_name": 2083
+  },
+  "latest_replay": {
+    "input_rows": 3163,
+    "mapping_complete_rows": 791,
+    "mapping_complete_unique_chains": 282,
+    "direct_description_ready_rows": 129,
+    "direct_description_ready_unique_chains": 41,
+    "action_counts": {
+      "auto_accept_candidate": 129,
+      "defer_mapping": 1985,
+      "defer_operator_resolution": 387,
+      "exclude_candidate_alignment_failure": 50,
+      "recover_call_graph": 191,
+      "review_api_sidecar": 242,
+      "split_subworkflow": 179
+    }
+  },
+  "batch_gate": {
+    "source_authority": "verified_8466_rows",
+    "processing_full_pool_replay": "not_replayed_in_current_windows_workspace",
+    "training_rows_emitted": 0,
+    "training_admission": "not_granted_batch_census_only",
+    "validation_eligible": false,
+    "test_eligible": false,
+    "production_merge": "not_granted",
+    "llm_called": false
+  },
+  "next_batch_actions": [
+    "replay_current_rules_against_full_source_manifest",
+    "run_description_fidelity_and_four_layer_dedup",
+    "keep_recovery_split_and_api_sidecar_out_of_training_until_support_30"
+  ]
+}

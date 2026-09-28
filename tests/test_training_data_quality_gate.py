@@ -67,6 +67,174 @@ def _id_mappings() -> dict:
 
 
 class TrainingDataQualityGateTests(unittest.TestCase):
+    def test_description_alignment_is_reported_without_quarantining_by_default(self):
+        workflow = _workflow("A", ["op.a"], [1], name="export-chart")
+        workflow["task_metadata"]["task_description"] = (
+            "Export the result, visualize it as a map layer, and create a chart."
+        )
+
+        result = build_quality_gate_candidate(
+            [workflow],
+            _id_mappings(),
+            QualityGatePolicy(min_task_count=1),
+        )
+
+        self.assertEqual(len(result.candidate_workflows), 1)
+        self.assertEqual(len(result.quarantined_workflows), 0)
+        alignment = result.candidate_workflows[0]["quality_gate"]["description_alignment"]
+        self.assertEqual(
+            {claim["claim"] for claim in alignment["unsupported_claims"]},
+            {"export", "visualization", "chart"},
+        )
+        self.assertIn(
+            "description_alignment_issue",
+            result.candidate_workflows[0]["quality_gate"]["flags"],
+        )
+        self.assertEqual(result.report["description_alignment"]["workflows_with_issues"], 1)
+        self.assertEqual(result.report["description_alignment"]["claims"]["export"], 1)
+
+    def test_description_alignment_strict_policy_quarantines_unsupported_claims(self):
+        mismatched = _workflow("A", ["op.a"], [1], name="export")
+        mismatched["task_metadata"]["task_description"] = "Export the final image."
+        clean = _workflow("A", ["op.b"], [2], name="clean")
+
+        result = build_quality_gate_candidate(
+            [mismatched, clean],
+            _id_mappings(),
+            QualityGatePolicy(
+                min_task_count=1,
+                description_alignment_policy="quarantine",
+            ),
+        )
+
+        self.assertEqual(len(result.candidate_workflows), 1)
+        self.assertEqual(len(result.quarantined_workflows), 1)
+        reasons = result.quarantined_workflows[0]["quality_gate"]["quarantine_reasons"]
+        self.assertEqual(reasons[0]["reason"], "description_chain_mismatch")
+        self.assertEqual(reasons[0]["claim"], "export")
+
+    def test_source_and_sequence_identities_form_transitive_split_groups(self):
+        workflows = [
+            _workflow("A", ["op.a"], [1], name="source-a-1"),
+            _workflow("A", ["op.b"], [2], name="source-a-2"),
+            _workflow("A", ["op.c"], [2], name="source-b"),
+            _workflow("A", ["op.d"], [4], name="source-c"),
+            _workflow("A", ["op.e"], [5], name="source-d"),
+        ]
+        workflows[0]["metadata"]["source_hash"] = "a" * 64
+        workflows[1]["metadata"]["source_hash"] = "a" * 64
+        workflows[2]["metadata"]["source_hash"] = "b" * 64
+        workflows[3]["metadata"]["source_hash"] = "c" * 64
+        workflows[4]["metadata"]["source_hash"] = "d" * 64
+        for workflow in workflows:
+            workflow["metadata"]["source_identity_authority"] = "source_content_sha256"
+
+        result = build_quality_gate_candidate(
+            workflows,
+            _id_mappings(),
+            QualityGatePolicy(min_task_count=1, train_ratio=0.5, val_ratio=0.25),
+        )
+
+        split_of = {}
+        for split_name, key in (("train", "train_indices"), ("val", "val_indices"), ("test", "test_indices")):
+            for index in result.splits[key]:
+                split_of[index] = split_name
+        self.assertEqual(split_of[0], split_of[1])
+        self.assertEqual(split_of[1], split_of[2])
+        self.assertEqual(result.report["splits"]["cross_split_source_identities"], 0)
+        self.assertEqual(result.report["source_identity"]["missing_workflows"], 0)
+        self.assertTrue(result.report["source_identity"]["source_disjoint_verified"])
+
+    def test_strict_source_identity_policy_rejects_missing_authority(self):
+        workflow = _workflow("A", ["op.a"], [1], name="missing-source")
+
+        with self.assertRaisesRegex(ValueError, "source identity.*missing-source_A"):
+            build_quality_gate_candidate(
+                [workflow],
+                _id_mappings(),
+                QualityGatePolicy(min_task_count=1, source_identity_policy="require"),
+            )
+
+    def test_equivalent_hash_fields_share_one_source_component(self):
+        workflows = [
+            _workflow("A", ["op.a"], [1], name="source-hash"),
+            _workflow("A", ["op.b"], [2], name="content-hash"),
+            _workflow("A", ["op.c"], [3], name="other-1"),
+            _workflow("A", ["op.d"], [4], name="other-2"),
+        ]
+        workflows[0]["metadata"]["source_hash"] = "a" * 64
+        workflows[1]["metadata"]["content_sha256"] = "a" * 64
+        workflows[2]["metadata"]["source_hash"] = "b" * 64
+        workflows[3]["metadata"]["source_hash"] = "c" * 64
+        for workflow in workflows:
+            workflow["metadata"]["source_identity_authority"] = "source_content_sha256"
+
+        result = build_quality_gate_candidate(
+            workflows,
+            _id_mappings(),
+            QualityGatePolicy(min_task_count=1, train_ratio=0.5, val_ratio=0.25),
+        )
+
+        split_of = {}
+        for split_name, key in (("train", "train_indices"), ("val", "val_indices"), ("test", "test_indices")):
+            for index in result.splits[key]:
+                split_of[index] = split_name
+        self.assertEqual(split_of[0], split_of[1])
+        self.assertEqual(result.report["splits"]["cross_split_source_identities"], 0)
+
+    def test_declared_identity_without_authority_is_not_marked_verified(self):
+        workflow = _workflow("A", ["op.a"], [1], name="declared-only")
+        workflow["metadata"]["source_hash"] = "a" * 64
+
+        result = build_quality_gate_candidate(
+            [workflow],
+            _id_mappings(),
+            QualityGatePolicy(min_task_count=1),
+        )
+
+        self.assertEqual(result.report["source_identity"]["declared_workflows"], 1)
+        self.assertEqual(result.report["source_identity"]["authoritative_workflows"], 0)
+        self.assertFalse(result.report["source_identity"]["source_disjoint_verified"])
+
+    def test_schema_mismatch_and_unmapped_operator_are_quarantined(self):
+        short_confidence = _workflow("A", ["op.a", "op.b"], [1, 2], [0.95], "short")
+        unmapped = _workflow("A", ["op.not_in_mapping"], [1], [0.95], "unmapped")
+        clean = _workflow("A", ["op.a"], [1], [0.95], "clean")
+
+        result = build_quality_gate_candidate(
+            [short_confidence, unmapped, clean],
+            _id_mappings(),
+            QualityGatePolicy(min_task_count=1),
+        )
+
+        self.assertEqual(len(result.candidate_workflows), 1)
+        self.assertEqual(len(result.quarantined_workflows), 2)
+        reason_names = {
+            reason["reason"]
+            for workflow in result.quarantined_workflows
+            for reason in workflow["quality_gate"]["quarantine_reasons"]
+        }
+        self.assertEqual(reason_names, {"schema_length_mismatch", "mapping_metadata_missing"})
+        self.assertEqual(result.report["schema_quarantine"]["workflows"], 2)
+
+    def test_written_candidate_preserves_upstream_authority_provenance(self):
+        provenance = {"schema": "test.provenance", "id_mappings": {"sha256": "abc"}}
+        validation = {"training_admission": True, "issues": []}
+        result = build_quality_gate_candidate(
+            [_workflow("A", ["op.a"], [1], name="a")],
+            _id_mappings(),
+            QualityGatePolicy(min_task_count=1),
+            provenance=provenance,
+            authority_validation=validation,
+        )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            paths = write_quality_gate_outputs(result, Path(tmp))
+            payload = json.loads(paths["data"].read_text(encoding="utf-8"))
+
+        self.assertEqual(payload["provenance"], provenance)
+        self.assertEqual(payload["authority_validation"], validation)
+
     def test_auto_remap_low_confidence_is_quarantined_and_sparse_tasks_are_merged(self):
         workflows = [
             _workflow("Main", ["op.auto"], [1], [0.72], "auto-low"),
@@ -104,8 +272,8 @@ class TrainingDataQualityGateTests(unittest.TestCase):
 
     def test_grouped_split_keeps_duplicate_l3_sequences_together_and_trains_all_tasks(self):
         workflows = [
-            _workflow("A", ["op.a"], [1, 2], name="a-dup"),
-            _workflow("B", ["op.b"], [1, 2], name="b-dup"),
+            _workflow("A", ["op.a", "op.b"], [1, 2], name="a-dup"),
+            _workflow("B", ["op.b", "op.a"], [1, 2], name="b-dup"),
             _workflow("A", ["op.c"], [3], name="a-2"),
             _workflow("B", ["op.d"], [4], name="b-2"),
             _workflow("A", ["op.e"], [5], name="a-3"),
@@ -180,12 +348,21 @@ class TrainingDataQualityGateTests(unittest.TestCase):
                 str(out_dir),
                 "--min-task-count",
                 "1",
+                "--description-alignment-policy",
+                "report",
+                "--source-identity-policy",
+                "report",
+                "--input-authority-policy",
+                "report",
             ])
 
             self.assertTrue((out_dir / "labeled_workflows_l3_v4_quality_gate.json").exists())
             self.assertTrue((out_dir / "dataset_splits_v4_quality_gate.json").exists())
             self.assertTrue((out_dir / "quality_gate_report.json").exists())
             self.assertTrue(data_path.exists())
+            report = json.loads((out_dir / "quality_gate_report.json").read_text(encoding="utf-8"))
+            self.assertEqual(report["policy"]["description_alignment_policy"], "report")
+            self.assertEqual(report["policy"]["source_identity_policy"], "report")
 
     def test_gee_operator_alias_audit_reports_official_name_gaps(self):
         workflows = [

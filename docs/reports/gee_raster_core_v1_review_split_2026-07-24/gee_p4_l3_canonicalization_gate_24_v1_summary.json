@@ -1,0 +1,311 @@
+{
+  "counts": {
+    "accepted_source_rows": 14,
+    "input_rows": 24,
+    "l3_ready_rows": 18,
+    "needs_canonicalization_rules_rows": 6,
+    "rewritten_source_rows": 10,
+    "test_rows_emitted": 0,
+    "training_rows_emitted": 0,
+    "unique_skipped_raw_operators": 76,
+    "unique_unmapped_raw_operators": 12,
+    "validation_rows_emitted": 0
+  },
+  "decision": {
+    "next_gate": "export only l3_ready rows after schema and lineage validation; add rules for unmapped operators before admitting other rows",
+    "test_eligible": false,
+    "training_admission": "not_granted_pending_export_gate",
+    "validation_eligible": false
+  },
+  "inputs": {
+    "id_mappings": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\id_mappings_v2.json",
+    "p4_adjudication": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_p4_review_adjudication_28_v1.jsonl",
+    "p4_rewrites": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_p4_rewrite_10_v1.jsonl"
+  },
+  "policy": {
+    "llm_used": false,
+    "old_l3_sequence_reused": false,
+    "operator_order_preserved_after_skips": true,
+    "support_calls_skipped": true,
+    "training_rows_emitted": false
+  },
+  "review_ids": [
+    "gee_raster_core_review_004",
+    "gee_raster_core_review_005",
+    "gee_raster_core_review_006",
+    "gee_raster_core_review_009",
+    "gee_raster_core_review_010",
+    "gee_raster_core_review_014",
+    "gee_raster_core_review_018",
+    "gee_raster_core_review_020",
+    "gee_raster_core_review_021",
+    "gee_raster_core_review_022",
+    "gee_raster_core_review_027",
+    "gee_raster_core_review_029",
+    "gee_raster_core_review_030",
+    "gee_raster_core_review_031",
+    "gee_raster_core_review_033",
+    "gee_raster_core_review_034",
+    "gee_raster_core_review_035",
+    "gee_raster_core_review_038",
+    "gee_raster_core_review_042",
+    "gee_raster_core_review_044",
+    "gee_raster_core_review_045",
+    "gee_raster_core_review_047",
+    "gee_raster_core_review_049",
+    "gee_raster_core_review_050"
+  ],
+  "schema": "gis_recommend.gee_p4_l3_canonicalization_gate_summary.v1",
+  "top_skipped_raw_operators": [
+    [
+      "ee.list.sequence",
+      8
+    ],
+    [
+      "ee.number.pow.int",
+      8
+    ],
+    [
+      "ee.number.int",
+      7
+    ],
+    [
+      "ee.string.cat",
+      7
+    ],
+    [
+      "image.updatemask.copyproperties",
+      4
+    ],
+    [
+      "composite.bandnames",
+      3
+    ],
+    [
+      "ee.geometry.polygon",
+      2
+    ],
+    [
+      "ee.algorithms.if",
+      2
+    ],
+    [
+      "ee.imagecollection.toarrayperband",
+      2
+    ],
+    [
+      "name.cat",
+      2
+    ],
+    [
+      "ee.date.fromymd",
+      2
+    ],
+    [
+      "image.date.difference",
+      2
+    ],
+    [
+      "ndvi.reduceregion.toimage",
+      2
+    ],
+    [
+      "image.updatemask.select.copyproperties",
+      1
+    ],
+    [
+      "fc.map.style",
+      1
+    ],
+    [
+      "hoke_points.map.style",
+      1
+    ],
+    [
+      "ee.algorithms.objecttype",
+      1
+    ],
+    [
+      "ee.date.millis",
+      1
+    ],
+    [
+      "ee.filter.maxdifference",
+      1
+    ],
+    [
+      "fc.first.propertynames",
+      1
+    ],
+    [
+      "fc.first.propertynames.remove",
+      1
+    ],
+    [
+      "ee.geometry.point",
+      1
+    ],
+    [
+      "indexes.addall",
+      1
+    ],
+    [
+      "frame.bandnames",
+      1
+    ],
+    [
+      "image.bandtypes",
+      1
+    ],
+    [
+      "ee.kernel.square",
+      1
+    ],
+    [
+      "image.updatemask.divide.select.copyproperties",
+      1
+    ],
+    [
+      "img_base.bandnames",
+      1
+    ],
+    [
+      "img_fus.bandnames",
+      1
+    ],
+    [
+      "ndvi_sub2.reduceregion.values",
+      1
+    ],
+    [
+      "img_base.reduceregion.values",
+      1
+    ],
+    [
+      "ee.number.divide.sqrt",
+      1
+    ],
+    [
+      "data.clip.copyproperties",
+      1
+    ],
+    [
+      "ee.reducer.mean.setoutputs",
+      1
+    ],
+    [
+      "image.id",
+      1
+    ],
+    [
+      "l8.filterbounds.filterdate.sort",
+      1
+    ],
+    [
+      "ee.number.divide.round",
+      1
+    ],
+    [
+      "a500.toarrayperband",
+      1
+    ],
+    [
+      "q250.select.toarrayperband",
+      1
+    ],
+    [
+      "q250.size",
+      1
+    ],
+    [
+      "ndvis.arraylength",
+      1
+    ],
+    [
+      "d.add.int",
+      1
+    ],
+    [
+      "imnormfunction.imnormalize",
+      1
+    ],
+    [
+      "finish.difference",
+      1
+    ],
+    [
+      "start.advance",
+      1
+    ],
+    [
+      "daystart.advance",
+      1
+    ],
+    [
+      "composite.bandnames.size",
+      1
+    ],
+    [
+      "daystart.millis",
+      1
+    ],
+    [
+      "ee.data.setdefaultworkloadtag",
+      1
+    ],
+    [
+      "ee.string.cat.cat",
+      1
+    ]
+  ],
+  "top_unmapped_raw_operators": [
+    [
+      "table.distinct",
+      1
+    ],
+    [
+      "ndbi_bangunan.reducetovectors",
+      1
+    ],
+    [
+      "ee.reducer.minmax",
+      1
+    ],
+    [
+      "beforehh.focal_median",
+      1
+    ],
+    [
+      "beforehv.focal_median",
+      1
+    ],
+    [
+      "afterhh.focal_median",
+      1
+    ],
+    [
+      "afterhv.focal_median",
+      1
+    ],
+    [
+      "myregions.reducetoimage",
+      1
+    ],
+    [
+      "myregions.reducetoimage.rename.aside",
+      1
+    ],
+    [
+      "myfunctions.makeaeaproj",
+      1
+    ],
+    [
+      "featurecollection.aggregate_array",
+      1
+    ],
+    [
+      "meso_regions.geometry.dissolve",
+      1
+    ]
+  ]
+}

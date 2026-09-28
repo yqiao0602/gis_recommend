@@ -1,0 +1,59 @@
+{
+  "counts": {
+    "high_risk_rows": 5,
+    "input_rows": 50,
+    "low_risk_rows": 31,
+    "medium_risk_rows": 14,
+    "precheck_rows": 50,
+    "requires_source_lookup_rows": 50,
+    "unique_l3_sequences": 50,
+    "unique_operator_sequences": 50,
+    "unique_source_sha256": 50
+  },
+  "decision": {
+    "admission_change": "none",
+    "llm_used": false,
+    "mutated_training_package": false,
+    "production_merge": "not_granted",
+    "review_role": "sampling_audit_rule_calibration",
+    "test_eligible": false,
+    "training_rows_emitted": 0,
+    "training_run_started": false,
+    "validation_eligible": false
+  },
+  "inputs": {
+    "audit_sample": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_raster_core_batch_training_package_v1\\audit_sample_50.jsonl"
+  },
+  "policy": {
+    "do_not_edit_operator_or_l3_sequences_in_precheck": true,
+    "do_not_mutate_train11397_package": true,
+    "do_not_promote_gee_to_validation_or_test": true,
+    "risk_flags_are_audit_priorities_not_rejections": true,
+    "source_lookup_required_for_final_adjudication": true,
+    "source_platform": "GEE",
+    "target_platform": "L3"
+  },
+  "review_split_audit_counts": {
+    "test": 5,
+    "train": 38,
+    "val": 7
+  },
+  "risk_flag_counts": {
+    "advanced_temporal_text_without_temporal_operator": 4,
+    "classification_text_without_classifier_operator": 5,
+    "complex_or_long_chain_review_priority": 5,
+    "display_or_export_language_requires_core_boundary_check": 27,
+    "evaluation_text_without_evaluation_operator": 3,
+    "prior_review_split_was_not_train_but_output_is_train_only": 12,
+    "reducer_heavy_chain_review_priority": 1,
+    "regional_statistics_text_without_regional_operator": 1,
+    "threshold_mask_heavy_chain_review_priority": 2,
+    "vector_or_training_label_text_without_vector_sampling_operator": 6
+  },
+  "risk_level_counts": {
+    "high": 5,
+    "low": 31,
+    "medium": 14
+  },
+  "schema": "gis_recommend.gee_raster_core_batch_audit_precheck_summary.v1"
+}

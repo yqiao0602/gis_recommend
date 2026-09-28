@@ -1,0 +1,116 @@
+{
+  "schema": "gis_recommend.qgis_rule_signature_decisions.v1",
+  "rule_id": "direct-explicit-dag-v1",
+  "review_scope": "processing_structure_only",
+  "task_text_admission": "not_granted_pending_description_fidelity",
+  "signatures": [
+    {
+      "signature_hash": "bdbf37f38b76f82d05e8b4b10e956319ed66ece5b93413249439fae4da40ed8f",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Fix geometries feeds dissolve, then the dissolved output feeds reprojection."
+    },
+    {
+      "signature_hash": "8224cca9d5e546e7aef5741f93fad5dbfd5a923f750067390d9d92ba08666eb2",
+      "structure_valid": true,
+      "review_basis": "manual_signature_review_v2",
+      "notes": "Dissolve output is consumed directly by multipart-to-singleparts; surrounding task logic is outside the admitted description."
+    },
+    {
+      "signature_hash": "cc0184a795e5381afec1cfc4971cfc5122e59d2c79441b7ed73f083042765f80",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Buffer output feeds centroid extraction."
+    },
+    {
+      "signature_hash": "51f24aa2aef5d8f9b032be16b1022613d10ce4da50a252f3386bb1bd2d693589",
+      "structure_valid": true,
+      "review_basis": "manual_signature_review_v2",
+      "notes": "The first raster sampling output is the vector input to the second raster sampling call."
+    },
+    {
+      "signature_hash": "87fb1b3d81696f0c151dafc85af4d75a5fe317f6c88acc8a43aef30108951e52",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass_same_signature",
+      "notes": "Minimum bounding geometry output feeds vertex extraction."
+    },
+    {
+      "signature_hash": "fe3562655f8a24056ba026b39ce666e9053d58c545fd930be493f72bca8f62d3",
+      "structure_valid": true,
+      "review_basis": "manual_signature_review_v2",
+      "notes": "Polygonized mask is the overlay input to intersection; upstream mask creation must be omitted from the scoped description."
+    },
+    {
+      "signature_hash": "3123521170afaabfe4fe61c30286b0de088bf07fe26d7fb6384b84ed86b2b1d2",
+      "structure_valid": true,
+      "review_basis": "manual_signature_review_v2",
+      "notes": "Extract-by-attribute output is used as the buffer input."
+    },
+    {
+      "signature_hash": "99de3f19eef232a78069a243319c8632e7dccab2ba294cf938a9e4841be36af7",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "The two reprojection results and final projection assignment form the reviewed direct chain."
+    },
+    {
+      "signature_hash": "6c2ada19686d7036d773c611d5f69aa3048f0d5c59eaa6fd3e2c2bd7b688c2e9",
+      "structure_valid": true,
+      "review_basis": "ssa_regression_fix_review_v2",
+      "notes": "After nearest-definition recovery the edges are translate to slope and slope to warp only."
+    },
+    {
+      "signature_hash": "0f47898acfe50fda98a8447550228a6ca4045f63694616b81a54a0f39d7808ce",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Each field-calculator result feeds the next call in the five-step chain."
+    },
+    {
+      "signature_hash": "0ac3f1ce7554621728cbeb00a86af9afdda349365275cfa50c656e658f5f97df",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Centroids feed reprojection and the reprojected points feed raster sampling."
+    },
+    {
+      "signature_hash": "1d7a641f5d405a88e0f96b06051d2c189348dce99b33a73ac322394fac0dfbda",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Refactored fields output feeds geometry repair."
+    },
+    {
+      "signature_hash": "67cc21e89b8d6ff1ad28fafc1ba951586a9e0a1fc55a0593b20474e7fda5732a",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Difference output feeds retain-fields."
+    },
+    {
+      "signature_hash": "12c50ee93799ab0e4a85524d5b6a2a39e60ab7f8b4a462f5635620322101c0f5",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Dissolved paths feed polygonization."
+    },
+    {
+      "signature_hash": "d889f805e77ce8562e8a964a6809ce8f1fc3e547e6d3fadd927b4b5dee56bc59",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Expression extraction feeds buffer, and the buffer feeds location extraction."
+    },
+    {
+      "signature_hash": "a28fe6739f89882d4cc1a6a6c6f3ad54bfabaf473723c4030c2f5a4c3efb85ba",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Polygonized raster output feeds dissolve."
+    },
+    {
+      "signature_hash": "b97b65e4469ee537386e70c6566988db7556ebd9cc35fe719a58ecd074825182",
+      "structure_valid": true,
+      "review_basis": "manual_signature_review_v2",
+      "notes": "The first union of soils and land use feeds the second union with subbasins."
+    },
+    {
+      "signature_hash": "10fc66527748ec9359fda9243badf9572b672753998eb94743e1281de9f99298",
+      "structure_valid": true,
+      "review_basis": "migrated_prior_pass",
+      "notes": "Centroids feed reprojection and the reprojected points feed the spatial join."
+    }
+  ]
+}

@@ -1,0 +1,419 @@
+{
+  "schema": "gis_recommend.m2_p1_dapt.v1",
+  "corpus_sha256": "695ac70fbd9a33632141cb0234aee0f4311449eff5d3fae8fe1cc604b4e0ac74",
+  "train_files": 9165,
+  "eval_files": 150,
+  "train_blocks": 25416,
+  "block": 1024,
+  "epochs": 1,
+  "lr": 0.0001,
+  "loss_first": 0.9789628163352608,
+  "loss_last": 0.9541377658809402,
+  "train_minutes": 1074.7,
+  "peak_memory_gb": 14.35,
+  "before": {
+    "ppl_gis_holdout": 1.7159,
+    "ppl_api_heavy": 0.7123,
+    "ppl_generic_control": 0.8615,
+    "cloze": {
+      "top1": 0,
+      "top5": 4,
+      "n": 14,
+      "details": [
+        {
+          "probe": "The QGIS algorithm native:… creates buffer polygons around the inpu",
+          "gold": "buffer",
+          "top5": [
+            "q",
+            "gd",
+            "v",
+            "r",
+            "\""
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm native:… computes the geometric intersection of ",
+          "gold": "intersection",
+          "top5": [
+            "q",
+            "gd",
+            "v",
+            "r",
+            "\""
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm native:… clips a vector layer using the features",
+          "gold": "clip",
+          "top5": [
+            "q",
+            "gd",
+            "v",
+            "r",
+            "\""
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm native:… merges features that share the same att",
+          "gold": "dissolve",
+          "top5": [
+            "q",
+            "gd",
+            "v",
+            "r",
+            "\""
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm native:… reprojects a vector layer to another CR",
+          "gold": "reprojectlayer",
+          "top5": [
+            "q",
+            "gd",
+            "v",
+            "r",
+            "\""
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm gdal:… performs raster algebra over input rast",
+          "gold": "rastercalculator",
+          "top5": [
+            "gd",
+            "Raster",
+            "Create",
+            "r",
+            "w"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "In PyQGIS, a vector layer is represented by the class….",
+          "gold": "QgsVectorLayer",
+          "top5": [
+            "Q",
+            "Qgs",
+            "Q",
+            "",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": true
+        },
+        {
+          "probe": "In PyQGIS, a geometry object is represented by the class….",
+          "gold": "QgsGeometry",
+          "top5": [
+            "Q",
+            "Qgs",
+            "Q",
+            "Geometry",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": true
+        },
+        {
+          "probe": "In PyQGIS, a raster layer is represented by the class….",
+          "gold": "QgsRasterLayer",
+          "top5": [
+            "Q",
+            "Raster",
+            "Qgs",
+            "",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": true
+        },
+        {
+          "probe": "A QGIS processing algorithm subclasses… to define its behavior.",
+          "gold": "QgsProcessingAlgorithm",
+          "top5": [
+            "Q",
+            "Processing",
+            "Algorithm",
+            "",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "In GIS, areas of equal distance around a feature are called… zones.",
+          "gold": "buffer",
+          "top5": [
+            "",
+            "",
+            "buffers",
+            "buffers",
+            "buffer"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "Converting vector polygons to raster cells is called….",
+          "gold": "rasterization",
+          "top5": [
+            "r",
+            "raster",
+            "vector",
+            "vector",
+            ""
+          ],
+          "top1_hit": false,
+          "top5_hit": true
+        },
+        {
+          "probe": "NoData values in a raster indicate… or undefined cells.",
+          "gold": "missing",
+          "top5": [
+            "no",
+            "missing",
+            "no",
+            "No",
+            ""
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "A coordinate reference system defines how… map to locations on Earth.",
+          "gold": "coordinates",
+          "top5": [
+            "coordinates",
+            "",
+            "where",
+            "real",
+            ""
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        }
+      ]
+    },
+    "task_probes": [
+      "- Create a 500-meter buffer around all roads.\n- Clip the buildings inside the buffer.\n- Calculate the area of the clipped buildings.\n- Calculate the percentage of the total area of the clipped buildin",
+      "- Reproject the input layer to EPSG:4326.\n- Compute zonal statistics of the raster over the polygons.\n- Save the output as a new layer.\n- Save the output as a new layer.\n- Save the output as a new lay",
+      "- Merge vector layers: Use the \"Merge\" tool to combine multiple vector layers into one.\n- Create buffer polygons: Use the \"Buffer\" tool to create polygons around the merged features.\n- Set buffer dist"
+    ]
+  },
+  "after": {
+    "ppl_gis_holdout": 1.4403,
+    "ppl_api_heavy": 0.54,
+    "ppl_generic_control": 0.8632,
+    "cloze": {
+      "top1": 0,
+      "top5": 4,
+      "n": 14,
+      "details": [
+        {
+          "probe": "The QGIS algorithm native:… creates buffer polygons around the inpu",
+          "gold": "buffer",
+          "top5": [
+            "gd",
+            "r",
+            "native",
+            "d",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm native:… computes the geometric intersection of ",
+          "gold": "intersection",
+          "top5": [
+            "gd",
+            "r",
+            "native",
+            "d",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm native:… clips a vector layer using the features",
+          "gold": "clip",
+          "top5": [
+            "gd",
+            "r",
+            "native",
+            "d",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm native:… merges features that share the same att",
+          "gold": "dissolve",
+          "top5": [
+            "gd",
+            "r",
+            "native",
+            "d",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm native:… reprojects a vector layer to another CR",
+          "gold": "reprojectlayer",
+          "top5": [
+            "gd",
+            "r",
+            "native",
+            "d",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "The QGIS algorithm gdal:… performs raster algebra over input rast",
+          "gold": "rastercalculator",
+          "top5": [
+            "gd",
+            "Raster",
+            "clip",
+            "GD",
+            "Build"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "In PyQGIS, a vector layer is represented by the class….",
+          "gold": "QgsVectorLayer",
+          "top5": [
+            "Q",
+            "",
+            "",
+            "Qgs",
+            "q"
+          ],
+          "top1_hit": false,
+          "top5_hit": true
+        },
+        {
+          "probe": "In PyQGIS, a geometry object is represented by the class….",
+          "gold": "QgsGeometry",
+          "top5": [
+            "Q",
+            "Qgs",
+            "",
+            "",
+            "Q"
+          ],
+          "top1_hit": false,
+          "top5_hit": true
+        },
+        {
+          "probe": "In PyQGIS, a raster layer is represented by the class….",
+          "gold": "QgsRasterLayer",
+          "top5": [
+            "Q",
+            "",
+            "",
+            "Raster",
+            "Qgs"
+          ],
+          "top1_hit": false,
+          "top5_hit": true
+        },
+        {
+          "probe": "A QGIS processing algorithm subclasses… to define its behavior.",
+          "gold": "QgsProcessingAlgorithm",
+          "top5": [
+            "",
+            "+",
+            "Q",
+            "",
+            "#"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "In GIS, areas of equal distance around a feature are called… zones.",
+          "gold": "buffer",
+          "top5": [
+            "buffers",
+            "",
+            "buffer",
+            "buffers",
+            "zones"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "Converting vector polygons to raster cells is called….",
+          "gold": "rasterization",
+          "top5": [
+            "r",
+            "",
+            "re",
+            "r",
+            "raster"
+          ],
+          "top1_hit": false,
+          "top5_hit": true
+        },
+        {
+          "probe": "NoData values in a raster indicate… or undefined cells.",
+          "gold": "missing",
+          "top5": [
+            "",
+            "+",
+            "",
+            "",
+            ""
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        },
+        {
+          "probe": "A coordinate reference system defines how… map to locations on Earth.",
+          "gold": "coordinates",
+          "top5": [
+            "",
+            "coordinates",
+            "",
+            "latitude",
+            "real"
+          ],
+          "top1_hit": false,
+          "top5_hit": false
+        }
+      ]
+    },
+    "task_probes": [
+      "1. Create a 500-meter buffer around all roads.\n    2. Clip the buildings inside the buffer.\n    3. Calculate the area of the clipped buildings.\n    4. Calculate the total area of the buildings.\n    5.",
+      "- Reproject the input layer to EPSG:4326.\n- Compute zonal statistics of the raster over the polygons.\n- Save the results to a CSV file.\n\"\"\"\nfrom qgis.core import QgsProject, QgsVectorLayer, QgsRasterL",
+      "1. Merge vector layers\n2. Create buffer polygons\n3. Calculate area of buffer polygons\n4. Calculate area of original features\n5. Calculate area difference\n6. Calculate percentage difference\n7. Calculat"
+    ]
+  },
+  "signal": {
+    "ppl_gis_delta": 0.2756,
+    "ppl_api_delta": 0.1723,
+    "ppl_generic_delta": -0.0017,
+    "cloze_top1_delta": 0,
+    "cloze_top5_delta": 0
+  }
+}

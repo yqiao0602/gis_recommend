@@ -1,0 +1,96 @@
+  [V4] Loaded L3 embeddings: 128 tokens from docs/reports/paper_v1_profile_v1/l3_embeddings_paper_v1_128.pt
+  Params: 22.7M trainable, 117.4M total
+
+  Loading warm-start from /home/qy/gee_llm_smoke/m1_smoke_ckpt2/best_model.pth ...
+  Loading warm-start from /home/qy/gee_llm_smoke/m1_smoke_ckpt2/best_model.pth ...
+  Model loaded (epoch 1, val_loss=?)
+  [V4.2] Using frequency-weighted CE loss (alpha=0.5)
+  [V4.2] 转移矩阵: 60 states loaded
+  [V4.5] task_cls_loss_weight overridden to 0.3
+  [V4.6] task_type length bucket MSE loss enabled (weight=0.1)
+  [V4.6] task_type length bucket CLS loss enabled (weight=0.15, 4 classes)
+  Task classifier weights loaded from warm-start
+
+  Starting V4.6 Quality-Gate training...
+
+================================================================================
+V4.6 Training: Gradient Fix + Early Stopping (composite, patience=12)
+================================================================================
+  Device: cuda, AMP: True
+  Batch: 16 x 2 accum = 32 effective
+  LR: BERT=2.0e-06, Other=5.0e-05
+  AR max steps: 40
+  Gen eval batches: 8
+  Early stopping: patience=12 on composite (0.5*SetF1+0.3*LCS+0.2*(1-earlyEOS))
+================================================================================
+
+
+Epoch 1/1
+----------------------------------------------------------------------
+  [AR-SS] Starting autoregressive scheduled sampling
+  [M1-R1] platform sampler: GEE 70% / QGIS 30% | strata GEE=19 QGIS=4 | samples/epoch=640
+Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:   0%|          | 0/40 [00:00<?, ?it/s]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:   0%|          | 0/40 [00:01<?, ?it/s, loss=10.6546, main=8.4010]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:   2%|▎         | 1/40 [00:01<01:09,  1.78s/it, loss=10.6546, main=8.4010]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:   2%|▎         | 1/40 [00:07<01:09,  1.78s/it, loss=49.5551, main=7.1221]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:   5%|▌         | 2/40 [00:07<02:39,  4.19s/it, loss=49.5551, main=7.1221]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:   5%|▌         | 2/40 [00:07<02:39,  4.19s/it, loss=9.3485, main=7.9311] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:   8%|▊         | 3/40 [00:07<01:29,  2.42s/it, loss=9.3485, main=7.9311]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:   8%|▊         | 3/40 [00:08<01:29,  2.42s/it, loss=9.2851, main=6.7813]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  10%|█         | 4/40 [00:08<01:02,  1.74s/it, loss=9.2851, main=6.7813]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  10%|█         | 4/40 [00:09<01:02,  1.74s/it, loss=10.0734, main=7.6787]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  12%|█▎        | 5/40 [00:09<00:44,  1.26s/it, loss=10.0734, main=7.6787]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  12%|█▎        | 5/40 [00:09<00:44,  1.26s/it, loss=12.5471, main=9.4289]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  15%|█▌        | 6/40 [00:09<00:34,  1.01s/it, loss=12.5471, main=9.4289]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  15%|█▌        | 6/40 [00:14<00:34,  1.01s/it, loss=57.6026, main=7.9359]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  18%|█▊        | 7/40 [00:14<01:17,  2.34s/it, loss=57.6026, main=7.9359]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  18%|█▊        | 7/40 [00:17<01:17,  2.34s/it, loss=44.7911, main=6.2471]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  20%|██        | 8/40 [00:17<01:20,  2.52s/it, loss=44.7911, main=6.2471]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  20%|██        | 8/40 [00:17<01:20,  2.52s/it, loss=9.9381, main=7.6742] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  22%|██▎       | 9/40 [00:17<00:57,  1.86s/it, loss=9.9381, main=7.6742]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  22%|██▎       | 9/40 [00:22<00:57,  1.86s/it, loss=56.4216, main=10.0536]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  25%|██▌       | 10/40 [00:22<01:18,  2.60s/it, loss=56.4216, main=10.0536]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  25%|██▌       | 10/40 [00:25<01:18,  2.60s/it, loss=53.3782, main=8.5104] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  28%|██▊       | 11/40 [00:25<01:24,  2.90s/it, loss=53.3782, main=8.5104]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  28%|██▊       | 11/40 [00:26<01:24,  2.90s/it, loss=13.3325, main=10.8799]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  30%|███       | 12/40 [00:26<01:00,  2.15s/it, loss=13.3325, main=10.8799]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  30%|███       | 12/40 [00:26<01:00,  2.15s/it, loss=11.3444, main=8.1447] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  32%|███▎      | 13/40 [00:26<00:43,  1.62s/it, loss=11.3444, main=8.1447]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  32%|███▎      | 13/40 [00:28<00:43,  1.62s/it, loss=14.7072, main=10.3618]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  35%|███▌      | 14/40 [00:28<00:46,  1.78s/it, loss=14.7072, main=10.3618]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  35%|███▌      | 14/40 [00:29<00:46,  1.78s/it, loss=12.4255, main=9.4323] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  38%|███▊      | 15/40 [00:29<00:38,  1.52s/it, loss=12.4255, main=9.4323]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  38%|███▊      | 15/40 [00:30<00:38,  1.52s/it, loss=9.7793, main=7.4730] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  40%|████      | 16/40 [00:30<00:29,  1.21s/it, loss=9.7793, main=7.4730]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  40%|████      | 16/40 [00:30<00:29,  1.21s/it, loss=11.3881, main=8.3309]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  42%|████▎     | 17/40 [00:30<00:22,  1.04it/s, loss=11.3881, main=8.3309]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  42%|████▎     | 17/40 [00:34<00:22,  1.04it/s, loss=50.8067, main=8.0547]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  45%|████▌     | 18/40 [00:34<00:41,  1.88s/it, loss=50.8067, main=8.0547]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  45%|████▌     | 18/40 [00:35<00:41,  1.88s/it, loss=9.3301, main=7.0982] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  48%|████▊     | 19/40 [00:35<00:30,  1.47s/it, loss=9.3301, main=7.0982]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  48%|████▊     | 19/40 [00:39<00:30,  1.47s/it, loss=53.5842, main=11.0261]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  50%|█████     | 20/40 [00:39<00:46,  2.32s/it, loss=53.5842, main=11.0261]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  50%|█████     | 20/40 [00:39<00:46,  2.32s/it, loss=10.1466, main=8.2492] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  52%|█████▎    | 21/40 [00:39<00:32,  1.72s/it, loss=10.1466, main=8.2492]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  52%|█████▎    | 21/40 [00:40<00:32,  1.72s/it, loss=13.0067, main=9.8850]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  55%|█████▌    | 22/40 [00:40<00:24,  1.36s/it, loss=13.0067, main=9.8850]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  55%|█████▌    | 22/40 [00:40<00:24,  1.36s/it, loss=12.9150, main=9.7955]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  57%|█████▊    | 23/40 [00:40<00:18,  1.07s/it, loss=12.9150, main=9.7955]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  57%|█████▊    | 23/40 [00:46<00:18,  1.07s/it, loss=24.9309, main=8.6363]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  60%|██████    | 24/40 [00:46<00:40,  2.51s/it, loss=24.9309, main=8.6363]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  60%|██████    | 24/40 [00:50<00:40,  2.51s/it, loss=48.1944, main=8.8634]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  62%|██████▎   | 25/40 [00:50<00:45,  3.01s/it, loss=48.1944, main=8.8634]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  62%|██████▎   | 25/40 [00:51<00:45,  3.01s/it, loss=14.7514, main=11.6187]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  65%|██████▌   | 26/40 [00:51<00:30,  2.21s/it, loss=14.7514, main=11.6187]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  65%|██████▌   | 26/40 [00:51<00:30,  2.21s/it, loss=14.1752, main=11.7063]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  68%|██████▊   | 27/40 [00:51<00:21,  1.63s/it, loss=14.1752, main=11.7063]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  68%|██████▊   | 27/40 [00:53<00:21,  1.63s/it, loss=55.8780, main=9.9135] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  70%|███████   | 28/40 [00:53<00:21,  1.81s/it, loss=55.8780, main=9.9135]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  70%|███████   | 28/40 [00:56<00:21,  1.81s/it, loss=10.6684, main=8.0950]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  72%|███████▎  | 29/40 [00:56<00:24,  2.27s/it, loss=10.6684, main=8.0950]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  72%|███████▎  | 29/40 [00:57<00:24,  2.27s/it, loss=12.8595, main=9.2311]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  75%|███████▌  | 30/40 [00:57<00:17,  1.79s/it, loss=12.8595, main=9.2311]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  75%|███████▌  | 30/40 [00:57<00:17,  1.79s/it, loss=12.2129, main=9.3885]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  78%|███████▊  | 31/40 [00:57<00:12,  1.36s/it, loss=12.2129, main=9.3885]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  78%|███████▊  | 31/40 [01:03<00:12,  1.36s/it, loss=71.3839, main=7.5042]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  80%|████████  | 32/40 [01:03<00:20,  2.50s/it, loss=71.3839, main=7.5042]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  80%|████████  | 32/40 [01:03<00:20,  2.50s/it, loss=13.8607, main=11.5906]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  82%|████████▎ | 33/40 [01:03<00:13,  1.86s/it, loss=13.8607, main=11.5906]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  82%|████████▎ | 33/40 [01:04<00:13,  1.86s/it, loss=11.6567, main=8.0486] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  85%|████████▌ | 34/40 [01:04<00:08,  1.47s/it, loss=11.6567, main=8.0486]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  85%|████████▌ | 34/40 [01:04<00:08,  1.47s/it, loss=14.2266, main=10.5878]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  88%|████████▊ | 35/40 [01:04<00:06,  1.25s/it, loss=14.2266, main=10.5878]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  88%|████████▊ | 35/40 [01:07<00:06,  1.25s/it, loss=13.1501, main=10.6607]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  90%|█████████ | 36/40 [01:07<00:07,  1.79s/it, loss=13.1501, main=10.6607]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  90%|█████████ | 36/40 [01:12<00:07,  1.79s/it, loss=10.8536, main=8.1066] Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  92%|█████████▎| 37/40 [01:12<00:07,  2.63s/it, loss=10.8536, main=8.1066]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  92%|█████████▎| 37/40 [01:16<00:07,  2.63s/it, loss=10.4691, main=7.9628]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  95%|█████████▌| 38/40 [01:16<00:06,  3.06s/it, loss=10.4691, main=7.9628]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  95%|█████████▌| 38/40 [01:21<00:06,  3.06s/it, loss=44.1181, main=6.7342]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  98%|█████████▊| 39/40 [01:21<00:03,  3.53s/it, loss=44.1181, main=6.7342]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]:  98%|█████████▊| 39/40 [01:25<00:03,  3.53s/it, loss=85.0635, main=7.5814]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]: 100%|██████████| 40/40 [01:25<00:00,  3.71s/it, loss=85.0635, main=7.5814]Epoch 1/1 [AR-SS(tf=0.42,ar=50%), n=640]: 100%|██████████| 40/40 [01:25<00:00,  2.13s/it, loss=85.0635, main=7.5814]
+
+  [Diag] BERT top-layer gradients (after backward): OK ✓
+
+  Train: Loss=25.3704 (main=8.8181, len=2.681, tcls=1.467)
+  Val:   Loss=16.6480 | PPL=16988492.0 | Top1=1.9% Top5=16.4% TF-SeqEM=0.0% avglen(ref)=5.5
+  Gen:   AR-SeqEM=0.0% AR-TokenAcc=0.0%
+         AR-LCS=0.000 AR-SetF1=0.000
+         len(pred)=99.0 len(ref)=4.5 |lenErr|=94.5 earlyEOS=0.0% empty=0.0%
+         rep=97.6% dup=79.7% badTrans=100.0%
+         earlyEOS/bucket: long=0% medium=0% short=0%
+  TF=0.417, AR=50%, LR=0.000050
+  [Diag] BERT gradient check moved to _train_step_autoregressive (after backward)
+  [SNAPSHOT] Saved latest epoch: /home/qy/gee_llm_smoke/m1_smoke_ckpt40/latest_model.pth
+  [BEST] New best composite=0.2000 at epoch 1 (SetF1=0.000 LCS=0.000 earlyEOS=0.0%) → saved /home/qy/gee_llm_smoke/m1_smoke_ckpt40/best_model.pth
+  [SNAPSHOT] Saved best Gen SetF1: /home/qy/gee_llm_smoke/m1_smoke_ckpt40/best_gen_set_f1_model.pth
+  [SNAPSHOT] Saved best Gen LCS: /home/qy/gee_llm_smoke/m1_smoke_ckpt40/best_gen_lcs_model.pth
+
+================================================================================
+Training complete! Loading best (composite=0.2000, epoch 1) checkpoint for test evaluation...
+
+Test Results:
+  Loss=16.6480 PPL=16988492.0
+  Top1=1.9% Top5=16.4%
+  TF-SeqEM=0.0% avglen(ref)=5.5
+  AR-SeqEM=0.0% AR-TokenAcc=0.0%
+  AR-LCS=0.000 AR-SetF1=0.000
+  len(pred)=99.0 len(ref)=4.5 |lenErr|=94.5
+  earlyEOS=0.0% empty=0.0%
+  rep=97.6% dup=79.7% badTrans=100.0%
+  earlyEOS/bucket: long=0% medium=0% short=0%
+
+History saved: /home/qy/gee_llm_smoke/m1_smoke_ckpt40/training_history_v4_6.json
+Checkpoint selection manifest saved: /home/qy/gee_llm_smoke/m1_smoke_ckpt40/checkpoint_selection_manifest_v4_6.json
+
+V4.6 Quality-Gate training summary:
+  trainer: V4.6
+  mode: warmstart
+  mr_registry: {'status': 'disabled', 'path': None, 'ratio': 0.0, 'task_groups': 0, 'matched_train_samples': 0}
+  mrv_training_dataset: {'status': 'disabled', 'version_name': None, 'injected_variants': 0}
+  length_bucket_training: {'status': 'enabled', 'path': 'docs/reports/paper_v1_profile_v1/task_type_length_stats_paper_v1.json', 'mse_loss_weight': 0.1, 'cls_loss_weight': 0.15, 'target': 'task_type_expected_length_mse + 4_class_bucket_cls', 'splits': {'train': {'samples': 640, 'bucket_counts': {'medium': 640}}, 'val': {'samples': 49, 'bucket_counts': {'medium': 49}}, 'test': {'samples': 0, 'bucket_counts': {}}}, 'expected_length_by_bucket': {'short': 3, 'medium': 5, 'long': 8, 'very_long': 13}, 'loss_weight': 0.1}
+  text_encoding: {'template': 'Task type / Task name / Goal', 'max_text_length': 256, 'length_unit': 'whitespace_tokens_approximation', 'samples': 640, 'long_prompt_count_over_max': 0, 'max_prompt_length': 179, 'p90_prompt_length': 58.0, 'p99_prompt_length': 86.0}
+  sequence_horizon: {'max_seq_length': 100, 'ar_max_steps': 40, 'samples': 640, 'truncated_sequence_count': 0, 'train_sequences_over_ar_max_steps': 5, 'max_content_length': 65, 'p90_content_length': 9.0, 'p99_content_length': 37.0}
+  eval_source_guard: {'status': 'clean', 'generated_eval_rows': 0, 'split_counts': {}, 'source_counts': {}, 'examples': [], 'allow_generated_eval_sources': False, 'blocked_source_markers': ['qgis_vector_augment', 'llm_source_code_to_l3', 'llm_api_trace_to_l3', 'api_trace_to_l3', 'api_trace']}
+  sample_weighting: {'samples': 640, 'tier_counts': {'unmarked': 640}, 'source_counts': {'unknown': 640}, 'weight_min': 0.5, 'weight_max': 1.0, 'weight_mean': 0.6106249999999974, 'non_unit_weight_count': 567}
+  family_sampler: {'status': 'disabled', 'target_families': ['intersection', 'union', 'difference', 'spatial_overlay', 'spatial_clip', 'spatial_aggregation', 'geometry_repair', 'attribute_filter', 'field_calculation', 'crs_transform', 'centroid', 'grid_generation', 'nearest_neighbor'], 'source_quality_weighting': False}
+  training_contract: {'system_objective': 'increase usable/executable multi-solution GIS operator chains', 'known_limitations': ['token_ce_is_single_reference_supervision', 'ranking_is_post_training_not_a_training_objective', 'semantic_constraints_are_evaluated_outside_the_loss', 'inference_beam_constraints_are_not_fully_mirrored_in_ar_sampling'], 'required_post_training_validation': ['p0_evidence_aware_ranking_calibration', 'workflow_usability_evaluation', 'qgis_mapping_or_execution_diagnostics']}
+  metric_contract: {'primary': ['set_f1', 'usable', 'executable', 'qgis_mapping'], 'supporting': ['lcs'], 'diagnostic_only': ['token_acc', 'sequence_em', 'loss', 'perplexity', 'top1', 'top5'], 'multi_solution_policy': 'TokenAcc and exact sequence match are diagnostic only for GIS workflow quality.'}
+  checkpoint_policy: {'latest_snapshot': 'best_model.pth', 'latest_snapshot_note': 'historical compatibility name; overwritten each epoch', 'additional_selection_snapshots': ['best_gen_set_f1_model.pth', 'best_gen_lcs_model.pth', 'best_gen_composite_model.pth'], 'composite_formula': '0.5*SetF1 + 0.3*LCS + 0.2*(1 - early_eos_rate)', 'selection_snapshot_note': 'post-training comparison aids; does not change training objective'}
+  data_path: /home/qy/gee_llm_smoke/m1_smoke_small_v1.json
+  splits_path: /home/qy/gee_llm_smoke/m1_splits_small_v1.json
+  task_vocab_path: /home/qy/gee_llm_smoke/m1_task_vocab_v1.json
+  warmstart_path: /home/qy/gee_llm_smoke/m1_smoke_ckpt2/best_model.pth
+  checkpoint_dir: /home/qy/gee_llm_smoke/m1_smoke_ckpt40
+  workflows_total: 689
+  train: 640
+  val: 49
+  test: 0
+  num_task_types: 5
+  vocab_size: 132
+  num_epochs: 1
+  tf_phase_epochs: 0
+  device: cuda
+  dry_run: False
+  history_epochs: 1

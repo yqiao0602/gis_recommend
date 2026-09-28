@@ -1,0 +1,25 @@
+{
+  "schema": "gis_recommend.qgis.external_operator_wrapper_contract.v1",
+  "contract_id": "mappy-v0.3.2-matchAlgo-v1",
+  "plugin_name": "mappy",
+  "plugin_version": "v0.3.2",
+  "package_url": "https://plugins.qgis.org/plugins/mappy/version/v0.3.2/download/",
+  "package_sha256": "738c8989c4bf1a4062f53bd8e3519d485c1610d4382b16b7040757774ba32f8a",
+  "implementation_path": "mappy/mappy_utils.py",
+  "function_name": "matchAlgo",
+  "function_contract": {
+    "input": "one literal provider-qualified operator ID",
+    "return_if_catalog_contains_input": "input ID",
+    "fallback": "qgis:<input slug> when the input ID is absent and the fallback is present",
+    "failure": "raises NameError when neither ID is present"
+  },
+  "admission_preconditions": [
+    "source header identifies mappy v0.3.2",
+    "source imports matchAlgo from mappy_utils without a visible local rebinding",
+    "call has exactly one positional literal argument and no keywords",
+    "frozen catalog proves the input or qgis fallback return value",
+    "all normal Processing boundary, mapping, description, and dedup gates still pass"
+  ],
+  "training_rows_emitted": 0,
+  "production_merge": "not_granted"
+}

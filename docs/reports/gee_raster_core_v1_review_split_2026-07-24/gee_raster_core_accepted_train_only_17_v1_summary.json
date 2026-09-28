@@ -1,0 +1,160 @@
+{
+  "counts": {
+    "exported_rows": 17,
+    "max_l3_length": 18,
+    "min_l3_length": 3,
+    "p0_accept_rows": 9,
+    "p2_v2_accepted_rows": 8,
+    "unique_l3_sequences": 17,
+    "unique_operator_sequences": 17,
+    "unique_review_ids": 17,
+    "unique_source_sha256": 17
+  },
+  "decision": {
+    "llm_called": false,
+    "next_gate": "manual manifest review before any training manifest or expansion",
+    "production_merge": "not_granted",
+    "test_eligible": false,
+    "training_admission": "not_granted_train_only_export_gate_passed",
+    "validation_eligible": false
+  },
+  "inputs": {
+    "p2_adjudication": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_p2_rewrite_8_review_packet_adjudicated_v2.jsonl",
+    "p2_train_rows": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_p2_rewrite_8_v2_train_rows.jsonl",
+    "salvage_csv": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_salvage_50_v1.csv",
+    "source_snippets": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\source_evidence_snippets.jsonl"
+  },
+  "policy": {
+    "exclude_from_qgis_operator_chain_gold": true,
+    "force_review_split": "train",
+    "sample_weight_max": 0.5,
+    "source_platform": "GEE",
+    "target_platform": "L3",
+    "training_scope": "core_subworkflow"
+  },
+  "review_ids": {
+    "all": [
+      "gee_raster_core_review_001",
+      "gee_raster_core_review_008",
+      "gee_raster_core_review_011",
+      "gee_raster_core_review_017",
+      "gee_raster_core_review_023",
+      "gee_raster_core_review_036",
+      "gee_raster_core_review_037",
+      "gee_raster_core_review_041",
+      "gee_raster_core_review_043",
+      "gee_raster_core_review_002",
+      "gee_raster_core_review_003",
+      "gee_raster_core_review_015",
+      "gee_raster_core_review_016",
+      "gee_raster_core_review_019",
+      "gee_raster_core_review_025",
+      "gee_raster_core_review_032",
+      "gee_raster_core_review_048"
+    ],
+    "p0_accept": [
+      "gee_raster_core_review_001",
+      "gee_raster_core_review_008",
+      "gee_raster_core_review_011",
+      "gee_raster_core_review_017",
+      "gee_raster_core_review_023",
+      "gee_raster_core_review_036",
+      "gee_raster_core_review_037",
+      "gee_raster_core_review_041",
+      "gee_raster_core_review_043"
+    ],
+    "p2_v2_accepted": [
+      "gee_raster_core_review_002",
+      "gee_raster_core_review_003",
+      "gee_raster_core_review_015",
+      "gee_raster_core_review_016",
+      "gee_raster_core_review_019",
+      "gee_raster_core_review_025",
+      "gee_raster_core_review_032",
+      "gee_raster_core_review_048"
+    ]
+  },
+  "schema": "gis_recommend.gee_raster_core_accepted_train_only_export.v1",
+  "top_operators": [
+    [
+      "ee.imagecollection.filterdate",
+      14
+    ],
+    [
+      "ee.imagecollection.filter",
+      14
+    ],
+    [
+      "ee.image.select",
+      13
+    ],
+    [
+      "ee.imagecollection.select",
+      9
+    ],
+    [
+      "ee.imagecollection.filterbounds",
+      8
+    ],
+    [
+      "ee.image.eq",
+      6
+    ],
+    [
+      "ee.image.reduceregion",
+      6
+    ],
+    [
+      "ee.image.updatemask",
+      6
+    ],
+    [
+      "ee.image.clip",
+      6
+    ],
+    [
+      "ee.image.rename",
+      5
+    ],
+    [
+      "ee.image.addbands",
+      4
+    ],
+    [
+      "ee.imagecollection.first",
+      4
+    ],
+    [
+      "ee.imagecollection.reduce",
+      3
+    ],
+    [
+      "ee.imagecollection.mean",
+      3
+    ],
+    [
+      "ee.image.pixelarea",
+      3
+    ],
+    [
+      "ee.image.selfmask",
+      2
+    ],
+    [
+      "ee.imagecollection.median",
+      2
+    ],
+    [
+      "ee.image.expression",
+      2
+    ],
+    [
+      "ee.image.where",
+      2
+    ],
+    [
+      "ee.image.subtract",
+      2
+    ]
+  ]
+}

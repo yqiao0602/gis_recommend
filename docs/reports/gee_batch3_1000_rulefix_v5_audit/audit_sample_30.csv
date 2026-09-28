@@ -1,0 +1,1010 @@
+audit_index,audit_row_authority_sha256,audit_status,calibration_stratum,evidence_locations,exact_dag_fingerprint,fact_bundle_sha256,human_critical_failure,human_dataset_fidelity,human_decision,human_notes,human_output_fidelity,human_spatial_fidelity,human_task_text_fidelity,human_temporal_fidelity,human_transformation_fidelity,known_omissions,l3_sequence,operator_sequence,production_merge,proposal_id,proposal_status,risk_flags,risk_stratum,schema,source_bytes,source_path,source_sha256,source_sha256_verified,source_snippet,task_description,task_name,task_text_candidate_sha256,test_eligible,training_admission,validation_eligible,workflow_id,workflow_key
+1,6b8c5486606ef51fbd813917bc60e1b063f3ca9035b5e9b16063b080c7d5cee2,pending_human_review,helper_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":56,""end_line"":57,""start_column"":17,""start_line"":57}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":44,""end_line"":59,""start_column"":17,""start_line"":57}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":25,""end_line"":61,""start_column"":19,""start_line"":61}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":44,""end_line"":59,""start_column"":17,""start_line"":57}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":26,""end_line"":61,""start_column"":17,""start_line"":57}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":24,""end_line"":63,""start_column"":17,""start_line"":57}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":14,""end_line"":65,""start_column"":17,""start_line"":57}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":5,""end_line"":83,""start_column"":1,""start_line"":69}}]",3c0b67a3c8c8b3117da99ae32c90d74fff005e9d12b682ca908851c1fa8bea3d,3ec8254091a1c549c7d4111f0a27a9be9c8833a527241106c62ba430f7b4ba4e,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_03_09_06"",""L3_03_01_04"",""L3_10_02_03""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.filterbounds"",""ee.imagecollection.select"",""ee.imagecollection.median""]",not_granted,gee_expansion_e0c9dd01c8586426ff870456,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""stratum:helper_export""]",external_dynamic,gis_recommend.gee_workflow_expansion_audit_row.v1,1692,data150000/script_146658.txt,0137708c1097ffa4015be74ed11a10fa82fc3a03da7987c3f300ae812119d0c1,True,"L0055:   };
+L0056: 
+L0057:  var pro_temp =  ee.ImageCollection(""MODIS/006/MCD12Q1"")
+L0058: 
+L0059:      .filterDate('2016-01-01', '2016-12-31')
+L0060: 
+L0061:      .filterBounds(table4)
+L0062: 
+L0063:      .select('LC_Type1')
+L0064: 
+L0065:      .median();
+L0066: 
+L0067:  Map.addLayer(pro_temp.clip(table4), {min: 0.0, max: 60.0},'pro_temp')
+L0068: 
+L0069:  Export.image.toDrive({
+L0070: 
+L0071:    image: pro_temp,
+L0072: 
+L0073:    description: 'MODIS_LC_2016',
+L0074: 
+L0075:      scale: 500,
+L0076: 
+L0077:      folder:'LC_MCD12Q1',
+L0078: 
+L0079:      region: geometry,
+L0080: 
+L0081:      maxPixels:1e13
+L0082: 
+L0083:    });
+L0084: 
+L0085: var empty = ee.Image().toByte();","Use MODIS/006/MCD12Q1 as the source imagery. Apply the filterDate interval [2016-01-01, 2016-12-31). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; filterbounds; select; median. Produce the resulting image as the workflow output.",Create an image with an ordered 4-step GEE workflow,bcc917260e288f66ae0e6473e48c8020af0d5a74d14220883ed77cdf8d72b315,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""0137708c1097ffa4015be74ed11a10fa82fc3a03da7987c3f300ae812119d0c1"",""output-workflow-1""]"
+2,04a7bea8ff2b62496feb805699d528d5033cdc23d55216f0da30f5081fcb00f8,pending_human_review,helper_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":49,""end_line"":27,""start_column"":14,""start_line"":27}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":57,""end_line"":29,""start_column"":14,""start_line"":27}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":37,""end_line"":47,""start_column"":29,""start_line"":47}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":57,""end_line"":29,""start_column"":14,""start_line"":27}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":70,""end_line"":31,""start_column"":14,""start_line"":27}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":23,""end_line"":47,""start_column"":9,""start_line"":47}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":38,""end_line"":47,""start_column"":9,""start_line"":47}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":6,""end_line"":59,""start_column"":0,""start_line"":45}}]",d63ad06ce416b8e09a9f10f99af90342c086bc68d3782b6fdd64ca2ad8721c5e,2fe17da8056ee91b677b5e760a0600908ce6343846748adfeeadf71933dfd55a,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_03_09_05"",""L3_10_02_03"",""L3_03_01_01""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.filter"",""ee.imagecollection.mean"",""ee.image.clip""]",not_granted,gee_expansion_85afad8a321d49ba26fb8f07,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""stratum:helper_export""]",external_dynamic,gis_recommend.gee_workflow_expansion_audit_row.v1,1088,data260000/script_252106.txt,01f68335bdeb321397c09c8d63b927458c8df406c3e9d922f0248a96fb50fbc0,True,"L0025: }
+L0026: 
+L0027: var dataset = ee.ImageCollection('COPERNICUS/S2')
+L0028: 
+L0029:                   .filterDate('2020-04-12', '2020-04-13')
+L0030: 
+L0031:                   .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 20))
+L0032: 
+L0033: var rgbVis = {
+L0043: Map.addLayer(dataset.median(), rgbVis, 'RGB');
+L0044: 
+L0045: Export.image.toDrive({
+L0046: 
+L0047:   image: dataset.mean().clip(geometry),
+L0048: 
+L0049:   description: 'Kyiv_0410_2015_Sentinel2',
+L0050: 
+L0051:   folder: 'MAN_lab3',
+L0052: 
+L0053:   scale: 10,
+L0054: 
+L0055:   region: geometry,
+L0056: 
+L0057:   crs : 'EPSG:32636'
+L0058: 
+L0059:     });","Use COPERNICUS/S2 as the source imagery. Apply the filterDate interval [2020-04-12, 2020-04-13). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; filter; mean; clip. Produce the resulting image as the workflow output.",Create an image with an ordered 4-step GEE workflow,4bb52eba70d153299511bf2a6cffaaa536668213b68594cdd23c04cfb9835ef6,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""01f68335bdeb321397c09c8d63b927458c8df406c3e9d922f0248a96fb50fbc0"",""output-workflow-1""]"
+3,d51ff3bfc8ed063fd55ce0a595ffbff459b70950639b27828672c9f31e84aec3,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":52,""end_line"":1,""start_column"":14,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":69,""end_line"":3,""start_column"":14,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":73,""end_line"":15,""start_column"":65,""start_line"":15}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":69,""end_line"":3,""start_column"":14,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":25,""end_line"":5,""start_column"":14,""start_line"":1}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":59,""end_line"":15,""start_column"":23,""start_line"":15}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":74,""end_line"":15,""start_column"":23,""start_line"":15}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":45,""start_column"":0,""start_line"":33}}]",6d9681178f5d65ddf0f4fe66bbbf6e197dc0f68b82ff0236c2341f2b0b5e726b,ce637e4482e9d843b2433fa315cba3b99b1fe01d726640c2e82cd066ff7b0cce,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_10_02_03"",""L3_03_01_04"",""L3_03_01_01""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.mean"",""ee.image.select"",""ee.image.clip""]",not_granted,gee_expansion_3ddc41dfc7c958f2ddbfe277,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier""]",external_dynamic,gis_recommend.gee_workflow_expansion_audit_row.v1,815,data180000/script_174650.txt,076695d6d27f0dfdbe4876b52d9e809fada715dfb2b5164bd1a361ed547afea8,True,"L0001: var dataset = ee.ImageCollection('MODIS/006/MOD44B')
+L0002: 
+L0003:                   .filter(ee.Filter.date('2008-01-01', '2008-12-31'))
+L0004: 
+L0005:                   .mean()
+L0006: 
+L0007: var reprojected = dataset
+L0013: print(dataset);
+L0014: 
+L0015: var percentTreeCover = dataset.select('Percent_Tree_Cover').clip(geometry), reprojected;
+L0016: 
+L0017: var percentTreeCoverVis = {
+L0031: Map.addLayer(percentTreeCover, percentTreeCoverVis, 'Percent_Tree_Cover');
+L0032: 
+L0033: Export.image.toDrive({
+L0034: 
+L0035:   image: percentTreeCover,
+L0036: 
+L0037:   description: 'porcentaje_VC_08_30m',
+L0038: 
+L0039:   scale: 30,
+L0040: 
+L0041:   maxPixels:1E11,
+L0042: 
+L0043:   region: geometry,
+L0044: 
+L0045: });","Use MODIS/006/MOD44B as the source imagery. Apply the filterDate interval [2008-01-01, 2008-12-31). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; mean; select; clip. Produce the resulting image as the workflow output.",Create an image with an ordered 4-step GEE workflow,3eb91107f5878857deb32504fd9b2ed3b4278c7038582ceaa288b602e945a77c,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""076695d6d27f0dfdbe4876b52d9e809fada715dfb2b5164bd1a361ed547afea8"",""output-workflow-1""]"
+4,cdeed75dd085c9f218063119042c83549dc7decedec1dadaddb7abff1cc3779c,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":58,""end_line"":1,""start_column"":11,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":68,""end_line"":3,""start_column"":14,""start_line"":3}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":34,""end_line"":27,""start_column"":29,""start_line"":27}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":68,""end_line"":3,""start_column"":14,""start_line"":3}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":44,""end_line"":25,""start_column"":12,""start_line"":25}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":35,""end_line"":27,""start_column"":18,""start_line"":27}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":2,""end_line"":63,""start_column"":14,""start_line"":55}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":21,""end_line"":79,""start_column"":0,""start_line"":71}}]",b6d7b6943a06158b178f86a72c6f661ede5f48eb701b6260552a9876f7027631,e3e72c257f049eae63fbfda9e432b87d22e41875eccf74cdb5909caa06d7927a,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_03_10_R"",""L3_03_01_01"",""L3_08_01_01""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.reduce"",""ee.image.clip"",""ee.image.sample""]",not_granted,gee_expansion_b597f71e502cbd594f49d703,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier""]",external_dynamic,gis_recommend.gee_workflow_expansion_audit_row.v1,1174,data40000/script_35702.txt,076c98db6821105651cd65545697ad24a9e5c51a83bec060fae857433f3aaa92,True,"L0001: var data = ee.ImageCollection(""IDAHO_EPSCOR/TERRACLIMATE"");
+L0002: 
+L0003: var dataset = data.filter(ee.Filter.date('2002-12-1', '2002-12-30'));
+L0004: 
+L0005: var soilMoistureVis = {
+L0023: };
+L0024: 
+L0025: var total = dataset.reduce(ee.Reducer.sum());
+L0026: 
+L0027: var totalRanchi = total.clip(net_4);
+L0028: 
+L0029: var stats = total.reduceRegion({
+L0053: Map.centerObject(net_4);
+L0054: 
+L0055: var vectors = totalRanchi.sample({
+L0056: 
+L0057:   region: net_4,
+L0058: 
+L0059:   geometries: true,
+L0060: 
+L0061:   scale: 5000,// if you want points
+L0062: 
+L0063: });
+L0064: 
+L0065: print(vectors);
+L0069: Map.addLayer(vectors, soilMoistureVis, ""Vectors"");
+L0070: 
+L0071: Export.table.toDrive({
+L0072: 
+L0073:   collection: vectors,
+L0074: 
+L0075:   folder: 'earthengine_all',
+L0076: 
+L0077:   fileNamePrefix: 'vec_',
+L0078: 
+L0079:   fileFormat: 'CSV'})","Use IDAHO_EPSCOR/TERRACLIMATE as the source imagery. Apply the filterDate interval [2002-12-1, 2002-12-30). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; reduce; clip; sample. Produce the resulting table as the workflow output.",Create a table with an ordered 4-step GEE workflow,a7cbf29306e12715a7122f2b9e37dffe563669acb456ed999462b48cb1e5bdc2,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""076c98db6821105651cd65545697ad24a9e5c51a83bec060fae857433f3aaa92"",""output-workflow-1""]"
+5,287c91bbd847414e2ec669e9f4f82018c498af0f8ef2b5d064ab21ebfb28d379,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":66,""end_line"":1,""start_column"":19,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":53,""end_line"":3,""start_column"":19,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":49,""end_line"":7,""start_column"":41,""start_line"":7}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":53,""end_line"":3,""start_column"":19,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":28,""end_line"":5,""start_column"":19,""start_line"":1}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":50,""end_line"":7,""start_column"":22,""start_line"":7}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":63,""end_line"":9,""start_column"":29,""start_line"":9}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":78,""end_line"":9,""start_column"":29,""start_line"":9}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":124,""end_line"":67,""start_column"":0,""start_line"":67}}]",26deb3e3193b05ebcd81fc0da795fc1cebfe8dcecffbaec2d3567aff3eaee775,300589b217bbb41c28554d77dca031447f7cc153e046359dc744802c89cb8614,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_03_10_R"",""L3_03_01_01"",""L3_03_01_04"",""L3_03_03_A""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.reduce"",""ee.image.clip"",""ee.image.select"",""ee.image.multiply""]",not_granted,gee_expansion_3ddf9fec4f9b8f35034ff1b8,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier""]",external_dynamic,gis_recommend.gee_workflow_expansion_audit_row.v1,6470,data120000/script_116313.txt,078db02d4518916e05a3d8685e5a8675ee81aefd212ca10373c8b37bc36e6c65,True,"L0001: var TerraClimate = ee.ImageCollection('IDAHO_EPSCOR/TERRACLIMATE')
+L0002: 
+L0003:   .filter(ee.Filter.date('2019-01-01', '2020-01-30')) // Identifica las mensualidades disponibles desde enero de 1958
+L0004: 
+L0005:   .reduce(ee.Reducer.mean());
+L0006: 
+L0007: var TerraClimateAOI = TerraClimate.clip (geometry); // Delimita el poligono de zona AOI desde el visor de Engine
+L0008: 
+L0009: var EvapotranspiracionReal = TerraClimateAOI.select('aet_mean').multiply (0.1);
+L0010: 
+L0011: var DeficitClimaticoAgua = TerraClimateAOI.select('def_mean').multiply (0.1);
+L0065: Map.centerObject (geometry);
+L0066: 
+L0067: Export.image.toDrive({image: EvapotranspiracionReal, description: 'EvapotranspiracionReal', scale: 4638 , region: geometry});
+L0068: 
+L0069: Export.image.toDrive({image: DeficitClimaticoAgua, description: 'DeficitClimaticoAgua', scale: 4638 , region: geometry});","Use IDAHO_EPSCOR/TERRACLIMATE as the source imagery. Apply the filterDate interval [2019-01-01, 2020-01-30). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; reduce; clip; select; multiply. Produce the resulting image as the workflow output.",Create an image with an ordered 5-step GEE workflow,05801dd0704ee7557c2a642c3e287e7b52c5034e7c948433c17b9ed86ae11179,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""078db02d4518916e05a3d8685e5a8675ee81aefd212ca10373c8b37bc36e6c65"",""output-workflow-1""]"
+6,8dff1a99fe58c515fe2659e5395ab0c01624a459e9016ec4acecd84758ad42fc,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":52,""end_line"":1,""start_column"":17,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":43,""end_line"":3,""start_column"":17,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":23,""end_line"":5,""start_column"":18,""start_line"":5}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":43,""end_line"":3,""start_column"":17,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":24,""end_line"":5,""start_column"":17,""start_line"":1}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":55,""end_line"":7,""start_column"":17,""start_line"":1}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":30,""end_line"":13,""start_column"":13,""start_line"":13}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":44,""end_line"":13,""start_column"":13,""start_line"":13}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":56,""end_line"":13,""start_column"":13,""start_line"":13}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":43,""start_column"":0,""start_line"":33}}]",3c432ae3d65124d3e2d62d60d9c9db8467045c58bdac11f6aa7672bc0a3ea752,6e068f5cecb59eea0527cd677356a8804e15165f88ed502cdde91622404735ea,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_03_09_06"",""L3_03_09_05"",""L3_10_02_03"",""L3_03_01_04"",""L3_03_01_01""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.filterbounds"",""ee.imagecollection.filter"",""ee.imagecollection.mean"",""ee.image.select"",""ee.image.clip""]",not_granted,gee_expansion_f0720941902257fbf10523cd,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier""]",external_dynamic,gis_recommend.gee_workflow_expansion_audit_row.v1,628,data170000/script_169561.txt,07ba585b86251bafa469f6f2836b84c7e9708280034b3e94935ac3ea121e90f1,True,"L0001: var collection = ee.ImageCollection('COPERNICUS/S2')
+L0002: 
+L0003:     .filterDate('2016-01-01', '2017-01-01')
+L0004: 
+L0005:     .filterBounds(table)
+L0006: 
+L0007:     .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 2));
+L0008: 
+L0009: print(collection)
+L0011: var bands = ['B4', 'B3', 'B2']
+L0012: 
+L0013: var mosaic = collection.mean().select(bands).clip(table)
+L0014: 
+L0015: print(mosaic)
+L0031: Map.centerObject(table)
+L0032: 
+L0033: Export.image.toDrive({
+L0034: 
+L0035:   image:mosaic,
+L0036: 
+L0037:   description: ""Potsdam_RGB"",
+L0038: 
+L0039:   region: table,
+L0040: 
+L0041:   scale: 10
+L0042: 
+L0043: });","Use COPERNICUS/S2 as the source imagery. Apply the filterDate interval [2016-01-01, 2017-01-01). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; filterbounds; filter; mean; select; clip. Produce the resulting image as the workflow output.",Create an image with an ordered 6-step GEE workflow,7520b91abf2dd38a173eb0fa040e6cefc4150ed59c1e8957a2429d906e52a16b,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""07ba585b86251bafa469f6f2836b84c7e9708280034b3e94935ac3ea121e90f1"",""output-workflow-1""]"
+7,6e8c93df14c11f086c0d08ee242154c97bb1dc3e6d840a03f4e7554bb72e8ab0,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":53,""end_line"":1,""start_column"":14,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":69,""end_line"":3,""start_column"":14,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":29,""end_line"":35,""start_column"":24,""start_line"":35}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":69,""end_line"":3,""start_column"":14,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":97,""end_line"":5,""start_column"":19,""start_line"":5}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":21,""start_column"":12,""start_line"":21}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":47,""end_line"":29,""start_column"":16,""start_line"":29}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":30,""end_line"":35,""start_column"":9,""start_line"":35}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":43,""start_column"":0,""start_line"":33}}]",8ab8a253e14ac2fce7169a8f906f1c21fc218477775754a1926c209ee54efbc6,137d96c8a9a1273a73ca2167238f1e7e40b42ad9e88b58956bfdd3c487bd0c3f,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_03_01_04"",""L3_03_07_01"",""L3_03_08_07"",""L3_03_01_01""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.select"",""ee.imagecollection.mosaic"",""ee.image.unmix"",""ee.image.clip""]",not_granted,gee_expansion_d73f4a4c424ff9b9ffd791c1,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier""]",external_dynamic,gis_recommend.gee_workflow_expansion_audit_row.v1,885,data220000/script_215316.txt,07c7954b23eddebefc5f1385cc8c6f00f64f7780fc1e35dda87a22dee4197901,True,"L0001: var dataset = ee.ImageCollection('ASTER/AST_L1T_003')
+L0002: 
+L0003:                   .filter(ee.Filter.date('2003-01-01', '2004-12-30'));
+L0004: 
+L0005: var select_bands = dataset.select(['B01', 'B02', 'B3N','B04', 'B05', 'B06', 'B07', 'B08', 'B09']);
+L0006: 
+L0007: var falseColorVis = {
+L0019: Map.addLayer(select_bands.mosaic().clip(totak), falseColorVis, 'False Color');
+L0020: 
+L0021: var image = select_bands.mosaic()
+L0022: 
+L0023: var granite = [145, 147, 97, 99, 103, 98, 95, 97, 89];
+L0027: var dol = [127, 123, 80, 85, 86, 89, 79, 80, 79];
+L0028: 
+L0029: var fractions = image.unmix([granite, am, dol]);
+L0030: 
+L0031: Map.addLayer(fractions.clip(totak), {}, 'unmixed', false);
+L0032: 
+L0033: Export.image.toDrive({
+L0034: 
+L0035:   image: fractions.clip(totak),
+L0036: 
+L0037:   description: 'unmix_igneos',
+L0038: 
+L0039:   scale: 30,
+L0040: 
+L0041:   region: totak
+L0042: 
+L0043: })","Use ASTER/AST_L1T_003 as the source imagery. Apply the filterDate interval [2003-01-01, 2004-12-30). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; select; mosaic; unmix; clip. Produce the resulting image as the workflow output.",Create an image with an ordered 5-step GEE workflow,6443148b10a8780de88e13d7f3d38a30c1ac1a22446fd5c0a20bda84c1cc9961,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""07c7954b23eddebefc5f1385cc8c6f00f64f7780fc1e35dda87a22dee4197901"",""output-workflow-1""]"
+8,8d9e2ece7468332a30b5f644ff5ab995d7db4fd297e3ae05371015ee648885d5,pending_human_review,helper_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":48,""end_line"":1,""start_column"":9,""start_line"":1}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":133,""end_line"":9,""start_column"":15,""start_line"":9}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":38,""end_line"":27,""start_column"":5,""start_line"":25}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":27,""end_line"":25,""start_column"":21,""start_line"":25}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":57,""end_line"":11,""start_column"":13,""start_line"":11}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":28,""end_line"":25,""start_column"":5,""start_line"":25}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":38,""end_line"":27,""start_column"":5,""start_line"":25}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":76,""end_line"":29,""start_column"":5,""start_line"":25}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":76,""end_line"":31,""start_column"":5,""start_line"":25}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":71,""end_line"":39,""start_column"":10,""start_line"":39}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":23,""end_line"":41,""start_column"":10,""start_line"":39}},{""fact_id"":""transform-0008"",""fact_type"":""transformation"",""source_location"":{""end_column"":29,""end_line"":83,""start_column"":16,""start_line"":83}},{""fact_id"":""transform-0009"",""fact_type"":""transformation"",""source_location"":{""end_column"":2,""end_line"":95,""start_column"":18,""start_line"":87}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":6,""end_line"":133,""start_column"":4,""start_line"":125}}]",45b2cb35de696f94c65d2088723091dffc6b0a082d1b8ded7e7e8b3533241513,0f0e1aca149c2e6fbfdcfc21b53644688a62125a956aa6e387f0963d436c4d7a,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_02_06_02"",""L3_03_09_06"",""L3_03_09_01"",""L3_03_09_05"",""L3_03_09_05"",""L3_03_09_05"",""L3_03_01_04"",""L3_03_01_09"",""L3_03_02_01""]","[""ee.featurecollection.filter"",""ee.imagecollection.filterbounds"",""ee.imagecollection.filterdate"",""ee.imagecollection.filter"",""ee.imagecollection.filter"",""ee.imagecollection.filter"",""ee.imagecollection.select"",""ee.imagecollection.tobands"",""ee.image.reduceregions""]",not_granted,gee_expansion_dcf8460583ddaf9cceec9cc6,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""private_asset_redacted"",""repeated_operator"",""stratum:helper_export""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,2907,data200000/script_196296.txt,01a3ff82ae77b0b02f412e317218550634818e52c87705707bc40e84c322f4ba,True,"L0001: var s1 = ee.ImageCollection(""COPERNICUS/S1_GRD""), // Sentinel 1
+L0002: 
+L0003:     s2 = ee.ImageCollection(""COPERNICUS/S2""), // sentinel 2
+L0007:     region = ee.FeatureCollection(""users/lcsruiz/Mapping_seasonal_glacier_melt_across_the_ANDES_with_SAR/Extent_tronador""),
+L0008: 
+L0009:     glaciers = ee.FeatureCollection(""users/lcsruiz/Mapping_seasonal_glacier_melt_across_the_ANDES_with_SAR/GL_TRONADOR_2012_LAT_LON""),
+L0010: 
+L0011:     Alerce = glaciers.filter(ee.Filter.eq('ENUM_ID', 17));
+L0012: 
+L0013: Map.centerObject(glaciers);
+L0023: var gMask = ee.Image().paint(glaciers, 1).eq(0) // crear la mascara
+L0024: 
+L0025: s1 = s1.filterBounds(Alerce) // filtrar para el glaciar
+L0026: 
+L0027:      .filterDate(studyStart, studyEnd)
+L0028: 
+L0029:     .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+L0030: 
+L0031:     .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+L0032: 
+L0033: var band = 'VV';
+L0037:           .select(band);
+L0038: 
+L0039: var s1D = s1.filter(ee.Filter.eq('orbitProperties_pass', 'DESCENDING'))
+L0040: 
+L0041:           .select(band);
+L0042: 
+L0043: print('s1D', s1D)
+L0081: print('Dates S1A:',s1A_dates)
+L0082: 
+L0083: var multiband = s1D.toBands();
+L0084: 
+L0085: print(multiband)
+L0086: 
+L0087: var Mean_alerce = multiband.reduceRegions({
+L0088: 
+L0089:   collection: Alerce,
+L0090: 
+L0091:   reducer: ee.Reducer.mean(),
+L0092: 
+L0093:   scale: 10,
+L0094: 
+L0095: });
+L0096: 
+L0097: print('Mean Alerce', Mean_alerce)
+L0123: print(Mean_alerce_2.getInfo('columns:'))
+L0124: 
+L0125:     Export.table.toDrive({
+L0126: 
+L0127:       collection: Mean_alerce,
+L0128: 
+L0129:       description: 'S1D_Alerce',
+L0130: 
+L0131:       fileFormat: 'CSV'
+L0132: 
+L0133:     });
+L0134: 
+L0135:       Export.table.toDrive({","Use COPERNICUS/S1_GRD as the source imagery. Use the source feature data defined by the workflow. Apply the filterDate interval [2017-04-01, 2018-03-31). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filter; filterbounds; filterdate; filter; filter; filter; select; tobands; reduceregions. Produce the resulting table as the workflow output.",Create a table with an ordered 9-step GEE workflow,e281fb62243b50e27b4f3649938977a12a720b1ff529b5781c0d7c1d9ae74bb0,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""01a3ff82ae77b0b02f412e317218550634818e52c87705707bc40e84c322f4ba"",""output-workflow-1""]"
+9,00803b20feefd251ca38b836e7abb254656a270adda367cc81a6bfc107a7a307,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":52,""end_line"":1,""start_column"":17,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":53,""end_line"":3,""start_column"":45,""start_line"":3}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":38,""end_line"":3,""start_column"":14,""start_line"":3}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":54,""end_line"":3,""start_column"":14,""start_line"":3}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":30,""end_line"":7,""start_column"":9,""start_line"":7}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":20,""end_line"":13,""start_column"":0,""start_line"":5}}]",9182337403604e22fcaff31c205ec6ff2e12fc1e4f9361e2a23c89c602fc0c02,82a9f7d273e79829f11baedccc6f1568d833d3250492db3b806b22db9db34758,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_03_01_04"",""L3_03_01_01"",""L3_03_01_04""]","[""ee.image.select"",""ee.image.clip"",""ee.image.select""]",not_granted,gee_expansion_d226c4fd2d5084c096a19061,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""no_source_backed_temporal_operation"",""repeated_operator""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,1184,data250000/script_244892.txt,07a65b4c310e3893ea6d2eb198883eebffc6dd13507d6594bd7ae67cfd72dc23,True,"L0001: var ALOSDSMDEM = ee.Image  ('JAXA/ALOS/AW3D30_V1_1');
+L0002: 
+L0003: var ALOSDSM = ALOSDSMDEM.select('AVE').clip (geometry);
+L0004: 
+L0005: Export.image.toDrive({
+L0006: 
+L0007:   image: ALOSDSM.select(""AVE""),
+L0008: 
+L0009:   description: 'ALOSDSM_30m',
+L0010: 
+L0011:   scale: 30,
+L0012: 
+L0013:   region: geometry});
+L0014: 
+L0015: var slope =  ee.Terrain.slope (ALOSDSMDEM);",Use JAXA/ALOS/AW3D30_V1_1 as the source imagery. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: select; clip; select. Produce the resulting image as the workflow output.,Create an image with an ordered 3-step GEE workflow,9d1d2aa40a3452112a647ddf4e972c355575653f15c75db74225c53dc53f2abf,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""07a65b4c310e3893ea6d2eb198883eebffc6dd13507d6594bd7ae67cfd72dc23"",""output-workflow-1""]"
+10,5a980faa0a047c56eb8090e30a74d48815c6a52e58266cdecd5a6dc507941cae,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":49,""end_line"":1,""start_column"":14,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":50,""end_line"":3,""start_column"":14,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":69,""end_line"":1,""start_column"":63,""start_line"":1}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":70,""end_line"":1,""start_column"":14,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":50,""end_line"":3,""start_column"":14,""start_line"":1}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":73,""end_line"":5,""start_column"":14,""start_line"":1}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":30,""end_line"":11,""start_column"":13,""start_line"":11}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":39,""end_line"":13,""start_column"":20,""start_line"":13}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":40,""end_line"":15,""start_column"":20,""start_line"":15}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":41,""end_line"":15,""start_column"":20,""start_line"":13}},{""fact_id"":""transform-0008"",""fact_type"":""transformation"",""source_location"":{""end_column"":40,""end_line"":17,""start_column"":20,""start_line"":17}},{""fact_id"":""transform-0009"",""fact_type"":""transformation"",""source_location"":{""end_column"":41,""end_line"":17,""start_column"":20,""start_line"":13}},{""fact_id"":""transform-0010"",""fact_type"":""transformation"",""source_location"":{""end_column"":41,""end_line"":19,""start_column"":21,""start_line"":19}},{""fact_id"":""transform-0011"",""fact_type"":""transformation"",""source_location"":{""end_column"":42,""end_line"":19,""start_column"":20,""start_line"":13}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":4,""end_line"":37,""start_column"":0,""start_line"":27}}]",fe28dbd44f029bcb0bbc118153b81806a11cbc8d9f59e2bddb1b26b0fc796fbd,e6f9b25cdda1e272d3a7f4514599934c08ad5e13ee7e31b4999232729d7e4599,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_06"",""L3_03_09_01"",""L3_03_09_05"",""L3_03_07_01"",""L3_03_01_04"",""L3_03_01_04"",""L3_10_04_01"",""L3_03_01_04"",""L3_10_04_01"",""L3_03_01_04"",""L3_10_04_01""]","[""ee.imagecollection.filterbounds"",""ee.imagecollection.filterdate"",""ee.imagecollection.filtermetadata"",""ee.imagecollection.mosaic"",""ee.image.select"",""ee.image.select"",""ee.image.addbands"",""ee.image.select"",""ee.image.addbands"",""ee.image.select"",""ee.image.addbands""]",not_granted,gee_expansion_ae2c781fac7e13a970489be0,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""repeated_operator""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,905,data90000/script_82229.txt,07ff7a9a07b331fc60a0086718ed2bb283cc0c25fca4f40f444d6f2fc45788f8,True,"L0001: var sentinel= ee.ImageCollection('COPERNICUS/S2').filterBounds(limite).
+L0002: 
+L0003:              filterDate('2021-10-02','2021-10-04').
+L0004: 
+L0005:              filterMetadata('CLOUD_COVERAGE_ASSESSMENT', 'Less_Than', 10); // otros operadores: Greater_Than, Less_Than, equals;
+L0006: 
+L0007: print (sentinel);
+L0009: Map.addLayer(sentinel, {max:10000, min:0, bands: ['B8A','B11','B12']},""Sentinel"");
+L0010: 
+L0011: var mosaic = sentinel.mosaic();
+L0012: 
+L0013: var bandasmosaico = mosaic.select('B4')
+L0014: 
+L0015:           .addBands(mosaic.select('B8A'))
+L0016: 
+L0017:           .addBands(mosaic.select('B11'))
+L0018: 
+L0019:           .addBands (mosaic.select('B12'));
+L0020: 
+L0021: Map.addLayer(bandasmosaico, {max:10000, min:0, bands: ['B8A','B11','B12']},""Bandasmosaico"");
+L0025: Map.centerObject(limite,12);
+L0026: 
+L0027: Export.image.toDrive({
+L0028: 
+L0029:   image: bandasmosaico,
+L0030: 
+L0031:   region: limite,
+L0032: 
+L0033:   description: 'limite_s2_2021-10-03_b4-8A-11-12_4326',
+L0034: 
+L0035:   scale: 20,
+L0036: 
+L0037:   });","Use COPERNICUS/S2 as the source imagery. Apply the filterDate interval [2021-10-02, 2021-10-04). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterbounds; filterdate; filtermetadata; mosaic; select; select; addbands; select; addbands; select; addbands. Produce the resulting image as the workflow output.",Create an image with an ordered 11-step GEE workflow,d66ca8c835942e95afe3e6770948682050a9f2dbcaecd7437612e8fcde6aa704,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""07ff7a9a07b331fc60a0086718ed2bb283cc0c25fca4f40f444d6f2fc45788f8"",""output-workflow-1""]"
+11,a858f11e03aa723a2484fec47adbf7e30802b134be459b985455e46198a37037,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":76,""end_line"":1,""start_column"":12,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":85,""end_line"":1,""start_column"":82,""start_line"":1}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":86,""end_line"":1,""start_column"":12,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":31,""end_line"":15,""start_column"":13,""start_line"":15}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":32,""end_line"":17,""start_column"":14,""start_line"":17}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":34,""end_line"":19,""start_column"":15,""start_line"":19}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":31,""end_line"":21,""start_column"":13,""start_line"":21}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":2,""end_line"":23,""start_column"":14,""start_line"":11}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":20,""end_line"":23,""start_column"":14,""start_line"":11}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":119,""start_column"":0,""start_line"":109}}]",9a9a8796700a658d55d603c430755c8d0b6488d2e73a2bde6f48f93f478b8f66,ae04d40e56b6c5b6d47cc1936f7b18e4b63fce8e4fa2631b0642f5eeb1b2ca73,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_03_01_01"",""L3_03_01_04"",""L3_03_01_04"",""L3_03_01_04"",""L3_03_01_04"",""L3_03_03_A"",""L3_01_02_03""]","[""ee.image.clip"",""ee.image.select"",""ee.image.select"",""ee.image.select"",""ee.image.select"",""ee.image.expression"",""ee.image.rename""]",not_granted,gee_expansion_0b839318e20327476e820c8c,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""no_source_backed_temporal_operation"",""repeated_operator""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,3114,data200000/script_193673.txt,08382826acd416602e4b5e4f50aac234789ad6b850297ac2a28e366ae33bddf3,True,"L0001: var sen16 = ee.Image('COPERNICUS/S2/20160604T052652_20160604T053931_T43RFM').clip(Jha);
+L0002: 
+L0003: var sen17 = ee.Image('COPERNICUS/S2/20170430T052651_20170430T053101_T43RFM').clip(Jha);
+L0009: var sen20 = ee.Image('COPERNICUS/S2/20200509T052649_20200509T053704_T43RFM').clip(Jha);
+L0010: 
+L0011: var bsi2_16 = sen16.expression(
+L0012: 
+L0013:     '((SWIR1 + RED)-(NIR + BLUE))/((SWIR1 + RED)+(NIR + BLUE))', {
+L0014: 
+L0015:       'RED': sen16.select('B4'),
+L0016: 
+L0017:       'BLUE': sen16.select('B2'),
+L0018: 
+L0019:       'SWIR1': sen16.select('B11'),
+L0020: 
+L0021:       'NIR': sen16.select('B8'),
+L0022: 
+L0023: }).rename('si_1_16');
+L0024: 
+L0025: var bsi2_17 = sen17.expression(
+L0107: Map.addLayer(outline, {palette: ['blue']}, 'Jha')
+L0108: 
+L0109: Export.image.toDrive({
+L0110: 
+L0111:   image: bsi2_16,
+L0112: 
+L0113:   description: 'Jha_Pre_bsi2_16',
+L0114: 
+L0115:   scale: 15,
+L0116: 
+L0117:   region: Jha
+L0118: 
+L0119: });
+L0120: 
+L0121: Export.image.toDrive({",Use COPERNICUS/S2/20160604T052652_20160604T053931_T43RFM as the source imagery. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: clip; select; select; select; select; expression; rename. Produce the resulting image as the workflow output.,Create an image with an ordered 7-step GEE workflow,e6f66086f5dca61cec7e0255d889f63598e0f49da9349690b57187bab3d9a862,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""08382826acd416602e4b5e4f50aac234789ad6b850297ac2a28e366ae33bddf3"",""output-workflow-1""]"
+12,1b37da9fc799d5a424fcb644b04b8f45e2f65ddfa4c69fed6c56a327c5ce2081,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":54,""end_line"":3,""start_column"":10,""start_line"":3}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":38,""end_line"":7,""start_column"":10,""start_line"":3}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":22,""end_line"":5,""start_column"":14,""start_line"":5}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":23,""end_line"":5,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":38,""end_line"":7,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":45,""end_line"":9,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":41,""end_line"":11,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":39,""end_line"":13,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":7,""end_line"":15,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":15,""end_line"":17,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0008"",""fact_type"":""transformation"",""source_location"":{""end_column"":20,""end_line"":19,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0009"",""fact_type"":""transformation"",""source_location"":{""end_column"":40,""end_line"":21,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0010"",""fact_type"":""transformation"",""source_location"":{""end_column"":28,""end_line"":27,""start_column"":16,""start_line"":27}},{""fact_id"":""transform-0011"",""fact_type"":""transformation"",""source_location"":{""end_column"":42,""end_line"":29,""start_column"":11,""start_line"":29}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":4,""end_line"":45,""start_column"":0,""start_line"":33}}]",3198af90fa11b1306aa055c826fe565d72ea332fad33494fa005e457adde1ec9,cd0b0cb4b5922e52992d83e17f226847c84b51950fd2b86d51775c8fe5eaa134,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_06"",""L3_03_09_01"",""L3_03_09_05"",""L3_03_09_05"",""L3_03_09_05"",""L3_10_02_03"",""L3_03_01_01"",""L3_03_03_A"",""L3_03_08_01"",""L3_03_03_L"",""L3_03_01_05""]","[""ee.imagecollection.filterbounds"",""ee.imagecollection.filterdate"",""ee.imagecollection.filter"",""ee.imagecollection.filter"",""ee.imagecollection.filter"",""ee.imagecollection.mean"",""ee.image.clip"",""ee.image.multiply"",""ee.image.normalizeddifference"",""ee.image.gte"",""ee.image.updatemask""]",not_granted,gee_expansion_fb461ef787fbe7cc2bed5715,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""repeated_operator""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,1583,data30000/script_29577.txt,083f040efae02a7655b4baa16f8ec58e349c9e9a44d5c73874f681cf2abaece1,True,"L0001: Map.centerObject(geometry);
+L0002: 
+L0003: var La5 = ee.ImageCollection(""LANDSAT/LT05/C02/T1_L2"")
+L0004: 
+L0005: .filterBounds(geometry)
+L0006: 
+L0007: .filterDate('1990-03-16','1995-03-16')
+L0008: 
+L0009: .filter(ee.Filter.lessThan('CLOUD_COVER',10))
+L0010: 
+L0011: .filter(ee.Filter.equals('WRS_PATH',166))
+L0012: 
+L0013: .filter(ee.Filter.equals('WRS_ROW',34))
+L0014: 
+L0015: .mean()
+L0016: 
+L0017: .clip(geometry)
+L0018: 
+L0019: .multiply(0.0000275)
+L0020: 
+L0021: .normalizedDifference(['SR_B2','SR_B4']);
+L0022: 
+L0023: print(La5);
+L0025: Map.addLayer(La5,{},'La5');
+L0026: 
+L0027: var image_thr = La5.gte(0.0);
+L0028: 
+L0029: var mask = image_thr.updateMask(image_thr);
+L0030: 
+L0031: Map.addLayer(mask,{palette:'blue'},'water');
+L0032: 
+L0033: Export.image.toDrive({
+L0034: 
+L0035:   image:mask
+L0036: 
+L0037:  , description:'mask_water'
+L0038: 
+L0039: , region:geometry
+L0040: 
+L0041: , scale:30
+L0042: 
+L0043:  ,  maxPixels:1e9
+L0044: 
+L0045:   });
+L0046: 
+L0047:  var La5_TIME = ee.ImageCollection(""LANDSAT/LT05/C02/T1_L2"")","Use LANDSAT/LT05/C02/T1_L2 as the source imagery. Apply the filterDate interval [1990-03-16, 1995-03-16). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterbounds; filterdate; filter; filter; filter; mean; clip; multiply; normalizeddifference; gte; updatemask. Produce the resulting image as the workflow output.",Create an image with an ordered 11-step GEE workflow,ae84cb36ff8a8ff1230aa040f0897b3611a4d2806b2defcc0f497938be1e6557,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""083f040efae02a7655b4baa16f8ec58e349c9e9a44d5c73874f681cf2abaece1"",""output-workflow-1""]"
+13,8c26482a8428c050df852399c5e763f684053ff674b8c6c7c84c4b4308970805,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":54,""end_line"":1,""start_column"":9,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":38,""end_line"":5,""start_column"":9,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":17,""end_line"":3,""start_column"":14,""start_line"":3}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":18,""end_line"":3,""start_column"":9,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":38,""end_line"":5,""start_column"":9,""start_line"":1}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":46,""end_line"":7,""start_column"":9,""start_line"":1}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":7,""end_line"":9,""start_column"":9,""start_line"":1}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":10,""end_line"":11,""start_column"":9,""start_line"":1}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":29,""end_line"":15,""start_column"":14,""start_line"":15}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":29,""end_line"":17,""start_column"":14,""start_line"":17}},{""fact_id"":""transform-0008"",""fact_type"":""transformation"",""source_location"":{""end_column"":30,""end_line"":19,""start_column"":15,""start_line"":19}},{""fact_id"":""transform-0009"",""fact_type"":""transformation"",""source_location"":{""end_column"":32,""end_line"":19,""start_column"":10,""start_line"":13}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":8,""end_line"":33,""start_column"":6,""start_line"":23}}]",26b42047ab7fd73230a7259d323ea743cc62dec0f21b91207cc09d6c0772953d,5d6939df3c08c313dd8de7b8b4bd5d3b13b1e6fdddb2a70cf02876d3faf9e55f,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_06"",""L3_03_09_01"",""L3_03_09_05"",""L3_10_02_03"",""L3_03_01_01"",""L3_03_01_04"",""L3_03_01_04"",""L3_03_01_04"",""L3_03_03_A""]","[""ee.imagecollection.filterbounds"",""ee.imagecollection.filterdate"",""ee.imagecollection.filtermetadata"",""ee.imagecollection.mean"",""ee.image.clip"",""ee.image.select"",""ee.image.select"",""ee.image.select"",""ee.image.expression""]",not_granted,gee_expansion_63d63739466aa23bc2bfd013,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""repeated_operator""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,613,data70000/script_68485.txt,084080333f4f3857b3bf0bdb215ce3060eb7448017b851c19320f3e3103fc82e,True,"L0001: var L8 = ee.ImageCollection(""LANDSAT/LC08/C01/T1_TOA"")
+L0002: 
+L0003: .filterBounds(ROI)
+L0004: 
+L0005: .filterDate(""2018-03-09"",""2020-09-09"")
+L0006: 
+L0007: .filterMetadata('CLOUD_COVER', 'less_than', 1)
+L0008: 
+L0009: .mean()
+L0010: 
+L0011: .clip(ROI);
+L0012: 
+L0013: var evi = L8.expression('2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))',{
+L0014: 
+L0015:       'NIR' : L8.select('B5'),
+L0016: 
+L0017:       'RED' : L8.select('B4'),
+L0018: 
+L0019:       'BLUE' : L8.select('B2')});
+L0020: 
+L0021:       Map.addLayer(evi, {min: -1, max: 1, palette: ['black','white', 'green']});
+L0022: 
+L0023:       Export.image.toDrive({
+L0024: 
+L0025:         image: evi,
+L0026: 
+L0027:         folder: ""GEE"",
+L0028: 
+L0029:         scale: 30,
+L0030: 
+L0031:         region: (ROI),
+L0032: 
+L0033:       });","Use LANDSAT/LC08/C01/T1_TOA as the source imagery. Apply the filterDate interval [2018-03-09, 2020-09-09). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterbounds; filterdate; filtermetadata; mean; clip; select; select; select; expression. Produce the resulting image as the workflow output.",Create an image with an ordered 9-step GEE workflow,93ed12d4fdbc60cb371b47a91f7a3073748990df7d823ed27b9f39db4e2602a8,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""084080333f4f3857b3bf0bdb215ce3060eb7448017b851c19320f3e3103fc82e"",""output-workflow-1""]"
+14,2103d35be72576dafa2187391266ccc2c9f856f36de41ae107f37abff7dcae07,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":53,""end_line"":57,""start_column"":13,""start_line"":57}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":90,""end_line"":1,""start_column"":22,""start_line"":1}},{""fact_id"":""dataset-0003"",""fact_type"":""dataset"",""source_location"":{""end_column"":88,""end_line"":13,""start_column"":20,""start_line"":13}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":53,""end_line"":59,""start_column"":12,""start_line"":59}},{""fact_id"":""temporal-0002"",""fact_type"":""temporal"",""source_location"":{""end_column"":58,""end_line"":61,""start_column"":12,""start_line"":61}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":26,""end_line"":63,""start_column"":18,""start_line"":63}},{""fact_id"":""spatial-0002"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":27,""end_line"":81,""start_column"":14,""start_line"":81}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":80,""end_line"":3,""start_column"":15,""start_line"":3}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":67,""end_line"":57,""start_column"":13,""start_line"":57}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":54,""end_line"":59,""start_column"":13,""start_line"":57}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":59,""end_line"":61,""start_column"":13,""start_line"":57}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":27,""end_line"":63,""start_column"":13,""start_line"":57}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":29,""end_line"":65,""start_column"":13,""start_line"":57}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":21,""end_line"":67,""start_column"":13,""start_line"":57}},{""fact_id"":""transform-0008"",""fact_type"":""transformation"",""source_location"":{""end_column"":19,""end_line"":69,""start_column"":13,""start_line"":57}},{""fact_id"":""transform-0009"",""fact_type"":""transformation"",""source_location"":{""end_column"":2,""end_line"":85,""start_column"":12,""start_line"":77}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":97,""start_column"":0,""start_line"":87}}]",7a131ca1e5f6a2ae66bc56318ffbaf61048ee176cc19d1b7f91c0a75c8cab48e,040cef87859f512029306929f0c0bb8e49dedf87bd5a709fcfd5e1a3ea456c47,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_02_06_02"",""L3_03_01_04"",""L3_03_09_05"",""L3_03_09_05"",""L3_03_09_06"",""L3_03_10_R"",""L3_03_03_A"",""L3_03_01_01"",""L3_03_02_01""]","[""ee.featurecollection.filter"",""ee.imagecollection.select"",""ee.imagecollection.filter"",""ee.imagecollection.filter"",""ee.imagecollection.filterbounds"",""ee.imagecollection.reduce"",""ee.image.unitscale"",""ee.image.clip"",""ee.image.reduceregions""]",not_granted,gee_expansion_f00da4850c94fb60345295d5,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""repeated_operator""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,4176,data80000/script_74782.txt,08978d162c954ef92f9e6d902470283d889c0b6a00a488b2783e24b016e4e544,True,"L0001: var india_districts = ee.FeatureCollection('ft:1FvWpF37AzuI01WkdSUPHMcCcZKXCe_I8Bm4LVwhe');
+L0002: 
+L0003: var district = india_districts.filter(ee.Filter.inList('NAME_2', ['Kendujhar']));
+L0004: 
+L0005: var blocks = ee.FeatureCollection('ft:1PU3KVkcNorOux0E7f13lseVoQsJT_PI9T2xpVHj6')
+L0011: Map.addLayer(ee.Image().paint(district,1,3),{},'district');
+L0012: 
+L0013: var projectpoints = ee.FeatureCollection('ft:1dqPdrqKoBAC5azBCswSjSfI1RQd9NyqmCnF5rXAN');
+L0014: 
+L0015: print('projectpoints',projectpoints);
+L0055: print('lcMask Scale in meters:', lcMask.projection().nominalScale());
+L0056: 
+L0057: var maxLAI = ee.ImageCollection('MODIS/006/MCD15A3H').select('Lai')
+L0058: 
+L0059:     .filter(ee.Filter.calendarRange(2018,2018,'year'))
+L0060: 
+L0061:     .filter(ee.Filter.calendarRange(135,304,'day_of_year'))
+L0062: 
+L0063:     .filterBounds(district)
+L0064: 
+L0065:     .reduce(ee.Reducer.max())//calculate max for September
+L0066: 
+L0067:     .unitScale(0, 10)  //scale the data
+L0068: 
+L0069:     .clip(district)
+L0070: 
+L0071:     ;
+L0075: print('projectpoints_LAI_array',projectpoints_LAI_array);
+L0076: 
+L0077: var stats = maxLAI.reduceRegions({
+L0078: 
+L0079:   reducer: ee.Reducer.first(),
+L0080: 
+L0081:   collection: projectpoints,
+L0082: 
+L0083:   scale:463
+L0084: 
+L0085: });
+L0086: 
+L0087: Export.table.toDrive({
+L0088: 
+L0089:   collection: stats,
+L0090: 
+L0091:   description: 'projectpoints_LAI_Kendujhar',
+L0092: 
+L0093:   folder: 'MNFC',
+L0094: 
+L0095:   fileFormat: 'CSV'
+L0096: 
+L0097: });
+L0098: 
+L0099: var maxLAI= maxLAI.updateMask(lcMask);","Use MODIS/006/MCD15A3H as the source imagery. Use ft:1FvWpF37AzuI01WkdSUPHMcCcZKXCe_I8Bm4LVwhe, ft:1dqPdrqKoBAC5azBCswSjSfI1RQd9NyqmCnF5rXAN as the source feature data. Apply the calendarRange interval [2018, 2018] for year. Apply the calendarRange interval [135, 304] for day_of_year. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filter; select; filter; filter; filterbounds; reduce; unitscale; clip; reduceregions. Produce the resulting table as the workflow output.",Create a table with an ordered 9-step GEE workflow,47e3849278d856366405f8dbf4b43eb4fcdabe574b5ab7780dc18a36e8641690,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""08978d162c954ef92f9e6d902470283d889c0b6a00a488b2783e24b016e4e544"",""output-workflow-1""]"
+15,3822e2025e0a4a7602fb58510e38dcc94c5df0a32bb7bda7c6ea17859259e3f5,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":55,""end_line"":1,""start_column"":16,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":56,""end_line"":5,""start_column"":16,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":38,""end_line"":3,""start_column"":32,""start_line"":3}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":39,""end_line"":3,""start_column"":16,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":56,""end_line"":5,""start_column"":16,""start_line"":1}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":63,""end_line"":7,""start_column"":16,""start_line"":1}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":90,""end_line"":9,""start_column"":16,""start_line"":1}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":90,""end_line"":11,""start_column"":16,""start_line"":1}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":24,""end_line"":13,""start_column"":16,""start_line"":1}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":63,""start_column"":0,""start_line"":49}}]",309f1d56152600e1fd106e1f4ac0e062e52cfa148438534bdb1bc5adfa878eff,2691f4c8f73a1e565144d318492a300c3b2b733699546e19248e8e4bf6038270,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_06"",""L3_03_09_01"",""L3_03_09_05"",""L3_03_09_05"",""L3_03_09_05"",""L3_03_10_R""]","[""ee.imagecollection.filterbounds"",""ee.imagecollection.filterdate"",""ee.imagecollection.filter"",""ee.imagecollection.filter"",""ee.imagecollection.filter"",""ee.imagecollection.max""]",not_granted,gee_expansion_2275991f8c93268786d1f7e9,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""repeated_operator""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,2378,data140000/script_135625.txt,08b175541f65af11d5a16662b45b7ce5085ab49f8c8c18c558a56463f4366384,True,"L0001: var s1_jhansi = ee.ImageCollection('COPERNICUS/S1_GRD')
+L0002: 
+L0003:                   .filterBounds(jhansi)
+L0004: 
+L0005:                   .filterDate('2019-08-13','2019-09-06')
+L0006: 
+L0007:                   .filter(ee.Filter.eq('instrumentMode', 'IW'))
+L0008: 
+L0009:                   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+L0010: 
+L0011:                   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+L0012: 
+L0013:                   .max();
+L0014: 
+L0015: print(s1_jhansi,'Jhansi');
+L0047: Map.addLayer(jhansi,{},'Jhansi boundary',false);
+L0048: 
+L0049: Export.image.toDrive({
+L0050: 
+L0051:   image:s1_jhansi,
+L0052: 
+L0053:   description: 'exporting_jhansi_S1image',
+L0054: 
+L0055:   fileNamePrefix: 'jhansi_S1_28aug2019',
+L0056: 
+L0057:   region: jhansi,
+L0058: 
+L0059:   scale:10,
+L0060: 
+L0061:   maxPixels: 1e9
+L0062: 
+L0063: });
+L0064: 
+L0065: Export.image.toDrive({","Use COPERNICUS/S1_GRD as the source imagery. Apply the filterDate interval [2019-08-13, 2019-09-06). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterbounds; filterdate; filter; filter; filter; max. Produce the resulting image as the workflow output.",Create an image with an ordered 6-step GEE workflow,ba1824f52f092316607a369d789d60c047cf6d7fd44e3dda5d82d431b8c26b0f,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""08b175541f65af11d5a16662b45b7ce5085ab49f8c8c18c558a56463f4366384"",""output-workflow-1""]"
+16,b9809ee1190e9f58a138c0ce639ac83d6ed6980dfe061a8b2cf141926ce7a0e7,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":50,""end_line"":5,""start_column"":11,""start_line"":5}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":46,""end_line"":9,""start_column"":11,""start_line"":5}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":33,""end_line"":7,""start_column"":27,""start_line"":7}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":34,""end_line"":7,""start_column"":11,""start_line"":5}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":46,""end_line"":9,""start_column"":11,""start_line"":5}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":59,""end_line"":11,""start_column"":11,""start_line"":5}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":15,""start_column"":20,""start_line"":15}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":53,""end_line"":17,""start_column"":10,""start_line"":17}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":66,""end_line"":17,""start_column"":10,""start_line"":17}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":55,""end_line"":35,""start_column"":12,""start_line"":35}},{""fact_id"":""transform-0008"",""fact_type"":""transformation"",""source_location"":{""end_column"":68,""end_line"":35,""start_column"":12,""start_line"":35}},{""fact_id"":""transform-0009"",""fact_type"":""transformation"",""source_location"":{""end_column"":55,""end_line"":37,""start_column"":12,""start_line"":37}},{""fact_id"":""transform-0010"",""fact_type"":""transformation"",""source_location"":{""end_column"":68,""end_line"":37,""start_column"":12,""start_line"":37}},{""fact_id"":""transform-0011"",""fact_type"":""transformation"",""source_location"":{""end_column"":55,""end_line"":39,""start_column"":12,""start_line"":39}},{""fact_id"":""transform-0012"",""fact_type"":""transformation"",""source_location"":{""end_column"":68,""end_line"":39,""start_column"":12,""start_line"":39}},{""fact_id"":""transform-0013"",""fact_type"":""transformation"",""source_location"":{""end_column"":55,""end_line"":41,""start_column"":12,""start_line"":41}},{""fact_id"":""transform-0014"",""fact_type"":""transformation"",""source_location"":{""end_column"":68,""end_line"":41,""start_column"":12,""start_line"":41}},{""fact_id"":""transform-0015"",""fact_type"":""transformation"",""source_location"":{""end_column"":55,""end_line"":43,""start_column"":12,""start_line"":43}},{""fact_id"":""transform-0016"",""fact_type"":""transformation"",""source_location"":{""end_column"":68,""end_line"":43,""start_column"":12,""start_line"":43}},{""fact_id"":""transform-0017"",""fact_type"":""transformation"",""source_location"":{""end_column"":55,""end_line"":45,""start_column"":12,""start_line"":45}},{""fact_id"":""transform-0018"",""fact_type"":""transformation"",""source_location"":{""end_column"":68,""end_line"":45,""start_column"":12,""start_line"":45}},{""fact_id"":""transform-0019"",""fact_type"":""transformation"",""source_location"":{""end_column"":53,""end_line"":47,""start_column"":10,""start_line"":47}},{""fact_id"":""transform-0020"",""fact_type"":""transformation"",""source_location"":{""end_column"":66,""end_line"":47,""start_column"":10,""start_line"":47}},{""fact_id"":""transform-0021"",""fact_type"":""transformation"",""source_location"":{""end_column"":28,""end_line"":71,""start_column"":16,""start_line"":71}},{""fact_id"":""transform-0022"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":73,""start_column"":19,""start_line"":73}},{""fact_id"":""transform-0023"",""fact_type"":""transformation"",""source_location"":{""end_column"":34,""end_line"":73,""start_column"":16,""start_line"":71}},{""fact_id"":""transform-0024"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":75,""start_column"":19,""start_line"":75}},{""fact_id"":""transform-0025"",""fact_type"":""transformation"",""source_location"":{""end_column"":34,""end_line"":75,""start_column"":16,""start_line"":71}},{""fact_id"":""transform-0026"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":77,""start_column"":19,""start_line"":77}},{""fact_id"":""transform-0027"",""fact_type"":""transformation"",""source_location"":{""end_column"":34,""end_line"":77,""start_column"":16,""start_line"":71}},{""fact_id"":""transform-0028"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":79,""start_column"":19,""start_line"":79}},{""fact_id"":""transform-0029"",""fact_type"":""transformation"",""source_location"":{""end_column"":34,""end_line"":79,""start_column"":16,""start_line"":71}},{""fact_id"":""transform-0030"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":81,""start_column"":19,""start_line"":81}},{""fact_id"":""transform-0031"",""fact_type"":""transformation"",""source_location"":{""end_column"":34,""end_line"":81,""start_column"":16,""start_line"":71}},{""fact_id"":""transform-0032"",""fact_type"":""transformation"",""source_location"":{""end_column"":34,""end_line"":83,""start_column"":19,""start_line"":83}},{""fact_id"":""transform-0033"",""fact_type"":""transformation"",""source_location"":{""end_column"":35,""end_line"":83,""start_column"":16,""start_line"":71}},{""fact_id"":""transform-0034"",""fact_type"":""transformation"",""source_location"":{""end_column"":32,""end_line"":85,""start_column"":19,""start_line"":85}},{""fact_id"":""transform-0035"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":85,""start_column"":16,""start_line"":71}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":101,""start_column"":0,""start_line"":91}}]",db1578ca3868209f2460ccbe19526eba0a1e48d3fbb9899fe64a9e1ccf727a0a,888859113a73b3fb49dfaccee5a99a94c332bb2b69bbe37008462115b74682ba,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_06"",""L3_03_09_01"",""L3_03_09_05"",""L3_10_02_03"",""L3_03_08_01"",""L3_03_01_01"",""L3_03_08_01"",""L3_03_01_01"",""L3_03_08_01"",""L3_03_01_01"",""L3_03_08_01"",""L3_03_01_01"",""L3_03_08_01"",""L3_03_01_01"",""L3_03_08_01"",""L3_03_01_01"",""L3_03_08_01"",""L3_03_01_01"",""L3_03_08_01"",""L3_03_01_01"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L"",""L3_03_03_L""]","[""ee.imagecollection.filterbounds"",""ee.imagecollection.filterdate"",""ee.imagecollection.filtermetadata"",""ee.imagecollection.median"",""ee.image.normalizeddifference"",""ee.image.clip"",""ee.image.normalizeddifference"",""ee.image.clip"",""ee.image.normalizeddifference"",""ee.image.clip"",""ee.image.normalizeddifference"",""ee.image.clip"",""ee.image.normalizeddifference"",""ee.image.clip"",""ee.image.normalizeddifference"",""ee.image.clip"",""ee.image.normalizeddifference"",""ee.image.clip"",""ee.image.normalizeddifference"",""ee.image.clip"",""ee.image.lt"",""ee.image.gt"",""ee.image.and"",""ee.image.gt"",""ee.image.and"",""ee.image.gt"",""ee.image.and"",""ee.image.gt"",""ee.image.and"",""ee.image.gt"",""ee.image.and"",""ee.image.gt"",""ee.image.and"",""ee.image.gt"",""ee.image.and""]",not_granted,gee_expansion_efb9af0f40765fe56b7a300d,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""long_chain_20_plus"",""repeated_operator""]",long_or_repeated,gis_recommend.gee_workflow_expansion_audit_row.v1,2458,data180000/script_178243.txt,08b6de758c8708cb90a6b6487546d27fff52253823accf72b77e89baa3fcab76,True,"L0003: var end_date='2010-10-01';      //exclusive date
+L0004: 
+L0005: var data = ee.ImageCollection(""ASTER/AST_L1T_003"") //Landsat 7 data selection
+L0006: 
+L0007:              .filterBounds(anagar)                      //selection of data for area of interest
+L0008: 
+L0009:              .filterDate(start_date, end_date)          // filter for date
+L0010: 
+L0011:              .filterMetadata('CLOUDCOVER', 'less_than', 30); //cloud cover mask
+L0012: 
+L0013: print(data);
+L0014: 
+L0015: var median=ee.Image(data.median()); //calculation of median data to remove bad pixels
+L0016: 
+L0017: var ndvi= median.normalizedDifference(['B3N', 'B02']).clip(anagar); //NDVI lt_0
+L0018: 
+L0019: var evi = median.expression(                                      //EVI lt_0.25
+L0033:                 ).clip(anagar);
+L0034: 
+L0035: var mndwi1= median.normalizedDifference(['B01', 'B04']).clip(anagar); //MNDWI1 gt_0.35
+L0036: 
+L0037: var mndwi2= median.normalizedDifference(['B01', 'B05']).clip(anagar); //MNDWI2 gt_0.5
+L0038: 
+L0039: var mndwi3= median.normalizedDifference(['B01', 'B06']).clip(anagar);
+L0040: 
+L0041: var mndwi4= median.normalizedDifference(['B01', 'B07']).clip(anagar);
+L0042: 
+L0043: var mndwi5= median.normalizedDifference(['B01', 'B08']).clip(anagar);
+L0044: 
+L0045: var mndwi6= median.normalizedDifference(['B01', 'B09']).clip(anagar);
+L0046: 
+L0047: var ndwi= median.normalizedDifference(['B01', 'B3N']).clip(anagar);  //NDWI gt_0
+L0048: 
+L0049: var awei = median.expression(                                     //AWEI gt_0.19
+L0069: var extract=(
+L0070: 
+L0071:                 ndvi.lt(0.2)          //1
+L0072: 
+L0073:               .and(mndwi1.gt(0.5))   //3
+L0074: 
+L0075:               .and(mndwi2.gt(0.5))    //4
+L0076: 
+L0077:               .and(mndwi3.gt(0.5))    //5
+L0078: 
+L0079:               .and(mndwi4.gt(0.5))    //6
+L0080: 
+L0081:               .and(mndwi5.gt(0.5))    //7
+L0082: 
+L0083:               .and(mndwi6.gt(0.45))    //8
+L0084: 
+L0085:               .and(ndwi.gt(-0.2))        //9
+L0086: 
+L0087:             );
+L0089: Map.addLayer(extract,{ },'aster');
+L0090: 
+L0091: Export.image.toDrive({
+L0092: 
+L0093:   image: extract,
+L0094: 
+L0095:   description: 'rainy_2011_aster',
+L0096: 
+L0097:   scale: 30,
+L0098: 
+L0099:   region: anagar
+L0100: 
+L0101: });","Use ASTER/AST_L1T_003 as the source imagery. Apply the filterDate interval [2010-06-01, 2010-10-01). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterbounds; filterdate; filtermetadata; median; normalizeddifference; clip; normalizeddifference; clip; normalizeddifference; clip; normalizeddifference; clip; normalizeddifference; clip; normalizeddifference; clip; normalizeddifference; clip; normalizeddifference; clip; lt; gt; and; gt; and; gt; and; gt; and; gt; and; gt; and; gt; and. Produce the resulting image as the workflow output.",Create an image with an ordered 35-step GEE workflow,9778f5cc48f958e230cd171ba1fdb0d4d1de1fe30c7ebcc4ac9e426a9d6fd3a7,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""08b6de758c8708cb90a6b6487546d27fff52253823accf72b77e89baa3fcab76"",""output-workflow-1""]"
+17,76164f8bb5bc55b2a46d7ea0001eeec83cda22dc63bc09d8e58ab098fde85efd,pending_human_review,helper_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":47,""end_line"":53,""start_column"":9,""start_line"":53}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":62,""end_line"":1,""start_column"":10,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":65,""end_line"":55,""start_column"":9,""start_line"":53}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":31,""end_line"":59,""start_column"":28,""start_line"":59}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":65,""end_line"":55,""start_column"":9,""start_line"":53}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":66,""end_line"":57,""start_column"":9,""start_line"":53}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":32,""end_line"":59,""start_column"":9,""start_line"":53}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":40,""end_line"":63,""start_column"":29,""start_line"":63}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":50,""end_line"":65,""start_column"":34,""start_line"":65}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":38,""end_line"":69,""start_column"":9,""start_line"":69}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":87,""start_column"":0,""start_line"":75}}]",84b4146a76cab4e828daa1ee51bef9bc5dd2fd67ba3d851e805a8f37526b14ac,3b12bb9c4bda38781445c050869b6d92d897691a870b8740420200ed26800ae5,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_03_09_05"",""L3_03_09_06"",""L3_10_02_03"",""L3_03_01_01"",""L3_03_01_04""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.filter"",""ee.imagecollection.filterbounds"",""ee.imagecollection.median"",""ee.image.clip"",""ee.image.select""]",not_granted,gee_expansion_198e2641d4330e793d390916,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""private_asset_redacted"",""stratum:helper_export""]",multi_dataset_private,gis_recommend.gee_workflow_expansion_audit_row.v1,1607,data280000/script_278695.txt,020dd9ee0545db2f1f257dedc782d667143786c04a8141dc4ea7d45af4224141,True,"L0001: var shp = ee.FeatureCollection('users/rezaparhizcar/hamidiye')
+L0002: 
+L0003: Map.centerObject (shp, 15)
+L0051: });
+L0052: 
+L0053: var S2 = ee.ImageCollection(""COPERNICUS/S2_SR"")
+L0054: 
+L0055:               .filter(ee.Filter.date('2021-12-01', '2021-12-31'))
+L0056: 
+L0057:               .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 70))
+L0058: 
+L0059:               .filterBounds(shp);
+L0060: 
+L0061:               print(S2)
+L0062: 
+L0063:                 var median = S2.median();
+L0064: 
+L0065:                 var median_norm = median.clip(shp);
+L0066: 
+L0067:   var     bands_4_7=['B4','B3','B2'];
+L0068: 
+L0069: var S2 = median_norm.select(bands_4_7);
+L0070: 
+L0071: var vis5={band:['B4','B3','B2'], min: 0,max: 3000,}
+L0073: Map.addLayer(S2,vis5,'S2');
+L0074: 
+L0075: Export.image.toDrive({
+L0076: 
+L0077:   image: S2,
+L0078: 
+L0079:   description: 'sen_hamidiye',
+L0080: 
+L0081:   region: shp,
+L0082: 
+L0083:   scale:10,
+L0084: 
+L0085:   maxPixels:1e9
+L0086: 
+L0087: });","Use COPERNICUS/S2_SR as the source imagery. Use the source feature data defined by the workflow. Apply the filterDate interval [2021-12-01, 2021-12-31). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; filter; filterbounds; median; clip; select. Produce the resulting image as the workflow output.",Create an image with an ordered 6-step GEE workflow,8f9e4328c7a34e9bd08a139bbe35913da7d0b91c411548fed3a517a0a9fb4a92,False,not_granted_pending_sampling_audit,False,output-workflow-2,"[""020dd9ee0545db2f1f257dedc782d667143786c04a8141dc4ea7d45af4224141"",""output-workflow-2""]"
+18,f1baa1ccda4ebae48d0f52af19d91af350bf19325eca243d9a3ca8af40a17691,pending_human_review,helper_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":57,""end_line"":21,""start_column"":18,""start_line"":21}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":56,""end_line"":3,""start_column"":10,""start_line"":3}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":59,""end_line"":23,""start_column"":18,""start_line"":21}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":29,""end_line"":33,""start_column"":26,""start_line"":33}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":60,""end_line"":5,""start_column"":10,""start_line"":3}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":59,""end_line"":23,""start_column"":18,""start_line"":21}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":42,""end_line"":25,""start_column"":18,""start_line"":21}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":29,""end_line"":27,""start_column"":18,""start_line"":21}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":35,""end_line"":29,""start_column"":18,""start_line"":21}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":37,""end_line"":31,""start_column"":18,""start_line"":21}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":30,""end_line"":33,""start_column"":18,""start_line"":21}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":15,""end_line"":67,""start_column"":0,""start_line"":59}}]",6648c592c684e2002b7927b060c77488a76f4fbfd7e9760dfc7de4ec42016309,f690b5222fc74739a4bb3238b159e9c7855792c347966ea7cc2b9fcbb26d15eb,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_02_06_02"",""L3_03_09_01"",""L3_03_01_04"",""L3_10_02_03"",""L3_03_03_A"",""L3_03_03_A"",""L3_03_01_01""]","[""ee.featurecollection.filter"",""ee.imagecollection.filterdate"",""ee.imagecollection.select"",""ee.imagecollection.median"",""ee.image.multiply"",""ee.image.subtract"",""ee.image.clip""]",not_granted,gee_expansion_05b38595e353345a5022a25f,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""stratum:helper_export""]",multi_dataset_private,gis_recommend.gee_workflow_expansion_audit_row.v1,2052,data140000/script_135539.txt,0210a76f8f8f6d297f5cd4f471c056b0496509f8e101a1cfee139406664cb12d,True,"L0001: Map.setOptions('hybrid');
+L0002: 
+L0003: var AOI = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
+L0004: 
+L0005:             .filter(ee.Filter.eq('country_na', 'Nicaragua'));
+L0006: 
+L0007: var newBand = function (img) {
+L0019: };
+L0020: 
+L0021: var Temperatura = ee.ImageCollection('MODIS/061/MOD11A2')
+L0022: 
+L0023:                     .filterDate('2022-05-01', '2022-07-01')
+L0024: 
+L0025:                     .select('LST_Day_1km')
+L0026: 
+L0027:                     .median()
+L0028: 
+L0029:                     .multiply(0.02)
+L0030: 
+L0031:                     .subtract(273.15)
+L0032: 
+L0033:                     .clip(AOI);
+L0034: 
+L0035: print(Temperatura)
+L0057: Map.addLayer(Temperatura.select('LST_Day_1km'), temperatureVis, 'Temperatura superficial');
+L0058: 
+L0059: Export.image.toDrive({
+L0060: 
+L0061:   image: Temperatura,
+L0062: 
+L0063:   description: ""Temp_Mayo_Junio_2022"",
+L0064: 
+L0065:   region: AOI,
+L0066: 
+L0067:   scale: 1000});
+L0068: 
+L0069: var Histograma = ui.Chart.image.histogram({","Use MODIS/061/MOD11A2 as the source imagery. Use USDOS/LSIB_SIMPLE/2017 as the source feature data. Apply the filterDate interval [2022-05-01, 2022-07-01). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filter; filterdate; select; median; multiply; subtract; clip. Produce the resulting image as the workflow output.",Create an image with an ordered 7-step GEE workflow,63d6a962317f5f56094b12a0d2a2d9d96a7d95051782de6b84ba18ae1513dbf0,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""0210a76f8f8f6d297f5cd4f471c056b0496509f8e101a1cfee139406664cb12d"",""output-workflow-1""]"
+19,8c9c965384c87f25e62e947e53bb48ebedecee6c79fa968a25777f19e138bf78,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":50,""end_line"":29,""start_column"":11,""start_line"":29}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":81,""end_line"":7,""start_column"":10,""start_line"":7}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":20,""end_line"":31,""start_column"":17,""start_line"":31}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":69,""end_line"":29,""start_column"":11,""start_line"":29}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":11,""end_line"":31,""start_column"":11,""start_line"":29}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":31,""end_line"":31,""start_column"":17,""start_line"":31}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":32,""end_line"":31,""start_column"":11,""start_line"":29}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":191,""start_column"":0,""start_line"":175}}]",094f7dae030d84c3a6eeae03407249fbe74668739319ff21f975c6c3a3d509fd,f0986b0583d87714343c10367ef1437c923fba9cc6c49ad1b66839c7cc47ae38,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_03_01_04"",""L3_03_07_01"",""L3_02_03_05"",""L3_03_01_01""]","[""ee.imagecollection.select"",""ee.imagecollection.mosaic"",""ee.featurecollection.geometry"",""ee.image.clip""]",not_granted,gee_expansion_3d632873debc04bf8894616e,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""no_source_backed_temporal_operation"",""private_asset_redacted""]",multi_dataset_private,gis_recommend.gee_workflow_expansion_audit_row.v1,3929,data270000/script_263834.txt,077746d312c78bb1d9c2ae027971caac58312a14363ae1988c5b4400a131d1f3,True,"L0005: var cc= require('users/PIJ-17-05/glaciers_vm:cloud_filter');
+L0006: 
+L0007: var AOI = ee.FeatureCollection(""users/PIJ-17-05/glaciers_sa/north_andean_region"");
+L0008: 
+L0009: var pop_data = ee.ImageCollection(""CIESIN/GPWv411/GPW_UNWPP-Adjusted_Population_Density"");
+L0027:   hlm.set('system:index','hlm')]);
+L0028: 
+L0029: var land = ee.ImageCollection(""MODIS/006/MCD12Q1"").select('LC_Type1')
+L0030: 
+L0031:   .mosaic().clip(AOI.geometry());
+L0032: 
+L0033: print(land);
+L0173: });
+L0174: 
+L0175: Export.image.toDrive({
+L0176: 
+L0177:  image: land,
+L0178: 
+L0179:  description: 'land_cover',
+L0180: 
+L0181:  scale: 100,
+L0182: 
+L0183:  region: AOI,
+L0184: 
+L0185:  maxPixels:480757896 ,
+L0186: 
+L0187:  folder: 'north_andean_region',
+L0188: 
+L0189:  fileFormat: 'GeoTIFF'
+L0190: 
+L0191: });",Use MODIS/006/MCD12Q1 as the source imagery. Use the source feature data defined by the workflow. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: select; mosaic; geometry; clip. Produce the resulting image as the workflow output.,Create an image with an ordered 4-step GEE workflow,d6802e6dd42416665fb8dd05f5bfd713e8052188ed5d751bf7fecc2cf015bc1b,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""077746d312c78bb1d9c2ae027971caac58312a14363ae1988c5b4400a131d1f3"",""output-workflow-1""]"
+20,f160326333a10cf6076b04b194dd8eb8436866d495ef2583520b7ce78fbb2026,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":70,""end_line"":21,""start_column"":18,""start_line"":21}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":63,""end_line"":1,""start_column"":10,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":14,""end_line"":71,""start_column"":11,""start_line"":71}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":27,""end_line"":23,""start_column"":18,""start_line"":21}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":83,""start_column"":0,""start_line"":63}}]",70b14dabbb70f002278e1a53011abdbd67df0fb92d4fbe9f00f8c0955e493801,43773dad0b601764345911603a90ee36336a6bd7702b4c1c59bc688a6b4416b3,,,,,,,,,,"[""no_source_backed_temporal_operation""]","[""L3_03_01_04""]","[""ee.image.select""]",not_granted,gee_expansion_f76344c986ca45c773f0b07b,pending_sampling_audit,"[""multiple_dataset_facts"",""no_source_backed_temporal_operation"",""private_asset_redacted""]",multi_dataset_private,gis_recommend.gee_workflow_expansion_audit_row.v1,3103,data90000/script_84573.txt,080f0a17f9f0885edcfae98c5aed36bdaae301be549b5248c2dd723a0f1771b2,True,"L0001: var shp = ee.FeatureCollection('users/diazetra/Deep/KotaBogor')
+L0002: 
+L0003: Map.addLayer(shp)
+L0019: print(image_sort)
+L0020: 
+L0021: var image_final = ee.Image('LANDSAT/LC08/C01/T1/LC08_122065_20180706')
+L0022: 
+L0023:   .select([""B6"",""B5"",""B4""])
+L0024: 
+L0025: var image_B2 = ee.Image('LANDSAT/LC08/C01/T1/LC08_122065_20180706')
+L0061: Map.addLayer(image_colorinfrared.clip(shp))
+L0062: 
+L0063: Export.image.toDrive({
+L0064: 
+L0065:   image : image_final,
+L0066: 
+L0067:   description : 'landsatkotabogor',
+L0068: 
+L0069:   scale : 30,
+L0070: 
+L0071:   region : shp,
+L0072: 
+L0073:   folder : 'landsat',
+L0074: 
+L0075:   fileFormat : 'GeoTIFF',
+L0076: 
+L0077:   formatOptions: {
+L0078: 
+L0079:     cloudOptimized: true
+L0080: 
+L0081:   }
+L0082: 
+L0083: })
+L0084: 
+L0085: Export.image.toDrive({",Use LANDSAT/LC08/C01/T1/LC08_122065_20180706 as the source imagery. Use the source feature data defined by the workflow. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: select. Produce the resulting image as the workflow output.,Create an image with an ordered 1-step GEE workflow,dc7bed2f9729a7cb39d7b6d67bd2f636c5f6a395f6e2f71c0aedc35e8c939f16,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""080f0a17f9f0885edcfae98c5aed36bdaae301be549b5248c2dd723a0f1771b2"",""output-workflow-1""]"
+21,0d7117b853fe306d940f7d0c23ee01890a439ee538c7661696e90ce312e17beb,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":104,""end_line"":5,""start_column"":10,""start_line"":5}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":100,""end_line"":7,""start_column"":14,""start_line"":7}},{""fact_id"":""dataset-0003"",""fact_type"":""dataset"",""source_location"":{""end_column"":29,""end_line"":11,""start_column"":18,""start_line"":11}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":38,""end_line"":11,""start_column"":35,""start_line"":11}},{""fact_id"":""spatial-0002"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":21,""end_line"":13,""start_column"":14,""start_line"":13}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":39,""end_line"":11,""start_column"":18,""start_line"":11}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":2,""end_line"":19,""start_column"":18,""start_line"":11}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":29,""start_column"":0,""start_line"":21}}]",488c95c2bb446efb62e4cd519a11b63b8c953ad702fe9ff8e4ac9f039b550f81,8beab7a7bca36bd622b8173377abe5f19daef056dcdbabe48e84fd72f9d2314c,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_03_01_01"",""L3_08_01_01""]","[""ee.image.clip"",""ee.image.sampleregions""]",not_granted,gee_expansion_b64b497355ff8f7f2e126111,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""no_source_backed_temporal_operation"",""private_asset_redacted""]",multi_dataset_private,gis_recommend.gee_workflow_expansion_audit_row.v1,709,data250000/script_246846.txt,085074486b7a6cc6d8df1f931956b4d3a22329e217fbf34e149c31d3c94c9d04,True,"L0003: var vegetationIndexLib = require(""users/nildsonsilva/packages:vegetationIndex.js"");
+L0004: 
+L0005: var roi = ee.FeatureCollection('users/nildsonsilva/Usina_Pedra/extensao_corrigido_V3_PEDRA_UNION_wgs84')
+L0006: 
+L0007: var talhoes = ee.FeatureCollection('users/nildsonsilva/Usina_Pedra/pixels_usina_sentinel_pedra_10m')
+L0008: 
+L0009: Map.addLayer(talhoes,{},'talhoes')
+L0010: 
+L0011: var fcPointSamp = ee.Image(1).clip(roi).sampleRegions({
+L0012: 
+L0013:   collection: talhoes,
+L0014: 
+L0015:   scale: 10,
+L0016: 
+L0017:   geometries: true
+L0018: 
+L0019: });
+L0020: 
+L0021: Export.table.toAsset({
+L0022: 
+L0023:   'collection': fcPointSamp,
+L0024: 
+L0025:   'description':'usina_pedra_centroides_10m',
+L0026: 
+L0027:   'assetId':'usina_pedra_centroides_10m',
+L0028: 
+L0029: })",Use a constant image with value 1. Use the source feature data defined by the workflow. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: clip; sampleregions. Produce the resulting table as the workflow output.,Create a table with an ordered 2-step GEE workflow,803f59b231ce96f6b8d04ea912d9e34059f729fa895572131d47a8cf2ce62502,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""085074486b7a6cc6d8df1f931956b4d3a22329e217fbf34e149c31d3c94c9d04"",""output-workflow-1""]"
+22,dd27ba16d07a51ac52cbd519de2170327fba86993d9d2a8949b5458de14ea71f,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":55,""end_line"":1,""start_column"":14,""start_line"":1}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":63,""end_line"":3,""start_column"":12,""start_line"":3}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":35,""end_line"":7,""start_column"":27,""start_line"":7}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":63,""end_line"":1,""start_column"":14,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":36,""end_line"":7,""start_column"":14,""start_line"":7}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":18,""end_line"":33,""start_column"":0,""start_line"":19}}]",faed2f018d7ac8922f83923950598343f7b26fe216c3eac516c128681d40d192,f7507681e2c1d3ec48c40cd55246ab870c836fdfc713cdf5ac6589811408b405,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_03_10_R"",""L3_03_01_01""]","[""ee.imagecollection.first"",""ee.image.clip""]",not_granted,gee_expansion_6fc241fd41ddff164f7d72a5,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""no_source_backed_temporal_operation"",""private_asset_redacted""]",multi_dataset_private,gis_recommend.gee_workflow_expansion_audit_row.v1,536,data30000/script_26111.txt,086e96fb67f1805cb3e3dffc08c61f4e194a226d9aeff3b044a77179e80ef707,True,"L0001: var dataset = ee.ImageCollection(""ESA/WorldCover/v100"").first();
+L0002: 
+L0003: var table = ee.FeatureCollection(""users/alikaramvand/DAM_irri"");
+L0004: 
+L0005: var geometry =table;
+L0006: 
+L0007: var clipped = dataset.clip(geometry)
+L0008: 
+L0009: var visualization = {
+L0017: Map.addLayer(clipped, visualization, 'Clipped')
+L0018: 
+L0019: Export.image.toDrive({
+L0020: 
+L0021:   image: clipped,
+L0022: 
+L0023:   description: 'Land_USE',
+L0024: 
+L0025:   folder: 'earthengine',
+L0026: 
+L0027:   fileNamePrefix: 'Land USE1',
+L0028: 
+L0029:   region: geometry,
+L0030: 
+L0031:   scale: 20,
+L0032: 
+L0033:   maxPixels: 1e7})",Use ESA/WorldCover/v100 as the source imagery. Use the source feature data defined by the workflow. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: first; clip. Produce the resulting image as the workflow output.,Create an image with an ordered 2-step GEE workflow,c3330feecd05b21cc6c26ccc0e7056dfbdaf10e94b1a4690346e79a7be9e1f9d,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""086e96fb67f1805cb3e3dffc08c61f4e194a226d9aeff3b044a77179e80ef707"",""output-workflow-1""]"
+23,7fb89d6b61060f8ed820d1e4e013e7df85a7e996ee6bf38a0353f7ff7d72db8b,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":93,""end_line"":3,""start_column"":11,""start_line"":3}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":59,""end_line"":7,""start_column"":12,""start_line"":7}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":59,""end_line"":7,""start_column"":12,""start_line"":7}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":70,""end_line"":7,""start_column"":12,""start_line"":7}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":32,""end_line"":15,""start_column"":23,""start_line"":13}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":23,""end_line"":17,""start_column"":23,""start_line"":13}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":24,""end_line"":19,""start_column"":23,""start_line"":13}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":35,""start_column"":0,""start_line"":23}}]",3f11e763fc47c109ffdd4ddc9d4fb98e2335d9a6123895de38ffd37c9c2016e0,59c06fb51a1ddcbaed425fa84dad8630b08756ddf9ca78846fd22ffbb09fb1e8,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_02_03_05"",""L3_03_09_06"",""L3_03_07_01"",""L3_03_01_01""]","[""ee.featurecollection.geometry"",""ee.imagecollection.filterbounds"",""ee.imagecollection.mosaic"",""ee.image.clip""]",not_granted,gee_expansion_ec9861a67d296d004de7702d,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""no_source_backed_temporal_operation"",""private_asset_redacted""]",multi_dataset_private,gis_recommend.gee_workflow_expansion_audit_row.v1,840,data210000/script_205527.txt,0896b76b6de0c97fc12a0bb4fd5372bea4dbc86029d053a2fb53dee3d00a4e5c,True,"L0001: var imageVisParam_ESRI = {""opacity"":1,""bands"":[""b1""],""min"":1,""max"":10,""palette"":[""8dffda"",""14ff31"",""686dff"",""ff9b54"",""ff712d"",""ff66b4""]};
+L0002: 
+L0003: var ESRI = ee.ImageCollection(""projects/sat-io/open-datasets/landcover/ESRI_Global-LULC_10m"")
+L0004: 
+L0005: Map.addLayer(ESRI,imageVisParam_ESRI,""ESRI_landcover"")
+L0006: 
+L0007: var ROI  =  ee.FeatureCollection(""users/lixinyancas/hubei"").geometry()
+L0008: 
+L0009: Map.centerObject(ROI, 8)
+L0011: Map.addLayer(ROI, {color: 'FF0000', fillColor: '00000000', width: 1}, ""ROI"")
+L0012: 
+L0013: var ESRI_ROI_landcover=ESRI
+L0014: 
+L0015:               .filterBounds(ROI)
+L0016: 
+L0017:               .mosaic()
+L0018: 
+L0019:               .clip(ROI)
+L0020: 
+L0021: Map.addLayer(ESRI_ROI_landcover,imageVisParam_ESRI,""ESRI_ROI_landcover"")
+L0022: 
+L0023: Export.image.toDrive({
+L0024: 
+L0025:     image:ESRI_ROI_landcover,
+L0026: 
+L0027:     description: ""ESRI_ROI_landcover"",
+L0028: 
+L0029:     region:ROI,
+L0030: 
+L0031:     scale:10,
+L0032: 
+L0033:     maxPixels:1e13
+L0034: 
+L0035: });",Use projects/sat-io/open-datasets/landcover/ESRI_Global-LULC_10m as the source imagery. Use the source feature data defined by the workflow. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: geometry; filterbounds; mosaic; clip. Produce the resulting image as the workflow output.,Create an image with an ordered 4-step GEE workflow,e2b0ade4627205b6ba02abf50c4835bfd2d9a17a9381e122a95923abc82dcac5,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""0896b76b6de0c97fc12a0bb4fd5372bea4dbc86029d053a2fb53dee3d00a4e5c"",""output-workflow-1""]"
+24,0e1432e948d7b54074d15ca9d64a2be093a9d786d4eb12d50021b9439a7ced05,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":60,""end_line"":5,""start_column"":13,""start_line"":5}},{""fact_id"":""dataset-0002"",""fact_type"":""dataset"",""source_location"":{""end_column"":62,""end_line"":1,""start_column"":10,""start_line"":1}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":48,""end_line"":7,""start_column"":13,""start_line"":5}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":45,""end_line"":13,""start_column"":42,""start_line"":13}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":48,""end_line"":7,""start_column"":13,""start_line"":5}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":26,""end_line"":9,""start_column"":13,""start_line"":5}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":36,""end_line"":13,""start_column"":21,""start_line"":13}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":46,""end_line"":13,""start_column"":21,""start_line"":13}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":53,""start_column"":0,""start_line"":41}}]",90ef55a650308c8e22a7d49590fb959305178c685db9f9b7516c56dbfa2639fe,4cf2bd52e9ac0edeef26bd8b68ee24a83ee4ce384a1bfad2030d8a232270ebdc,,,,,,,,,,"[""dynamic_transformation_arguments""]","[""L3_03_09_01"",""L3_03_01_04"",""L3_03_07_01"",""L3_03_01_01""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.select"",""ee.imagecollection.mosaic"",""ee.image.clip""]",not_granted,gee_expansion_ede8c5bb04b20d83b844b445,pending_sampling_audit,"[""dynamic_transformation_arguments"",""multiple_dataset_facts"",""private_asset_redacted""]",multi_dataset_private,gis_recommend.gee_workflow_expansion_audit_row.v1,1449,data80000/script_79868.txt,08e6c869ee2b7276c878758e85be429ee5d67e2f5582cb8da25a795a95a896d7,True,"L0001: var aoi = ee.FeatureCollection('users/Data/WeMAST_FAO_Basins');
+L0002: 
+L0003: Map.addLayer(aoi)
+L0004: 
+L0005: var wb_wet = ee.ImageCollection(""JRC/GSW1_2/MonthlyHistory"")
+L0006: 
+L0007:           .filterDate('2015-11-01','2016-04-30') //Wet = Nov - April
+L0008: 
+L0009:           .select('water')
+L0010: 
+L0011: print('JRC Global Water History', wb_wet)
+L0012: 
+L0013: var wb_clipped_wet = wb_wet.mosaic().clip(aoi)
+L0014: 
+L0015: var visualization = {
+L0039: Map.addLayer(wb_clipped_dry, visualization, 'Water extent-Dry');
+L0040: 
+L0041: Export.image.toDrive(
+L0042: 
+L0043: {image:wb_clipped_wet,
+L0044: 
+L0045:   description: 'wb_clipped_wet_2016', // Before exporting, change the wet/dry and year (where applicable)
+L0046: 
+L0047:   fileNamePrefix: 'wb_clipped_wet_2016',
+L0048: 
+L0049:   scale: 30, //resolution for exported data
+L0050: 
+L0051:   maxPixels: 9000000000000,
+L0052: 
+L0053: });
+L0054: 
+L0055: Export.image.toDrive(","Use JRC/GSW1_2/MonthlyHistory as the source imagery. Use the source feature data defined by the workflow. Apply the filterDate interval [2015-11-01, 2016-04-30). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; select; mosaic; clip. Produce the resulting image as the workflow output.",Create an image with an ordered 4-step GEE workflow,3151a6fd2c278f3a86afb77b13aa8eb5d40e2d11ab27fa224d7637d2b8beba5e,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""08e6c869ee2b7276c878758e85be429ee5d67e2f5582cb8da25a795a95a896d7"",""output-workflow-1""]"
+25,06a6f06344237d0dee59e53c67a74b8f86f2dd812b8f529a1064156320323b6e,pending_human_review,helper_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":43,""end_line"":5,""start_column"":10,""start_line"":5}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":34,""end_line"":253,""start_column"":18,""start_line"":253}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":27,""end_line"":11,""start_column"":10,""start_line"":11}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":35,""end_line"":253,""start_column"":9,""start_line"":253}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":267,""start_column"":0,""start_line"":251}}]",c49c2b3afb2e19151ce4144105461951fcc3a9eadda17a78dd48bb926346b29d,8fe4a2c3d62dda8ad18a3343ae60c74a47a2f707c9703d01e6cec23ed6818d4f,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_03_01_04"",""L3_03_01_01""]","[""ee.image.select"",""ee.image.clip""]",not_granted,gee_expansion_58c2a88796aced475510c176,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""no_source_backed_temporal_operation"",""stratum:helper_export""]",no_temporal_operation,gis_recommend.gee_workflow_expansion_audit_row.v1,5031,data90000/script_83555.txt,016d109e53bd15119a0669709ba83da396757c08e4b319edbdbc1faa23f3b9ff,True,"L0003: var palettes = require('users/gena/packages:palettes')
+L0004: 
+L0005: var DEM = ee.Image(""JAXA/ALOS/AW3D30_V1_1"");
+L0006: 
+L0007: var slope =  ee.Terrain.slope (DEM);
+L0009: var aspect =  ee.Terrain.aspect (DEM);
+L0010: 
+L0011: var DSM = DEM.select('AVE');
+L0012: 
+L0013: var slopepercent = slope.divide(180).multiply(Math.PI).tan().multiply(100).rename('Percent')
+L0249: Map.addLayer(cuenca_quilimari.style(vis_params_quili), {}, ""Cuencas"");
+L0250: 
+L0251: Export.image.toDrive({
+L0252: 
+L0253:   image: DSM.clip(cuenca_quilimari),
+L0254: 
+L0255:   description: namefinal,
+L0256: 
+L0257:   folder: folder ,
+L0258: 
+L0259:   scale: 30,
+L0260: 
+L0261:   region: cuenca_quilimari,
+L0262: 
+L0263:   crs: 'EPSG:4326',
+L0264: 
+L0265:   maxPixels: 1e9
+L0266: 
+L0267: });",Use JAXA/ALOS/AW3D30_V1_1 as the source imagery. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: select; clip. Produce the resulting image as the workflow output.,Create an image with an ordered 2-step GEE workflow,f2bbeb923ddda9fcba48316290d9bc5f41c23869c0786802d5e1231da2f817db,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""016d109e53bd15119a0669709ba83da396757c08e4b319edbdbc1faa23f3b9ff"",""output-workflow-1""]"
+26,8cfe744e056f73ea9bb1e65111426af3bbdd0d37b20e4879c9a94e50afa66e68,pending_human_review,helper_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":35,""end_line"":137,""start_column"":13,""start_line"":137}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":24,""end_line"":139,""start_column"":21,""start_line"":139}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":25,""end_line"":139,""start_column"":13,""start_line"":137}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":55,""end_line"":221,""start_column"":29,""start_line"":221}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":87,""end_line"":225,""start_column"":0,""start_line"":221}}]",3cb1bcd2018d5980d698bbdd6c1105c73bcb575bb1a8b36bc2ea3781cb376a96,64e63b0ee47df1a6cdd8ac08326f7c0f13a1806fa37017c403307c0b1d9dd578,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_03_01_01"",""L3_03_01_04""]","[""ee.image.clip"",""ee.image.select""]",not_granted,gee_expansion_c481db402d994d80ad66c34b,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""no_source_backed_temporal_operation"",""stratum:helper_export""]",no_temporal_operation,gis_recommend.gee_workflow_expansion_audit_row.v1,8477,data230000/script_227146.txt,021354457e2a2c1786e55cbb20334d537ad4636f6ffe3b863261f77a8808c8ef,True,"L0135:                       .clip(aoi);
+L0136: 
+L0137: var LonLat = ee.Image.pixelLonLat()
+L0138: 
+L0139:                .clip(aoi);
+L0140: 
+L0141: var image = images.first();
+L0219:                       description: ""2021-01-01_CR_VVbyVH"", scale: 30, maxPixels: 1e13});
+L0220: 
+L0221: Export.image.toDrive({image: LonLat.select('longitude'),
+L0222: 
+L0223:                       folder: 'Anzali_wetland',
+L0224: 
+L0225:                       description: ""2021-01-01_longitude"", scale: 30, maxPixels: 1e13});
+L0226: 
+L0227: Export.image.toDrive({image: LonLat.select('latitude'),","Create a pixel longitude/latitude image with ee.Image.pixelLonLat(). From the generated pixel longitude/latitude image, select its longitude band. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: clip; select. Produce the resulting image as the workflow output.",Create an image with an ordered 2-step GEE workflow,b2bda837a8d3fa95680c1eeefd271ab02e1f2f9dcbc6a98739954f1b00c9b647,False,not_granted_pending_sampling_audit,False,output-workflow-11,"[""021354457e2a2c1786e55cbb20334d537ad4636f6ffe3b863261f77a8808c8ef"",""output-workflow-11""]"
+27,c142d4bb1e77618d912ff875409b491e4c0215e98b2306bbf03b90254cfc742e,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":39,""end_line"":1,""start_column"":11,""start_line"":1}},{""fact_id"":""spatial-0001"",""fact_type"":""spatial_input"",""source_location"":{""end_column"":55,""end_line"":9,""start_column"":49,""start_line"":9}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":40,""end_line"":5,""start_column"":16,""start_line"":5}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":56,""end_line"":9,""start_column"":24,""start_line"":9}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":19,""end_line"":33,""start_column"":0,""start_line"":19}}]",84a60486b91fc588296116297da1dc29d10edcc3b65f0a473d8222a2f84839c5,8c13bf6aa46dadcfcc899957e2610632a294dc9abe08169db2e67be3a5ffa3e9,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_temporal_operation""]","[""L3_03_01_04"",""L3_03_01_01""]","[""ee.image.select"",""ee.image.clip""]",not_granted,gee_expansion_d09ce707724d718edd759a3e,pending_sampling_audit,"[""dynamic_transformation_arguments"",""external_spatial_identifier"",""no_source_backed_temporal_operation""]",no_temporal_operation,gis_recommend.gee_workflow_expansion_audit_row.v1,1768,data220000/script_218555.txt,07e85df6ae50a5fe1e238d68acc5485b2eaaa8f51bd902d5982043e4aecef023,True,"L0001: var srtm = ee.Image(""USGS/SRTMGL1_003"");
+L0002: 
+L0003: print(srtm);
+L0004: 
+L0005: var elevation = srtm.select('elevation');
+L0006: 
+L0007: print(elevation,'elev');
+L0008: 
+L0009: var elevation_clipped = ee.Image(elevation).clip(region);
+L0010: 
+L0011: var zones = elevation.gt(700).add(elevation.gt(1000)).add(elevation.gt(1700)).add(elevation.gt(2500)).add(elevation.gt(4000));
+L0017: Map.addLayer(zones.clip(region), {min: 0, max: 4, palette: palette}, 'elevation zones');
+L0018: 
+L0019: Export.image.toDrive({
+L0020: 
+L0021:   image: elevation_clipped,
+L0022: 
+L0023:   description: 'DEM_srtm30m',
+L0024: 
+L0025:   folder: 'my_folder',
+L0026: 
+L0027:   region: region,
+L0028: 
+L0029:   scale: 30,
+L0030: 
+L0031:   crs: 'EPSG:32638',
+L0032: 
+L0033:   maxPixels: 1e10});
+L0034: 
+L0035: var chirps = ee.ImageCollection(precip);",Use USGS/SRTMGL1_003 as the source imagery. Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: select; clip. Produce the resulting image as the workflow output.,Create an image with an ordered 2-step GEE workflow,02f5b1242aca898c8d31c59ad3ab32e698b74d956702e0720258af71a1fce99a,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""07e85df6ae50a5fe1e238d68acc5485b2eaaa8f51bd902d5982043e4aecef023"",""output-workflow-1""]"
+28,78820d454e5084b734e3d6268115a42ef57ae1481274355b6fc6d525e4a6295f,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":53,""end_line"":75,""start_column"":9,""start_line"":75}},{""fact_id"":""temporal-0001"",""fact_type"":""temporal"",""source_location"":{""end_column"":50,""end_line"":77,""start_column"":9,""start_line"":75}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":50,""end_line"":77,""start_column"":9,""start_line"":75}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":25,""end_line"":79,""start_column"":14,""start_line"":79}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":109,""start_column"":0,""start_line"":95}}]",cba1b9fc9400d830b36f6e7acdead94a7b8f4d82ebad6daf7797b0cca325a982,60ca28bbe661e79e55796bdb92980eca1d3d8306060c4f8fa9160532547a95f5,,,,,,,,,,[],"[""L3_03_09_01"",""L3_03_07_01""]","[""ee.imagecollection.filterdate"",""ee.imagecollection.mosaic""]",not_granted,gee_expansion_08c1336380f64f38efe965f1,pending_sampling_audit,"[""external_spatial_identifier""]",other,gis_recommend.gee_workflow_expansion_audit_row.v1,2051,data20000/script_11048.txt,08613565b06eee5353d522da21691ef81676a294160f32fea7fd8694cff41b40,True,"L0073: var geometry = /* color: #d63000 */ee.Geometry.Point([121.279, 51.798]);
+L0074: 
+L0075: var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_RT')
+L0076: 
+L0077:             .filterDate('2019-06-23','2019-06-24');
+L0078: 
+L0079: var hecheng = l8.mosaic();
+L0080: 
+L0081: print(hecheng);
+L0093: Map.addLayer(s2, {bands: ['B12', 'B8', 'B2'], max: 4000}, 's2');
+L0094: 
+L0095: Export.image.toDrive({
+L0096: 
+L0097:   image:hecheng,
+L0098: 
+L0099:   description:'fire',
+L0100: 
+L0101:   crs:'EPSG:4326',
+L0102: 
+L0103:   scale:10,
+L0104: 
+L0105:   maxPixels:20000000,
+L0106: 
+L0107:   region:roi
+L0108: 
+L0109: });","Use LANDSAT/LC08/C01/T1_RT as the source imagery. Apply the filterDate interval [2019-06-23, 2019-06-24). Use the source-defined spatial input where required by the workflow. Apply the following GEE operations in order: filterdate; mosaic. Produce the resulting image as the workflow output.",Create an image with an ordered 2-step GEE workflow,a543fcf018dfc41175406a631d8d7a1d9aa5daf735be796806a17d10457b1ba1,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""08613565b06eee5353d522da21691ef81676a294160f32fea7fd8694cff41b40"",""output-workflow-1""]"
+29,2c0f4fcbfe674decbd1319d263af1e81b28fbe165e9d21ebf3a6494bff7397f3,pending_human_review,control_flow_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":63,""end_line"":1,""start_column"":17,""start_line"":1}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":62,""end_line"":3,""start_column"":16,""start_line"":3}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":65,""start_column"":0,""start_line"":57}}]",c818ca1d17ecb1e454fc5d234fc96b56d2f87d5541d7ccf18eacf9dae66d68ca,395b5f9bd07f18f0655ab84fb3ea2b2e5fe16a2fd736295c6c6949169466554c,,,,,,,,,,"[""dynamic_transformation_arguments"",""no_source_backed_spatial_input"",""no_source_backed_temporal_operation""]","[""L3_02_06_02""]","[""ee.featurecollection.filter""]",not_granted,gee_expansion_fa1852731e753f0a01e177c9,pending_sampling_audit,"[""dynamic_transformation_arguments"",""no_source_backed_spatial_input"",""no_source_backed_temporal_operation"",""stratum:control_flow_export""]",spatial_omission,gis_recommend.gee_workflow_expansion_audit_row.v1,2312,data40000/script_36468.txt,009fb3fadd7d9bbb8e30f70d7ae4fa2263f59cf5958d10f964f8dcebe97ee2c3,True,"L0001: var ecoRegions = ee.FeatureCollection(""USDOS/LSIB_SIMPLE/2017"");
+L0002: 
+L0003: var ecoRegion = ecoRegions.filter(ee.Filter.eq('ECO_ID', 814));
+L0004: 
+L0005: var rect = ee.FeatureCollection(ecoRegion); // poli or poli1 or poli2 or...
+L0055: Map.addLayer(landAreaImg, {opacity: 0.7}, ""landAreaImg"")
+L0056: 
+L0057: Export.table.toDrive({
+L0058: 
+L0059:   collection: ecoRegion,
+L0060: 
+L0061:   description:'Arctic_tundra',
+L0062: 
+L0063:   fileFormat: 'KML',
+L0064: 
+L0065: });
+L0066: 
+L0067: Export.table.toDrive({",Use USDOS/LSIB_SIMPLE/2017 as the source feature data. Apply the following GEE operations in order: filter. Produce the resulting table as the workflow output.,Create a table with an ordered 1-step GEE workflow,9191f0ba018051bfef26638d609b70d77737c24dfc318e5983268cc6c4a76676,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""009fb3fadd7d9bbb8e30f70d7ae4fa2263f59cf5958d10f964f8dcebe97ee2c3"",""output-workflow-1""]"
+30,8581d919f146ca6246b5dbc091534c4a5fef4d09ddcb6b878ea4a914eea29d48,pending_human_review,linear_export,"[{""fact_id"":""dataset-0001"",""fact_type"":""dataset"",""source_location"":{""end_column"":78,""end_line"":1,""start_column"":12,""start_line"":1}},{""fact_id"":""transform-0001"",""fact_type"":""transformation"",""source_location"":{""end_column"":11,""end_line"":3,""start_column"":12,""start_line"":1}},{""fact_id"":""transform-0002"",""fact_type"":""transformation"",""source_location"":{""end_column"":25,""end_line"":3,""start_column"":12,""start_line"":1}},{""fact_id"":""transform-0003"",""fact_type"":""transformation"",""source_location"":{""end_column"":35,""end_line"":11,""start_column"":11,""start_line"":11}},{""fact_id"":""transform-0004"",""fact_type"":""transformation"",""source_location"":{""end_column"":41,""end_line"":11,""start_column"":11,""start_line"":11}},{""fact_id"":""transform-0005"",""fact_type"":""transformation"",""source_location"":{""end_column"":31,""end_line"":13,""start_column"":11,""start_line"":13}},{""fact_id"":""transform-0006"",""fact_type"":""transformation"",""source_location"":{""end_column"":31,""end_line"":15,""start_column"":11,""start_line"":15}},{""fact_id"":""transform-0007"",""fact_type"":""transformation"",""source_location"":{""end_column"":40,""end_line"":17,""start_column"":11,""start_line"":17}},{""fact_id"":""transform-0008"",""fact_type"":""transformation"",""source_location"":{""end_column"":52,""end_line"":17,""start_column"":11,""start_line"":17}},{""fact_id"":""transform-0009"",""fact_type"":""transformation"",""source_location"":{""end_column"":35,""end_line"":19,""start_column"":11,""start_line"":19}},{""fact_id"":""transform-0010"",""fact_type"":""transformation"",""source_location"":{""end_column"":63,""end_line"":19,""start_column"":11,""start_line"":19}},{""fact_id"":""transform-0011"",""fact_type"":""transformation"",""source_location"":{""end_column"":39,""end_line"":21,""start_column"":15,""start_line"":21}},{""fact_id"":""transform-0012"",""fact_type"":""transformation"",""source_location"":{""end_column"":57,""end_line"":21,""start_column"":15,""start_line"":21}},{""fact_id"":""transform-0013"",""fact_type"":""transformation"",""source_location"":{""end_column"":36,""end_line"":23,""start_column"":12,""start_line"":23}},{""fact_id"":""transform-0014"",""fact_type"":""transformation"",""source_location"":{""end_column"":54,""end_line"":23,""start_column"":12,""start_line"":23}},{""fact_id"":""transform-0015"",""fact_type"":""transformation"",""source_location"":{""end_column"":33,""end_line"":25,""start_column"":11,""start_line"":25}},{""fact_id"":""transform-0016"",""fact_type"":""transformation"",""source_location"":{""end_column"":51,""end_line"":25,""start_column"":11,""start_line"":25}},{""fact_id"":""transform-0017"",""fact_type"":""transformation"",""source_location"":{""end_column"":27,""end_line"":29,""start_column"":2,""start_line"":29}},{""fact_id"":""transform-0018"",""fact_type"":""transformation"",""source_location"":{""end_column"":27,""end_line"":31,""start_column"":2,""start_line"":31}},{""fact_id"":""transform-0019"",""fact_type"":""transformation"",""source_location"":{""end_column"":27,""end_line"":33,""start_column"":2,""start_line"":33}},{""fact_id"":""transform-0020"",""fact_type"":""transformation"",""source_location"":{""end_column"":27,""end_line"":35,""start_column"":2,""start_line"":35}},{""fact_id"":""transform-0021"",""fact_type"":""transformation"",""source_location"":{""end_column"":27,""end_line"":37,""start_column"":2,""start_line"":37}},{""fact_id"":""transform-0022"",""fact_type"":""transformation"",""source_location"":{""end_column"":30,""end_line"":39,""start_column"":2,""start_line"":39}},{""fact_id"":""transform-0023"",""fact_type"":""transformation"",""source_location"":{""end_column"":2,""end_line"":45,""start_column"":13,""start_line"":27}},{""fact_id"":""transform-0024"",""fact_type"":""transformation"",""source_location"":{""end_column"":16,""end_line"":45,""start_column"":13,""start_line"":27}},{""fact_id"":""transform-0025"",""fact_type"":""transformation"",""source_location"":{""end_column"":24,""end_line"":45,""start_column"":13,""start_line"":27}},{""fact_id"":""output-0001"",""fact_type"":""output"",""source_location"":{""end_column"":2,""end_line"":75,""start_column"":0,""start_line"":57}}]",228ae4be9e1ab0575bcb2a31b4708856882efac197dc48a8c893a09267f3d849,27cc48ba453fcd127ff8a80c2adfe790894fba82bb624c41edc2d5c4a0681a0c,,,,,,,,,,"[""dynamic_output_fields"",""dynamic_transformation_arguments"",""no_source_backed_spatial_input"",""no_source_backed_temporal_operation""]","[""L3_03_01_05"",""L3_03_01_05"",""L3_03_01_04"",""L3_03_03_L"",""L3_03_01_04"",""L3_03_01_04"",""L3_03_01_04"",""L3_03_03_A"",""L3_03_01_04"",""L3_03_03_A"",""L3_03_01_04"",""L3_03_03_L"",""L3_03_01_04"",""L3_03_03_A"",""L3_03_01_04"",""L3_03_03_A"",""L3_01_02_03"",""L3_01_02_03"",""L3_01_02_03"",""L3_01_02_03"",""L3_01_02_03"",""L3_01_02_03"",""L3_03_01_09"",""L3_03_03_A"",""L3_01_13_01""]","[""ee.image.unmask"",""ee.image.updatemask"",""ee.image.select"",""ee.image.eq"",""ee.image.select"",""ee.image.select"",""ee.image.select"",""ee.image.divide"",""ee.image.select"",""ee.image.unitscale"",""ee.image.select"",""ee.image.eq"",""ee.image.select"",""ee.image.unitscale"",""ee.image.select"",""ee.image.unitscale"",""ee.image.rename"",""ee.image.rename"",""ee.image.rename"",""ee.image.rename"",""ee.image.rename"",""ee.image.rename"",""ee.image.cat"",""ee.image.multiply"",""ee.image.uint8""]",not_granted,gee_expansion_ca8f05a700ea90a71c7c33d8,pending_sampling_audit,"[""dynamic_output_fields"",""dynamic_transformation_arguments"",""long_chain_20_plus"",""no_source_backed_spatial_input"",""no_source_backed_temporal_operation"",""private_asset_redacted"",""repeated_operator""]",spatial_omission,gis_recommend.gee_workflow_expansion_audit_row.v1,1438,data230000/script_226397.txt,0763fbdfcf4cf3749d42b995d8d3c727a17ea0e37870d69c682a2662ae05c9a4,True,"L0001: var input = ee.Image('users/mdh/hansen_global_forest_change_2020_v1_8_merged')
+L0002: 
+L0003:   .unmask().updateMask(1);
+L0004: 
+L0005: var min_loss_year = 2001;
+L0009: var max_year_code = max_loss_year - min_loss_year + 1;
+L0010: 
+L0011: var mask = input.select('datamask').eq(1);
+L0012: 
+L0013: var loss = input.select('loss');
+L0014: 
+L0015: var gain = input.select('gain');
+L0016: 
+L0017: var tree = input.select('treecover2000').divide(100);
+L0018: 
+L0019: var year = input.select('lossyear').unitScale(1, max_year_code);
+L0020: 
+L0021: var new_loss = input.select('lossyear').eq(max_year_code);
+L0022: 
+L0023: var first = input.select('first_.*').unitScale(0, 120);
+L0024: 
+L0025: var last = input.select('last.*').unitScale(0, 120);
+L0026: 
+L0027: var output = ee.Image.cat([
+L0028: 
+L0029:   mask.rename('mask_uint8'),
+L0030: 
+L0031:   loss.rename('loss_uint8'),
+L0032: 
+L0033:   gain.rename('gain_uint8'),
+L0034: 
+L0035:   tree.rename('tree_uint8'),
+L0036: 
+L0037:   year.rename('year_uint8'),
+L0038: 
+L0039:   new_loss.rename('new_uint8'),
+L0040: 
+L0041:   first,
+L0042: 
+L0043:   last,
+L0044: 
+L0045: ]).multiply(255).uint8();
+L0046: 
+L0047: var level = 12;
+L0055: var origin = circumference / 2;
+L0056: 
+L0057: Export.image.toAsset({
+L0058: 
+L0059:   image: output,
+L0060: 
+L0061:   description: 'HansenMercatorPreVis',
+L0062: 
+L0063:   assetId: 'users/mdh/hansen_global_forest_change_2020_v1_8_previs',
+L0064: 
+L0065:   dimensions: size + 'x' + size,
+L0066: 
+L0067:   crs: 'EPSG:3857',
+L0068: 
+L0069:   crsTransform: [scale, 0, -origin, 0, -scale, origin],
+L0070: 
+L0071:   maxPixels: size * size,
+L0072: 
+L0073:   maxWorkers: 2000,
+L0074: 
+L0075: });",Use the source imagery defined by the workflow. Apply the following GEE operations in order: unmask; updatemask; select; eq; select; select; select; divide; select; unitscale; select; eq; select; unitscale; select; unitscale; rename; rename; rename; rename; rename; rename; cat; multiply; uint8. Produce the resulting image as the workflow output.,Create an image with an ordered 25-step GEE workflow,331225e2be035dc8a1073c9546c423d2d18eb7b56ea00bd877777e4548d06349,False,not_granted_pending_sampling_audit,False,output-workflow-1,"[""0763fbdfcf4cf3749d42b995d8d3c727a17ea0e37870d69c682a2662ae05c9a4"",""output-workflow-1""]"

@@ -1,0 +1,57 @@
+{
+  "schema": "gis_recommend.gee_typed_l3_override_authority.v1",
+  "version": "v8.5",
+  "base_mapping_sha256": "005699dfd438e966cda28db8891795a07b9867856951de022cd8704c6e6a4558",
+  "overrides": [
+    {
+      "canonical_operator": "ee.image.mask",
+      "receiver_type": "ee.image",
+      "primary_l3": "L3_03_01_07",
+      "mapping_confidence": 1.0,
+      "min_arguments": 0,
+      "max_arguments": 0,
+      "signature_mismatch_policy": "retain_base",
+      "rationale": "Source-reviewed zero-argument Image.mask() is a mask getter; Image.mask(mask) retains the base setter mapping."
+    },
+    {
+      "canonical_operator": "ee.image.reduce",
+      "receiver_type": "ee.image",
+      "primary_l3": "L3_03_02_02",
+      "mapping_confidence": 1.0,
+      "min_arguments": 1,
+      "max_arguments": 1,
+      "signature_mismatch_policy": "fail_closed",
+      "rationale": "Image.reduce(reducer) computes a per-pixel statistic across bands, matching Cell Statistics rather than Global Statistics."
+    },
+    {
+      "canonical_operator": "ee.image.resample",
+      "receiver_type": "ee.image",
+      "primary_l3": "L3_03_05_01",
+      "mapping_confidence": 1.0,
+      "min_arguments": 1,
+      "max_arguments": 1,
+      "signature_mismatch_policy": "fail_closed",
+      "rationale": "Image.resample(mode) changes interpolation behavior without itself changing the CRS."
+    },
+    {
+      "canonical_operator": "ee.image.unmask",
+      "receiver_type": "ee.image",
+      "primary_l3": "L3_03_01_08",
+      "mapping_confidence": 1.0,
+      "min_arguments": 0,
+      "max_arguments": 2,
+      "signature_mismatch_policy": "fail_closed",
+      "rationale": "Image.unmask(value, sameFootprint) fills masked pixels and has a dedicated frozen stable-94 class."
+    },
+    {
+      "canonical_operator": "ee.image.max",
+      "receiver_type": "ee.image",
+      "primary_l3": "L3_03_02_02",
+      "mapping_confidence": 1.0,
+      "min_arguments": 1,
+      "max_arguments": 1,
+      "signature_mismatch_policy": "fail_closed",
+      "rationale": "Image.max(otherImage) computes a per-pixel maximum across aligned raster inputs, matching Cell Statistics rather than Select Bands."
+    }
+  ]
+}

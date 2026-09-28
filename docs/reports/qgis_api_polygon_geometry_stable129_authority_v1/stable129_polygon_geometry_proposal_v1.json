@@ -1,0 +1,39 @@
+{
+  "base_taxonomy": "stable127",
+  "candidate_units": 43,
+  "contract": "QgsGeometry.fromWkt(any source-fact Polygon expression) -> same feature setGeometry -> addFeature or literal addFeatures([feature])",
+  "excludes": [
+    "ambiguous_factory_or_setgeometry_relation",
+    "nonliteral_or_ambiguous_sink",
+    "accumulated_feature_list_sink",
+    "geometry_reassigned_before_sink",
+    "geometry_mutated_or_reassigned_before_setgeometry"
+  ],
+  "llm_called": false,
+  "mapping_admission": "not_granted_taxonomy_proposal_only",
+  "normalized_body_authorities": 37,
+  "not_equivalent_to": {
+    "l3_code": "L3_07_04_05",
+    "name": "Raster File Format Conversion",
+    "reason": "That class writes raster datasets; this verified macro parses a Polygon geometry into one vector feature."
+  },
+  "operator_id": "pyqgis:create_polygon_features_from_vertices",
+  "proposed_l3": {
+    "code": "L3_01_01_08",
+    "definition": "Parses a Polygon geometry expression and writes the same geometry to a target feature or sink.",
+    "l1_code": "L1_01",
+    "l1_name": "Data Management",
+    "l2_code": "L2_01_01",
+    "l2_name": "Dataset Creation",
+    "name": "Create Features from Polygon Geometry",
+    "token_id": 128
+  },
+  "proposed_taxonomy": "stable129",
+  "schema": "gis_recommend.qgis_api_stable129_taxonomy_proposal.v1",
+  "source_disjoint_calibration_units": 10,
+  "source_disjoint_holdout_units": 17,
+  "taxonomy_admission": "granted",
+  "taxonomy_admission_granted_at": "2026-08-09",
+  "taxonomy_admission_granted_by": "user_confirmed_vocabulary_129",
+  "training_admission": "not_granted_taxonomy_proposal_only"
+}

@@ -1,0 +1,282 @@
+review_split,candidate_unit_id,record_id,source_root_id,source_path,source_sha256,normalized_source_body_sha256,source_authority_key,lexical_scope,layer_alias,provider_alias_provenance,control_path,field_names,macro_line_start,macro_line_end,proposed_l3_code,macro_boundary_status,source_snippet,human_boundary_decision,human_mapping_decision,human_description_fidelity,human_notes
+holdout,b115fd03f68756ef40a17cd6,8195c7746f641a08ed0c6a95,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_48482.py,8195c7746f641a08ed0c6a957f69c807be656c61c5a308da37428ee43b478f3b,5263e15a6ad5eaf26f9d8f9801b47413dc8c8d9b095a2241722125ce9af96f2c,normalized_source_body_sha256:5263e15a6ad5eaf26f9d8f9801b47413dc8c8d9b095a2241722125ce9af96f2c,CreatePolygonAtLocationAction._add_polygon_to_layer,layer,inline_data_provider,"[""try@608"", ""if-body@633"", ""if-body@635""]","[""area""]",636,637,L3_01_02_01,verified_complete_existing_layer_macro,"633 |             if settings['add_area']:
+634 |                 area_field_idx = fields.indexOf('area')
+635 |                 if area_field_idx == -1:
+636 |                     layer.dataProvider().addAttributes([QgsField('area', QVariant.Double)])
+637 |                     layer.updateFields()
+638 |                     area_field_idx = layer.fields().indexOf('area')
+639 |                 field_indices['area'] = area_field_idx
+640 |             ",,,,
+holdout,e9c1adb5ff6c28ff79acf416,38bfca7b92c69dd885511a28,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4591.py,38bfca7b92c69dd885511a286f95609120cae5560e0ce87283963bc3c5a048c1,38bfca7b92c69dd885511a286f95609120cae5560e0ce87283963bc3c5a048c1,normalized_source_body_sha256:38bfca7b92c69dd885511a286f95609120cae5560e0ce87283963bc3c5a048c1,add_CN3_from_CN2,vector_layer,inline_data_provider,"[""try@23"", ""if-body@29""]","[""CN3""]",30,31,L3_01_02_01,verified_complete_existing_layer_macro,"27 | 
+28 |         # Add CN3 field if it doesn't exist
+29 |         if vector_layer.fields().indexOf(""CN3"") == -1:
+30 |             vector_layer.dataProvider().addAttributes([QgsField(""CN3"", QVariant.Double)])
+31 |             vector_layer.updateFields()
+32 | 
+33 |         # Calculate CN3 from CN2
+34 |         for feature in vector_layer.getFeatures():",,,,
+holdout,012fec82cbb230ebc9827ec9,86344be840faecb6a92bb1e1,route_b,/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts/script_0001841.py,86344be840faecb6a92bb1e1ad89342b2f87c2aa14901497e1dbfd09de6ee589,7f322dce06c4a83b81397fea9c8004a92c563051d10a9191daff2ce97b644047,normalized_source_body_sha256:7f322dce06c4a83b81397fea9c8004a92c563051d10a9191daff2ce97b644047,create_endpoint_connections,output_layer,provider_assignment,[],"[""A"", ""B"", ""D"", ""Flags"", ""Name"", ""Td"", ""Type"", ""f""]",169,179,L3_01_02_01,verified_complete_existing_layer_macro,"166 |     # dp = lay_conduits_mem.dataProvider()
+167 |     dp = output_layer.dataProvider()
+168 |     output_layer.startEditing()
+169 |     dp.addAttributes([
+170 |         QgsField(""Type"", QT_STRING),
+171 |         QgsField(""Flags"", QT_STRING),
+172 |         QgsField(""Name"", QT_STRING),
+173 |         QgsField(""f"", QT_DOUBLE),
+174 |         QgsField(""D"", QT_DOUBLE),
+175 |         QgsField(""Td"", QT_DOUBLE),
+176 |         QgsField(""A"", QT_DOUBLE),
+177 |         QgsField(""B"", QT_DOUBLE),
+178 |     ])
+179 |     output_layer.updateFields()
+180 | 
+181 |     gdf = gpd.GeoDataFrame.from_features(input_source)
+182 |     # print(gdf)",,,,
+holdout,9bc1cb7eb5da9349b4e2ab0d,853c776ba2dab5063cefc024,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4789.py,853c776ba2dab5063cefc024ce042134dab715b54cb7b0082d40a3b52506a9ea,816a645cf157b7f4c4a62e6c2dc2ee873cebb665e8a4ace3aaa796fdf4088365,normalized_source_body_sha256:816a645cf157b7f4c4a62e6c2dc2ee873cebb665e8a4ace3aaa796fdf4088365,calculateBiodiversity,in_feat,inline_data_provider,[],"[""biod""]",202,203,L3_01_02_01,verified_complete_existing_layer_macro,"199 |     Species list have to be format of [1,35,42,2,23,...,n]
+200 |     """"""
+201 |     
+202 |     in_feat.dataProvider().addAttributes([QgsField(""biod"",QVariant.Double)])
+203 |     in_feat.updateFields()
+204 |     
+205 |     with edit(in_feat):
+206 |         for feat in in_feat.getFeatures():",,,,
+holdout,108bcdfe88b3c7a672b0516a,1001180f71cebc63cdc90e0e,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_40817.py,1001180f71cebc63cdc90e0e2ec2566079e3dd947ef303509d24fffcf4880d15,bbcd7404ebcd50c4af363b1e9c171e410b67d8a2a26153f728e3e0c2df81b5fc,normalized_source_body_sha256:bbcd7404ebcd50c4af363b1e9c171e410b67d8a2a26153f728e3e0c2df81b5fc,HazardIden.run,selectedLayer_1,provider_assignment,"[""if-body@233"", ""with@242""]","[""Total_risk""]",344,345,L3_01_02_01,verified_complete_existing_layer_macro,"341 |                 
+342 |                 # TOTAL RISK 
+343 |                 pr = selectedLayer_1.dataProvider()                                                                             
+344 |                 pr.addAttributes([QgsField(('Total_risk'), QVariant.Double)])                                            
+345 |                 selectedLayer_1.updateFields() 
+346 |                 for sl in selectedLayer_1.getFeatures():
+347 |                         sl['Total_risk'] = 0
+348 |                         selectedLayer_1.updateFeature(sl)",,,,
+holdout,25fdb219781a71d6106173ed,e70c03d8471be714ab2c1473,textbook_strict,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0015534.py,e70c03d8471be714ab2c1473fbfd887c2ea1f4dc535a0bfbc031de844ccccbdc,64665e41eda7e9978e7639cdc4b7dc8fb41ca0a00a31f3961de7586d8339a5a5,normalized_source_body_sha256:64665e41eda7e9978e7639cdc4b7dc8fb41ca0a00a31f3961de7586d8339a5a5,style_station_layer,layer,inline_data_provider,"[""if-body@271"", ""if-body@278"", ""if-body@283""]","[""station_type""]",286,287,L3_01_02_01,verified_complete_existing_layer_macro,"283 |             if 'station_type' not in [field.name() for field in layer.fields()]:
+284 |                 from qgis.core import QgsField
+285 |                 from PyQt5.QtCore import QVariant
+286 |                 layer.dataProvider().addAttributes([QgsField('station_type', QVariant.String)])
+287 |                 layer.updateFields()
+288 |             
+289 |             # Fill in station type
+290 |             type_idx = layer.fields().indexFromName('station_type')",,,,
+holdout,96ef5d460f0ce0c61ecb6033,26f23760caa0b5a28bf6cda5,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_45440.py,26f23760caa0b5a28bf6cda52f683c345588d2e0d421f0031d97d87cbca3e5a0,0c89833a6dcd8be96420b3326a911937ce8a923b944980ca6231289cb458fc65,normalized_source_body_sha256:0c89833a6dcd8be96420b3326a911937ce8a923b944980ca6231289cb458fc65,gerar_ids_sequenciais,layer,provider_assignment,"[""if-body@35""]","[""id_seq""]",36,37,L3_01_02_01,verified_complete_existing_layer_macro,"33 | def gerar_ids_sequenciais(layer):
+34 |     pr = layer.dataProvider()
+35 |     if layer.fields().indexOf('id_seq') == -1:
+36 |         pr.addAttributes([QgsField(""id_seq"", QVariant.Int)])
+37 |         layer.updateFields()
+38 |     idx = layer.fields().indexOf('id_seq')
+39 |     layer.startEditing()
+40 |     count = 1",,,,
+holdout,546fdedbf01f9595c1edca40,efc1b6be7647f59e4247887b,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_32144.py,efc1b6be7647f59e4247887b150e7cf47dc80a7a1b0d3df906806a02e5f9df8f,71756a4ad4b2d7b421c816395ef9f773b0870198bce7f42da2743ff4adeb6a44,normalized_source_body_sha256:71756a4ad4b2d7b421c816395ef9f773b0870198bce7f42da2743ff4adeb6a44,<module>,vectorLyr,provider_assignment,[],"[""Admission""]",10,11,L3_01_02_01,verified_complete_existing_layer_macro,"7 | vectorLyr =  QgsVectorLayer('/qgis_data/nyc/NYC_MUSEUMS_GEO.shp', 'Museums' , ""ogr"")
+8 | vectorLyr.isValid()
+9 | vpr = vectorLyr.dataProvider()
+10 | vpr.addAttributes([QgsField(""Admission"", QVariant.Double)])
+11 | vectorLyr.updateFields()",,,,
+holdout,299f1e479d9f8197246ee093,bd6447c2074b02e6e5489617,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_32938.py,bd6447c2074b02e6e548961728ecb47d02e496d40eacc75ea756a05b51b603c2,7d2185c229448a85e5bfc08413cec87c176020bc0a95637effaaa2bbec8f94c5,normalized_source_body_sha256:7d2185c229448a85e5bfc08413cec87c176020bc0a95637effaaa2bbec8f94c5,PolyArea.addAreaToLayer,layer,provider_assignment,"[""if-body@246"", ""if-body@247""]","[""Area(m^2)""]",248,249,L3_01_02_01,verified_complete_existing_layer_macro,"245 |         fieldNum = len(fieldsList)  # number of the columns in the attribute table
+246 |         if mOrkm == True:
+247 |             if ""Area(m^2)"" not in fieldsList:
+248 |                 layer_provider.addAttributes([QgsField(""Area(m^2)"", QVariant.Double)])  # adding the new field
+249 |                 layer.updateFields()
+250 |                 fieldNum = fieldNum + 1  # updating the number of columns
+251 |                 print(f'Added column ""{layer.fields().names()[fieldNum - 1]}"" to layer ""{layer.name()}""')
+252 |                 addUpdateMB.setText(""Area(m^2) column has been added!"")",,,,
+holdout,84a0e9bec53da977f69d84e3,fd445548918dd2a511e38521,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41117.py,fd445548918dd2a511e385215baafd217059c38617101b2a2c2cf552e1368926,29709961236cfddef74b61e47a195cddb335a353ca882fc9f68fc4236d57df82,normalized_source_body_sha256:29709961236cfddef74b61e47a195cddb335a353ca882fc9f68fc4236d57df82,Split.run,layer,provider_assignment,"[""if-body@754"", ""if-body@859""]","[""Ycentroid""]",861,867,L3_01_02_01,verified_complete_existing_layer_macro,"858 | 
+859 |             if a==0 :
+860 |                 layer_provider.addAttributes([QgsField(""Xcentroid"",QVariant.String)])
+861 |                 layer_provider.addAttributes([QgsField(""Ycentroid"",QVariant.String)])
+862 |                 layer_provider.addAttributes([QgsField(""Latitude"",QVariant.String)])
+863 |                 layer_provider.addAttributes([QgsField(""Longitude"",QVariant.String)])
+864 |                 layer_provider.addAttributes([QgsField(""unique id"",QVariant.String)])
+865 |                 layer_provider.addAttributes([QgsField(""Multipolygon"",QVariant.String)])
+866 |                 g=[]
+867 |                 layer.updateFields()
+868 |                 layer.startEditing()
+869 |                 features = layer.getFeatures()
+870 |                 ",,,,
+holdout,88df27552e14e7013947f591,104cb8873162af3525ebb685,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_2323.py,104cb8873162af3525ebb6855b3c5663873f4a113ae0fd25997feedb5c8d0834,c51f9c83ebf4b44fa61756f2e16454c4208389e26227c032b5e8d1c8b801f302,normalized_source_body_sha256:c51f9c83ebf4b44fa61756f2e16454c4208389e26227c032b5e8d1c8b801f302,create_endpoint_connections,output_layer,provider_assignment,[],"[""A"", ""B"", ""D"", ""Flags"", ""Name"", ""Td"", ""Type"", ""f""]",163,173,L3_01_02_01,verified_complete_existing_layer_macro,"160 |     # dp = lay_conduits_mem.dataProvider()
+161 |     dp = output_layer.dataProvider()
+162 |     output_layer.startEditing()
+163 |     dp.addAttributes([
+164 |         QgsField(""Type"", QT_STRING),
+165 |         QgsField(""Flags"", QT_STRING),
+166 |         QgsField(""Name"", QT_STRING),
+167 |         QgsField(""f"", QT_DOUBLE),
+168 |         QgsField(""D"", QT_DOUBLE),
+169 |         QgsField(""Td"", QT_DOUBLE),
+170 |         QgsField(""A"", QT_DOUBLE),
+171 |         QgsField(""B"", QT_DOUBLE),
+172 |     ])
+173 |     output_layer.updateFields()
+174 | 
+175 |     gdf = gpd.GeoDataFrame.from_features(input_source)
+176 |     # print(gdf)",,,,
+holdout,834da65422fa0dd41d39ee20,944bc693a61df6623d1e6690,gitlab_supplement,/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0005794.py,944bc693a61df6623d1e66903ca9718be7e5c7566483195d796b63e9db160bf1,97a6695a52bc260ded0321fb3fbae9f2844cc651509a7935780b600068619fdb,normalized_source_body_sha256:97a6695a52bc260ded0321fb3fbae9f2844cc651509a7935780b600068619fdb,CheckError_Dlg.run,layer,provider_assignment,"[""try@782"", ""for@802"", ""if-body@804""]","[""loi""]",809,810,L3_01_02_01,verified_complete_existing_layer_macro,"806 | 					layer = QgsProject.instance().addMapLayer(shp)
+807 | 					layer.isValid()
+808 | 					layer_provider = layer.dataProvider()
+809 | 					layer_provider.addAttributes([QgsField(""loi"", QVariant.String,'',200)])
+810 | 					layer.updateFields()				
+811 | 				elif n==2:
+812 | 					a = 1
+813 | 					checkldlr = []",,,,
+holdout,d8c8491bded5988dc49e4d58,22e09a5499ed39254dc172b5,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_22554.py,22e09a5499ed39254dc172b570e4a3b8929bfe9d95ba7b53ef64adb1084ef755,c446814338f3a562b8ab8fb485651db5f7c4571dcaa2faf3a97571aa448e809d,normalized_source_body_sha256:c446814338f3a562b8ab8fb485651db5f7c4571dcaa2faf3a97571aa448e809d,ET2QGIS.add_columns_to_attribute_table,layer,inline_data_provider,"[""for@365"", ""if-body@367""]","[""Date"", ""FileName"", ""MergeSrc"", ""PartNum""]",381,389,L3_01_02_01,verified_complete_existing_layer_macro,"378 |                 layer.startEditing()
+379 | 
+380 |                 # Add new attributes
+381 |                 layer.dataProvider().addAttributes([
+382 |                     QgsField(""MergeSrc"",  QVariant.String),
+383 |                     QgsField(""FileName"", QVariant.String),
+384 |                     QgsField(""PartNum"",  QVariant.String),
+385 |                     QgsField(""Date"",     QVariant.Date)
+386 |                 ])
+387 | 
+388 |                 # Update the layer to reflect the changes
+389 |                 layer.updateFields()
+390 | 
+391 |                 # Commit the changes to the layer
+392 |                 layer.commitChanges()",,,,
+holdout,12a5d009e062d69111322393,de2b5accb834576930316cff,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_40470.py,de2b5accb834576930316cff5299cabbaa54b6fa90b83af1dd7c720eb6faaa25,de2b5accb834576930316cff5299cabbaa54b6fa90b83af1dd7c720eb6faaa25,normalized_source_body_sha256:de2b5accb834576930316cff5299cabbaa54b6fa90b83af1dd7c720eb6faaa25,add_has_column,layer,inline_data_provider,"[""if-body@6"", ""if-body@8""]","[""has_""]",11,12,L3_01_02_01,verified_complete_existing_layer_macro,"8 |         if ""has_"" not in [field.name() for field in layer.fields()]:
+9 |             layer.startEditing()
+10 |             # Add the 'has_' field
+11 |             layer.dataProvider().addAttributes([QgsField(""has_"", QVariant.Double)])
+12 |             layer.updateFields()
+13 |             # Calculate the area in hectares
+14 |             expression = QgsExpression(""$area/10000"")
+15 |             context = QgsExpressionContext()",,,,
+holdout,886d721d4e0cc6fa6e5c3815,99c04f9e36b4634b0f87e257,textbook_strict,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0003761.py,99c04f9e36b4634b0f87e257eef0329db8f7e9ea767d1510250320857d99dd13,a6101df11c535f7d107732263bcd88b972046a78f2d70bf7eb029fbd944fd7fe,normalized_source_body_sha256:a6101df11c535f7d107732263bcd88b972046a78f2d70bf7eb029fbd944fd7fe,sequence_points_within_polygon,point_layer,inline_data_provider,"[""if-body@32""]","[""ELEMENTID""]",34,35,L3_01_02_01,verified_complete_existing_layer_macro,"31 | def sequence_points_within_polygon(point_layer, polygon_layer, point_1_layer, filter_attribute_name, filter_attribute_value, concat_attribute_name, middle_string):
+32 |     if point_layer.fields().indexOf(""ELEMENTID"") == -1:
+33 |         point_layer.startEditing()
+34 |         point_layer.dataProvider().addAttributes([QgsField(""ELEMENTID"", QVariant.String)])
+35 |         point_layer.updateFields()
+36 |     point_layer.startEditing()  # Start editing block here
+37 | 
+38 |     selected_polygons = [poly for poly in polygon_layer.getFeatures() if poly[filter_attribute_name] == filter_attribute_value]",,,,
+holdout,f660ee1aa1d543210b93afee,d4f89de118d893a18c8c11a0,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_31987.py,d4f89de118d893a18c8c11a0c01a4275c03c0ec9e88cd976d669baead8665c1a,d0aabe36cd97612bcc6f51ac561a10547d22e194ded47dfd4fc5f7153d6186ed,normalized_source_body_sha256:d0aabe36cd97612bcc6f51ac561a10547d22e194ded47dfd4fc5f7153d6186ed,Covid19Tracker.cases,vl,provider_assignment,[],"[""Cases"", ""Lat"", ""Lon""]",226,228,L3_01_02_01,verified_complete_existing_layer_macro,"223 |         QgsProject.instance().addMapLayer(vl)
+224 |         from qgis.PyQt.QtCore import QVariant
+225 |         pr = vl.dataProvider()
+226 |         pr.addAttributes(
+227 |             [QgsField(""Lat"", QVariant.String), QgsField(""Lon"", QVariant.String), QgsField(""Cases"", QVariant.Double)])
+228 |         vl.updateFields()
+229 |         for i in range(len(f['Lat'])):
+230 |             import numpy as np
+231 |             F = QgsFeature()",,,,
+holdout,5aca3a33c4003f22b6b86457,e490f958fd26edf7e0fb92aa,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_52035.py,e490f958fd26edf7e0fb92aa4e956a552a00ba627448153708b7b416b094932c,d3ad15ca80df6eee8a093ca1b0b19f6a34300dda946fcc4a73ab8df30e6f73d0,normalized_source_body_sha256:d3ad15ca80df6eee8a093ca1b0b19f6a34300dda946fcc4a73ab8df30e6f73d0,uwg_reclassifier.reclassify_to_UWG,vlayer,inline_data_provider,[],"[""UWGTime""]",370,371,L3_01_02_01,verified_complete_existing_layer_macro,"367 |         # # Add new field # TODO perhaps make it able for user to select field name
+368 |         # # fieldname = dlg.textEditFilename.text() or similar
+369 |         vlayer.dataProvider().addAttributes([QgsField('UWGType',QVariant.String)])
+370 |         vlayer.dataProvider().addAttributes([QgsField('UWGTime',QVariant.String)])
+371 |         vlayer.updateFields()
+372 | 
+373 |         typeIndex = vlayer.fields().indexFromName('UWGType') #The field needs to be created in advance
+374 |         attrmapType = {} #dictionary of feature id: {field index: new value}",,,,
+holdout,31abf5b076f038391cdb10ed,a719f5e84210cda54ac347ac,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_44431.py,a719f5e84210cda54ac347ac72417ba42c7b31329be80327f5a80b108a262c0b,7b1bc1b636e390aa26a15e576aebfa52ff85d0ca0c460cad7817cbde8282dfce,normalized_source_body_sha256:7b1bc1b636e390aa26a15e576aebfa52ff85d0ca0c460cad7817cbde8282dfce,run_clustering,layer,inline_data_provider,"[""if-body@39""]","[""Cluster_ID""]",40,41,L3_01_02_01,verified_complete_existing_layer_macro,"37 | 
+38 |     # Add Cluster_ID field if missing
+39 |     if ""Cluster_ID"" not in [field.name() for field in layer.fields()]:
+40 |         layer.dataProvider().addAttributes([QgsField(""Cluster_ID"", QVariant.Int)])
+41 |         layer.updateFields()
+42 | 
+43 |     unassigned = set(points.keys())
+44 |     clusters = {}  # feature_id: cluster_id",,,,
+holdout,e2836813ce61166388aa90a5,1841aece9ed8f9da84b6083a,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_32467.py,1841aece9ed8f9da84b6083afa1ff51cd85c2fd6d4545b8f2645623236a521fb,1ca2febb5163a8b4fc65b8c7997689272cf26b144697f84ab3200032fcf79228,normalized_source_body_sha256:1ca2febb5163a8b4fc65b8c7997689272cf26b144697f84ab3200032fcf79228,<module>,layer,provider_assignment,[],"[""hemisphere""]",43,44,L3_01_02_01,verified_complete_existing_layer_macro,"40 | 
+41 | layer = iface.activeLayer()
+42 | provider = layer.dataProvider()
+43 | provider.addAttributes([QgsField(""hemisphere"", QVariant.String)])
+44 | layer.updateFields()
+45 | idxField = layer.fieldNameIndex(""hemisphere"")
+46 | features = layer.getFeatures()
+47 | ",,,,
+holdout,3f0dc28395548c91a91fa18e,975f564dc23bb045d8f30369,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_30567.py,975f564dc23bb045d8f303696a660ae55effb016e5ed1f25d013d983236828c3,e8fe7b6389e1bced720703384535846cc468b8b5895f7b3f1706f55bfe89da39,normalized_source_body_sha256:e8fe7b6389e1bced720703384535846cc468b8b5895f7b3f1706f55bfe89da39,ImportController.createAttributeTable,layer,provider_assignment,[],"[""lfdm"", ""pictures"", ""x"", ""y"", ""z""]",57,62,L3_01_02_01,verified_complete_existing_layer_macro,"54 | 
+55 |     def createAttributeTable(self, layer):
+56 |         layerData = layer.dataProvider()
+57 |         layerData.addAttributes([QgsField(""lfdm"", QVariant.Int),
+58 |                                  QgsField(""x"", QVariant.Double),
+59 |                                  QgsField(""y"", QVariant.Double),
+60 |                                  QgsField(""z"", QVariant.Double),
+61 |                                  QgsField(""pictures"", QVariant.String)])
+62 |         layer.updateFields()
+63 | 
+64 |     def createTrajectoryFromPointLayer(self, pointLayer, lineLayer):
+65 |         vertices = []",,,,
+holdout,43579928f84f89f222fcc5ac,984410ea6b64604f56ea6367,official_plugins,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/SmartLineLabeler__4.0.0/SmartLineLabeler/SmartLineLabeler.py,984410ea6b64604f56ea636716f913453fa11804a23a9cdcc3316d038be0269e,30d66c4a4323a1ca8fc9129027cc3cd675a5e518a7165df4daaa62050bbf29eb,normalized_source_body_sha256:30d66c4a4323a1ca8fc9129027cc3cd675a5e518a7165df4daaa62050bbf29eb,SmartLineLabeler.createLabel,lblLayer,inline_data_provider,"[""if-body@414"", ""with@415""]","[""nearest""]",416,419,L3_01_02_01,verified_complete_existing_layer_macro,"413 |         # add field ""nearest"" if not available
+414 |         if ""nearest"" not in fieldlist:
+415 |             with edit(lblLayer):
+416 |                 lblLayer.dataProvider().addAttributes(
+417 |                     [QgsField(""nearest"", QVariant.Bool)]
+418 |                 )
+419 |                 lblLayer.updateFields()
+420 | 
+421 |         # add field ""angle"" if not available
+422 |         if ""angle"" not in fieldlist:",,,,
+holdout,f424c7e45a55947962f44dd5,b4d1dee45d9a39fb384881f2,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_29789.py,b4d1dee45d9a39fb384881f2011219bb0f1fd58bc5dc522ab915be318481b79f,70736e1470ce86f0f38f7cf1c56a987e482015c02726ec1b751a97efa3c14f30,normalized_source_body_sha256:70736e1470ce86f0f38f7cf1c56a987e482015c02726ec1b751a97efa3c14f30,load_files,points,inline_data_provider,[],"[""Per_Diff""]",160,161,L3_01_02_01,verified_complete_existing_layer_macro,"157 | 	temp = QgsRasterLayer('SNODAS_Snow_Pack_Avg_Temp_%s.tif' % End_Date[:-2], 'Snow Pack Average Temperature %s' % End_Date[:-2])
+158 |     
+159 | 	# Add Percent Difference Field to the Points
+160 | 	points.dataProvider().addAttributes([QgsField(""Per_Diff"", QVariant.String)])
+161 | 	points.updateFields()
+162 | 
+163 | 	features = points.getFeatures()
+164 | 	with edit(points):",,,,
+holdout,686e662fdee37d56a93156d4,3cbe8742c69ee3fee9368a17,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_21274.py,3cbe8742c69ee3fee9368a17bd8a801b7995dbdd9bf8a14de2fcb7a3263b98ce,6778862850ef632a7fe0fcd252c516a433ab85f1a8d55560759b8b024a9f34b6,normalized_source_body_sha256:6778862850ef632a7fe0fcd252c516a433ab85f1a8d55560759b8b024a9f34b6,SGC.loadTramiteLayerGroup,new_layer,provider_assignment,"[""if-body@1357"", ""for@1365""]","[""id_objeto""]",1377,1380,L3_01_02_01,verified_complete_existing_layer_macro,"1374 |                 new_layer = QgsProject.instance().mapLayers()[list(set(QgsProject.instance().mapLayers()) - set(qgis_layers))[0]] 
+1375 |                 layer_provider = new_layer.dataProvider()
+1376 |                 layer_provider.addAttributes([QgsField(""id"",QVariant.Int)])
+1377 |                 layer_provider.addAttributes([QgsField(""id_objeto"",QVariant.Int)])
+1378 |                 layer_provider.addAttributes([QgsField(""id_padre"",QVariant.Int)])
+1379 |                 layer_provider.addAttributes([QgsField(""anidacion"",QVariant.Int)])
+1380 |                 new_layer.updateFields()
+1381 |                 self.layers.append({""id"": l[""id""], 
+1382 |                                     ""tabla"": l[""tabla""],
+1383 |                                     ""tipo"": ""oms"" if l[""tipo""] == 0 else """", ",,,,
+holdout,59fe2361938d3607a42350d8,b4698d2b05a63e8eb7713109,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_40671.py,b4698d2b05a63e8eb7713109db490d04849ca649851bdff291adc366081814e1,23e39cc82dedfb0583d9e9026b9d029c8c72892a3aeac8cb1ed5bc839525e172,normalized_source_body_sha256:23e39cc82dedfb0583d9e9026b9d029c8c72892a3aeac8cb1ed5bc839525e172,calc_attributes,out_layer,provider_assignment,"[""with@43""]","[""struktur"", ""tbk_typ""]",47,49,L3_01_02_01,verified_complete_existing_layer_macro,"44 |         # Add fields
+45 |         print(""add fields..."")
+46 |         provider = out_layer.dataProvider()
+47 |         provider.addAttributes([QgsField(""struktur"", QVariant.Int),
+48 |                                 QgsField(""tbk_typ"", QVariant.String)])
+49 |         out_layer.updateFields()
+50 | 
+51 |         # Calculate fields
+52 |         print(""calculate fields..."")",,,,
+holdout,04d77d5569a7f1a61b8d1ce3,85c89b21c578cbe8fa3557a8,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_13592.py,85c89b21c578cbe8fa3557a8d8cebb95c8bbea4aeff155684105f719b943ba7f,3f60f1f7d1d59e2549d04d1176db858ca49b1d23f30bf22981020035559eb21a,normalized_source_body_sha256:3f60f1f7d1d59e2549d04d1176db858ca49b1d23f30bf22981020035559eb21a,KMeansDialog.createLabels,layer,provider_assignment,[],"[""etiquetas""]",119,120,L3_01_02_01,verified_complete_existing_layer_macro,"116 |     # create label in field table
+117 |     def createLabels(self, layer):
+118 |         layer_provider = layer.dataProvider()
+119 |         layer_provider.addAttributes([QgsField(""etiquetas"",QVariant.Int)])
+120 |         layer.updateFields()
+121 |         #QgsMessageLog.logMessage(layer.name(), 'K-Means plugin', level=Qgis.Info)
+122 |         
+123 |     # update labels value in field table",,,,
+holdout,925dfdd124402889e09cd932,5d9f3e8b89f91107da8b194c,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41856.py,5d9f3e8b89f91107da8b194c6ed2aecfa0a93002a8faf4aa0de542d1469ab509,f98b0eb4802a36600fbdfdf07b71f959c0b4d9aabf7b09993fae04cc9efe0dc9,normalized_source_body_sha256:f98b0eb4802a36600fbdfdf07b71f959c0b4d9aabf7b09993fae04cc9efe0dc9,<module>,gridded,provider_assignment,[],"[""2012-20 Mean""]",15,18,L3_01_02_01,verified_complete_existing_layer_macro,"12 | # create spatial index    
+13 | gridded.dataProvider().createSpatialIndex()
+14 | layer_provider = gridded.dataProvider()
+15 | layer_provider.addAttributes([QgsField(""2012-20 Mean"", QVariant.Double)])
+16 | layer_provider.addAttributes([QgsField(""2012-20 Stdev"", QVariant.Double)])
+17 | layer_provider.addAttributes([QgsField(""2020 Z score"", QVariant.Double)])
+18 | gridded.updateFields()  
+19 | 
+20 | meanfire_idx = gridded.fields().lookupField('2012-20 Mean')
+21 | stdfire_idx = gridded.fields().lookupField('2012-20 Stdev')",,,,
+holdout,107db361e3963757979893f6,afc93557f0c1392c91c8eb6d,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_41811.py,afc93557f0c1392c91c8eb6d66908f324d32a50bee84ffacfab25220bf0b4dd0,2e9a3a176e870245128cb0dac00e5b9876c2d2f241c0ed36e065b1516bb19b22,normalized_source_body_sha256:2e9a3a176e870245128cb0dac00e5b9876c2d2f241c0ed36e065b1516bb19b22,<module>,layer,provider_assignment,"[""for@9""]","[""FRE""]",14,16,L3_01_02_01,verified_complete_existing_layer_macro,"11 |     layer = QgsVectorLayer(fire, '', 'ogr')
+12 |         
+13 |     layer_provider = layer.dataProvider()
+14 |     layer_provider.addAttributes([QgsField(""FRE"", QVariant.Double, 'double', 15, 2)])
+15 | 
+16 |     layer.updateFields()
+17 | 
+18 |     for f in layer.getFeatures():
+19 |         ",,,,
+holdout,7128d8dbeb2ff044f5b1cf51,8e193091f30690af22355cff,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3872.py,8e193091f30690af22355cff913691b904ddf6b5731053e4cc98b0f45c442479,2d2e6fa0f41f5be801f9d0559b8d1463a2391a601674ba5814341aabff6a96a0,normalized_source_body_sha256:2d2e6fa0f41f5be801f9d0559b8d1463a2391a601674ba5814341aabff6a96a0,calc,source_roads_layer,provider_assignment,"[""if-body@409"", ""if-body@429"", ""if-body@437"", ""if-body@438""]","[""Lday""]",440,442,L3_01_02_01,verified_complete_existing_layer_macro,"437 |             if settings['period_pts_day'] == ""True"" or settings['period_roads_day'] == ""True"":
+438 |                 if 'Lday' not in source_roads_layer.fields().names():
+439 |                     source_roads_dataprovider = source_roads_layer.dataProvider()
+440 |                     source_roads_dataprovider.addAttributes([QgsField('Lday',
+441 |                                                                       QVariant.Double, len=5, prec=1)])
+442 |                     source_roads_layer.updateFields()
+443 |             if settings['period_pts_eve'] == ""True"" or settings['period_roads_eve'] == ""True"":
+444 |                 if 'Levening' not in source_roads_layer.fields().names():
+445 |                     source_roads_dataprovider = source_roads_layer.dataProvider()",,,,
+holdout,49749083b3d83a34aa507c69,1b78b7992b77d93b006a662c,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3905.py,1b78b7992b77d93b006a662ce247a1f80aa5bdcb754e2942f9dd3f5855d16799,e450d5c4ff188479fa733ae07b6156e949a1e1c6dbd90055f1777d21a47de031,normalized_source_body_sha256:e450d5c4ff188479fa733ae07b6156e949a1e1c6dbd90055f1777d21a47de031,SafetyPolygonWorkflow._assign_reclassification_to_safety,layer,inline_data_provider,"[""with@121"", ""if-body@122""]","[""value""]",123,124,L3_01_02_01,verified_complete_existing_layer_macro,"120 |         """"""
+121 |         with edit(layer):
+122 |             if layer.fields().indexFromName(""value"") == -1:
+123 |                 layer.dataProvider().addAttributes([QgsField(""value"", QVariant.Int)])
+124 |                 layer.updateFields()
+125 | 
+126 |             feature_count = layer.featureCount()
+127 |             counter = 0",,,,
+holdout,62f55043822eb8d317102406,46397fdd394ad7660f607492,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_13298.py,46397fdd394ad7660f60749224925eb37ac8eb4a0238d459c4fa7c8832151fbe,16a39c48681b7f6f6c369e3c5713bfd167f4c2d11f8a045a91308cc991daf07a,normalized_source_body_sha256:16a39c48681b7f6f6c369e3c5713bfd167f4c2d11f8a045a91308cc991daf07a,sequence_points_within_polygon,point_layer,inline_data_provider,"[""if-body@26""]","[""ELEMENTID""]",28,29,L3_01_02_01,verified_complete_existing_layer_macro,"25 | def sequence_points_within_polygon(point_layer, polygon_layer, point_1_layer, filter_attribute_name, filter_attribute_value, concat_attribute_name, middle_string):
+26 |     if point_layer.fields().indexOf(""ELEMENTID"") == -1:
+27 |         point_layer.startEditing()
+28 |         point_layer.dataProvider().addAttributes([QgsField(""ELEMENTID"", QVariant.String)])
+29 |         point_layer.updateFields()
+30 |     point_layer.startEditing()  # Start editing block here
+31 | 
+32 |     selected_polygons = [poly for poly in polygon_layer.getFeatures() if poly[filter_attribute_name] == filter_attribute_value]",,,,

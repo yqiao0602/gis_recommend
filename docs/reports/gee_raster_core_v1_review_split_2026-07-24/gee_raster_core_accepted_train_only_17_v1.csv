@@ -1,0 +1,180 @@
+schema,review_id,script_id,source_platform,target_platform,training_scope,task_name,task_description,l3_sequence,operator_sequence,source_sha256,source_path,evidence_snippet,admission_tier,sample_weight,validation_eligible,test_eligible,description_policy,known_omissions,review_split
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_001,Workflowoutput160000_script_152283,GEE,L3,core_subworkflow,Identify built-up areas,"The script identifies built-up (urban) areas by analyzing the Dynamic World land cover dataset from January 2020 to January 2021 over a region near Tsukuba, Japan, using a mode-reduced classification composite and extracting pixels labeled as 'built' (class 6). It calculates the percentage of built area within the study region.","[""L3_03_09_01"", ""L3_03_09_06"", ""L3_03_01_04"", ""L3_03_10_R"", ""L3_03_03_L"", ""L3_01_02_03"", ""L3_03_02_01"", ""L3_03_01_05"", ""L3_03_02_01""]","[""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds"", ""ee.image.select"", ""ee.imagecollection.reduce"", ""ee.image.eq"", ""ee.image.rename"", ""ee.image.reduceregion"", ""ee.image.selfmask"", ""ee.image.reduceregion""]",62f73d4bfbb9492022e6392cea07b0ebd4a423305dfa57734b0420459ce886d1,/home/yll/GEE/Data/data160000/script_152283.txt,"5: var geometry = ee.Geometry.Polygon([[[139.995968, 36.238901], [139.995968, 35.945904], [140.174438, 35.945904], [140.174438, 36.238901]]])      // つくば
+7: Map.setCenter(lon, lat, 15);
+13: var dw = ee.ImageCollection('GOOGLE/DYNAMICWORLD/V1')
+15: .filterDate(startDate, endDate)
+17: .filterBounds(geometry);
+19: var classification = dw.select('label');
+21: var dwComposite = classification.reduce(ee.Reducer.mode());
+41: Map.addLayer(dwComposite.clip(geometry), dwVisParams, 'Classified Composite');
+43: Map.addLayer(builtArea.clip(geometry), {}, 'Built Areas');
+49: var statsTotal = builtArea.reduceRegion({
+51: reducer: ee.Reducer.count(),
+53: geometry: geometry,",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_008,Workflowoutput30000_script_22464,GEE,L3,core_subworkflow,Detect edges in satellite imagery,"The script detects edges in a median composite of Sentinel-2 imagery over the Peninsula region using Laplacian and Gaussian convolution kernels, highlighting sharp transitions in surface reflectance for feature delineation.","[""L3_03_09_01"", ""L3_03_09_06"", ""L3_03_09_05"", ""L3_10_02_03"", ""L3_09_03_01"", ""L3_09_09_01"", ""L3_09_03_01""]","[""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filter"", ""ee.imagecollection.median"", ""ee.kernel.gaussian"", ""ee.kernel.laplacian8"", ""ee.image.convolve""]",db6ca1489e34dcd71da7b39660a83bf228528f08e2ee3546f32a630c302a66d4,/home/yll/GEE/Data/data30000/script_22464.txt,"1: var Peninsula = ee.FeatureCollection('users/Alejandro_AmayaH/EJE_ENE23_00-15');
+3: Map.addLayer (Peninsula, {'palette': 'F03B20', opacity:1}, 'Peninsula',false);
+5: var composite = ee.ImageCollection('COPERNICUS/S2')
+7: .filterDate ('2020-01-01','2022-12-31')
+9: .filterBounds (Peninsula)
+11: .filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE', 5));
+17: Map.addLayer(sentinel_comp.clip(Peninsula),visParams,'Composite Peninsula', false) ;
+19: var Gausiana = ee.Kernel.gaussian({radius:1.4, sigma:1, units:'pixels', normalize:true});
+21: var Laplaciana = ee.Kernel.laplacian8 ({normalize: false});
+29: Map.addLayer (EdgeImage.clip(Peninsula),{bands:['B8','B4','B3'], max:0.5,min:0}, 'Kernel Laplaciano-Gaus');
+31: Map.addLayer (EdgeImageL.clip(Peninsula),{bands:['B8','B4','B3'], max:0.5,min:0}, 'Kernel Laplaciano', false);
+33: Map.centerObject (Peninsula, 8);",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_011,Workflowoutput120000_script_116424,GEE,L3,core_subworkflow,Identify agriculture expansion into forest loss areas,"The script identifies areas where agriculture has expanded into locations of prior forest loss by combining a forest loss layer with an agriculture land cover layer, then detecting overlapping pixels with a value sum of 2, indicating both forest loss and agricultural presence.","[""L3_03_03_A"", ""L3_10_04_01"", ""L3_03_03_A"", ""L3_03_01_05"", ""L3_03_03_L""]","[""ee.image.expression"", ""ee.image.addbands"", ""ee.image.expression"", ""ee.image.updatemask"", ""ee.image.eq""]",b816293eaaf7e511ab1758c79515af7bf95a734cb9f0c7f3bd8e7556fe16d31b,/home/yll/GEE/Data/data120000/script_116424.txt,"1: var AGRICULTURA = ee.Image('users/franklinlmc/AGRICOLA_00001')
+3: Map.addLayer(BOSQUE,vis,""PERDIDA"")
+5: var PERDIDA = BOSQUE.expression ('B1 == 5',{'B1': BOSQUE.select ('b1')});
+7: Map.addLayer(PERDIDA)
+9: Map.addLayer(AGRICULTURA,{palette:""green""},""AGRICULTURA"")
+13: print(juntos)
+15: var imagen_suma = juntos.expression('B1+B2',{'B1':juntos.select('b1'),
+17: 'B2':juntos.select('b1_1'),})
+19: Map.addLayer(imagen_suma)
+21: print(imagen_suma)
+23: var FINAL = ee.Image(imagen_suma).updateMask( imagen_suma.eq(2))
+25: Map.addLayer(FINAL)",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_017,Workflowoutput60000_script_52490,GEE,L3,core_subworkflow,Analyze mean EVI,"The script calculates the mean Enhanced Vegetation Index (EVI) from an image collection over a specified date range (2021-01-01 to 2022-01-01), then clips the result to a user-defined geometry for spatial focus. The output is a single mean EVI image representing temporal aggregation of EVI values within the study period and area.","[""L3_03_01_04"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_01_01""]","[""ee.image.select"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.reduce"", ""ee.image.clip""]",2c27c662904893ee765e1ca944be739ddad3a377ba9780738307dc0f2033d833,/home/yll/GEE/Data/data60000/script_52490.txt,"1: var dataset= imageCollection2.select ('EVI');
+3: print(dataset.size());
+5: var date_filter = dataset.filterDate('2021-01-01','2022-01-01');
+7: print(date_filter.size());
+9: var mean_EVI = date_filter.reduce(ee.Reducer.mean());
+11: var study_area = mean_EVI.clip(geometry);
+31: Map.addLayer(study_area,ndviVis)",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_023,Workflowoutput50000_script_49293,GEE,L3,core_subworkflow,Count classified pixels,"The script calculates the total number of pixels classified as class 1 (e.g., a specific land cover type) in a single image by applying an equality mask and summing the remaining pixel values within the image's geometry using a reduceRegion operation.","[""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_02_01""]","[""ee.image.eq"", ""ee.image.selfmask"", ""ee.image.reduceregion""]",372466c1448566d720befcdea2bb765519a0da52874b8053c1515ff14849bb32,/home/yll/GEE/Data/data50000/script_49293.txt,"1: var classifiedCL = ee.ImageCollection([image,image2,image3,image4,image5,image6,image8,image9,image10,
+5: var sum1 = image.eq(1).selfMask().reduceRegion({
+7: reducer: ee.Reducer.sum(),
+9: geometry: image.geometry(),
+19: print(sum1)",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_036,Workflowoutput150000_script_147202,GEE,L3,core_subworkflow,Detect soy-to-other crop conversion,"The script identifies changes in cropland use between 2008 and 2015 in a specific region (FIPS_2, region1=3), focusing on the conversion of soybean (label 5) to other crops or non-crop land. It uses NLCD land cover data to mask forest areas (class 82) and USDA CDL data to track annual cropland type changes, reclassifying soybean as 0 and other crops as 1. The output is a change map where pixel values encode transitions: 100 for new crop (gain), 10 for lost crop (loss), and 1 for no change. A final binary map highlights persistent change over time.","[""L3_03_01_04"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_03_01_01"", ""L3_03_03_L"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_09_05"", ""L3_03_10_R"", ""L3_03_01_01"", ""L3_03_01_05"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_03_03_L""]","[""ee.image.select"", ""ee.imagecollection.filter"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.first"", ""ee.image.select"", ""ee.image.clip"", ""ee.image.eq"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filter"", ""ee.imagecollection.filter"", ""ee.imagecollection.first"", ""ee.image.clip"", ""ee.image.updatemask"", ""ee.image.where"", ""ee.image.eq"", ""ee.image.subtract"", ""ee.image.where"", ""ee.image.eq""]",f4ec662e47de3efce2956673142bf3195ff589d1755c31d16027991b773e23bf,/home/yll/GEE/Data/data150000/script_147202.txt,"1: var region=table.select(['region1','FIPS_2','NAME','NAME_1']);
+3: var region_f=region.filter(ee.Filter.eq('region1', 3))
+5: var NLCD=imageCollection.filterDate('2008-01-01','2008-12-31').first().select('landcover').clip(region_f).eq(82);
+9: var CDL=ee.ImageCollection(""USDA/NASS/CDL"").filterDate('2008-01-01','2020-12-31');//.clip(region_f);
+15: var CDL_1=CDL.filter(ee.Filter.eq(""system:index"",(start+1).toString())).first().select('cropland').clip(region_f).updateMask(NLCD_1);
+17: var CDL_1_1=CDL_1.where(CDL_1.select('cropland').eq(5),0);//transform soybean's label from 5 to 0
+19: var CDL_1_2 =CDL_1_1.where(CDL_1_1.select('cropland').gte(1),1);//transform all other crop's label from 5 to 1
+21: var CDL_0=CDL.filter(ee.Filter.eq(""system:index"",(start).toString())).first().select('cropland').clip(region_f).updateMask(NLCD);
+23: var CDL_0_1=CDL_1.where(CDL_0.select('cropland').eq(5),0);
+25: var CDL_0_2 =CDL_1_1.where(CDL_0_1.select('cropland').gte(1),1);
+39: var NLCD=imageCollection.filterDate('2001-01-01','2001-12-31').first().select('landcover').clip(table).eq(82);
+43: var NLCD=imageCollection.filterDate('2004-01-01','2004-12-31').first().select('landcover').clip(table).eq(82);",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_037,Workflowoutput50000_script_46925,GEE,L3,core_subworkflow,Analyze VV backscatter changes,"The script computes the mean VV polarization SAR backscatter from Sentinel-1 GRD data across three seasonal periods (spring, late spring, summer) for both ascending and descending orbits, producing two multi-band images representing temporal changes in radar response over the same region and time range.","[""L3_03_09_05"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_01_09"", ""L3_03_09_05"", ""L3_10_02_03""]","[""ee.imagecollection.filter"", ""ee.imagecollection.filter"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.filter"", ""ee.filter.date"", ""ee.image.cat"", ""ee.imagecollection.filter"", ""ee.imagecollection.mean""]",8746d83e108b95c5f6e7a4be1c58cc9d48fc78a7e75ba835ff05af850a625dfe,/home/yll/GEE/Data/data50000/script_46925.txt,"1: var imgVV = ee.ImageCollection('COPERNICUS/S1_GRD')
+3: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+5: .filter(ee.Filter.eq('instrumentMode', 'IW'))
+7: .select('VV')
+9: .map(function(image) {
+19: var desc = imgVV.filter(ee.Filter.eq('orbitProperties_pass', 'DESCENDING'));
+21: var asc = imgVV.filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING'));
+23: var spring = ee.Filter.date('2014-10-03', '2022-05-19');
+25: var lateSpring = ee.Filter.date('2014-10-03', '2022-05-19');
+27: var summer = ee.Filter.date('2014-10-03', '2022-05-19');
+29: var descChange = ee.Image.cat(
+31: desc.filter(spring).mean(),",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_041,Workflowoutput240000_script_231870,GEE,L3,core_subworkflow,Analyze sea surface temperature anomalies,"The script calculates daily sea surface temperature (SST) anomalies by subtracting long-term monthly mean SST (from 2002–2012) from daily SST images in October 2016. It first filters MODIS-Aqua SST data for the target month, then computes monthly climatology using a 11-year baseline, and finally generates an anomaly time series by differencing daily observations against corresponding monthly means. Outputs include the original SST image collection, the monthly climatology collection, and the daily anomaly collection with preserved timestamps for temporal analysis.","[""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_10_02_03"", ""L3_03_03_A""]","[""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filter"", ""ee.imagecollection.filter"", ""ee.image.select"", ""ee.imagecollection.mean"", ""ee.image.subtract""]",ecf791e47c85439330b6537b17fce0bd5d2aabe6a1fa111896215291e61d9e96,/home/yll/GEE/Data/data240000/script_231870.txt,"1: var startDate = ee.Date('2016-10-01');
+3: var endDate = ee.Date(startDate.advance(1,'month'));
+5: var date_range = ee.DateRange(startDate,endDate);
+7: var sstImg = ee.ImageCollection('NASA/OCEANDATA/MODIS-Aqua/L3SMI')
+9: .filterBounds(EEZ) //Filter by Study Area
+11: .filterDate(date_range) // startdate, enddate
+13: .select('sst')
+17: print('sstImg', sstImg);
+19: var sst2002_12 = ee.ImageCollection('NASA/OCEANDATA/MODIS-Aqua/L3SMI')
+21: .select('sst')
+23: .filterDate(ee.Date('2002-01-01'), ee.Date('2012-12-31'));
+25: var months = ee.List.sequence(1, 12);",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_043,Workflowoutput280000_script_271898,GEE,L3,core_subworkflow,Extract panchromatic band for fusion,"The script processes Landsat 8 and Landsat 7 TOA reflectance collections over a region of interest, applying cloud masking using the simpleCloudScore algorithm. It selects the first cloud-free image from each collection: the panchromatic band (B8) from Landsat 8, renamed as 'quanse', and the shortwave infrared band (B5) from Landsat 7. These are intended for band fusion or spatial enhancement, where the high-resolution panchromatic band from Landsat 8 is to be combined with the multispectral band from Landsat 7. The output includes the first masked Landsat 8 panchromatic image, the first masked Landsat 7 B5 band, and an attempt to add the panchromatic band to the Landsat 7 image as a new band named 'quanse'.","[""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_01_02_03"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_10_04_01""]","[""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.image.updatemask"", ""ee.image.select"", ""ee.image.lte"", ""ee.imagecollection.first"", ""ee.image.select"", ""ee.image.rename"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.image.updatemask"", ""ee.image.select"", ""ee.image.lte"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.first"", ""ee.imagecollection.select"", ""ee.image.addbands""]",ba9cc0bd211c616e36849ed7eb5c96a3c9839549cfec43b84f1c6f5cc3f18b51,/home/yll/GEE/Data/data280000/script_271898.txt,"1: var l8 = ee.ImageCollection(""LANDSAT/LC08/C01/T1_TOA"")
+3: .filterBounds(roi)
+5: .filterDate(""2017-8-31"", ""2019-7-1"")
+7: .map(ee.Algorithms.Landsat.simpleCloudScore)
+9: .map(function(image) {
+11: return image.updateMask(image.select(""cloud"").lte(0));
+15: var l8_first=l8.first().select(""B8"").rename(""quanse"")
+17: print(l8_first)
+19: var l7 = ee.ImageCollection(""LANDSAT/LE07/C01/T1_TOA"")
+21: .filterBounds(roi)
+23: .filterDate(""2017-8-31"", ""2019-7-1"")
+25: .map(ee.Algorithms.Landsat.simpleCloudScore)",gee_core_p0_accept,0.5,False,False,original_core_faithful,[],train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_002,Workflowoutput150000_script_148378,GEE,L3,core_subworkflow,Summarize mosaicked water-vapor imagery by polygons,"Select the water-vapor band from a Sentinel-2 image collection, mosaic the selected imagery, compute zonal mean water-vapor values for polygons, and apply the retained limit operation.","[""L3_03_01_04"", ""L3_03_07_01"", ""L3_03_02_01"", ""L3_03_09_07""]","[""ee.imagecollection.select"", ""ee.imagecollection.mosaic"", ""ee.image.reduceregions"", ""ee.imagecollection.limit""]",ad0aa3b539691bba7fe2f8e0b3ce51dbd6828734d92c056a8bfe2d0ea839ae08,/home/yll/GEE/Data/data150000/script_148378.txt,"1: var aoi = ee.FeatureCollection('users/hugheslloyd/ZZ2/Ramatoela');
+3: var wvp = ee.Image(ee.ImageCollection(""COPERNICUS/S2_SR"").select('WVP').mosaic());
+5: var withWVP = wvp.reduceRegions({
+9: reducer: ee.Reducer.mean(),
+17: var volume = ee.Number(feature.get('mean'))
+19: .divide(100).multiply(feature.geometry().area());
+27: .map(wvpVolume)
+33: print(highVolume)
+35: Map.centerObject(aoi, 15)
+37: Map.addLayer(highVolume.style({color: 'red'}))",gee_core_p2_rewrite,0.5,False,False,rewritten_chain_faithful,"[""polygon area multiplication"", ""water-vapor volume estimate"", ""top-5 ranking"", ""map display""]",train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_003,Workflowoutput290000_script_285470,GEE,L3,core_subworkflow,Summarize vegetated area from an NDVI mask,"Filter Sentinel-2 imagery by region, date, and metadata, mosaic and clip the imagery, compute and rename NDVI, apply a vegetation threshold mask, multiply the masked pixels by pixel area, and reduce the result over the region to summarize vegetated area.","[""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_07_01"", ""L3_03_01_01"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_02_01""]","[""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filtermetadata"", ""ee.imagecollection.mosaic"", ""ee.image.clip"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.mask"", ""ee.image.select"", ""ee.image.gte"", ""ee.image.multiply"", ""ee.image.pixelarea"", ""ee.image.reduceregion""]",4d9fcdfdfa0be53f6d8d919d7713338f9fe5c8396a25a283d2c86c2f09195c47,/home/yll/GEE/Data/data290000/script_285470.txt,"1: var imagen = s2.filterBounds(geometry).filterDate('2021-04-01','2021-04-15')
+3: .filterMetadata('CLOUDY_PIXEL_PERCENTAGE',""less_than"",5);
+5: print(imagen)
+7: Map.addLayer(imagen,{""opacity"":1,""bands"":[""B4"",""B3"",""B2""],""min"":182.55645812984517,""max"":1282.1259225419285,""gamma"":1}, 'imagen')
+9: var imagen1 = s2.filterBounds(geometry).filterDate('2021-07-01','2021-07-15')
+11: .filterMetadata('CLOUDY_PIXEL_PERCENTAGE',""less_than"",5);
+13: print(imagen1)
+15: var mosaico1 =imagen1.mosaic().clip(geometry);
+17: Map.addLayer(imagen1,{""opacity"":1,""bands"":[""B4"",""B3"",""B2""],""min"":182.55645812984517,""max"":1282.1259225419285,""gamma"":1}, 'imagen1')
+19: var ndvi = mosaico1.clip(geometry).normalizedDifference(['B8','B4']).rename(""NDVI"")
+21: Map.addLayer(ndvi,{""opacity"":1,""bands"":[""NDVI""],""min"":0.1,""max"":0.8,""palette"":[""ff3a0e"",""ffdb29"",""caff29"",""71ff29"",""18c626""]}, ""NDVI"")
+23: var image = ee.Image(1).mask(ndvi.select('NDVI').gte(0.369)) // ======CON VEGETACION",gee_core_p2_rewrite,0.5,False,False,rewritten_chain_faithful,"[""map display layers"", ""NDVI visualization palette"", ""printed non-vegetated and total area summaries""]",train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_015,Workflowoutput240000_script_239786,GEE,L3,core_subworkflow,Calculate annual precipitation zonal means,"Select precipitation imagery, filter the image collection to the target year, reduce the collection into an annual precipitation image, and compute polygon zonal mean precipitation with reduceRegions.","[""L3_03_01_04"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_02_01""]","[""ee.imagecollection.select"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.reduce"", ""ee.image.reduceregions""]",84049a9b995bee4dbbd138229137884961567659790bcfbaeb8530702209d97f,/home/yll/GEE/Data/data240000/script_239786.txt,"1: var polys = ee.FeatureCollection(""users/mweber36/OR_Watersheds_Example"");
+3: Map.addLayer(polys);
+5: var precipCollection = ee.ImageCollection('IDAHO_EPSCOR/GRIDMET')
+7: .select('pr')   // select  precip band only
+9: .filterDate('2017-01-01', '2017-12-31');
+11: print(precipCollection);
+13: var annualPrecip = precipCollection.reduce(ee.Reducer.sum());
+15: print(annualPrecip);
+17: var polysPrecip = annualPrecip.reduceRegions({
+21: reducer: ee.Reducer.mean(),
+27: print(polysPrecip);
+31: return feature.set({areaCheck: feature.geometry().area().divide(100 * 10000)});",gee_core_p2_rewrite,0.5,False,False,rewritten_chain_faithful,"[""watershed area calculation"", ""appending area properties"", ""raster or feature export""]",train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_016,Workflowoutput180000_script_178749,GEE,L3,core_subworkflow,Build an alert-proximity cumulative-cost mask,"Compute cumulative cost from alert locations over a constant raster cost surface, threshold the cost image to retain locations within the distance limit, and apply the retained country-code collection filter for the study-region boundary features.","[""L3_03_02_03"", ""L3_03_03_L"", ""L3_03_09_05""]","[""ee.image.cumulativecost"", ""ee.image.lt"", ""ee.imagecollection.filter""]",3ed97cb1edd572b5ec2d5ae8a0b15449d716643f8c53f158ce53637a570d94ea,/home/yll/GEE/Data/data180000/script_178749.txt,"1: var alertbuffer = ee.Image(1)
+11: Map.addLayer(drcroc_peatforest, {palette:['green']}, 'drcroc_peatforests');
+15: Map.addLayer(alertbuffer.updateMask(alertbuffer), params, 'drcroc_alert_buffer');
+17: Map.addLayer(drcroc_alert, {palette:['coral']}, 'drcroc_alert');
+19: var shapes = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017'); // connect to features
+21: var drcShape = shapes.filter(ee.Filter.eq('country_co', 'CG')); // filter drc shape
+23: var rocShape = shapes.filter(ee.Filter.eq('country_co', 'CF')); // filter roc shape",gee_core_p2_rewrite,0.5,False,False,rewritten_chain_faithful,"[""peat-forest overlay"", ""alert-point display"", ""visual buffer assessment"", ""map display layers""]",train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_019,Workflowoutput230000_script_222963,GEE,L3,core_subworkflow,Detect irrigated areas with NDVI-temperature masking,"Filter Landsat imagery by date and WRS path/row metadata, build median composites, compute NDVI and temperature-derived images, combine threshold conditions, apply the resulting irrigation mask, multiply by pixel area, and reduce the masked area over the region.","[""L3_03_09_01"", ""L3_03_09_05"", ""L3_10_02_03"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_03_01_01"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_01"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_02_01""]","[""ee.imagecollection.filterdate"", ""ee.imagecollection.filter"", ""ee.imagecollection.median"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.clip"", ""ee.image.add"", ""ee.image.divide"", ""ee.image.select"", ""ee.image.add"", ""ee.image.divide"", ""ee.image.clip"", ""ee.image.gt"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.image.multiply"", ""ee.image.pixelarea"", ""ee.image.reduceregion""]",e718a6e26e3801a4ac3a053258c147ac4d4f62b091fa1d1e5ae206b6b1cfebb6,/home/yll/GEE/Data/data230000/script_222963.txt,"1: Map.centerObject(KRB_Agr,10);
+3: var img1 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+5: .filterDate('2019-01-20', '2019-01-30')
+7: .filter(ee.Filter.eq('WRS_PATH', 174))
+9: .filter(ee.Filter.eq('WRS_ROW', 36))
+13: print(img1, 'img1');
+15: var img2 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+17: .filterDate('2019-02-10', '2019-02-20')
+19: .filter(ee.Filter.eq('WRS_PATH', 174))
+21: .filter(ee.Filter.eq('WRS_ROW', 36))
+25: print(img2, 'img2');
+27: var img1 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')",gee_core_p2_rewrite,0.5,False,False,rewritten_chain_faithful,"[""histogram outputs"", ""chart analysis"", ""map display layers""]",train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_025,Workflowoutput110000_script_104566,GEE,L3,core_subworkflow,Classify land cover and summarize class area,"Add derived bands to imagery, filter image collections, select predictor bands, sample training regions, configure and train a Random Forest classifier, classify the image, add pixel-area information, reduce the classified image over the region, and flatten the resulting feature collection.","[""L3_10_04_01"", ""L3_03_09_05"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_08_01_01"", ""L3_08_03_01"", ""L3_08_03_01"", ""L3_03_01_04"", ""L3_08_04_01"", ""L3_03_03_A"", ""L3_10_04_01"", ""L3_03_02_01"", ""L3_02_03_05""]","[""ee.image.addbands"", ""ee.imagecollection.filter"", ""ee.imagecollection.filter"", ""ee.image.select"", ""ee.image.sampleregions"", ""ee.classifier.smilerandomforest"", ""ee.classifier.train"", ""ee.image.select"", ""ee.image.classify"", ""ee.image.pixelarea"", ""ee.image.addbands"", ""ee.image.reduceregion"", ""ee.featurecollection.flatten""]",f4bf75d350f0968a07577791a47266c1c3933d7f8245ec1cc9ba51ead953e988,/home/yll/GEE/Data/data110000/script_104566.txt,"1: Map.centerObject(homeRange_PH, 8);
+3: Map.setOptions('SATELLITE');
+5: Map.addLayer(mergedTable_total,{}, 'training points', false);
+35: print('collection', collection);
+63: var trainingPts = sample.filter(ee.Filter.lt('random', split));
+65: var validationPts = sample.filter(ee.Filter.gte('random', split));
+67: Map.addLayer(trainingPts, {color:'red', 'opacity':0.2}, 'trainingPts - red', false);
+69: Map.addLayer(validationPts, {color:'blue', 'opacity':0.2}, 'validationPts - blue', false);
+71: var training = collection.select(indexBands).sampleRegions({
+81: print('training', training);
+83: var trained_RF100 = ee.Classifier.smileRandomForest(100).train({
+91: var classified100 = collection.select(indexBands).classify(trained_RF100);",gee_core_p2_rewrite,0.5,False,False,rewritten_chain_faithful,"[""accuracy evaluation"", ""confusion matrix"", ""class accuracy metrics""]",train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_032,Workflowoutput280000_script_279533,GEE,L3,core_subworkflow,Filter a calibrated GPM precipitation collection,"Select calibrated precipitation from the GPM IMERG image collection, filter the collection by date, and filter it by the study geometry.","[""L3_03_01_04"", ""L3_03_09_01"", ""L3_03_09_06""]","[""ee.imagecollection.select"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds""]",2f104cf277660c2b8e8648024feeb53f6519dc2d802cee962ba3f9bf76933f07,/home/yll/GEE/Data/data280000/script_279533.txt,"1: ee.Geometry.Polygon(
+11: ee.Geometry.Polygon(
+21: var inidate = ee.Date.fromYMD(2014,01,01)
+23: var enddate = ee.Date.fromYMD(2014,02,01)
+27: var gsmap = ee.ImageCollection('NASA/GPM_L3/IMERG_V06').select(['precipitationCal'])
+29: .filterDate(inidate, enddate).filterBounds(geometry);",gee_core_p2_rewrite,0.5,False,False,rewritten_chain_faithful,"[""clipping"", ""downstream temporal analysis"", ""downstream spatial analysis""]",train
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_048,Workflowoutput290000_script_281423,GEE,L3,core_subworkflow,Prepare TerraClimate mean and banded climate imagery,"Select TerraClimate variables, compute their long-term mean image, select precipitation imagery, convert the precipitation collection to bands, select image bands, and rename the retained climate bands.","[""L3_03_01_04"", ""L3_10_02_03"", ""L3_03_01_04"", ""L3_03_01_09"", ""L3_03_01_04"", ""L3_01_02_03""]","[""ee.imagecollection.select"", ""ee.imagecollection.mean"", ""ee.imagecollection.select"", ""ee.imagecollection.tobands"", ""ee.image.select"", ""ee.image.rename""]",f1c234d464724255dc122d343c72e70bd0109dad25565ba6bf6b1bac080e9ff1,/home/yll/GEE/Data/data290000/script_281423.txt,"1: var dataset = ee.ImageCollection('IDAHO_EPSCOR/TERRACLIMATE')
+3: var bio = ee.ImageCollection('IDAHO_EPSCOR/TERRACLIMATE').select(['tmmx', 'tmmn', 'pr', 'def']).mean().rename([""maxTemp"", ""minTemp"", ""RAINFALL"", ""waterDef""])
+5: var precip = ee.ImageCollection('IDAHO_EPSCOR/TERRACLIMATE').select(['pr']).toBands()
+7: var years = ee.List.sequence(1958, 2020)
+9: print(precip)
+11: print(years)
+13: var YEARS = ee.List.sequence(2001, 2019).map(function(x){return ee.Number(x).toInt()})
+15: print(YEARS)
+19: print('Band names:', bandNames);
+21: print(ee.String(bandNames).split(0,4))
+23: print(precip)
+25: var bio_old = ee.Image('WORLDCLIM/V1/BIO').select(['bio01','bio12']).rename(['TEMPERATURE','RAINFALL'])",gee_core_p2_rewrite,0.5,False,False,rewritten_chain_faithful,"[""annual composites for 2001-2019"", ""WorldClim comparison"", ""print and band-inspection output""]",train

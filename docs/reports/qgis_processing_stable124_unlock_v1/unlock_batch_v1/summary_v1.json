@@ -1,0 +1,321 @@
+{
+  "blocker_action_counts": {
+    "defer_mapping": 1494,
+    "defer_operator_resolution": 444,
+    "recover_call_graph": 212,
+    "split_subworkflow": 255
+  },
+  "blocker_rows": 2658,
+  "candidate_lane_counts": {
+    "direct": 127,
+    "operator_resolution_direct": 1,
+    "operator_resolution_split_multi": 4,
+    "operator_resolution_split_single": 76,
+    "recovery_multistep": 7,
+    "split_multistep": 26,
+    "split_single_step": 279
+  },
+  "candidate_pool_rows": 520,
+  "candidate_rule_signature_counts": {
+    "2044c82acd4fb5df4417097c89ee3999133f5aed218c13b13fa8ff5fa0d106da": 2,
+    "2c105f753e8445bbc1c95fdfc4e90ff9f06c9fbee59352b032aae6e9bc8a95ea": 76,
+    "31fd3a7bcb2dfa1c6f9458f43d1bfe9713de695e288db9213228cc3733c1d724": 279,
+    "413ec008a82c0fa67176b7f6b8b831ec8787271b371d90bfdbec7c43a413aece": 26,
+    "43a657901d1ac4e8462f535ef9569fb78f541fa49744c020ec15dd0fe51a6353": 127,
+    "c2fc90907b7c770eea2ba13b58989bc9b335aaca394c85ddf7620ec38689eaad": 1,
+    "c8ccac16d4287b04175fbd26e6870b834461507195a072998641534c3cd9912d": 5,
+    "fcaf21334fc327363ad7ad432b2bc96957d35313b7182238f2a741de804b049c": 4
+  },
+  "dedup_status_counts": {
+    "canonical_candidate": 12,
+    "duplicate_source_region": 172,
+    "duplicate_training_pair": 336
+  },
+  "direct_dedup_status_counts": {
+    "canonical_candidate": 16,
+    "duplicate_source_region": 76,
+    "duplicate_training_pair": 55
+  },
+  "direct_description_fidelity_passed": 127,
+  "direct_parameter_evidence_status_counts": {
+    "verified_source_ast": 147
+  },
+  "direct_replay_rows": 147,
+  "direct_source_failures": 12,
+  "operator_summary": {
+    "action_counts": {
+      "auto_accept_candidate": 1,
+      "defer_mapping": 39,
+      "defer_operator_resolution": 269,
+      "exclude_candidate_alignment_failure": 20,
+      "recover_call_graph": 58,
+      "review_api_sidecar": 23,
+      "split_subworkflow": 34
+    },
+    "description_summary": {
+      "decision": {
+        "legacy_task_text_used": false,
+        "llm_called": false,
+        "next_gate": "four_layer_deduplication_then_train_only_export",
+        "training_admission": "not_granted_pending_dedup_and_export_gate",
+        "training_rows_emitted": 0
+      },
+      "description_policy": "deterministic_operator_dag_zh_v5",
+      "description_status_counts": {
+        "candidate": 1
+      },
+      "direct_rows": 1,
+      "fidelity_gate": {
+        "deferred": 0,
+        "passed": 1
+      },
+      "input_rows": 444,
+      "parameter_evidence_status_counts": {
+        "verified_source_ast": 1
+      },
+      "parameterized_steps": 2,
+      "rows_with_literal_parameter_facts": 1,
+      "schema": "gis_recommend.qgis_direct_description_summary.v1",
+      "scope_counts": {
+        "whole_processing_scope": 1
+      }
+    },
+    "fully_normalized_mapping_complete_rows": 136,
+    "fully_normalized_rows": 164,
+    "input_rows": 444,
+    "normalization_status_counts": {
+      "fully_normalized": 164,
+      "partially_normalized": 280
+    },
+    "partially_normalized_mapped_subset_rows": 269,
+    "partially_normalized_rows": 280,
+    "recovery_summary": {
+      "decision": {
+        "next_gate": "source-disjoint audit of recovery local DAG rule",
+        "training_admission": "not_granted_pending_recovery_rule_audit",
+        "training_rows_emitted": 0
+      },
+      "deferred_structure_reason_counts": {
+        "conditional_early_exit": 27,
+        "control_flow:for": 16,
+        "control_flow:if": 20,
+        "control_flow:try": 6,
+        "downstream_data_transform": 19,
+        "downstream_low_level_data_transform:addFeature": 7,
+        "downstream_low_level_data_transform:setGeometry": 7,
+        "intermediate_data_transform": 12,
+        "missing_data_edges": 20,
+        "unresolved_processing_parameter_name:crs": 2,
+        "unresolved_processing_parameter_name:extent": 2
+      },
+      "eligible_description_deferred": 0,
+      "eligible_description_fidelity_passed": 7,
+      "eligible_multi_step_units": 7,
+      "eligible_parent_rule_counts": {
+        "recover-missing-data-edges-v1": 7
+      },
+      "eligible_recovery_rule_counts": {
+        "recovery-multi-root-fanin-dag-v1": 7
+      },
+      "eligible_source_disjoint_support": 7,
+      "eligible_unique_normalized_dags": 3,
+      "failed_parent_rows": 0,
+      "failures": [],
+      "multi_step_units": 58,
+      "parent_rows": 58,
+      "schema": "gis_recommend.qgis_recovery_local_dag_summary.v1",
+      "structurally_eligible_before_description_gate": 7,
+      "total_local_units": 91
+    },
+    "split_summary": {
+      "decision": {
+        "next_gate": "source-disjoint audit of multi-step local DAG units",
+        "training_admission": "not_granted_pending_split_rule_audit",
+        "training_rows_emitted": 0
+      },
+      "eligible_multi_step_description_deferred": 2,
+      "eligible_multi_step_description_fidelity_passed": 4,
+      "failed_parent_rows": 0,
+      "failures": [],
+      "multi_step_description_deferred": 23,
+      "multi_step_description_fidelity_passed": 14,
+      "multi_step_structure_deferred": 31,
+      "multi_step_structure_eligible": 6,
+      "multi_step_structure_reason_counts": {
+        "control_flow:for": 3,
+        "control_flow:if": 2,
+        "control_flow:try": 9,
+        "downstream_data_transform": 31,
+        "intermediate_data_transform": 22,
+        "missing_data_edges": 6,
+        "unused_temporary_terminal": 1
+      },
+      "multi_step_units": 37,
+      "parent_rows": 34,
+      "parent_rows_split": 34,
+      "schema": "gis_recommend.qgis_split_subworkflow_summary.v1",
+      "single_step_units": 166,
+      "total_units": 203,
+      "unique_multi_step_dags": 12
+    },
+    "training_rows_emitted": 0
+  },
+  "policy_version": "qgis-processing-blocker-batch-v1",
+  "production_merge": "not_granted",
+  "quality_gate": {
+    "llm_called": false,
+    "source_authority_failures": 253,
+    "training_rows_emitted": 0,
+    "uncertain_training_rows": 0,
+    "validation_test_rows": 0
+  },
+  "recovery_summary": {
+    "decision": {
+      "next_gate": "source-disjoint audit of recovery local DAG rule",
+      "training_admission": "not_granted_pending_recovery_rule_audit",
+      "training_rows_emitted": 0
+    },
+    "deferred_structure_reason_counts": {
+      "conditional_early_exit": 22,
+      "control_flow:for": 32,
+      "control_flow:if": 33,
+      "control_flow:try": 9,
+      "control_flow:while": 1,
+      "downstream_data_transform": 39,
+      "downstream_low_level_data_transform:addFeature": 4,
+      "downstream_low_level_data_transform:addFeatures": 6,
+      "downstream_low_level_data_transform:changeAttributeValue": 5,
+      "downstream_low_level_data_transform:commitChanges": 9,
+      "downstream_low_level_data_transform:setGeometry": 9,
+      "downstream_low_level_data_transform:startEditing": 9,
+      "downstream_low_level_data_transform:updateFeature": 9,
+      "intermediate_data_transform": 1,
+      "missing_data_edges": 12,
+      "unresolved_processing_parameter_name:QgsCoordinateReferenceSystem": 4,
+      "unresolved_processing_parameter_name:QgsProcessingFeatureSourceDefinition": 2,
+      "unresolved_processing_parameter_name:field": 1,
+      "unused_temporary_terminal": 7
+    },
+    "eligible_description_deferred": 5,
+    "eligible_description_fidelity_passed": 16,
+    "eligible_multi_step_units": 21,
+    "eligible_parent_rule_counts": {
+      "recover-control-flow-v1": 2,
+      "recover-missing-data-edges-v1": 19
+    },
+    "eligible_recovery_rule_counts": {
+      "recovery-connected-local-dag-v1": 11,
+      "recovery-multi-root-fanin-dag-v1": 10
+    },
+    "eligible_source_disjoint_support": 17,
+    "eligible_unique_normalized_dags": 12,
+    "failed_parent_rows": 0,
+    "failures": [],
+    "multi_step_units": 109,
+    "parent_rows": 212,
+    "schema": "gis_recommend.qgis_recovery_local_dag_summary.v1",
+    "structurally_eligible_before_description_gate": 21,
+    "total_local_units": 324
+  },
+  "review_rows": 50,
+  "review_rule_signature_counts": {
+    "2044c82acd4fb5df4417097c89ee3999133f5aed218c13b13fa8ff5fa0d106da": 2,
+    "2c105f753e8445bbc1c95fdfc4e90ff9f06c9fbee59352b032aae6e9bc8a95ea": 10,
+    "31fd3a7bcb2dfa1c6f9458f43d1bfe9713de695e288db9213228cc3733c1d724": 9,
+    "413ec008a82c0fa67176b7f6b8b831ec8787271b371d90bfdbec7c43a413aece": 9,
+    "43a657901d1ac4e8462f535ef9569fb78f541fa49744c020ec15dd0fe51a6353": 13,
+    "c2fc90907b7c770eea2ba13b58989bc9b335aaca394c85ddf7620ec38689eaad": 1,
+    "c8ccac16d4287b04175fbd26e6870b834461507195a072998641534c3cd9912d": 3,
+    "fcaf21334fc327363ad7ad432b2bc96957d35313b7182238f2a741de804b049c": 3
+  },
+  "review_seed": 20260807,
+  "review_source_authority_zero_overlap": true,
+  "review_source_disjoint_zero_overlap": true,
+  "review_source_sha_zero_overlap": true,
+  "review_split_counts": {
+    "calibration": 25,
+    "holdout": 25
+  },
+  "schema": "gis_recommend.qgis_processing_blocker_batch.v1.summary",
+  "selected_candidate_lane_counts": {
+    "direct": 71,
+    "operator_resolution_direct": 1,
+    "operator_resolution_split_multi": 4,
+    "operator_resolution_split_single": 71,
+    "recovery_multistep": 7,
+    "split_multistep": 26,
+    "split_single_step": 70
+  },
+  "selected_candidate_rows": 250,
+  "selected_dedup_status_counts": {
+    "canonical_candidate": 12,
+    "duplicate_source_region": 105,
+    "duplicate_training_pair": 133
+  },
+  "selected_source_authorities": 150,
+  "source_failure_rows": 253,
+  "source_path_resolution_counts": {
+    "verified_exact": 2405
+  },
+  "source_verified_rows": 2405,
+  "split_summary": {
+    "decision": {
+      "next_gate": "source-disjoint audit of multi-step local DAG units",
+      "training_admission": "not_granted_pending_split_rule_audit",
+      "training_rows_emitted": 0
+    },
+    "eligible_multi_step_description_deferred": 12,
+    "eligible_multi_step_description_fidelity_passed": 26,
+    "failed_parent_rows": 0,
+    "failures": [],
+    "multi_step_description_deferred": 95,
+    "multi_step_description_fidelity_passed": 198,
+    "multi_step_structure_deferred": 255,
+    "multi_step_structure_eligible": 38,
+    "multi_step_structure_reason_counts": {
+      "conditional_early_exit": 62,
+      "control_flow:for": 34,
+      "control_flow:if": 127,
+      "control_flow:try": 41,
+      "downstream_data_transform": 189,
+      "downstream_low_level_data_transform:addFeature": 86,
+      "downstream_low_level_data_transform:addFeatures": 2,
+      "downstream_low_level_data_transform:changeAttributeValue": 5,
+      "downstream_low_level_data_transform:commitChanges": 21,
+      "downstream_low_level_data_transform:deleteFeature": 2,
+      "downstream_low_level_data_transform:deleteFeatures": 1,
+      "downstream_low_level_data_transform:materialize": 43,
+      "downstream_low_level_data_transform:setGeometry": 32,
+      "downstream_low_level_data_transform:startEditing": 21,
+      "downstream_low_level_data_transform:updateFeature": 23,
+      "downstream_processing_consumer:gdal:cliprasterbymasklayer": 2,
+      "downstream_processing_consumer:native:clip": 2,
+      "downstream_processing_consumer:native:explodelines": 20,
+      "downstream_processing_consumer:native:intersection": 2,
+      "downstream_processing_consumer:native:joinattributesbylocation": 4,
+      "downstream_processing_consumer:native:joinattributestable": 2,
+      "downstream_processing_consumer:native:pointsalonglines": 4,
+      "downstream_processing_consumer:native:zonalstatisticsfb": 1,
+      "intermediate_data_transform": 103,
+      "missing_data_edges": 22,
+      "provider_input_type_conflict": 3,
+      "unresolved_processing_parameter_name:C_NODATA_VALUE": 12,
+      "unresolved_processing_parameter_name:C_SAMPLING_METHOD": 8,
+      "unresolved_processing_parameter_name:QgsCoordinateReferenceSystem": 2,
+      "unresolved_processing_parameter_name:QgsProcessingFeatureSourceDefinition": 3,
+      "unresolved_processing_parameter_name:dataseries": 4,
+      "unresolved_processing_parameter_name:f": 4,
+      "unresolved_processing_parameter_name:os": 2,
+      "unused_temporary_terminal": 33
+    },
+    "multi_step_units": 293,
+    "parent_rows": 255,
+    "parent_rows_split": 255,
+    "schema": "gis_recommend.qgis_split_subworkflow_summary.v1",
+    "single_step_units": 937,
+    "total_units": 1230,
+    "unique_multi_step_dags": 99
+  },
+  "training_admission": "not_granted_pending_source_disjoint_review",
+  "training_rows_emitted": 0
+}

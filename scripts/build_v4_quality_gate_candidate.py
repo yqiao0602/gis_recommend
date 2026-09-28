@@ -23,12 +23,16 @@ from gis_recommend.data.quality_gate import (  # noqa: E402
 )
 
 
-def _load_workflows(path: Path) -> list[dict]:
+def _load_input(path: Path) -> tuple[list[dict], dict | None, dict | None]:
     with path.open(encoding="utf-8") as f:
         raw = json.load(f)
     if isinstance(raw, dict):
-        return raw.get("labeled_workflows", [])
-    return raw
+        return (
+            raw.get("labeled_workflows", []),
+            raw.get("provenance"),
+            raw.get("authority_validation"),
+        )
+    return raw, None, None
 
 
 def _load_json(path: Path) -> dict:
@@ -76,6 +80,24 @@ def main(argv: list[str] | None = None) -> dict[str, Path]:
         choices=("quarantine", "keep"),
         default="quarantine",
     )
+    parser.add_argument(
+        "--description-alignment-policy",
+        choices=("report", "quarantine"),
+        default="report",
+        help="Audit lexical description/chain gaps or quarantine affected workflows.",
+    )
+    parser.add_argument(
+        "--source-identity-policy",
+        choices=("report", "require", "ignore"),
+        default="report",
+        help="Report missing trusted source identity, require it, or use legacy sequence-only grouping.",
+    )
+    parser.add_argument(
+        "--input-authority-policy",
+        choices=("require", "report"),
+        default="require",
+        help="Require Step8 provenance/training admission or retain unvalidated input for diagnostics only.",
+    )
     parser.add_argument("--train-ratio", type=float, default=0.8)
     parser.add_argument("--val-ratio", type=float, default=0.1)
     parser.add_argument("--seed", type=int, default=42)
@@ -90,7 +112,17 @@ def main(argv: list[str] | None = None) -> dict[str, Path]:
     mapping_path = Path(args.id_mappings)
     out_dir = Path(args.out_dir)
 
-    workflows = _load_workflows(data_path)
+    workflows, provenance, authority_validation = _load_input(data_path)
+    input_authority_valid = bool(
+        provenance
+        and authority_validation
+        and authority_validation.get("training_admission") is True
+    )
+    if args.input_authority_policy == "require" and not input_authority_valid:
+        raise ValueError(
+            "Quality-gate input lacks validated Step8 authority; "
+            "use --input-authority-policy report for diagnostics only"
+        )
     id_mappings = _load_json(mapping_path)
     sources = tuple(
         source.strip()
@@ -104,13 +136,25 @@ def main(argv: list[str] | None = None) -> dict[str, Path]:
         low_confidence_threshold=args.low_confidence_threshold,
         low_confidence_sources=sources,
         low_confidence_policy=args.low_confidence_policy,
+        description_alignment_policy=args.description_alignment_policy,
+        source_identity_policy=args.source_identity_policy,
         group_duplicate_l3_sequence=not args.no_group_duplicate_l3_sequence,
         train_ratio=args.train_ratio,
         val_ratio=args.val_ratio,
         seed=args.seed,
     )
 
-    result = build_quality_gate_candidate(workflows, id_mappings, policy)
+    result = build_quality_gate_candidate(
+        workflows,
+        id_mappings,
+        policy,
+        provenance=provenance,
+        authority_validation=authority_validation or {
+            "training_admission": False,
+            "issues": ["missing_or_unvalidated_step8_authority"],
+            "policy": args.input_authority_policy,
+        },
+    )
     paths = write_quality_gate_outputs(result, out_dir)
 
     official_path = Path(args.official_gee_operators)
@@ -139,7 +183,9 @@ def main(argv: list[str] | None = None) -> dict[str, Path]:
         f"candidate={result.report['counts']['candidate_workflows']}, "
         f"quarantine={result.report['counts']['quarantined_workflows']}, "
         f"sparse_merged={result.report['counts']['sparse_merged_workflows']}, "
-        f"cross_split_duplicates={result.report['splits']['cross_split_sequence_hashes']}"
+        f"cross_split_duplicates={result.report['splits']['cross_split_sequence_hashes']}, "
+        f"missing_source_identity={result.report['source_identity']['missing_workflows']}, "
+        f"description_issues={result.report['description_alignment']['workflows_with_issues']}"
     )
     return paths
 

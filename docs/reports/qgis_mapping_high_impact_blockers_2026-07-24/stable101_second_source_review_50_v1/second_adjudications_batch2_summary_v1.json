@@ -1,0 +1,35 @@
+{
+  "schema": "gis_recommend.qgis_stable101_second_adjudication_batch.v1",
+  "batch_id": "priority_batch2",
+  "review_indices": [5, 8, 11, 12, 15, 17, 20, 23, 26, 28],
+  "counts": {
+    "rows": 10,
+    "accepted": 6,
+    "deferred": 2,
+    "rejected": 2,
+    "pending": 0
+  },
+  "decision_indices": {
+    "accepted": [5, 11, 12, 17, 23, 28],
+    "deferred": [15, 20],
+    "rejected": [8, 26]
+  },
+  "inputs": {
+    "source_review_jsonl": "stable101_source_review_50_v1.jsonl",
+    "source_review_sha256": "5d3b3dd1b920299f663e8c053e07becc1fadf4ccd1eda50c9b907e4bbde4935e",
+    "preclassification_jsonl": "second_salvage_preclass_v1.jsonl",
+    "preclassification_sha256": "b1e8e752b593c9543f65ea055e07a5bd3c75a875a56f0dd4cd0b91e18ef148c4",
+    "proposal_md": "second_priority_review_batch2_proposals_v1.md",
+    "proposal_sha256": "edeb5150c736dfb1954ad7e9475266883360b4a044f7d2fddbcd3f26e8be7393"
+  },
+  "decision": {
+    "human_review_status": "jointly_confirmed_batch2",
+    "training_admission": "not_granted_pending_dedup_recovery_and_export",
+    "validation_eligible": false,
+    "test_eligible": false,
+    "production_merge": "not_granted",
+    "training_rows_emitted": 0,
+    "llm_called": false,
+    "next_gate": "deduplicate accepted rows; split and recover deferred rows; continue priority batch 3 review"
+  }
+}

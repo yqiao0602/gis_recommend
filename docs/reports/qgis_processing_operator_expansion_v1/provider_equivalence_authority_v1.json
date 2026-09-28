@@ -1,0 +1,31 @@
+{
+  "schema": "gis_recommend.qgis_processing_provider_equivalence_authority.v1",
+  "status": "granted_source_reviewed_existing_l3_only",
+  "taxonomy_profile": "stable110_authority_v1",
+  "restored_l3_mappings": {
+    "grass7:r.neighbors": "L3_03_02_03",
+    "saga:featuresbuffer": "L3_02_01_01",
+    "saga:polygonselfintersection": "L3_01_05_01"
+  },
+  "reviewed_provider_equivalents": {
+    "script:copernicusrastercalculator": "qgis:rastercalculator"
+  },
+  "custom_equivalence_evidence": {
+    "script:copernicusrastercalculator": {
+      "decision": "exact_existing_l3_capability",
+      "implementation_path": "/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/workflow_candidates/Copernicus_Global_Land_QGIS_plugin__1.2__cgl_tools_raster_calc_copernicus.py",
+      "implementation_sha256": "9e6393a970b52a3a3e6c704b41b426400bebfab0801df4268bdec00d5ceac0b7",
+      "normalized_source_authorities": 16,
+      "notes": "Thin QgsRasterCalculator wrapper with explicit raster layers, formula, sample-grid extent/size, and raster output."
+    }
+  },
+  "evidence": {
+    "grass7:r.neighbors": "Moving-window statistics over raster neighborhoods; exact existing Focal Statistics contract.",
+    "saga:featuresbuffer": "Feature buffer with distance parameters; exact existing Buffer contract.",
+    "saga:polygonselfintersection": "Reports polygon self-intersections; exact existing Check Geometry contract."
+  },
+  "training_admission": "not_granted_pending_full_pool_replay_description_and_dedup",
+  "validation_eligible": false,
+  "test_eligible": false,
+  "production_merge": "not_granted"
+}

@@ -1,0 +1,814 @@
+﻿call_sites,covered_dependency_edges,covered_operator_ids,dependency_edge_count,dependency_edge_evidence,dependency_edges,description_fidelity_passed,description_fidelity_reasons,description_fidelity_status,description_length,description_policy,description_source,feature_extractor_version,frozen_dependency_edges,frozen_l3_chain,frozen_operator_ids,frozen_parameter_facts,known_omissions,lexical_scope,local_risk_evidence,local_structure_reasons,local_structure_status,mapped_l3_chain,normalized_dag_key,operator_count,operator_ids,operator_semantic_coverage,parameter_facts,parent_call_indices,parent_record_id,parent_signature_hash,parent_source_root_id,production_merge,schema,source_path,source_sha256,split_class,splitter_version,task_description,task_name,test_eligible,training_admission,training_row_emitted,unit_id,unit_ordinal,validation_eligible,workflow_unit_scope,review_position,source_hash_verified,source_snippet,review_status,human_dependency_correct,human_operator_order_correct,human_boundary_correct,human_description_faithful,human_final_decision,human_notes
+"[{""line_end"": 438, ""line_start"": 436, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""aoi""}, ""param_keys"": []}, {""line_end"": 446, ""line_start"": 446, ""operator_id"": ""native:fillnodata"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""gdal:warpreproject"", ""native:fillnodata""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_03_05_02"", ""L3_03_03_A""]","[""gdal:warpreproject"", ""native:fillnodata""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",WorkflowBase._subset_raster_layer,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_03_05_02"", ""L3_03_03_A""]",07f8f8f110a9709c83f99db3e114fd9932c73f4830ec56aa98be892265a61805,2,"[""gdal:warpreproject"", ""native:fillnodata""]",2,"[{}, {}]","[0, 1]",83054a716d9f38d45417ff55,bf4114433915430b4a633c4c2870c2781c50743e88ccd803b0d875ec0960966d,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000648.py,0d0f9e34cac37f5ceaae62c919c27f2cc03fd4a45d2f3dd7974730607fb15f72,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据重投影并对齐栅格；随后将前述对齐后的栅格用于使用指定值填充栅格无数据单元，得到此 Processing 链的结果。,局部工作流：对齐栅格并填充无数据单元,False,not_granted_split_census_audit_only,False,local_ec0f33cda7b309407673,1,False,local_subworkflow,1,True,"432:             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+433:             ""TARGET_EXTENT"": f""{bbox.xMinimum()},{bbox.xMaximum()},{bbox.yMinimum()},{bbox.yMaximum()} [{self.target_crs.authid()}]"",
+434:         }
+435: 
+436:         aoi = processing.run(
+437:             ""gdal:warpreproject"", params, feedback=QgsProcessingFeedback()
+438:         )[""OUTPUT""]
+439: 
+440:         params = {
+441:             ""INPUT"": aoi,
+442:             ""BAND"": 1,
+443:             ""FILL_VALUE"": 0,
+444:             ""OUTPUT"": reprojected_raster_path,
+445:         }
+446:         processing.run(""native:fillnodata"", params)
+447:         return reprojected_raster_path
+448: 
+449:     def _rasterize(
+450:         self,",pending_human_review,,,,,,
+"[{""line_end"": 215, ""line_start"": 200, ""operator_id"": ""gdal:slope"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""results""}, ""param_keys"": [""INPUT"", ""BAND"", ""SCALE"", ""AS_PERCENT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 231, ""line_start"": 221, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""slope_cos_result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:slope"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_01"", ""L3_03_03_A""]","[""gdal:slope"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",QgisExecutionContext.calculate_slope,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_01"", ""L3_03_03_A""]",1909c4f046e97af92c5910cbef5fa9b993678c1b5964b25d052e2f4cd26f720f,2,"[""gdal:slope"", ""gdal:rastercalculator""]",2,"[{}, {}]","[0, 1]",7afe40bb22dde5fe427a88d3,df80519e36a0a508783a93a82a445505642b91aea287b56306b0f851592b1975,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004802.py,0f8b54e652ee2235de34225dad7646d4f61008ce8dd65b63549b62270247e77c,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡度；随后将前述坡度栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡度并栅格计算,False,not_granted_split_census_audit_only,False,local_11150b29a7ad052f11be,1,False,local_subworkflow,2,True,"196:         return super().luminance_bytes
+197: 
+198:     def calculate_slope(self, in_radians=True) -> str:
+199:         self.log_info(""[QGIS processing]: calculating slope."")
+200:         results = processing.run(
+201:             ""gdal:slope"",
+202:             {
+203:                 'INPUT': self.dem_layer,
+204:                 'BAND': 1,
+205:                 # magic number 111120 lol
+206:                 'SCALE': 1,
+207:                 'AS_PERCENT': False,
+208:                 'COMPUTE_EDGES': True,
+209:                 'ZEVENBERGEN': True,
+210:                 'OUTPUT': 'TEMPORARY_OUTPUT'
+211:             },
+212:             feedback=self.silent_feedback,
+213:             context=self.qgis_context,
+214:             is_child_algorithm=True
+215:         )
+216:         result_deg_path = results['OUTPUT']
+217: 
+218:         if not in_radians:
+219:             return result_deg_path
+220: 
+221:         slope_cos_result = processing.run(
+222:             'gdal:rastercalculator',
+223:             {
+224:                 'INPUT_A': result_deg_path,
+225:                 'BAND_A': 1,
+226:                 'FORMULA': f'deg2rad(A)',
+227:                 'OUTPUT': 'TEMPORARY_OUTPUT',
+228:             },
+229:             feedback=self.silent_feedback,
+230:             context=self.qgis_context
+231:         )
+232:         return slope_cos_result['OUTPUT']
+233: 
+234:     def calculate_aspect(self, in_radians=True) -> str:
+235:         self.log_info(""[QGIS processing]: calculating aspect."")",pending_human_review,,,,,,
+"[{""line_end"": 250, ""line_start"": 236, ""operator_id"": ""gdal:aspect"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""results""}, ""param_keys"": [""INPUT"", ""BAND"", ""TRIG_ANGLE"", ""ZERO_FLAT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 266, ""line_start"": 256, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""slope_cos_result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:aspect"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_02"", ""L3_03_03_A""]","[""gdal:aspect"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",QgisExecutionContext.calculate_aspect,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_02"", ""L3_03_03_A""]",b1840352255b44c50907093f17a1d17a01ec6613623d353edb2192b443a7719e,2,"[""gdal:aspect"", ""gdal:rastercalculator""]",2,"[{}, {}]","[2, 3]",7afe40bb22dde5fe427a88d3,df80519e36a0a508783a93a82a445505642b91aea287b56306b0f851592b1975,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004802.py,0f8b54e652ee2235de34225dad7646d4f61008ce8dd65b63549b62270247e77c,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡向；随后将前述坡向栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡向并栅格计算,False,not_granted_split_census_audit_only,False,local_2db799eb48c76a857eba,2,False,local_subworkflow,3,True,"232:         return slope_cos_result['OUTPUT']
+233: 
+234:     def calculate_aspect(self, in_radians=True) -> str:
+235:         self.log_info(""[QGIS processing]: calculating aspect."")
+236:         results = processing.run(
+237:             ""gdal:aspect"",
+238:             {
+239:                 'INPUT': self.dem_layer,
+240:                 'BAND': 1,
+241:                 'TRIG_ANGLE': False,
+242:                 'ZERO_FLAT': True,
+243:                 'COMPUTE_EDGES': True,
+244:                 'ZEVENBERGEN': True,
+245:                 'OUTPUT': 'TEMPORARY_OUTPUT'
+246:             },
+247:             feedback=self.silent_feedback,
+248:             context=self.qgis_context,
+249:             is_child_algorithm=True
+250:         )
+251: 
+252:         result_deg_path = results['OUTPUT']
+253:         if not in_radians:
+254:             return result_deg_path
+255: 
+256:         slope_cos_result = processing.run(
+257:             'gdal:rastercalculator',
+258:             {
+259:                 'INPUT_A': result_deg_path,
+260:                 'BAND_A': 1,
+261:                 'FORMULA': f'deg2rad(A)',
+262:                 'OUTPUT': 'TEMPORARY_OUTPUT',
+263:             },
+264:             feedback=self.silent_feedback,
+265:             context=self.qgis_context
+266:         )
+267:         return slope_cos_result['OUTPUT']
+268: 
+269:     def calculate_luminance(self, slope_path=None, aspect_path=None) -> str:
+270:         self.log_info(""[QGIS processing]: calculating luminance."")",pending_human_review,,,,,,
+"[{""line_end"": 1000, ""line_start"": 999, ""operator_id"": ""native:buffer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""buffer_run""}, ""param_keys"": []}, {""line_end"": 1022, ""line_start"": 1016, ""operator_id"": ""native:zonalstatistics"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""native:buffer"", ""native:zonalstatistics""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_02_01_01"", ""L3_03_02_01""]","[""native:buffer"", ""native:zonalstatistics""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",DrainLevelAlgorithm.processAlgorithm,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_02_01_01"", ""L3_03_02_01""]",949e855b07b7ea970c94cd87b3acab81569adfd7c4689c5fe5ad1ed9b430e3e2,2,"[""native:buffer"", ""native:zonalstatistics""]",2,"[{}, {}]","[0, 1]",7836cc6b528a405875c23579,0d5f7434925c86ae5f7de08e3a7b34ac97e323a17daf7d252ebc0501568bb334,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0005981.py,2eb9d2400c054642ff8e71d8b94b696a66ce4fa8382a3641b4aa8206e469511c,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据创建缓冲区；随后将前述缓冲区结果用于按多边形分区计算栅格统计量并更新图层，得到此 Processing 链的结果。,局部工作流：创建缓冲区并分区统计并更新图层,False,not_granted_split_census_audit_only,False,local_661854b439aacbdf082c,1,False,local_subworkflow,4,True,"995:             'MITER_LIMIT': 2,
+996:             'SEGMENTS': 5,
+997:             'OUTPUT': 'TEMPORARY_OUTPUT'
+998:         }
+999:         buffer_run = processing.run('native:buffer', alg_params, context=context, feedback=feedback,
+1000:                                     is_child_algorithm=True)
+1001:         buffered = buffer_run['OUTPUT']
+1002: 
+1003:         feedback.setCurrentStep(1)
+1004:         if feedback.isCanceled():
+1005:             return
+1006: 
+1007:         # Zonal statistics (in place)
+1008:         alg_params = {
+1009:             'COLUMN_PREFIX': 'stats_',
+1010:             'INPUT_RASTER': parameters['DEM'],
+1011:             'INPUT_VECTOR': buffered,
+1012:             'RASTER_BAND': 1,
+1013:             'STATISTICS': [5]  # 5 = MIN
+1014:         }
+1015: 
+1016:         processing.run(
+1017:             'native:zonalstatistics',
+1018:             alg_params,
+1019:             context=context,
+1020:             feedback=feedback,
+1021:             is_child_algorithm=True
+1022:         )
+1023: 
+1024:         zonal_statistics_output_layer = context.getMapLayer(buffered)
+1025:         feedback.setCurrentStep(2)
+1026:         if feedback.isCanceled():",pending_human_review,,,,,,
+"[{""line_end"": 78, ""line_start"": 67, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""with_area""}, ""param_keys"": [""INPUT"", ""OUTPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FORMULA""]}, {""line_end"": 88, ""line_start"": 81, ""operator_id"": ""qgis:selectbyattribute"", ""ordinal"": 3, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""FIELD"", ""OPERATOR"", ""VALUE"", ""METHOD""]}]","[[0, 1]]","[""native:fieldcalculator"", ""qgis:selectbyattribute""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,100,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_01_02_06"", ""L3_02_06_01""]","[""native:fieldcalculator"", ""qgis:selectbyattribute""]","[{""FIELD_LENGTH"": 11, ""FIELD_NAME"": ""area"", ""FIELD_TYPE"": 0, ""FORMULA"": ""area(@geometry)""}, {}]","[""outside_explicit_processing_dag_not_described""]",remove_small_features,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_01_02_06"", ""L3_02_06_01""]",155293e0167d118591f5b872d8c73eb51c72d64a5eb6779e1686d3f62500a6c0,2,"[""native:fieldcalculator"", ""qgis:selectbyattribute""]",2,"[{""FIELD_LENGTH"": 11, ""FIELD_NAME"": ""area"", ""FIELD_TYPE"": 0, ""FORMULA"": ""area(@geometry)""}, {}]","[1, 2]",0c4e5fb1cbf6a09810189e67,350466b8c46e4151791d1de000c19ccbd052df19ccf3d8f59810ace5a157fc6b,workflow,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0006595.py,3411e082114917f43ee29deacdd430469d41d3e02ec11693e20a73279167bb1f,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据计算字段值（目标字段为 area，计算公式为 area(@geometry)）；随后将前述更新字段的图层用于按属性条件选择矢量要素，得到此 Processing 链的结果。,局部工作流：计算字段并属性选择,False,not_granted_split_census_audit_only,False,local_7ac24b22363df6f84cbe,2,False,local_subworkflow,5,True,"63:         Copy of `layer` with some deleted features.
+64:     """"""
+65:     # computing area: `with_area` is a shallow copy: different attributes but same geometry data/features
+66:     logger = get_logger()
+67:     with_area = processing.run(""native:fieldcalculator"",
+68:                                 {
+69:                                     'INPUT': layer,
+70:                                     'OUTPUT': 'memory:',
+71:                                     'FIELD_NAME': 'area',
+72:                                     'FIELD_TYPE': 0,     # double, yet of precision 0 hence int
+73:                                     'FIELD_LENGTH': 11,
+74:                                     'FORMULA': 'area(@geometry)',
+75:                                 },
+76:                                 context=context,
+77:                                 feedback=feedback,
+78:                                 )['OUTPUT']
+79: 
+80:     # selecting features with small areas
+81:     processing.run(""qgis:selectbyattribute"",
+82:                       {'INPUT': with_area,
+83:                        'FIELD': 'area',
+84:                        'OPERATOR': 5,   # lower or equal
+85:                        'VALUE': f'{min_area}',
+86:                        'METHOD': 0},
+87:                       feedback=feedback,
+88:                       context=context)
+89:     initial_buildings_number = with_area.featureCount()
+90:     unwanted_buildings_number = with_area.selectedFeatureCount()
+91: 
+92: ",pending_human_review,,,,,,
+"[{""line_end"": 189, ""line_start"": 178, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FIELD_PRECISION"", ""FORMULA"", ""OUTPUT""]}, {""line_end"": 203, ""line_start"": 192, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FIELD_PRECISION"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""native:fieldcalculator"", ""native:fieldcalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,116,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_01_02_06"", ""L3_01_02_06""]","[""native:fieldcalculator"", ""native:fieldcalculator""]","[{""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""X"", ""FIELD_TYPE"": 0, ""FORMULA"": ""x(@geometry)""}, {""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""Y"", ""FIELD_TYPE"": 0, ""FORMULA"": ""y(@geometry)""}]","[""outside_explicit_processing_dag_not_described""]",add_XY_coordinates,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_01_02_06"", ""L3_01_02_06""]",f0a49580b80ee2a5ef3c492bbe4bfdf611558d8655028fa5219b04e8bb4b3c62,2,"[""native:fieldcalculator"", ""native:fieldcalculator""]",2,"[{""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""X"", ""FIELD_TYPE"": 0, ""FORMULA"": ""x(@geometry)""}, {""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""Y"", ""FIELD_TYPE"": 0, ""FORMULA"": ""y(@geometry)""}]","[4, 5]",0c4e5fb1cbf6a09810189e67,350466b8c46e4151791d1de000c19ccbd052df19ccf3d8f59810ace5a157fc6b,workflow,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0006595.py,3411e082114917f43ee29deacdd430469d41d3e02ec11693e20a73279167bb1f,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据计算字段值（目标字段为 X，计算公式为 x(@geometry)）；随后将前述更新字段的图层用于计算字段值（目标字段为 Y，计算公式为 y(@geometry)），得到此 Processing 链的结果。,局部工作流：计算字段并计算字段,False,not_granted_split_census_audit_only,False,local_a3de7f0849c9c6c15d18,4,False,local_subworkflow,6,True,"174:     """"""
+175:     # x0 and y0 reference for Lambert-93: https://fr.wikipedia.org/wiki/Projection_conique_conforme_de_Lambert#/media/Fichier:Lambert_et_mercator_pour_wikipedia.svg
+176:     logger = get_logger()
+177:     logger.info(""Adding 'X' field"")
+178:     algresult = processing.run(""native:fieldcalculator"",
+179:                     {'INPUT': layer,
+180:                     'FIELD_NAME':'X',
+181:                     'FIELD_TYPE':0,   # double
+182:                     'FIELD_LENGTH':10,
+183:                     'FIELD_PRECISION':1,
+184:                     'FORMULA': 'x(@geometry)',
+185:                     'OUTPUT': 'memory:'
+186:                     },
+187:                     context=context,
+188:                     feedback=feedback,
+189:                     )
+190: 
+191:     logger.info(""Adding 'Y' field"")
+192:     algresult = processing.run(""native:fieldcalculator"",
+193:                     {'INPUT': algresult['OUTPUT'],
+194:                     'FIELD_NAME':'Y',
+195:                     'FIELD_TYPE':0,     # double
+196:                     'FIELD_LENGTH':10,
+197:                     'FIELD_PRECISION':1,
+198:                     'FORMULA':'y(@geometry)',
+199:                     'OUTPUT': 'memory:'
+200:                     },
+201:                     context=context,
+202:                     feedback=feedback,
+203:                     )
+204:     return algresult['OUTPUT'] # shallow copy: different attributes but same geometry data/features as layer",pending_human_review,,,,,,
+"[{""line_end"": 215, ""line_start"": 200, ""operator_id"": ""gdal:slope"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""results""}, ""param_keys"": [""INPUT"", ""BAND"", ""SCALE"", ""AS_PERCENT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 231, ""line_start"": 221, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""slope_cos_result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:slope"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_01"", ""L3_03_03_A""]","[""gdal:slope"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",QgisExecutionContext.calculate_slope,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_01"", ""L3_03_03_A""]",1909c4f046e97af92c5910cbef5fa9b993678c1b5964b25d052e2f4cd26f720f,2,"[""gdal:slope"", ""gdal:rastercalculator""]",2,"[{}, {}]","[0, 1]",c771c801e993684c8b4d9b80,df80519e36a0a508783a93a82a445505642b91aea287b56306b0f851592b1975,workflow,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0003076.py,397ee51db8ac09615cb2c320dca92a495dffe8faa7d9c9e7b5aa7e98a496ca79,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡度；随后将前述坡度栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡度并栅格计算,False,not_granted_split_census_audit_only,False,local_11150b29a7ad052f11be,1,False,local_subworkflow,7,True,"196:         return super().luminance_bytes
+197: 
+198:     def calculate_slope(self, in_radians=True) -> str:
+199:         self.log_info(""[QGIS processing]: calculating slope."")
+200:         results = processing.run(
+201:             ""gdal:slope"",
+202:             {
+203:                 'INPUT': self.dem_layer,
+204:                 'BAND': 1,
+205:                 # magic number 111120 lol
+206:                 'SCALE': 1,
+207:                 'AS_PERCENT': False,
+208:                 'COMPUTE_EDGES': True,
+209:                 'ZEVENBERGEN': True,
+210:                 'OUTPUT': 'TEMPORARY_OUTPUT'
+211:             },
+212:             feedback=self.silent_feedback,
+213:             context=self.qgis_context,
+214:             is_child_algorithm=True
+215:         )
+216:         result_deg_path = results['OUTPUT']
+217: 
+218:         if not in_radians:
+219:             return result_deg_path
+220: 
+221:         slope_cos_result = processing.run(
+222:             'gdal:rastercalculator',
+223:             {
+224:                 'INPUT_A': result_deg_path,
+225:                 'BAND_A': 1,
+226:                 'FORMULA': f'deg2rad(A)',
+227:                 'OUTPUT': 'TEMPORARY_OUTPUT',
+228:             },
+229:             feedback=self.silent_feedback,
+230:             context=self.qgis_context
+231:         )
+232:         return slope_cos_result['OUTPUT']
+233: 
+234:     def calculate_aspect(self, in_radians=True) -> str:
+235:         self.log_info(""[QGIS processing]: calculating aspect."")",pending_human_review,,,,,,
+"[{""line_end"": 250, ""line_start"": 236, ""operator_id"": ""gdal:aspect"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""results""}, ""param_keys"": [""INPUT"", ""BAND"", ""TRIG_ANGLE"", ""ZERO_FLAT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 266, ""line_start"": 256, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""slope_cos_result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:aspect"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_02"", ""L3_03_03_A""]","[""gdal:aspect"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",QgisExecutionContext.calculate_aspect,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_02"", ""L3_03_03_A""]",b1840352255b44c50907093f17a1d17a01ec6613623d353edb2192b443a7719e,2,"[""gdal:aspect"", ""gdal:rastercalculator""]",2,"[{}, {}]","[2, 3]",c771c801e993684c8b4d9b80,df80519e36a0a508783a93a82a445505642b91aea287b56306b0f851592b1975,workflow,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0003076.py,397ee51db8ac09615cb2c320dca92a495dffe8faa7d9c9e7b5aa7e98a496ca79,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡向；随后将前述坡向栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡向并栅格计算,False,not_granted_split_census_audit_only,False,local_2db799eb48c76a857eba,2,False,local_subworkflow,8,True,"232:         return slope_cos_result['OUTPUT']
+233: 
+234:     def calculate_aspect(self, in_radians=True) -> str:
+235:         self.log_info(""[QGIS processing]: calculating aspect."")
+236:         results = processing.run(
+237:             ""gdal:aspect"",
+238:             {
+239:                 'INPUT': self.dem_layer,
+240:                 'BAND': 1,
+241:                 'TRIG_ANGLE': False,
+242:                 'ZERO_FLAT': True,
+243:                 'COMPUTE_EDGES': True,
+244:                 'ZEVENBERGEN': True,
+245:                 'OUTPUT': 'TEMPORARY_OUTPUT'
+246:             },
+247:             feedback=self.silent_feedback,
+248:             context=self.qgis_context,
+249:             is_child_algorithm=True
+250:         )
+251: 
+252:         result_deg_path = results['OUTPUT']
+253:         if not in_radians:
+254:             return result_deg_path
+255: 
+256:         slope_cos_result = processing.run(
+257:             'gdal:rastercalculator',
+258:             {
+259:                 'INPUT_A': result_deg_path,
+260:                 'BAND_A': 1,
+261:                 'FORMULA': f'deg2rad(A)',
+262:                 'OUTPUT': 'TEMPORARY_OUTPUT',
+263:             },
+264:             feedback=self.silent_feedback,
+265:             context=self.qgis_context
+266:         )
+267:         return slope_cos_result['OUTPUT']
+268: 
+269:     def calculate_luminance(self, slope_path=None, aspect_path=None) -> str:
+270:         self.log_info(""[QGIS processing]: calculating luminance."")",pending_human_review,,,,,,
+"[{""line_end"": 215, ""line_start"": 200, ""operator_id"": ""gdal:slope"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""results""}, ""param_keys"": [""INPUT"", ""BAND"", ""SCALE"", ""AS_PERCENT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 231, ""line_start"": 221, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""slope_cos_result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:slope"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_01"", ""L3_03_03_A""]","[""gdal:slope"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",QgisExecutionContext.calculate_slope,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_01"", ""L3_03_03_A""]",1909c4f046e97af92c5910cbef5fa9b993678c1b5964b25d052e2f4cd26f720f,2,"[""gdal:slope"", ""gdal:rastercalculator""]",2,"[{}, {}]","[0, 1]",b1ce660c3984f9d36ee69462,df80519e36a0a508783a93a82a445505642b91aea287b56306b0f851592b1975,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000581.py,3d1b0bdcadafe7b856012715430a9b8c8703e670ad5b95b8734f4dc480ebb2b1,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡度；随后将前述坡度栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡度并栅格计算,False,not_granted_split_census_audit_only,False,local_11150b29a7ad052f11be,1,False,local_subworkflow,9,True,"196:         return super().luminance_bytes
+197: 
+198:     def calculate_slope(self, in_radians=True) -> str:
+199:         self.log_info(""[QGIS processing]: calculating slope."")
+200:         results = processing.run(
+201:             ""gdal:slope"",
+202:             {
+203:                 'INPUT': self.dem_layer,
+204:                 'BAND': 1,
+205:                 # magic number 111120 lol
+206:                 'SCALE': 1,
+207:                 'AS_PERCENT': False,
+208:                 'COMPUTE_EDGES': True,
+209:                 'ZEVENBERGEN': True,
+210:                 'OUTPUT': 'TEMPORARY_OUTPUT'
+211:             },
+212:             feedback=self.silent_feedback,
+213:             context=self.qgis_context,
+214:             is_child_algorithm=True
+215:         )
+216:         result_deg_path = results['OUTPUT']
+217: 
+218:         if not in_radians:
+219:             return result_deg_path
+220: 
+221:         slope_cos_result = processing.run(
+222:             'gdal:rastercalculator',
+223:             {
+224:                 'INPUT_A': result_deg_path,
+225:                 'BAND_A': 1,
+226:                 'FORMULA': f'deg2rad(A)',
+227:                 'OUTPUT': 'TEMPORARY_OUTPUT',
+228:             },
+229:             feedback=self.silent_feedback,
+230:             context=self.qgis_context
+231:         )
+232:         return slope_cos_result['OUTPUT']
+233: 
+234:     def calculate_aspect(self, in_radians=True) -> str:
+235:         self.log_info(""[QGIS processing]: calculating aspect."")",pending_human_review,,,,,,
+"[{""line_end"": 250, ""line_start"": 236, ""operator_id"": ""gdal:aspect"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""results""}, ""param_keys"": [""INPUT"", ""BAND"", ""TRIG_ANGLE"", ""ZERO_FLAT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 266, ""line_start"": 256, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 4, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""slope_cos_result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:aspect"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_02"", ""L3_03_03_A""]","[""gdal:aspect"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",QgisExecutionContext.calculate_aspect,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_02"", ""L3_03_03_A""]",b1840352255b44c50907093f17a1d17a01ec6613623d353edb2192b443a7719e,2,"[""gdal:aspect"", ""gdal:rastercalculator""]",2,"[{}, {}]","[2, 3]",b1ce660c3984f9d36ee69462,df80519e36a0a508783a93a82a445505642b91aea287b56306b0f851592b1975,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000581.py,3d1b0bdcadafe7b856012715430a9b8c8703e670ad5b95b8734f4dc480ebb2b1,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡向；随后将前述坡向栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡向并栅格计算,False,not_granted_split_census_audit_only,False,local_2db799eb48c76a857eba,2,False,local_subworkflow,10,True,"232:         return slope_cos_result['OUTPUT']
+233: 
+234:     def calculate_aspect(self, in_radians=True) -> str:
+235:         self.log_info(""[QGIS processing]: calculating aspect."")
+236:         results = processing.run(
+237:             ""gdal:aspect"",
+238:             {
+239:                 'INPUT': self.dem_layer,
+240:                 'BAND': 1,
+241:                 'TRIG_ANGLE': False,
+242:                 'ZERO_FLAT': True,
+243:                 'COMPUTE_EDGES': True,
+244:                 'ZEVENBERGEN': True,
+245:                 'OUTPUT': 'TEMPORARY_OUTPUT'
+246:             },
+247:             feedback=self.silent_feedback,
+248:             context=self.qgis_context,
+249:             is_child_algorithm=True
+250:         )
+251: 
+252:         result_deg_path = results['OUTPUT']
+253:         if not in_radians:
+254:             return result_deg_path
+255: 
+256:         slope_cos_result = processing.run(
+257:             'gdal:rastercalculator',
+258:             {
+259:                 'INPUT_A': result_deg_path,
+260:                 'BAND_A': 1,
+261:                 'FORMULA': f'deg2rad(A)',
+262:                 'OUTPUT': 'TEMPORARY_OUTPUT',
+263:             },
+264:             feedback=self.silent_feedback,
+265:             context=self.qgis_context
+266:         )
+267:         return slope_cos_result['OUTPUT']
+268: 
+269:     def calculate_luminance(self, slope_path=None, aspect_path=None) -> str:
+270:         self.log_info(""[QGIS processing]: calculating luminance."")",pending_human_review,,,,,,
+"[{""line_end"": 714, ""line_start"": 709, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""aoi""}, ""param_keys"": []}, {""line_end"": 727, ""line_start"": 722, ""operator_id"": ""native:fillnodata"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""gdal:warpreproject"", ""native:fillnodata""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_03_05_02"", ""L3_03_03_A""]","[""gdal:warpreproject"", ""native:fillnodata""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",WorkflowBase._subset_raster_layer,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_03_05_02"", ""L3_03_03_A""]",07f8f8f110a9709c83f99db3e114fd9932c73f4830ec56aa98be892265a61805,2,"[""gdal:warpreproject"", ""native:fillnodata""]",2,"[{}, {}]","[0, 1]",2aa2a64b3abc477012160a36,bf4114433915430b4a633c4c2870c2781c50743e88ccd803b0d875ec0960966d,workflow,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0005824.py,46c06a83585dec23cce732796956e7d7dd62369e48b5cc3ce2dd9d5f8a2054dd,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据重投影并对齐栅格；随后将前述对齐后的栅格用于使用指定值填充栅格无数据单元，得到此 Processing 链的结果。,局部工作流：对齐栅格并填充无数据单元,False,not_granted_split_census_audit_only,False,local_8db1daf521305bc8e5b5,1,False,local_subworkflow,11,True,"705:             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+706:             ""TARGET_EXTENT"": f""{bbox.xMinimum()},{bbox.xMaximum()},{bbox.yMinimum()},{bbox.yMaximum()} [{self.target_crs.authid()}]"",  # noqa E231
+707:         }
+708: 
+709:         aoi = processing.run(
+710:             ""gdal:warpreproject"",
+711:             params,
+712:             context=self.context,
+713:             feedback=QgsProcessingFeedback(),
+714:         )[""OUTPUT""]
+715: 
+716:         params = {
+717:             ""INPUT"": aoi,
+718:             ""BAND"": 1,
+719:             ""FILL_VALUE"": 0,
+720:             ""OUTPUT"": reprojected_raster_path,
+721:         }
+722:         processing.run(
+723:             ""native:fillnodata"",
+724:             params,
+725:             context=self.context,
+726:             feedback=QgsProcessingFeedback(),
+727:         )
+728:         return reprojected_raster_path
+729: 
+730:     def _rasterize(
+731:         self,",pending_human_review,,,,,,
+"[{""line_end"": 714, ""line_start"": 709, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""aoi""}, ""param_keys"": []}, {""line_end"": 727, ""line_start"": 722, ""operator_id"": ""native:fillnodata"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""gdal:warpreproject"", ""native:fillnodata""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_03_05_02"", ""L3_03_03_A""]","[""gdal:warpreproject"", ""native:fillnodata""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",WorkflowBase._subset_raster_layer,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_03_05_02"", ""L3_03_03_A""]",07f8f8f110a9709c83f99db3e114fd9932c73f4830ec56aa98be892265a61805,2,"[""gdal:warpreproject"", ""native:fillnodata""]",2,"[{}, {}]","[0, 1]",16a2b7463dd89748793cd690,bf4114433915430b4a633c4c2870c2781c50743e88ccd803b0d875ec0960966d,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000067.py,4ed030e48ff82003c415058dc47509d463496c23508be5e5175be05b2bca5404,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据重投影并对齐栅格；随后将前述对齐后的栅格用于使用指定值填充栅格无数据单元，得到此 Processing 链的结果。,局部工作流：对齐栅格并填充无数据单元,False,not_granted_split_census_audit_only,False,local_8db1daf521305bc8e5b5,1,False,local_subworkflow,12,True,"705:             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+706:             ""TARGET_EXTENT"": f""{bbox.xMinimum()},{bbox.xMaximum()},{bbox.yMinimum()},{bbox.yMaximum()} [{self.target_crs.authid()}]"",  # noqa E231
+707:         }
+708: 
+709:         aoi = processing.run(
+710:             ""gdal:warpreproject"",
+711:             params,
+712:             context=self.context,
+713:             feedback=QgsProcessingFeedback(),
+714:         )[""OUTPUT""]
+715: 
+716:         params = {
+717:             ""INPUT"": aoi,
+718:             ""BAND"": 1,
+719:             ""FILL_VALUE"": 0,
+720:             ""OUTPUT"": reprojected_raster_path,
+721:         }
+722:         processing.run(
+723:             ""native:fillnodata"",
+724:             params,
+725:             context=self.context,
+726:             feedback=QgsProcessingFeedback(),
+727:         )
+728:         return reprojected_raster_path
+729: 
+730:     def _rasterize(
+731:         self,",pending_human_review,,,,,,
+"[{""line_end"": 438, ""line_start"": 436, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""aoi""}, ""param_keys"": []}, {""line_end"": 446, ""line_start"": 446, ""operator_id"": ""native:fillnodata"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""gdal:warpreproject"", ""native:fillnodata""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_03_05_02"", ""L3_03_03_A""]","[""gdal:warpreproject"", ""native:fillnodata""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",WorkflowBase._subset_raster_layer,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_03_05_02"", ""L3_03_03_A""]",07f8f8f110a9709c83f99db3e114fd9932c73f4830ec56aa98be892265a61805,2,"[""gdal:warpreproject"", ""native:fillnodata""]",2,"[{}, {}]","[0, 1]",acee304a672de00f95a59cdb,bf4114433915430b4a633c4c2870c2781c50743e88ccd803b0d875ec0960966d,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004115.py,58555037f7cc87eb411ae37d556483cd7d31f5521b1eaf2a469d9b4975c9b019,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据重投影并对齐栅格；随后将前述对齐后的栅格用于使用指定值填充栅格无数据单元，得到此 Processing 链的结果。,局部工作流：对齐栅格并填充无数据单元,False,not_granted_split_census_audit_only,False,local_ec0f33cda7b309407673,1,False,local_subworkflow,13,True,"432:             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+433:             ""TARGET_EXTENT"": f""{bbox.xMinimum()},{bbox.xMaximum()},{bbox.yMinimum()},{bbox.yMaximum()} [{self.target_crs.authid()}]"",
+434:         }
+435: 
+436:         aoi = processing.run(
+437:             ""gdal:warpreproject"", params, feedback=QgsProcessingFeedback()
+438:         )[""OUTPUT""]
+439: 
+440:         params = {
+441:             ""INPUT"": aoi,
+442:             ""BAND"": 1,
+443:             ""FILL_VALUE"": 0,
+444:             ""OUTPUT"": reprojected_raster_path,
+445:         }
+446:         processing.run(""native:fillnodata"", params)
+447:         return reprojected_raster_path
+448: 
+449:     def _rasterize(
+450:         self,",pending_human_review,,,,,,
+"[{""line_end"": 78, ""line_start"": 67, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""with_area""}, ""param_keys"": [""INPUT"", ""OUTPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FORMULA""]}, {""line_end"": 88, ""line_start"": 81, ""operator_id"": ""qgis:selectbyattribute"", ""ordinal"": 3, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""FIELD"", ""OPERATOR"", ""VALUE"", ""METHOD""]}]","[[0, 1]]","[""native:fieldcalculator"", ""qgis:selectbyattribute""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,100,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_01_02_06"", ""L3_02_06_01""]","[""native:fieldcalculator"", ""qgis:selectbyattribute""]","[{""FIELD_LENGTH"": 11, ""FIELD_NAME"": ""area"", ""FIELD_TYPE"": 0, ""FORMULA"": ""area(@geometry)""}, {}]","[""outside_explicit_processing_dag_not_described""]",remove_small_features,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_01_02_06"", ""L3_02_06_01""]",155293e0167d118591f5b872d8c73eb51c72d64a5eb6779e1686d3f62500a6c0,2,"[""native:fieldcalculator"", ""qgis:selectbyattribute""]",2,"[{""FIELD_LENGTH"": 11, ""FIELD_NAME"": ""area"", ""FIELD_TYPE"": 0, ""FORMULA"": ""area(@geometry)""}, {}]","[1, 2]",81dd267226a8ade3fc559131,350466b8c46e4151791d1de000c19ccbd052df19ccf3d8f59810ace5a157fc6b,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000755.py,6376dc511b4afb9add4aa0614fe35464e65f89467beb1995bfa79c8bf1437bd8,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据计算字段值（目标字段为 area，计算公式为 area(@geometry)）；随后将前述更新字段的图层用于按属性条件选择矢量要素，得到此 Processing 链的结果。,局部工作流：计算字段并属性选择,False,not_granted_split_census_audit_only,False,local_7ac24b22363df6f84cbe,2,False,local_subworkflow,14,True,"63:         Copy of `layer` with some deleted features.
+64:     """"""
+65:     # computing area: `with_area` is a shallow copy: different attributes but same geometry data/features
+66:     logger = get_logger()
+67:     with_area = processing.run(""native:fieldcalculator"",
+68:                                 {
+69:                                     'INPUT': layer,
+70:                                     'OUTPUT': 'memory:',
+71:                                     'FIELD_NAME': 'area',
+72:                                     'FIELD_TYPE': 0,     # double, yet of precision 0 hence int
+73:                                     'FIELD_LENGTH': 11,
+74:                                     'FORMULA': 'area(@geometry)',
+75:                                 },
+76:                                 context=context,
+77:                                 feedback=feedback,
+78:                                 )['OUTPUT']
+79: 
+80:     # selecting features with small areas
+81:     processing.run(""qgis:selectbyattribute"",
+82:                       {'INPUT': with_area,
+83:                        'FIELD': 'area',
+84:                        'OPERATOR': 5,   # lower or equal
+85:                        'VALUE': f'{min_area}',
+86:                        'METHOD': 0},
+87:                       feedback=feedback,
+88:                       context=context)
+89:     initial_buildings_number = with_area.featureCount()
+90:     unwanted_buildings_number = with_area.selectedFeatureCount()
+91: 
+92: ",pending_human_review,,,,,,
+"[{""line_end"": 189, ""line_start"": 178, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FIELD_PRECISION"", ""FORMULA"", ""OUTPUT""]}, {""line_end"": 203, ""line_start"": 192, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FIELD_PRECISION"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""native:fieldcalculator"", ""native:fieldcalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,116,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_01_02_06"", ""L3_01_02_06""]","[""native:fieldcalculator"", ""native:fieldcalculator""]","[{""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""X"", ""FIELD_TYPE"": 0, ""FORMULA"": ""x(@geometry)""}, {""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""Y"", ""FIELD_TYPE"": 0, ""FORMULA"": ""y(@geometry)""}]","[""outside_explicit_processing_dag_not_described""]",add_XY_coordinates,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_01_02_06"", ""L3_01_02_06""]",f0a49580b80ee2a5ef3c492bbe4bfdf611558d8655028fa5219b04e8bb4b3c62,2,"[""native:fieldcalculator"", ""native:fieldcalculator""]",2,"[{""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""X"", ""FIELD_TYPE"": 0, ""FORMULA"": ""x(@geometry)""}, {""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""Y"", ""FIELD_TYPE"": 0, ""FORMULA"": ""y(@geometry)""}]","[4, 5]",81dd267226a8ade3fc559131,350466b8c46e4151791d1de000c19ccbd052df19ccf3d8f59810ace5a157fc6b,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000755.py,6376dc511b4afb9add4aa0614fe35464e65f89467beb1995bfa79c8bf1437bd8,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据计算字段值（目标字段为 X，计算公式为 x(@geometry)）；随后将前述更新字段的图层用于计算字段值（目标字段为 Y，计算公式为 y(@geometry)），得到此 Processing 链的结果。,局部工作流：计算字段并计算字段,False,not_granted_split_census_audit_only,False,local_a3de7f0849c9c6c15d18,4,False,local_subworkflow,15,True,"174:     """"""
+175:     # x0 and y0 reference for Lambert-93: https://fr.wikipedia.org/wiki/Projection_conique_conforme_de_Lambert#/media/Fichier:Lambert_et_mercator_pour_wikipedia.svg
+176:     logger = get_logger()
+177:     logger.info(""Adding 'X' field"")
+178:     algresult = processing.run(""native:fieldcalculator"",
+179:                     {'INPUT': layer,
+180:                     'FIELD_NAME':'X',
+181:                     'FIELD_TYPE':0,   # double
+182:                     'FIELD_LENGTH':10,
+183:                     'FIELD_PRECISION':1,
+184:                     'FORMULA': 'x(@geometry)',
+185:                     'OUTPUT': 'memory:'
+186:                     },
+187:                     context=context,
+188:                     feedback=feedback,
+189:                     )
+190: 
+191:     logger.info(""Adding 'Y' field"")
+192:     algresult = processing.run(""native:fieldcalculator"",
+193:                     {'INPUT': algresult['OUTPUT'],
+194:                     'FIELD_NAME':'Y',
+195:                     'FIELD_TYPE':0,     # double
+196:                     'FIELD_LENGTH':10,
+197:                     'FIELD_PRECISION':1,
+198:                     'FORMULA':'y(@geometry)',
+199:                     'OUTPUT': 'memory:'
+200:                     },
+201:                     context=context,
+202:                     feedback=feedback,
+203:                     )
+204:     return algresult['OUTPUT'] # shallow copy: different attributes but same geometry data/features as layer",pending_human_review,,,,,,
+"[{""line_end"": 714, ""line_start"": 709, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""aoi""}, ""param_keys"": []}, {""line_end"": 727, ""line_start"": 722, ""operator_id"": ""native:fillnodata"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""gdal:warpreproject"", ""native:fillnodata""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_03_05_02"", ""L3_03_03_A""]","[""gdal:warpreproject"", ""native:fillnodata""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",WorkflowBase._subset_raster_layer,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_03_05_02"", ""L3_03_03_A""]",07f8f8f110a9709c83f99db3e114fd9932c73f4830ec56aa98be892265a61805,2,"[""gdal:warpreproject"", ""native:fillnodata""]",2,"[{}, {}]","[0, 1]",3e66d87ecc7849d0455042e7,bf4114433915430b4a633c4c2870c2781c50743e88ccd803b0d875ec0960966d,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0003094.py,7472b376899df8bd3edc70c2ec458fc2c77558000f6a0b9d6ffbf72c7e333202,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据重投影并对齐栅格；随后将前述对齐后的栅格用于使用指定值填充栅格无数据单元，得到此 Processing 链的结果。,局部工作流：对齐栅格并填充无数据单元,False,not_granted_split_census_audit_only,False,local_8db1daf521305bc8e5b5,1,False,local_subworkflow,16,True,"705:             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+706:             ""TARGET_EXTENT"": f""{bbox.xMinimum()},{bbox.xMaximum()},{bbox.yMinimum()},{bbox.yMaximum()} [{self.target_crs.authid()}]"",  # noqa E231
+707:         }
+708: 
+709:         aoi = processing.run(
+710:             ""gdal:warpreproject"",
+711:             params,
+712:             context=self.context,
+713:             feedback=QgsProcessingFeedback(),
+714:         )[""OUTPUT""]
+715: 
+716:         params = {
+717:             ""INPUT"": aoi,
+718:             ""BAND"": 1,
+719:             ""FILL_VALUE"": 0,
+720:             ""OUTPUT"": reprojected_raster_path,
+721:         }
+722:         processing.run(
+723:             ""native:fillnodata"",
+724:             params,
+725:             context=self.context,
+726:             feedback=QgsProcessingFeedback(),
+727:         )
+728:         return reprojected_raster_path
+729: 
+730:     def _rasterize(
+731:         self,",pending_human_review,,,,,,
+"[{""line_end"": 1000, ""line_start"": 999, ""operator_id"": ""native:buffer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""buffer_run""}, ""param_keys"": []}, {""line_end"": 1022, ""line_start"": 1016, ""operator_id"": ""native:zonalstatistics"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""native:buffer"", ""native:zonalstatistics""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_02_01_01"", ""L3_03_02_01""]","[""native:buffer"", ""native:zonalstatistics""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",DrainLevelAlgorithm.processAlgorithm,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_02_01_01"", ""L3_03_02_01""]",949e855b07b7ea970c94cd87b3acab81569adfd7c4689c5fe5ad1ed9b430e3e2,2,"[""native:buffer"", ""native:zonalstatistics""]",2,"[{}, {}]","[0, 1]",5d6d79ed0ecb36e1f9d2db0e,0d5f7434925c86ae5f7de08e3a7b34ac97e323a17daf7d252ebc0501568bb334,workflow,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0006371.py,7ab493652b81e33cd6d65d4a7d1cbf472a2532b3291b9ebc24599a26dfcdf229,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据创建缓冲区；随后将前述缓冲区结果用于按多边形分区计算栅格统计量并更新图层，得到此 Processing 链的结果。,局部工作流：创建缓冲区并分区统计并更新图层,False,not_granted_split_census_audit_only,False,local_661854b439aacbdf082c,1,False,local_subworkflow,17,True,"995:             'MITER_LIMIT': 2,
+996:             'SEGMENTS': 5,
+997:             'OUTPUT': 'TEMPORARY_OUTPUT'
+998:         }
+999:         buffer_run = processing.run('native:buffer', alg_params, context=context, feedback=feedback,
+1000:                                     is_child_algorithm=True)
+1001:         buffered = buffer_run['OUTPUT']
+1002: 
+1003:         feedback.setCurrentStep(1)
+1004:         if feedback.isCanceled():
+1005:             return
+1006: 
+1007:         # Zonal statistics (in place)
+1008:         alg_params = {
+1009:             'COLUMN_PREFIX': 'stats_',
+1010:             'INPUT_RASTER': parameters['DEM'],
+1011:             'INPUT_VECTOR': buffered,
+1012:             'RASTER_BAND': 1,
+1013:             'STATISTICS': [5]  # 5 = MIN
+1014:         }
+1015: 
+1016:         processing.run(
+1017:             'native:zonalstatistics',
+1018:             alg_params,
+1019:             context=context,
+1020:             feedback=feedback,
+1021:             is_child_algorithm=True
+1022:         )
+1023: 
+1024:         zonal_statistics_output_layer = context.getMapLayer(buffered)
+1025:         feedback.setCurrentStep(2)
+1026:         if feedback.isCanceled():",pending_human_review,,,,,,
+"[{""line_end"": 217, ""line_start"": 208, ""operator_id"": ""native:buffer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""offset_polygon_layer""}, ""param_keys"": [""INPUT"", ""DISTANCE"", ""SEGMENTS"", ""END_CAP_STYLE"", ""JOIN_STYLE"", ""MITER_LIMIT"", ""DISSOLVE"", ""OUTPUT""]}, {""line_end"": 226, ""line_start"": 219, ""operator_id"": ""native:selectbylocation"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""selected""}, ""param_keys"": [""INPUT"", ""PREDICATE"", ""INTERSECT"", ""METHOD""]}]","[[0, 1]]","[""native:buffer"", ""native:selectbylocation""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,80,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_02_01_01"", ""L3_02_06_03""]","[""native:buffer"", ""native:selectbylocation""]","[{""DISSOLVE"": false, ""END_CAP_STYLE"": 2, ""JOIN_STYLE"": 2, ""SEGMENTS"": 5}, {}]","[""outside_explicit_processing_dag_not_described""]",LidarSegmentator.LiDAR_polygon_segmentation,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_02_01_01"", ""L3_02_06_03""]",99483f0e47099d47f2596298f984dfbbb2b5417d7db9fba6b4c31e005c4bf2b8,2,"[""native:buffer"", ""native:selectbylocation""]",2,"[{""DISSOLVE"": false, ""END_CAP_STYLE"": 2, ""JOIN_STYLE"": 2, ""SEGMENTS"": 5}, {}]","[1, 2]",38ba2c6ec3347e0be431508b,1e672a440456085cfaf68f8efc8504887909c9467c74afe623e7ba56567db649,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0006100.py,83e4ab19db858a55c5629bef808c56ae04f0c229fb50caa0072a7e297153a803,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据创建缓冲区（分段数为 5，保留独立缓冲区）；随后将前述缓冲区结果用于按空间关系选择矢量要素，得到此 Processing 链的结果。,局部工作流：创建缓冲区并空间选择,False,not_granted_split_census_audit_only,False,local_cb083f7c5d5c0d6667de,2,False,local_subworkflow,18,True,"204: 
+205:         uri = 'file:///%s?crs=%s&xField=%s&yField=%s&zField=%s&delimiter=%s' % (os.path.abspath(LiDAR_file), 'epsg:'+str(srcLiDAR), 'field_1','field_2', 'field_3', ' ')
+206:         Layer_LIDAR=QgsVectorLayer(uri,""Layer_LIDAR"",""delimitedtext"")
+207: 
+208:         offset_polygon_layer = processing.run(""native:buffer"", {
+209:             'INPUT':self.found_polygon_Layer,
+210:             'DISTANCE':offset,# /(40075*1000)*360, # Converts from meters to arc degrees
+211:             'SEGMENTS':5,
+212:             'END_CAP_STYLE':2,
+213:             'JOIN_STYLE':2,
+214:             'MITER_LIMIT':2,
+215:             'DISSOLVE':False,
+216:             'OUTPUT': 'TEMPORARY_OUTPUT',
+217:         })
+218: 
+219:         selected = processing.run(""native:selectbylocation"", {
+220:             'INPUT':Layer_LIDAR,
+221:             'PREDICATE':[6], # inside
+222:             'INTERSECT':offset_polygon_layer['OUTPUT'],
+223:             # 'INTERSECT':self.found_polygon_Layer,
+224:             'METHOD':0,
+225:             }
+226:         )
+227: 
+228:         #points_buildings_Layer = selected['OUTPUT']
+229:         points_buildings_Layer = Layer_LIDAR.materialize(QgsFeatureRequest().setFilterFids(Layer_LIDAR.selectedFeatureIds()))
+230:         points_buildings_Layer.setName(""points_buildings_Layer"")",pending_human_review,,,,,,
+"[{""line_end"": 50, ""line_start"": 38, ""operator_id"": ""gdal:slope"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""BAND"", ""SCALE"", ""AS_PERCENT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 64, ""line_start"": 53, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""INPUT_B"", ""BAND_B"", ""FORMULA"", ""NO_DATA"", ""RTYPE"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:slope"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""static_output_path""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_01"", ""L3_03_03_A""]","[""gdal:slope"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",slope_filter_depth,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_01"", ""L3_03_03_A""]",1909c4f046e97af92c5910cbef5fa9b993678c1b5964b25d052e2f4cd26f720f,2,"[""gdal:slope"", ""gdal:rastercalculator""]",2,"[{}, {}]","[1, 2]",a2a6689833ac73f7d40a8431,8eb581f9b10d6a440f1c7754645c1aafa2935025cdcd97b5715f29e239aa202f,workflow,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0005860.py,92d16e6cdcfceaa2b79fbf0174c8de4a89718fbe60e9dc7cfdc344d50fb6c774,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡度；随后将前述坡度栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡度并栅格计算,False,not_granted_split_census_audit_only,False,local_9bc02b735158b14c58f2,2,False,local_subworkflow,19,True,"34: def slope_filter_depth(depth_raster, slope_threshold, out_path, context, feedback):
+35:     feedback.pushInfo(f"">>> Applying slope filter (threshold={slope_threshold} degrees)..."")
+36:     slope_temp = out_path.replace("".tif"", ""_slope.tif"")
+37: 
+38:     processing.run(
+39:         ""gdal:slope"",
+40:         {
+41:             'INPUT': depth_raster,
+42:             'BAND': 1,
+43:             'SCALE': 1.0,
+44:             'AS_PERCENT': False,
+45:             'COMPUTE_EDGES': True,
+46:             'ZEVENBERGEN': False,
+47:             'OUTPUT': slope_temp
+48:         },
+49:         context=context, feedback=feedback, is_child_algorithm=True
+50:     )
+51: 
+52:     formula = f'A * (B <= {slope_threshold}) + (-9999.0) * (B > {slope_threshold})'
+53:     result = processing.run(
+54:         ""gdal:rastercalculator"",
+55:         {
+56:             'INPUT_A': depth_raster, 'BAND_A': 1,
+57:             'INPUT_B': slope_temp,   'BAND_B': 1,
+58:             'FORMULA': formula,
+59:             'NO_DATA': -9999.0,
+60:             'RTYPE': 5,
+61:             'OUTPUT': out_path
+62:         },
+63:         context=context, feedback=feedback, is_child_algorithm=True
+64:     )
+65:     return result['OUTPUT']
+66: 
+67: 
+68: def remove_positive_pixels(in_path, out_path, feedback):",pending_human_review,,,,,,
+"[{""line_end"": 78, ""line_start"": 67, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""with_area""}, ""param_keys"": [""INPUT"", ""OUTPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FORMULA""]}, {""line_end"": 88, ""line_start"": 81, ""operator_id"": ""qgis:selectbyattribute"", ""ordinal"": 3, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""FIELD"", ""OPERATOR"", ""VALUE"", ""METHOD""]}]","[[0, 1]]","[""native:fieldcalculator"", ""qgis:selectbyattribute""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,100,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_01_02_06"", ""L3_02_06_01""]","[""native:fieldcalculator"", ""qgis:selectbyattribute""]","[{""FIELD_LENGTH"": 11, ""FIELD_NAME"": ""area"", ""FIELD_TYPE"": 0, ""FORMULA"": ""area(@geometry)""}, {}]","[""outside_explicit_processing_dag_not_described""]",remove_small_features,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_01_02_06"", ""L3_02_06_01""]",155293e0167d118591f5b872d8c73eb51c72d64a5eb6779e1686d3f62500a6c0,2,"[""native:fieldcalculator"", ""qgis:selectbyattribute""]",2,"[{""FIELD_LENGTH"": 11, ""FIELD_NAME"": ""area"", ""FIELD_TYPE"": 0, ""FORMULA"": ""area(@geometry)""}, {}]","[1, 2]",f9242f6de33615252533e607,350466b8c46e4151791d1de000c19ccbd052df19ccf3d8f59810ace5a157fc6b,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004348.py,ae4d248f0ae3b2c285c54ec98e4ddbcae837beb85a6c28e99b86c6320450aff7,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据计算字段值（目标字段为 area，计算公式为 area(@geometry)）；随后将前述更新字段的图层用于按属性条件选择矢量要素，得到此 Processing 链的结果。,局部工作流：计算字段并属性选择,False,not_granted_split_census_audit_only,False,local_7ac24b22363df6f84cbe,2,False,local_subworkflow,20,True,"63:         Copy of `layer` with some deleted features.
+64:     """"""
+65:     # computing area: `with_area` is a shallow copy: different attributes but same geometry data/features
+66:     logger = get_logger()
+67:     with_area = processing.run(""native:fieldcalculator"",
+68:                                 {
+69:                                     'INPUT': layer,
+70:                                     'OUTPUT': 'memory:',
+71:                                     'FIELD_NAME': 'area',
+72:                                     'FIELD_TYPE': 0,     # double, yet of precision 0 hence int
+73:                                     'FIELD_LENGTH': 11,
+74:                                     'FORMULA': 'area(@geometry)',
+75:                                 },
+76:                                 context=context,
+77:                                 feedback=feedback,
+78:                                 )['OUTPUT']
+79: 
+80:     # selecting features with small areas
+81:     processing.run(""qgis:selectbyattribute"",
+82:                       {'INPUT': with_area,
+83:                        'FIELD': 'area',
+84:                        'OPERATOR': 5,   # lower or equal
+85:                        'VALUE': f'{min_area}',
+86:                        'METHOD': 0},
+87:                       feedback=feedback,
+88:                       context=context)
+89:     initial_buildings_number = with_area.featureCount()
+90:     unwanted_buildings_number = with_area.selectedFeatureCount()
+91: 
+92: ",pending_human_review,,,,,,
+"[{""line_end"": 189, ""line_start"": 178, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 5, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FIELD_PRECISION"", ""FORMULA"", ""OUTPUT""]}, {""line_end"": 203, ""line_start"": 192, ""operator_id"": ""native:fieldcalculator"", ""ordinal"": 6, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""algresult""}, ""param_keys"": [""INPUT"", ""FIELD_NAME"", ""FIELD_TYPE"", ""FIELD_LENGTH"", ""FIELD_PRECISION"", ""FORMULA"", ""OUTPUT""]}]","[[0, 1]]","[""native:fieldcalculator"", ""native:fieldcalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,116,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_01_02_06"", ""L3_01_02_06""]","[""native:fieldcalculator"", ""native:fieldcalculator""]","[{""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""X"", ""FIELD_TYPE"": 0, ""FORMULA"": ""x(@geometry)""}, {""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""Y"", ""FIELD_TYPE"": 0, ""FORMULA"": ""y(@geometry)""}]","[""outside_explicit_processing_dag_not_described""]",add_XY_coordinates,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_01_02_06"", ""L3_01_02_06""]",f0a49580b80ee2a5ef3c492bbe4bfdf611558d8655028fa5219b04e8bb4b3c62,2,"[""native:fieldcalculator"", ""native:fieldcalculator""]",2,"[{""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""X"", ""FIELD_TYPE"": 0, ""FORMULA"": ""x(@geometry)""}, {""FIELD_LENGTH"": 10, ""FIELD_NAME"": ""Y"", ""FIELD_TYPE"": 0, ""FORMULA"": ""y(@geometry)""}]","[4, 5]",f9242f6de33615252533e607,350466b8c46e4151791d1de000c19ccbd052df19ccf3d8f59810ace5a157fc6b,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0004348.py,ae4d248f0ae3b2c285c54ec98e4ddbcae837beb85a6c28e99b86c6320450aff7,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据计算字段值（目标字段为 X，计算公式为 x(@geometry)）；随后将前述更新字段的图层用于计算字段值（目标字段为 Y，计算公式为 y(@geometry)），得到此 Processing 链的结果。,局部工作流：计算字段并计算字段,False,not_granted_split_census_audit_only,False,local_a3de7f0849c9c6c15d18,4,False,local_subworkflow,21,True,"174:     """"""
+175:     # x0 and y0 reference for Lambert-93: https://fr.wikipedia.org/wiki/Projection_conique_conforme_de_Lambert#/media/Fichier:Lambert_et_mercator_pour_wikipedia.svg
+176:     logger = get_logger()
+177:     logger.info(""Adding 'X' field"")
+178:     algresult = processing.run(""native:fieldcalculator"",
+179:                     {'INPUT': layer,
+180:                     'FIELD_NAME':'X',
+181:                     'FIELD_TYPE':0,   # double
+182:                     'FIELD_LENGTH':10,
+183:                     'FIELD_PRECISION':1,
+184:                     'FORMULA': 'x(@geometry)',
+185:                     'OUTPUT': 'memory:'
+186:                     },
+187:                     context=context,
+188:                     feedback=feedback,
+189:                     )
+190: 
+191:     logger.info(""Adding 'Y' field"")
+192:     algresult = processing.run(""native:fieldcalculator"",
+193:                     {'INPUT': algresult['OUTPUT'],
+194:                     'FIELD_NAME':'Y',
+195:                     'FIELD_TYPE':0,     # double
+196:                     'FIELD_LENGTH':10,
+197:                     'FIELD_PRECISION':1,
+198:                     'FORMULA':'y(@geometry)',
+199:                     'OUTPUT': 'memory:'
+200:                     },
+201:                     context=context,
+202:                     feedback=feedback,
+203:                     )
+204:     return algresult['OUTPUT'] # shallow copy: different attributes but same geometry data/features as layer",pending_human_review,,,,,,
+"[{""line_end"": 50, ""line_start"": 38, ""operator_id"": ""gdal:slope"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""BAND"", ""SCALE"", ""AS_PERCENT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 64, ""line_start"": 53, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""INPUT_B"", ""BAND_B"", ""FORMULA"", ""NO_DATA"", ""RTYPE"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:slope"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""static_output_path""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_01"", ""L3_03_03_A""]","[""gdal:slope"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",slope_filter_depth,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_01"", ""L3_03_03_A""]",1909c4f046e97af92c5910cbef5fa9b993678c1b5964b25d052e2f4cd26f720f,2,"[""gdal:slope"", ""gdal:rastercalculator""]",2,"[{}, {}]","[1, 2]",ba87b0fef5d1d14815b21bee,8eb581f9b10d6a440f1c7754645c1aafa2935025cdcd97b5715f29e239aa202f,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000268.py,bd894346f4e357f3ca9cda0ce5fedd9390428e867f5b4767cf27af6ada7a809d,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡度；随后将前述坡度栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡度并栅格计算,False,not_granted_split_census_audit_only,False,local_9bc02b735158b14c58f2,2,False,local_subworkflow,22,True,"34: def slope_filter_depth(depth_raster, slope_threshold, out_path, context, feedback):
+35:     feedback.pushInfo(f"">>> Applying slope filter (threshold={slope_threshold} degrees)..."")
+36:     slope_temp = out_path.replace("".tif"", ""_slope.tif"")
+37: 
+38:     processing.run(
+39:         ""gdal:slope"",
+40:         {
+41:             'INPUT': depth_raster,
+42:             'BAND': 1,
+43:             'SCALE': 1.0,
+44:             'AS_PERCENT': False,
+45:             'COMPUTE_EDGES': True,
+46:             'ZEVENBERGEN': False,
+47:             'OUTPUT': slope_temp
+48:         },
+49:         context=context, feedback=feedback, is_child_algorithm=True
+50:     )
+51: 
+52:     formula = f'A * (B <= {slope_threshold}) + (-9999.0) * (B > {slope_threshold})'
+53:     result = processing.run(
+54:         ""gdal:rastercalculator"",
+55:         {
+56:             'INPUT_A': depth_raster, 'BAND_A': 1,
+57:             'INPUT_B': slope_temp,   'BAND_B': 1,
+58:             'FORMULA': formula,
+59:             'NO_DATA': -9999.0,
+60:             'RTYPE': 5,
+61:             'OUTPUT': out_path
+62:         },
+63:         context=context, feedback=feedback, is_child_algorithm=True
+64:     )
+65:     return result['OUTPUT']
+66: 
+67: 
+68: def remove_positive_pixels(in_path, out_path, feedback):",pending_human_review,,,,,,
+"[{""line_end"": 438, ""line_start"": 436, ""operator_id"": ""gdal:warpreproject"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": ""OUTPUT"", ""target"": ""aoi""}, ""param_keys"": []}, {""line_end"": 446, ""line_start"": 446, ""operator_id"": ""native:fillnodata"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""gdal:warpreproject"", ""native:fillnodata""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_03_05_02"", ""L3_03_03_A""]","[""gdal:warpreproject"", ""native:fillnodata""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",WorkflowBase._subset_raster_layer,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_03_05_02"", ""L3_03_03_A""]",07f8f8f110a9709c83f99db3e114fd9932c73f4830ec56aa98be892265a61805,2,"[""gdal:warpreproject"", ""native:fillnodata""]",2,"[{}, {}]","[0, 1]",7d5eeed0fc731700f32afd26,bf4114433915430b4a633c4c2870c2781c50743e88ccd803b0d875ec0960966d,workflow,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow\downloaded_scripts\script_0006048.py,d18e3731818745925cce12611b5aec060f05041cb1b1a9f4a1412304fbe7c347,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据重投影并对齐栅格；随后将前述对齐后的栅格用于使用指定值填充栅格无数据单元，得到此 Processing 链的结果。,局部工作流：对齐栅格并填充无数据单元,False,not_granted_split_census_audit_only,False,local_ec0f33cda7b309407673,1,False,local_subworkflow,23,True,"432:             ""OUTPUT"": ""TEMPORARY_OUTPUT"",
+433:             ""TARGET_EXTENT"": f""{bbox.xMinimum()},{bbox.xMaximum()},{bbox.yMinimum()},{bbox.yMaximum()} [{self.target_crs.authid()}]"",
+434:         }
+435: 
+436:         aoi = processing.run(
+437:             ""gdal:warpreproject"", params, feedback=QgsProcessingFeedback()
+438:         )[""OUTPUT""]
+439: 
+440:         params = {
+441:             ""INPUT"": aoi,
+442:             ""BAND"": 1,
+443:             ""FILL_VALUE"": 0,
+444:             ""OUTPUT"": reprojected_raster_path,
+445:         }
+446:         processing.run(""native:fillnodata"", params)
+447:         return reprojected_raster_path
+448: 
+449:     def _rasterize(
+450:         self,",pending_human_review,,,,,,
+"[{""line_end"": 50, ""line_start"": 38, ""operator_id"": ""gdal:slope"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": [""INPUT"", ""BAND"", ""SCALE"", ""AS_PERCENT"", ""COMPUTE_EDGES"", ""ZEVENBERGEN"", ""OUTPUT""]}, {""line_end"": 64, ""line_start"": 53, ""operator_id"": ""gdal:rastercalculator"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""result""}, ""param_keys"": [""INPUT_A"", ""BAND_A"", ""INPUT_B"", ""BAND_B"", ""FORMULA"", ""NO_DATA"", ""RTYPE"", ""OUTPUT""]}]","[[0, 1]]","[""gdal:slope"", ""gdal:rastercalculator""]",1,"[{""consumer_index"": 1, ""kinds"": [""static_output_path""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,62,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_04_01_01"", ""L3_03_03_A""]","[""gdal:slope"", ""gdal:rastercalculator""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",slope_filter_depth,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_04_01_01"", ""L3_03_03_A""]",1909c4f046e97af92c5910cbef5fa9b993678c1b5964b25d052e2f4cd26f720f,2,"[""gdal:slope"", ""gdal:rastercalculator""]",2,"[{}, {}]","[1, 2]",8f15530c8500a72553dbf5fb,8eb581f9b10d6a440f1c7754645c1aafa2935025cdcd97b5715f29e239aa202f,workflow_A,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\github_qgis_workflow_A类\downloaded_scripts\script_0001072.py,d373959fb314fd7ab9a8a5ae5b5311600943b5610a67183d3825378c50c037c0,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据从高程栅格计算坡度；随后将前述坡度栅格用于执行栅格计算，得到此 Processing 链的结果。,局部工作流：计算坡度并栅格计算,False,not_granted_split_census_audit_only,False,local_9bc02b735158b14c58f2,2,False,local_subworkflow,24,True,"34: def slope_filter_depth(depth_raster, slope_threshold, out_path, context, feedback):
+35:     feedback.pushInfo(f"">>> Applying slope filter (threshold={slope_threshold} degrees)..."")
+36:     slope_temp = out_path.replace("".tif"", ""_slope.tif"")
+37: 
+38:     processing.run(
+39:         ""gdal:slope"",
+40:         {
+41:             'INPUT': depth_raster,
+42:             'BAND': 1,
+43:             'SCALE': 1.0,
+44:             'AS_PERCENT': False,
+45:             'COMPUTE_EDGES': True,
+46:             'ZEVENBERGEN': False,
+47:             'OUTPUT': slope_temp
+48:         },
+49:         context=context, feedback=feedback, is_child_algorithm=True
+50:     )
+51: 
+52:     formula = f'A * (B <= {slope_threshold}) + (-9999.0) * (B > {slope_threshold})'
+53:     result = processing.run(
+54:         ""gdal:rastercalculator"",
+55:         {
+56:             'INPUT_A': depth_raster, 'BAND_A': 1,
+57:             'INPUT_B': slope_temp,   'BAND_B': 1,
+58:             'FORMULA': formula,
+59:             'NO_DATA': -9999.0,
+60:             'RTYPE': 5,
+61:             'OUTPUT': out_path
+62:         },
+63:         context=context, feedback=feedback, is_child_algorithm=True
+64:     )
+65:     return result['OUTPUT']
+66: 
+67: 
+68: def remove_positive_pixels(in_path, out_path, feedback):",pending_human_review,,,,,,
+"[{""line_end"": 217, ""line_start"": 208, ""operator_id"": ""native:buffer"", ""ordinal"": 2, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""offset_polygon_layer""}, ""param_keys"": [""INPUT"", ""DISTANCE"", ""SEGMENTS"", ""END_CAP_STYLE"", ""JOIN_STYLE"", ""MITER_LIMIT"", ""DISSOLVE"", ""OUTPUT""]}, {""line_end"": 226, ""line_start"": 219, ""operator_id"": ""native:selectbylocation"", ""ordinal"": 3, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""selected""}, ""param_keys"": [""INPUT"", ""PREDICATE"", ""INTERSECT"", ""METHOD""]}]","[[0, 1]]","[""native:buffer"", ""native:selectbylocation""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,80,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_02_01_01"", ""L3_02_06_03""]","[""native:buffer"", ""native:selectbylocation""]","[{""DISSOLVE"": false, ""END_CAP_STYLE"": 2, ""JOIN_STYLE"": 2, ""SEGMENTS"": 5}, {}]","[""outside_explicit_processing_dag_not_described""]",LidarSegmentator.LiDAR_polygon_segmentation,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_02_01_01"", ""L3_02_06_03""]",99483f0e47099d47f2596298f984dfbbb2b5417d7db9fba6b4c31e005c4bf2b8,2,"[""native:buffer"", ""native:selectbylocation""]",2,"[{""DISSOLVE"": false, ""END_CAP_STYLE"": 2, ""JOIN_STYLE"": 2, ""SEGMENTS"": 5}, {}]","[1, 2]",b68852f211bdb2a9a4c4d12f,1e672a440456085cfaf68f8efc8504887909c9467c74afe623e7ba56567db649,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000618.py,dbec8176e0491b73ef239cc7d9c815df434270bac82ce479981a28bdb9bba1ba,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据创建缓冲区（分段数为 5，保留独立缓冲区）；随后将前述缓冲区结果用于按空间关系选择矢量要素，得到此 Processing 链的结果。,局部工作流：创建缓冲区并空间选择,False,not_granted_split_census_audit_only,False,local_cb083f7c5d5c0d6667de,2,False,local_subworkflow,25,True,"204: 
+205:         uri = 'file:///%s?crs=%s&xField=%s&yField=%s&zField=%s&delimiter=%s' % (os.path.abspath(LiDAR_file), 'epsg:'+str(srcLiDAR), 'field_1','field_2', 'field_3', ' ')
+206:         Layer_LIDAR=QgsVectorLayer(uri,""Layer_LIDAR"",""delimitedtext"")
+207: 
+208:         offset_polygon_layer = processing.run(""native:buffer"", {
+209:             'INPUT':self.found_polygon_Layer,
+210:             'DISTANCE':offset,# /(40075*1000)*360, # Converts from meters to arc degrees
+211:             'SEGMENTS':5,
+212:             'END_CAP_STYLE':2,
+213:             'JOIN_STYLE':2,
+214:             'MITER_LIMIT':2,
+215:             'DISSOLVE':False,
+216:             'OUTPUT': 'TEMPORARY_OUTPUT',
+217:         })
+218: 
+219:         selected = processing.run(""native:selectbylocation"", {
+220:             'INPUT':Layer_LIDAR,
+221:             'PREDICATE':[6], # inside
+222:             'INTERSECT':offset_polygon_layer['OUTPUT'],
+223:             # 'INTERSECT':self.found_polygon_Layer,
+224:             'METHOD':0,
+225:             }
+226:         )
+227: 
+228:         #points_buildings_Layer = selected['OUTPUT']
+229:         points_buildings_Layer = Layer_LIDAR.materialize(QgsFeatureRequest().setFilterFids(Layer_LIDAR.selectedFeatureIds()))
+230:         points_buildings_Layer.setName(""points_buildings_Layer"")",pending_human_review,,,,,,
+"[{""line_end"": 1000, ""line_start"": 999, ""operator_id"": ""native:buffer"", ""ordinal"": 1, ""output_role"": {""role"": ""assigned"", ""subscript"": null, ""target"": ""buffer_run""}, ""param_keys"": []}, {""line_end"": 1022, ""line_start"": 1016, ""operator_id"": ""native:zonalstatistics"", ""ordinal"": 2, ""output_role"": {""role"": ""side_effect_or_unassigned"", ""subscript"": null, ""target"": ""expr""}, ""param_keys"": []}]","[[0, 1]]","[""native:buffer"", ""native:zonalstatistics""]",1,"[{""consumer_index"": 1, ""kinds"": [""variable_or_alias""], ""producer_index"": 0}]","[[0, 1]]",True,[],candidate,71,deterministic_operator_dag_zh_v3,frozen_local_dag_only,qgis-conversion-features-v6,"[[0, 1]]","[""L3_02_01_01"", ""L3_03_02_01""]","[""native:buffer"", ""native:zonalstatistics""]","[{}, {}]","[""outside_explicit_processing_dag_not_described""]",DrainLevelAlgorithm.processAlgorithm,"{""control_flow_kinds"": [], ""downstream_data_transform_calls"": [], ""intermediate_data_transform_calls"": [], ""unresolved_output_references"": [], ""unused_temporary_terminal_indices"": []}",[],eligible,"[""L3_02_01_01"", ""L3_03_02_01""]",949e855b07b7ea970c94cd87b3acab81569adfd7c4689c5fe5ad1ed9b430e3e2,2,"[""native:buffer"", ""native:zonalstatistics""]",2,"[{}, {}]","[0, 1]",703e5cf93c1d9724abbb4f84,0d5f7434925c86ae5f7de08e3a7b34ac97e323a17daf7d252ebc0501568bb334,standard_v2,not_granted,gis_recommend.qgis_split_unit_audit.v1,E:\02_projects\03_PythonProject\Operator-recommend-system\Algorithm_classification\system_redesign\爬取GithubQGIS\QGIS_standard_multi_operator_workflows_v2\downloaded_scripts\script_0000652.py,ff39e4f4ac07e6e0602d4be8c56531574d962d5c70592d6ce8bd99f22d70877a,multi_step_local_dag,qgis-local-subworkflow-splitter-v2,在该局部工作流中，对输入数据创建缓冲区；随后将前述缓冲区结果用于按多边形分区计算栅格统计量并更新图层，得到此 Processing 链的结果。,局部工作流：创建缓冲区并分区统计并更新图层,False,not_granted_split_census_audit_only,False,local_661854b439aacbdf082c,1,False,local_subworkflow,26,True,"995:             'MITER_LIMIT': 2,
+996:             'SEGMENTS': 5,
+997:             'OUTPUT': 'TEMPORARY_OUTPUT'
+998:         }
+999:         buffer_run = processing.run('native:buffer', alg_params, context=context, feedback=feedback,
+1000:                                     is_child_algorithm=True)
+1001:         buffered = buffer_run['OUTPUT']
+1002: 
+1003:         feedback.setCurrentStep(1)
+1004:         if feedback.isCanceled():
+1005:             return
+1006: 
+1007:         # Zonal statistics (in place)
+1008:         alg_params = {
+1009:             'COLUMN_PREFIX': 'stats_',
+1010:             'INPUT_RASTER': parameters['DEM'],
+1011:             'INPUT_VECTOR': buffered,
+1012:             'RASTER_BAND': 1,
+1013:             'STATISTICS': [5]  # 5 = MIN
+1014:         }
+1015: 
+1016:         processing.run(
+1017:             'native:zonalstatistics',
+1018:             alg_params,
+1019:             context=context,
+1020:             feedback=feedback,
+1021:             is_child_algorithm=True
+1022:         )
+1023: 
+1024:         zonal_statistics_output_layer = context.getMapLayer(buffered)
+1025:         feedback.setCurrentStep(2)
+1026:         if feedback.isCanceled():",pending_human_review,,,,,,

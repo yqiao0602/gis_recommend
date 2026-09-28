@@ -55,3 +55,25 @@ gis-empirical-evaluate = "gis_recommend.evaluation.empirical:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = [
+    "codex_tmp",
+    ".tmp_test",
+    "outputs",
+    "outputs_v2",
+    "archive",
+    "docs/archive",
+    "experiments",
+    "legacy",
+]
+markers = [
+    "core: current mainline regression tests",
+    "evaluation: gis-evaluate integration tests",
+    "shadow: optional shadow evaluation experiments",
+    "torch: requires PyTorch",
+    "legacy: legacy compatibility tests",
+    "experimental: non-mainline experiments",
+    "slow: slow tests",
+]

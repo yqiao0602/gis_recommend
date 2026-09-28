@@ -1,0 +1,21 @@
+{
+  "schema": "gis_recommend.qgis_raw_unclassified_adjudication.v1",
+  "status": "candidate_only",
+  "decisions": [
+    {"record_id": "bb18e19dcdbb7bac5897d5b9", "decision": "implementation_subworkflow_candidate", "reason": "真实 CSV Tools Processing helper；5 次有序调用，含 3 个固定 ID、1 个 registry 解析 ID 和 1 个导出；属于插件实现，不直接视为用户 workflow。"},
+    {"record_id": "7b7decf8da13d64995b9fa53", "decision": "reject_generic_wrapper", "reason": "QGISMCPServer 的通用 run_processing_algorithm 包装器；algorithm 和 parameters 均由调用方传入，无任务语义或可恢复算子。"},
+    {"record_id": "9fb3db94b15cb0f795dff7ed", "decision": "defer_dynamic_plugin_call", "reason": "GUI 插件通过 ALG_ID/params 动态执行单步，需恢复 ALG_ID 来源和输入输出契约；当前不能准入。"},
+    {"record_id": "73f141bcaa84f8c497a4fce9", "decision": "reject_detector_false_positive", "reason": "processing 是 EphemeralSTRDSRenderer 实例变量，调用的是 renderer.run()，不是 QGIS processing API。"},
+    {"record_id": "d8d9d4672d610dfd33a1b7df", "decision": "complete_workflow_candidate", "reason": "DEMProcessing 类中 3 个有源码文档和固定 alg_string 的栅格 Processing 步骤：statistics、unique-values report、reclass；需完整边界/I-O/L3/描述审核。"},
+    {"record_id": "187931b47b9d641cd9897361", "decision": "defer_dynamic_runner", "reason": "顶层 processing.run(name, params) 是动态执行入口；缺少 name 绑定与任务上下文。"},
+    {"record_id": "736bfb8716e55c22d54e1cff", "decision": "implementation_candidate_defer", "reason": "矢量瓦片生成插件的 selected_alg 动态调用，异常 fallback 重复调用同一算子；需解析 selected_alg 来源，不能将两次调用计为两步 workflow。"},
+    {"record_id": "05c8182a6ddb28f5ace0471e", "decision": "implementation_candidate_defer", "reason": "与 736b… 同类矢量瓦片生成实现，selected_alg 动态且 fallback 重复调用；需 family 去重和来源解析。"},
+    {"record_id": "d2ffe1f06fb6e494ee5cd0b9", "decision": "reject_generic_wrapper", "reason": "ProcessingWorker 仅转发 self.algorithm_id/self.parameters 的 GUI worker；无局部任务链。"},
+    {"record_id": "41f7c46d142935f422fcfb8b", "decision": "reject_generic_cli", "reason": "命令行通用执行器，args.algorithm/params 由用户输入；不提供可监督的任务语义。"},
+    {"record_id": "c9e0d26930fc1da58ac2103b", "decision": "implementation_workflow_candidate_defer", "reason": "完整 water productivity pipeline 的步骤执行器，alg_id/step_params 来自运行时配置；可能包含真实多步链，但需恢复 step registry、边界和输出契约。"},
+    {"record_id": "9819fffcfce00cdfbc9e060a", "decision": "reject_generic_wrapper", "reason": "AlgorithmWorker 只转发动态 alg_name/params 的 Qt worker；无可恢复任务语义。"},
+    {"record_id": "c8c01552f6c74669daf2aacd", "decision": "defer_dynamic_runner", "reason": "路由脚本有真实输入/输出和 routing 变量，但 operator ID 动态；需证明 routing 绑定和算法契约后再审。"}
+  ],
+  "training_rows_emitted": 0,
+  "production_merge": "not_granted"
+}

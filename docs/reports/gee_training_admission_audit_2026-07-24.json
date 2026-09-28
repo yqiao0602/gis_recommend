@@ -1,0 +1,312 @@
+{
+  "schema": "gis_recommend.gee_training_admission_audit.v1",
+  "inputs": {
+    "candidate": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\pipeline\\step8_quality_gate\\labeled_workflows_l3_v4_quality_gate.json",
+    "quarantine": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\pipeline\\step8_quality_gate\\quarantined_workflows_l3_v4_quality_gate.json",
+    "hierarchy": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\system_redesign\\outputs_v2\\classification_hierarchy_v2.csv",
+    "min_chain_len": 1,
+    "max_chain_len": 20
+  },
+  "counts": {
+    "candidate_workflows": 76884,
+    "quarantined_workflows": 30515,
+    "total_rows_seen": 107399
+  },
+  "training_tiers": {
+    "counts": {
+      "gold": 0,
+      "silver_a": 14362,
+      "silver_b": 58402,
+      "rejected": 34635
+    },
+    "sample_weights": {
+      "gold": 1.0,
+      "silver_a": 0.5,
+      "silver_b": 0.15,
+      "rejected": 0.0
+    },
+    "reason_counts": {
+      "gold": {},
+      "silver_a": {
+        "missing_authoritative_source_identity": 14362
+      },
+      "silver_b": {
+        "description_chain_alignment_issue": 58402
+      },
+      "rejected": {
+        "chain_length_out_of_bounds": 4104,
+        "missing_or_unknown_task_text": 17,
+        "quality_gate_quarantine": 30515
+      }
+    },
+    "example_script_ids": {
+      "gold": [],
+      "silver_a": [
+        "Workflowoutput1-5000_script_4364",
+        "Workflowoutput1-5000_script_1237",
+        "Workflowoutput1-5000_script_2252",
+        "Workflowoutput1-5000_script_4914",
+        "Workflowoutput1-5000_script_1469",
+        "Workflowoutput1-5000_script_4251",
+        "Workflowoutput1-5000_script_4970",
+        "Workflowoutput1-5000_script_4202",
+        "Workflowoutput1-5000_script_1852",
+        "Workflowoutput1-5000_script_4913"
+      ],
+      "silver_b": [
+        "Workflowoutput1-5000_script_2030",
+        "Workflowoutput1-5000_script_3756",
+        "Workflowoutput1-5000_script_4603",
+        "Workflowoutput1-5000_script_4678",
+        "Workflowoutput1-5000_script_3400",
+        "Workflowoutput1-5000_script_4862",
+        "Workflowoutput1-5000_script_4874",
+        "Workflowoutput1-5000_script_2171",
+        "Workflowoutput1-5000_script_1023",
+        "Workflowoutput1-5000_script_4113"
+      ],
+      "rejected": [
+        "Workflowoutput1-5000_script_2341",
+        "Workflowoutput1-5000_script_3794",
+        "Workflowoutput1-5000_script_1734",
+        "Workflowoutput1-5000_script_3871",
+        "Workflowoutput1-5000_script_2611",
+        "Workflowoutput1-5000_script_4528",
+        "Workflowoutput1-5000_script_2835",
+        "Workflowoutput1-5000_script_1043",
+        "Workflowoutput1-5000_script_1029",
+        "Workflowoutput1-5000_script_3199",
+        "Workflowoutput1-5000_script_286",
+        "Workflowoutput1-5000_script_332",
+        "Workflowoutput1-5000_script_2979",
+        "Workflowoutput1-5000_script_4928",
+        "Workflowoutput1-5000_script_4613",
+        "Workflowoutput1-5000_script_2734",
+        "Workflowoutput1-5000_script_3191",
+        "Workflowoutput1-5000_script_4036",
+        "Workflowoutput1-5000_script_119",
+        "Workflowoutput1-5000_script_3388"
+      ]
+    }
+  },
+  "text": {
+    "candidate_usable_text": 76867,
+    "candidate_unknown_or_empty_text": 17
+  },
+  "description_alignment": {
+    "authority": "lexical_proxy",
+    "candidate_workflows_with_issues": 61084,
+    "claims": {
+      "chart": 12103,
+      "export": 30352,
+      "visualization": 38741
+    },
+    "statuses": {
+      "declared_out_of_scope_ui": 50844,
+      "declared_unlabeled_output": 30352
+    }
+  },
+  "source_identity": {
+    "candidate_declared_workflows": 0,
+    "candidate_authoritative_workflows": 0,
+    "candidate_missing_authoritative_workflows": 76884,
+    "identity_field_occurrences": {},
+    "source_disjoint_verified": false
+  },
+  "workflow_scope": {
+    "candidate_scope_counts": {
+      "core_analysis": 15800,
+      "io_or_presentation_declared_in_text": 61084
+    },
+    "scope_authority": "description_lexical_proxy"
+  },
+  "modality": {
+    "candidate_l1_counts": {
+      "L1_01": 37645,
+      "L1_02": 8157,
+      "L1_03": 507144,
+      "L1_07": 6407,
+      "L1_08": 50058,
+      "L1_09": 968,
+      "L1_10": 46935
+    },
+    "top_l3": [
+      {
+        "item": "L3_03_01_04",
+        "count": 87072
+      },
+      {
+        "item": "L3_03_09_05",
+        "count": 77726
+      },
+      {
+        "item": "L3_03_09_01",
+        "count": 69670
+      },
+      {
+        "item": "L3_03_09_06",
+        "count": 49235
+      },
+      {
+        "item": "L3_03_03_A",
+        "count": 48906
+      },
+      {
+        "item": "L3_03_01_01",
+        "count": 42966
+      },
+      {
+        "item": "L3_03_10_R",
+        "count": 32653
+      },
+      {
+        "item": "L3_03_03_L",
+        "count": 32166
+      },
+      {
+        "item": "L3_10_02_03",
+        "count": 29585
+      },
+      {
+        "item": "L3_03_01_05",
+        "count": 22591
+      },
+      {
+        "item": "L3_08_03_01",
+        "count": 19860
+      },
+      {
+        "item": "L3_01_02_03",
+        "count": 17504
+      },
+      {
+        "item": "L3_03_02_01",
+        "count": 15322
+      },
+      {
+        "item": "L3_10_04_01",
+        "count": 15201
+      },
+      {
+        "item": "L3_08_04_01",
+        "count": 13526
+      },
+      {
+        "item": "L3_01_03_04",
+        "count": 13310
+      },
+      {
+        "item": "L3_08_01_01",
+        "count": 12949
+      },
+      {
+        "item": "L3_03_07_01",
+        "count": 8410
+      },
+      {
+        "item": "L3_03_08_01",
+        "count": 7442
+      },
+      {
+        "item": "L3_01_13_01",
+        "count": 6823
+      }
+    ],
+    "active_l3": 47,
+    "top10_l3_share": 0.7493678820168139,
+    "top_task_types": [
+      {
+        "item": "Land use/land cover",
+        "count": 23742
+      },
+      {
+        "item": "Vegetation",
+        "count": 15350
+      },
+      {
+        "item": "Land surface/agriculture indicators",
+        "count": 11563
+      },
+      {
+        "item": "Terrestrial hydrosphere indicators",
+        "count": 5365
+      },
+      {
+        "item": "Surface thermal properties",
+        "count": 3067
+      },
+      {
+        "item": "Precipitation",
+        "count": 2210
+      },
+      {
+        "item": "Natural hazards",
+        "count": 2044
+      },
+      {
+        "item": "Habitat conversion/fragmentation",
+        "count": 2028
+      },
+      {
+        "item": "Surface radiative properties",
+        "count": 1421
+      },
+      {
+        "item": "Human settlements",
+        "count": 1395
+      },
+      {
+        "item": "Air quality",
+        "count": 1119
+      },
+      {
+        "item": "Topography",
+        "count": 832
+      },
+      {
+        "item": "Water quality",
+        "count": 820
+      },
+      {
+        "item": "Atmospheric temperature",
+        "count": 808
+      },
+      {
+        "item": "Biospheric indicators",
+        "count": 700
+      },
+      {
+        "item": "Clouds",
+        "count": 631
+      },
+      {
+        "item": "Carbon flux",
+        "count": 445
+      },
+      {
+        "item": "Snow/ice",
+        "count": 436
+      },
+      {
+        "item": "Forest science",
+        "count": 337
+      },
+      {
+        "item": "Soils",
+        "count": 323
+      }
+    ]
+  },
+  "duplicates": {
+    "candidate_unique_l3_sequences": 42325,
+    "candidate_duplicate_l3_sequence_items": 43501,
+    "candidate_unique_text_chain_pairs": 76874,
+    "candidate_duplicate_text_chain_pair_items": 13
+  },
+  "decision": {
+    "training_admission": "not_granted",
+    "large_dataset_overwrite_authorized": false,
+    "llm_calls_used": false,
+    "recommended_next_gate": "review this audit, then build a bounded GEE_raster_core_v1 from gold/silver_a rows only"
+  }
+}

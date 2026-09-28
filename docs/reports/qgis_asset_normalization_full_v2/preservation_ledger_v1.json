@@ -1,0 +1,79 @@
+{
+  "schema": "gis_recommend.qgis_asset_v2_preservation_ledger.v1",
+  "version": "v2",
+  "build_date": "2026-09-04",
+  "purpose": "v2 rebuild after the server-side v1 diagnostics tree was deleted; NOT a v1 restore",
+  "rebuild_reason": "The v1 normalized ledger (45a1c12d...) existed only on the server and was lost when /home/qy/system_redesign/diagnostics/ was deleted. Only a 1KB summary had been mirrored locally.",
+  "inputs": {
+    "processing_manifest_v2.jsonl": {
+      "sha256": "24190e1fed46f6c7f0b6d00e45dfebf71c1f15f70ae255f8631385f29e9cac39",
+      "rows": 8466,
+      "local_source": "docs/reports/qgis_full_authority_manifests_v1/processing_source_manifest_v1.jsonl"
+    },
+    "api_manifest_v2.jsonl": {
+      "sha256": "d076c4050759616cad47c6c5a7c78a3e876f95665426a2d4cd2800b273ac18da",
+      "rows": 39386,
+      "local_source": "docs/reports/qgis_api_pattern_full_v1/api_steps_manifest_v2.jsonl"
+    },
+    "empty_manifest.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rows": 0
+    },
+    "total_manifest_rows": 47852
+  },
+  "scripts": {
+    "mine_qgis_assets.py": "2033e04190527c4a5f2ae98af5d2eb8cb75221cb0838019781af1f15db26623e",
+    "normalize_qgis_assets.py": "6ddab9708bdae44d039d1f2eedd6ab935e1ca104143b9650d45368efc54cb1c3",
+    "run_qgis_asset_miner_sharded.py": "2730e85596567b5a4ab2adad0af9f8ac711e9e8cdf9d24f91bb8288f7ff92921",
+    "census_qgis_source_roles.py": "82dd22f6dd348b1e19af6446639d74574459877bf71c64861d56eb9a0ae52dee",
+    "scan_qgis_raw_unclassified.py": "a611b914921ca8c224c3a34f8b35d04f5171775c5e3d05c666d3aa7337fc7cf9",
+    "run_v2.sh": "704ef6b5373c660b730ac424417f14c7f8ba6027503c818e25d6896f84fb1379"
+  },
+  "git_commit_at_build": "02a1d16",
+  "outputs": {
+    "qgis_asset_miner_sharded_v1.jsonl": {
+      "sha256": "7fbcf9d557859a7e1cfb273a98d3378c1af83ba8424d1ed10b0f778a8eff9b8e",
+      "rows": 47852,
+      "size_mb": 66,
+      "second_copy": "server_only_regenerable_from_shards"
+    },
+    "sharded_summary_v1.json": {
+      "sha256": "3e3b54bc7247fc5ab779b47ddb8503f73049677644ae2798b537cf86f7e3ddf5",
+      "second_copy": "docs/reports/qgis_asset_miner_full_v2/sharded_summary_v1.json"
+    },
+    "qgis_asset_normalized_v1.jsonl": {
+      "sha256": "a13ce1a250812d69a2fb1bc957a911d1401145963069fa47e3dc254d68b8d140",
+      "rows": 47852,
+      "size_mb": 83,
+      "second_copy": "docs/reports/qgis_asset_normalization_full_v2/qgis_asset_normalized_v1.jsonl",
+      "second_copy_hash_verified": true
+    },
+    "normalized_summary_v1.json": {
+      "sha256": "68e75a969703558acca59894c1a0540b83dd03bba7aacf71f62075277d57f44f",
+      "second_copy": "docs/reports/qgis_asset_normalization_full_v2/summary_v1.json"
+    }
+  },
+  "server_locations": {
+    "work_root": "/home/qy/qgis_asset_v2",
+    "shards": "/home/qy/qgis_asset_v2/qgis_asset_miner_full_sharded_v2 (479 shards, DONE.json each)",
+    "note": "shard tree is regenerable; the two merged ledgers are the artifacts that matter"
+  },
+  "source_roots": {
+    "core_processing": "/home/yll/GEE/爬取多源数据源/QGIS_Core_Processing/workflow_scripts",
+    "github_merge": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts",
+    "gitlab_supplement": "/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement",
+    "model_tutorial": "/home/yll/GEE/爬取多源数据源/QGIS_Model_Tutorial_Workflows/downloaded_scripts(QGIS_Model_Tutorial_Workflows)",
+    "official_plugins": "/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked",
+    "pwc_qgis": "/home/yll/GEE/爬取gee脚本/爬取PWCQGIS/downloaded_scripts-PWC",
+    "route_b": "/home/yll/GEE/QGIS_ArcGIS_RouteB_Gitee_GitLab/downloaded_scripts",
+    "textbook_strict": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict",
+    "zenodo_qgis": "/home/yll/GEE/爬取Zenodo网站/zenodo_extracted/QGIS"
+  },
+  "source_root_corrections": {
+    "model_tutorial": "manifest path .../downloaded_scripts no longer exists; resolved to .../downloaded_scripts(QGIS_Model_Tutorial_Workflows) after SHA verification",
+    "pwc_qgis": "manifest path .../downloaded_scripts no longer exists; resolved to .../downloaded_scripts-PWC after 9/9 SHA verification"
+  },
+  "training_rows_emitted": 0,
+  "training_admission": "not_granted_asset_v2_rebuild",
+  "formal_authority_modified": false
+}

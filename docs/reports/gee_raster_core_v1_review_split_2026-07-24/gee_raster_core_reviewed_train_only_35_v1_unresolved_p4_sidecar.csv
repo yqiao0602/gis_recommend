@@ -1,0 +1,146 @@
+schema,review_id,script_id,source_bucket,canonicalization_status,blocking_reason,unmapped_raw_operators,skipped_raw_operators,quality_flags,task_name,task_description,source_sha256,source_path,evidence_snippet,training_admission,validation_eligible,test_eligible,production_merge,next_action
+gis_recommend.gee_p4_unresolved_sidecar_row.v1,gee_raster_core_review_018,Workflowoutput50000_script_46825,p4_accepted,needs_canonicalization_rules,operator_to_l3_mapping_authority_missing,"[""table.distinct""]","[""data.clip.copyproperties"", ""ee.reducer.mean.setoutputs"", ""image.id""]","[""untyped_receiver"", ""callback"", ""function_callback""]",Extract rainfall at HQ locations,"The script calculates mean daily precipitation values from CHIRPS data for a feature collection of HQ locations during May 2020, clips the data to a specified geometry, and generates a time-series table mapping each location to its corresponding daily rainfall values.",3d266ccc8a071a23dc17f1371c72d4e97932d49ee93e186a530ef01a82de0c45,/home/yll/GEE/Data/data50000/script_46825.txt,"1: var hq = ee.FeatureCollection(""users/BBiswas/s24pgsHQ4GEE"");
+3: Map.setCenter(88.5, 22, 8);
+5: var geometry = sa.geometry()
+7: Map.addLayer(geometry, {color: 'grey',line: 'red'}, 'SArea',0);
+9: var image = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY')
+11: var data=image.filterDate('2020-05-01', '2020-05-31');
+13: var preci=data.map(function(data){
+21: var rainfall=preci.select('precipitation');
+23: Map.addLayer(rainfall);
+25: var hqloc = rainfall.map(function(image) {
+27: var withStats = image.reduceRegions({
+31: reducer: ee.Reducer.mean().setOutputs(['rain']),
+35: }).map(function(feature) {
+49: var joined = ee.Join.saveAll('matches').apply({
+55: condition: ee.Filter.equals({
+65: return joined.map(function(row) {
+67: var values = ee.List(row.get('matches'))
+69: .map(function(feature) {
+71: feature = ee.Feature(feature);
+77: return row.select([rowId]).set(ee.Dictionary(values.flatten()));
+85: Map.addLayer(hq, {color: 'red'}, 'CD Blocks')",not_granted_deferred_mapping_authority_required,False,False,not_granted,add reviewed operator-to-L3 canonicalization authority or keep deferred
+gis_recommend.gee_p4_unresolved_sidecar_row.v1,gee_raster_core_review_020,Workflowoutput110000_script_108423,p4_accepted,needs_canonicalization_rules,operator_to_l3_mapping_authority_missing,"[""ndbi_bangunan.reducetovectors""]","[""ee.geometry.polygon"", ""l8.filterbounds.filterdate.sort"", ""ee.algorithms.if"", ""ee.number.divide.round""]","[""untyped_receiver"", ""callback"", ""function_callback"", ""named_callback""]",Identify built-up areas,"The script identifies built-up (urban/constructed) areas in Surakarta, Indonesia, using NDBI (Normalized Difference Built-up Index) derived from atmospherically corrected Landsat 8 surface reflectance data from 2020. It classifies pixels with NDBI > 0 as built-up, converts the result into vector polygons, labels them as 'Bangunan' (Building) or 'Non Bangunan', and calculates the total built-up area in square kilometers.",33879a3f203df42121960482b4d30f1dee6ed1fd816a060684135b229d7a3692,/home/yll/GEE/Data/data110000/script_108423.txt,"3: ee.Geometry.Polygon(
+13: l8 = ee.ImageCollection(""LANDSAT/LC08/C02/T1_L2""),
+23: Map.centerObject(surakarta);
+25: var l8_filter = l8.filterBounds(surakarta)
+27: .filterDate('2020-01-01', '2020-12-31')
+31: var l8_paling_bersih = ee.Image(l8_filter.first())
+37: var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+39: var thermalBands = image.select('ST_B.*').multiply(0.00341802).add(149.0);
+49: Map.addLayer(l8_scalling, imageVisParam4, 'l8');
+51: var ndbi = l8_scalling.expression(
+55: 'swir': l8_scalling.select('SR_B6'),
+57: 'nir': l8_scalling.select('SR_B5'),
+61: Map.addLayer(ndbi, imageVisParam3, 'ndbi')
+65: Map.addLayer(ndbi_bangunan);
+67: var bangunan_vektor = ndbi_bangunan.reduceToVectors({
+69: geometry: surakarta,
+73: geometryType: 'polygon',
+79: Map.addLayer(bangunan_vektor)
+83: return ee.Algorithms.If(ee.Number(fc.get('ket')).eq(1), fc.set({'pl': 'Bangunan'}),
+89: var bangunan_vektor2 = bangunan_vektor.map(tambah_ket)
+91: print(bangunan_vektor2)
+95: .multiply(ee.Image.pixelArea())
+99: var area = area_bangunan.reduceRegion({
+101: reducer: ee.Reducer.sum(),
+109: print(ee.Number(area.get('bangunan')).divide(1e6).round())
+111: Map.addLayer(area_bangunan)",not_granted_deferred_mapping_authority_required,False,False,not_granted,add reviewed operator-to-L3 canonicalization authority or keep deferred
+gis_recommend.gee_p4_unresolved_sidecar_row.v1,gee_raster_core_review_027,Workflowoutput20000_script_19339,p4_rewritten_needs_edit,needs_canonicalization_rules,operator_to_l3_mapping_authority_missing,"[""ee.reducer.minmax""]","[""imnormfunction.imnormalize"", ""composite.bandnames"", ""name.cat"", ""name.cat"", ""composite.bandnames""]","[""unbound_identifier"", ""untyped_receiver"", ""callback"", ""function_callback""]",Min-max normalize a Sentinel-2 median composite,"Filter Sentinel-2 imagery by date, region, and metadata, build a median composite, clip it to the study geometry, compute per-band min-max statistics, unit-scale each selected band, stack the normalized bands, and rename the output bands.",8e601156d33f2c3a1843ee99870bbc67ef1c909521be97ca082cad56ced17f01,/home/yll/GEE/Data/data20000/script_19339.txt,"5: var collection = ee.ImageCollection(""COPERNICUS/S2_SR"")
+7: .filter(ee.Filter.date('2020-02-01', '2020-02-29'))
+9: .filterBounds(indus)
+11: .filterMetadata('CLOUDY_PIXEL_PERCENTAGE', 'less_than', 25)
+13: .map(s2mask())
+15: .select('B2','B3','B4','B5','B6','B7','B8','B8A','B11','B12');
+17: var composite = ee.Image(collection.median()).toFloat().clip(indus);
+21: var minMax = composite.reduceRegion({
+23: reducer: ee.Reducer.minMax(),
+25: geometry: indus.geometry(),
+35: var unitScale = ee.ImageCollection.fromImages(
+37: composite.bandNames().map(function(name){
+39: name = ee.String(name);
+41: var band = composite.select(name);
+43: return band.unitScale(ee.Number(minMax.get(name.cat('_min'))), ee.Number(minMax.get(name.cat('_max'))))
+47: Map.addLayer(imNormalized)",not_granted_deferred_mapping_authority_required,False,False,not_granted,add reviewed operator-to-L3 canonicalization authority or keep deferred
+gis_recommend.gee_p4_unresolved_sidecar_row.v1,gee_raster_core_review_038,Workflowoutput120000_script_111026,p4_accepted,needs_canonicalization_rules,operator_to_l3_mapping_authority_missing,"[""beforehh.focal_median"", ""beforehv.focal_median"", ""afterhh.focal_median"", ""afterhv.focal_median""]","[""beforehh.evaluate""]","[""untyped_receiver"", ""callback"", ""function_callback"", ""named_callback""]",Detect snow-covered areas using SAR,"The script identifies snow-covered areas by analyzing the difference in HH-polarized Sentinel-1 SAR backscatter before and after snow events, applying median filtering and thresholding to detect significant changes indicative of snow presence.",f81df181c1f5424c11929d2a6d759aeb84f1e45823d79c61273522ab53e8fa3d,/home/yll/GEE/Data/data120000/script_111026.txt,"1: var collectionHH= ee.ImageCollection(""COPERNICUS/S1_GRD"")
+3: .filter(ee.Filter.eq(""instrumentMode"", ""EW""))
+5: .filter(ee.Filter.listContains(""transmitterReceiverPolarisation"", ""HH""))
+7: .filter(ee.Filter.eq(""orbitProperties_pass"", ""DESCENDING""))
+9: .filterMetadata(""resolution_meters"", ""equals"", 25)
+11: .filterBounds(geometry)
+13: .select (""HH"");
+15: print(collectionHH, ""Collection HH"");
+17: var collectionHV= ee.ImageCollection(""COPERNICUS/S1_GRD"")
+19: .filter(ee.Filter.eq(""instrumentMode"", ""EW""))
+21: .filter(ee.Filter.listContains(""transmitterReceiverPolarisation"", ""HV""))
+23: .filter(ee.Filter.eq(""orbitProperties_pass"", ""DESCENDING""))
+25: .filterMetadata(""resolution_meters"", ""equals"", 25)
+27: .filterBounds(geometry)
+29: .select (""HV"");
+31: print(collectionHV, ""Collection HV"");
+33: var beforeHH= collectionHH.filterDate(""2019-07-01"", ""2019-09-30"");
+35: var afterHH= collectionHH.filterDate(""2020-07-01"", ""2020-09-30"");
+37: var beforeHV= collectionHV.filterDate(""2019-07-01"", ""2019-09-30"");
+39: var afterHV= collectionHV.filterDate(""2020-07-01"", ""2020-09-30"");
+41: print(beforeHH, ""Before HH"");
+43: print(afterHH, ""After HH"");
+45: print(beforeHV, ""Before HV"");
+47: print(afterHV, ""After HV"");
+53: var image= ee.Image(image.id);
+55: Map.addLayer(image);}
+59: beforeHH.features.map(addImage)})
+61: var beforeHH= collectionHH.filterDate(""2019-07-01"", ""2019-09-30"").mosaic();
+63: var afterHH= collectionHH.filterDate(""2020-07-01"", ""2020-09-30"").mosaic();
+65: var beforeHV= collectionHV.filterDate(""2019-07-01"", ""2019-09-30"").mosaic();",not_granted_deferred_mapping_authority_required,False,False,not_granted,add reviewed operator-to-L3 canonicalization authority or keep deferred
+gis_recommend.gee_p4_unresolved_sidecar_row.v1,gee_raster_core_review_044,Workflowoutput70000_script_60516,p4_rewritten_needs_edit,needs_canonicalization_rules,operator_to_l3_mapping_authority_missing,"[""myregions.reducetoimage"", ""myregions.reducetoimage.rename.aside"", ""myfunctions.makeaeaproj""]","[""i.date.getrelative"", ""ee.list.sequence"", ""ee.number.parse"", ""ee.date.format""]","[""unbound_identifier"", ""untyped_receiver"", ""callback"", ""function_callback""]",Summarize algae-mask counts by region and elevation context,"Prepare glacier and algae masks, filter MODIS imagery and regional features, build mask images for retained algae/elevation strata, compute regional pixel-count summaries with reduceRegions, and carry the bounded grid and region attributes used by the statistical extraction.",58690606f7199b64e5f234262ab78b77957537f38c7c78ae443f2ed858c3bb1e,/home/yll/GEE/Data/data70000/script_60516.txt,"5: var finalAlgae = ee.ImageCollection(""projects/ee-caseyengstrom/assets/globalSnowAlgae/3_algaeMaps/final""),
+7: terraDay = ee.ImageCollection(""MODIS/061/MOD09GA""),
+9: s2sr = ee.ImageCollection(""COPERNICUS/S2_SR""),
+11: snow = ee.ImageCollection(""MODIS/006/MOD10A1""),
+13: dem_raw = ee.Image(""MERIT/DEM/v1_0_3""),
+15: terra8 = ee.ImageCollection(""MODIS/061/MOD09A1""),
+17: aqua8 = ee.ImageCollection(""MODIS/061/MYD09A1""),
+19: aqua = ee.ImageCollection(""MODIS/061/MYD09GA""),
+21: glims = ee.FeatureCollection(""GLIMS/current""),
+23: glacierImages = ee.ImageCollection(""projects/ee-caseyengstrom/assets/globalSnowAlgae/1_glacierImages/glaciers""),
+25: algaeImages = ee.ImageCollection(""projects/ee-caseyengstrom/assets/globalSnowAlgae/3_algaeMaps/v5""),
+27: regions = ee.FeatureCollection(""projects/ee-caseyengstrom/assets/globalSnowAlgae/glacierRegionsV12"");
+31: var elvAlgaeMask = ee.Image(""projects/ee-caseyengstrom/assets/globalSnowAlgae/3_algaeMaps/medianElvAlgaeMask"")
+39: var algaeMasks = ee.ImageCollection([hiAlgaeMask,loAlgaeMask, bothAlgaeMask])
+43: var myRegions = regions.filter(ee.Filter.inList('range', northAmerica))
+49: .filter(ee.Filter.calendarRange(7, 8, 'month'))
+51: .map(myFunctions.processTerraDay)
+53: .map(function(i){
+57: var doyImage = ee.Image.constant(doy).toInt32().rename('doy')
+63: var years = ee.List.sequence(2000, 2022)
+65: var maxRgndDateCol = ee.ImageCollection.fromImages(
+67: years.map(function (y) {
+71: .filter(ee.Filter.calendarRange(y, y, 'year'))
+79: .select('doy')
+97: }))//.aside(print, ""max rgnd date col by elev"")//.aside(Map.addLayer, {}, ""max rgnd col"")
+101: .map(function(image){
+105: .reduceRegions({
+107: reducer: myFunctions.myMeanReducer,
+115: }).map(function(f){
+123: myRegions =myRegions.map(function(f){",not_granted_deferred_mapping_authority_required,False,False,not_granted,add reviewed operator-to-L3 canonicalization authority or keep deferred
+gis_recommend.gee_p4_unresolved_sidecar_row.v1,gee_raster_core_review_045,Workflowoutput200000_script_196514,p4_accepted,needs_canonicalization_rules,operator_to_l3_mapping_authority_missing,"[""featurecollection.aggregate_array"", ""meso_regions.geometry.dissolve""]","[""ee.list.distinct"", ""area.getinfo"", ""ee.number.getinfo""]","[""untyped_receiver"", ""callback"", ""function_callback""]",Aggregate municipalities by code,"The script aggregates municipal features from a FeatureCollection based on the 'CD_GEOCME' attribute, dissolves geometries to form meso-regions, computes the total area of the resulting region using two different pixel-based methods (pixel count and pixel area), and prints the area in square kilometers. The workflow includes feature union by property, geometry dissolution, image reduction over a region, and unit conversion for area calculation.",1b8209edfc3ebe5f49d741c9adba7abfe1fe38bed3f2294e65b68ff8530e97fe,/home/yll/GEE/Data/data200000/script_196514.txt,"1: var countries = ee.FeatureCollection(municipios);
+3: Map.addLayer(municipios);
+5: Map.centerObject(municipios, 8);
+7: print(municipios)
+9: var featurecol_union_func = function(featurecollection, nameProperty){
+11: var propVals = ee.List(featurecollection.aggregate_array(nameProperty)).distinct();
+13: var unionByProp = ee.FeatureCollection(propVals.map(function(propVal){
+15: var tempFC = featurecollection.filter(ee.Filter.eq(nameProperty, propVal));
+21: return ee.Feature(unionFC.first()).set(nameProperty, propVal);
+31: print(Meso_Regions, 'Meso_Regions');
+33: var ROI = Meso_Regions.geometry().dissolve();
+35: var testAreaImage = ee.Image(1).clip(municipios);
+39: var reducer = testAreaImage.reduceRegion({
+41: reducer: ee.Reducer.sum(),
+43: geometry: ROI,
+53: var area = ee.Number(reducer.get('constant'))
+59: print('area of Nepal using pixel count method: ', area.getInfo() + ' km2');
+61: var img = ee.Image.pixelArea().divide(1000000);
+63: var area2 = img.reduceRegion({
+65: reducer: ee.Reducer.sum(),
+67: geometry: ROI,
+77: print('area of FARS using pixel area method: ', ee.Number(area2.get('area')).getInfo() + ' km2');",not_granted_deferred_mapping_authority_required,False,False,not_granted,add reviewed operator-to-L3 canonicalization authority or keep deferred

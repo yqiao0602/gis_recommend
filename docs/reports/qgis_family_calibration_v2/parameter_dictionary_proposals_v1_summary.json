@@ -1,0 +1,39 @@
+{
+  "schema": "gis_recommend.qgis_family_calibration_proposal_summary.v1",
+  "family": "parameter_dictionary",
+  "rule_id": "resolve-single-scope-parameter-dictionary-v1",
+  "review_source": "docs/reports/qgis_family_calibration_v2/review_60_v1.jsonl",
+  "proposal_file": "docs/reports/qgis_family_calibration_v2/parameter_dictionary_proposals_v1.jsonl",
+  "reviewed_records": 30,
+  "decision_counts": {
+    "true_positive": 30,
+    "false_positive": 0,
+    "defer": 0
+  },
+  "source_verification_counts": {
+    "verified_remote_sha256_match": 30,
+    "mismatch": 0,
+    "unavailable": 0
+  },
+  "proposal_precision": {
+    "numerator_true_positive": 30,
+    "denominator_true_positive_plus_false_positive": 30,
+    "point_estimate": 1.0,
+    "wilson_95_lower": 0.8865,
+    "required_point_estimate": 0.95,
+    "required_wilson_95_lower": 0.8,
+    "source_backed_proposal_precision_gate": "pass"
+  },
+  "observed_failure_modes": [],
+  "checked_exclusion_modes": [
+    "dynamic dictionary keys",
+    "conditional or partial dictionary mutation before processing.run",
+    "ambiguous same-scope reaching definitions",
+    "cross-scope dictionary flow",
+    "dictionary resolution with no multi-step dependency contribution"
+  ],
+  "proposal_only": true,
+  "human_adjudication": "not_granted",
+  "production_merge": "not_granted",
+  "training_rows": 0
+}

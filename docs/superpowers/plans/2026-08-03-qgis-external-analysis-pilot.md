@@ -157,7 +157,7 @@ timeout after two layers logged retries; it left no residual process or image.
 - Create: `tests/fixtures/qgis_external_pilot/ambiguous_branch.py`
 - Create: `tests/test_qgis_joern_sidecar.py`
 
-- [ ] **Step 1: Write failing fixture expectations**
+- [x] **Step 1: Write failing fixture expectations**
 
 Require P1-P5 to recover a helper parameter, returned `result["OUTPUT"]`, and the downstream Processing edge. Require A1-A5 to recover geometry-to-`setGeometry`-to-`addFeature`. The branch fixture must be `ambiguous`, not complete.
 
@@ -174,15 +174,15 @@ def test_conflicting_branch_is_not_complete():
     assert row.evidence_status == "ambiguous"
 ```
 
-- [ ] **Step 2: Implement one generic CPG query set**
+- [x] **Step 2: Implement one generic CPG query set**
 
 The Scala query exports JSONL records with `record_id`, `source_sha256`, query IDs, source/sink nodes, node code and positions, ordered flow paths, control-path evidence, and terminal evidence. Query logic is generic by call/FQN/argument role; no record ID, file basename, line number, or source-specific exception is allowed.
 
-- [ ] **Step 3: Implement fail-closed Python normalization**
+- [x] **Step 3: Implement fail-closed Python normalization**
 
 Use explicit terminal states `complete`, `partial`, `insufficient`, `ambiguous`, and `query_failure`. Reject missing source hashes, duplicate query IDs, unsorted or dangling flow nodes, and complete claims without a terminal.
 
-- [ ] **Step 4: Run local normalization tests and server Joern fixture smoke**
+- [x] **Step 4: Run local normalization tests and server Joern fixture smoke**
 
 ```powershell
 D:/01_software/02_DevelopmentKits/Python/Anaconda3/python.exe -m pytest tests/test_qgis_joern_sidecar.py -q
@@ -194,9 +194,11 @@ bash scripts/qgis_external_pilot/run_server_pilot.sh joern-fixture-smoke
 
 Expected: all three fixture outcomes match; exported JSONL is byte-identical across two query runs after normalization.
 
-- [ ] **Step 5: Apply the first time-box gate**
+- [x] **Step 5: Apply the first time-box gate**
 
 If cross-function parameter, return, result-dictionary, or API-to-sink fixtures fail after the two-day budget, write a failure report and stop the pilot.
+
+Gate result (2026-08-04): passed. The isolated Processing helper and API-to-sink fixtures are `complete`; the conflicting branch is `ambiguous`. Two normalized exports are byte-identical at SHA256 `14385508ed108aa1981044a365d6a64eafdd0ceb71b5387a52262177a560a2a5`. Evidence: `docs/reports/qgis_external_analysis_pilot_v1/joern_fixture_gate_v1/`.
 
 ### Task 4: Export and Compare QGIS 3.28 Registry
 
@@ -206,19 +208,19 @@ If cross-function parameter, return, result-dictionary, or API-to-sink fixtures 
 - Create: `tests/fixtures/qgis_external_pilot/registry_records.json`
 - Create: `tests/test_qgis_registry_sidecar.py`
 
-- [ ] **Step 1: Write failing normalization and status tests**
+- [x] **Step 1: Write failing normalization and status tests**
 
 Test stable ordering and the separate statuses `matched`, `operator_not_found`, `provider_not_installed`, `provider_version_mismatch`, and `catalog_contract_mismatch`. Verify a mismatch is report-only and never mutates `benchmarks/qgis_planner_v1/authority/qgis_catalog.json`.
 
-- [ ] **Step 2: Implement lazy-PyQGIS Registry export**
+- [x] **Step 2: Implement lazy-PyQGIS Registry export**
 
 Initialize QGIS headlessly inside the container, initialize Processing, enumerate providers/algorithms, and emit normalized parameter/output definitions. Include provider availability/version, QGIS version, image digest, and exporter hash. Do not import `qgis` from repository runtime modules.
 
-- [ ] **Step 3: Implement catalog comparison**
+- [x] **Step 3: Implement catalog comparison**
 
 Join the Registry snapshot to `benchmarks/qgis_planner_v1/authority/qgis_catalog.json` by normalized operator ID. Produce a report-only delta; do not write the benchmark authority.
 
-- [ ] **Step 4: Run tests and server Registry smoke twice**
+- [x] **Step 4: Run tests and server Registry smoke twice**
 
 ```powershell
 D:/01_software/02_DevelopmentKits/Python/Anaconda3/python.exe -m pytest tests/test_qgis_registry_sidecar.py -q
@@ -230,6 +232,8 @@ bash scripts/qgis_external_pilot/run_server_pilot.sh registry-smoke
 
 Expected: QGIS 3.28.15, `native:buffer` with nonempty INPUT/OUTPUT contract, explicit provider status for GRASS/SAGA, and byte-identical normalized snapshots across two runs.
 
+Gate result (2026-08-04): passed. QGIS 3.28.15 and `native:buffer` INPUT/OUTPUT were verified; normalized snapshots and comparison reports are byte-identical. The report-only catalog delta is 369 matched, 402 operator-not-found, and 520 contract-mismatch; catalog SHA256 remained `a0b2426205b5ba809f03171360f10ab80bf2bc2321d8619eb2994075a132d6bd`. Evidence: `docs/reports/qgis_external_analysis_pilot_v1/registry_gate_v1/`.
+
 ### Task 5: Implement DataTrove Exact and MinHash Sidecars
 
 **Files:**
@@ -240,11 +244,11 @@ Expected: QGIS 3.28.15, `native:buffer` with nonempty INPUT/OUTPUT contract, exp
 - Create: `tests/test_qgis_datatrove_sidecar.py`
 - Modify: `tests/test_qgis_source_authority.py`
 
-- [ ] **Step 1: Write failing exact-reconciliation tests**
+- [x] **Step 1: Write failing exact-reconciliation tests**
 
 Fixture rows include exact normalized-body duplicates, comment/header-only variants, near duplicates, and unrelated code. Require exact clusters to equal existing body-hash groups and MinHash clusters to remain report-only.
 
-- [ ] **Step 2: Implement normalized DataTrove input/output adapters**
+- [x] **Step 2: Implement normalized DataTrove input/output adapters**
 
 Extract the existing body-normalization block from `source_authority()` into a public
 `normalized_source_body(path: Path) -> str` helper, keep the resulting authority hashes
@@ -253,7 +257,7 @@ those normalized bodies. Configure token-shingle MinHash explicitly and include 
 threshold, n-gram size, hash config, and DataTrove version in every summary. Never use
 MinHash output to remove a row.
 
-- [ ] **Step 3: Run local tests and server DataTrove fixture smoke**
+- [x] **Step 3: Run local tests and server DataTrove fixture smoke**
 
 ```powershell
 D:/01_software/02_DevelopmentKits/Python/Anaconda3/python.exe -m pytest tests/test_qgis_datatrove_sidecar.py -q
@@ -265,6 +269,8 @@ bash scripts/qgis_external_pilot/run_server_pilot.sh datatrove-fixture-smoke
 
 Expected: exact cluster reconciliation passes; the near-duplicate fixture appears only in MinHash output; two normalized runs are byte-identical.
 
+Gate result (2026-08-04): passed. DataTrove 0.9.0 exact clusters equal the existing normalized-body authority; the near-duplicate pair appears only in report-only MinHash evidence. The custom versioned source-code tokenizer avoids an unplanned SpaCy dependency. Two clean normalized runs are byte-identical at SHA256 `e3bc91dc060138d76d5576b96446bbca147b3f8a4f25e734e4afbfd94e1d227e`; authority mutation=false, training rows=0, and `/home/yll` remains read-only. Evidence: `docs/reports/qgis_external_analysis_pilot_v1/datatrove_gate_v1/`.
+
 ### Task 6: Implement Evidence Delta and Metrics
 
 **Files:**
@@ -272,7 +278,7 @@ Expected: exact cluster reconciliation passes; the near-duplicate fixture appear
 - Create: `scripts/run_qgis_external_analysis_pilot.py`
 - Create: `tests/test_qgis_external_pilot_comparison.py`
 
-- [ ] **Step 1: Write failing metric-definition tests**
+- [x] **Step 1: Write failing metric-definition tests**
 
 Cover all five evidence-delta states and prove the critical distinctions:
 
@@ -294,19 +300,21 @@ def test_complete_claim_on_negative_is_false_complete():
     assert result.false_complete_evidence is True
 ```
 
-- [ ] **Step 2: Implement stable evidence signatures and delta classification**
+- [x] **Step 2: Implement stable evidence signatures and delta classification**
 
 Normalize nodes, edges, control paths, terminals, and evidence kinds before comparison. Emit `existing_only`, `shared_equivalent`, `joern_only_partial`, `joern_only_complete`, or `contradictory`; classify Joern-only evidence by cross-function parameter, return, FQN/import, multi-hop def-use, branch dominance, or alias propagation.
 
-- [ ] **Step 3: Implement hard and promotion gates**
+- [x] **Step 3: Implement hard and promotion gates**
 
 Hard gate: source hashes complete, query/runtime failure zero, false-complete zero, claimed-complete truncation zero, Registry fallback zero, exact-cluster reconciliation true, and provenance complete. Promotion gate: at least one previously unresolved normalized-body family with support at least 30 and source-disjoint calibration/holdout zero FP.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 ```powershell
 D:/01_software/02_DevelopmentKits/Python/Anaconda3/python.exe -m pytest tests/test_qgis_external_pilot_comparison.py -q
 ```
+
+Gate result (2026-08-04): passed locally. All five delta states, coverage-miss/false-complete/truncation distinctions, six Joern novelty kinds, every hard-gate failure, promotion support/source-disjoint conditions, externally declared source count, and byte-stable driver output are covered by 19 passing tests. Training admission remains not granted and emitted training rows=0.
 
 ### Task 7: Execute the 40-Source Checkpoint
 

@@ -76,6 +76,10 @@ NUM_SPECIAL_TOKENS = len(SPECIAL_TOKENS)
 _vocab_profile = os.environ.get("GIS_VOCAB_PROFILE", "v2_94_stable")
 if _vocab_profile == "v3_107_experimental":
     VOCAB_SIZE = 107
+elif _vocab_profile == "stable124_experimental":
+    VOCAB_SIZE = 124
+elif _vocab_profile == "paper_v1_128":
+    VOCAB_SIZE = 128
 
 # MUST be computed AFTER VOCAB_SIZE is final (profile may have changed it).
 TOTAL_VOCAB_SIZE = VOCAB_SIZE + NUM_SPECIAL_TOKENS

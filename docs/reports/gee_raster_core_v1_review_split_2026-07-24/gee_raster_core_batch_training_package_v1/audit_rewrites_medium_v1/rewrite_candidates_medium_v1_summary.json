@@ -1,0 +1,75 @@
+{
+  "backlog_decision_counts": {
+    "defer_generic_rule_review": 10,
+    "defer_manual_boundary_review": 1,
+    "rewrite_or_defer_text_overclaim": 2
+  },
+  "backlog_sample_ids": [
+    "gee_raster_core_batch_v1_75c30ac29b14f137",
+    "gee_raster_core_batch_v1_39ddf8ee8db4243d",
+    "gee_raster_core_batch_v1_ecf791e47c854393",
+    "gee_raster_core_batch_v1_4dabfc16c36669e6",
+    "gee_raster_core_batch_v1_533863f11e12008d",
+    "gee_raster_core_batch_v1_fe154f6a7a2929b1",
+    "gee_raster_core_batch_v1_bed1c5dbc2033aea",
+    "gee_raster_core_batch_v1_70a146c3311b869d",
+    "gee_raster_core_batch_v1_b7bb0897f4c8e25d",
+    "gee_raster_core_batch_v1_7027fa287be94183",
+    "gee_raster_core_batch_v1_08899a4f296de3d1",
+    "gee_raster_core_batch_v1_f1c234d464724255",
+    "gee_raster_core_batch_v1_d4880f5276430669"
+  ],
+  "counts": {
+    "deferred_backlog_rows": 13,
+    "rewrite_candidate_rows": 1,
+    "rule_proposal_rows": 14,
+    "schema_valid_train_only_candidate_rows": 1,
+    "source_audit_rows": 14,
+    "test_rows_emitted": 0,
+    "training_rows_emitted": 0,
+    "unique_rewrite_source_sha256": 1,
+    "validation_rows_emitted": 0
+  },
+  "decision": {
+    "llm_used": false,
+    "mutated_train11397_package": false,
+    "next_gate": "use this sidecar for rule calibration; regenerate/merge any future batch training package only through a separate explicit admission gate",
+    "production_merge": "not_granted",
+    "test_eligible": false,
+    "training_admission": "not_granted_rewrite_sidecar_schema_gate_passed",
+    "training_run_started": false,
+    "validation_eligible": false
+  },
+  "inputs": {
+    "rule_props": "docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_raster_core_batch_training_package_v1\\audit_rule_props_medium_v1\\rule_props_medium_v1.jsonl",
+    "source_audit": "docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_raster_core_batch_training_package_v1\\audit_src_medium_v1\\medium_v1.jsonl"
+  },
+  "known_omission_counts": {
+    "Map display, print output, and display/export noise": 1,
+    "confusion matrices and accuracy metrics": 1,
+    "external feature collections and labeled sample provenance are source context": 1
+  },
+  "output_prefix": "rewrite_candidates_medium_v1",
+  "policy": {
+    "allow_operator_add_delete_reorder": false,
+    "do_not_mutate_train11397_package": true,
+    "do_not_promote_gee_to_validation_or_test": true,
+    "known_omissions_are_sidecar_only": true,
+    "preserve_operator_order": true,
+    "rewrite_sidecar_only": true,
+    "source_path_join_required": true
+  },
+  "proposal_decision_counts": {
+    "defer_generic_rule_review": 10,
+    "defer_manual_boundary_review": 1,
+    "rewrite_core_classifier_keep_eval_sidecar": 1,
+    "rewrite_or_defer_text_overclaim": 2
+  },
+  "rewrite_ids": [
+    "gee_raster_core_batch_rewrite_78327a27fc37eeec"
+  ],
+  "risk_levels": [
+    "medium"
+  ],
+  "schema": "gis_recommend.gee_raster_core_batch_rewrite_summary.v1"
+}

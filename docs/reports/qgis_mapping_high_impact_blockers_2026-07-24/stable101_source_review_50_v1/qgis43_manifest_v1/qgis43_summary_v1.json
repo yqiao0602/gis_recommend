@@ -1,0 +1,47 @@
+{
+  "common_operator_sequences": [
+    [
+      "native:fixgeometries",
+      "native:clip"
+    ],
+    [
+      "native:reclassifybytable",
+      "gdal:polygonize"
+    ]
+  ],
+  "counts": {
+    "input_rows": 43,
+    "manifest_rows": 43,
+    "max_chain_length": 14,
+    "min_chain_length": 1,
+    "multirow_source_groups": 6,
+    "ready_now_rows": 19,
+    "recovered_canonical_rows": 24,
+    "source_groups": 34,
+    "suppressed_rows": 0,
+    "unique_call_graphs": 43,
+    "unique_l3_sequences": 37,
+    "unique_normalized_dags": 41,
+    "unique_operator_sequences": 38,
+    "unique_source_regions": 43
+  },
+  "cross_pool_audit": {
+    "common_operator_sequences": 2,
+    "common_record_ids": 0,
+    "common_source_sha256": 0,
+    "max_task_text_similarity": 0.427746,
+    "near_duplicate_pairs": 0
+  },
+  "decision": {
+    "llm_called": false,
+    "manifest_admission": "granted_train_only_qgis43_pilot",
+    "next_gate": "run real loader/loss smoke, then define the next source-conversion sample",
+    "production_merge": "not_granted",
+    "split": "train_only_qgis43_pilot",
+    "test_eligible": false,
+    "training_run": false,
+    "validation_eligible": false
+  },
+  "schema": "gis_recommend.qgis_stable101_train_manifest_summary.v1",
+  "source_group_policy": "all rows with one source_sha256 must remain in one future split"
+}

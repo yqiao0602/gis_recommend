@@ -1,0 +1,415 @@
+schema,review_id,script_id,source_platform,target_platform,training_scope,task_name,task_description,l3_sequence,operator_sequence,source_sha256,source_path,evidence_snippet,admission_tier,sample_weight,validation_eligible,test_eligible,description_policy,known_omissions,review_split,p4_source_bucket
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_004,Workflowoutput80000_script_75877,GEE,L3,core_subworkflow,Prepare Sentinel-2 water-index masks and quality mosaic,"Filter site features and Sentinel-2 imagery by region and date, clip the images, decode QA cloud bits to update masks, compute water-index and wetness bands, add them to each image, and build a quality mosaic using the retained index band.","[""L3_03_02_03"", ""L3_03_09_05"", ""L3_03_02_03"", ""L3_03_09_05"", ""L3_03_02_03"", ""L3_03_09_05"", ""L3_03_02_03"", ""L3_03_09_05"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_01_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_10_02_01""]","[""ee.filter.eq"", ""ee.imagecollection.filter"", ""ee.filter.eq"", ""ee.imagecollection.filter"", ""ee.filter.eq"", ""ee.imagecollection.filter"", ""ee.filter.eq"", ""ee.imagecollection.filter"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.image.clip"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.qualitymosaic""]",0f6b901df19286f512c8ad5179bea56c2235e3b52abc6ded7a23daffa018878f,/home/yll/GEE/Data/data80000/script_75877.txt,"3: print(GAMDAM);
+5: Map.addLayer(GAMDAM);
+7: var site1 = (table.filter(ee.Filter.eq(""FID_1"", 12171)));
+9: var site2 = (table.filter(ee.Filter.eq(""FID_1"", 1561)));
+11: var site3 = (table.filter(ee.Filter.eq(""FID_1"", 3527)));
+13: var site4 = (table.filter(ee.Filter.eq(""FID_1"", 4481)));
+25: var collection = ee.ImageCollection(""COPERNICUS/S2"")
+27: .filterBounds(site4)
+29: .filterDate('2021-05-01', '2021-06-30');
+31: print(collection);
+33: Map.addLayer(collection, vizParamsS2);
+35: var clipped = collection.map(function(image){return image.clip(site4)});
+37: print(clipped);
+39: Map.addLayer(clipped, vizParamsS2, 'clipped');
+43: var qa = image.select('QA60')
+55: .select(""B.*"")
+61: var cloudmasked = clipped.map(maskS2clouds);
+63: print(cloudmasked);
+65: Map.addLayer(cloudmasked, vizParamsS2, 'cloudmasked');
+69: var NDWI1threshold = image.normalizedDifference(['B2', 'B4']).rename('NDWI1');
+73: var NDWI1coll = cloudmasked.map(NDWI1);
+75: print(NDWI1coll);
+79: var NDWI2threshold = image.normalizedDifference(['B3', 'B8']).rename('NDWI2');
+83: var NDWI2coll = NDWI1coll.map(NDWI2);
+85: print(NDWI2coll);
+89: var NWIthreshold = image.expression('(B2-(B8+B11+B12))/(B2-(B8+B11+B12))',
+91: {'B2': image.select('B2'), 'B8': image.select('B8'), 'B11': image.select('B11'), 'B12': image.select('B12')}).rename('NWI');
+95: var NWIcoll = NDWI2coll.map(NWI);
+97: print(NWIcoll);
+101: var AWEIshthreshold = image.expression('B2+(2.5*B3)-(1.5*B8*B11)-0.25*B12',",gee_core_p4_reviewed,0.5,False,False,rewritten_chain_faithful,"[""final thresholded water-extent product"", ""map display layers"", ""print output""]",train,p4_rewritten_needs_edit
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_005,Workflowoutput70000_script_68120,GEE,L3,core_subworkflow,Construct land-cover training samples from joined imagery,"Convert labeled training features to centroids, merge training feature collections, join them with nearby Landsat surface-reflectance images, apply cloud masking and calibrated band selection, sample image values at the training locations, flatten the sampled collection, and inspect the first sample row.","[""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_02_05_11"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_02_06_02"", ""L3_02_06_02"", ""L3_01_02_01"", ""L3_02_06_02"", ""L3_02_06_02"", ""L3_01_02_01"", ""L3_02_04_01"", ""L3_02_06_02"", ""L3_01_02_01"", ""L3_02_06_03"", ""L3_03_03_L"", ""L3_02_04_01"", ""L3_03_10_R"", ""L3_02_06_02"", ""L3_02_06_02"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_08_01_01"", ""L3_02_03_05"", ""L3_03_10_R""]","[""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.feature.centroid"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.feature.get"", ""ee.feature.get"", ""ee.featurecollection.set"", ""ee.feature.get"", ""ee.feature.get"", ""ee.featurecollection.set"", ""ee.join.saveall"", ""ee.feature.get"", ""ee.featurecollection.set"", ""ee.filter.intersects"", ""ee.filter.and"", ""ee.join.saveall"", ""ee.imagecollection.first"", ""ee.feature.get"", ""ee.feature.get"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.rightshift"", ""ee.image.eq"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.multiply"", ""ee.image.add"", ""ee.image.sampleregions"", ""ee.featurecollection.flatten"", ""ee.imagecollection.first""]",563ebf721f8a99be22f3fa96336c992132d6f2badd0cf7223fed12bd0540cc36,/home/yll/GEE/Data/data70000/script_68120.txt,"1: var fC1 = ee.FeatureCollection('users/zepyoorohanian/Ohanian_gtd')
+3: var fC2 = ee.FeatureCollection('users/samuelmatey/SamMatey600PtsFC')
+5: var fC3 = ee.FeatureCollection('users/mmagana0212/MaganaGtd1')
+7: var fC4 = ee.FeatureCollection('users/kylietaylorrr44/Geog415/myExportTableTask2')
+9: var fC5 = ee.FeatureCollection('users/chloehoke/hokePath42Row36Points') // already point
+11: var fC6 = ee.FeatureCollection('users/briennesolis/Solis600FC')
+13: var fC8 = ee.FeatureCollection('users/claylevy53/All_Points')
+15: var fC9 = ee.FeatureCollection('users/zhouyiwei123/GEOG415/gtdTotal')
+17: var fC10 = ee.FeatureCollection('users/mannnatalie/GEOG415/GTD_Path40_Row36_NMann') // already point
+19: var fC11 = ee.FeatureCollection('users/blavallee14/Geog415/blavalleeGtd')
+21: var fC12 = ee.FeatureCollection('users/zchapman2/Geog415/zchapmanpoints')
+23: var fC13 = ee.FeatureCollection('users/annemariepeacock/600points')
+31: var fC1_point = fC1.map(convertGeom);
+33: var fC2_point = fC2.map(convertGeom);
+35: var fC3_point = fC3.map(convertGeom);
+37: var fC5_point = fC5.map(convertGeom); // already point data
+39: var fC6_point = fC6.map(convertGeom);
+41: var fC8_point = fC8.map(convertGeom);
+43: var fC9_point = fC9.map(convertGeom);
+45: var fC10_point = fC10.map(convertGeom); // already point data
+47: var fC12_point = fC12.map(convertGeom);
+49: var fC13_point = fC13.map(convertGeom);
+69: var land_type = ee.Dictionary({
+85: var palette = ee.Dictionary({
+105: .map(function (feature) {
+123: .map(function (feature) {
+139: Map.addLayer(hoke_image, {}, ""Hoke Training Data"")
+141: Map.addLayer(image, {}, ""ALL Training Data"")
+143: Map.centerObject(fC)
+145: print(ee.Algorithms.ObjectType(fC))",gee_core_p4_reviewed,0.5,False,False,rewritten_chain_faithful,"[""full classifier training and prediction"", ""map styling and display layers"", ""final land-cover map use""]",train,p4_rewritten_needs_edit
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_006,Workflowoutput50000_script_49585,GEE,L3,core_subworkflow,Prepare Sentinel-2 spectral and texture features,"Filter Sentinel-2 Level-1 imagery by date, cloud metadata, and bounds, decode QA bits to mask clouds, select the first retained image, clip it to the region, and derive B8 texture features using a GLCM texture operation.","[""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_09_06"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_03_01_01"", ""L3_03_01_04"", ""L3_08_02_02"", ""L3_03_01_04"", ""L3_03_01_04""]","[""ee.imagecollection.filterdate"", ""ee.imagecollection.filtermetadata"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.imagecollection.first"", ""ee.imagecollection.select"", ""ee.image.clip"", ""ee.imagecollection.select"", ""ee.image.glcmtexture"", ""ee.imagecollection.select"", ""ee.imagecollection.select""]",84f4aa442256a3cd1c78f8cc2b17339096b1724f1d89d388414b1392442f8116,/home/yll/GEE/Data/data50000/script_49585.txt,"1: var sampleTestingPoints = ee.FeatureCollection(""users/berkayozen92/sampleTestingPoints5000"");
+3: var sampleTrainingPoints = ee.FeatureCollection(""users/berkayozen92/sampleTrainingPoints5000"");
+5: var allArea = ee.FeatureCollection(""users/berkayozen92/allArea"");
+7: var nonteaArea = ee.FeatureCollection(""users/berkayozen92/nonTea"");
+9: var teaArea = ee.FeatureCollection(""users/berkayozen92/tea"");
+15: var qa = image.select('QA60');
+29: Map.setCenter(40.3541, 40.8787, 12);
+33: level1 : ee.ImageCollection('COPERNICUS/S2'), // Level 1-C Data
+35: level2 : ee.ImageCollection('COPERNICUS/S2_SR'), // Level 2-A Data
+45: var dataSet = s2.level1.filterDate('2016-06-01','2016-08-30')
+47: .filterMetadata('CLOUDY_PIXEL_PERCENTAGE','less_than',10)
+49: .filterBounds(ee.Geometry.Point(40.3194, 40.8995 ))
+51: .map(maskS2clouds);
+53: var frame = dataSet.first().select(S2BANDS);
+59: print(S2BANDS_EXTENDED);
+63: print(image.bandTypes());
+65: Map.addLayer(image, visParams, 'Sentinel-2');
+67: var square = ee.Kernel.square({radius: 2});
+69: var glcm = image.select('B8').glcmTexture({size: 4});
+73: Map.addLayer(glcm.select('B8_ent'), {min: 0, max: 1500, palette: ['0000CC', 'CC0000']}, 'Entropy');
+75: Map.addLayer(glcm.select('B8_diss'), {min: 0, max: 1500, palette: ['0000CC', 'CC0000']}, 'Dissimilarity');",gee_core_p4_reviewed,0.5,False,False,rewritten_chain_faithful,"[""training and testing samples"", ""final tea-area classification"", ""map display and band diagnostics""]",train,p4_rewritten_needs_edit
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_009,Workflowoutput30000_script_28452,GEE,L3,core_subworkflow,Estimate land surface temperature,"The script estimates land surface temperature (LST) in Punjab using Landsat 8 Surface Reflectance data by computing NDVI, PVI, TOA radiance, brightness temperature, and emissivity corrections for the summer months of 2021 and 2022.","[""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_09_01"", ""L3_03_03_L"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_10_02_03"", ""L3_03_01_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_10_R"", ""L3_03_02_01"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_08_02_04"", ""L3_03_02_01"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_01_03"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_01_01_03"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_01_01_03"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01""]","[""ee.imagecollection.filterbounds"", ""ee.filter.date"", ""ee.filter.date"", ""ee.filter.or"", ""ee.imagecollection.filter"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.image.divide"", ""ee.imagecollection.select"", ""ee.imagecollection.median"", ""ee.image.clip"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.subtract"", ""ee.image.add"", ""ee.image.divide"", ""ee.image.rename"", ""ee.imagecollection.select"", ""ee.image.multiply"", ""ee.image.add"", ""ee.image.rename"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.min"", ""ee.image.reduceregion"", ""ee.image.get"", ""ee.imagecollection.select"", ""ee.reducer.max"", ""ee.image.reduceregion"", ""ee.image.get"", ""ee.imagecollection.select"", ""ee.image.subtract"", ""ee.image.constant"", ""ee.image.subtract"", ""ee.image.divide"", ""ee.image.pow"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.constant"", ""ee.imagecollection.select"", ""ee.image.multiply"", ""ee.image.add"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.constant"", ""ee.imagecollection.select"", ""ee.image.multiply"", ""ee.image.add"", ""ee.image.rename"", ""ee.image.addbands""]",139562db7d3676a99a0e191f8631a3880a943ab34acc07cdcb88dd589b891e49,/home/yll/GEE/Data/data30000/script_28452.txt,"1: var image = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+3: .filterBounds(punjab);
+11: var qa = image.select('pixel_qa');
+19: .select(""B[0-9]*"")
+25: var sum21 = ee.Filter.date('2021-06-01','2021-09-30');
+27: var sum22 = ee.Filter.date('2022-06-01','2022-09-30');
+29: var SumFilter = ee.Filter.or(sum21, sum22);
+31: var allSum = image.filter(SumFilter);
+33: var images = allSum.map(mask8sr).median().clip(punjab);
+35: Map.addLayer(images, {bands: ['B4','B3','B2'], min:0, max: 0.3}, 'Punjab color image', 0);
+37: Map.centerObject(punjab);
+39: Map.addLayer(punjab,{},'StudyArea');
+43: var nir = image.select('B5');
+45: var red = image.select('B4');
+55: Map.addLayer(ndvi,{}, 'NDVI',0);
+59: return image.select('B10').multiply(0.0003342).add(0.1).rename('TOA');
+65: Map.addLayer(images2,{}, 'TOA',0);
+69: var bt = image.expression(
+73: {'toa': image.select('TOA')}
+81: var images3= images2.map(BT);
+85: var min = ee.Number(ee.Image(image.select('NDVI')).reduceRegion(ee.Reducer.min(), city, 30).get('NDVI'));
+87: var max = ee.Number(ee.Image(image.select('NDVI')).reduceRegion(ee.Reducer.max(), city, 30).get('NDVI'));
+89: var ndvi1 = image.select('NDVI').subtract(min);
+91: var ndvi2 = ee.Image.constant(max).subtract(min);
+99: var images4 = images3.map(PVI);
+103: var e = ee.Image.constant(0.004).multiply(image.select('PVI')).add(0.986).rename('Error');
+109: var images5 = images4.map(Error);
+113: lst1 = ee.Image.constant(0.00115).multiply(image.select('BT')).divide(1.4388);
+115: lst2 = ee.Image.constant(1).add(lst1).multiply(image.select('Error'));
+117: lst3 = image.select('BT').divide(lst2).rename('LST');",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Map display layers and print diagnostics are outside the target; retained chain focuses on image filtering, cloud masking, NDVI/thermal arithmetic, and LST-related band construction.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_010,Workflowoutput40000_script_31183,GEE,L3,core_subworkflow,Classify human settlements using PlanetScope imagery,"The script classifies land cover, specifically identifying human settlements, using a Random Forest classifier applied to a PlanetScope image collection. It preprocesses images by removing zero-value pixels and masking out floodplain areas using a HAND threshold, then computes spectral indices (NDVI, NDWI, RGDIFF) before training the classifier on building point labels. The output is a classified image stack with accuracy metrics (overall, producer’s, consumer’s) stored as metadata, culminating in a median reduction of the classified results.","[""L3_03_01_04"", ""L3_03_09_06"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_01_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_10_04_01"", ""L3_10_04_01"", ""L3_03_10_R"", ""L3_08_01_01"", ""L3_08_03_01"", ""L3_08_03_01"", ""L3_08_07_01"", ""L3_08_07_01"", ""L3_08_07_01"", ""L3_08_07_01"", ""L3_08_04_01"", ""L3_01_02_01"", ""L3_08_02_04"", ""L3_03_02_05""]","[""ee.imagecollection.select"", ""ee.imagecollection.filterbounds"", ""ee.image.neq"", ""ee.image.updatemask"", ""ee.image.clip"", ""ee.image.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.image.addbands"", ""ee.image.addbands"", ""ee.imagecollection.first"", ""ee.image.sampleregions"", ""ee.classifier.randomforest"", ""ee.classifier.train"", ""ee.classifier.confusionmatrix"", ""ee.confusionmatrix.accuracy"", ""ee.confusionmatrix.consumersaccuracy"", ""ee.confusionmatrix.producersaccuracy"", ""ee.image.classify"", ""ee.featurecollection.set"", ""ee.reducer.median"", ""ee.image.reduce""]",5e44adb6c746001c03047aceac37023c3b42f4cc69161a2135c4956dac8c0ee9,/home/yll/GEE/Data/data40000/script_31183.txt,"1: var ImgCollection = ee.ImageCollection(""users/andreahess42/PlanetScope/AnAw_collection"");
+13: var handTile =ee.Image(""users/andreahess42/Ethiopia/hand_all"");
+15: var handThresh = ee.Number(1);   //threshold below which pixels will be not considered, since they're in river banks
+17: var geometry = ee.FeatureCollection(""users/andreahess42/Ethiopia/AnAw_boundaries"");
+19: var buildings = ee.FeatureCollection(""users/andreahess42/Ethiopia/AnAw_Buildings_points_20200310"");
+23: .select(['b1', 'b2', 'b3', 'b4'], ['blue', 'green', 'red', 'nir'])
+25: .filterBounds(geometry);
+33: var maskImage = zeroFilter.clip(geometry);
+39: var noZeroTile = collection.map(removeZero);
+41: var hand = ee.Image(handTile).select('b1');
+53: var noFloodTile = noZeroTile.map(removeFloodplain);
+57: var ndvi = image.normalizedDifference([""nir"", ""red""]).rename(""ndvi"");
+59: var ndwi = image.normalizedDifference([""green"", ""nir""]).rename(""ndwi"");
+61: var rgdiff = image.expression('red-green', {
+63: 'red':image.select('red'),
+65: 'green': image.select('green')
+77: var imageStack = noFloodTile.map(addIndices);
+85: var training = image.sampleRegions({
+95: var rfParams = ee.Classifier.randomForest({
+109: var classifier = rfParams.train({
+127: var classified = image.classify(classifier);
+133: var acc = imageStack.map(runRF);
+135: print(acc);
+137: var median = acc.reduce(ee.Reducer.median());",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Visualization and non-core display behavior remain omitted. The retained target is classification plus accuracy/aggregation core, not UI rendering.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_014,Workflowoutput210000_script_200286,GEE,L3,core_subworkflow,Assess NDVI fusion accuracy,"The script evaluates the accuracy of a fused NDVI image (img_fus) by comparing it with a base NDVI image (img_base) over a region of interest (roi). It computes the squared difference between the two NDVI images, sums the result over the ROI, normalizes by the pixel count, and calculates the RMSE. The output is a single RMSE value printed to the console, representing the root mean square error between the base and fused NDVI datasets.","[""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_08_02_04"", ""L3_03_02_01"", ""L3_02_06_02"", ""L3_10_02_03"", ""L3_03_02_01"", ""L3_02_06_02"", ""L3_03_03_A""]","[""ee.image.subtract"", ""ee.image.subtract"", ""ee.image.multiply"", ""ee.reducer.sum"", ""ee.image.reduceregion"", ""ee.feature.get"", ""ee.imagecollection.count"", ""ee.image.reduceregion"", ""ee.feature.get"", ""ee.image.divide""]",7e8ce81306f432282b12eab80e6ec1d2bc4fc4732298956f51a3614469bd9e67,/home/yll/GEE/Data/data210000/script_200286.txt,"15: var sum2 = ndvi_sub2.reduceRegion({
+17: reducer:ee.Reducer.sum(),
+19: geometry:roi,
+25: var count = img_base.reduceRegion({
+27: reducer:ee.Reducer.count(),
+29: geometry:roi,
+35: var rmse = (ee.Number(sum2).divide(ee.Number(count))).sqrt()
+37: print(rmse)",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Print output is omitted; retained target is RMSE-style NDVI fusion error computation.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_021,Workflowoutput220000_script_214115,GEE,L3,core_subworkflow,Filter Sentinel-1 SAR imagery for minimum backscatter,"Filter Sentinel-1 GRD images by required VV/VH polarizations, instrument mode, region, and date; compute the minimum image from the retained collection; select backscatter polarizations; and clip the result to the study polygon.","[""L3_03_03_L"", ""L3_03_09_05"", ""L3_03_03_L"", ""L3_03_09_05"", ""L3_03_02_03"", ""L3_03_09_05"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_03_01_01""]","[""ee.filter.listcontains"", ""ee.imagecollection.filter"", ""ee.filter.listcontains"", ""ee.imagecollection.filter"", ""ee.filter.eq"", ""ee.imagecollection.filter"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.min"", ""ee.imagecollection.select"", ""ee.image.clip""]",376caf3981300a9121757ebb51c7ed8ca7ac4b24c4ebb16f4c7411425fd1c105,/home/yll/GEE/Data/data220000/script_214115.txt,"1: Map.centerObject(TZS_polygon);
+3: var S1_GRD =  ee.ImageCollection('COPERNICUS/S1_GRD')
+5: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+7: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+9: .filter(ee.Filter.eq('instrumentMode', 'IW'))
+11: .filterBounds(TZS_polygon)
+13: .filterDate('2020-01-01','2021-01-01')
+15: .map(terrainCorrection)
+19: .select('VH','VV');",gee_core_p4_reviewed,0.5,False,False,rewritten_chain_faithful,"[""terrain-correction internals"", ""map centering and display"", ""downstream interpretation""]",train,p4_rewritten_needs_edit
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_022,Workflowoutput50000_script_47799,GEE,L3,core_subworkflow,Detect vegetation change thresholds,"The script analyzes time-series NDVI and day-of-year (DOY) data to compute forward differences in NDVI over time, then applies a daily change threshold based on DOY intervals to identify periods of minimal NDVI change. It constructs masked NDVI arrays using logical conditions on these differences, aiming to detect stable vs. changing vegetation states over time within a specified region.","[""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_01_03"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_01_04""]","[""ee.imagecollection.select"", ""ee.image.arrayslice"", ""ee.image.arrayslice"", ""ee.image.subtract"", ""ee.image.arrayslice"", ""ee.image.arrayslice"", ""ee.image.subtract"", ""ee.image.constant"", ""ee.image.arrayslice"", ""ee.image.multiply"", ""ee.image.abs"", ""ee.image.lt"", ""ee.image.abs"", ""ee.image.lt"", ""ee.image.addbands"", ""ee.imagecollection.toarray"", ""ee.image.abs"", ""ee.image.lt"", ""ee.image.addbands"", ""ee.imagecollection.toarray"", ""ee.image.multiply"", ""ee.image.abs"", ""ee.image.lt"", ""ee.image.addbands"", ""ee.imagecollection.toarray"", ""ee.image.multiply"", ""ee.image.abs"", ""ee.image.lt"", ""ee.image.addbands"", ""ee.imagecollection.toarray"", ""ee.image.multiply"", ""ee.image.abs"", ""ee.image.lt"", ""ee.image.addbands"", ""ee.imagecollection.toarray"", ""ee.image.multiply"", ""ee.image.abs"", ""ee.image.lt"", ""ee.image.addbands"", ""ee.imagecollection.toarray"", ""ee.image.multiply"", ""ee.imagecollection.toarray"", ""ee.image.add"", ""ee.image.arrayslice""]",2d91eb75e72f7f04fe4b27184ba04ea61069e484c9a2d3d5a17235ee1f631b8c,/home/yll/GEE/Data/data50000/script_47799.txt,"1: ee.Geometry.Polygon(
+15: Map.addLayer(DOYs, {}, 'DOYs')
+17: var NDVIs = Q250.select('NDVI').toArrayPerBand()
+21: Map.addLayer(NDVIs, {}, 'NDVIs')
+39: var indexes = ee.Image.constant(ee.Array(ee.List.sequence(0, maxSize)));
+45: Map.addLayer(indexes, {}, 'indexes2')
+47: var daily_ch_th = ee.Number(0.1/8)
+49: print('daily_ch_th', daily_ch_th)
+53: Map.addLayer(diffDOYs, {}, 'diffDOYs')
+55: Map.addLayer(diffNDVIs, {}, 'diffNDVIs')
+57: Map.addLayer(NDVIch_th, {}, 'NDVIch_th')
+59: Map.addLayer(diffNDVIs.abs().lt(NDVIch_th), {}, 'first diff')
+61: Map.addLayer((diffNDVIs.abs().lt(NDVIch_th)).addBands(ee.Image(ee.Array([1]))).toArray(0), {}, 'first diff')
+63: Map.addLayer((diffNDVIs.abs().lt(NDVIch_th)).addBands(ee.Image(ee.Array([1]))).toArray(0).multiply(NDVIs), {}, 'first diff mask')
+65: print((diffNDVIs.abs().lt(NDVIch_th)).addBands(ee.Image(ee.Array([1]))).toArray(0).multiply(NDVIs))
+67: print(ee.Image((diffNDVIs.abs().lt(NDVIch_th)).addBands(ee.Image(ee.Array([1]))).toArray(0).multiply(NDVIs)))
+69: Map.addLayer(ee.Image((diffNDVIs.abs().lt(NDVIch_th)).addBands(ee.Image(ee.Array([1]))).toArray(0).multiply(NDVIs)))
+71: Map.addLayer(ee.ImageCollection([(diffNDVIs.abs().lt(NDVIch_th)).addBands(ee.Image(ee.Array([1]))).toArray(0).multiply(NDVIs)]))
+75: print('array', array)
+77: Map.addLayer(array)
+79: var days = ee.List.sequence(0, 10);
+81: var dates = days.map(function(d) {
+83: d = ee.Number(d).int()
+85: var d1 = d.add(ee.Number(1)).int()
+93: print('dates', dates, ee.ImageCollection(dates).toArrayPerBand() );
+95: Map.addLayer(ee.ImageCollection(dates).toArrayPerBand())//.toArray())",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Map layers, printed diagnostics, and visualization of intermediate arrays remain outside the target.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_029,Workflowoutput70000_script_64579,GEE,L3,core_subworkflow,Build Sentinel-1 composites and train a Random Forest from samples,"Create date-window Sentinel-1 composites, filter out empty composites, select a representative clipped image, sample training regions from the retained image, initialize a Random Forest classifier, and train it on the sampled features.","[""L3_03_03_A"", ""L3_03_09_05"", ""L3_03_02_03"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_09_06"", ""L3_10_02_03"", ""L3_03_03_L"", ""L3_01_02_01"", ""L3_01_02_01"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_01_01"", ""L3_08_01_01"", ""L3_08_03_01"", ""L3_08_03_01""]","[""ee.image.subtract"", ""ee.imagecollection.filtermetadata"", ""ee.filter.eq"", ""ee.imagecollection.filter"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.median"", ""ee.image.eq"", ""ee.featurecollection.set"", ""ee.featurecollection.set"", ""ee.imagecollection.filtermetadata"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.first"", ""ee.image.clip"", ""ee.image.sampleregions"", ""ee.classifier.smilerandomforest"", ""ee.classifier.train""]",e322dcb642db029f2bfebe9887e2061f87dc4780199781f2dd28d56e0cdf968a,/home/yll/GEE/Data/data70000/script_64579.txt,"3: var water_non_veg = image.clip(aoi).select(""VV"").lt(-15.0)
+5: var water_veg = image.clip(aoi).select(""VV"").gt(-9.5)
+7: var mosaic = ee.ImageCollection([
+19: var start = ee.Date('2017-07-01')
+21: var finish = ee.Date('2017-08-01')
+25: var dayOffsets = ee.List.sequence(0, days.subtract(1))
+27: var allImagesInRangeS1 = ee.ImageCollection(dayOffsets
+29: .map(function (dayOffset) {
+35: var composite = ee.ImageCollection('COPERNICUS/S1_GRD')
+37: .filterMetadata('instrumentMode', 'equals', 'IW')
+39: .filter(ee.Filter.eq('transmitterReceiverPolarisation', ['VV', 'VH']))
+41: .filterDate(dayStart, dayFinish)
+43: .filterBounds(aoi)
+55: .filterMetadata('empty', 'equals', 0)
+57: var training_data = allImagesInRangeS1.filterDate('2017-07-28')
+61: var polygons = ee.FeatureCollection([
+63: ee.Feature(openwater_points, {'class': 2}),
+65: ee.Feature(vegetatedwater_points, {'class': 1}),
+67: ee.Feature(other_points, {'class': 0})
+71: var training = training_data.sampleRegions({
+81: var classifier = ee.Classifier.smileRandomForest({
+87: var trained = classifier.train(training, 'class');
+91: var classified = image.classify(trained).clip(aoi);
+99: var kf= ee.Number(1);
+101: var kfv = ee.Number(0.9);
+103: var meanDictionary = image.reduceRegion({
+105: reducer: ee.Reducer.mean(),
+107: geometry: aoi,
+115: var stdDictionary = image.reduceRegion({
+117: reducer: ee.Reducer.stdDev(),",gee_core_p4_reviewed,0.5,False,False,rewritten_chain_faithful,"[""adaptive-threshold reduceRegion logic"", ""post-training classify output"", ""final open-water or submerged-vegetation map""]",train,p4_rewritten_needs_edit
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_030,Workflowoutput50000_script_40197,GEE,L3,core_subworkflow,Map vegetation and moisture dynamics,"The script computes maximum NDVI and LSWI, and integrates FAPAR over a time period from Sentinel-2 data to generate spatial maps representing peak vegetation greenness, land surface water content, and cumulative photosynthetically active radiation absorption for agricultural or vegetated land monitoring.","[""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_08_02_04"", ""L3_03_02_05"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_03_10_R"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_03_10_R"", ""L3_02_03_05"", ""L3_02_03_05"", ""L3_02_03_05""]","[""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.add"", ""ee.image.divide"", ""ee.image.multiply"", ""ee.image.rename"", ""ee.reducer.sum"", ""ee.image.reduce"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.imagecollection.max"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.imagecollection.max"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.add"", ""ee.image.divide"", ""ee.image.multiply"", ""ee.image.rename"", ""ee.imagecollection.sum"", ""ee.featurecollection.geometry"", ""ee.featurecollection.geometry"", ""ee.featurecollection.geometry""]",076b9c62fe1d3b167dacecaab6600d8734701de920049a1b231e3b3af524f589,/home/yll/GEE/Data/data50000/script_40197.txt,"1: var s2 = ee.ImageCollection('COPERNICUS/S2')
+3: .filterBounds(fc) // where 'fc' is your feature collection shapefile
+5: .filterDate('2022-09-01', '2023-03-30') // select a specific time period
+9: return img.normalizedDifference(['B8', 'B4']).rename('NDVI')
+15: return img.normalizedDifference(['B8', 'B11']).rename('LSWI')
+21: var red = image.select('B4');
+23: var nir = image.select('B8');
+31: var s2_fapar = s2.map(fapar);
+33: var s2_fapar_sum = s2_fapar.reduce(ee.Reducer.sum());
+35: var ndviMax = s2.map(ndvi).max()
+37: var lswiMax = s2.map(lswi).max()
+39: var faparInt = s2.map(fapar).sum()
+41: Export.image.toDrive({
+49: region: fc.geometry(),
+55: Export.image.toDrive({
+63: region: fc.geometry(),
+69: Export.image.toDrive({
+77: region: fc.geometry(),",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Export.image.toDrive calls and Drive/output configuration remain outside the target.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_031,Workflowoutput150000_script_148921,GEE,L3,core_subworkflow,Analyze crop residue cover,"The script analyzes minimum crop residue cover at the field level across monthly intervals in 2022 using GeoTIFF data loaded from a Google Cloud bucket, aggregating weekly observations into monthly bands and computing mean residue values per agricultural field geometry.","[""L3_03_01_04"", ""L3_03_01_09"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_08_02_04"", ""L3_02_03_05"", ""L3_03_02_01"", ""L3_03_01_05"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_10_02_03"", ""L3_02_03_05"", ""L3_03_02_01"", ""L3_03_01_04"", ""L3_01_02_03"", ""L3_03_01_04"", ""L3_01_02_03"", ""L3_10_02_03"", ""L3_02_03_05"", ""L3_03_02_01"", ""L3_02_06_02"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_01"", ""L3_01_02_01"", ""L3_03_10_R""]","[""ee.image.select"", ""ee.imagecollection.tobands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.neq"", ""ee.image.updatemask"", ""ee.reducer.mean"", ""ee.featurecollection.geometry"", ""ee.image.reduceregion"", ""ee.image.unmask"", ""ee.image.eq"", ""ee.image.updatemask"", ""ee.imagecollection.count"", ""ee.featurecollection.geometry"", ""ee.image.reduceregion"", ""ee.imagecollection.select"", ""ee.image.rename"", ""ee.imagecollection.select"", ""ee.image.rename"", ""ee.imagecollection.count"", ""ee.featurecollection.geometry"", ""ee.image.reduceregion"", ""ee.feature.get"", ""ee.image.divide"", ""ee.image.multiply"", ""ee.featurecollection.set"", ""ee.featurecollection.set"", ""ee.imagecollection.first""]",c146b438193ffad9e244646b3d5626b3411538d26b69fde4e53c4f7922f738e3,/home/yll/GEE/Data/data150000/script_148921.txt,"1: ee.data.setDefaultWorkloadTag('preview_data_france_residue_ali');
+7: var imgList = ee.List.sequence(1, 12).map(function(month){
+9: return ee.Image.loadGeoTIFF(
+11: ee.String('gs://aliz-test/fr_')
+13: .cat(geohash).cat('_2022_').cat(ee.Number(month).int()).cat('_v2.tif')
+15: ).select([""week_1_min_residue"", ""week_2_min_residue"", ""week_3_min_residue"", ""week_4_min_residue"", ""number_images_used""],
+17: [ee.String(""week_1_min_residue_"").cat(ee.Number(month).int()), ee.String(""week_2_min_residue_"").cat(ee.Number(month).int()), ee.String(""week_3_min_residue_"").cat(ee.Number(month).int()), ee.String(""week_4_min_residue_"").cat(ee.Number(month).int()), ee.String(""number_images_used_"").cat(ee.Number(month).int())]);
+27: var reduced = fields.map(function(field){
+29: var residue_mean = img.reduceRegion({
+31: reducer: ee.Reducer.mean(),
+33: geometry: field.geometry(),
+41: residue_mean = residue_mean.map(function(k, v){
+43: return ee.Algorithms.If(v, ee.Number(v).round(), -9999);
+53: .reduceRegion({
+55: reducer: ee.Reducer.count(),
+57: geometry: field.geometry(),
+65: var keys = nodata_count.select(['.*week.*']).keys();
+67: var renamed = keys.map(function(key){
+69: return ee.String(key).cat('_nodata');
+75: var all_count = residue_unmasked.select('week_1_month_1')
+79: .reduceRegion({
+81: reducer: ee.Reducer.count(),
+83: geometry: field.geometry(),
+91: nodata_count = nodata_count.map(function(key, value){
+93: return ee.Number(value).divide(all_count.get('all_count')).multiply(100).round();
+105: var img = ee.ImageCollection(load('gbr'))
+109: .select('.*week.*');
+113: var renamed = bandNames.map(function(bandName){
+115: return ee.String(bandName)
+123: img = img.select(bandNames, renamed);",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Client-side property-name inspection and print/getInfo behavior remain outside the target.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_033,Workflowoutput140000_script_132851,GEE,L3,core_subworkflow,Construct Landsat vegetation-index yearly composites,"Filter Landsat imagery by region and yearly windows, apply QA cloud masking, clip images, compute NDVI, EVI, and SAVI vegetation-index bands, add the derived bands, and build yearly mean index composites.","[""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_01_01"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_09_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_08_01"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_09_02"", ""L3_03_09_05"", ""L3_10_02_03"", ""L3_01_02_01"", ""L3_01_03_04"", ""L3_03_10_R"", ""L3_03_01_01""]","[""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.image.clip"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.image.normalizeddifference"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.expression"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.filter.calendarrange"", ""ee.imagecollection.filter"", ""ee.imagecollection.mean"", ""ee.featurecollection.set"", ""ee.imagecollection.fromimages"", ""ee.imagecollection.first"", ""ee.image.clip""]",b5cd17972fe8845d5adddf15037cb3a813ebae62dea841f9b3b27176c233b18d,/home/yll/GEE/Data/data140000/script_132851.txt,"1: Map.centerObject(geometry)
+3: var L8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR').filterBounds(geometry)
+7: return image.clip(geometry)
+13: var ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+19: function maskL8sr(imageCollection) {
+25: var qa = imageCollection.select('pixel_qa');
+31: return imageCollection.updateMask(mask);
+35: var year = ee.Number(2020); // start with the previous year because of winter wheat
+37: var st_date = ee.Date.fromYMD(year,1,01)
+41: var filtered = L8.filterDate(st_date,en_date)
+43: .map(maskL8sr).sort('system:time_start',true)
+45: var filtered = filtered.map(clip)
+47: var with_ndvi = filtered.map(addNDVI)
+49: print(with_ndvi)
+69: var rgbVis = with_ndvi.map(function(img) {
+71: return img.select('NDVI').visualize(visParams);
+75: print(rgbVis,'rgb')
+79: 'region': geometry,
+89: print(rgbVis.getVideoThumbURL(gifParams));
+91: var collection = L8.filterDate('1990-01-01', '2015-12-31');
+95: var eviImg = img.select(['B5','B4','B2'],['nir','red','blue']);
+97: eviImg = eviImg.expression(
+101: 'NIR': eviImg.select('nir'),
+103: 'RED': eviImg.select('red'),
+105: 'BLUE': eviImg.select('blue')
+115: var saviImg = img.select(['B5','B4'],['nir','red']);
+117: saviImg = saviImg.expression('((NIR-RED)/(NIR+RED+L))*(1+L)', {
+119: 'NIR': saviImg.select('nir'),
+121: 'RED': saviImg.select('red'),
+131: var years = collection.map(maskL8sr).map(addNDVI).map(evi).map(savi)",gee_core_p4_reviewed,0.5,False,False,rewritten_chain_faithful,"[""GIF or video thumbnail generation"", ""map display layers"", ""long-form output presentation""]",train,p4_rewritten_needs_edit
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_034,Workflowoutput50000_script_45485,GEE,L3,core_subworkflow,Preprocess MODIS phenology bands and masks,"Filter MCD12Q2 phenology imagery by date, select phenology and cycle-count bands, apply NumCycles and phenology masks, adjust day-of-year values relative to a baseline date, and convert retained phenology-mask outputs to integer bands.","[""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_09_01"", ""L3_01_01_03"", ""L3_03_03_A"", ""L3_01_13_01"", ""L3_03_09_01"", ""L3_01_13_01"", ""L3_01_02_03"", ""L3_03_03_A"", ""L3_03_01_05"", ""L3_01_13_01"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_09_01"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_01_13_01""]","[""ee.image.gte"", ""ee.image.updatemask"", ""ee.filter.date"", ""ee.imagecollection.filter"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.gte"", ""ee.filter.date"", ""ee.image.constant"", ""ee.image.subtract"", ""ee.image.int"", ""ee.filter.date"", ""ee.image.int"", ""ee.image.rename"", ""ee.image.subtract"", ""ee.image.updatemask"", ""ee.image.toint"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.filterdate"", ""ee.image.gt"", ""ee.image.where"", ""ee.image.toint""]",3097c1d551b838136d7a29ecff539d2259f7d6667aaca2c2a745230d96a4ccb9,/home/yll/GEE/Data/data50000/script_45485.txt,"3: var MCD12Q2 = ee.ImageCollection(""MODIS/006/MCD12Q2"").filter(ee.Filter.date('2003-01-01','2004-01-01'));
+7: var Pheno = image.select(['Greenup_1','MidGreenup_1','Peak_1','Maturity_1','Senescence_1','MidGreendown_1','Dormancy_1']);
+9: var QA = image.select('QA_Detailed_1');
+13: var mask = image.select('NumCycles').gte(1);
+15: var time = ee.Image.constant(image.date().difference(ee.Date('1970-01-01'), 'day')).subtract(ee.Image(1)).int();
+17: var year = ee.Image(image.date().difference(ee.Date('2000-01-01'), 'year')).int().rename(""year"");
+25: var Pheno = MCD12Q2.map(DOY1);
+27: print(""Pheno is"",Pheno);
+29: var Greenup_1=Pheno.select('Greenup_1');
+31: var Dormancy_1=Pheno.select('Dormancy_1');
+33: var lai_2003_raw= ee.ImageCollection(""MODIS/006/MCD15A3H"").select('Lai')
+35: .filterDate('2003-01-01','2004-01-01')
+37: .map(function(img){
+39: var Image_col_2003=ee.Image(img);
+47: print('lai_2003_raw',lai_2003_raw)
+49: Map.addLayer(lai_2003_raw,{},""lai_2003_raw"");
+51: Map.addLayer(Lai_Global_2003_1500_unseason_G_D_erci_unmask_greenup_lt_Dormancy,{},""Lai_Global_2003_1500_unseason_G_D_erci_unmask_greenup_lt_Dormancy"");
+53: Map.addLayer(Alashanzuoqi_T_Greenup_Dormancy,{},""Alashanzuoqi_T_Greenup_Dormancy"");",gee_core_p4_reviewed,0.5,False,False,rewritten_chain_faithful,"[""full LAI capping and processing"", ""phenology interpretation steps"", ""print diagnostics""]",train,p4_rewritten_needs_edit
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_035,Workflowoutput210000_script_202604,GEE,L3,core_subworkflow,Compute monthly NDVI and SR,"The script computes monthly mean NDVI and derived Soil Reflectance (SR) from MODIS MOD13Q1 imagery over a region of interest for the year 2018. It processes the NDVI band by scaling it (dividing by 10000), then calculates SR using a mathematical transformation of NDVI, renames it, and aggregates images into monthly composites by taking the mean. The output is a monthly time-series ImageCollection with NDVI and SR bands, each image labeled with year, month, and timestamp for temporal analysis.","[""L3_03_09_01"", ""L3_03_09_06"", ""L3_03_01_04"", ""L3_03_01_01"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_09_02"", ""L3_03_09_05"", ""L3_03_09_02"", ""L3_03_09_05"", ""L3_10_02_03"", ""L3_01_02_01"", ""L3_01_02_01"", ""L3_01_02_01"", ""L3_02_03_05"", ""L3_01_03_04""]","[""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.select"", ""ee.image.clip"", ""ee.image.divide"", ""ee.image.add"", ""ee.image.multiply"", ""ee.image.add"", ""ee.image.divide"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.filter.calendarrange"", ""ee.imagecollection.filter"", ""ee.filter.calendarrange"", ""ee.imagecollection.filter"", ""ee.imagecollection.mean"", ""ee.featurecollection.set"", ""ee.featurecollection.set"", ""ee.featurecollection.set"", ""ee.featurecollection.flatten"", ""ee.imagecollection.fromimages""]",e7535916bfd7080d2694722841042c2172c8065fd3bab433e9433b6cba4da76a,/home/yll/GEE/Data/data210000/script_202604.txt,"7: var d16NDVI = ee.ImageCollection('MODIS/061/MOD13Q1')
+9: .filterDate('2018-01-01', '2018-12-31')
+11: .filterBounds(roi)
+13: .select('NDVI')
+15: .map(clipImg)
+17: .map(function(image){
+27: var years = ee.List.sequence(2018, 2018);
+29: var months = ee.List.sequence(1, 12);
+31: var NDVI =  ee.ImageCollection.fromImages(
+33: years.map(function (y) {
+35: return months.map(function(m) {
+37: return d16NDVI.filter(ee.Filter.calendarRange(y,y, 'year'))
+39: .filter(ee.Filter.calendarRange(m, m, 'month'))
+43: .set('system:time_start', ee.Date.fromYMD(y, m, 1));});}).flatten());
+45: print(monthlymeanNDVI);",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Print output and non-core display behavior are omitted; retained target is monthly NDVI/SR image collection construction.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_042,Workflowoutput280000_script_271425,GEE,L3,core_subworkflow,Identify sugarcane suitable areas,"The script evaluates biophysical and climatic conditions for sugarcane cultivation by applying multiple threshold filters on environmental variables derived from geospatial datasets. It computes suitability criteria based on temperature seasonality (Tr, Tf, diff_Trf), soil moisture indices (SIOS, LIOS), thermal integral differences (diff_integral), and growing season length (GSL). The output is a series of binary raster masks indicating areas that meet varying combinations of these thresholds, intended to map regions climatically suitable for sugarcane growth.","[""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L""]","[""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.imagecollection.select"", ""ee.image.lt"", ""ee.image.and""]",2c4cd63de7d7cf834bd88a84155247762ea87c08d590174cd256ecbbdef9e990,/home/yll/GEE/Data/data280000/script_271425.txt,"1: var SUG1 = SUG.select('Tr').gt(30).and(SUG.select('Tr').lt(209))//factor_sug1
+3: var SUG2 = SUG.select('Tf').gt(60).and(SUG.select('Tf').lt(210))//90%
+5: var SUG3 = SUG.select('diff_Trf').gt(-120).and(SUG.select('diff_Trf').lt(120))//90%-90
+7: var SUG4 = SUG.select('SIOS').gt(102).and(SUG.select('SIOS').lt(174))//90%
+9: var SUG6 = SUG.select('LIOS').gt(132).and(SUG.select('LIOS').lt(214))//90%
+11: var SUG7 = SUG.select('diff_integral').gt(20).and(SUG.select('diff_integral').lt(69))//90%
+13: var SUG8 = SUG.select('GSL').gt(260).and(SUG.select('GSL').lt(389))//90%
+15: var SUG1 = SUG.select('Tr').gt(49).and(SUG.select('Tr').lt(209))//factor_sug1
+17: var SUG2 = SUG.select('Tf').gt(50).and(SUG.select('Tf').lt(200))//90%
+19: var SUG3 = SUG.select('diff_Trf').gt(-120).and(SUG.select('diff_Trf').lt(130))//90%-90
+21: var SUG4 = SUG.select('SIOS').gt(102).and(SUG.select('SIOS').lt(170))//90%
+23: var SUG6 = SUG.select('LIOS').gt(136).and(SUG.select('LIOS').lt(213))//90%
+25: var SUG7 = SUG.select('diff_integral').gt(21).and(SUG.select('diff_integral').lt(66))//90%
+27: var SUG8 = SUG.select('GSL').gt(260).and(SUG.select('GSL').lt(389))//90%
+29: var SUG1 = SUG.select('Tr').gt(30).and(SUG.select('Tr').lt(210))//factor_sug1
+31: var SUG2 = SUG.select('Tf').gt(60).and(SUG.select('Tf').lt(210))//90%
+33: var SUG3 = SUG.select('diff_Trf').gt(-140).and(SUG.select('diff_Trf').lt(110))//90%-90
+35: var SUG4 = SUG.select('SIOS').gt(82).and(SUG.select('SIOS').lt(175))//90%
+37: var SUG6 = SUG.select('LIOS').gt(116).and(SUG.select('LIOS').lt(216))//90%
+39: var SUG1 = SUG.select('Tr').gt(30).and(SUG.select('Tr').lt(210))//factor_sug1
+41: var SUG2 = SUG.select('Tf').gt(60).and(SUG.select('Tf').lt(230))//90%
+43: var SUG3 = SUG.select('diff_Trf').gt(-160).and(SUG.select('diff_Trf').lt(110))//90%-90
+45: var SUG4 = SUG.select('SIOS').gt(82).and(SUG.select('SIOS').lt(176))//90%
+47: var SUG6 = SUG.select('LIOS').gt(116).and(SUG.select('LIOS').lt(227))//90%
+49: var SUG7 = SUG.select('diff_integral').gt(20).and(SUG.select('diff_integral').lt(73))//90%
+51: var SUG8 = SUG.select('GSL').gt(239).and(SUG.select('GSL').lt(410))//90%",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Downstream map rendering, final suitability interpretation, and any export behavior are omitted.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_047,Workflowoutput180000_script_171584,GEE,L3,core_subworkflow,Decode MODIS QA bits and build a combined mask,"Select MODIS QA bands, repeatedly extract bit ranges with bitwise operations and shifts, derive cloud, shadow, and land/water logical conditions, combine the QA conditions, and update the image mask with the retained combined mask.","[""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_01_05"", ""L3_03_01_05"", ""L3_03_01_05"", ""L3_03_01_05""]","[""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.rightshift"", ""ee.image.expression"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.rightshift"", ""ee.image.expression"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.rightshift"", ""ee.image.expression"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.rightshift"", ""ee.image.expression"", ""ee.image.eq"", ""ee.image.not"", ""ee.image.and"", ""ee.image.not"", ""ee.image.and"", ""ee.image.not"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.image.updatemask"", ""ee.image.updatemask"", ""ee.image.updatemask"", ""ee.image.updatemask""]",0eb2c875e3d222ccf6450e047c2d9303106ddac3257f23bbccfbb791984b7201,/home/yll/GEE/Data/data180000/script_171584.txt,"11: return image.select([0], [newName])
+19: var image = ee.Image('MODIS/006/MOD09GA/2012_06_01');
+21: var QA = image.select('state_1km');
+25: .expression(""b(0) == 1 || b(0) == 2"");
+29: .expression(""b(0)==7"");
+33: .expression(""b(0)==1"");
+37: .expression(""b(0)==1"");
+41: Map.addLayer(image,
+55: Map.addLayer(image.updateMask(mask),
+69: Map.addLayer(
+79: Map.addLayer(
+89: Map.addLayer(
+99: Map.addLayer(",gee_core_p4_reviewed,0.5,False,False,rewritten_chain_faithful,"[""overlay and display layers for individual QA components""]",train,p4_rewritten_needs_edit
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_049,Workflowoutput40000_script_33946,GEE,L3,core_subworkflow,Estimate land surface temperature,"The script estimates Land Surface Temperature (LST) from Landsat 8 thermal band data by computing brightness temperature, deriving NDVI, calculating vegetation proportion and emissivity, and applying atmospheric correction. Outputs include a true-color image, NDVI map, and LST result derived through radiometric calibration and emissivity adjustment.","[""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_02_06_02"", ""L3_02_06_02"", ""L3_03_01_04"", ""L3_02_06_02"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_02_06_02"", ""L3_02_06_02"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_10_R"", ""L3_08_02_04"", ""L3_03_02_01"", ""L3_03_02_01"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_03_A""]","[""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.first"", ""ee.feature.get"", ""ee.feature.get"", ""ee.imagecollection.select"", ""ee.feature.get"", ""ee.image.multiply"", ""ee.image.add"", ""ee.feature.get"", ""ee.feature.get"", ""ee.image.divide"", ""ee.image.add"", ""ee.image.log"", ""ee.image.divide"", ""ee.image.subtract"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.subtract"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.add"", ""ee.image.divide"", ""ee.imagecollection.min"", ""ee.reducer.max"", ""ee.image.reduceregion"", ""ee.image.reduceregion"", ""ee.image.subtract"", ""ee.image.subtract"", ""ee.image.divide"", ""ee.image.pow"", ""ee.image.multiply"", ""ee.image.add"", ""ee.image.multiply"", ""ee.image.divide"", ""ee.image.log"", ""ee.image.multiply"", ""ee.image.add"", ""ee.image.divide""]",067972659882342a6ea6329b061a5d0ea715108eb68192f1413fd9169b06d25a,/home/yll/GEE/Data/data40000/script_33946.txt,"5: var l8 = ee.ImageCollection(""LANDSAT/LC08/C01/T1"");
+7: var spatialFiltered = l8.filterBounds(point);
+9: var temporalFiltered = spatialFiltered.filterDate('2015-06-01', '2015-06-30');
+13: var image = ee.Image(sorted.first());
+15: print(image);
+17: var date = ee.Date(image.get('system:time_start'));
+19: print('Timestamp: ', date); // ee.Date
+23: var clouds = ee.Algorithms.Landsat.simpleCloudScore(image).select(['cloud']);
+29: Map.centerObject(image, 9);
+31: Map.centerObject(image, 9);
+35: Map.addLayer(image, visParams, 'true-color composite');
+37: var Ml = ee.Image(ee.Number(image.get('RADIANCE_MULT_BAND_10')));
+39: var Qcal = image.select('B10');
+41: var Al = ee.Image(ee.Number(image.get('RADIANCE_ADD_BAND_10')));
+45: var K1 = ee.Image(ee.Number(image.get('K1_CONSTANT_BAND_10')));
+47: var K2 = ee.Image(ee.Number(image.get('K2_CONSTANT_BAND_10')));
+55: var NDVI = (image.select('B5').subtract(image.select('B4')))
+57: .divide(image.select('B5').add(image.select('B4')));
+59: print('NDVI', NDVI);
+63: Map.addLayer(NDVI, ndviParams, 'NDVI image', false);
+65: var minReducer = ee.Reducer.min();
+67: var maxReducer = ee.Reducer.max();
+69: var NDVImin = NDVI.reduceRegion({
+71: reducer: minReducer,
+77: var NDVImax = NDVI.reduceRegion({
+79: reducer: maxReducer,",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""True-color/NDVI map display, print diagnostics, and UI output are omitted.""]",train,p4_accepted
+gis_recommend.gee_raster_core_train_row.v1,gee_raster_core_review_050,Workflowoutput240000_script_235195,GEE,L3,core_subworkflow,Classify land cover using Sentinel-2 and FIRMS,"The script classifies land cover in a specified area using Sentinel-2 surface reflectance imagery from April 2019, masked for water and forest using JAXA ALOS PALSAR data, and validated with FIRMS active fire data. It applies cloud masking via QA60 band, masks pixels over water (B11 > 700) and non-forest (FNF ≤ 1), then performs Random Forest classification on the mosaic of images from April 22–30 using training samples derived from ground control points. The output includes a classified land cover map for late April 2019 and an accuracy assessment via confusion matrix and overall accuracy.","[""L3_03_01_03"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_09_06"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_03_A"", ""L3_03_03_A"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_03_L"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_10_04_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_01_04"", ""L3_03_01_05"", ""L3_03_07_01"", ""L3_03_01_01"", ""L3_03_07_01"", ""L3_03_01_01"", ""L3_03_07_01"", ""L3_03_01_01"", ""L3_03_07_01"", ""L3_03_01_01"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_01_03_04"", ""L3_08_01_02"", ""L3_03_01_03"", ""L3_03_09_05"", ""L3_03_01_03"", ""L3_03_09_05"", ""L3_08_01_01"", ""L3_08_03_01"", ""L3_08_03_01"", ""L3_08_04_01"", ""L3_08_01_01"", ""L3_08_07_01"", ""L3_08_07_01""]","[""ee.filter.lt"", ""ee.imagecollection.filter"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.filterbounds"", ""ee.image.pow"", ""ee.image.pow"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.image.pow"", ""ee.image.pow"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.image.pow"", ""ee.image.pow"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.image.pow"", ""ee.image.pow"", ""ee.imagecollection.select"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.bitwiseand"", ""ee.image.eq"", ""ee.image.and"", ""ee.image.updatemask"", ""ee.imagecollection.filterdate"", ""ee.imagecollection.first"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.image.gt"", ""ee.image.updatemask"", ""ee.image.rename"", ""ee.image.addbands"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.select"", ""ee.image.updatemask"", ""ee.imagecollection.mosaic"", ""ee.image.clip"", ""ee.imagecollection.mosaic"", ""ee.image.clip"", ""ee.imagecollection.mosaic"", ""ee.image.clip"", ""ee.imagecollection.mosaic"", ""ee.image.clip"", ""ee.filter.date"", ""ee.imagecollection.filter"", ""ee.filter.date"", ""ee.imagecollection.filter"", ""ee.filter.date"", ""ee.imagecollection.filter"", ""ee.filter.date"", ""ee.imagecollection.filter"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.imagecollection.merge"", ""ee.featurecollection.randomcolumn"", ""ee.filter.lt"", ""ee.imagecollection.filter"", ""ee.filter.gte"", ""ee.imagecollection.filter"", ""ee.image.sampleregions"", ""ee.classifier.smilerandomforest"", ""ee.classifier.train"", ""ee.image.classify"", ""ee.image.sampleregions"", ""ee.featurecollection.errormatrix"", ""ee.confusionmatrix.accuracy""]",eaf834697878992e4bc42b3408b9cf5de22c321e0e3211f0349fdc605504ba45,/home/yll/GEE/Data/data240000/script_235195.txt,"1: var s2= ee.ImageCollection(""COPERNICUS/S2_SR"").filter(ee.Filter.lt(""CLOUDY_PIXEL_PERCENTAGE"", 10));
+5: var area = ee.FeatureCollection(geometry);
+9: Map.centerObject(area, 6.5);
+11: var fireImColA1 = ee.ImageCollection(s2.filterDate('2019-04-01', '2019-04-07')  //// Filter by dates.
+13: .filterBounds(area));
+15: var fireImColA2 = ee.ImageCollection(s2.filterDate('2019-04-08', '2019-04-14')  //// Filter by dates.
+17: .filterBounds(area));
+19: var fireImColA3 = ee.ImageCollection(s2.filterDate('2019-04-15', '2019-04-21')  //// Filter by dates.
+21: .filterBounds(area));
+23: var fireImColA4 = ee.ImageCollection(s2.filterDate('2019-04-22', '2019-04-30')  //// Filter by dates.
+25: .filterBounds(area));
+29: var cloudBitMask = ee.Number(2).pow(10).int(); ////cloud band
+31: var cirrusBitMask = ee.Number(2).pow(11).int();//// cirrus band
+33: var qa = image.select('QA60'); //// Get the pixel QA band.
+45: var fire_CM_ImColA1 = fireImColA1.map(maskS2sr);
+47: var fire_CM_ImColA2 = fireImColA2.map(maskS2sr);
+49: var fire_CM_ImColA3 = fireImColA3.map(maskS2sr);
+51: var fire_CM_ImColA4 = fireImColA4.map(maskS2sr);
+55: var swir = image.select(['B11']);
+57: return image.addBands(ee.Image(1).updateMask(swir.gt(700)).rename('water_mask'));
+61: var dataset1 =ee.ImageCollection('JAXA/ALOS/PALSAR/YEARLY/FNF')
+63: .filterDate('2017-01-01', '2017-12-31')
+69: var fnf = dataset1.select('fnf');
+71: return image.addBands(ee.Image(1).updateMask(fnf.gt(1)).rename('forest_mask'));
+75: var fire_WM_ImColA1 = fire_CM_ImColA1.map(S2maskedWater).map(S2maskforest);
+77: var fire_WM_ImColA2 = fire_CM_ImColA2.map(S2maskedWater).map(S2maskforest);
+79: var fire_WM_ImColA3 = fire_CM_ImColA3.map(S2maskedWater).map(S2maskforest);
+81: var fire_WM_ImColA4 = fire_CM_ImColA4.map(S2maskedWater).map(S2maskforest);
+83: var forest = fire_WM_ImColA1.select('forest_mask');
+87: return image.updateMask(image.select('water_mask')).updateMask(image.select('forest_mask'));",gee_core_p4_reviewed,0.5,False,False,manual_chain_faithful,"[""Map display and non-core layer rendering are omitted; retained target is the masking/classification/evaluation core.""]",train,p4_accepted

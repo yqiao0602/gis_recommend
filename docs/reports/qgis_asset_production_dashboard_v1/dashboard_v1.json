@@ -1,0 +1,79 @@
+{
+  "asset_pools": [
+    {
+      "next": "calibration -> qualification -> dedup",
+      "pool": "processing_workflow",
+      "rows": 1236,
+      "status": "family_production"
+    },
+    {
+      "next": "operator grounding",
+      "pool": "processing_operator",
+      "rows": 591,
+      "status": "queued"
+    },
+    {
+      "next": "semantic recovery",
+      "pool": "processing_implementation",
+      "rows": 1088,
+      "status": "queued"
+    },
+    {
+      "next": "bounded dynamic recovery",
+      "pool": "processing_dynamic_candidate",
+      "rows": 496,
+      "status": "deferred"
+    },
+    {
+      "next": "API -> GIS semantic -> L3",
+      "pool": "api_semantic_unit",
+      "rows": 3209,
+      "status": "queued"
+    },
+    {
+      "next": "pattern qualification",
+      "pool": "api_pattern",
+      "rows": 4880,
+      "status": "queued"
+    },
+    {
+      "next": "support other pools",
+      "pool": "api_implementation_evidence",
+      "rows": 12407,
+      "status": "evidence_only"
+    },
+    {
+      "next": "do not process yet",
+      "pool": "unresolved",
+      "rows": 23945,
+      "status": "deferred"
+    }
+  ],
+  "authority_modified": false,
+  "dedup_reject_rows": 105,
+  "dedup_unique_silver_candidates": 2,
+  "family_candidate_rows": 107,
+  "family_lanes": [
+    {
+      "dedup_unique": 1,
+      "family": "native:dissolve|native:multiparttosingleparts",
+      "reviewed_rows": 73,
+      "silver_candidates": 73,
+      "structural_passed": 73
+    },
+    {
+      "dedup_unique": 1,
+      "family": "native:buffer|native:clip",
+      "reviewed_rows": 34,
+      "silver_candidates": 34,
+      "structural_passed": 34
+    }
+  ],
+  "family_silver_candidates_before_dedup": 107,
+  "gold_candidates": 0,
+  "next_decision": "start independent intent review for the two dedup survivors; launch operator/API asset lanes in parallel",
+  "raw_sources": 47852,
+  "schema": "gis_recommend.qgis_asset_production_dashboard.v1",
+  "source_verified_rows": 47542,
+  "training_rows_emitted": 0
+}

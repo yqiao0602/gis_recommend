@@ -50,6 +50,20 @@ codex_tmp/
 /outputs_v2_partial_test/
 /archive/
 
+# Local one-off research and extraction artifacts (archive before removal)
+/academic-search/
+/literature-downloader-skill/
+/academic_literature_*.json
+/chatgeoai_extracted.txt
+/geotool_gpt_extracted.txt
+/paper*_extracted.txt
+
+# Local scratch scripts are archived outside the active script surface.
+/scripts/_*.py
+/scripts/_*.sh
+/scripts/_*.txt
+/scripts/_*.vbs
+
 # ───────── Reference literature / vendored repos (large) ─────────
 /docs/相关文献/
 
@@ -60,3 +74,14 @@ codex_tmp/
 !/outputs_v2/l3_vocab_v2.json
 !/outputs_v2/transition_allowed_next.json
 !/outputs_v2/dataset_splits_v4.json
+
+# QGIS planner benchmark release payloads are distributed by a hash-pinned release.
+/benchmarks/qgis_planner_v1/authority/source_exclusion_ledger.jsonl
+/benchmarks/qgis_planner_v1/dist/
+
+# ───────── Escape-bug / session debris (never commit; excluded from migration) ─────────
+/.tmp/
+/.tmp_*
+/.merge-backup-*/
+/.join(r[
+/tmp_*

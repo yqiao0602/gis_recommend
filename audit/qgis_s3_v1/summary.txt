@@ -1,0 +1,14 @@
+总workflow: 1488  解析失败: 0
+Gate1 去重: 算子序列重复组 152 (涉及 513 个W); 描述完全重复组 1; 同源脚本重复 0 组
+Gate2 Task独立性: {'op_leak': 1156, 'clean': 247, 'infer': 39, 'order_leak': 46}
+长度分布: {'7-15': 446, '3-6': 458, '16+': 176, '1-2': 408}
+交叉表 (len_bin x cls):
+  1-2  : clean=  43  infer=  12  order_leak=   9  op_leak= 344
+  3-6  : clean=  76  infer=   5  order_leak=  20  op_leak= 357
+  7-15 : clean=  87  infer=  15  order_leak=  11  op_leak= 333
+  16+  : clean=  41  infer=   7  order_leak=   6  op_leak= 122
+Gate3 完整性: 0-link工作流 771; 0-SEQUENTIAL关系工作流 484
+Gate4: 含native:的工作流 550; 其中所有native算子均有完整IN/OUT参数的 549
+clean类工作流 247 (其中含native: 136)
+抽样清单: 95 条 -> review_sample.csv
+漏斗(初版): total=1488 -> 有描述=1488 -> 非op_leak=332 -> clean=247 -> clean+native=136 -> native参数完整=549

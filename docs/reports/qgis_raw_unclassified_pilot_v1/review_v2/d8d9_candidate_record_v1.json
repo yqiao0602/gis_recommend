@@ -1,0 +1,54 @@
+{
+  "schema": "gis_recommend.qgis_raw_source_backed_candidate.v1",
+  "record_id": "d8d9d4672d610dfd33a1b7df",
+  "candidate_only": true,
+  "candidate_class": "implementation_backed_workflow",
+  "workflow_unit_scope": "classify_method_only",
+  "source": {
+    "source_root_id": "github_merge",
+    "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_32269.py",
+    "source_sha256": "d8d9d4672d610dfd33a1b7df7e80445217050331695410297a4a70dd2de48d8d",
+    "class_name": "DEMProcessing",
+    "method_span": {"line_start": 88, "line_end": 153},
+    "operator_spans": [
+      {"ordinal": 1, "method": "calc_stats", "operator_id": "qgis:rasterlayerstatistics", "line_start": 53, "line_end": 53, "source_expression": "processing.run(alg_string, params)", "operator_binding_span": {"line_start": 46, "line_end": 50}},
+      {"ordinal": 2, "method": "classify", "operator_id": "grass7:r.reclass", "line_start": 152, "line_end": 152, "source_expression": "processing.runAndLoadResults(alg_string, params)", "operator_binding_span": {"line_start": 142, "line_end": 149}}
+    ]
+  },
+  "operator_sequence": ["qgis:rasterlayerstatistics", "grass7:r.reclass"],
+  "dependency_edges": [
+    {"producer_ordinal": 1, "consumer_ordinal": 2, "kind": "returned_scalar_stats_to_rule_generation", "evidence": "classify line 132 calls calc_stats; lines 133-140 read MIN/MAX and construct txtrules"}
+  ],
+  "input_output_contract": {
+    "inputs": [{"name": "raster", "source": "DEMProcessing.__init__ self.raster", "type": "raster_layer", "evidence_span": {"line_start": 12, "line_end": 18}}],
+    "intermediate": [{"name": "stats", "type": "statistics_mapping", "consumer": "MIN/MAX for equal-interval breaks"}, {"name": "txtrules", "type": "reclass_rules_text", "construction_span": {"line_start": 135, "line_end": 140}}],
+    "outputs": [{"name": "classified raster", "type": "raster_layer", "path_expression": "os.path.join(self.working_directory, 'classified.tiff')", "evidence_span": {"line_start": 145, "line_end": 153}}]
+  },
+  "l3_mapping": {
+    "status": "partial_pending_mapping_authority",
+    "steps": [
+      {"operator_id": "qgis:rasterlayerstatistics", "proposed_l3": "L3_03_02_05", "basis": "existing raster-statistics semantic crosswalk; current strict crosswalk entry remains pending_review"},
+      {"operator_id": "grass7:r.reclass", "proposed_l3": "L3_03_04_01", "basis": "existing reclassification family mapping; provider-specific grass7 binding still requires authority"}
+    ],
+    "unresolved": ["strict authority for qgis:rasterlayerstatistics", "strict authority for grass7:r.reclass"]
+  },
+  "task_semantics": {
+    "task_name": "Classify a DEM into equal-interval elevation classes",
+    "task_description": "Given a DEM raster, compute its minimum and maximum values, divide that range into nine equal intervals, and reclassify the DEM into integer elevation classes saved as classified.tiff.",
+    "fidelity_status": "candidate_pending_independent_review",
+    "fidelity_evidence": ["classify docstring describes GRASS reclassification", "lines 132-140 derive rules from DEM MIN/MAX", "lines 145-153 define classified raster output"]
+  },
+  "dedup": {
+    "status": "pending_four_layer_dedup",
+    "canonical_operator_key": "qgis:rasterlayerstatistics>grass7:r.reclass",
+    "task_intent_key": "dem_equal_interval_reclassification",
+    "parent_source_sha256": "d8d9d4672d610dfd33a1b7df7e80445217050331695410297a4a70dd2de48d8d",
+    "split_group_required": true
+  },
+  "training_admission": "not_granted_candidate_only",
+  "training_rows_emitted": 0,
+  "validation_eligible": false,
+  "test_eligible": false,
+  "production_merge": "not_granted",
+  "remaining_gates": ["source SHA recheck at export", "strict L3 authority", "parameter/I-O audit", "independent semantic review", "four-layer and cross-pool dedup", "tokenizer/V4 smoke"]
+}

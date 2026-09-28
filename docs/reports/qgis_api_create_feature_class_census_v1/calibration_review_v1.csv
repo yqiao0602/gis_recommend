@@ -1,0 +1,706 @@
+review_split,record_id,source_root_id,source_path,source_sha256,normalized_source_body_sha256,source_authority_key,lexical_scope,proposed_l3_code,macro_boundary_status,excluded_high_level_methods,full_scope_call_sequence,source_snippet,human_boundary_decision,human_mapping_decision,human_description_fidelity,human_notes
+calibration,bc5253bd188c80ebe7d12f3b,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_7045.py,bc5253bd188c80ebe7d12f3bcca2467c845d589e28ae34e7c4085689b2868fcd,051bafc97fca4d79fc41d291625c9f67769aede79a3a17af4cdae00291139663,normalized_source_body_sha256:051bafc97fca4d79fc41d291625c9f67769aede79a3a17af4cdae00291139663,<module>,L3_01_01_01,strict_review_eligible,[],"[""values"", ""maplayers"", ""instance"", ""name"", ""getitem"", ""maplayersbyname"", ""instance"", ""indexfromname"", ""fields"", ""uniquevalues"", ""getexistingdirectory"", ""qgsexpression"", ""qgsfeaturerequest"", ""getfeatures"", ""crs"", ""qgsvectorlayer"", ""towkt"", ""dataprovider"", ""fields"", ""addattributes"", ""updatefields"", ""qgsfeature"", ""setgeometry"", ""geometry"", ""setattributes"", ""attributes"", ""addfeature"", ""addmaplayer"", ""instance"", ""writeasvectorformat""]","49 |             county_layer = QgsVectorLayer(f""Point?crs={crs.toWkt()}"", f""{county} County"", ""memory"")
+50 |             provider = county_layer.dataProvider()
+51 |             
+52 |             # Add fields to the new layer
+53 |             fields = point_layer.fields()
+54 |             provider.addAttributes(fields)
+55 |             county_layer.updateFields()
+56 |             
+57 |             # Add features to the new layer
+58 |             for feature in selected_features:
+59 |                 new_feature = QgsFeature()
+60 |                 new_feature.setGeometry(feature.geometry())
+61 |                 new_feature.setAttributes(feature.attributes())
+62 |                 provider.addFeature(new_feature)
+63 |             
+64 |             # Add the new layer to the map
+65 |             QgsProject.instance().addMapLayer(county_layer)
+66 |             
+67 |             # Save the new layer to a file
+68 |             save_path = f""{save_directory}/{county}_County.shp""
+69 |             QgsVectorFileWriter.writeAsVectorFormat(
+70 |                 county_layer,
+71 |                 save_path,
+72 |                 ""UTF-8"",
+73 |                 crs,
+74 |                 ""ESRI Shapefile""
+75 |             )",,,,
+calibration,b2bcf5ff4ab64db824ea7b55,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_43368.py,b2bcf5ff4ab64db824ea7b550494e888611e35baa3e2375b8cca267278e08c01,89e2bf4200d08d4e88d4d8afeef5c36f145d79e822b78ae0695d63346ff57df0,normalized_source_body_sha256:89e2bf4200d08d4e88d4d8afeef5c36f145d79e822b78ae0695d63346ff57df0,<module>,L3_01_01_01,strict_review_eligible,[],"[""qgscoordinatereferencesystem"", ""qgsvectorlayer"", ""dataprovider"", ""qgsfields"", ""append"", ""qgsfield"", ""append"", ""qgsfield"", ""addattributes"", ""updatefields"", ""qgspointxy"", ""frompolygonxy"", ""qgsfeature"", ""setfields"", ""setgeometry"", ""addfeatures"", ""updateextents"", ""addmaplayer"", ""instance"", ""writeasvectorformat"", ""print"", ""print""]","37 | 
+38 | # 3. Add attributes
+39 | fields = QgsFields()
+40 | fields.append(QgsField(""id"", QVariant.Int))
+41 | fields.append(QgsField(""name"", QVariant.String))
+42 | provider.addAttributes(fields)
+43 | layer.updateFields()
+44 | 
+45 | # 4. Define your AOI polygon coordinates (lon, lat)
+46 | coords = [
+47 |     (51.00, 24.10),
+48 |     (51.80, 24.60),
+49 |     (54.20, 25.75),
+50 |     (55.70, 25.75),
+51 |     (56.10, 24.50),
+52 |     (55.40, 23.70),
+53 |     (54.00, 23.30),
+54 |     (52.30, 23.40),
+55 |     (51.00, 24.10)  # closing the polygon
+56 | ]
+57 | 
+58 | points = [QgsPointXY(x, y) for (x, y) in coords]
+59 | 
+60 | geom = QgsGeometry.fromPolygonXY([points])
+61 | 
+62 | # 5. Create the feature
+63 | feat = QgsFeature()
+64 | feat.setFields(fields)
+65 | feat.setGeometry(geom)
+66 | feat[""id""] = 1
+67 | feat[""name""] = ""Dubai_AbuDhabi_AOI""
+68 | 
+69 | provider.addFeatures([feat])
+70 | layer.updateExtents()
+71 | 
+72 | # 6. Add to current QGIS project (for visualization)
+73 | QgsProject.instance().addMapLayer(layer)
+74 | 
+75 | # 7. Save to GeoJSON
+76 | # Use your project folder; QGIS prefers absolute paths.
+77 | # If your QGIS project is in the repo root, this relative-like path will make sense.
+78 | output_path = ""data/aoi/Dubai_AbuDhabi_AOI.geojson""
+79 | 
+80 | # If needed, you can also make it absolute, e.g.:
+81 | # output_path = ""/Users/yourname/GlobeHolder/data/aoi/Dubai_AbuDhabi_AOI.geojson""
+82 | 
+83 | error = QgsVectorFileWriter.writeAsVectorFormat(
+84 |     layer,
+85 |     output_path,
+86 |     ""UTF-8"",
+87 |     crs,
+88 |     ""GeoJSON""
+89 | )
+90 | 
+91 | if error == QgsVectorFileWriter.NoError:
+92 |     print(f""✅ GeoJSON successfully written to: {output_path}"")
+93 | else:
+94 |     print(f""❌ Error writing GeoJSON (code: {error})"")",,,,
+calibration,e16114bb18deaae4283a2cae,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3896.py,e16114bb18deaae4283a2cae6906806a6f5baaafc6323a7518e1be4027bd1619,23d63a021e6c65aa4d3636ec558b68f15576c41367781ccd990978f939fd0e9f,normalized_source_body_sha256:23d63a021e6c65aa4d3636ec558b68f15576c41367781ccd990978f939fd0e9f,ContextualIndexScoreWorkflow.create_scored_boundary_layer,L3_01_01_01,strict_review_eligible,[],"[""emit"", ""qgsvectorlayer"", ""setcrs"", ""dataprovider"", ""qgsfield"", ""addattributes"", ""updatefields"", ""emit"", ""qgsfeature"", ""fields"", ""setgeometry"", ""indexfromname"", ""fields"", ""setattribute"", ""addfeatures"", ""commitchanges"", ""emit"", ""join"", ""writeasvectorformat"", ""crs"", ""qgsvectorlayer"", ""emit""]","129 |         subset_layer.setCrs(self.target_crs)
+130 |         subset_layer_data = subset_layer.dataProvider()
+131 |         field = QgsField(""score"", QVariant.Double)
+132 |         fields = [field]
+133 |         # Add attributes (fields) from the point_layer
+134 |         subset_layer_data.addAttributes(fields)
+135 |         subset_layer.updateFields()
+136 |         self.progressChanged.emit(40.0)  # We just use nominal intervals for progress updates
+137 | 
+138 |         feature = QgsFeature(subset_layer.fields())
+139 |         feature.setGeometry(clip_area)
+140 |         score_field_index = subset_layer.fields().indexFromName(""score"")
+141 |         feature.setAttribute(score_field_index, self.index_score)
+142 |         features = [feature]
+143 |         # Add reprojected features to the new subset layer
+144 |         subset_layer_data.addFeatures(features)
+145 |         subset_layer.commitChanges()
+146 |         self.progressChanged.emit(60.0)  # We just use nominal intervals for progress updates
+147 | 
+148 |         shapefile_path = os.path.join(self.workflow_directory, f""{output_prefix}.shp"")
+149 |         # Use QgsVectorFileWriter to save the layer to a shapefile
+150 |         QgsVectorFileWriter.writeAsVectorFormat(
+151 |             subset_layer,
+152 |             shapefile_path,
+153 |             ""utf-8"",
+154 |             subset_layer.crs(),
+155 |             ""ESRI Shapefile"",
+156 |         )
+157 |         layer = QgsVectorLayer(shapefile_path, ""area_layer"", ""ogr"")
+158 |         self.progressChanged.emit(80.0)  # We just use nominal intervals for progress updates
+159 | 
+160 |         return layer
+161 | ",,,,
+calibration,0e31a3ceee11087d481bf395,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_42470.py,0e31a3ceee11087d481bf395b87173f40f279415ee4c328ad15e32bb7d62cda5,7fa671ba9a62557f83a719f9620d80bdb2104ff7ec9e647a3ed7c07b95ceb3b0,normalized_source_body_sha256:7fa671ba9a62557f83a719f9620d80bdb2104ff7ec9e647a3ed7c07b95ceb3b0,detect_illegal_dumps,L3_01_01_01,strict_review_eligible,[],"[""open"", ""read"", ""shapes"", ""astype"", ""shape"", ""append"", ""qgsfields"", ""append"", ""qgsfield"", ""append"", ""qgsfield"", ""qgsvectorlayer"", ""to_string"", ""addattributes"", ""dataprovider"", ""updatefields"", ""enumerate"", ""qgsfeature"", ""setgeometry"", ""frompointxy"", ""qgspointxy"", ""setattributes"", ""addfeature"", ""dataprovider"", ""updateextents"", ""addmaplayer"", ""instance"", ""writeasvectorformat"", ""crs""]","47 |     fields = QgsFields()
+48 |     fields.append(QgsField(""id"", QVariant.Int))
+49 |     fields.append(QgsField(""area_m2"", QVariant.Double))
+50 | 
+51 |     mem_layer = QgsVectorLayer(""Point?crs="" + crs.to_string(), ""Illegal_Dumps"", ""memory"")
+52 |     mem_layer.dataProvider().addAttributes(fields)
+53 |     mem_layer.updateFields()
+54 | 
+55 |     for i, (x, y, area) in enumerate(spots):
+56 |         feat = QgsFeature()
+57 |         feat.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(x, y)))
+58 |         feat.setAttributes([i + 1, area])
+59 |         mem_layer.dataProvider().addFeature(feat)
+60 | 
+61 |     mem_layer.updateExtents()
+62 |     QgsProject.instance().addMapLayer(mem_layer)
+63 | 
+64 |     # Optionally export as Shapefile
+65 |     QgsVectorFileWriter.writeAsVectorFormat(mem_layer, output_path, ""UTF-8"", mem_layer.crs(), ""ESRI Shapefile"")
+66 | 
+67 |     return mem_layer",,,,
+calibration,1a277c2aaa78c907eabad6f9,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_52697.py,1a277c2aaa78c907eabad6f9daed1bb6230bc0f678c21fe2af69981baf783bf5,0af2dfb643f83be2395c42885188e392bc06f696f45e63a1932a3525952be829,normalized_source_body_sha256:0af2dfb643f83be2395c42885188e392bc06f696f45e63a1932a3525952be829,FrmChartExport.export_values,L3_01_01_01,strict_review_eligible,[],"[""list"", ""keys"", ""qgsvectorlayer"", ""dataprovider"", ""isinstance"", ""append"", ""qgsfield"", ""append"", ""qgsfield"", ""addattributes"", ""updatefields"", ""qgsfeature"", ""setfields"", ""fields"", ""get"", ""name"", ""fields"", ""setattributes"", ""append"", ""addfeatures"", ""updateextents"", ""savevectoroptions"", ""lower"", ""endswith"", ""endswith"", ""writeasvectorformatv3"", ""qgscoordinatetransformcontext""]","187 |             if isinstance(val, (int, float)):
+188 |                  qgs_fields.append(QgsField(f, QVariant.Double))
+189 |             else:
+190 |                  qgs_fields.append(QgsField(f, QVariant.String))
+191 |         
+192 |         pr.addAttributes(qgs_fields)
+193 |         vl.updateFields()
+194 |         
+195 |         feats = []
+196 |         for row in self.data:
+197 |             feat = QgsFeature()
+198 |             feat.setFields(vl.fields())
+199 |             attrs = [row.get(f.name(), None) for f in vl.fields()]
+200 |             feat.setAttributes(attrs)
+201 |             feats.append(feat)
+202 |             
+203 |         pr.addFeatures(feats)
+204 |         vl.updateExtents()
+205 |         
+206 |         options = QgsVectorFileWriter.SaveVectorOptions()
+207 |         options.fileEncoding = ""UTF-8""
+208 |         options.driverName = ""CSV""
+209 |         
+210 |         lower = filename.lower()
+211 |         if lower.endswith("".xlsx""): options.driverName = ""XLSX""
+212 |         elif lower.endswith("".json""): options.driverName = ""GeoJSON""
+213 |         
+214 |         err = QgsVectorFileWriter.writeAsVectorFormatV3(vl, filename, QgsCoordinateTransformContext(), options)
+215 |         if err[0] != QgsVectorFileWriter.NoError:
+216 |              return False, err[1]
+217 |              
+218 |         return True, """"
+219 | ",,,,
+calibration,55cd5898ea1866ddbb882763,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_49841.py,55cd5898ea1866ddbb882763a17a88cb7315e40f99159fb1eabe4d886ac6b4b5,885cc86b8fac65017f662f16e3639c5350a0419b66ea6a19785af1497cfd0571,normalized_source_body_sha256:885cc86b8fac65017f662f16e3639c5350a0419b66ea6a19785af1497cfd0571,extract_district_map,L3_01_01_01,strict_review_eligible,[],"[""isvalid"", ""print"", ""extent"", ""mapcanvas"", ""source"", ""dirname"", ""join"", ""crs"", ""qgsvectorlayer"", ""format"", ""authid"", ""startediting"", ""qgsfields"", ""fields"", ""append"", ""addattributes"", ""dataprovider"", ""updatefields"", ""qgsexpression"", ""format"", ""qgsfeaturerequest"", ""getfeatures"", ""qgsfeature"", ""contains"", ""boundingbox"", ""geometry"", ""combineextentwith"", ""boundingbox"", ""geometry"", ""setgeometry"", ""fromwkt"", ""aswkt"", ""geometry"", ""name"", ""addfeature"", ""commitchanges"", ""writeasvectorformat"", ""addmaplayer"", ""instance"", ""setname"", ""triggerrepaint"", ""logmessage"", ""format"", ""name"", ""setextent"", ""mapcanvas"", ""refresh"", ""mapcanvas""]","35 |     fields = QgsFields()
+36 |     for field in input_layer.fields():
+37 |         fields.append(field)
+38 | 
+39 |     # Add the fields to the new layer
+40 |     memory_layer.dataProvider().addAttributes(fields)
+41 |     memory_layer.updateFields()
+42 | 
+43 |     # Create a query to select features based on the district name
+44 |     expr = QgsExpression('""DISTRICT"" = \'{0}\''.format(district_name))
+45 |     request = QgsFeatureRequest(expr)
+46 | 
+47 |     # Loop through the features of the original layer based on the query
+48 |     for original_feature in input_layer.getFeatures(request):
+49 |         # Create the feature for the new layer
+50 |         feature = QgsFeature(fields)
+51 | 
+52 |         # Check if the extent of the extracted feature is within the visible extent
+53 |         if not canvas_extent.contains(feature.geometry().boundingBox()):
+54 |             # Adjust the map canvas extent to include the extracted feature
+55 |             canvas_extent.combineExtentWith(feature.geometry().boundingBox())
+56 | 
+57 |         # Set the geometry of the new feature
+58 |         feature.setGeometry(QgsGeometry.fromWkt(original_feature.geometry().asWkt()))
+59 | 
+60 |         # Set the district name in the 'DISTRICT' field
+61 |         feature['DISTRICT'] = district_name
+62 | 
+63 |         # Copy attribute values from the original feature to the new feature
+64 |         for field in fields:
+65 |             field_name = field.name()
+66 |             if field_name != 'DISTRICT':  # Skip the 'DISTRICT' field
+67 |                 feature[field_name] = original_feature[field_name]
+68 | 
+69 |         # Add the feature to the new layer
+70 |         memory_layer.addFeature(feature)
+71 | 
+72 |     # Commit the changes to the memory layer
+73 |     memory_layer.commitChanges()
+74 | 
+75 |     # Save the memory layer to a new shapefile in the same directory as the original
+76 |     QgsVectorFileWriter.writeAsVectorFormat(
+77 |         memory_layer, output_shapefile, 'utf-8', input_crs, 'ESRI Shapefile')
+78 | 
+79 |     # Add the new layer to the project with a modified name
+80 |     layer_name = district_name + '_district'
+81 |     QgsProject.instance().addMapLayer(memory_layer)
+82 |     memory_layer.setName(layer_name)",,,,
+calibration,88c483ce9427120f3a026581,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4681.py,88c483ce9427120f3a0265814905081e71eefcc0938eccf002050116c2fafe61,18d223e1aecab06b10c8557b6d0ea5daf8bd9ed18b3744b3cabf17308f2c3a4e,normalized_source_body_sha256:18d223e1aecab06b10c8557b6d0ea5daf8bd9ed18b3744b3cabf17308f2c3a4e,DefaultIndexScoreWorkflow.create_scored_boundary_layer,L3_01_01_01,strict_review_eligible,[],"[""qgsvectorlayer"", ""setcrs"", ""dataprovider"", ""qgsfield"", ""addattributes"", ""updatefields"", ""qgsfeature"", ""fields"", ""setgeometry"", ""indexfromname"", ""fields"", ""setattribute"", ""addfeatures"", ""commitchanges"", ""join"", ""writeasvectorformat"", ""crs"", ""qgsvectorlayer""]","102 |         subset_layer.setCrs(self.target_crs)
+103 |         subset_layer_data = subset_layer.dataProvider()
+104 |         field = QgsField(""score"", QVariant.Double)
+105 |         fields = [field]
+106 |         # Add attributes (fields) from the point_layer
+107 |         subset_layer_data.addAttributes(fields)
+108 |         subset_layer.updateFields()
+109 | 
+110 |         feature = QgsFeature(subset_layer.fields())
+111 |         feature.setGeometry(clip_area)
+112 |         score_field_index = subset_layer.fields().indexFromName(""score"")
+113 |         feature.setAttribute(score_field_index, self.index_score)
+114 |         features = [feature]
+115 |         # Add reprojected features to the new subset layer
+116 |         subset_layer_data.addFeatures(features)
+117 |         subset_layer.commitChanges()
+118 | 
+119 |         shapefile_path = os.path.join(self.workflow_directory, f""{output_prefix}.shp"")
+120 |         # Use QgsVectorFileWriter to save the layer to a shapefile
+121 |         QgsVectorFileWriter.writeAsVectorFormat(
+122 |             subset_layer,
+123 |             shapefile_path,
+124 |             ""utf-8"",
+125 |             subset_layer.crs(),
+126 |             ""ESRI Shapefile"",
+127 |         )
+128 |         layer = QgsVectorLayer(shapefile_path, ""area_layer"", ""ogr"")
+129 | 
+130 |         return layer
+131 | 
+132 |     # Default implementation of the abstract method - not used in this workflow",,,,
+calibration,791a717d212a6e23cd0d5474,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_6392.py,791a717d212a6e23cd0d547467673671b0959342a447c6bb3332e600dc027bf7,3effbddead71805af69c60d28d6cf1bfccab055ebd7169b76ccefec260d7da0e,normalized_source_body_sha256:3effbddead71805af69c60d28d6cf1bfccab055ebd7169b76ccefec260d7da0e,Divide_SqPolygons,L3_01_01_01,strict_review_eligible,[],"[""search"", ""name"", ""group"", ""name"", ""enumerate"", ""getfeatures"", ""towkt"", ""crs"", ""qgsvectorlayer"", ""dataprovider"", ""addattributes"", ""fields"", ""updatefields"", ""addfeature"", ""updateextents"", ""str"", ""path"", ""writeasvectorformat"", ""crs"", ""print"", ""print"", ""name""]","46 |         # 新しいメモリレイヤを作成
+47 |         crs = layer.crs().toWkt()
+48 |         mem_layer = QgsVectorLayer('Polygon?crs=' + crs, f'polygon_{i}', 'memory')
+49 |         mem_layer_data = mem_layer.dataProvider()
+50 |         # 属性テーブルの構造をコピー
+51 |         mem_layer_data.addAttributes(layer.fields())
+52 |         mem_layer.updateFields()
+53 |         # フィーチャを追加
+54 |         mem_layer_data.addFeature(feature)
+55 |         mem_layer.updateExtents()
+56 |         # 出力ファイル名
+57 |         out_path = str(Path(output_dir + ""/"" + f""{layer_id}_"" + damage_class + f""_{i}.fgb""))
+58 |         # 保存
+59 |         QgsVectorFileWriter.writeAsVectorFormat(mem_layer, out_path, 'UTF-8', mem_layer.crs(), 'FlatGeobuf')
+60 |         print(f'保存: {out_path}')
+61 | 
+62 |     print(f'{layer.name()}について，全てのポリゴンを個別ファイルとして保存しました。')
+63 | 
+64 | def Layers_Loop(layers, output_dir, damage_class):",,,,
+calibration,83dbdcbd0e3d553e078528e1,textbook_strict,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0004945.py,83dbdcbd0e3d553e078528e1b47ebe32dfcaa6125a7a27a9c64c346582b24078,81dd65d16b764baace2caa7733d28a325394708ae88ef32b6f173bed6f5045c1,normalized_source_body_sha256:81dd65d16b764baace2caa7733d28a325394708ae88ef32b6f173bed6f5045c1,create_geopackage_table,L3_01_01_01,strict_review_eligible,[],"[""qgsvectorlayer"", ""qgsfield"", ""int"", ""append"", ""addattributes"", ""dataprovider"", ""updatefields"", ""savevectoroptions"", ""qgscoordinatetransformcontext"", ""exists"", ""writeasvectorformatv3""]","557 |     if field_tuple_list:
+558 |         fields = []
+559 |         for field_tuple in field_tuple_list:
+560 |             field = QgsField(field_tuple[0], int(field_tuple[1]))
+561 |             fields.append(field)
+562 |         memory_layer.dataProvider().addAttributes(fields)
+563 |         memory_layer.updateFields()
+564 |     options = QgsVectorFileWriter.SaveVectorOptions()
+565 |     options.layerName = table_name
+566 |     options.driverName = 'GPKG'
+567 |     transform = QgsCoordinateTransformContext()
+568 |     if os.path.exists(geopackage_path):
+569 |         options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteLayer
+570 |     QgsVectorFileWriter.writeAsVectorFormatV3(memory_layer, geopackage_path, transform, options)
+571 | 
+572 | 
+573 | def apply_db_migrations(db_path: str):
+574 |     with spatialite_connect(db_path) as conn:
+575 |         conn.execute('PRAGMA foreign_keys = ON;')",,,,
+calibration,e839477504a2bf4291b106d6,textbook_strict,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0015862.py,e839477504a2bf4291b106d6de4510d6aed52992355828c8a6588193adb567a4,d1d5c7517ca190c736fb1ffec58b7a26348e03fab9bf3a6aeac95894d3afb472,normalized_source_body_sha256:d1d5c7517ca190c736fb1ffec58b7a26348e03fab9bf3a6aeac95894d3afb472,save_centerlines,L3_01_01_01,strict_review_eligible,[],"[""qgsvectorlayer"", ""dataprovider"", ""addattributes"", ""qgsfield"", ""qgsfield"", ""updatefields"", ""addfeatures"", ""savevectoroptions"", ""writeasvectorformatv3"", ""transformcontext"", ""instance"", ""print"", ""print"", ""print""]","54 |             # 中心線レイヤーを作成
+55 |             centerline_layer = QgsVectorLayer(""LineString?crs=EPSG:6668"", ""Road_Centerlines"", ""memory"")
+56 | 
+57 |             # フィールドを追加
+58 |             provider = centerline_layer.dataProvider()
+59 |             provider.addAttributes([
+60 |                 QgsField(""id"", QVariant.Int),
+61 |                 QgsField(""length"", QVariant.Double)
+62 |             ])
+63 |             centerline_layer.updateFields()
+64 | 
+65 |             # フィーチャを追加
+66 |             provider.addFeatures(features)
+67 | 
+68 |             # 新しい推奨APIでFGB形式で保存
+69 |             from qgis.core import QgsVectorFileWriter, QgsProject
+70 |             options = QgsVectorFileWriter.SaveVectorOptions()
+71 |             options.driverName = ""FlatGeobuf""
+72 |             options.fileEncoding = ""UTF-8""
+73 |             errorcode, error, _, _ = QgsVectorFileWriter.writeAsVectorFormatV3(
+74 |                 centerline_layer,
+75 |                 output_path,
+76 |                 QgsProject.instance().transformContext(),
+77 |                 options
+78 |             )
+79 | 
+80 |             if errorcode == QgsVectorFileWriter.NoError:
+81 |                 print(f""中心線を {output_path} に保存しました"")
+82 |                 return True
+83 |             else:",,,,
+calibration,e490f958fd26edf7e0fb92aa,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_52035.py,e490f958fd26edf7e0fb92aa4e956a552a00ba627448153708b7b416b094932c,d3ad15ca80df6eee8a093ca1b0b19f6a34300dda946fcc4a73ab8df30e6f73d0,normalized_source_body_sha256:d3ad15ca80df6eee8a093ca1b0b19f6a34300dda946fcc4a73ab8df30e6f73d0,uwg_reclassifier.reclassify_to_UWG,L3_01_01_01,strict_review_eligible,[],"[""len"", ""text"", ""critical"", ""currenttext"", ""currentlayer"", ""fields"", ""append"", ""name"", ""index"", ""list"", ""uniquevalues"", ""range"", ""len"", ""eval"", ""str"", ""text"", ""eval"", ""str"", ""str"", ""currenttext"", ""eval"", ""str"", ""currenttext"", ""addattributes"", ""dataprovider"", ""qgsfield"", ""addattributes"", ""dataprovider"", ""qgsfield"", ""updatefields"", ""indexfromname"", ""fields"", ""getfeatures"", ""id"", ""changeattributevalues"", ""dataprovider"", ""updatefields"", ""indexfromname"", ""fields"", ""getfeatures"", ""id"", ""changeattributevalues"", ""dataprovider"", ""updatefields"", ""writeasvectorformat"", ""text"", ""crs"", ""fields"", ""append"", ""name"", ""index"", ""index"", ""deleteattributes"", ""dataprovider"", ""updatefields"", ""qgsvectorlayer"", ""path"", ""addmaplayer"", ""instance"", ""information"", ""clear""]","364 |             Pr = eval('self.dlg.comboBoxpPeriod_' + str(i))      
+365 |             dict_period[oldField] = Pr.currentText()
+366 | 
+367 |         # # Add new field # TODO perhaps make it able for user to select field name
+368 |         # # fieldname = dlg.textEditFilename.text() or similar
+369 |         vlayer.dataProvider().addAttributes([QgsField('UWGType',QVariant.String)])
+370 |         vlayer.dataProvider().addAttributes([QgsField('UWGTime',QVariant.String)])
+371 |         vlayer.updateFields()
+372 | 
+373 |         typeIndex = vlayer.fields().indexFromName('UWGType') #The field needs to be created in advance
+374 |         attrmapType = {} #dictionary of feature id: {field index: new value}
+375 |         for f in vlayer.getFeatures():
+376 |             if f[att_column] in dict_reclass:
+377 |                 attrmapType[f.id()] = {typeIndex:dict_reclass[f[att_column]]}
+378 | 
+379 |         vlayer.dataProvider().changeAttributeValues(attrmapType)
+380 |         vlayer.updateFields()
+381 | 
+382 |         timeIndex = vlayer.fields().indexFromName('UWGTime') #The field needs to be created in advance
+383 |         attrmapPeriod = {} #dictionary of feature id: {field index: new value}
+384 |         for f in vlayer.getFeatures():
+385 |             if f[att_column] in dict_period:
+386 |                 attrmapPeriod[f.id()] = {timeIndex:dict_period[f[att_column]]}
+387 | 
+388 |         vlayer.dataProvider().changeAttributeValues(attrmapPeriod)
+389 |         vlayer.updateFields()
+390 | 
+391 |         # Write new Shapefile
+392 | 
+393 |         QgsVectorFileWriter.writeAsVectorFormat(vlayer, self.dlg.textOutput.text(), ""UTF-8"", vlayer.crs(), ""ESRI Shapefile"")
+394 | 
+395 |         # Remove created fields from original shapefile
+396 |         att_list = []
+397 |         for fieldName in vlayer.fields():
+398 |             att_list.append(fieldName.name())
+399 | 
+400 |         UWGType = att_list.index('UWGType')
+401 |         UWGTime = att_list.index('UWGTime')
+402 |         vlayer.dataProvider().deleteAttributes([UWGType, UWGTime])
+403 |         vlayer.updateFields()
+404 | 
+405 |         # Add newly created shapefile to Project
+406 |         new_vlayer = QgsVectorLayer(self.outputfile[0], Path(self.outputfile[0]).name[:-4])
+407 |         QgsProject.instance().addMapLayer(new_vlayer)
+408 | ",,,,
+calibration,dba7bc9ee9e3735f762bce2c,textbook_strict,/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0001578.py,dba7bc9ee9e3735f762bce2cb349d31ea362729ba181574575f8fd3b9e3e4867,fdf9d0b7ce43bbb81340dee5f3168c55596bad6bba1ce67d062fdaaefe94d083,normalized_source_body_sha256:fdf9d0b7ce43bbb81340dee5f3168c55596bad6bba1ce67d062fdaaefe94d083,calc_attributes,L3_01_01_01,strict_review_eligible,[],"[""print"", ""print"", ""join"", ""join"", ""qgsvectorlayer"", ""transformcontext"", ""instance"", ""writeasvectorformatv3"", ""getvectorsaveoptions"", ""qgsvectorlayer"", ""edit"", ""print"", ""dataprovider"", ""addattributes"", ""qgsfield"", ""qgsfield"", ""updatefields"", ""print"", ""qgsexpression"", ""qgsexpressioncontext"", ""appendscopes"", ""globalprojectlayerscopes"", ""getfeatures"", ""setfeature"", ""evaluate"", ""updatefeature"", ""print"", ""delete_fields"", ""print""]","58 | 
+59 |     # Copy shapefile
+60 |     in_layer = QgsVectorLayer(shape_in, ""stands in"", ""ogr"")
+61 | 
+62 |     ctc = QgsProject.instance().transformContext()
+63 |     QgsVectorFileWriter.writeAsVectorFormatV3(in_layer, shape_out, ctc, getVectorSaveOptions('GPKG', 'utf-8'))
+64 |     out_layer = QgsVectorLayer(shape_out, ""stands in"", ""ogr"")
+65 | 
+66 |     with edit(out_layer):
+67 |         # Add fields
+68 |         print(""add fields..."")
+69 |         provider = out_layer.dataProvider()
+70 |         provider.addAttributes([QgsField(""struktur"", QVariant.Int),
+71 |                                 QgsField(""tbk_typ"", QVariant.String)])
+72 |         out_layer.updateFields()
+73 | 
+74 |         # Calculate fields
+75 |         print(""calculate fields..."")
+76 |         expression = QgsExpression('to_int(area($geometry))')
+77 |         context = QgsExpressionContext()",,,,
+calibration,d3479a10532097778aa13c83,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_32727.py,d3479a10532097778aa13c8332372b8fb751ae668297ead0a6f4e70b327d751c,621346ba006fe4a523634c7677ee83bba9cc67347c68983ad476a4e905a7a4a2,normalized_source_body_sha256:621346ba006fe4a523634c7677ee83bba9cc67347c68983ad476a4e905a7a4a2,Test4.run,L3_01_01_01,strict_review_eligible,[],"[""show"", ""values"", ""maplayers"", ""instance"", ""type"", ""additem"", ""name"", ""additem"", ""name"", ""exec_"", ""currentindex"", ""itemdata"", ""currentindex"", ""itemdata"", ""information"", ""mainwindow"", ""name"", ""featurecount"", ""crs"", ""fieldnameindex"", ""fieldnameindex"", ""fieldnameindex"", ""fieldnameindex"", ""fieldnameindex"", ""fieldnameindex"", ""fieldnameindex"", ""text"", ""text"", ""text"", ""text"", ""len"", ""logmessage"", ""str"", ""len"", ""qgsdatasourceuri"", ""setdatabase"", ""adddatabase"", ""setdatabasename"", ""database"", ""open"", ""logmessage"", ""str"", ""str"", ""name"", ""tolist"", ""fields"", ""getfeatures"", ""fieldnameindex"", ""sorted"", ""attributes"", ""attributes"", ""attributes"", ""getfeatures"", ""format"", ""int"", ""logmessage"", ""str"", ""len"", ""logmessage"", ""writeasvectorformat"", ""qgsvectorlayer"", ""addmaplayer"", ""instance"", ""startediting"", ""getfeatures"", ""changeattributevalue"", ""id"", ""changeattributevalue"", ""id"", ""changeattributevalue"", ""id"", ""commitchanges"", ""len"", ""logmessage"", ""str"", ""str"", ""towkt"", ""crs"", ""qgsvectorlayer"", ""startediting"", ""addattribute"", ""logmessage"", ""name"", ""updatefields"", ""addfeatures"", ""getfeatures"", ""changeattributevalue"", ""id"", ""changeattributevalue"", ""id"", ""changeattributevalue"", ""id"", ""commitchanges"", ""savevectoroptions"", ""writeasvectorformat"", ""information"", ""mainwindow"", ""str"", ""str"", ""information"", ""mainwindow""]","307 | 
+308 |                 if len(dirname)>0:
+309 | 
+310 |                     QgsMessageLog.logMessage(""Shape file choosen ..."", tag=""TOMs panel"")
+311 | 
+312 |                     writer = QgsVectorFileWriter.writeAsVectorFormat(layerSupply,filePath,""utf-8"",None,""ESRI Shapefile"")
+313 |                     vlayer = QgsVectorLayer(filePath + "".shp"", layerName, ""ogr"")
+314 |                     QgsMapLayerRegistry.instance().addMapLayer(vlayer)
+315 | 
+316 |                     vlayer.startEditing()
+317 |                     for feat in vlayer.getFeatures():
+318 |                         vlayer.changeAttributeValue(feat.id(), idxSupplySurveyID, surveyID)
+319 |                         vlayer.changeAttributeValue(feat.id(), idxSupplySurveyDay, surveyDay)
+320 |                         vlayer.changeAttributeValue(feat.id(), idxSupplySurveyTime, surveyTime)
+321 | 
+322 |                     vlayer.commitChanges()
+323 | 
+324 |                 elif len(dBname)>0:
+325 |                     #writer = QgsVectorFileWriter.writeAsVectorFormat(layerSupply,filePath,""utf-8"",None,""ESRI Shapefile"")
+326 |                     #vlayer = QgsVectorLayer(filePath + "".shp"", layerName, ""ogr"")
+327 | 
+328 |                     QgsMessageLog.logMessage(""Spatialite choosen ..."" + str(dBname) + "":"" + str(layerName), tag=""TOMs panel"")
+329 | 
+330 |                     crst = layerSupply.crs().toWkt()
+331 |                     newDemandLayer = QgsVectorLayer(""LineString?crs="" + crst, layerName, ""memory"")
+332 |                     #newDemandLayer.setCrs(crs)
+333 |                     #newDemandLayer = QgsVectorLayer(layerSupply.source())
+334 |                     #newDemandLayer.setName(layerName)
+335 | 
+336 |                     #newDemandLayer.addAttributes(attr)
+337 |                     newDemandLayer.startEditing()
+338 | 
+339 |                     for field in attr:
+340 |                         newDemandLayer.addAttribute(field)
+341 |                         QgsMessageLog.logMessage(""Adding field ..."" + field.name(), tag=""TOMs panel"")
+342 |                     newDemandLayer.updateFields()
+343 |                     check = newDemandLayer.addFeatures(feats)
+344 | 
+345 |                     for feat in newDemandLayer.getFeatures():
+346 |                         newDemandLayer.changeAttributeValue(feat.id(), idxSupplySurveyID, surveyID)
+347 |                         newDemandLayer.changeAttributeValue(feat.id(), idxSupplySurveyDay, surveyDay)
+348 |                         newDemandLayer.changeAttributeValue(feat.id(), idxSupplySurveyTime, surveyTime)
+349 | 
+350 |                     newDemandLayer.commitChanges()
+351 | 
+352 |                     """"""try:
+353 |                         newDemandLayer = QgsVectorLayer(uri.database(), layerName, 'spatialite')
+354 | 
+355 |                     except:
+356 |                         QgsMessageLog.logMessage('creating layer', tag=""TOMs panel"")
+357 |                         exc_type, exc_value, exc_traceback = sys.exc_info()
+358 |                         QgsMessageLog.logMessage(
+359 |                             'creating layer: error: ' + str(
+360 |                                 repr(traceback.extract_tb(exc_traceback))),
+361 |                             tag=""TOMs panel"")""""""
+362 | 
+363 |                     #QgsMapLayerRegistry.instance().addMapLayer(newDemandLayer)
+364 | 
+365 |                     # https://gis.stackexchange.com/questions/285346/add-layers-to-geopackage-using-pyqgis-qgis-3?rq=1
+366 | 
+367 |                     errorMsg = ''
+368 |                     options = QgsVectorFileWriter.SaveVectorOptions()
+369 |                     options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteLayer
+370 |                     #options.ct = crs
+371 |                     #options.driverName = 'SQlite'
+372 |                     options.driverName = 'Geopackage'
+373 |                     #options.datasourceOptions = [""SPATIALITE=YES""]
+374 |                     #options.layerName = ""_"".join(lyr.name().split(' '))
+375 |                     error = QgsVectorFileWriter.writeAsVectorFormat(newDemandLayer, dBname, options)
+376 |                     """"""if error:
+377 |                         QMessageBox.information(self.iface.mainWindow(), ""hello world"",
+378 |                                                 newDemandLayer.name() + "". Error number:"" + str(error) + "":"" + str(errorMsg))
+379 | 
+380 |                     error = QgsVectorFileWriter.writeAsVectorFormat(newDemandLayer,",,,,
+calibration,027533a5503b3082edcc43be,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_51860.py,027533a5503b3082edcc43be5f0ae52d6257fd31202f9e7e050100a4583f5869,027533a5503b3082edcc43be5f0ae52d6257fd31202f9e7e050100a4583f5869,normalized_source_body_sha256:027533a5503b3082edcc43be5f0ae52d6257fd31202f9e7e050100a4583f5869,Database.create_memory_layer,L3_01_01_01,strict_review_eligible,[],"[""qgsvectorlayer"", ""startediting"", ""addattributes"", ""dataprovider"", ""qgsfield"", ""qgsfield"", ""qgsfield"", ""updatefields"", ""xrange"", ""rowcount"", ""xrange"", ""columncount"", ""item"", ""append"", ""text"", ""qgsfeature"", ""setattributes"", ""addfeatures"", ""dataprovider"", ""commitchanges"", ""writeasvectorformat"", ""abspath"", ""dirname"", ""load_shp_layer_to_qgis""]","134 | 
+135 |     def create_memory_layer(self):
+136 |         layer = QgsVectorLayer(""Polygon?crs=epsg:5514"", ""typy_vykopu"", ""memory"")
+137 | 
+138 |         layer.startEditing()
+139 |         layer.dataProvider().addAttributes(
+140 |             [QgsField(""typ"", QVariant.Int), QgsField(""popis"", QVariant.String), QgsField(""cena"", QVariant.Double)])
+141 |         layer.updateFields()
+142 | 
+143 |         for row in xrange(self.joinDB_dlg.tableWidget.rowCount()):
+144 |             item_list = []
+145 |             for column in xrange(self.joinDB_dlg.tableWidget.columnCount()):
+146 |                 item = self.joinDB_dlg.tableWidget.item(row, column)
+147 |                 item_list.append(item.text())
+148 | 
+149 |             feat = QgsFeature()
+150 |             feat.setAttributes([item_list[0], item_list[1], item_list[2]])
+151 |             layer.dataProvider().addFeatures([feat])
+152 | 
+153 |         layer.commitChanges()
+154 | 
+155 |         QgsVectorFileWriter.writeAsVectorFormat(layer,
+156 |                                                 os.path.abspath(os.path.dirname(__file__)) + '/layers/' + 'typy_vykopu',
+157 |                                                 ""utf-8"", None, ""ESRI Shapefile"")
+158 |         self.load_shp_layer_to_qgis('typy_vykopu')
+159 | 
+160 |     def load_shp_layer_to_qgis(self, layer_name):
+161 |         layer = QgsVectorLayer(os.path.abspath(os.path.dirname(__file__)) + '/layers/' + layer_name + '.shp',
+162 |                                layer_name, 'ogr')",,,,
+calibration,966ef1bddba9e8139d05cb29,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_39784.py,966ef1bddba9e8139d05cb29b239d994d1e0fa12ca18745289edca720d5e1a88,3993af5cc16bdddac572f9a03229669b9fb3244b49f034b81b1ff2c13864a454,normalized_source_body_sha256:3993af5cc16bdddac572f9a03229669b9fb3244b49f034b81b1ff2c13864a454,PhanLoaiDuLieu.split_layer_by_attribute,L3_01_01_01,strict_review_eligible,[],"[""setsubsetstring"", ""geometrytype"", ""crs"", ""critical"", ""qgsvectorlayer"", ""format"", ""authid"", ""crs"", ""isvalid"", ""critical"", ""authid"", ""dataprovider"", ""addattributes"", ""fields"", ""updatefields"", ""getfeatures"", ""addfeatures"", ""isvalid"", ""options"", ""getsavefilename"", ""endswith"", ""writeasvectorformat"", ""crs"", ""information"", ""critical"", ""warning"", ""critical""]","289 |                 continue
+290 | 
+291 |             memory_provider = memory_layer.dataProvider()
+292 | 
+293 |             # Sao chép các trường (attributes) từ lớp gốc sang lớp mới
+294 |             memory_provider.addAttributes(layer.fields())
+295 |             memory_layer.updateFields()
+296 | 
+297 |             # Sao chép các đối tượng (features) từ lớp gốc vào lớp mới
+298 |             features = layer.getFeatures()
+299 |             memory_provider.addFeatures(features)
+300 | 
+301 |             # Kiểm tra lớp bộ nhớ sau khi sao chép dữ liệu
+302 |             if memory_layer.isValid():
+303 |                 options = QFileDialog.Options()
+304 |                 save_file, _ = QFileDialog.getSaveFileName(
+305 |                     None, f""Lưu lớp dữ liệu cho {value}"", """", ""Shapefile (*.shp);;GeoJSON (*.geojson)"", options=options)
+306 | 
+307 |                 if save_file:
+308 |                     if not save_file.endswith("".shp""):
+309 |                         save_file += "".shp""
+310 | 
+311 |                     error_code, error_msg = QgsVectorFileWriter.writeAsVectorFormat(layer, save_file, ""UTF-8"",
+312 |                                                                                     memory_layer.crs(),
+313 |                                                                                     ""ESRI Shapefile"")
+314 |                     if error_code == QgsVectorFileWriter.NoError:
+315 |                         QMessageBox.information(None, ""Thành công"",
+316 |                                                 f""Lớp dữ liệu cho {value} đã được lưu tại: {save_file}"")
+317 |                     else:
+318 |                         QMessageBox.critical(None, ""Lỗi"", f""Không thể lưu lớp dữ liệu cho {value}! Lỗi: {error_msg}"")",,,,
+calibration,07c176b1032faaeefc188d43,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_51711.py,07c176b1032faaeefc188d43c1042980509f8706724c28e620fc584b8af9504e,a66ff8dbf7f43786185c68215e9cd43979842b22e841e99523ffa1029291df13,normalized_source_body_sha256:a66ff8dbf7f43786185c68215e9cd43979842b22e841e99523ffa1029291df13,checkCartoDBId,L3_01_01_01,strict_review_eligible,[],"[""fieldnameindex"", ""checktempdir"", ""namedtemporaryfile"", ""writeasvectorformat"", ""qgsvectorlayer"", ""name"", ""addattributes"", ""dataprovider"", ""qgsfield"", ""updatefields"", ""getfeatures"", ""id"", ""fieldnameindex"", ""changeattributevalues"", ""dataprovider"", ""updatefeature""]","125 |     new_layer = layer
+126 | 
+127 |     if convert and layer.fieldNameIndex('cartodb_id') == -1:
+128 |         checkTempDir()
+129 |         temp = tempfile.NamedTemporaryFile()
+130 |         error = QgsVectorFileWriter.writeAsVectorFormat(layer, temp.name, 'utf-8', None, 'ESRI Shapefile')
+131 |         if error == QgsVectorFileWriter.NoError:
+132 |             new_layer = QgsVectorLayer(temp.name + '.shp', layer.name(), 'ogr')
+133 |             new_layer.dataProvider().addAttributes([QgsField('cartodb_id', QVariant.Int)])
+134 |             new_layer.updateFields()
+135 |             features = new_layer.getFeatures()
+136 |             i = 1
+137 |             for feature in features:
+138 |                 fid = feature.id()
+139 |                 aid = new_layer.fieldNameIndex('cartodb_id')",,,,
+calibration,68798ebfa40f53a06051e7b7,official_plugins,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/FLO-2D_MapCrafter__0.3.1/flo2d_mapcrafter/mapping/flood.py,68798ebfa40f53a06051e7b7d5a181c44e96438f616232560d49980034534714,4e99677a71f3c4b7b730a87ad85b6d67a68a83e9fca1f90866f5eebe6c6f9a16,normalized_source_body_sha256:4e99677a71f3c4b7b730a87ad85b6d67a68a83e9fca1f90866f5eebe6c6f9a16,FloodMaps.process_vectors,L3_01_01_01,strict_review_eligible,[],"[""open"", ""readlines"", ""open"", ""readlines"", ""zip"", ""split"", ""split"", ""append"", ""qgsvectorlayer"", ""authid"", ""dataprovider"", ""startediting"", ""addattributes"", ""qgsfield"", ""qgsfield"", ""qgsfield"", ""addattributes"", ""qgsfield"", ""qgsfield"", ""qgsfield"", ""updatefields"", ""commitchanges"", ""split"", ""float"", ""float"", ""float"", ""int"", ""qgsfeature"", ""setgeometry"", ""frompointxy"", ""qgspointxy"", ""setattributes"", ""int"", ""dir_to_angle"", ""addfeature"", ""updateextents"", ""savevectoroptions"", ""transformcontext"", ""instance"", ""writeasvectorformatv3"", ""qgsvectorlayer"", ""addmaplayer"", ""instance"", ""set_velocity_vector_style"", ""insertlayer""]","332 |         pr = vl.dataProvider()
+333 | 
+334 |         # Add fields to the layer
+335 |         vl.startEditing()
+336 |         try:
+337 |             pr.addAttributes([
+338 |                 QgsField('ID', QMetaType.Type.Int),
+339 |                 QgsField('Velocity',  QMetaType.Type.Double),
+340 |                 QgsField('Direction', QMetaType.Type.Int)
+341 |             ])
+342 |         except:
+343 |             pr.addAttributes([
+344 |                 QgsField('ID', QVariant.Int),
+345 |                 QgsField('Velocity',  QVariant.Double),
+346 |                 QgsField('Direction', QVariant.Int)
+347 |             ])
+348 |         vl.updateFields()
+349 |         vl.commitChanges()
+350 | 
+351 |         for line in combined_lines:
+352 |             parts = line.split()
+353 |             x, y, velocity, direction = float(parts[1]), float(parts[2]), float(parts[3]), int(parts[4])
+354 |             if velocity != 0:
+355 |                 feature = QgsFeature()
+356 |                 feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(x, y)))
+357 |                 feature.setAttributes([int(parts[0]), velocity, self.dir_to_angle(direction)])
+358 |                 pr.addFeature(feature)
+359 | 
+360 |         # Update the layer's extent
+361 |         vl.updateExtents()
+362 | 
+363 |         # Save the shapefile
+364 |         options = QgsVectorFileWriter.SaveVectorOptions()
+365 |         options.driverName = ""ESRI Shapefile""
+366 |         options.layerName = name
+367 |         options.fileEncoding = 'utf-8'
+368 | 
+369 |         coordinateTransformContext = QgsProject.instance().transformContext()
+370 | 
+371 |         QgsVectorFileWriter.writeAsVectorFormatV3(vl, shapefile, coordinateTransformContext, options)
+372 | 
+373 |         # Add the layer to the project
+374 |         velocity_vector_lyr = QgsVectorLayer(shapefile, name, 'ogr')
+375 |         QgsProject.instance().addMapLayer(velocity_vector_lyr, False)
+376 |         set_velocity_vector_style(velocity_vector_lyr, vector_scale)",,,,
+calibration,9ac3f6ad7c60bff07a95b928,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_3980.py,9ac3f6ad7c60bff07a95b9284ab91bd35e20588788be35ce3ca94e0552b32184,610c957b5fb5755630121e604e0f68295554f8322017cfc2743c7d99c6369435,normalized_source_body_sha256:610c957b5fb5755630121e604e0f68295554f8322017cfc2743c7d99c6369435,calc_attributes,L3_01_01_01,strict_review_eligible,[],"[""print"", ""print"", ""join"", ""join"", ""qgsvectorlayer"", ""transformcontext"", ""instance"", ""writeasvectorformatv3"", ""getvectorsaveoptions"", ""qgsvectorlayer"", ""edit"", ""print"", ""dataprovider"", ""addattributes"", ""qgsfield"", ""qgsfield"", ""updatefields"", ""print"", ""qgsexpression"", ""qgsexpressioncontext"", ""appendscopes"", ""globalprojectlayerscopes"", ""getfeatures"", ""setfeature"", ""evaluate"", ""updatefeature"", ""print"", ""delete_fields"", ""print""]","52 | 
+53 |     # Copy shapefile
+54 |     in_layer = QgsVectorLayer(shape_in, ""stands in"", ""ogr"")
+55 | 
+56 |     ctc = QgsProject.instance().transformContext()
+57 |     QgsVectorFileWriter.writeAsVectorFormatV3(in_layer, shape_out, ctc, getVectorSaveOptions('GPKG', 'utf-8'))
+58 |     out_layer = QgsVectorLayer(shape_out, ""stands in"", ""ogr"")
+59 | 
+60 |     with edit(out_layer):
+61 |         # Add fields
+62 |         print(""add fields..."")
+63 |         provider = out_layer.dataProvider()
+64 |         provider.addAttributes([QgsField(""struktur"", QVariant.Int),
+65 |                                 QgsField(""tbk_typ"", QVariant.String)])
+66 |         out_layer.updateFields()
+67 | 
+68 |         # Calculate fields
+69 |         print(""calculate fields..."")
+70 |         expression = QgsExpression('to_int(area($geometry))')
+71 |         context = QgsExpressionContext()",,,,
+calibration,3071ecdcb4c9d52ec925bf7f,official_plugins,/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/NMEA_Visualizer__0.7/nmeavisualizer/plugin.py,3071ecdcb4c9d52ec925bf7fd633e61dcd0a05bbbfe2cb090c129f8734ab8750,0c0ab6d7f63a3d6899a759c48e98371591fc7a25091148631cd555bb5072e2b8,normalized_source_body_sha256:0c0ab6d7f63a3d6899a759c48e98371591fc7a25091148631cd555bb5072e2b8,NmeaVisualizerPlugin.run,L3_01_01_01,strict_review_eligible,[],"[""getopenfilename"", ""qdialog"", ""setwindowtitle"", ""qvboxlayout"", ""qcheckbox"", ""qcheckbox"", ""qcheckbox"", ""qcheckbox"", ""setchecked"", ""addwidget"", ""addwidget"", ""addwidget"", ""addwidget"", ""qpushbutton"", ""addwidget"", ""setlayout"", ""connect"", ""exec"", ""ischecked"", ""ischecked"", ""ischecked"", ""ischecked"", ""qgsfield"", ""qgsfield"", ""qgsfield"", ""qgsfield"", ""qgsfield"", ""qgsfield"", ""qgsfield"", ""open"", ""startswith"", ""startswith"", ""parse_gga"", ""strip"", ""qgsfeature"", ""setgeometry"", ""frompointxy"", ""qgspointxy"", ""setattributes"", ""append"", ""qgsvectorlayer"", ""dataprovider"", ""addattributes"", ""updatefields"", ""addfeatures"", ""information"", ""defaultsymbol"", ""geometrytype"", ""setcolor"", ""qcolor"", ""defaultsymbol"", ""geometrytype"", ""setcolor"", ""qcolor"", ""append"", ""qgsrenderercategory"", ""defaultsymbol"", ""geometrytype"", ""setcolor"", ""qcolor"", ""append"", ""qgsrenderercategory"", ""qgscategorizedsymbolrenderer"", ""setsourcesymbol"", ""setrenderer"", ""addmaplayer"", ""instance"", ""splitext"", ""writeasvectorformat"", ""crs"", ""writeasvectorformat"", ""crs"", ""writeasvectorformat"", ""crs"", ""information"", ""len""]","104 |                         feat.setAttributes([quality, sats, hdop, lat, lon, alt, timestamp])
+105 |                         features.append(feat)
+106 | 
+107 |         layer = QgsVectorLayer(""Point?crs=EPSG:4326"", ""NMEA Points"", ""memory"")
+108 |         pr = layer.dataProvider()
+109 |         pr.addAttributes(fields)
+110 |         layer.updateFields()
+111 |         pr.addFeatures(features)
+112 | 
+113 |         if not features:
+114 |             QMessageBox.information(None, ""No data"", ""No valid GGA sentences found."")
+115 |             return
+116 | 
+117 |         # --- Apply categorized renderer by ""quality"": 4=green, 5=orange, others=red ---
+118 |         try:
+119 |             # Base/default symbol (for 'others')
+120 |             default_symbol = QgsSymbol.defaultSymbol(layer.geometryType())
+121 |             default_symbol.setColor(QColor(200, 0, 0))  # red
+122 |             categories = []
+123 | 
+124 |             # Category: quality == 4 (green)
+125 |             sym4 = QgsSymbol.defaultSymbol(layer.geometryType())
+126 |             sym4.setColor(QColor(0, 160, 0))
+127 |             categories.append(QgsRendererCategory(4, sym4, ""RTK fix (4)""))
+128 | 
+129 |             # Category: quality == 5 (orange)
+130 |             sym5 = QgsSymbol.defaultSymbol(layer.geometryType())
+131 |             sym5.setColor(QColor(230, 140, 0))
+132 |             categories.append(QgsRendererCategory(5, sym5, ""RTK float (5)""))
+133 | 
+134 |             renderer = QgsCategorizedSymbolRenderer(""quality"", categories)
+135 |             # Set default (others) symbol to red
+136 |             renderer.setSourceSymbol(default_symbol)
+137 |             layer.setRenderer(renderer)
+138 |         except Exception as e:
+139 |             # Renderer application is non-critical; continue even if it fails
+140 |             pass
+141 | 
+142 |         if add_to_map:
+143 |             QgsProject.instance().addMapLayer(layer)
+144 | 
+145 |         output_base = os.path.splitext(file_path)[0]
+146 |         if export_gpkg:
+147 |             QgsVectorFileWriter.writeAsVectorFormat(layer, output_base + "".gpkg"", ""utf-8"", layer.crs(), ""GPKG"")
+148 |         if export_shp:
+149 |             QgsVectorFileWriter.writeAsVectorFormat(layer, output_base + "".shp"", ""utf-8"", layer.crs(), ""ESRI Shapefile"")
+150 |         if export_kml:
+151 |             QgsVectorFileWriter.writeAsVectorFormat(layer, output_base + "".kml"", ""utf-8"", layer.crs(), ""KML"")
+152 | 
+153 |         if not add_to_map:
+154 |             QMessageBox.information(None, ""Success"", f""Loaded {len(features)} positions."")",,,,
+calibration,2b4212ece50db56fc4689599,github_merge,/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_6558.py,2b4212ece50db56fc468959911ec655fa3d3b70a8bc47ccc9607a3e80cc75268,f9cf6fdfe0c11c0b0654e65a2f90486c6b4c1461d4698204b29e75ec64017158,normalized_source_body_sha256:f9cf6fdfe0c11c0b0654e65a2f90486c6b4c1461d4698204b29e75ec64017158,<module>,L3_01_01_01,strict_review_eligible,[],"[""maplayersbyname"", ""instance"", ""maplayersbyname"", ""instance"", ""exception"", ""exception"", ""dataprovider"", ""crs"", ""qgsfields"", ""append"", ""qgsfield"", ""append"", ""qgsfield"", ""append"", ""qgsfield"", ""append"", ""qgsfield"", ""append"", ""qgsfield"", ""qgsvectorlayer"", ""authid"", ""dataprovider"", ""addattributes"", ""updatefields"", ""qgsdistancearea"", ""setsourcecrs"", ""transformcontext"", ""instance"", ""getfeatures"", ""geometry"", ""length"", ""aspoint"", ""interpolate"", ""sample"", ""qgspointxy"", ""qgsfeature"", ""setgeometry"", ""frompointxy"", ""qgspointxy"", ""id"", ""round"", ""round"", ""x"", ""y"", ""setattributes"", ""addfeature"", ""updateextents"", ""addmaplayer"", ""instance"", ""savevectoroptions"", ""writeasvectorformatv2"", ""transformcontext"", ""instance"", ""print"", ""print""]","35 | out_fields.append(QgsField(""X"", QVariant.Double))
+36 | out_fields.append(QgsField(""Y"", QVariant.Double))
+37 | 
+38 | mem_layer = QgsVectorLayer(""Point?crs="" + crs.authid(), ""All_Transects_Points"", ""memory"")
+39 | mem_provider = mem_layer.dataProvider()
+40 | mem_provider.addAttributes(out_fields)
+41 | mem_layer.updateFields()
+42 | 
+43 | d = QgsDistanceArea()
+44 | d.setSourceCrs(crs, QgsProject.instance().transformContext())
+45 | 
+46 | # Step 5: Store values for plotting
+47 | graph_dist = []
+48 | graph_elev = []
+49 | 
+50 | # Step 6: Process all transects
+51 | for feat in transects.getFeatures():
+52 |     geom = feat.geometry()
+53 |     length = geom.length()
+54 |     cur_dist = 0
+55 | 
+56 |     while cur_dist <= length:
+57 |         pt = geom.interpolate(cur_dist).asPoint()
+58 |         elev = provider.sample(QgsPointXY(pt), 1)[0]
+59 | 
+60 |         if elev is not None:
+61 |             new_feat = QgsFeature()
+62 |             new_feat.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(pt)))
+63 | 
+64 |             attrs = [
+65 |                 feat.id(),          # ID_LINE
+66 |                 round(cur_dist, 2), # DIST
+67 |                 round(elev, 2),     # Z
+68 |                 pt.x(),             # X
+69 |                 pt.y()              # Y
+70 |             ]
+71 |             new_feat.setAttributes(attrs)
+72 |             mem_provider.addFeature(new_feat)
+73 | 
+74 |         cur_dist += spacing
+75 | 
+76 | mem_layer.updateExtents()
+77 | QgsProject.instance().addMapLayer(mem_layer)
+78 | 
+79 | # Step 7: Export layer to GeoPackage
+80 | output_gpkg_path = ""D:/qgis/output/transects_profiles.gpkg""
+81 | options = QgsVectorFileWriter.SaveVectorOptions()
+82 | options.driverName = ""GPKG""
+83 | options.fileEncoding = ""UTF-8""
+84 | options.layerName = ""All_Transects_Points""
+85 | 
+86 | error = QgsVectorFileWriter.writeAsVectorFormatV2(mem_layer, output_gpkg_path, QgsProject.instance().transformContext(), options)
+87 | 
+88 | if error[0] == QgsVectorFileWriter.NoError:
+89 |     print(f""GeoPackage saved successfully at: {output_gpkg_path}"")
+90 | else:
+91 |     print(f""Error saving GeoPackage: {error}"")",,,,

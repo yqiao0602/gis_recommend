@@ -1,0 +1,112 @@
+{
+  "counts": {
+    "deferred_backlog_rows": 47,
+    "policy_candidate_rows": 6,
+    "rewrite_candidate_rows": 3,
+    "risk_layers": 3,
+    "rule_proposal_rows": 50,
+    "schema_valid_train_only_candidate_rows": 3,
+    "source_audit_rows": 50,
+    "source_hash_verified_rows": 50,
+    "training_rows_emitted": 0
+  },
+  "decision": {
+    "admission_change": "none",
+    "llm_used": false,
+    "mutated_train11397_package": false,
+    "next_gate": "formalize policy candidates or regenerate through an explicit batch gate",
+    "production_merge": "not_granted",
+    "test_eligible": false,
+    "training_rows_emitted": 0,
+    "training_run_started": false,
+    "validation_eligible": false
+  },
+  "inputs": {
+    "package_dir": "docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_raster_core_batch_training_package_v1",
+    "risk_layers": [
+      "high",
+      "medium",
+      "low"
+    ]
+  },
+  "policy": {
+    "do_not_edit_operator_or_l3_sequences": true,
+    "do_not_mutate_train11397_package": true,
+    "do_not_promote_gee_to_validation_or_test": true,
+    "risk_flags_are_calibration_signals": true,
+    "rollup_only": true
+  },
+  "policy_candidate_ids": [
+    "generic_rule_review_fail_closed",
+    "display_export_noise_sidecar",
+    "external_context_sidecar",
+    "manual_boundary_review_fail_closed",
+    "rule_repair_before_regeneration",
+    "evaluation_metrics_sidecar"
+  ],
+  "proposal_decision_counts": {
+    "defer_external_algorithm_sidecar": 1,
+    "defer_generic_rule_review": 39,
+    "defer_manual_boundary_review": 4,
+    "defer_regional_statistics_mapping_repair": 1,
+    "rewrite_core_classifier_keep_eval_sidecar": 2,
+    "rewrite_core_raster_stats_text": 1,
+    "rewrite_or_defer_text_overclaim": 2
+  },
+  "risk_layer_counts": {
+    "high": {
+      "deferred_backlog_rows": 3,
+      "rewrite_candidate_rows": 2,
+      "rule_proposal_rows": 5,
+      "schema_valid_train_only_candidate_rows": 2,
+      "source_audit_rows": 5,
+      "source_hash_verified_rows": 5,
+      "training_rows_emitted": 0
+    },
+    "low": {
+      "deferred_backlog_rows": 31,
+      "rewrite_candidate_rows": 0,
+      "rule_proposal_rows": 31,
+      "schema_valid_train_only_candidate_rows": 0,
+      "source_audit_rows": 31,
+      "source_hash_verified_rows": 31,
+      "training_rows_emitted": 0
+    },
+    "medium": {
+      "deferred_backlog_rows": 13,
+      "rewrite_candidate_rows": 1,
+      "rule_proposal_rows": 14,
+      "schema_valid_train_only_candidate_rows": 1,
+      "source_audit_rows": 14,
+      "source_hash_verified_rows": 14,
+      "training_rows_emitted": 0
+    }
+  },
+  "rule_repair_target_counts": {
+    "optional_evaluation_extractor": 2,
+    "regional_statistics_extractor_or_l3_mapping": 1,
+    "temporal_module_extractor_or_external_algorithm_policy": 1
+  },
+  "schema": "gis_recommend.gee_raster_core_batch_sampling_audit_rollup_summary.v1",
+  "sidecar_requirement_counts": {
+    "display_export_noise_sidecar": 5,
+    "evaluation_metrics_sidecar_not_training_target": 2,
+    "external_algorithm_module_sidecar": 1,
+    "external_vector_context_sidecar": 4,
+    "vector_featurecollection_context_sidecar": 1
+  },
+  "source_action_counts": {
+    "extend_extractor_for_temporal_module_or_sidecar_external_algorithm": 1,
+    "keep_display_export_as_noise_sidecar_not_training_target": 27,
+    "manual_chain_boundary_review": 5,
+    "move_evaluation_to_sidecar_or_extend_evaluation_extractor": 2,
+    "no_source_backed_rule_change_suggested": 14,
+    "repair_extractor_or_l3_mapping_for_regional_statistics": 1,
+    "retain_train_only_split_audit_note": 12,
+    "rewrite_task_text_classification_claim_or_defer": 5,
+    "rewrite_task_text_evaluation_claim_or_defer": 1,
+    "rewrite_task_text_label_vector_claim_or_defer": 3,
+    "rewrite_temporal_claim_or_defer": 3,
+    "separate_external_vector_context_from_core_operator_chain": 3
+  }
+}

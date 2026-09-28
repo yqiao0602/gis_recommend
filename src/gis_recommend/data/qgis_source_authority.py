@@ -6,15 +6,7 @@ import hashlib
 from pathlib import Path
 
 
-def source_authority(path: Path, *, source_sha256: str) -> dict[str, str]:
-    if not path.is_file():
-        return {
-            "source_authority_key": f"source_sha256:{source_sha256}",
-            "source_authority_basis": "source_sha256_fallback",
-            "normalized_source_body_sha256": "",
-            "upstream_source_repo": "",
-            "upstream_source_path": "",
-        }
+def _source_metadata_and_body(path: Path) -> tuple[str, str, str]:
     lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
     upstream_repo = ""
     upstream_path = ""
@@ -27,7 +19,7 @@ def source_authority(path: Path, *, source_sha256: str) -> dict[str, str]:
         elif line.startswith("# Source path:"):
             upstream_path = line.partition(":")[2].strip()
             metadata_found = True
-        elif line.startswith("# Query used:") or line.startswith("# Harvested at:"):
+        elif line.startswith(("# Query used:", "# Harvested at:")):
             metadata_found = True
         elif metadata_found and not line.strip():
             body_start = index + 1
@@ -36,6 +28,26 @@ def source_authority(path: Path, *, source_sha256: str) -> dict[str, str]:
             body_start = index
             break
     normalized_body = "\n".join(line.rstrip() for line in lines[body_start:]).strip()
+    return upstream_repo, upstream_path, normalized_body
+
+
+def normalized_source_body(path: Path) -> str:
+    """Return the exact normalized body used by QGIS source authority."""
+    if not path.is_file():
+        raise FileNotFoundError(path)
+    return _source_metadata_and_body(path)[2]
+
+
+def source_authority(path: Path, *, source_sha256: str) -> dict[str, str]:
+    if not path.is_file():
+        return {
+            "source_authority_key": f"source_sha256:{source_sha256}",
+            "source_authority_basis": "source_sha256_fallback",
+            "normalized_source_body_sha256": "",
+            "upstream_source_repo": "",
+            "upstream_source_path": "",
+        }
+    upstream_repo, upstream_path, normalized_body = _source_metadata_and_body(path)
     body_sha = hashlib.sha256(normalized_body.encode("utf-8")).hexdigest()
     return {
         "source_authority_key": f"normalized_source_body_sha256:{body_sha}",

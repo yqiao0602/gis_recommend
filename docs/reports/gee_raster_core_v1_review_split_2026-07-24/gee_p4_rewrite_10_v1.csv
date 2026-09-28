@@ -1,0 +1,228 @@
+review_id,script_id,review_split,task_name,task_description,original_task_name,original_task_description,operator_sequence,old_l3_sequence,new_l3_sequence_status,known_omissions,quality_flags,source_sha256,source_path,evidence_snippet,description_policy,training_admission,validation_eligible,test_eligible,adjudication_basis,adjudication_notes
+gee_raster_core_review_004,Workflowoutput80000_script_75877,train,Prepare Sentinel-2 water-index masks and quality mosaic,"Filter site features and Sentinel-2 imagery by region and date, clip the images, decode QA cloud bits to update masks, compute water-index and wetness bands, add them to each image, and build a quality mosaic using the retained index band.",Detect surface water using NDWI,"The script detects surface water extent by computing multiple water indices (NDWI1, NDWI2, NWI, AWEIsh, AWEInsh, TCwet, SWI, etc.) from Sentinel-2 imagery over a specific region (site4) during May–June 2021. It applies cloud masking, clips images to the region, and generates a mosaic based on the 'NDWI2' band quality, likely to produce a clear composite image highlighting water bodies.","[""ee.filter.eq"", ""table.filter"", ""ee.filter.eq"", ""table.filter"", ""ee.filter.eq"", ""table.filter"", ""ee.filter.eq"", ""table.filter"", ""ee.imagecollection.filterbounds"", ""ee.imagecollection.filterbounds.filterdate"", ""image.clip"", ""image.select"", ""qa.bitwiseand"", ""qa.bitwiseand.eq"", ""qa.bitwiseand"", ""qa.bitwiseand.eq"", ""qa.bitwiseand.eq.and"", ""image.updatemask"", ""image.updatemask.select"", ""image.updatemask.select.copyproperties"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""image.select"", ""image.select"", ""image.select"", ""image.select"", ""image.expression"", ""image.expression.rename"", ""image.addbands"", ""image.select"", ""image.select"", ""image.select"", ""image.select"", ""image.select"", ""image.expression"", ""image.expression.rename"", ""image.addbands"", ""image.select"", ""image.select"", ""image.select"", ""image.select"", ""image.expression"", ""image.expression.rename"", ""image.addbands"", ""image.select"", ""image.select"", ""image.select"", ""image.select"", ""image.select"", ""image.select"", ""image.expression"", ""image.expression.rename"", ""image.addbands"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""image.select"", ""image.select"", ""image.expression"", ""image.expression.rename"", ""image.addbands"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""ndwicoll.qualitymosaic""]","[""L3_03_09_05"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_01_01"", ""L3_10_02_01""]",pending_operator_l3_canonicalization,"[""final thresholded water-extent product"", ""map display layers"", ""print output""]","[""untyped_receiver"", ""callback"", ""function_callback"", ""named_callback""]",0f6b901df19286f512c8ad5179bea56c2235e3b52abc6ded7a23daffa018878f,/home/yll/GEE/Data/data80000/script_75877.txt,"3: print(GAMDAM);
+5: Map.addLayer(GAMDAM);
+7: var site1 = (table.filter(ee.Filter.eq(""FID_1"", 12171)));
+9: var site2 = (table.filter(ee.Filter.eq(""FID_1"", 1561)));
+11: var site3 = (table.filter(ee.Filter.eq(""FID_1"", 3527)));
+13: var site4 = (table.filter(ee.Filter.eq(""FID_1"", 4481)));
+25: var collection = ee.ImageCollection(""COPERNICUS/S2"")
+27: .filterBounds(site4)
+29: .filterDate('2021-05-01', '2021-06-30');
+31: print(collection);
+33: Map.addLayer(collection, vizParamsS2);
+35: var clipped = collection.map(function(image){return image.clip(site4)});
+37: print(clipped);
+39: Map.addLayer(clipped, vizParamsS2, 'clipped');
+43: var qa = image.select('QA60')
+55: .select(""B.*"")
+61: var cloudmasked = clipped.map(maskS2clouds);
+63: print(cloudmasked);
+65: Map.addLayer(cloudmasked, vizParamsS2, 'cloudmasked');
+69: var NDWI1threshold = image.normalizedDifference(['B2', 'B4']).rename('NDWI1');
+73: var NDWI1coll = cloudmasked.map(NDWI1);
+75: print(NDWI1coll);
+79: var NDWI2threshold = image.normalizedDifference(['B3', 'B8']).rename('NDWI2');
+83: var NDWI2coll = NDWI1coll.map(NDWI2);
+85: print(NDWI2coll);
+89: var NWIthreshold = image.expression('(B2-(B8+B11+B12))/(B2-(B8+B11+B12))',
+91: {'B2': image.select('B2'), 'B8': image.select('B8'), 'B11': image.select('B11'), 'B12': image.select('B12')}).rename('NWI');
+95: var NWIcoll = NDWI2coll.map(NWI);
+97: print(NWIcoll);
+101: var AWEIshthreshold = image.expression('B2+(2.5*B3)-(1.5*B8*B11)-0.25*B12',",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 1_10: The new chain recovers table/site filters, Sentinel-2 filter/date/bounds, clipping, QA cloud masking, multiple normalizedDifference/expression index bands, addBands, and qualityMosaic. Original task text overstates final surface-water detection, so this should be text-rewritten before train-only export."
+gee_raster_core_review_005,Workflowoutput70000_script_68120,train,Construct land-cover training samples from joined imagery,"Convert labeled training features to centroids, merge training feature collections, join them with nearby Landsat surface-reflectance images, apply cloud masking and calibrated band selection, sample image values at the training locations, flatten the sampled collection, and inspect the first sample row.",Classify land cover types,"The script merges multiple user-generated feature collections of training data points, each labeled with a land cover class, converts polygon features to centroids if necessary, and joins them with Landsat 8 surface reflectance imagery within a 30-day temporal window. It applies pixel value extraction at the point locations to generate a final training dataset for supervised land cover classification. The output is a flattened feature collection containing spectral values from Landsat bands matched to labeled training points, intended for use in a land cover classification model.","[""feature.centroid"", ""feature.centroid"", ""feature.centroid"", ""feature.centroid"", ""feature.centroid"", ""feature.centroid"", ""feature.centroid"", ""feature.centroid"", ""feature.centroid"", ""feature.centroid"", ""fc1_point.merge"", ""fc1_point.merge.merge"", ""fc1_point.merge.merge.merge"", ""fc1_point.merge.merge.merge.merge"", ""fc1_point.merge.merge.merge.merge.merge"", ""fc1_point.merge.merge.merge.merge.merge.merge"", ""fc1_point.merge.merge.merge.merge.merge.merge.merge"", ""fc1_point.merge.merge.merge.merge.merge.merge.merge.merge"", ""fc1_point.merge.merge.merge.merge.merge.merge.merge.merge.merge"", ""feature.get"", ""palette.get"", ""feature.set"", ""fc.map.style"", ""feature.get"", ""palette.get"", ""feature.set"", ""hoke_points.map.style"", ""ee.algorithms.objecttype"", ""ee.join.saveall"", ""feature.get"", ""ee.date.millis"", ""feature.set"", ""ee.filter.maxdifference"", ""ee.filter.intersects"", ""ee.filter.and"", ""savealljoin.apply"", ""fc.first"", ""fc.first.propertynames"", ""fc.first.propertynames.remove"", ""feature.get"", ""ee.list.get"", ""image.select"", ""image.select.bitwiseand"", ""image.select.bitwiseand.rightshift"", ""image.select.bitwiseand.rightshift.eq"", ""image.select"", ""image.select.updatemask"", ""clrmsk.select"", ""image.select"", ""image.select.multiply"", ""image.select.multiply.add"", ""imgsr.sampleregions"", ""joinfc.map.flatten"", ""final_training_data.first""]","[""L3_01_03_04"", ""L3_02_04_01"", ""L3_03_10_R"", ""L3_02_03_05""]",pending_operator_l3_canonicalization,"[""full classifier training and prediction"", ""map styling and display layers"", ""final land-cover map use""]","[""callback"", ""function_callback"", ""named_callback"", ""untyped_receiver"", ""native_js_call""]",563ebf721f8a99be22f3fa96336c992132d6f2badd0cf7223fed12bd0540cc36,/home/yll/GEE/Data/data70000/script_68120.txt,"1: var fC1 = ee.FeatureCollection('users/zepyoorohanian/Ohanian_gtd')
+3: var fC2 = ee.FeatureCollection('users/samuelmatey/SamMatey600PtsFC')
+5: var fC3 = ee.FeatureCollection('users/mmagana0212/MaganaGtd1')
+7: var fC4 = ee.FeatureCollection('users/kylietaylorrr44/Geog415/myExportTableTask2')
+9: var fC5 = ee.FeatureCollection('users/chloehoke/hokePath42Row36Points') // already point
+11: var fC6 = ee.FeatureCollection('users/briennesolis/Solis600FC')
+13: var fC8 = ee.FeatureCollection('users/claylevy53/All_Points')
+15: var fC9 = ee.FeatureCollection('users/zhouyiwei123/GEOG415/gtdTotal')
+17: var fC10 = ee.FeatureCollection('users/mannnatalie/GEOG415/GTD_Path40_Row36_NMann') // already point
+19: var fC11 = ee.FeatureCollection('users/blavallee14/Geog415/blavalleeGtd')
+21: var fC12 = ee.FeatureCollection('users/zchapman2/Geog415/zchapmanpoints')
+23: var fC13 = ee.FeatureCollection('users/annemariepeacock/600points')
+31: var fC1_point = fC1.map(convertGeom);
+33: var fC2_point = fC2.map(convertGeom);
+35: var fC3_point = fC3.map(convertGeom);
+37: var fC5_point = fC5.map(convertGeom); // already point data
+39: var fC6_point = fC6.map(convertGeom);
+41: var fC8_point = fC8.map(convertGeom);
+43: var fC9_point = fC9.map(convertGeom);
+45: var fC10_point = fC10.map(convertGeom); // already point data
+47: var fC12_point = fC12.map(convertGeom);
+49: var fC13_point = fC13.map(convertGeom);
+69: var land_type = ee.Dictionary({
+85: var palette = ee.Dictionary({
+105: .map(function (feature) {
+123: .map(function (feature) {
+139: Map.addLayer(hoke_image, {}, ""Hoke Training Data"")
+141: Map.addLayer(image, {}, ""ALL Training Data"")
+143: Map.centerObject(fC)
+145: print(ee.Algorithms.ObjectType(fC))",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 1_10: The new chain recovers point-centroid conversion, feature-collection merges, temporal/spatial image join, cloud masking, calibrated image selection, sampleRegions, flatten, and first-row inspection. It is useful as training-sample construction, but the current task name says land-cover classification and needs rewriting."
+gee_raster_core_review_006,Workflowoutput50000_script_49585,train,Prepare Sentinel-2 spectral and texture features,"Filter Sentinel-2 Level-1 imagery by date, cloud metadata, and bounds, decode QA bits to mask clouds, select the first retained image, clip it to the region, and derive B8 texture features using a GLCM texture operation.",Identify tea cultivation area,"The script identifies tea cultivation areas using Sentinel-2 Level 1-C data by computing spectral indices and GLCM texture features (Entropy and Dissimilarity) from the B8 band, training and testing with labeled sample points, and classifying within a defined region of interest in Turkey.","[""s2.level1.filterdate"", ""s2.level1.filterdate.filtermetadata"", ""ee.geometry.point"", ""s2.level1.filterdate.filtermetadata.filterbounds"", ""image.select"", ""qa.bitwiseand"", ""qa.bitwiseand.eq"", ""qa.bitwiseand"", ""qa.bitwiseand.eq"", ""qa.bitwiseand.eq.and"", ""image.updatemask"", ""dataset.first"", ""dataset.first.select"", ""indexes.addall"", ""frame.bandnames"", ""frame.clip"", ""image.bandtypes"", ""ee.kernel.square"", ""image.select"", ""image.select.glcmtexture"", ""glcm.select"", ""glcm.select""]","[""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_09_06"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_03_01_01"", ""L3_03_01_04"", ""L3_08_02_02""]",pending_operator_l3_canonicalization,"[""training and testing samples"", ""final tea-area classification"", ""map display and band diagnostics""]","[""unbound_identifier"", ""untyped_receiver"", ""callback"", ""function_callback"", ""named_callback""]",84f4aa442256a3cd1c78f8cc2b17339096b1724f1d89d388414b1392442f8116,/home/yll/GEE/Data/data50000/script_49585.txt,"1: var sampleTestingPoints = ee.FeatureCollection(""users/berkayozen92/sampleTestingPoints5000"");
+3: var sampleTrainingPoints = ee.FeatureCollection(""users/berkayozen92/sampleTrainingPoints5000"");
+5: var allArea = ee.FeatureCollection(""users/berkayozen92/allArea"");
+7: var nonteaArea = ee.FeatureCollection(""users/berkayozen92/nonTea"");
+9: var teaArea = ee.FeatureCollection(""users/berkayozen92/tea"");
+15: var qa = image.select('QA60');
+29: Map.setCenter(40.3541, 40.8787, 12);
+33: level1 : ee.ImageCollection('COPERNICUS/S2'), // Level 1-C Data
+35: level2 : ee.ImageCollection('COPERNICUS/S2_SR'), // Level 2-A Data
+45: var dataSet = s2.level1.filterDate('2016-06-01','2016-08-30')
+47: .filterMetadata('CLOUDY_PIXEL_PERCENTAGE','less_than',10)
+49: .filterBounds(ee.Geometry.Point(40.3194, 40.8995 ))
+51: .map(maskS2clouds);
+53: var frame = dataSet.first().select(S2BANDS);
+59: print(S2BANDS_EXTENDED);
+63: print(image.bandTypes());
+65: Map.addLayer(image, visParams, 'Sentinel-2');
+67: var square = ee.Kernel.square({radius: 2});
+69: var glcm = image.select('B8').glcmTexture({size: 4});
+73: Map.addLayer(glcm.select('B8_ent'), {min: 0, max: 1500, palette: ['0000CC', 'CC0000']}, 'Entropy');
+75: Map.addLayer(glcm.select('B8_diss'), {min: 0, max: 1500, palette: ['0000CC', 'CC0000']}, 'Dissimilarity');",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 1_10: The new chain recovers Sentinel-2 date/cloud/bounds filtering, QA masking, first image selection, clipping, and B8 GLCM texture selection. Because the original task claims tea-cultivation classification while the recovered chain is only feature preparation, this needs a narrower task rewrite and possibly another source check for the unbound/index helper."
+gee_raster_core_review_021,Workflowoutput220000_script_214115,train,Filter Sentinel-1 SAR imagery for minimum backscatter,"Filter Sentinel-1 GRD images by required VV/VH polarizations, instrument mode, region, and date; compute the minimum image from the retained collection; select backscatter polarizations; and clip the result to the study polygon.",Extract SAR backscatter for land surface,"The script computes minimum VV and VH polarization backscatter values from Sentinel-1 GRD imagery over a specified region (TZS_polygon) between 2020 and 2021. It applies terrain correction to the image collection, selects the minimum pixel value across the time series, clips the result to the polygon boundary, and outputs a dual-polarization (VV, VH) radar backscatter image representing stabilized surface scattering characteristics for land surface analysis.","[""ee.filter.listcontains"", ""ee.imagecollection.filter"", ""ee.filter.listcontains"", ""ee.imagecollection.filter.filter"", ""ee.filter.eq"", ""ee.imagecollection.filter.filter.filter"", ""ee.imagecollection.filter.filter.filter.filterbounds"", ""ee.imagecollection.filter.filter.filter.filterbounds.filterdate"", ""ee.imagecollection.filter.filter.filter.filterbounds.filterdate.map.min"", ""ee.imagecollection.filter.filter.filter.filterbounds.filterdate.map.min.select"", ""s1_grd.clip""]","[""L3_03_09_05"", ""L3_03_09_05"", ""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_01_04"", ""L3_03_01_01""]",pending_operator_l3_canonicalization,"[""terrain-correction internals"", ""map centering and display"", ""downstream interpretation""]","[""untyped_receiver""]",376caf3981300a9121757ebb51c7ed8ca7ac4b24c4ebb16f4c7411425fd1c105,/home/yll/GEE/Data/data220000/script_214115.txt,"1: Map.centerObject(TZS_polygon);
+3: var S1_GRD =  ee.ImageCollection('COPERNICUS/S1_GRD')
+5: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+7: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+9: .filter(ee.Filter.eq('instrumentMode', 'IW'))
+11: .filterBounds(TZS_polygon)
+13: .filterDate('2020-01-01','2021-01-01')
+15: .map(terrainCorrection)
+19: .select('VH','VV');",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 11_20: The new chain recovers Sentinel-1 VH/VV/instrument filters, bounds/date filtering, mapped collection minimum, polarization selection, and clipping. The original description claims terrain correction, but the retained chain does not represent it, so rewrite around SAR filtering/min-backscatter extraction."
+gee_raster_core_review_027,Workflowoutput20000_script_19339,train,Min-max normalize a Sentinel-2 median composite,"Filter Sentinel-2 imagery by date, region, and metadata, build a median composite, clip it to the study geometry, compute per-band min-max statistics, unit-scale each selected band, stack the normalized bands, and rename the output bands.",Normalize Sentinel-2 surface reflectance,"The script computes a median composite of Sentinel-2 surface reflectance images from February 2020, masked for clouds and scaled between 0 and 1 per band using min-max normalization, clipped to the 'indus' region, resulting in a unit-scaled, cloud-cleared, normalized reflectance image for analysis.","[""ee.filter.date"", ""ee.imagecollection.filter"", ""ee.imagecollection.filter.filterbounds"", ""ee.imagecollection.filter.filterbounds.filtermetadata"", ""ee.imagecollection.filter.filterbounds.filtermetadata.map.select"", ""collection.median"", ""ee.image.tofloat"", ""ee.image.tofloat.clip"", ""imnormfunction.imnormalize"", ""ee.reducer.minmax"", ""indus.geometry"", ""composite.reduceregion"", ""composite.bandnames"", ""composite.select"", ""name.cat"", ""minmax.get"", ""name.cat"", ""minmax.get"", ""band.unitscale"", ""ee.imagecollection.fromimages"", ""ee.imagecollection.fromimages.tobands"", ""composite.bandnames"", ""ee.imagecollection.fromimages.tobands.rename""]","[""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_09_05"", ""L3_03_09_06"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_10_02_03"", ""L3_01_13_01"", ""L3_03_01_01"", ""L3_03_02_01"", ""L3_03_03_A"", ""L3_03_01_09"", ""L3_03_01_09""]",pending_operator_l3_canonicalization,"[""cloud-mask update-mask semantics from the source helper"", ""display layers""]","[""unbound_identifier"", ""untyped_receiver"", ""callback"", ""function_callback""]",8e601156d33f2c3a1843ee99870bbc67ef1c909521be97ca082cad56ced17f01,/home/yll/GEE/Data/data20000/script_19339.txt,"5: var collection = ee.ImageCollection(""COPERNICUS/S2_SR"")
+7: .filter(ee.Filter.date('2020-02-01', '2020-02-29'))
+9: .filterBounds(indus)
+11: .filterMetadata('CLOUDY_PIXEL_PERCENTAGE', 'less_than', 25)
+13: .map(s2mask())
+15: .select('B2','B3','B4','B5','B6','B7','B8','B8A','B11','B12');
+17: var composite = ee.Image(collection.median()).toFloat().clip(indus);
+21: var minMax = composite.reduceRegion({
+23: reducer: ee.Reducer.minMax(),
+25: geometry: indus.geometry(),
+35: var unitScale = ee.ImageCollection.fromImages(
+37: composite.bandNames().map(function(name){
+39: name = ee.String(name);
+41: var band = composite.select(name);
+43: return band.unitScale(ee.Number(minMax.get(name.cat('_min'))), ee.Number(minMax.get(name.cat('_max'))))
+47: Map.addLayer(imNormalized)",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 11_20: The new chain recovers Sentinel-2 filter/date/bounds/metadata selection, median composite, clipping, minMax reduceRegion, per-band unitScale, toBands, and rename. Rewrite the task as min-max normalization of a Sentinel-2 composite rather than cloud-masked normalization."
+gee_raster_core_review_029,Workflowoutput70000_script_64579,train,Build Sentinel-1 composites and train a Random Forest from samples,"Create date-window Sentinel-1 composites, filter out empty composites, select a representative clipped image, sample training regions from the retained image, initialize a Random Forest classifier, and train it on the sampled features.",Identify open water and submerged vegetation,"The script identifies open water and vegetated water bodies using Sentinel-1 VV backscatter thresholds and adaptive thresholding based on mean and standard deviation within the area of interest. It also implements a supervised Random Forest classification model trained on sample points to classify water types, with outputs including classified water maps and threshold values as image bands.","[""finish.difference"", ""days.subtract"", ""ee.list.sequence"", ""start.advance"", ""daystart.advance"", ""ee.imagecollection.filtermetadata"", ""ee.filter.eq"", ""ee.imagecollection.filtermetadata.filter"", ""ee.imagecollection.filtermetadata.filter.filterdate"", ""ee.imagecollection.filtermetadata.filter.filterdate.filterbounds"", ""ee.imagecollection.filtermetadata.filter.filterdate.filterbounds.median"", ""composite.bandnames"", ""composite.bandnames.size"", ""composite.bandnames.size.eq"", ""composite.set"", ""daystart.millis"", ""composite.set.set"", ""ee.imagecollection.filtermetadata"", ""allimagesinranges1.filterdate"", ""allimagesinranges1.filterdate.first"", ""allimagesinranges1.filterdate.first.clip"", ""training_data.sampleregions"", ""ee.classifier.smilerandomforest"", ""classifier.train""]","[""L3_03_03_A"", ""L3_03_03_L"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_10_R"", ""L3_03_01_01"", ""L3_08_01_01"", ""L3_08_03_01""]",pending_operator_l3_canonicalization,"[""adaptive-threshold reduceRegion logic"", ""post-training classify output"", ""final open-water or submerged-vegetation map""]","[""untyped_receiver"", ""callback"", ""function_callback""]",e322dcb642db029f2bfebe9887e2061f87dc4780199781f2dd28d56e0cdf968a,/home/yll/GEE/Data/data70000/script_64579.txt,"3: var water_non_veg = image.clip(aoi).select(""VV"").lt(-15.0)
+5: var water_veg = image.clip(aoi).select(""VV"").gt(-9.5)
+7: var mosaic = ee.ImageCollection([
+19: var start = ee.Date('2017-07-01')
+21: var finish = ee.Date('2017-08-01')
+25: var dayOffsets = ee.List.sequence(0, days.subtract(1))
+27: var allImagesInRangeS1 = ee.ImageCollection(dayOffsets
+29: .map(function (dayOffset) {
+35: var composite = ee.ImageCollection('COPERNICUS/S1_GRD')
+37: .filterMetadata('instrumentMode', 'equals', 'IW')
+39: .filter(ee.Filter.eq('transmitterReceiverPolarisation', ['VV', 'VH']))
+41: .filterDate(dayStart, dayFinish)
+43: .filterBounds(aoi)
+55: .filterMetadata('empty', 'equals', 0)
+57: var training_data = allImagesInRangeS1.filterDate('2017-07-28')
+61: var polygons = ee.FeatureCollection([
+63: ee.Feature(openwater_points, {'class': 2}),
+65: ee.Feature(vegetatedwater_points, {'class': 1}),
+67: ee.Feature(other_points, {'class': 0})
+71: var training = training_data.sampleRegions({
+81: var classifier = ee.Classifier.smileRandomForest({
+87: var trained = classifier.train(training, 'class');
+91: var classified = image.classify(trained).clip(aoi);
+99: var kf= ee.Number(1);
+101: var kfv = ee.Number(0.9);
+103: var meanDictionary = image.reduceRegion({
+105: reducer: ee.Reducer.mean(),
+107: geometry: aoi,
+115: var stdDictionary = image.reduceRegion({
+117: reducer: ee.Reducer.stdDev(),",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 11_20: The new chain recovers Sentinel-1 date-window compositing, non-empty filtering, representative image clipping, sampleRegions, Random Forest factory, and training. It can become a training-sample/RF-training subworkflow after a narrower rewrite, but the current task overclaims final water classification."
+gee_raster_core_review_033,Workflowoutput140000_script_132851,train,Construct Landsat vegetation-index yearly composites,"Filter Landsat imagery by region and yearly windows, apply QA cloud masking, clip images, compute NDVI, EVI, and SAVI vegetation-index bands, add the derived bands, and build yearly mean index composites.",Analyze winter wheat NDVI trends,"The script analyzes winter wheat growth patterns using NDVI derived from Landsat 8 surface reflectance data in 2020, and computes long-term EVI and SAVI vegetation indices from 1990 to 2015 for yearly mean composites. Outputs include a time series of NDVI images, a GIF animation, and annual vegetation index composites.","[""ee.imagecollection.filterbounds"", ""ee.date.fromymd"", ""st_date.advance"", ""l8.filterdate"", ""imagecollection.select"", ""qa.bitwiseand"", ""qa.bitwiseand.eq"", ""qa.bitwiseand"", ""qa.bitwiseand.eq"", ""qa.bitwiseand.eq.and"", ""imagecollection.updatemask"", ""l8.filterdate.map.sort"", ""image.clip"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""img.select"", ""img.select.visualize"", ""rgbvis.getvideothumburl"", ""l8.filterdate"", ""imagecollection.select"", ""qa.bitwiseand"", ""qa.bitwiseand.eq"", ""qa.bitwiseand"", ""qa.bitwiseand.eq"", ""qa.bitwiseand.eq.and"", ""imagecollection.updatemask"", ""image.normalizeddifference"", ""image.normalizeddifference.rename"", ""image.addbands"", ""img.select"", ""eviimg.select"", ""eviimg.select"", ""eviimg.select"", ""eviimg.expression"", ""eviimg.expression.rename"", ""img.addbands"", ""img.select"", ""saviimg.select"", ""saviimg.select"", ""saviimg.expression"", ""saviimg.expression.rename"", ""img.addbands"", ""ee.list.sequence"", ""ee.filter.calendarrange"", ""collection.filter"", ""yearlyds.mean"", ""yearlyds.mean.set"", ""ee.imagecollection.fromimages"", ""l8.first"", ""l8.first.clip""]","[""L3_03_09_06"", ""L3_03_09_01"", ""L3_03_09_01"", ""L3_03_01_04"", ""L3_07_01_05"", ""L3_03_09_01"", ""L3_10_02_03""]",pending_operator_l3_canonicalization,"[""GIF or video thumbnail generation"", ""map display layers"", ""long-form output presentation""]","[""untyped_receiver"", ""callback"", ""function_callback"", ""named_callback""]",b5cd17972fe8845d5adddf15037cb3a813ebae62dea841f9b3b27176c233b18d,/home/yll/GEE/Data/data140000/script_132851.txt,"1: Map.centerObject(geometry)
+3: var L8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR').filterBounds(geometry)
+7: return image.clip(geometry)
+13: var ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+19: function maskL8sr(imageCollection) {
+25: var qa = imageCollection.select('pixel_qa');
+31: return imageCollection.updateMask(mask);
+35: var year = ee.Number(2020); // start with the previous year because of winter wheat
+37: var st_date = ee.Date.fromYMD(year,1,01)
+41: var filtered = L8.filterDate(st_date,en_date)
+43: .map(maskL8sr).sort('system:time_start',true)
+45: var filtered = filtered.map(clip)
+47: var with_ndvi = filtered.map(addNDVI)
+49: print(with_ndvi)
+69: var rgbVis = with_ndvi.map(function(img) {
+71: return img.select('NDVI').visualize(visParams);
+75: print(rgbVis,'rgb')
+79: 'region': geometry,
+89: print(rgbVis.getVideoThumbURL(gifParams));
+91: var collection = L8.filterDate('1990-01-01', '2015-12-31');
+95: var eviImg = img.select(['B5','B4','B2'],['nir','red','blue']);
+97: eviImg = eviImg.expression(
+101: 'NIR': eviImg.select('nir'),
+103: 'RED': eviImg.select('red'),
+105: 'BLUE': eviImg.select('blue')
+115: var saviImg = img.select(['B5','B4'],['nir','red']);
+117: saviImg = saviImg.expression('((NIR-RED)/(NIR+RED+L))*(1+L)', {
+119: 'NIR': saviImg.select('nir'),
+121: 'RED': saviImg.select('red'),
+131: var years = collection.map(maskL8sr).map(addNDVI).map(evi).map(savi)",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 11_20: The new chain recovers Landsat filtering, cloud masking, clipping, NDVI normalizedDifference, EVI/SAVI expressions, addBands, yearly filtering, and yearly mean collection construction. The task should be rewritten around vegetation-index trend construction, not visualization/time-series output."
+gee_raster_core_review_034,Workflowoutput50000_script_45485,train,Preprocess MODIS phenology bands and masks,"Filter MCD12Q2 phenology imagery by date, select phenology and cycle-count bands, apply NumCycles and phenology masks, adjust day-of-year values relative to a baseline date, and convert retained phenology-mask outputs to integer bands.",Extract phenology metrics from MODIS,"The script calculates and extracts phenological metrics (Greenup, MidGreenup, Peak, Maturity, Senescence, MidGreendown, Dormancy) in day-of-year format from the MCD12Q2 MODIS dataset for 2003, adjusts them relative to a temporal baseline, and masks results based on quality and cycle count. It also processes LAI data from MCD15A3H for the same period, capping extreme values. The output includes time-corrected phenology images and filtered LAI imagery for analysis.","[""lai_global_2003_1500_unseason_g_d_erci_unmask_greenup_lt_dormancy.gte"", ""mcd12q2_2003_full.updatemask"", ""ee.filter.date"", ""ee.imagecollection.filter"", ""image.select"", ""image.select"", ""image.select"", ""image.select.gte"", ""image.date"", ""image.date.difference"", ""ee.image.constant"", ""ee.image.constant.subtract"", ""ee.image.constant.subtract.int"", ""image.date"", ""image.date.difference"", ""ee.image.int"", ""ee.image.int.rename"", ""pheno.subtract"", ""pheno.subtract.updatemask"", ""pheno.subtract.updatemask.toint"", ""time.addbands"", ""time.addbands.copyproperties"", ""pheno.select"", ""pheno.select"", ""ee.imagecollection.select"", ""ee.imagecollection.select.filterdate"", ""image_col_2003.gt"", ""image_col_2003.where"", ""image_col_2003.where.toint""]","[""L3_03_01_05"", ""L3_03_03_L"", ""L3_03_09_05"", ""L3_03_09_01"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_03_09_01""]",pending_operator_l3_canonicalization,"[""full LAI capping and processing"", ""phenology interpretation steps"", ""print diagnostics""]","[""untyped_receiver"", ""callback"", ""function_callback"", ""named_callback""]",3097c1d551b838136d7a29ecff539d2259f7d6667aaca2c2a745230d96a4ccb9,/home/yll/GEE/Data/data50000/script_45485.txt,"3: var MCD12Q2 = ee.ImageCollection(""MODIS/006/MCD12Q2"").filter(ee.Filter.date('2003-01-01','2004-01-01'));
+7: var Pheno = image.select(['Greenup_1','MidGreenup_1','Peak_1','Maturity_1','Senescence_1','MidGreendown_1','Dormancy_1']);
+9: var QA = image.select('QA_Detailed_1');
+13: var mask = image.select('NumCycles').gte(1);
+15: var time = ee.Image.constant(image.date().difference(ee.Date('1970-01-01'), 'day')).subtract(ee.Image(1)).int();
+17: var year = ee.Image(image.date().difference(ee.Date('2000-01-01'), 'year')).int().rename(""year"");
+25: var Pheno = MCD12Q2.map(DOY1);
+27: print(""Pheno is"",Pheno);
+29: var Greenup_1=Pheno.select('Greenup_1');
+31: var Dormancy_1=Pheno.select('Dormancy_1');
+33: var lai_2003_raw= ee.ImageCollection(""MODIS/006/MCD15A3H"").select('Lai')
+35: .filterDate('2003-01-01','2004-01-01')
+37: .map(function(img){
+39: var Image_col_2003=ee.Image(img);
+47: print('lai_2003_raw',lai_2003_raw)
+49: Map.addLayer(lai_2003_raw,{},""lai_2003_raw"");
+51: Map.addLayer(Lai_Global_2003_1500_unseason_G_D_erci_unmask_greenup_lt_Dormancy,{},""Lai_Global_2003_1500_unseason_G_D_erci_unmask_greenup_lt_Dormancy"");
+53: Map.addLayer(Alashanzuoqi_T_Greenup_Dormancy,{},""Alashanzuoqi_T_Greenup_Dormancy"");",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 11_20: The new chain recovers MCD12Q2 filtering, phenology band selection, NumCycles mask, DOY baseline adjustment fragments, collection selection/filtering, gt/where/toInt postprocessing, and partial LAI masking. It needs a narrowed description and possibly a manually bounded phenology-band preprocessing target before export."
+gee_raster_core_review_044,Workflowoutput70000_script_60516,val,Summarize algae-mask counts by region and elevation context,"Prepare glacier and algae masks, filter MODIS imagery and regional features, build mask images for retained algae/elevation strata, compute regional pixel-count summaries with reduceRegions, and carry the bounded grid and region attributes used by the statistical extraction.",Identify snow algae timing by elevation,"The script identifies the timing of maximum red snow algae presence (via RGND index) on glaciers in North America, stratified by elevation (high vs low), using MODIS Terra and Aqua data from 2000 to 2022. Outputs include regional and pixel-level statistics on the day of year with peak RGND values, masked by glacier and snow algae extent, and aggregated over user-defined regions.","[""glacierimages.mosaic"", ""glacierimages.mosaic.unmask"", ""glacierimages.mosaic.unmask.reproject"", ""elvalgaemask.unmask"", ""elvalgaemask.unmask.rename"", ""elvalgaemask.unmask.rename.set"", ""elvalgaemask.not"", ""elvalgaemask.not.unmask"", ""elvalgaemask.not.unmask.rename"", ""elvalgaemask.not.unmask.rename.set"", ""hialgaemask.or"", ""hialgaemask.or.rename"", ""hialgaemask.or.rename.set"", ""ee.filter.inlist"", ""regions.filter"", ""ee.filter.calendarrange"", ""terraday.filter"", ""i.date"", ""i.date.getrelative"", ""i.date.getrelative.toint"", ""ee.image.constant"", ""ee.image.constant.toint32"", ""ee.image.constant.toint32.rename"", ""i.addbands"", ""ee.list.sequence"", ""ee.filter.calendarrange"", ""myterraday.filter"", ""myterraday.filter.qualitymosaic"", ""rgndmaxcomp.gt"", ""rgndmaxcomp.updatemask"", ""rgndmaxcomp.updatemask.select"", ""rgndmaxcomp.updatemask.select.rename"", ""doy_max_rgnd.updatemask"", ""doy_max_rgnd.updatemask.rename"", ""doy_max_rgnd.updatemask"", ""doy_max_rgnd.updatemask.rename"", ""doy_max_rgnd.updatemask"", ""doy_max_rgnd.updatemask.rename"", ""hidoy.addbands"", ""hidoy.addbands.addbands"", ""hidoy.addbands.addbands.set"", ""ee.imagecollection.fromimages"", ""image.reduceregions"", ""image.get"", ""f.set"", ""maxrgnddatecol.map.flatten"", ""f.get"", ""ee.number.parse"", ""f.set"", ""ee.reducer.first"", ""myregions.reducetoimage"", ""myregions.reducetoimage.rename"", ""myregions.reducetoimage.rename.aside"", ""i.addbands"", ""regions.geometry"", ""i.addbands.sample"", ""maxrgnddatecol.map.flatten"", ""image.updatemask"", ""imagemasked.reduceregions"", ""image.get"", ""mask.get"", ""f.set"", ""algaemasks.map.flatten"", ""maxrgnddatecol.map.flatten"", ""ee.filter.gt"", ""maxrgnddatecol.map.flatten.filter"", ""image.updatemask"", ""imagemasked.reduceregions"", ""image.get"", ""mask.get"", ""f.set"", ""algaemasks.map.flatten"", ""maxrgnddatecol.map.flatten"", ""ee.filter.gt"", ""maxrgnddatecol.map.flatten.filter"", ""myterraday.select"", ""image.get"", ""ee.date.format"", ""image.updatemask"", ""imagemasked.reduceregions"", ""mask.get"", ""f.set"", ""algaemasks.map.flatten"", ""myterraday.select.map.flatten"", ""ee.filter.gt"", ""myterraday.select.map.flatten.filter"", ""myfunctions.makeaeaproj"", ""ee.filter.inlist"", ""regions.filter"", ""regions.filter.geometry"", ""mygeom.coveringgrid"", ""ee.reducer.count"", ""elvalgaemask.reduceregions"", ""ee.filter.gt"", ""elvalgaemask.reduceregions.filter"", ""elvalgaemask.reduceregions.filter.select""]","[""L3_03_07_01"", ""L3_03_01_05"", ""L3_03_05_02"", ""L3_03_01_05"", ""L3_01_02_03"", ""L3_03_03_L"", ""L3_01_02_03"", ""L3_03_09_05"", ""L3_03_09_05"", ""L3_10_04_01"", ""L3_10_04_01"", ""L3_02_03_05"", ""L3_01_02_03"", ""L3_02_03_05"", ""L3_03_09_05"", ""L3_03_01_04"", ""L3_03_01_04"", ""L3_02_03_05"", ""L3_03_09_05"", ""L3_03_09_05""]",pending_operator_l3_canonicalization,"[""full timing-of-maximum algae analysis"", ""pixel-level temporal statistics"", ""unverified elevation-stratified outputs""]","[""unbound_identifier"", ""untyped_receiver"", ""callback"", ""function_callback""]",58690606f7199b64e5f234262ab78b77957537f38c7c78ae443f2ed858c3bb1e,/home/yll/GEE/Data/data70000/script_60516.txt,"5: var finalAlgae = ee.ImageCollection(""projects/ee-caseyengstrom/assets/globalSnowAlgae/3_algaeMaps/final""),
+7: terraDay = ee.ImageCollection(""MODIS/061/MOD09GA""),
+9: s2sr = ee.ImageCollection(""COPERNICUS/S2_SR""),
+11: snow = ee.ImageCollection(""MODIS/006/MOD10A1""),
+13: dem_raw = ee.Image(""MERIT/DEM/v1_0_3""),
+15: terra8 = ee.ImageCollection(""MODIS/061/MOD09A1""),
+17: aqua8 = ee.ImageCollection(""MODIS/061/MYD09A1""),
+19: aqua = ee.ImageCollection(""MODIS/061/MYD09GA""),
+21: glims = ee.FeatureCollection(""GLIMS/current""),
+23: glacierImages = ee.ImageCollection(""projects/ee-caseyengstrom/assets/globalSnowAlgae/1_glacierImages/glaciers""),
+25: algaeImages = ee.ImageCollection(""projects/ee-caseyengstrom/assets/globalSnowAlgae/3_algaeMaps/v5""),
+27: regions = ee.FeatureCollection(""projects/ee-caseyengstrom/assets/globalSnowAlgae/glacierRegionsV12"");
+31: var elvAlgaeMask = ee.Image(""projects/ee-caseyengstrom/assets/globalSnowAlgae/3_algaeMaps/medianElvAlgaeMask"")
+39: var algaeMasks = ee.ImageCollection([hiAlgaeMask,loAlgaeMask, bothAlgaeMask])
+43: var myRegions = regions.filter(ee.Filter.inList('range', northAmerica))
+49: .filter(ee.Filter.calendarRange(7, 8, 'month'))
+51: .map(myFunctions.processTerraDay)
+53: .map(function(i){
+57: var doyImage = ee.Image.constant(doy).toInt32().rename('doy')
+63: var years = ee.List.sequence(2000, 2022)
+65: var maxRgndDateCol = ee.ImageCollection.fromImages(
+67: years.map(function (y) {
+71: .filter(ee.Filter.calendarRange(y, y, 'year'))
+79: .select('doy')
+97: }))//.aside(print, ""max rgnd date col by elev"")//.aside(Map.addLayer, {}, ""max rgnd col"")
+101: .map(function(image){
+105: .reduceRegions({
+107: reducer: myFunctions.myMeanReducer,
+115: }).map(function(f){
+123: myRegions =myRegions.map(function(f){",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 21_28: The new chain recovers glacier/algae mask preparation, MODIS/region filtering, reduceRegions count extraction, and grid/region operations, but the original task is broader than the retained statistical extraction. Rewrite around a bounded algae-mask regional-count/elevation subworkflow before export."
+gee_raster_core_review_047,Workflowoutput180000_script_171584,test,Decode MODIS QA bits and build a combined mask,"Select MODIS QA bands, repeatedly extract bit ranges with bitwise operations and shifts, derive cloud, shadow, and land/water logical conditions, combine the QA conditions, and update the image mask with the retained combined mask.",Identify cloud and shadow pixels,"The script processes MODIS MOD09GA surface reflectance data to extract and mask cloud, shadow, and land/water conditions using the state_1km QA band. It decodes specific bit ranges from the QA layer to isolate cloud state, land/water flag, internal cloud shadows, and high clouds, then creates a combined mask to filter out poor-quality pixels. The output includes visualizations of the original and masked imagery, along with overlay layers showing detected clouds, shadows, high clouds, and land/water areas for quality assessment.","[""image.select"", ""image.select"", ""image.select.bitwiseand"", ""image.select.bitwiseand.rightshift"", ""getqabits.expression"", ""image.select"", ""image.select.bitwiseand"", ""image.select.bitwiseand.rightshift"", ""getqabits.expression"", ""image.select"", ""image.select.bitwiseand"", ""image.select.bitwiseand.rightshift"", ""getqabits.expression"", ""image.select"", ""image.select.bitwiseand"", ""image.select.bitwiseand.rightshift"", ""getqabits.expression"", ""landwaterflag.eq"", ""cloud.not"", ""landwaterflag.eq.and"", ""sombra.not"", ""landwaterflag.eq.and.and"", ""nubes.not"", ""landwaterflag.eq.and.and.and"", ""image.updatemask"", ""cloud.updatemask"", ""sombra.updatemask"", ""nubes.updatemask"", ""landwaterflag.updatemask""]","[""L3_03_01_04"", ""L3_03_03_A"", ""L3_03_03_L"", ""L3_03_03_L""]",pending_operator_l3_canonicalization,"[""overlay and display layers for individual QA components""]","[""untyped_receiver"", ""loop_order_unresolved"", ""native_js_call""]",0eb2c875e3d222ccf6450e047c2d9303106ddac3257f23bbccfbb791984b7201,/home/yll/GEE/Data/data180000/script_171584.txt,"11: return image.select([0], [newName])
+19: var image = ee.Image('MODIS/006/MOD09GA/2012_06_01');
+21: var QA = image.select('state_1km');
+25: .expression(""b(0) == 1 || b(0) == 2"");
+29: .expression(""b(0)==7"");
+33: .expression(""b(0)==1"");
+37: .expression(""b(0)==1"");
+41: Map.addLayer(image,
+55: Map.addLayer(image.updateMask(mask),
+69: Map.addLayer(
+79: Map.addLayer(
+89: Map.addLayer(
+99: Map.addLayer(",rewritten_chain_faithful,not_granted_pending_l3_mapping_and_export_gate,False,False,confirmed_p4_proposal_v1,"Confirmed from P4 proposal batch 21_28: The new chain recovers MODIS state_1km selection, repeated bitwiseAnd/rightShift/expression QA extraction, eq/not/and logic, combined mask construction, and updateMask calls. Because it has loop_order_unresolved/native_js_call flags from helper bit decoding, keep it as needs-edit/confirmation rather than immediate train-only."

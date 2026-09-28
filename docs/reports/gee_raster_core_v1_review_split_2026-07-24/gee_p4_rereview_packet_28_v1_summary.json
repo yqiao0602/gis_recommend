@@ -1,0 +1,39 @@
+{
+  "counts": {
+    "category_counts": {
+      "evaluation_vector_aggregation": 10,
+      "index_mask": 24,
+      "ml_classification": 6,
+      "sampling_regional_statistics": 17
+    },
+    "p4_candidate_rows": 28,
+    "quality_flag_counts": {
+      "callback": 23,
+      "function_callback": 23,
+      "loop_order_unresolved": 2,
+      "named_callback": 16,
+      "native_js_call": 2,
+      "unbound_identifier": 4,
+      "untyped_receiver": 28
+    },
+    "unique_sources": 28
+  },
+  "decision": {
+    "next_gate": "human P4 rereview of new source-extracted chains",
+    "test_eligible": false,
+    "training_admission": "not_granted_pending_p4_human_review",
+    "validation_eligible": false
+  },
+  "inputs": {
+    "p3b_jsonl": "docs\\reports\\gee_extractor_v2_p3b_deferred_reextract_impact_2026-07-25.jsonl",
+    "salvage_csv": "docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\gee_salvage_50_v1.csv",
+    "source_snippets": "docs\\reports\\gee_raster_core_v1_review_split_2026-07-24\\source_evidence_snippets.jsonl"
+  },
+  "policy": {
+    "human_fields_blank": true,
+    "llm_used": false,
+    "operator_chain_source": "P3-B deterministic source re-extraction",
+    "training_rows_emitted": false
+  },
+  "schema": "gis_recommend.gee_p4_rereview_packet.v1"
+}

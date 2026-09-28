@@ -1,0 +1,783 @@
+{
+  "classes": [
+    {
+      "l3_code": "L3_01_01_03",
+      "l3_description": "Creates a new empty raster dataset with specified properties.",
+      "l3_name": "Create Raster Dataset",
+      "token_id": 0
+    },
+    {
+      "l3_code": "L3_01_02_01",
+      "l3_description": "Adds a new field (column) to a table or feature class with specified data type and properties.",
+      "l3_name": "Add Field",
+      "token_id": 1
+    },
+    {
+      "l3_code": "L3_01_02_02",
+      "l3_description": "Deletes one or more fields from a table or feature class.",
+      "l3_name": "Delete Field",
+      "token_id": 2
+    },
+    {
+      "l3_code": "L3_01_02_03",
+      "l3_description": "Modifies field properties such as name alias or data type.",
+      "l3_name": "Alter Field",
+      "token_id": 3
+    },
+    {
+      "l3_code": "L3_01_02_06",
+      "l3_description": "Calculates field values using an expression or formula.",
+      "l3_name": "Calculate Field",
+      "token_id": 4
+    },
+    {
+      "l3_code": "L3_01_03_04",
+      "l3_description": "Merges multiple datasets into a new single dataset.",
+      "l3_name": "Merge",
+      "token_id": 5
+    },
+    {
+      "l3_code": "L3_01_08_03",
+      "l3_description": "Returns the number of features or records in a dataset.",
+      "l3_name": "Get Count",
+      "token_id": 6
+    },
+    {
+      "l3_code": "L3_01_13_01",
+      "l3_description": "Converts the data type of raster pixels (e.g., from float to integer, or 32-bit to 8-bit). This is also known as casting.",
+      "l3_name": "Change Pixel Data Type",
+      "token_id": 7
+    },
+    {
+      "l3_code": "L3_02_01_01",
+      "l3_description": "Creates buffer polygons around input features at a specified distance.",
+      "l3_name": "Buffer",
+      "token_id": 8
+    },
+    {
+      "l3_code": "L3_02_02_01",
+      "l3_description": "Computes geometric intersection of input features retaining only overlapping areas with attributes from all inputs.",
+      "l3_name": "Intersect",
+      "token_id": 9
+    },
+    {
+      "l3_code": "L3_02_02_02",
+      "l3_description": "Combines all features from multiple input layers preserving all geometries and attributes.",
+      "l3_name": "Union",
+      "token_id": 10
+    },
+    {
+      "l3_code": "L3_02_02_04",
+      "l3_description": "Removes portions of input features that overlap with erase features.",
+      "l3_name": "Erase",
+      "token_id": 11
+    },
+    {
+      "l3_code": "L3_02_02_05",
+      "l3_description": "Extracts features that do not overlap between two input layers (inverse of Intersect).",
+      "l3_name": "Symmetrical Difference",
+      "token_id": 12
+    },
+    {
+      "l3_code": "L3_02_02_06",
+      "l3_description": "Extracts input features that fall within the clip features extent like a cookie cutter.",
+      "l3_name": "Clip",
+      "token_id": 13
+    },
+    {
+      "l3_code": "L3_02_02_07",
+      "l3_description": "Updates input features by replacing overlapping areas with update features; non-overlapping input areas preserved.",
+      "l3_name": "Update",
+      "token_id": 14
+    },
+    {
+      "l3_code": "L3_02_03_05",
+      "l3_description": "Aggregates geometries into multi-geometry features (MultiPoint/MultiLineString/MultiPolygon) based on attribute.",
+      "l3_name": "Collect Features",
+      "token_id": 15
+    },
+    {
+      "l3_code": "L3_02_04_01",
+      "l3_description": "Joins attributes from one feature layer to another based on spatial relationship (intersects/contains/within/touches/etc.) without modifying geometry.",
+      "l3_name": "Spatial Join",
+      "token_id": 16
+    },
+    {
+      "l3_code": "L3_02_05_06",
+      "l3_description": "Splits line features at locations where they intersect point features.",
+      "l3_name": "Split Line at Point",
+      "token_id": 17
+    },
+    {
+      "l3_code": "L3_02_05_11",
+      "l3_description": "Converts features to point features at specified locations (centroid/inside/start/end/mid/vertices).",
+      "l3_name": "Feature to Point",
+      "token_id": 18
+    },
+    {
+      "l3_code": "L3_02_05_12",
+      "l3_description": "Creates minimum enclosing geometry (rectangle/circle/convex hull/envelope) for features.",
+      "l3_name": "Minimum Bounding Geometry",
+      "token_id": 19
+    },
+    {
+      "l3_code": "L3_02_06_01",
+      "l3_description": "Selects features or table records based on attribute query (SQL expression).",
+      "l3_name": "Select by Attribute",
+      "token_id": 20
+    },
+    {
+      "l3_code": "L3_02_06_02",
+      "l3_description": "Extracts features to new dataset based on attribute query.",
+      "l3_name": "Extract by Attribute",
+      "token_id": 21
+    },
+    {
+      "l3_code": "L3_02_06_03",
+      "l3_description": "Extracts features to new dataset based on spatial relationship with other features.",
+      "l3_name": "Extract by Location",
+      "token_id": 22
+    },
+    {
+      "l3_code": "L3_02_06_05",
+      "l3_description": "Filters features based on geometry properties (area/length/vertex count/perimeter).",
+      "l3_name": "Filter by Geometry",
+      "token_id": 23
+    },
+    {
+      "l3_code": "L3_02_07_01",
+      "l3_description": "Separates multipart features into individual singlepart features or component geometries.",
+      "l3_name": "Multipart to Singlepart",
+      "token_id": 24
+    },
+    {
+      "l3_code": "L3_03_01_01",
+      "l3_description": "Clips a raster dataset using vector polygon boundaries; pixels outside the geometry are set to NoData.",
+      "l3_name": "Clip Raster by Geometry",
+      "token_id": 25
+    },
+    {
+      "l3_code": "L3_03_01_02",
+      "l3_description": "Clips a raster dataset using a rectangular bounding box (extent); retains all pixels within the extent.",
+      "l3_name": "Clip Raster by Extent",
+      "token_id": 26
+    },
+    {
+      "l3_code": "L3_03_01_03",
+      "l3_description": "Extracts raster cells that satisfy a specified condition (attribute-based query or value range).",
+      "l3_name": "Extract by Condition",
+      "token_id": 27
+    },
+    {
+      "l3_code": "L3_03_01_04",
+      "l3_description": "Selects specific bands from a multi-band raster dataset.",
+      "l3_name": "Select Bands",
+      "token_id": 28
+    },
+    {
+      "l3_code": "L3_03_01_05",
+      "l3_description": "Updates the raster mask based on a condition; sets invalid pixels to NoData.",
+      "l3_name": "Update Mask",
+      "token_id": 29
+    },
+    {
+      "l3_code": "L3_03_01_09",
+      "l3_description": "Adds or concatenates bands from multiple images into a single multi-band image.",
+      "l3_name": "Add/Concatenate Bands",
+      "token_id": 30
+    },
+    {
+      "l3_code": "L3_03_02_01",
+      "l3_description": "Calculates statistics for raster values within zones defined by vector polygons.",
+      "l3_name": "Zonal Statistics",
+      "token_id": 31
+    },
+    {
+      "l3_code": "L3_03_02_03",
+      "l3_description": "Calculates statistics for each pixel based on values in a defined neighborhood (moving window).",
+      "l3_name": "Focal Statistics",
+      "token_id": 32
+    },
+    {
+      "l3_code": "L3_03_02_05",
+      "l3_description": "Computes summary statistics for the entire raster dataset (or within analysis extent).",
+      "l3_name": "Global Statistics",
+      "token_id": 33
+    },
+    {
+      "l3_code": "L3_03_03_A",
+      "l3_description": "[L3_03_03_01] Performs basic arithmetic operations (addition | [L3_03_03_04] Applies advanced mathematical functions (exponential | [L3_03_03_06] Performs binary bitwise operations (AND",
+      "l3_name": "Arithmetic & Math",
+      "token_id": 34
+    },
+    {
+      "l3_code": "L3_03_03_L",
+      "l3_description": "[L3_03_03_02] Performs Boolean logical operations (AND | [L3_03_03_03] Performs relational comparison operations between rasters or raster and scalar values.",
+      "l3_name": "Logical & Comparison",
+      "token_id": 35
+    },
+    {
+      "l3_code": "L3_03_04_01",
+      "l3_description": "Remaps raster values based on a lookup table; transforms old values to new values or class codes.",
+      "l3_name": "Reclassify / Remap",
+      "token_id": 36
+    },
+    {
+      "l3_code": "L3_03_04_02",
+      "l3_description": "Divides continuous raster values into discrete classes using equal interval",
+      "l3_name": "Slice (Discretization)",
+      "token_id": 37
+    },
+    {
+      "l3_code": "L3_03_04_03",
+      "l3_description": "Reclassifies raster based on conditional expression; assigns specified values where condition is true or false.",
+      "l3_name": "Conditional Reclassification (Con)",
+      "token_id": 38
+    },
+    {
+      "l3_code": "L3_03_05_02",
+      "l3_description": "Transforms raster to a different coordinate reference system; may also change resolution during transformation.",
+      "l3_name": "Reproject",
+      "token_id": 39
+    },
+    {
+      "l3_code": "L3_03_07_01",
+      "l3_description": "Merges multiple rasters into a single continuous raster using rule-based pixel selection (first/last/min/max/mean).",
+      "l3_name": "Mosaic to New Raster",
+      "token_id": 40
+    },
+    {
+      "l3_code": "L3_03_08_01",
+      "l3_description": "Calculates vegetation indices such as NDVI (Normalized Difference Vegetation Index) and EVI (Enhanced Vegetation Index) using multi-spectral bands.",
+      "l3_name": "Vegetation Indices",
+      "token_id": 41
+    },
+    {
+      "l3_code": "L3_03_08_02",
+      "l3_description": "Calculates domain-specific spectral indices: NDWI for water",
+      "l3_name": "Water/Urban/Other Indices",
+      "token_id": 42
+    },
+    {
+      "l3_code": "L3_03_08_03",
+      "l3_description": "Converts sensor Digital Numbers (DN) to at-sensor radiance or Top-of-Atmosphere (TOA) reflectance using calibration coefficients.",
+      "l3_name": "DN to Radiance/TOA",
+      "token_id": 43
+    },
+    {
+      "l3_code": "L3_03_08_04",
+      "l3_description": "Corrects for atmospheric scattering and absorption to derive surface reflectance from TOA reflectance.",
+      "l3_name": "Atmospheric Correction",
+      "token_id": 44
+    },
+    {
+      "l3_code": "L3_03_08_05",
+      "l3_description": "Converts thermal infrared band DN or radiance to brightness temperature in Kelvin or Celsius.",
+      "l3_name": "Brightness Temperature",
+      "token_id": 45
+    },
+    {
+      "l3_code": "L3_03_08_06",
+      "l3_description": "Identifies cloud and cloud shadow pixels using spectral characteristics and geometric projection.",
+      "l3_name": "Cloud & Shadow Detection",
+      "token_id": 46
+    },
+    {
+      "l3_code": "L3_03_08_07",
+      "l3_description": "Transforms multi-spectral data using PCA (Principal Component Analysis) or Tasseled Cap to create uncorrelated or physically meaningful components.",
+      "l3_name": "Spectral Transformations",
+      "token_id": 47
+    },
+    {
+      "l3_code": "L3_03_08_08",
+      "l3_description": "Fuses high-resolution panchromatic band with lower-resolution multispectral bands to create enhanced spatial resolution color imagery.",
+      "l3_name": "Pan-sharpening",
+      "token_id": 48
+    },
+    {
+      "l3_code": "L3_03_08_10",
+      "l3_description": "Parses quality/QA bands using bitwise operations to extract quality flags and filter low-quality pixels.",
+      "l3_name": "Quality Band Parsing",
+      "token_id": 49
+    },
+    {
+      "l3_code": "L3_03_09_01",
+      "l3_description": "Filters an image collection by start and end dates to select images within a specific temporal window.",
+      "l3_name": "Filter by Date Range",
+      "token_id": 50
+    },
+    {
+      "l3_code": "L3_03_09_02",
+      "l3_description": "Filters an image collection by specific months or seasons (e.g., summer months 6-8) across multiple years.",
+      "l3_name": "Filter by Month/Season",
+      "token_id": 51
+    },
+    {
+      "l3_code": "L3_03_09_04",
+      "l3_description": "Filters images by day of year (DOY, 1-365/366) to select specific periods regardless of year.",
+      "l3_name": "Filter by Day of Year",
+      "token_id": 52
+    },
+    {
+      "l3_code": "L3_03_09_05",
+      "l3_description": "Filters an image collection based on metadata properties such as cloud cover, satellite orbit, or quality flags.",
+      "l3_name": "Filter by Metadata Property",
+      "token_id": 53
+    },
+    {
+      "l3_code": "L3_03_09_06",
+      "l3_description": "Filters an image collection to include only images that intersect with a specified geographic region.",
+      "l3_name": "Filter by Spatial Bounds",
+      "token_id": 54
+    },
+    {
+      "l3_code": "L3_03_09_07",
+      "l3_description": "Limits the number of images in a collection by taking the first N images or applying count constraints.",
+      "l3_name": "Filter by Image Count/Limit",
+      "token_id": 55
+    },
+    {
+      "l3_code": "L3_03_10_R",
+      "l3_description": "[L3_03_10_01] Computes the pixel-wise median across all images in a time series, reducing outliers and noise. | [L3_03_10_02] Computes the pixel-wise arithmetic mean across all images in a time series. | [L3_03_10_03] Computes the pixel-wise maximum value across all images in a time series. | [L3_03_10_04] Computes the pixel-wise minimum value across all images in a time series. | [L3_03_10_05] Computes the pixel-wise sum of all images in a time series. | [L3_03_10_08] Computes pixel-wise percentiles (e.g., 25th, 75th) across all images in a time series for robust statistical aggregation. | [L3_03_10_09] Counts the number of valid (non-masked) observations per pixel across a time series. | [L3_03_10_10] Selects the first or last image in a temporally sorted image collection. | [L3_03_10_12] Aggregates images within regular time intervals (daily, monthly, yearly) using a reduction function.",
+      "l3_name": "Temporal Reducer",
+      "token_id": 56
+    },
+    {
+      "l3_code": "L3_03_11_05",
+      "l3_description": "Fits a polynomial regression model to time series data to identify non-linear temporal trends.",
+      "l3_name": "Polynomial Trend",
+      "token_id": 57
+    },
+    {
+      "l3_code": "L3_03_12_01",
+      "l3_description": "Detects changes by subtracting pixel values between two images from different dates.",
+      "l3_name": "Bi-temporal Differencing",
+      "token_id": 58
+    },
+    {
+      "l3_code": "L3_03_13_04",
+      "l3_description": "Calculates the duration of the growing season from time series vegetation indices.",
+      "l3_name": "Length of Season",
+      "token_id": 59
+    },
+    {
+      "l3_code": "L3_04_01_01",
+      "l3_description": "Calculates slope gradient (rate of change in elevation) in degrees or percent from a DEM.",
+      "l3_name": "Slope Gradient",
+      "token_id": 60
+    },
+    {
+      "l3_code": "L3_04_01_02",
+      "l3_description": "Calculates the downslope direction (compass bearing) of maximum rate of elevation change.",
+      "l3_name": "Aspect Direction",
+      "token_id": 61
+    },
+    {
+      "l3_code": "L3_04_01_03",
+      "l3_description": "Generates shaded relief map simulating illumination from a specified sun position for visualization.",
+      "l3_name": "Hillshade",
+      "token_id": 62
+    },
+    {
+      "l3_code": "L3_05_03_03",
+      "l3_description": "Automatically determines optimal number of groups and assigns features to groups using spatial and attribute characteristics.",
+      "l3_name": "Grouping Analysis",
+      "token_id": 63
+    },
+    {
+      "l3_code": "L3_07_01_01",
+      "l3_description": "Applies a single symbol style (color size shape) to all features in a layer.",
+      "l3_name": "Apply Simple Symbol",
+      "token_id": 64
+    },
+    {
+      "l3_code": "L3_07_01_05",
+      "l3_description": "Combines multiple raster bands into RGB color image for true-color or false-color visualization.",
+      "l3_name": "Render Raster (RGB Composite)",
+      "token_id": 65
+    },
+    {
+      "l3_code": "L3_07_01_06",
+      "l3_description": "Adds text labels to map features based on attribute values with placement and styling options.",
+      "l3_name": "Label Features",
+      "token_id": 66
+    },
+    {
+      "l3_code": "L3_07_04_01",
+      "l3_description": "Exports vector features to Shapefile format for data sharing and archiving.",
+      "l3_name": "Export To Shapefile",
+      "token_id": 67
+    },
+    {
+      "l3_code": "L3_07_04_05",
+      "l3_description": "Exports raster data to GeoTIFF format with georeferencing.",
+      "l3_name": "Export Raster To GeoTIFF",
+      "token_id": 68
+    },
+    {
+      "l3_code": "L3_07_04_06",
+      "l3_description": "Exports raster to non-georeferenced image format (PNG JPEG) for display.",
+      "l3_name": "Export Raster To Image",
+      "token_id": 69
+    },
+    {
+      "l3_code": "L3_08_01_01",
+      "l3_description": "Extracts labeled training samples from imagery or time-series stacks by intersecting ROI features with pixel values, writing spectral profiles and class IDs to a sample table.",
+      "l3_name": "Region-based Sample Extraction",
+      "token_id": 70
+    },
+    {
+      "l3_code": "L3_08_01_02",
+      "l3_description": "Builds balanced samples per class or per stratum by randomly generating points/pixels within training polygons, enforcing quotas or proportional weights.",
+      "l3_name": "Stratified Random Sampling",
+      "token_id": 71
+    },
+    {
+      "l3_code": "L3_08_02_01",
+      "l3_description": "Computes vegetation, water, burn, or soil indices (NDVI, NDWI, NBR, SAVI, etc.) from multispectral imagery to enrich feature stacks.",
+      "l3_name": "Spectral Index Generation",
+      "token_id": 72
+    },
+    {
+      "l3_code": "L3_08_02_02",
+      "l3_description": "Generates GLCM textures, entropy, variance, or contextual statistics in moving windows to characterize spatial patterns.",
+      "l3_name": "Texture & Context Metrics",
+      "token_id": 73
+    },
+    {
+      "l3_code": "L3_08_02_03",
+      "l3_description": "Applies opening/closing, top-hat/bottom-hat, or multi-scale morphological filters to emphasize shapes and objects in imagery.",
+      "l3_name": "Morphological Profiles",
+      "token_id": 74
+    },
+    {
+      "l3_code": "L3_08_02_04",
+      "l3_description": "Aggregates time-series imagery into metrics such as temporal mean, median, max NDVI, amplitude, or phenological phases.",
+      "l3_name": "Temporal Statistics Aggregation",
+      "token_id": 75
+    },
+    {
+      "l3_code": "L3_08_02_05",
+      "l3_description": "Transforms correlated bands/features into orthogonal components (PCA, MNF) or embeds them using autoencoders to reduce redundancy.",
+      "l3_name": "Dimensionality Reduction & PCA",
+      "token_id": 76
+    },
+    {
+      "l3_code": "L3_08_03_01",
+      "l3_description": "Fits an ensemble of decision trees for categorical prediction using user-defined tree counts, depth, and sampling strategy.",
+      "l3_name": "Train Random Forest Classifier",
+      "token_id": 77
+    },
+    {
+      "l3_code": "L3_08_03_02",
+      "l3_description": "Optimizes an SVM classifier/regressor with kernel selection, penalty, and gamma parameters for high-dimensional feature spaces.",
+      "l3_name": "Train Support Vector Machine",
+      "token_id": 78
+    },
+    {
+      "l3_code": "L3_08_04_01",
+      "l3_description": "Applies a trained classifier to imagery/feature stacks to produce labeled rasters or vectors representing thematic classes.",
+      "l3_name": "Apply Classifier to Imagery",
+      "token_id": 79
+    },
+    {
+      "l3_code": "L3_08_04_02",
+      "l3_description": "Generates per-class probability rasters, confidence layers, or uncertainty scores to quantify prediction strength.",
+      "l3_name": "Probability & Confidence Surfaces",
+      "token_id": 80
+    },
+    {
+      "l3_code": "L3_08_05_C",
+      "l3_description": "[L3_08_05_01] Clusters pixels/features into K groups using Euclidean distance in feature space to derive unsupervised land-cover classes. | [L3_08_05_02] Runs ISODATA/EM-style clustering allowing automatic split/merge of classes based on variance and distance thresholds. | [L3_08_05_03] Generates object segments (superpixels) using algorithms like SNIC or SLIC to support OBIA workflows and contextual features.",
+      "l3_name": "Pixel Clustering & Segmentation",
+      "token_id": 81
+    },
+    {
+      "l3_code": "L3_08_07_01",
+      "l3_description": "Computes confusion matrix from classification results and reference data, calculating overall accuracy, producer's/consumer's accuracy, kappa coefficient, F-score, and other classification accuracy metrics.",
+      "l3_name": "Confusion Matrix & Accuracy Report",
+      "token_id": 82
+    },
+    {
+      "l3_code": "L3_09_03_01",
+      "l3_description": "Applies simple kernels (mean, median, bilateral) to reduce salt-and-pepper noise while preserving edges.",
+      "l3_name": "Mean/Median/Bilateral Filtering",
+      "token_id": 83
+    },
+    {
+      "l3_code": "L3_09_05_02",
+      "l3_description": "Refines cloud and shadow masks using spectral tests, morphological dilation, or multi-spectral indexes.",
+      "l3_name": "Cloud Shadow/Mask Refinement",
+      "token_id": 84
+    },
+    {
+      "l3_code": "L3_09_06_01",
+      "l3_description": "Performs global or reference-based histogram equalization/matching to enhance contrast.",
+      "l3_name": "Histogram Equalization/Matching",
+      "token_id": 85
+    },
+    {
+      "l3_code": "L3_09_06_02",
+      "l3_description": "Applies gamma, log, or power-law tone curves for brightness adjustments and dynamic range compression.",
+      "l3_name": "Gamma/Log/Power-law Adjustment",
+      "token_id": 86
+    },
+    {
+      "l3_code": "L3_09_07_01",
+      "l3_description": "Matches color/illumination between scenes by transferring histograms or tone curves.",
+      "l3_name": "Histogram/Curve Matching Between Scenes",
+      "token_id": 87
+    },
+    {
+      "l3_code": "L3_09_09_01",
+      "l3_description": "Uses Laplacian or directional gradients to emphasize edges and micro-texture.",
+      "l3_name": "Laplacian/Directional Edge Enhancement",
+      "token_id": 88
+    },
+    {
+      "l3_code": "L3_10_02_01",
+      "l3_description": "Selects the best pixel from a time series based on quality criteria (cloud-free highest NDVI etc) to create a composite.",
+      "l3_name": "Quality Mosaic / Best Pixel Composite",
+      "token_id": 89
+    },
+    {
+      "l3_code": "L3_10_02_03",
+      "l3_description": "Averages or takes the median of time-series observations to reduce noise and create stable composites.",
+      "l3_name": "Multi-temporal Averaging",
+      "token_id": 90
+    },
+    {
+      "l3_code": "L3_10_03_01",
+      "l3_description": "Combines co-registered images using pixel-wise weighted averaging based on quality variance or user-defined weights.",
+      "l3_name": "Weighted Average Fusion",
+      "token_id": 91
+    },
+    {
+      "l3_code": "L3_10_04_01",
+      "l3_description": "Concatenates feature bands from multiple sources (spectral indices textures derivatives) into a single multi-band stack.",
+      "l3_name": "Feature Stacking",
+      "token_id": 92
+    },
+    {
+      "l3_code": "L3_10_06_01",
+      "l3_description": "Aligns one image to another using geometric transformation based on control points or optimization.",
+      "l3_name": "Image-to-Image Registration",
+      "token_id": 93
+    },
+    {
+      "l3_code": "L3_01_05_01",
+      "l3_description": "Checks feature geometry for validity and identifies errors.",
+      "l3_name": "Check Geometry",
+      "token_id": 94
+    },
+    {
+      "l3_code": "L3_01_09_01",
+      "l3_description": "Converts vector data between different GIS vector formats (Shapefile to GeoJSON to Geodatabase to GeoPackage etc.).",
+      "l3_name": "Vector Format Conversion",
+      "token_id": 95
+    },
+    {
+      "l3_code": "L3_02_05_07",
+      "l3_description": "Extends line features to a specified distance or to intersect other features.",
+      "l3_name": "Extend Line",
+      "token_id": 96
+    },
+    {
+      "l3_code": "L3_02_06_06",
+      "l3_description": "Extracts or generates point samples from input features at specified locations or random/regular distribution.",
+      "l3_name": "Sample Points",
+      "token_id": 97
+    },
+    {
+      "l3_code": "L3_01_05_02",
+      "l3_description": "Repairs invalid feature geometries automatically.",
+      "l3_name": "Repair Geometry",
+      "token_id": 98
+    },
+    {
+      "l3_code": "L3_01_09_03",
+      "l3_description": "Converts between raster and vector formats: raster to polygon/point/line or vector to raster.",
+      "l3_name": "Raster-Vector Conversion",
+      "token_id": 99
+    },
+    {
+      "l3_code": "L3_01_10_01",
+      "l3_description": "Transforms spatial data from one coordinate reference system (CRS) to another including projection and datum transformation.",
+      "l3_name": "Project/Reproject",
+      "token_id": 100
+    },
+    {
+      "l3_code": "L3_01_03_05",
+      "l3_description": "Joins fields from a non-spatial or spatial table to features using a shared key without applying a spatial predicate.",
+      "l3_name": "Attribute Table Join",
+      "token_id": 101
+    },
+    {
+      "l3_code": "L3_01_05_04",
+      "l3_description": "Deletes duplicate feature records based on geometry and/or attributes.",
+      "l3_name": "Delete Identical",
+      "token_id": 102
+    },
+    {
+      "l3_code": "L3_02_03_06",
+      "l3_description": "Creates a vector fishnet, rectangular, diamond, hexagonal, or regular-point grid over an extent.",
+      "l3_name": "Vector Grid Generation",
+      "token_id": 103
+    },
+    {
+      "l3_code": "L3_02_05_01",
+      "l3_description": "Reduces the complexity of feature geometries by removing vertices while preserving essential shape using tolerance.",
+      "l3_name": "Simplify",
+      "token_id": 104
+    },
+    {
+      "l3_code": "L3_02_07_03",
+      "l3_description": "Converts polygon boundaries to line features.",
+      "l3_name": "Polygon to Line",
+      "token_id": 105
+    },
+    {
+      "l3_code": "L3_02_05_02",
+      "l3_description": "Smooths sharp angles in feature geometries by fitting curves or adding vertices.",
+      "l3_name": "Smooth",
+      "token_id": 106
+    },
+    {
+      "l3_code": "L3_06_01_02",
+      "l3_description": "Performs Delaunay triangulation on point features to create triangle mesh satisfying Delaunay criterion.",
+      "l3_name": "Delaunay Triangulation",
+      "token_id": 107
+    },
+    {
+      "l3_code": "L3_02_05_16",
+      "l3_description": "Splits line features into individual two-vertex line segments at every intermediate vertex.",
+      "l3_name": "Explode Lines",
+      "token_id": 108
+    },
+    {
+      "l3_code": "L3_02_05_17",
+      "l3_description": "Splits line or polygon features where they intersect line features or polygon boundaries from another layer.",
+      "l3_name": "Split Features with Lines",
+      "token_id": 109
+    },
+    {
+      "l3_code": "L3_04_02_02",
+      "l3_description": "Calculates terrain ruggedness from elevation differences between each raster cell and its neighbors.",
+      "l3_name": "Terrain Ruggedness Index (TRI)",
+      "token_id": 110
+    },
+    {
+      "l3_code": "L3_02_05_18",
+      "l3_description": "Sets feature geometry Z values by sampling a raster surface, with optional scaling and offset.",
+      "l3_name": "Set Z from Raster",
+      "token_id": 111
+    },
+    {
+      "l3_code": "L3_02_05_19",
+      "l3_description": "Splits line features into consecutive parts no longer than a specified maximum length.",
+      "l3_name": "Split Lines by Length",
+      "token_id": 112
+    },
+    {
+      "l3_code": "L3_01_08_04",
+      "l3_description": "Calculates basic summary statistics for values in a selected attribute field.",
+      "l3_name": "Basic Field Statistics",
+      "token_id": 113
+    },
+    {
+      "l3_code": "L3_04_05_09",
+      "l3_description": "Fills a connected lake or inundation area from a seed location up to a specified water level on an elevation raster.",
+      "l3_name": "Lake Inundation",
+      "token_id": 114
+    },
+    {
+      "l3_code": "L3_02_07_04",
+      "l3_description": "Connects point features into ordered line paths using optional grouping and ordering fields.",
+      "l3_name": "Points to Line",
+      "token_id": 115
+    },
+    {
+      "l3_code": "L3_02_04_04",
+      "l3_description": "Adds overlap area and percentage measurements from one or more polygon overlay layers to input features.",
+      "l3_name": "Vector Overlap Statistics",
+      "token_id": 116
+    },
+    {
+      "l3_code": "L3_01_01_04",
+      "l3_description": "Creates point features from X and Y coordinate fields in a table using a specified coordinate reference system.",
+      "l3_name": "XY Table to Point",
+      "token_id": 117
+    },
+    {
+      "l3_code": "L3_01_07_01",
+      "l3_description": "Adds a spatial index to a feature class to improve spatial query performance.",
+      "l3_name": "Add Spatial Index",
+      "token_id": 118
+    },
+    {
+      "l3_code": "L3_02_07_09",
+      "l3_description": "Moves vertices or features to coincide with vertices/edges/endpoints of reference features within specified distance.",
+      "l3_name": "Snap",
+      "token_id": 119
+    },
+    {
+      "l3_code": "L3_02_07_07",
+      "l3_description": "Creates Thiessen (Voronoi) polygons around point features dividing space based on proximity.",
+      "l3_name": "Create Thiessen Polygons",
+      "token_id": 120
+    },
+    {
+      "l3_code": "L3_01_10_02",
+      "l3_description": "Defines or updates the coordinate system metadata for a dataset without transforming coordinate values.",
+      "l3_name": "Define Projection",
+      "token_id": 121
+    },
+    {
+      "l3_code": "L3_02_05_09",
+      "l3_description": "Reverses the direction of line features.",
+      "l3_name": "Flip Line",
+      "token_id": 122
+    },
+    {
+      "l3_code": "L3_02_06_04",
+      "l3_description": "Splits input features into multiple output datasets based on unique attribute values.",
+      "l3_name": "Split by Attribute",
+      "token_id": 123
+    },
+    {
+      "l3_code": "L3_01_01_01",
+      "l3_description": "Creates a new vector feature class with a specified geometry type, properties, and schema.",
+      "l3_name": "Create Feature Class",
+      "token_id": 124
+    },
+    {
+      "l3_code": "L3_01_01_05",
+      "l3_description": "Constructs point feature geometry from a coordinate pair and writes the same feature to a target layer or sink.",
+      "l3_name": "Create Point Features from Coordinates",
+      "token_id": 125
+    },
+    {
+      "l3_code": "L3_01_01_06",
+      "l3_description": "Constructs polyline feature geometry from two or more explicit vertices and writes the same feature to a target layer or sink.",
+      "l3_name": "Create Polyline Features from Vertices",
+      "token_id": 126
+    },
+    {
+      "l3_code": "L3_01_01_07",
+      "l3_description": "",
+      "l3_name": "Create Features from WKT Geometry",
+      "token_id": 127
+    }
+  ],
+  "composition": "101 (stable101) + 17 (stable106/108) + 6 (stable120/121/124) + 4 (stable125-128)",
+  "content_token_count": 128,
+  "note": "single authoritative L3 vocabulary for all QGIS training data, mapping checks, and dedup",
+  "schema": "gis_recommend.qgis_taxonomy_128_authority.v1",
+  "supersedes": [
+    "stable101_taxonomy_101",
+    "qgis_l3_v1_114",
+    "v2_94_stable",
+    "v3_107_experimental"
+  ],
+  "token_range": "0-127"
+}

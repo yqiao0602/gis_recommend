@@ -32,7 +32,9 @@ _ACTIVE_PROFILE: Optional[str] = None
 
 V2_94_STABLE = "v2_94_stable"
 V3_107_EXPERIMENTAL = "v3_107_experimental"
-VALID_PROFILES = {V2_94_STABLE, V3_107_EXPERIMENTAL}
+STABLE124_EXPERIMENTAL = "stable124_experimental"
+PAPER_V1_128 = "paper_v1_128"
+VALID_PROFILES = {V2_94_STABLE, V3_107_EXPERIMENTAL, STABLE124_EXPERIMENTAL, PAPER_V1_128}
 
 # ── Profile definitions ───────────────────────────────────────
 _PROFILES: dict[str, dict] = {
@@ -53,6 +55,24 @@ _PROFILES: dict[str, dict] = {
         "set_predictor_dir": "outputs_v2/set_predictor_checkpoints_v3_vec11277",  # TODO: needs retrain
         "training_data_dir": "outputs_v2/pipeline/step8_v3_vocab107",
         "training_data_file": "labeled_workflows_l3_v4_vocab107.json",
+    },
+    PAPER_V1_128: {
+        "vocab_size": 128,
+        "l3_code_count": 128,
+        "description": "M1-R1 isolated profile: full 128-token L3 taxonomy for paper_v1",
+        "id_mappings_default": "docs/reports/paper_v1_profile_v1/id_mappings_paper_v1_128.json",
+        "set_predictor_dir": "outputs_v2/set_predictor_checkpoints_v3_vec11277",
+        "training_data_dir": "docs/reports/paper_v1_profile_v1",
+        "training_data_file": "labeled_workflows_paper_v1.json",
+    },
+    STABLE124_EXPERIMENTAL: {
+        "vocab_size": 124,
+        "l3_code_count": 124,
+        "description": "Isolated QGIS experiment: stable 94 IDs plus 30 extensions",
+        "id_mappings_default": "docs/reports/qgis_stable124_experiment_profile_v1/id_mappings_stable124_experimental.json",
+        "set_predictor_dir": "outputs_v2/set_predictor_checkpoints_v3_vec11277",
+        "training_data_dir": "docs/reports/qgis_stable124_experiment_profile_v1",
+        "training_data_file": "labeled_workflows_stable124_plus28.json",
     },
 }
 
@@ -193,19 +213,34 @@ def training_preflight(
                     f"{mapping_path} — file not found. "
                     f"Generate it first or switch back to v2_94_stable."
                 )
-            # Check that the training data path looks compatible with
-            # this profile (avoid using old 94-token data under 107).
+            # Check that the training data is compatible with this profile.
+            # Compatibility is determined by TOKEN RANGE, not by file path —
+            # activation experiments and variants may use different paths.
             if data_path:
-                expected_dir = str(root / prof["training_data_dir"])
-                actual = str(Path(data_path).resolve())
-                if expected_dir not in actual:
-                    expected_file = prof["training_data_file"]
-                    errors.append(
-                        f"Profile '{profile_name}' expects training data at "
-                        f"{expected_dir}/{expected_file}, but received "
-                        f"{data_path}. Either fix --data or switch to "
-                        f"v2_94_stable."
-                    )
+                dp = Path(data_path)
+                if dp.exists():
+                    data = json.load(open(str(dp), "r", encoding="utf-8"))
+                    wfs = data.get("labeled_workflows", data) if isinstance(data, dict) else data
+                    if isinstance(wfs, list):
+                        max_tok = max(
+                            (t for wf in wfs if isinstance(wf, dict)
+                             for t in wf.get("l3_sequence", []) if isinstance(t, int)),
+                            default=-1,
+                        )
+                        if profile_name != STABLE124_EXPERIMENTAL and max_tok < prof["vocab_size"] - 13:
+                            # Data has no tokens in the expanded range (94-106) —
+                            # it was built for the 94-code vocabulary.
+                            errors.append(
+                                f"Training data max token is {max_tok}, but profile "
+                                f"'{profile_name}' expects tokens up to "
+                                f"{prof['vocab_size']-1}. "
+                                f"Use v2_94_stable or provide a 107-code training package."
+                            )
+                        elif max_tok >= prof["vocab_size"]:
+                            errors.append(
+                                f"Training data max token {max_tok} >= vocab_size "
+                                f"{prof['vocab_size']} — data was built for a larger vocabulary."
+                            )
 
     # 1. Check that TOTAL_VOCAB_SIZE is self-consistent
     expected = _cfg.VOCAB_SIZE + _cfg.NUM_SPECIAL_TOKENS

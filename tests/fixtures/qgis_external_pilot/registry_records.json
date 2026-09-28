@@ -1,0 +1,49 @@
+{
+  "snapshot": {
+    "schema": "gis_recommend.qgis_registry_export.v1",
+    "qgis_version": "3.28.15",
+    "image_digest": "sha256:test",
+    "exporter_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "providers": [
+      {
+        "provider_id": "native",
+        "name": "QGIS (native c++)",
+        "active": true,
+        "version": "builtin",
+        "algorithms": [
+          {
+            "operator_id": "native:centroids",
+            "display_name": "Centroids",
+            "parameters": [{"name": "INPUT", "type": "source", "optional": false}],
+            "outputs": [{"name": "OUTPUT", "type": "sink"}]
+          },
+          {
+            "operator_id": "native:buffer",
+            "display_name": "Buffer",
+            "parameters": [
+              {"name": "DISTANCE", "type": "distance", "optional": false},
+              {"name": "INPUT", "type": "source", "optional": false}
+            ],
+            "outputs": [{"name": "OUTPUT", "type": "sink"}]
+          }
+        ]
+      },
+      {
+        "provider_id": "grass7",
+        "name": "GRASS GIS 7",
+        "active": true,
+        "version": "7.6",
+        "algorithms": []
+      }
+    ]
+  },
+  "catalog": {
+    "operators": [
+      {"operator_id": "native:buffer", "provider": "native", "official_name": "Buffer", "input_types": ["LiteralData", "vector"], "output_types": ["vector"]},
+      {"operator_id": "native:missing", "provider": "native", "official_name": "Missing", "input_types": [], "output_types": []},
+      {"operator_id": "saga:foo", "provider": "saga", "official_name": "Foo", "input_types": [], "output_types": []},
+      {"operator_id": "grass7:v.clean", "provider": "grass7", "official_name": "Clean", "input_types": [], "output_types": [], "expected_provider_version": "7.8"},
+      {"operator_id": "native:centroids", "provider": "native", "official_name": "Centroids", "input_types": ["raster"], "output_types": ["raster"]}
+    ]
+  }
+}

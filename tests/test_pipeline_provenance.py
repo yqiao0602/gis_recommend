@@ -211,12 +211,130 @@ class PipelineProvenanceTests(unittest.TestCase):
                 output_dir=output_dir,
                 id_mappings=self.mapping_path,
                 skip_list=self.skip_path,
+                provenance_policy="report",
             )
         )
 
         output = json.loads((output_dir / "labeled_workflows_l3_v4_cleaned.json").read_text(encoding="utf-8"))
         self.assertEqual(output["statistics"]["provenance_warnings"], ["missing_provenance"])
         self.assertFalse(output["statistics"]["provenance_validated"])
+        self.assertEqual(output["provenance"], _expected_provenance(self.mapping_path, self.skip_path))
+        self.assertIsNone(output["input_provenance"])
+        self.assertFalse(output["authority_validation"]["training_admission"])
+
+    def test_step8_requires_valid_input_provenance_by_default(self):
+        input_file = self.root / "labeled_workflows_l3_v4.json"
+        input_file.write_text(
+            json.dumps({"labeled_workflows": [_step8_workflow()]}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(ValueError, "missing_provenance"):
+            step8_clean_v4_data.main(
+                SimpleNamespace(
+                    input_file=input_file,
+                    output_dir=self.root / "step8",
+                    id_mappings=self.mapping_path,
+                    skip_list=self.skip_path,
+                )
+            )
+
+    def test_step8_uses_authoritative_l3_mapping_instead_of_input_token_ids(self):
+        workflow = _step8_workflow()
+        workflow["l3_sequence"] = [-3, 90, 91, 92, -4]
+        input_file = self.root / "labeled_workflows_l3_v4.json"
+        input_file.write_text(
+            json.dumps({"labeled_workflows": [workflow]}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        output_dir = self.root / "step8"
+
+        step8_clean_v4_data.main(
+            SimpleNamespace(
+                input_file=input_file,
+                output_dir=output_dir,
+                id_mappings=self.mapping_path,
+                skip_list=self.skip_path,
+                provenance_policy="report",
+            )
+        )
+
+        output = json.loads(
+            (output_dir / "labeled_workflows_l3_v4_cleaned.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(output["labeled_workflows"][0]["l3_sequence"], [-3, 0, 1, 2, -4])
+
+    def test_step8_rejects_unknown_l3_code(self):
+        with self.assertRaisesRegex(ValueError, "L3_UNKNOWN"):
+            step8_clean_v4_data.rebuild_l3_sequence(
+                ["<START>", "L3_A", "L3_UNKNOWN", "<END>"],
+                {"L3_A": 0},
+            )
+
+    def test_step8_rejects_numeric_l3_code_that_bypasses_authority(self):
+        with self.assertRaisesRegex(ValueError, "999"):
+            step8_clean_v4_data.rebuild_l3_sequence(
+                ["<START>", "L3_A", 999, "<END>"],
+                {"L3_A": 0},
+            )
+
+    def test_step8_rejects_unknown_code_before_workflow_filtering(self):
+        workflow = _step8_workflow()
+        workflow["l3_codes"] = ["<START>", "L3_UNKNOWN", "<END>"]
+        workflow["l3_sequence"] = [-3, 999, -4]
+        workflow["operator_sequence"] = []
+        workflow["confidences"] = []
+        workflow["ambiguity_flags"] = []
+        input_file = self.root / "labeled_workflows_l3_v4.json"
+        input_file.write_text(
+            json.dumps({"labeled_workflows": [workflow]}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(ValueError, "L3_UNKNOWN"):
+            step8_clean_v4_data.main(
+                SimpleNamespace(
+                    input_file=input_file,
+                    output_dir=self.root / "step8",
+                    id_mappings=self.mapping_path,
+                    skip_list=self.skip_path,
+                    provenance_policy="report",
+                )
+            )
+
+    def test_step8_handles_empty_cleaned_result_without_division_error(self):
+        workflow = _step8_workflow()
+        workflow["operator_sequence"] = []
+        workflow["confidences"] = []
+        workflow["ambiguity_flags"] = []
+        input_file = self.root / "labeled_workflows_l3_v4.json"
+        input_file.write_text(
+            json.dumps({"labeled_workflows": [workflow]}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        output_dir = self.root / "step8"
+
+        step8_clean_v4_data.main(
+            SimpleNamespace(
+                input_file=input_file,
+                output_dir=output_dir,
+                id_mappings=self.mapping_path,
+                skip_list=self.skip_path,
+                provenance_policy="report",
+            )
+        )
+
+        output = json.loads(
+            (output_dir / "labeled_workflows_l3_v4_cleaned.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(output["num_workflows"], 0)
+
+    def test_step8_rejects_mapping_without_l3_authority(self):
+        invalid_mapping = self.root / "invalid_id_mappings.json"
+        invalid_mapping.write_text(json.dumps({"metadata": {"version": "invalid"}}), encoding="utf-8")
+
+        with self.assertRaisesRegex(ValueError, "non-empty 'l3'"):
+            step8_clean_v4_data.load_l3_code_to_id(invalid_mapping)
 
     def test_step8_records_stale_mapping_hash_without_blocking(self):
         input_file = self.root / "labeled_workflows_l3_v4.json"
@@ -237,6 +355,7 @@ class PipelineProvenanceTests(unittest.TestCase):
                 output_dir=output_dir,
                 id_mappings=self.mapping_path,
                 skip_list=self.skip_path,
+                provenance_policy="report",
             )
         )
 
@@ -269,6 +388,7 @@ class PipelineProvenanceTests(unittest.TestCase):
         self.assertEqual(output["provenance"], provenance)
         self.assertTrue(output["statistics"]["provenance_validated"])
         self.assertEqual(output["statistics"]["provenance_warnings"], [])
+        self.assertTrue(output["authority_validation"]["training_admission"])
 
     def test_audit_reports_missing_required_step8_provenance(self):
         audit = _load_audit_module()

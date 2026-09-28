@@ -1,0 +1,32 @@
+{
+  "adjudication_counts": {
+    "accept_recovered": 25,
+    "deferred": 4,
+    "rejected": 0,
+    "rows": 29
+  },
+  "decision": {
+    "next_gate": "export canonical rows to isolated recovered-only training JSONL",
+    "test_eligible": false,
+    "training_admission": "not_granted_pending_recovered_export",
+    "validation_eligible": false
+  },
+  "dedup_counts": {
+    "candidate_rows": 25,
+    "canonical_rows": 24,
+    "near_duplicate_clusters": 1,
+    "suppressed_rows": 1,
+    "unique_call_graphs": 25,
+    "unique_normalized_dags": 22,
+    "unique_source_regions": 25,
+    "unique_sources": 15
+  },
+  "policy": {
+    "call_graph_key": "source_sha256 + entrypoint + call path + source call sites",
+    "near_duplicate_rule": "same source_sha256 and normalized_dag_key with task-description similarity >= 0.9",
+    "normalized_dag_key": "operator sequence + dependency edges + optional ordinals + branch groups",
+    "operator_sequence_only_dedup": false,
+    "source_region_key": "source_sha256 + ordered source-span segments"
+  },
+  "schema": "gis_recommend.qgis_stable101_recovered_dedup_summary.v1"
+}

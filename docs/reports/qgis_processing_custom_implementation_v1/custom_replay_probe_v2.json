@@ -1,0 +1,1424 @@
+{
+  "action_counts": {
+    "auto_accept_candidate": 1,
+    "defer_mapping": 49,
+    "defer_operator_resolution": 20,
+    "recover_call_graph": 3,
+    "review_api_sidecar": 8
+  },
+  "candidate_rows": 1,
+  "canonical_rows": 1,
+  "dedup_counts": {
+    "canonical_candidate": 1
+  },
+  "direct": {
+    "decision": {
+      "legacy_task_text_used": false,
+      "llm_called": false,
+      "next_gate": "four_layer_deduplication_then_train_only_export",
+      "training_admission": "not_granted_pending_dedup_and_export_gate",
+      "training_rows_emitted": 0
+    },
+    "description_policy": "deterministic_operator_dag_zh_v4",
+    "description_status_counts": {
+      "deferred": 1
+    },
+    "direct_rows": 1,
+    "fidelity_gate": {
+      "deferred": 1,
+      "passed": 0
+    },
+    "input_rows": 81,
+    "parameter_evidence_status_counts": {
+      "verified_source_ast": 1
+    },
+    "parameterized_steps": 0,
+    "rows_with_literal_parameter_facts": 0,
+    "schema": "gis_recommend.qgis_direct_description_summary.v1",
+    "scope_counts": {
+      "whole_processing_scope": 1
+    }
+  },
+  "forced_split_parent_rows": 8,
+  "mapping_complete_details": [
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:extractbyattribute",
+        "native:buffer",
+        "native:clip",
+        "native:selectbylocation",
+        "native:selectbylocation",
+        "native:buffer",
+        "native:reclassifybytable",
+        "gdal:polygonize",
+        "gdal:cliprasterbymasklayer",
+        "native:rasterlayeruniquevaluesreport",
+        "native:extractbylocation"
+      ],
+      "record_id": "4b7f01c08e35be20edc4828d",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0013615.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:extractbyattribute",
+        "native:buffer",
+        "native:clip",
+        "native:selectbylocation",
+        "native:selectbylocation",
+        "native:buffer",
+        "native:reclassifybytable",
+        "gdal:polygonize",
+        "gdal:cliprasterbymasklayer",
+        "native:rasterlayeruniquevaluesreport",
+        "native:extractbylocation"
+      ],
+      "record_id": "8f9e887143532e1360a4d088",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4602.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "review_api_sidecar",
+      "operator_ids": [
+        "qgis:delaunaytriangulation",
+        "native:dissolve"
+      ],
+      "record_id": "2a31ec9ac7c86083074be73f",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_2655.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [
+          [
+            0,
+            1
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [
+          "mapLayerFromString",
+          "nextFeature",
+          "getFeatures"
+        ],
+        "intermediate_data_transform_calls": [
+          "mapLayerFromString",
+          "getFeatures",
+          "featureCount",
+          "setProgress",
+          "selectByIds",
+          "startEditing",
+          "deleteSelectedFeatures",
+          "commitChanges"
+        ],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 2,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "blocked_custom_transform",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "gdal:clipvectorbypolygon",
+        "gdal:clipvectorbypolygon"
+      ],
+      "record_id": "53a589fec30e4adeef1333d4",
+      "source_path": "/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0004296.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "gdal:clipvectorbypolygon",
+        "gdal:clipvectorbypolygon"
+      ],
+      "record_id": "7d90e4ec119f28a816ad5e8f",
+      "source_path": "/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0004297.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "gdal:translate",
+        "gdal:translate"
+      ],
+      "record_id": "5571a37a89c340c1d4ed145b",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0010983.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "gdal:translate",
+        "gdal:translate"
+      ],
+      "record_id": "d9a7640be21c684e952822ec",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_2409.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "gdal:rasterize"
+      ],
+      "record_id": "266d5dd3545e28b2bed7454f",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_2424.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "gdal:rasterize"
+      ],
+      "record_id": "a8147f6c2216b9e5f7e257dc",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0011003.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:joinattributestable",
+        "gdal:rasterize"
+      ],
+      "record_id": "5bfecfc5cf78f2c2c9f77c88",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0011004.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:joinattributestable",
+        "gdal:rasterize"
+      ],
+      "record_id": "b1da22367c33b009c084e8e6",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_2425.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "gdal:rasterize"
+      ],
+      "record_id": "0d19046c56d8ceb78b21843f",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_2426.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "gdal:rasterize"
+      ],
+      "record_id": "fbfe1fc854ba6d56aa1eb241",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0011005.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:fieldcalculator"
+      ],
+      "record_id": "253f37976509d4f3298c9720",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_1430.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:fieldcalculator"
+      ],
+      "record_id": "c207603a6384eb03d43fe1cd",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0012148.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:fieldcalculator"
+      ],
+      "record_id": "97362a04858d0827d6459333",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0012149.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:fieldcalculator"
+      ],
+      "record_id": "ea3aada8025142ba13dea8db",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_1431.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "auto_accept_candidate",
+      "operator_ids": [
+        "native:pointsalonglines"
+      ],
+      "record_id": "24009e14903d229b4db10177",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_4604.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [],
+        "intermediate_data_transform_calls": [],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 1,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "valid_whole_processing_scope_candidate",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:assignprojection"
+      ],
+      "record_id": "193d3209528875263af9062c",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_5475.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:assignprojection"
+      ],
+      "record_id": "e39ac8b84a42e77400682dfe",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0009670.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:assignprojection"
+      ],
+      "record_id": "a23f1a48b472e1826e022c49",
+      "source_path": "/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0004138.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "defer_operator_resolution",
+      "operator_ids": [
+        "native:assignprojection"
+      ],
+      "record_id": "f011fa220987cd5f62c2cdd0",
+      "source_path": "/home/yll/GEE/爬取多源数据源/QGIS_Official_Plugins/plugin_unpacked/PreCourlis__2.1.0/PreCourlis/processing/interpolate_lines.py",
+      "structure_evidence": {}
+    },
+    {
+      "action": "review_api_sidecar",
+      "operator_ids": [
+        "gdal:cliprasterbyextent",
+        "gdal:cliprasterbyextent",
+        "gdal:rastercalculator",
+        "gdal:aspect",
+        "gdal:slope",
+        "native:reclassifybytable",
+        "gdal:aspect",
+        "gdal:slope",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "gdal:sieve",
+        "gdal:sieve",
+        "gdal:rastercalculator",
+        "gdal:rastercalculator",
+        "native:clip",
+        "native:buffer",
+        "gdal:translate",
+        "saga:cliprasterwithpolygon",
+        "gdal:polygonize",
+        "gdal:translate",
+        "saga:cliprasterwithpolygon",
+        "gdal:polygonize",
+        "native:fixgeometries",
+        "native:fixgeometries",
+        "native:intersection",
+        "native:buffer",
+        "native:buffer",
+        "native:multiparttosingleparts",
+        "native:buffer",
+        "native:buffer",
+        "native:zonalstatistics",
+        "native:zonalstatistics",
+        "native:zonalstatistics"
+      ],
+      "record_id": "272990d475fbc9496cf8ef21",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_1637.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            19,
+            20
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            29,
+            30
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            31,
+            32
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [],
+        "intermediate_data_transform_calls": [
+          "fixLayerCrs"
+        ],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 33,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "blocked_custom_transform",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "review_api_sidecar",
+      "operator_ids": [
+        "gdal:cliprasterbyextent",
+        "gdal:cliprasterbyextent",
+        "gdal:rastercalculator",
+        "gdal:aspect",
+        "gdal:slope",
+        "native:reclassifybytable",
+        "gdal:aspect",
+        "gdal:slope",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "gdal:sieve",
+        "gdal:sieve",
+        "gdal:rastercalculator",
+        "gdal:rastercalculator",
+        "native:clip",
+        "native:buffer",
+        "gdal:translate",
+        "saga:cliprasterwithpolygon",
+        "gdal:polygonize",
+        "gdal:translate",
+        "saga:cliprasterwithpolygon",
+        "gdal:polygonize",
+        "native:fixgeometries",
+        "native:fixgeometries",
+        "native:intersection",
+        "native:buffer",
+        "native:buffer",
+        "native:multiparttosingleparts",
+        "native:buffer",
+        "native:buffer",
+        "native:zonalstatistics",
+        "native:zonalstatistics",
+        "native:zonalstatistics"
+      ],
+      "record_id": "750c54e369f38979d5787b6d",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0006132.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            19,
+            20
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            29,
+            30
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            31,
+            32
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [],
+        "intermediate_data_transform_calls": [
+          "fixLayerCrs"
+        ],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 33,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "blocked_custom_transform",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "review_api_sidecar",
+      "operator_ids": [
+        "gdal:cliprasterbyextent",
+        "gdal:cliprasterbyextent",
+        "gdal:rastercalculator",
+        "gdal:aspect",
+        "gdal:slope",
+        "native:reclassifybytable",
+        "gdal:aspect",
+        "gdal:slope",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "gdal:sieve",
+        "gdal:sieve",
+        "gdal:rastercalculator",
+        "gdal:rastercalculator",
+        "native:clip",
+        "native:buffer",
+        "gdal:translate",
+        "saga:cliprasterwithpolygon",
+        "gdal:polygonize",
+        "gdal:translate",
+        "saga:cliprasterwithpolygon",
+        "gdal:polygonize",
+        "native:fixgeometries",
+        "native:fixgeometries",
+        "native:intersection",
+        "native:buffer",
+        "native:buffer",
+        "native:multiparttosingleparts",
+        "native:buffer",
+        "native:buffer",
+        "native:zonalstatistics",
+        "native:zonalstatistics",
+        "native:zonalstatistics"
+      ],
+      "record_id": "d5c0f3d18e5bf98a4a038e27",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0006133.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            19,
+            20
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            29,
+            30
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            31,
+            32
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [],
+        "intermediate_data_transform_calls": [
+          "fixLayerCrs"
+        ],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 33,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "blocked_custom_transform",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "review_api_sidecar",
+      "operator_ids": [
+        "gdal:cliprasterbyextent",
+        "gdal:cliprasterbyextent",
+        "gdal:rastercalculator",
+        "gdal:aspect",
+        "gdal:slope",
+        "native:reclassifybytable",
+        "gdal:aspect",
+        "gdal:slope",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "gdal:sieve",
+        "gdal:sieve",
+        "gdal:rastercalculator",
+        "gdal:rastercalculator",
+        "native:clip",
+        "native:buffer",
+        "gdal:translate",
+        "saga:cliprasterwithpolygon",
+        "gdal:polygonize",
+        "gdal:translate",
+        "saga:cliprasterwithpolygon",
+        "gdal:polygonize",
+        "native:fixgeometries",
+        "native:fixgeometries",
+        "native:intersection",
+        "native:buffer",
+        "native:buffer",
+        "native:multiparttosingleparts",
+        "native:buffer",
+        "native:buffer",
+        "native:zonalstatistics",
+        "native:zonalstatistics",
+        "native:zonalstatistics"
+      ],
+      "record_id": "e888ba03e7300e361ac99a34",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_1638.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            19,
+            20
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            29,
+            30
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            31,
+            32
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [],
+        "intermediate_data_transform_calls": [
+          "fixLayerCrs"
+        ],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 33,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "blocked_custom_transform",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "review_api_sidecar",
+      "operator_ids": [
+        "gdal:cliprasterbyextent",
+        "gdal:warpreproject",
+        "native:createconstantrasterlayer",
+        "gdal:merge",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "gdal:rastercalculator",
+        "native:zonalstatistics"
+      ],
+      "record_id": "1079fa8ad4e069feb0023f0f",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_1640.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [
+          "if"
+        ],
+        "dependency_edges": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            9
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [],
+        "intermediate_data_transform_calls": [
+          "fixLayerCrs",
+          "mapLayerFromString",
+          "str",
+          "log",
+          "calculateShadowRaster"
+        ],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 10,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "blocked_custom_transform",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "review_api_sidecar",
+      "operator_ids": [
+        "gdal:cliprasterbyextent",
+        "gdal:warpreproject",
+        "native:createconstantrasterlayer",
+        "gdal:merge",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "native:reclassifybytable",
+        "gdal:rastercalculator",
+        "native:zonalstatistics"
+      ],
+      "record_id": "fb2effa2c44b39af77228bd6",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0006136.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [
+          "if"
+        ],
+        "dependency_edges": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            9
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [],
+        "intermediate_data_transform_calls": [
+          "fixLayerCrs",
+          "mapLayerFromString",
+          "str",
+          "log",
+          "calculateShadowRaster"
+        ],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 10,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "blocked_custom_transform",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "review_api_sidecar",
+      "operator_ids": [
+        "native:zonalstatistics",
+        "gdal:cliprasterbymasklayer",
+        "native:deletecolumn"
+      ],
+      "record_id": "60eaab4f519a59686da16ac6",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_31977.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [
+          "for"
+        ],
+        "dependency_edges": [],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [],
+        "intermediate_data_transform_calls": [
+          "rasterUnitsPerPixelX",
+          "rasterUnitsPerPixelY",
+          "toString",
+          "extent",
+          "dataProvider",
+          "split",
+          "float",
+          "arange",
+          "sample"
+        ],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [
+          "QgsRasterLayer"
+        ],
+        "operator_count": 3,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "blocked_custom_transform",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "recover_call_graph",
+      "operator_ids": [
+        "native:clip",
+        "native:clip",
+        "native:union"
+      ],
+      "record_id": "504451b06dc98522e9d36961",
+      "source_path": "/home/yll/GEE/爬取多源数据源/QGIS_Plugins_GitLab_Supplement/downloaded_scripts/official_plugins/plugin_0008580.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [
+          "parameterAsSink",
+          "wkbType",
+          "crs",
+          "getFeatures"
+        ],
+        "intermediate_data_transform_calls": [],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 3,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "unresolved",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "recover_call_graph",
+      "operator_ids": [
+        "native:clip",
+        "native:clip",
+        "native:union"
+      ],
+      "record_id": "9cd837519bf785eaf3ee2610",
+      "source_path": "/home/yll/GEE/爬取GIS代码/QGIS_ArcGIS_Textbook_Candidates_Broad/downloaded_scripts_strict/script_0010742.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [
+          "parameterAsSink",
+          "wkbType",
+          "crs",
+          "getFeatures"
+        ],
+        "intermediate_data_transform_calls": [],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 3,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "unresolved",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    },
+    {
+      "action": "recover_call_graph",
+      "operator_ids": [
+        "native:clip",
+        "native:clip",
+        "native:union"
+      ],
+      "record_id": "eee40abcaf5e0fd64dff0f1d",
+      "source_path": "/home/yll/GEE/爬取GithubQGIS/合并脚本/QGIS_merged_dedup_by_index/downloaded_scripts/script_2464.py",
+      "structure_evidence": {
+        "api_pattern_count": 0,
+        "call_graph_status": "single_scope",
+        "candidate_alignment_status": "candidate_alignment_matched",
+        "control_flow_kinds": [],
+        "dependency_edges": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "description_requirement": "whole_scope_task_description_required",
+        "downstream_data_transform_calls": [
+          "parameterAsSink",
+          "wkbType",
+          "crs",
+          "getFeatures"
+        ],
+        "intermediate_data_transform_calls": [],
+        "mapping_complete": true,
+        "non_transforming_intermediate_calls": [],
+        "operator_count": 3,
+        "parse_status": "parsed",
+        "processing_temporary_input_references": [],
+        "structure_class": "unresolved",
+        "unresolved_output_references": [],
+        "unused_temporary_terminal_indices": [],
+        "workflow_unit_scope": "whole_processing_scope"
+      }
+    }
+  ],
+  "mapping_complete_rows": 32,
+  "recovery": {
+    "decision": {
+      "next_gate": "source-disjoint audit of recovery local DAG rule",
+      "training_admission": "not_granted_pending_recovery_rule_audit",
+      "training_rows_emitted": 0
+    },
+    "deferred_structure_reason_counts": {
+      "conditional_early_exit": 3,
+      "downstream_data_transform": 3,
+      "downstream_low_level_data_transform:addFeature": 3,
+      "downstream_low_level_data_transform:setGeometry": 3,
+      "missing_data_edges": 3
+    },
+    "eligible_description_deferred": 0,
+    "eligible_description_fidelity_passed": 0,
+    "eligible_multi_step_units": 0,
+    "eligible_parent_rule_counts": {},
+    "eligible_recovery_rule_counts": {},
+    "eligible_source_disjoint_support": 0,
+    "eligible_unique_normalized_dags": 0,
+    "failed_parent_rows": 0,
+    "failures": [],
+    "multi_step_units": 3,
+    "parent_rows": 3,
+    "schema": "gis_recommend.qgis_recovery_local_dag_summary.v1",
+    "structurally_eligible_before_description_gate": 0,
+    "total_local_units": 3
+  },
+  "replay_rows": 81,
+  "source_rows": 167,
+  "split": {
+    "decision": {
+      "next_gate": "source-disjoint audit of multi-step local DAG units",
+      "training_admission": "not_granted_pending_split_rule_audit",
+      "training_rows_emitted": 0
+    },
+    "eligible_multi_step_description_deferred": 4,
+    "eligible_multi_step_description_fidelity_passed": 0,
+    "failed_parent_rows": 0,
+    "failures": [],
+    "multi_step_description_deferred": 15,
+    "multi_step_description_fidelity_passed": 0,
+    "multi_step_structure_deferred": 11,
+    "multi_step_structure_eligible": 4,
+    "multi_step_structure_reason_counts": {
+      "conditional_early_exit": 1,
+      "control_flow:if": 4,
+      "downstream_data_transform": 5,
+      "downstream_low_level_data_transform:addFeature": 1,
+      "downstream_low_level_data_transform:setGeometry": 1,
+      "intermediate_data_transform": 9,
+      "legacy_positional_processing_signature": 1
+    },
+    "multi_step_units": 15,
+    "parent_rows": 8,
+    "parent_rows_split": 8,
+    "schema": "gis_recommend.qgis_split_subworkflow_summary.v1",
+    "single_step_units": 13,
+    "total_units": 28,
+    "unique_multi_step_dags": 6
+  },
+  "unmapped_operator_counts": {
+    "grass7:v.to.points": 4,
+    "native:aggregate": 4,
+    "native:createspatialindex": 2,
+    "native:extractwithindistance": 3,
+    "native:geometrybyexpression": 5,
+    "native:interpolatepoint": 4,
+    "native:orderbyexpression": 8,
+    "native:removeduplicatesbyattribute": 4,
+    "native:removeduplicatevertices": 2,
+    "native:splitlinesbylength": 1,
+    "native:sumlinelengths": 2,
+    "qgis:definecurrentprojection": 4,
+    "qgis:setstyleforvectorlayer": 2
+  },
+  "variant_rows": 97
+}

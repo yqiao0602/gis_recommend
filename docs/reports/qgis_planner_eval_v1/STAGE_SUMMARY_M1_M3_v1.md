@@ -29,6 +29,8 @@ Refusal（always-plan 裁定）：两条路线 refusal_accuracy 均 0；unsafe_p
 
 > 8.8k 监督下从零训练 117M 条件序列生成器，无法同时学会 task understanding、operator mapping 与 sequence generation：OOD 任务上 100/100 塌缩到同一吸引子 code（Define Projection），88/100 空图。EOS/终止行为倒是健康（48/49）——但终止的常常是错误的链。
 
+**语言浪费补充（2026-09-14 owner 复核 + manifest 复算，两个口径均验证）**：M1 文本编码器为 bert-base-uncased（纯英文词表），而 paper_v1 train 的 QGIS 子集 616 行中 **522 行（84.7%）含中文字符**（Phase 0-A 比例规则：中文 171 + 中英混合 332 = 503/81.7%；两种口径的差 19 行为含零星 CJK 的 latin 主导行），**零 CJK 的纯英文行仅 94 行**；69.2%（426/616）样本对 M1 encoder ≥50% [UNK]。benchmark 132 条全英文。即：**84.7% 的 QGIS 监督被英文编码器浪费，M1 实际可用的英文 QGIS 监督仅 ~94–112 行（按口径），而 M3/M2（Qwen 双语编码器）可读全部 8,817 行**。归因层 ④ 的准确表述应为"中文监督被英文编码器浪费 + 英文 QGIS 监督极薄"（训练侧结构性限制），而非"中文监督覆盖不足"；此差异为 M1 特有（M3/M2 无此问题）。
+
 ### M3-P1（general LLM + SFT）
 
 > 9B 预训练语言先验可迁移出真实算子选择能力：43/100 首算子正确、35/100 行 set recall ≥ 0.5、69 个正常行 precision 0.399。但 31/100 行陷入 ≥20 步复读（intersection ×490），precision 被 harmful extra（0.885）拖垮。**planning competence 已出现，sequence control competence 不足。**
