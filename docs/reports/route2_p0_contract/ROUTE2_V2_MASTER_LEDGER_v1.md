@@ -26,7 +26,24 @@
 只有第二层 = 无法归因（重蹈三臂覆辙）。** 因此 Stage-2 的对照臂（纯 QGIS SFT 的 C0 式基线）
 必须在 Stage-1 出结果**之前**就写进预注册——出结果后再补对照的诱惑是可以预见的。
 
-当前在跑的实验（Base zero-shot）回答的是第一层的**锚点**部分（见 ①-C）。
+**2026-09-28 owner 复核定稿：完整因果结构是三扇门，缺一不可**
+
+```text
+门一  Stage-1 Capability Gate      —— GEE 数据能否训出可测量的 W1–W4？
+门二  Stage-2 Grounding            —— Task+Plan 能否帮助 QGIS 落地？
+门三  Causal Comparison（对照臂）  —— 提升是否真来自 GEE Workflow Reasoning？
+
+                         Base
+                          │
+             ┌────────────┴────────────┐
+             ↓                         ↓
+       Control Arm                Treatment Arm
+     Base → QGIS SFT           Base → Stage-1(GEE) → Stage-2(QGIS)
+             └────────────┬────────────┘
+                    同一 QGIS 评测面
+```
+
+当前在跑的实验（Base zero-shot）回答的是门一的**锚点**部分（见 ①-C）。
 
 ---
 
@@ -93,6 +110,28 @@
 dev 四项全 0 ⇒ 任何非零提升都自动满足 "Base+Δ"。阈值预注册时若下限设得过低
 （例如仅"比 0 大"），Gate 将毫无判别力。**下限设定是现在整个实验链上最重要的一个数值决定。**
 
+#### R2 阈值评审共识（2026-09-28，owner 复核裁定——冻结性裁定，后续评审按此执行）
+
+1. **Δ 条件正式降级为诊断记录**：预注册文本须明确写
+   *"Base-relative margin is recorded diagnostically but is non-discriminative on the
+   current dev baseline because Base zero-shot scores are 0."*
+   保留记录、不再作为有效门槛条件。
+2. **Floor 分三层思考，禁止直接跳数字**：
+   - 第一层 非平凡性下限：严格压过 trivial baseline（W2 >0.7903 / W3 >0.5044，test 口径）
+   - 第二层 有意义能力门槛：真正要注册的门（须同时满足"击穿平凡策略"与"现实可达性"）
+   - 第三层 参考性能：oracle/human/strong baseline——只帮助解读，**不参与 Gate，且不得事后临时找**
+3. **W2 采用双条件门结构**（数值留待评审裁定）：`overall ≥ X AND No-class ≥ Y`。
+   No-class 准确率可从 gate_items 事后计算（gold 字段在案），**无需改 evaluator**。
+   设计动机：结构性堵死"恒答 Yes"路径；W2 的本质是合法/非法连接的判别，
+   Yes=100%/No=0% 即零判别。
+4. **W3 rewrite 维持诊断位**，不转正为 Gate 条件、不设事后阈值；gap 大→查表面模板依赖，
+   属解释性证据。
+5. **W1/W4 不套用 W2/W3 逻辑**：二者 trivial 基线恒 0、无非平凡锚点，
+   floor 只能由"合理可达性 + dev 二项噪声"推理得出，留待评审逐项裁定。
+6. **程序裁定**：现在不定任何数值。等 test Base 返回后开 **R2 Gate Threshold Review**
+   专场，一张表对齐（dev/test Base × 平凡基线 ×2 split × 各能力探针数 × No 类数），
+   逐项裁定后注册，随即进入 Stage-1。在此之前**不动训练、不动数据、不动 evaluator**。
+
 辅助思考工具——**平凡策略基线表**（2026-09-28 已在 CPU 上对冻结探针精确算出，非估计）：
 
 | 能力 | 平凡策略 | dev 实测分 | test 实测分 | 对设门的含义 |
@@ -125,8 +164,10 @@ L2 UG .419 / AMB .581 / amb set 最大 93——即便 Stage-1 满分，Plan 单�
 Stage-2 必须消费 Task+Plan 双条件（已经是 ⑤ 的冻结设计，此处是提醒不要在实现时退化）。
 
 ### R5。两层证据结构（0 节）——Stage-2 对照臂现在就要预注册
-最容易被"结果好看"诱惑而跳过的就是对照。建议 Stage-2 预注册文档里固定：
-主臂（Stage-1→Stage-2）vs 对照臂（同配方、Base 直接 QGIS SFT）。
+最容易被"结果好看"诱惑而跳过的就是对照。已按 2026-09-28 共识把两臂结构
+（Control: Base→QGIS SFT / Treatment: Base→Stage-1(GEE)→Stage-2(QGIS)，同一评测面）
+写入 0 节；Stage-2 预注册文档落地时必须原样引用该结构并固定配方等价性
+（除 Stage-1 中间层外，两臂的 SFT 数据/配方/评测完全一致）。
 没有对照，Phase F 的任何提升都不可归因（A1–A5 的直接教训）。
 
 ### R6。统计量偏小处
