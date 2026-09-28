@@ -813,3 +813,10 @@
 - **2026-09-26 评分器 v1.3.1 窄修复**：v1.3 `main()` 在报告路径引用 `generation_batches()` 内部 `batch_halvings` 导致 NameError；owner 批准仅修计数传递 + 最终报告回归 + 版本冻结。测试先复现 NameError，再验证模拟 0/1/2 次 OOM batch-halving 时完整 `main()` 的 JSON 报告计数分别为 0/1/2；原 6 项保留，CPU 共 9/9；ruff F821 无其他 undefined name，代码差异仅版本号/返回值/解包（report-path bugfix / no scoring-semantic change）。探针 SHA 和评分公式均未变。**状态 = READY FOR BASELINE，非 READY FOR TRAINING**；W3 rewrite gap 仅诊断，不追加 Gate 条件。
 - **未启动任何 GPU 工作**（Ollama + yyt SAM3 占用纪律不变）。下一步：GPU 空闲 → Base zero-shot（gate-dev+gate-test，--batch-size 1）→ 预注册 W1-W4 绝对下限与 Δ_i → Stage-1 开训等 owner 显式放行令。
 - **2026-09-27 服务器下线与资产保全（owner 方案 B 裁定）**：mdzhang (10.191.2.38) 关机。关机前完成 248 文件、双端 SHA256 全一致的保全备份（`stage1_train_v2_2` 150MB、`b1_gee_stage_train` 264MB、`plan_pool_tiered_v2` 234MB、gate-v3 探针+evaluator+plan_pipeline_v1、`v2a_A` 三件套、Phase R ep1/2/3 checkpoint、route2_C0、Qwen 指纹）；备份位于 `../server_backup_mdzhang_20260927/`（tar sha256 6542ac1f…，说明见其 `BACKUP_README.md`）。**Base zero-shot dev 完成**：evaluator v1.3.1 零 OOM/超时/批减半，W1-W4 全 0.0、invalid 2,795/3,236（86.4%）——零样本锚点=地板，判读重心落在预注册 Δ_i；**test 半边中止**，持三冻结 SHA（evaluator v1.3.1 / 探针 dev c3d95f67… test 866c3762… / 推理配置 6355bab4…）改在租用 GPU 重跑。运行期"零落盘零日志"确认为评估器设计（报告完成时一次写出），非卡死。持有线关机前获通知并确认（dev 工件 0a41a6d 入库）。下一步：等 owner 租用 GPU → test 复跑 → 预注册 W1-W4 下限+Δ_i → Stage-1 开训等 owner 显式放行。
+
+## 2026-09-29 凌晨：Base zero-shot test 半边完成 —— 双侧基线齐备，R2 阈值评审就绪
+
+- 租卡机（RTX 3090）test 重跑完成：14.05h、3,256 探针、**W1–W4 全 0.000**、OOM/timeout/halvings 全 0、invalid 84.5%；**三 SHA 对账全过**（v1.3.1 / probe 866c3762… / config 6355bab4…）——与 dev 半边（A10, 11.16h, 全 0）构成同一冻结实验的双侧基线。
+- 定性同型（格式不服从而非无知）：W4 双侧 parse 100%（格式可被 prime 的直接证据）、W1 9%/12%、W2/W3 0%。
+- 产物入库：`base_zero_shot_v1/`（test 报告+items+run.log，本机复验三 SHA）；评审输入包 `ROUTE2_V2_R2_REVIEW_INPUTS_v1.md`（Base×平凡基线×样本量总表 + 待裁定六项）。
+- 状态推进：READY FOR BASELINE → **AWAITING R2 THRESHOLD REVIEW**（owner 专场）。注册后即具备 Stage-1 开训全部条件（数据/代码/模型已在租卡机就位）。
