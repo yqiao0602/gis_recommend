@@ -1,0 +1,15 @@
+# Route-2 v2 Stage-1 — ⑦ frozen protocol, single stream 60/10/10/20 (token-verified in data)
+name: "stage1_v2_2"
+base_model: "/root/models/Qwen3.5-9B-Base"
+train_data: "/root/data/stage1_train_v2_2.jsonl"
+output_dir: "/root/data/stage1_run_v1"
+max_lr: 1.0e-4
+batch_size: 2
+grad_accum: 16
+max_len: 1024
+seed: 20260924
+epochs: 1
+smoke_rows: 100
+smoke_epochs: 3
+ckpt_every: 150
+log_every: 20
