@@ -827,3 +827,9 @@
 - owner 转发收官报告：dev/test Base 全零 + 平凡基线（W2 0.779/0.790、W3 0.497/0.504）+ test 14.05h，与本线从租卡机实拉报告逐项一致（elapsed 50,594s = 14.05h），确认两线评同一冻结实验。
 - **差异登记**：报告引用工位线评审材料 `ROUTE2_V2_R2_REVIEW_INPUTS_v1.md`（commit `9b04ced`）；该 commit 与文件在笔记本仓库（bundle 恢复，HEAD 链 `9c2d873` → `ef22297`）中均不存在。本线对应产物为 `ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`（`ef22297`）。回迁合并时需去重（保留一份或互设引用），避免两份"评审唯一输入"并存。**未发现任何数字分歧。**
 - 状态不变：AWAITING R2 THRESHOLD REVIEW——等 owner 裁定 W1 floor / W2 双条件（overall >0.79 + No-class）/ W3 floor（候选带 0.55-0.60）/ W4 floor。
+
+## 2026-09-29：租卡机监控发现——Stage-1 全量训练已由工位线启动（09:18），等 owner 确认放行令
+
+- 笔记本线例行连通检查发现：`train_stage1.py --config stage1_v2_2.yaml --release`（PID 103666，09:18:45 启动，RTX 3090，17.6/24 GiB）。工位线动作序列：09:16 smoke（100 行×3 epoch，data SHA `02b5b476` ✓，task_too_long 0）→ 09:18 preflight（56,710 行，类别配比 37044/7876/3803/7987 与 v2_2 冻结报告一致，Task 保护 0 超长）→ 09:19 全量（1 epoch，est 1,773 optimizer steps）。
+- yaml 与 ⑦ 协议可见项全部一致：lr 1e-4、effective batch 32（2×16）、max_len 1024、1 epoch、seed 20260924、数据=冻结 v2_2。QLoRA r16α32 在 yaml 不可见（应在 train.py 内置），未独立核验。
+- **矛盾点**：owner 约 08:40 同步本线时状态仍为 AWAITING R2 THRESHOLD REVIEW；阈值注册文档（ROUTE2_V2_STAGE1_THRESHOLDS_v1.md）是否已写/裁定四数是否已定，本线无从核验。**本线未动该进程**——若放行令已给工位线则本线转监控；若未给则属红线，处置权归 owner。已询问 owner。
