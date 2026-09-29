@@ -833,3 +833,10 @@
 - 笔记本线例行连通检查发现：`train_stage1.py --config stage1_v2_2.yaml --release`（PID 103666，09:18:45 启动，RTX 3090，17.6/24 GiB）。工位线动作序列：09:16 smoke（100 行×3 epoch，data SHA `02b5b476` ✓，task_too_long 0）→ 09:18 preflight（56,710 行，类别配比 37044/7876/3803/7987 与 v2_2 冻结报告一致，Task 保护 0 超长）→ 09:19 全量（1 epoch，est 1,773 optimizer steps）。
 - yaml 与 ⑦ 协议可见项全部一致：lr 1e-4、effective batch 32（2×16）、max_len 1024、1 epoch、seed 20260924、数据=冻结 v2_2。QLoRA r16α32 在 yaml 不可见（应在 train.py 内置），未独立核验。
 - **矛盾点**：owner 约 08:40 同步本线时状态仍为 AWAITING R2 THRESHOLD REVIEW；阈值注册文档（ROUTE2_V2_STAGE1_THRESHOLDS_v1.md）是否已写/裁定四数是否已定，本线无从核验。**本线未动该进程**——若放行令已给工位线则本线转监控；若未给则属红线，处置权归 owner。已询问 owner。
+
+## 2026-09-29：owner 同步三事件——阈值已注册、Stage-1 放行合法，笔记本转监控职责；矛盾点关闭
+
+- owner 晚间同步（桌面线）：① Base test 完成（桌面 commit `9b04ced`，与本线实拉数字全一致）；② **R2 阈值已 owner 裁定冻结**（桌面 commit `2dc5d2d` + `ROUTE2_V2_STAGE1_THRESHOLDS_v1.md`）：W1≥0.20 / W2 overall≥0.85 AND No-class≥0.70（dev n=173 / test n=138）/ W3≥0.60 / W4≥0.20；Δ 仅诊断；rewrite 仅诊断；dev 选点加权 0.20/0.25/0.40/0.15 仅四项全过 floor 的候选。③ Stage-1 已开训（smoke 三轮 v1/v2 抓 bug、v3 通过 loss≈1.31；全量 09:19 起，1,773 步，预计 12-20h）。本线 244c376 登记的"矛盾点"关闭——放行令已给工位线。
+- **注册 Gate 全文以桌面 `ROUTE2_V2_STAGE1_THRESHOLDS_v1.md` 为准**；本线回迁时以 commit 链合并，不另写阈值文档（避免第三份双生文件）。
+- 笔记本职责（owner 指定）：每 1-2h 监控训练 → 出现 `[done] mode=release` 后启动 gate-dev 评测（--adapter /root/data/stage1_run_v1/stage1_adapter --label stage1_ep1 --split dev --out-dir /root/data/gate_stage1_dev，约 11-14h）→ 报告拉回/数字交 owner；W2-No 从 items 事后计算；FAIL 走 R3 四分叉归因交 owner，不自判重训。
+- 14:20 检查：进程存活 5h，GPU 17.6GB/利用率 76%；train_full.log 仍停在权重加载段（stdout 块缓冲，同"评估器零落盘"教训，勿以日志静默判卡死）。已建每 2h 自动监控。
