@@ -865,3 +865,9 @@
 - 01:07 ✅ 正常（自动检查 #9，09-30）：存活 15h48m，1,360/1,773 步（77%），41.4s/步零漂移，loss 0.86-0.99 区间，ckpt@1350 已存；ETA ~05:50 不变。
 - 03:07 ✅ 正常（自动检查 #10，09-30）：存活 17h49m，1,540/1,773 步（87%），41.4s/步零漂移，loss 0.88-0.98，ckpt@1500 已存；剩 233 步 ≈ 2.7h，ETA ~05:50 不变。
 - 05:07 ✅ 正常（自动检查 #11，09-30）：存活 19h48m，1,720/1,773 步（97%），loss 0.83-0.86，41.4s/步零漂移；剩 53 步 ≈ 37 分钟，预计 ~05:45 完成。本批（01:07/03:07/05:07）合并 commit。下次检查（07:07）预期见 [done] 并自动启动 gate-dev。
+
+## 2026-09-30：Stage-1 训练完成（[done] mode=release，20.4h）——gate-dev 评测已由链式监视器自动拉起，本线不重复启动
+
+- 07:07 检查见 `[done] mode=release steps=1772 examples=56710 tokens=13,635,926 tgt_trunc=3,868 task_too_long=0 elapsed=73,319s`（20.36h，与 41.4s/步外推一致；steps 1772 vs 预估 1773 = 末尾不足一个有效 batch，正常）。**task_too_long=0：Task 保护零违例**；context_truncated=0。末段 loss ~0.83（仅记录，⑦：成功标准=Gate 非 loss）。adapter：`/root/data/stage1_run_v1/stage1_adapter`；账本：`run_ledger.json`；ckpt 单文件滚动至 step 1772 收尾。
+- **gate-dev 已在跑**：服务器链式监视器 05:41:51 检测训练账本 → 自动启动 `gate_evaluator_v1.py --adapter stage1_adapter --label stage1_ep1 --split dev --probe-file gate_dev_probes_v3.jsonl --out-dir gate_stage1_dev --batch-size 1`（PID 144484，`gate_stage1_dev_chain.log` 记 GATE_DEV_LAUNCHED + STABLE_AFTER_180S）。参数与 owner 冻结指令逐字一致。**本线核对后未重复启动**（避免双评测 OOM 污染）。评测 8GB 在位，预计 11-14h，**出分窗口今日 17:00-20:00**。
+- 本线监控自动化已按指令删除，另挂评测出分监控（报告 json 出现即拉回 + 事后计算 W2-No + 对五注册条件判 PASS/FAIL + 落盘 commit + 报 owner）。
