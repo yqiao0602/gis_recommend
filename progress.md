@@ -813,3 +813,11 @@
 - **2026-09-26 评分器 v1.3.1 窄修复**：v1.3 `main()` 在报告路径引用 `generation_batches()` 内部 `batch_halvings` 导致 NameError；owner 批准仅修计数传递 + 最终报告回归 + 版本冻结。测试先复现 NameError，再验证模拟 0/1/2 次 OOM batch-halving 时完整 `main()` 的 JSON 报告计数分别为 0/1/2；原 6 项保留，CPU 共 9/9；ruff F821 无其他 undefined name，代码差异仅版本号/返回值/解包（report-path bugfix / no scoring-semantic change）。探针 SHA 和评分公式均未变。**状态 = READY FOR BASELINE，非 READY FOR TRAINING**；W3 rewrite gap 仅诊断，不追加 Gate 条件。
 - **未启动任何 GPU 工作**（Ollama + yyt SAM3 占用纪律不变）。下一步：GPU 空闲 → Base zero-shot（gate-dev+gate-test，--batch-size 1）→ 预注册 W1-W4 绝对下限与 Δ_i → Stage-1 开训等 owner 显式放行令。
 - **2026-09-27 服务器下线与资产保全（owner 方案 B 裁定）**：mdzhang (10.191.2.38) 关机。关机前完成 248 文件、双端 SHA256 全一致的保全备份（`stage1_train_v2_2` 150MB、`b1_gee_stage_train` 264MB、`plan_pool_tiered_v2` 234MB、gate-v3 探针+evaluator+plan_pipeline_v1、`v2a_A` 三件套、Phase R ep1/2/3 checkpoint、route2_C0、Qwen 指纹）；备份位于 `../server_backup_mdzhang_20260927/`（tar sha256 6542ac1f…，说明见其 `BACKUP_README.md`）。**Base zero-shot dev 完成**：evaluator v1.3.1 零 OOM/超时/批减半，W1-W4 全 0.0、invalid 2,795/3,236（86.4%）——零样本锚点=地板，判读重心落在预注册 Δ_i；**test 半边中止**，持三冻结 SHA（evaluator v1.3.1 / 探针 dev c3d95f67… test 866c3762… / 推理配置 6355bab4…）改在租用 GPU 重跑。运行期"零落盘零日志"确认为评估器设计（报告完成时一次写出），非卡死。持有线关机前获通知并确认（dev 工件 0a41a6d 入库）。下一步：等 owner 租用 GPU → test 复跑 → 预注册 W1-W4 下限+Δ_i → Stage-1 开训等 owner 显式放行。
+
+## 2026-09-29：Base zero-shot test 完成（租卡机）——Base 全 0 双 split 锚定，R2 阈值评审材料就绪
+
+- 租卡机（root@223.109.239.32:24924）gate_rerun_v1 于 2026-09-29 03:44 出报告（启动 09-28 13:40，elapsed 50,594s ≈ 14.1h，与预估 11-12h 量级一致）。产物三件（报告 / gate_items / run.log）已 scp 拉回 `docs/reports/route2_p0_contract/plan_pipeline_v1/base_zero_shot_v1/`。
+- **三 SHA 对账全绿**：probe `866c3762…`（与本地 02_DATA_FROZEN/gate_test_probes_v3.jsonl 实测一致）、inference_config `6355bab4…`（与 dev 报告逐字一致）、evaluator gate-eval-v1.3.1。探针计数自洽：W1 1805 / W2 658 / W3 as-is+rewrite 256+256 / W4 281，合计 3,256 = test 探针总数；items jsonl 3,256 行。
+- **结果：W1/W2/W3(as-is,rewrite)/W4 全 0.000，与 dev 完全同构**；invalid 2,752/3,256（84.5%）；零 OOM、零超时、零批减半。Base 零样本 = 地板在双 split 上确立，Δ 条件无判别力的结论（R2 共识）获得 test 侧确证。
+- R2 阈值评审一页表已组装：`route2_p0_contract/ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`（dev/test Base × 平凡基线 × 探针数 × W2 No 类数，全部来自冻结数字）。**数值裁定权归 owner**，评审前不定任何阈值。
+- 笔记本环境恢复完成：bundle SHA256 `24353fbe…` 对上 → clone HEAD=9c2d873 → LFS checkout → 三项验证（evaluator SHA `c2e7d725` / pytest 9 passed / git status 干净）全过。

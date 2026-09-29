@@ -1,8 +1,10 @@
 # 当前项目状态
 
-最后更新：2026-09-27
+最后更新：2026-09-29
 
 ## Route-2 v2 当前交接
+
+**Base zero-shot test 完成（2026-09-29 03:44，租卡机）**：三 SHA 对账全绿（probe `866c3762…` / config `6355bab4…` / evaluator v1.3.1），W1-W4 全 0.000（invalid 2,752/3,256 = 84.5%，零 OOM/超时/批减半）。**Base 零样本 = 地板在 dev+test 双 split 上确立**，Δ 条件无判别力（R2 共识）获 test 侧确证。R2 阈值评审一页表已组装：`route2_p0_contract/ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`——**当前唯一等待事件 = owner 逐项裁定 W1-W4 绝对下限**（W2 双条件门 / W3 rewrite 仅诊断 / W1-W4 可达性推理，数值只由 owner 定）。裁定后：注册 `ROUTE2_V2_STAGE1_THRESHOLDS_v1.md` → owner 显式放行 → Stage-1 训练。
 
 **计算服务器 mdzhang (10.191.2.38) 已于 2026-09-27 关机**（owner "方案 B" 裁定：先保全、保全完立即关机，不等在跑的 Base zero-shot test 半边）。关机前已完成全部延续性资产的 SHA 校验备份（288 tar 条目 / 248 文件，双端 SHA256 全部一致）：压缩包 `../server_backup_mdzhang_20260927.tar.gz`（sha256 6542ac1f5bee451a…）+ 解包目录 + `BACKUP_README.md`（范围、显式不拉清单、复用说明）。已保全：`stage1_train_v2_2.jsonl`（150MB 冻结 Stage-1 训练数据）、`b1_gee_stage_train.jsonl`（264MB，本地原本没有）、`plan_pool_tiered_v2.jsonl`（234MB 冻结 B2 池）、gate-v3 探针 + `gate_evaluator_v1` + plan_pipeline_v1 全套、`v2a_A_train/dev/test.jsonl`（QGIS 1,334/120/111 SFT 文件）、**Phase R qgis_sft_ep1/2/3 checkpoint**（evaluator-repair rerun 可直接复用、免重训）、route2_C0 checkpoint（可做悬置的 test-111 终评）、configs、Qwen3.5-9B-Base config/tokenizer 指纹（权重未拉——公开模型，租卡机器上重新下载）。
 
