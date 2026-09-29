@@ -821,3 +821,9 @@
 - **结果：W1/W2/W3(as-is,rewrite)/W4 全 0.000，与 dev 完全同构**；invalid 2,752/3,256（84.5%）；零 OOM、零超时、零批减半。Base 零样本 = 地板在双 split 上确立，Δ 条件无判别力的结论（R2 共识）获得 test 侧确证。
 - R2 阈值评审一页表已组装：`route2_p0_contract/ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`（dev/test Base × 平凡基线 × 探针数 × W2 No 类数，全部来自冻结数字）。**数值裁定权归 owner**，评审前不定任何阈值。
 - 笔记本环境恢复完成：bundle SHA256 `24353fbe…` 对上 → clone HEAD=9c2d873 → LFS checkout → 三项验证（evaluator SHA `c2e7d725` / pytest 9 passed / git status 干净）全过。
+
+## 2026-09-29：owner 同步双线收官报告——数字全一致；发现评审材料双生，待回迁去重
+
+- owner 转发收官报告：dev/test Base 全零 + 平凡基线（W2 0.779/0.790、W3 0.497/0.504）+ test 14.05h，与本线从租卡机实拉报告逐项一致（elapsed 50,594s = 14.05h），确认两线评同一冻结实验。
+- **差异登记**：报告引用工位线评审材料 `ROUTE2_V2_R2_REVIEW_INPUTS_v1.md`（commit `9b04ced`）；该 commit 与文件在笔记本仓库（bundle 恢复，HEAD 链 `9c2d873` → `ef22297`）中均不存在。本线对应产物为 `ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`（`ef22297`）。回迁合并时需去重（保留一份或互设引用），避免两份"评审唯一输入"并存。**未发现任何数字分歧。**
+- 状态不变：AWAITING R2 THRESHOLD REVIEW——等 owner 裁定 W1 floor / W2 双条件（overall >0.79 + No-class）/ W3 floor（候选带 0.55-0.60）/ W4 floor。
