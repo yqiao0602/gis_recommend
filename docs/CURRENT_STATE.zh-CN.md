@@ -14,7 +14,9 @@ Phase R 维持 **CLOSED-FAIL（Infrastructure/evaluator failure），严格非 S
 
 **下一步（全部等租用 GPU + owner 放行）**：① 租卡、恢复环境、重下 Qwen3.5-9B-Base → ② Base zero-shot gate-test 复跑（dev 节奏约 11h，--batch-size 1）→ ③ 预注册 W1-W4 绝对下限 + Δ_i → ④ Stage-1 开训须 owner 显式放行令。持有线已在关机前获通知并确认；其 poweroff watcher 为 fail-safe，未阻碍手动关机。
 
-Stage-1 协议与 B2 门禁保持冻结；Stage-2 预注册见 `docs/plans/transfer_phase2_stage2_prereg_v1.md`。活跃路线看 `docs/plans/transfer_phase2_roadmap.md` 和 `route2_p0_contract/`。
+Stage-1 协议与 B2 门禁保持冻结。
+**租卡机产物回迁规则**（2026-09-30 立，全文见 `route2_p0_contract/RENTED_BOX_ARTIFACT_POLICY_v1.md`）：租用服务器为临时资源，其上一切实验产物（报告/账本/adapter/日志）须先入桌面仓库再于 mdzhang 复电后同步——Stage-1 adapter 与全量训练账本已按此入库（`stage1_run_v1/`）。
+；Stage-2 预注册见 `docs/plans/transfer_phase2_stage2_prereg_v1.md`。活跃路线看 `docs/plans/transfer_phase2_roadmap.md` 和 `route2_p0_contract/`。
 
 本文是日常接手入口；活跃计划看 `task_plan.md`，详细历史证据看
 `docs/PROJECT_CONTEXT.zh-CN.md`。

@@ -1,0 +1,69 @@
+{
+ "arm": "stage1_v2_2",
+ "base_model": "/root/models/Qwen3.5-9B-Base",
+ "train_data": "/root/data/stage1_train_v2_2.jsonl",
+ "train_data_sha256": "02b5b476d5727d9aa98bd9dd40879e3dedf7061eb62f1e36041cf9acd05bc902",
+ "rows": 56710,
+ "cats": {
+  "core": 37044,
+  "w4": 7987,
+  "reconstruction": 3803,
+  "completion": 7876
+ },
+ "sample_n": 500,
+ "sample_task_too_long": 0,
+ "token_stats": {
+  "task_p50_p90_max": [
+   104,
+   150,
+   262
+  ],
+  "ctx_p50_p90_max": [
+   0,
+   259,
+   798
+  ],
+  "tgt_p50_p90_max": [
+   179,
+   496,
+   966
+  ],
+  "eff_p50_p90_max": [
+   355,
+   842,
+   1024
+  ],
+  "ctx_truncated_rows": 20,
+  "tgt_truncated_rows": 32,
+  "ctx_truncated_tokens": 8943,
+  "tgt_truncated_tokens": 16891
+ },
+ "collator_batch_roundtrip": {
+  "core": {
+   "batch": 40,
+   "max_len": 1024,
+   "loss_tokens": 12997
+  },
+  "w4": {
+   "batch": 40,
+   "max_len": 1024,
+   "loss_tokens": 10346
+  },
+  "reconstruction": {
+   "batch": 40,
+   "max_len": 1024,
+   "loss_tokens": 9421
+  },
+  "completion": {
+   "batch": 40,
+   "max_len": 815,
+   "loss_tokens": 303
+  }
+ },
+ "max_len": 1024,
+ "seed": 20260924,
+ "epochs": 1,
+ "smoke_rows": 0,
+ "effective_batch": 32,
+ "est_optimizer_steps_full": 1773
+}

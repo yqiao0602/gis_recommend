@@ -14,7 +14,9 @@ Phase R remains **CLOSED-FAIL (infrastructure/evaluator failure), strictly NOT S
 
 **Next actions (gated on the rented GPU + owner release)**: (1) rent GPU, restore env, re-download Qwen3.5-9B-Base -> (2) Base zero-shot gate-test rerun (~11h at dev pace, --batch-size 1) -> (3) pre-register W1-W4 absolute floors + Delta_i -> (4) Stage-1 training only on explicit owner release. The Route-2 v2 holder line was notified before shutdown and confirmed; their poweroff watcher was fail-safe and did not interfere.
 
-Stage-1 protocol and B2 construction gates remain frozen; Stage-2 preregistration remains `docs/plans/transfer_phase2_stage2_prereg_v1.md`. See `docs/plans/transfer_phase2_roadmap.md` and `route2_p0_contract/` for live gate state.
+Stage-1 protocol and B2 construction gates remain frozen。
+**租卡机产物回迁规则**（2026-09-30 立，全文见 `route2_p0_contract/RENTED_BOX_ARTIFACT_POLICY_v1.md`）：租用服务器为临时资源，其上一切实验产物（报告/账本/adapter/日志）须先入桌面仓库再于 mdzhang 复电后同步——Stage-1 adapter 与全量训练账本已按此入库（`stage1_run_v1/`）。
+; Stage-2 preregistration remains `docs/plans/transfer_phase2_stage2_prereg_v1.md`. See `docs/plans/transfer_phase2_roadmap.md` and `route2_p0_contract/` for live gate state.
 
 This is the routine handoff entrypoint. See `task_plan.md` for live work and
 `docs/PROJECT_CONTEXT.md` for detailed historical evidence.
