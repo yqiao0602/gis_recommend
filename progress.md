@@ -871,3 +871,16 @@
 - 07:07 检查见 `[done] mode=release steps=1772 examples=56710 tokens=13,635,926 tgt_trunc=3,868 task_too_long=0 elapsed=73,319s`（20.36h，与 41.4s/步外推一致；steps 1772 vs 预估 1773 = 末尾不足一个有效 batch，正常）。**task_too_long=0：Task 保护零违例**；context_truncated=0。末段 loss ~0.83（仅记录，⑦：成功标准=Gate 非 loss）。adapter：`/root/data/stage1_run_v1/stage1_adapter`；账本：`run_ledger.json`；ckpt 单文件滚动至 step 1772 收尾。
 - **gate-dev 已在跑**：服务器链式监视器 05:41:51 检测训练账本 → 自动启动 `gate_evaluator_v1.py --adapter stage1_adapter --label stage1_ep1 --split dev --probe-file gate_dev_probes_v3.jsonl --out-dir gate_stage1_dev --batch-size 1`（PID 144484，`gate_stage1_dev_chain.log` 记 GATE_DEV_LAUNCHED + STABLE_AFTER_180S）。参数与 owner 冻结指令逐字一致。**本线核对后未重复启动**（避免双评测 OOM 污染）。评测 8GB 在位，预计 11-14h，**出分窗口今日 17:00-20:00**。
 - 本线监控自动化已按指令删除，另挂评测出分监控（报告 json 出现即拉回 + 事后计算 W2-No + 对五注册条件判 PASS/FAIL + 落盘 commit + 报 owner）。
+
+## 2026-09-30 gate-dev 评测监控（接管原训练监控自动化；训练任务完成后转评测盯守）
+
+- 09:07 ✅ 评测正常：PID 144484 存活 3h26m，GPU 8.1GB / 利用率 23%（batch-1 生成为访存瓶颈，低利用率属 evaluator 常态）；输出目录仅 eval.log（评估器设计：报告+items 完成时一次写出）。未重复启动（链式监视器 05:41 已按冻结参数拉起，本线 07:07 核对一致）。出分窗口维持 17:00-20:00。
+- 说明：会话内无 CronDelete 工具，旧训练监控自动化暂无法自行删除（任务其实体已完成）；后续触发将按本条口径执行——盯评测、绝不重复启动。owner 可在 Automations 页手动删。
+- 11:07 ✅ 评测正常：存活 5h25m，GPU 8.1GB / 22%，输出目录无新文件（报告一次写出设计，正常）。出分窗口 17:00-20:00 维持。
+
+## 2026-09-30：Stage-1 ep1 Gate-dev 出分——**FAIL（4/4 未过门）**，学习真实发生但未达注册下限；归因与续训裁定归 owner
+
+- 评测 12:41 完成（6.97h，零 OOM/超时/批减半，三 SHA 对账 ✓）。产物拉回 `stage1_ep1_v1/`。判定报告：`STAGE1_EP1_GATE_DEV_VERDICT_v1.md`。
+- **W1 0.0000（门 0.20）❌ / W2 overall 0.3052（门 0.85）❌ + W2-No 0.6185（门 0.70）❌ / W3 as-is 0.4829 macro（门 0.60）❌ / W4 0.0346（门 0.20）❌。** W3 rewrite gap 0.0057 仅诊断，无表面模板依赖。
+- 关键判读：Base 全 0 → W2 0.305 / W3 0.483 / W4 0.035，**学习真实发生**；但 W2/W3 仍低于平凡基线（0.779/0.497），Gate 判别力成立、正确拒绝。invalid 2,238/3,236（69.2%，Base 86.4%）——格式服从部分习得，仍是主瓶颈。W2 No 类错题 66/66 为空预测、0 例把 No 判成 Yes：判别方向对、产出不完整。
+- **本线动作边界**：未启动 test 半边、未续训、未动任何冻结物。R3 四分叉归因初看偏 A（1 epoch 格式服从不足）/C（Contract 信息不足），**裁定归 owner**。
