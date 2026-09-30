@@ -884,3 +884,9 @@
 - **W1 0.0000（门 0.20）❌ / W2 overall 0.3052（门 0.85）❌ + W2-No 0.6185（门 0.70）❌ / W3 as-is 0.4829 macro（门 0.60）❌ / W4 0.0346（门 0.20）❌。** W3 rewrite gap 0.0057 仅诊断，无表面模板依赖。
 - 关键判读：Base 全 0 → W2 0.305 / W3 0.483 / W4 0.035，**学习真实发生**；但 W2/W3 仍低于平凡基线（0.779/0.497），Gate 判别力成立、正确拒绝。invalid 2,238/3,236（69.2%，Base 86.4%）——格式服从部分习得，仍是主瓶颈。W2 No 类错题 66/66 为空预测、0 例把 No 判成 Yes：判别方向对、产出不完整。
 - **本线动作边界**：未启动 test 半边、未续训、未动任何冻结物。R3 四分叉归因初看偏 A（1 epoch 格式服从不足）/C（Contract 信息不足），**裁定归 owner**。
+
+## 2026-09-30：owner 裁定 R3-A 续训启动——同协议再训 1 epoch（训练充分性诊断），FAIL 保持有效
+
+- **owner 裁定**（原文要点）：不接受 Stage-1 FAIL 为最终科学结论，也不立即回合同层重设计；执行 ⑦ 预注册的"同协议续训 1 epoch"，定位 **R3-A 训练充分性诊断**；一切冻结（数据/Tier/能力定义/evaluator/probe/tokenizer/loss/QLoRA），不加 W1 格式样本、不做 curriculum/RL/B2；W3 parse 86.9% 是最有信息量信号——模型已学会按接口产出，缺的是 Task→Plan 条件化；**W1 登记 contract-format confound**（Gate 格式未入训练目标，0.000 不可判定；parse 2.5% vs Base ≈9% 为训练改变行为的证据）；**W2 表述收紧**（.6185 仅证明拒绝倾向出现/非恒答，overall .3052 + 正例 21.6% 不足以证明判别能力形成——"判别方向变化"而非"能力形成"）；R3 顺序 A→B(Tier A-only)→C(Contract/Schema)→D(转换损失)；Teacher Plan/B2/Stage-2/RL 继续冻结。
+- **执行**：同 yaml（stage1_v2_2.yaml，epochs=1 语义=resume 后正好再跑一整轮）、同 out-dir；trainer 内建 resume 从 `latest.pt` 恢复（[resume] step 1772 rows 56710 = ep1 精确终点，adapter+optimizer+scheduler+RNG 全量）。PID 156537，13:4x 启动，GPU 20GB。ep1 ledger 备份 `run_ledger_ep1.json`（新增文件，零删除）。判读锚点：若续跑首段 loss 从 ~0.83 起步（而非 9.x）即确认权重正确恢复。
+- **ep2 完成后**：gate-dev 由本线手动启动，label `stage1_ep2`、out-dir `gate_stage1_ep2_dev`（不覆盖 ep1）；链式监视器已确认为一次性脚本（不会自动重跑）。
