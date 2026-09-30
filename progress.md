@@ -890,3 +890,9 @@
 - **owner 裁定**（原文要点）：不接受 Stage-1 FAIL 为最终科学结论，也不立即回合同层重设计；执行 ⑦ 预注册的"同协议续训 1 epoch"，定位 **R3-A 训练充分性诊断**；一切冻结（数据/Tier/能力定义/evaluator/probe/tokenizer/loss/QLoRA），不加 W1 格式样本、不做 curriculum/RL/B2；W3 parse 86.9% 是最有信息量信号——模型已学会按接口产出，缺的是 Task→Plan 条件化；**W1 登记 contract-format confound**（Gate 格式未入训练目标，0.000 不可判定；parse 2.5% vs Base ≈9% 为训练改变行为的证据）；**W2 表述收紧**（.6185 仅证明拒绝倾向出现/非恒答，overall .3052 + 正例 21.6% 不足以证明判别能力形成——"判别方向变化"而非"能力形成"）；R3 顺序 A→B(Tier A-only)→C(Contract/Schema)→D(转换损失)；Teacher Plan/B2/Stage-2/RL 继续冻结。
 - **执行**：同 yaml（stage1_v2_2.yaml，epochs=1 语义=resume 后正好再跑一整轮）、同 out-dir；trainer 内建 resume 从 `latest.pt` 恢复（[resume] step 1772 rows 56710 = ep1 精确终点，adapter+optimizer+scheduler+RNG 全量）。PID 156537，13:4x 启动，GPU 20GB。ep1 ledger 备份 `run_ledger_ep1.json`（新增文件，零删除）。判读锚点：若续跑首段 loss 从 ~0.83 起步（而非 9.x）即确认权重正确恢复。
 - **ep2 完成后**：gate-dev 由本线手动启动，label `stage1_ep2`、out-dir `gate_stage1_ep2_dev`（不覆盖 ep1）；链式监视器已确认为一次性脚本（不会自动重跑）。
+
+## 2026-09-30 R3-A（ep2）监控（接管自动化盯守；旧 ep1 口径已作废——[done] 已处理、gate-dev ep1 已判 FAIL）
+
+- 15:07 ✅ ep2 正常：PID 156537 存活 1h11m，GPU 20GB / 65%，step 1,860（ep2 内 88/1,772 步，41.7s/步零漂移），loss 0.78-0.84 与 ep1 收尾平滑衔接，lr 9.89e-05 缓降中。ETA ~10-01 10:40 完成，gate-dev ep2（label stage1_ep2 / out-dir gate_stage1_ep2_dev）随后启动。
+- 17:07 ✅ ep2 正常：存活 3h11m，GPU 20GB / 100%，ep2 内 268/1,772 步（41.3s/步零漂移），loss 0.84-0.94 平台震荡（ep2 对同一数据的第二轮，平台属预期）；ETA ~10-01 10:40 不变。
+- 19:07 ✅ ep2 正常：存活 5h11m，GPU 20GB / 81%，ep2 内 448/1,772 步（25%，41.4s/步零漂移），loss 0.76-0.82 缓慢低于 ep1 平台（积极信号，继续观察）。本批（15:07/17:07/19:07）合并 commit。
