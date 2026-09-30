@@ -1,8 +1,12 @@
 # 当前项目状态
 
-最后更新：2026-09-29
+最后更新：2026-09-30
 
 ## Route-2 v2 当前交接
+
+**Stage-1 ep1 Gate-dev = FAIL（4/4 未过门，2026-09-30）**：W1 0.0000（门0.20）/ W2 0.3052+No类0.6185（门0.85+0.70）/ W3 as-is 0.4829（门0.60）/ W4 0.0346（门0.20）。学习真实发生（Base 全 0 → W2 0.305/W3 0.483/W4 0.035）但低于注册下限，且 W2/W3 低于平凡基线——Gate 判别力成立、正确拒绝。主瓶颈=格式服从（invalid 69.2%，Base 86.4%）。判定报告：`stage1_ep1_v1/STAGE1_EP1_GATE_DEV_VERDICT_v1.md`。
+
+**owner 裁定（2026-09-30）：FAIL 保持有效；执行 R3-A 同协议续训 1 epoch（=训练充分性诊断）**。W1 登记 contract-format confound（Gate 格式未入训练目标，parse 2.5% vs Base≈9%）；W2 表述收紧为"判别方向变化，非能力形成"。R3 顺序 A→B(Tier A-only)→C(Contract/Schema)→D(转换损失)。**R3-A 已启动**（同 yaml 同 out-dir，resume 自 step 1772；PID 156537，13:41 起，预计 ~20h → 10-01 上午完成）；ep2 完成后 gate-dev 以新 label `stage1_ep2`/新 out-dir 评测。**Teacher Plan、B2、Stage-2、RL 继续冻结。**
 
 **Base zero-shot test 完成（2026-09-29 03:44，租卡机）**：三 SHA 对账全绿（probe `866c3762…` / config `6355bab4…` / evaluator v1.3.1），W1-W4 全 0.000（invalid 2,752/3,256 = 84.5%，零 OOM/超时/批减半）。**Base 零样本 = 地板在 dev+test 双 split 上确立**，Δ 条件无判别力（R2 共识）获 test 侧确证。R2 阈值评审一页表已组装：`route2_p0_contract/ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`——**当前唯一等待事件 = owner 逐项裁定 W1-W4 绝对下限**（W2 双条件门 / W3 rewrite 仅诊断 / W1-W4 可达性推理，数值只由 owner 定）。裁定后：注册 `ROUTE2_V2_STAGE1_THRESHOLDS_v1.md` → owner 显式放行 → Stage-1 训练。
 
