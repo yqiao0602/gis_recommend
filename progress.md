@@ -960,3 +960,10 @@
 - **纠正**：smoke 产物整体隔离至 `/root/data/stage1_run_tierA_smoke_artifacts/`（mv 零删除），输出目录清空后干净重启。
 - **当前**：PID 189898，19:46 启动，`[release] full run: 35,246 rows x 1 epoch`，无 [resume] 行，GPU 15.5GB/76%。总步数 ≈ 1,101 optimizer steps（35,246/32）× 41.6s ≈ **12.7h，预计 10-02 ~08:30 完成**。完成后 gate-dev（label `stage1_tierA_ep1`，out-dir `gate_stage1_tierA_dev`）。
 - 教训登记：**同一 output_dir 内 smoke 会污染后续 release**（现行训练器行为）——今后 smoke 与 release 必须分目录，或 release 前清点 stage1_ckpt。
+
+## 2026-10-01 R3-B（Tier-A-only）监控
+
+- 21:07 ✅ 正常：PID 189898 存活 1h21m，GPU 15.5GB / 100%，step 120/1,101（optimizer 口径，日志分母 17,623 仍为微步显示 bug），40s/步，loss 1.53→1.17 起步下降；tgt_trunc 143/3,840 行。ETA ~10-02 08:00-08:30。
+- 23:07 ✅ Tier-A 正常：存活 3h21m，GPU 15.5GB / 35%，step 300/1,101（27%，40s/步零漂移），loss 1.00-1.13，ckpt@300 已存；ETA ~08:00-08:30 不变。
+- 10-02 01:07 ✅ Tier-A 正常：存活 5h21m，GPU 15.5GB / 92%，step 480/1,101（44%），loss 0.88-0.95，ckpt@450 已存；ETA ~08:00-08:30 不变。
+- 10-02 03:07 ✅ Tier-A 正常：存活 7h21m，GPU 15.5GB / 85%，step 660/1,101（60%），loss 0.84-0.98；ETA ~08:00-08:30 不变。本批（23:07/01:07/03:07）合并 commit。
