@@ -1,0 +1,97 @@
+{
+ "pool_tier_counts": {
+  "C": 12457,
+  "A": 28575,
+  "B": 17690,
+  "REJECT": 1113
+ },
+ "core_join": {
+  "rows": 37044,
+  "unmatched": 3542,
+  "ambiguous_tier": 1,
+  "tier_composition": {
+   "A": 20901,
+   "B": 12600
+  }
+ },
+ "tier_profile": {
+  "A": {
+   "n": 20901,
+   "steps": {
+    "p50": 4,
+    "p90": 10,
+    "p99": 44,
+    "max": 1098,
+    "mean": 6.5
+   },
+   "plan_tokens": {
+    "p50": 140,
+    "p90": 351,
+    "p99": 1434,
+    "max": 35523,
+    "mean": 229.0
+   },
+   "branch_ratio_mean": 0.058
+  },
+  "B": {
+   "n": 12600,
+   "steps": {
+    "p50": 5,
+    "p90": 16,
+    "p99": 49,
+    "max": 846,
+    "mean": 7.9
+   },
+   "plan_tokens": {
+    "p50": 185,
+    "p90": 511,
+    "p99": 1721,
+    "max": 26623,
+    "mean": 274.8
+   },
+   "branch_ratio_mean": 0.233
+  }
+ },
+ "w3_prompt_sample": "Task: Estimate shrub belowground biomass\nCalculate shrub belowground biomass density by applying root-to-shoot ratio (RSR) bootstrapped values to aboveground shrub biomass, then computes mean and 95% confidence interval (2.5th and 97.5th percentiles) across the bootstrapped results, producing a summ",
+ "w3_probe_join": {
+  "probes": 474,
+  "unmatched": 346,
+  "ambiguous": 0,
+  "tier_composition": {
+   "A": 57,
+   "B": 51,
+   "C": 19,
+   "REJECT": 1
+  },
+  "gold_steps_by_tier": {
+   "A": {
+    "p50": 4,
+    "p90": 12,
+    "p99": 74,
+    "max": 74,
+    "mean": 6.6
+   },
+   "B": {
+    "p50": 6,
+    "p90": 21,
+    "p99": 50,
+    "max": 50,
+    "mean": 10.6
+   },
+   "C": {
+    "p50": 10,
+    "p90": 32,
+    "p99": 37,
+    "max": 37,
+    "mean": 12.8
+   },
+   "REJECT": {
+    "p50": 4,
+    "p90": 4,
+    "p99": 4,
+    "max": 4,
+    "mean": 4.0
+   }
+  }
+ }
+}

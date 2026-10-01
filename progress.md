@@ -927,3 +927,13 @@
 - **裁定要点**：① ep2 已解耦 W2（epoch-sensitive，0.305→0.802）与 W3（不随训练量增长，0.483→0.499），"单纯 epoch 不足"解释被削弱；② 不跑 ep3 / 不堆 20 epoch（W3 信息增益≈0）、不改 Gate、不改 Plan Schema、不进 B2；③ **下一步 R3-B-0 数据诊断（纯分析不训练）**：把 A+B 训练样本按 Tier / Plan 长度 / step 数 / 算子多样性 / Task 复杂度 / chain 长度 / modifier / branch / type-flow break / source family 切片，核心问题="W3 失败是否集中于某类数据"，重点查 Tier A vs B 构成、长 Plan 条件化、Task↔Plan 对应强度（一任务多 Plan / 弱 Task 强 Plan）；④ 诊断无异常后做 **R3-B Tier-A-only 消融**（同 Base/tokenizer/evaluator/W1-W4/目标/预算，仅 A+B→A，1 epoch）；⑤ W4 的退化暂不动（先查 train/dev 分布与 prediction pattern，不改 20% 权重）；⑥ W1 调查冻结（结果不可作"W1 知识缺失"纯净证据），等 B/C/D 后再议接口修订。
 - **核心科学问题（owner 定调）**：为什么 W2 能学、W3 几乎不学——"连接规则可以快速学到；任务条件化规划能力尚未被证明"。这触及 Route-2 核心假设：大规模 GEE workflow supervision 能否教会 Task→workflow 构造。
 - **执行开始**：诊断数据全在本地（02_DATA_FROZEN：stage1_train_v2_2.jsonl + gate_dev_probes_v3.jsonl），CPU 本地分析，零服务器负载。
+
+## 2026-10-01：R3-B-0 数据诊断完成（纯 CPU 零训练）——三问有答案，Tier-A-only 消融动机充分
+
+- 报告：`r3b0_diagnosis/R3_B0_DIAGNOSIS_REPORT_v1.md`（脚本 v1/v2 + 两个 JSON 同目录）。数据源全冻结件；Tier 池从 mdzhang 保全 tar 解包获得（**租卡机上实际没有 plan_pool_tiered_v2.jsonl，工位线旧补充与实况不符，已更正**）。
+- **①Tier 构成**：核心 37,044 行回连 95.9% = A 62.2% / B 37.5%；B 结构性更难（分支率 0.233 vs 0.058，4 倍；流断裂 0.11 vs 0；步数/tokens 更长）——B 是"更脏的 3/8"，影响面约 42% 核心 tokens。
+- **②Plan 长度**：实锤双重截断——构建期 1,766 行砍尾（2.5M tokens，max 50,774/行）+ 运行期 max_len 1024；而 W3 探针金标偏长（mean 9.2 / p90 19 vs 训练 8.1 / 14），70/474 超训练 p90。W4 dev 同型偏长。
+- **③对应关系**：文本级干净（36,898 唯一任务 / 仅 1 多 Plan / 零弱任务），排除；语义级未测。
+- **新增发现**：W3 dev 探针 54%（匹配子集）来自 B/C/REJECT 层；改写版 236 个按设计不可回连。算子分布头重（3 个 filter 族占大头），与众数基线 0.497 互证。
+- **W4 快检**：训练 p90 13 步 vs dev 金标 p90 19 步，同型偏长；prediction pattern 分析待下一轮。
+- **等 owner**：是否跑 R3-B Tier-A-only 消融（动机充分）；构建期截断行的处理（超长丢弃/单独桶）属 ⑦ 外数据整形，仅登记待批。
