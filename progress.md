@@ -946,3 +946,10 @@
 - **R3-B-TRUNC 登记**：1,766 条构建期截断样本冻结不动，不与消融同时改（单变量纪律）；未来方向=length-aware 处理/完整监督，属下一阶段数据工程。
 - **汇报要求**：完整五条件表（A+B ep1/ep2/A-only 三列），非只看 W3。
 - 论文价值判断（owner）：主线正形成"GEE workflow supervision 可快速学 workflow 内部数据流判别（W2），但 Task-conditioned planning（W3）未同步形成；长 workflow 监督存在系统性截断；Tier-B 与 W3 关系待消融"——暂非最终结论。
+
+## 2026-10-01：R3-B Tier-A-only 消融——数据集构建完成 + smoke 通过；实验登记（放行前）
+
+- **数据集构建**（构建器字节级相同副本 `f3734d13`，隔离目录 /root/r3b_tierA，单变量=池子仅 Tier A，SHA `22c39d30…`，28,575 行；原池不在租卡机，从 mdzhang tar 解包）：SRC=b1_gee_stage_train.jsonl（服务器在位）。产出 `stage1_train_v2_2A.jsonl`（SHA `8a9337ae3e914e23…`，/root/data/）。审计：tier_ab_train_rows=23,030 全数入核心（0 转换失败/0 不合格）、token 配比 0.60001/0.1/0.09999/0.2、task_truncation=0、Chain LM=0、W4 子类 1598/1654/1610、总 tokens 14,287,002（=A+B 的 57.9%）。构建期截断在 A-only 仍存在（815 行/1.57M tokens）——与 A+B 臂同型处理，R3-B-TRUNC 冻结不动（单变量纪律）。报告 `stage1_dataset_report_v2_2A.json` 在服务器。
+- **配置**：`stage1_v2_2_tierA.yaml`（name stage1_v2_2_tierA、train_data=2_2A、output_dir=/root/data/stage1_run_tierA，其余与 stage1_v2_2.yaml 逐字同）；smoke 配置同 + smoke_rows=100。种子 20260924 不变。
+- **smoke 通过**：[done] mode=smoke steps=9 examples=300 tokens=62,613 tgt_trunc=3 task_too_long=0 elapsed=385s。
+- **实验登记（启动前）**：R3-B Tier-A-only，1 epoch，预算=同协议；**预期观测**——主读数 W3 as-is F1（dev，evaluator v1.3.1）对照 .499（A+B ep2）/.483（ep1）：>> .499 → 数据构成进入主解释；≈.50 → R3-C/D；< .50 → B 有正贡献。同时完整报告五条件（W1/W2 overall+No/W3/W4）。预计运行 ~11.6h（tokens 57.9%）。产出目录 stage1_run_tierA，评测 label `stage1_tierA_ep1`、out-dir `gate_stage1_tierA_dev`。GPU 空闲（11 MiB）。放行依据=owner 2026-10-01 批准（`864496b`）。
