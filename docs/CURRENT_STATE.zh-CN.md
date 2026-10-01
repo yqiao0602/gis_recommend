@@ -1,8 +1,12 @@
 # 当前项目状态
 
-最后更新：2026-09-30
+最后更新：2026-10-01（晚）
 
 ## Route-2 v2 当前交接
+
+**R3 诊断链进行中**：ep2 Gate-dev 仍 FAIL 但能力分化（W2 0.802 逼近门+No 类 0.994 过门 / W3 两轮持平 0.499 / W4 退化归零 / W1 confound 持续）→ owner 裁定走 R3-B。R3-B-0 数据诊断完成：Tier B 占训练 37.5% 且分支率 4 倍；**长 Plan 监督被构建期（1,766 行/2.5M tokens）+运行期双重截断**而 W3 探针偏长；Task↔Plan 文本级干净。报告 `r3b0_diagnosis/R3_B0_DIAGNOSIS_REPORT_v1.md`。
+
+**R3-B Tier-A-only 消融已启动（owner 批准，严格单变量）**：数据 `stage1_train_v2_2A.jsonl`（SHA `8a9337ae…`，23,030 核心行，构建器字节级相同副本，审计全绿），PID 189898 于 10-01 19:46 干净起跑（smoke 检查点污染事故已发现+隔离+纠正），预计 **10-02 ~08:30 完成**，随后 gate-dev（label `stage1_tierA_ep1`）。判读树：W3>>0.499→数据构成主嫌疑；≈0.50→R3-C/D；<0.50→B 有正贡献。1,766 截断样本冻结（R3-B-TRUNC）。ep1/ep2 判定与全部数字见 `stage1_ep1_v1/`、`stage1_ep2_v1/`。
 
 **Stage-1 ep1 Gate-dev = FAIL（4/4 未过门，2026-09-30）**：W1 0.0000（门0.20）/ W2 0.3052+No类0.6185（门0.85+0.70）/ W3 as-is 0.4829（门0.60）/ W4 0.0346（门0.20）。学习真实发生（Base 全 0 → W2 0.305/W3 0.483/W4 0.035）但低于注册下限，且 W2/W3 低于平凡基线——Gate 判别力成立、正确拒绝。主瓶颈=格式服从（invalid 69.2%，Base 86.4%）。判定报告：`stage1_ep1_v1/STAGE1_EP1_GATE_DEV_VERDICT_v1.md`。
 
