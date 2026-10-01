@@ -937,3 +937,12 @@
 - **新增发现**：W3 dev 探针 54%（匹配子集）来自 B/C/REJECT 层；改写版 236 个按设计不可回连。算子分布头重（3 个 filter 族占大头），与众数基线 0.497 互证。
 - **W4 快检**：训练 p90 13 步 vs dev 金标 p90 19 步，同型偏长；prediction pattern 分析待下一轮。
 - **等 owner**：是否跑 R3-B Tier-A-only 消融（动机充分）；构建期截断行的处理（超长丢弃/单独桶）属 ⑦ 外数据整形，仅登记待批。
+
+## 2026-10-01：owner 批准 R3-B Tier-A-only 消融（严格单变量）；1,766 截断样本冻结（R3-B-TRUNC）
+
+- **批准范围**：仅改数据构成 A+B → A-only；Base/tokenizer/evaluator/probe/Gate/W1-W4/objective/max_len/lr/effective batch/训练预算（1 epoch）全冻结；其余数据比例保持原协议（60/10/10/20 token shares）。定位=**数据质量/构成消融，非新正式 Stage-1 训练**。
+- **目的表述（owner 指定，禁止写成"验证 B 是噪声"）**："检验 Tier B 数据的加入是否对 Task→Workflow Planning 产生负面影响"。B 有双重属性（可能质量较低 + 同时含更多 branch/更长 workflow）：A-only 变好 → B 噪声伤害超复杂性收益，或复杂性本身难学；A-only 变差 → B 提供了 W3 必需的困难 workflow 信号。
+- **判读树**：W3 >> .499 → 数据构成进入主解释；≈.50 → R3-C/D；< .50 → B 的复杂 workflow 有正贡献。
+- **R3-B-TRUNC 登记**：1,766 条构建期截断样本冻结不动，不与消融同时改（单变量纪律）；未来方向=length-aware 处理/完整监督，属下一阶段数据工程。
+- **汇报要求**：完整五条件表（A+B ep1/ep2/A-only 三列），非只看 W3。
+- 论文价值判断（owner）：主线正形成"GEE workflow supervision 可快速学 workflow 内部数据流判别（W2），但 Task-conditioned planning（W3）未同步形成；长 workflow 监督存在系统性截断；Tier-B 与 W3 关系待消融"——暂非最终结论。
