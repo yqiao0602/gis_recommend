@@ -953,3 +953,10 @@
 - **配置**：`stage1_v2_2_tierA.yaml`（name stage1_v2_2_tierA、train_data=2_2A、output_dir=/root/data/stage1_run_tierA，其余与 stage1_v2_2.yaml 逐字同）；smoke 配置同 + smoke_rows=100。种子 20260924 不变。
 - **smoke 通过**：[done] mode=smoke steps=9 examples=300 tokens=62,613 tgt_trunc=3 task_too_long=0 elapsed=385s。
 - **实验登记（启动前）**：R3-B Tier-A-only，1 epoch，预算=同协议；**预期观测**——主读数 W3 as-is F1（dev，evaluator v1.3.1）对照 .499（A+B ep2）/.483（ep1）：>> .499 → 数据构成进入主解释；≈.50 → R3-C/D；< .50 → B 有正贡献。同时完整报告五条件（W1/W2 overall+No/W3/W4）。预计运行 ~11.6h（tokens 57.9%）。产出目录 stage1_run_tierA，评测 label `stage1_tierA_ep1`、out-dir `gate_stage1_tierA_dev`。GPU 空闲（11 MiB）。放行依据=owner 2026-10-01 批准（`864496b`）。
+
+## 2026-10-01：R3-B Tier-A-only 全量启动（20:44 干净起跑）——含一次 smoke 污染事故的发现与纠正
+
+- **事故**：首次 release 启动出现 `[resume] step 9 (rows 300)`——现行训练器 smoke/release 共享 `stage1_ckpt`，smoke 收尾把 step-9 检查点写入共享目录，release 启动即捡到（ep1 未发生是因为当时 smoke 9 步未及 ckpt_every=150 的间隔保存点；本次 smoke 收尾保存触发了污染）。**立即 pkill（起跑数秒内，操作级纠正）**。
+- **纠正**：smoke 产物整体隔离至 `/root/data/stage1_run_tierA_smoke_artifacts/`（mv 零删除），输出目录清空后干净重启。
+- **当前**：PID 189898，19:46 启动，`[release] full run: 35,246 rows x 1 epoch`，无 [resume] 行，GPU 15.5GB/76%。总步数 ≈ 1,101 optimizer steps（35,246/32）× 41.6s ≈ **12.7h，预计 10-02 ~08:30 完成**。完成后 gate-dev（label `stage1_tierA_ep1`，out-dir `gate_stage1_tierA_dev`）。
+- 教训登记：**同一 output_dir 内 smoke 会污染后续 release**（现行训练器行为）——今后 smoke 与 release 必须分目录，或 release 前清点 stage1_ckpt。
