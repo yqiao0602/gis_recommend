@@ -1079,3 +1079,9 @@
 - **裁定**：结局 2 成立——信息与组合逻辑都在，自回归生成没利用；优先方向 = structured decoding / intermediate representation / planner→serializer 两阶段（selection head 出多重集+长度 → 序列化器渲染），而非单纯加 SFT 或改 Task 表示。
 - **附带登记**：①当前 W3 gate 对顺序不敏感（bag 口径任意置换同分）——顺序敏感口径是 gate 设计层观察，冻结物不动；②L4 转移 AUC 0.904 对当前 gate 无直接贡献（未来顺序敏感口径有价值）；③计数分配为独立子问题（oracle 下占 15% 缺口）。
 - 零训练、零 GPU、冻结物未动。planner→serializer 设计草案归 owner。
+
+## 2026-10-02：owner 裁定 Planner→Serializer 最小可验证实验链（①-③ CPU 本回合执行；④训练待放行）
+
+- **定性结论（owner）**：模型不是不知道该做什么——组件信息在（AUC 0.913/0.904/F1 0.614），但一步生成完整 Plan 时退回高频先验（保守化欠发射）；Route-2 阶段结论暂记："GEE 数据有组件级价值，瓶颈在一次性自回归生成的利用方式"。
+- **实验序列**：① 定义 Planner schema → ② CPU 构造 Gold blueprint → ③ CPU 验证 blueprint→assembly → ④ 小规模 Planner SFT（Qwen3.5-9B+LoRA，只学 families+counts/length）→ ⑤ Planner+Rule Serializer → ⑥ 与 Direct Task→Plan 对比（若 >0.50 则核心假设成立）→ ⑦ 完整 Planner→Serializer → ⑧ Stage-1 Gate → ⑨ Stage-2 → ⑩ RL。**④⑤ 是关键**：验证"LLM 能不能学会先做 Planner"。
+- **本回合执行 ①②③（CPU）**；④ 起需 GPU 与 owner 放行。
