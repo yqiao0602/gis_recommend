@@ -997,3 +997,13 @@
 
 - **裁定要点**：① Tier-A-only 已回答"删 B 使 W3 降 8pp"，但不能断言 B 必有益（A-only 同时改变了规模/tokens/复杂度/分支/组合多样性五件事）；② **W2-Yes 崩溃（0.0016）比 W3 更值得追**，但暂不接受"B 教会 Yes"解释——竞争解释：A-only 训练分布/规模效应（Yes 类覆盖不足 → No 偏置）；③ 顺序改为：R3-B-1 诊断 → （视结果）小型 W2 机制验证 → R3-B-TRUNC 诊断 → R3-C → R3-D → 最后才考虑更长训练/objective；④ TRUNC 修正定位：两臂共同的上限因素，关键看截断位置与被截字段（后半段尾步骤 vs 关键 dependency/branch/constraint）；⑤ 不跑 ep3、不碰 RL。
 - **执行**：全本地 CPU。W2 dev 探针带标签（Yes 610/No 173）可按 task 文本回连池子取 Tier；训练行带 source_row_id（=SRC 行号=池子 row_id）可精确 join；TRUNC 分析需 Qwen tokenizer（走附录 C 镜像模板下载 tokenizer 小件）。
+
+## 2026-10-02：R3-B-1 数据诊断完成——W2-Yes 崩溃的解释反转：证据指向"累计 token 阈值"而非 Tier-B 内容
+
+- 报告：`r3b1_diagnosis/R3_B1_DIAGNOSIS_REPORT_v1.md`。全程本地 CPU + 冻结件 + 服务器 tokenizer 小件。
+- **F1 意外发现**：W2 的 783 探针是**类型对兼容性问题**（34 对、8 个 Yes 型），与任务/池子行无关（775/783 严格符合"同型→Yes"规则）——探针侧 Tier 交叉表不存在，双臂差异全是模型行为。
+- **F4 反例**：主 Yes 对（raster_collection→raster_collection，509 探针）在 A 层有 148,965 个实例——覆盖充足，A-only 却只答对 1 题。**"B 提供独有覆盖"解释不成立**。
+- **F5 收敛**：配对预测显示 A-only 对合法转移大面积**拒答**（空 407/No 202/Yes 1）；结合累计 token 曲线（A+B ep1 Yes .216 @24.7M → ep2 .748 @49.4M → A-only .0016 @14.3M），**"累计 token 阈值涌现"假说证据更强**——正中 owner 自定判别规则（"A 的 Yes 不少但仍 ≈0 → 问题在训练而非类别数量"）。**判别性预测已登记**：A-only 训满 2 epoch（~28.6M 跨入区间）若 Yes 出现→量变假说成立；仍≈0→内容假说复活。本轮不跑。
+- **F6 TRUNC 回答**：截断不是砍无害尾巴——**70.1% 被截行丢失含约束步骤**、中位丢 8 整步/31% 文本；导出步很少丢（1%）；分支步 0（已线性化）。伤害核心=约束信息+中后段步骤监督。
+- completion 流：B 以 32% 行数贡献 89 种 vs A 80 种下一意图（密度 2.2 倍）；核心 tokens A 57.9%/B 42.1%。
+- 待 owner：R3-C / R3-D / W2 阈值验证（A-only 2 epoch）/ TRUNC 整形，四选一或组合。
