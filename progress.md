@@ -1085,3 +1085,10 @@
 - **定性结论（owner）**：模型不是不知道该做什么——组件信息在（AUC 0.913/0.904/F1 0.614），但一步生成完整 Plan 时退回高频先验（保守化欠发射）；Route-2 阶段结论暂记："GEE 数据有组件级价值，瓶颈在一次性自回归生成的利用方式"。
 - **实验序列**：① 定义 Planner schema → ② CPU 构造 Gold blueprint → ③ CPU 验证 blueprint→assembly → ④ 小规模 Planner SFT（Qwen3.5-9B+LoRA，只学 families+counts/length）→ ⑤ Planner+Rule Serializer → ⑥ 与 Direct Task→Plan 对比（若 >0.50 则核心假设成立）→ ⑦ 完整 Planner→Serializer → ⑧ Stage-1 Gate → ⑨ Stage-2 → ⑩ RL。**④⑤ 是关键**：验证"LLM 能不能学会先做 Planner"。
 - **本回合执行 ①②③（CPU）**；④ 起需 GPU 与 owner 放行。
+
+## 2026-10-02：Planner Schema v1 设计 + Gold Blueprint 构造验证完成（步骤①②③ ✓）
+
+- 报告：`planner_design/PLANNER_SCHEMA_V1_REPORT_v1.md`；数据 `04_DIAG_WORK/planner_gold_blueprints_v1.jsonl`（37,044 行 / 32.5MB，本地就绪）。
+- **Schema v1**：`{families（首现顺序去重）, counts（每 family 次数）, length}`——**counts 必须在 schema 里**（R3-CD-4 oracle 15% 计数缺口的补齐手段，已验证）；Serializer v1 = 按 counts 展开（规则程序）。
+- **验证**：V1 oracle blueprint → serializer → **bag-F1 = 1.0000**（全量，冻结口径下无损）；V2 展开顺序==gold 顺序仅 **44.1%**（blueprint 保 bag 损顺序——当前 gate 兼容，未来顺序敏感口径需 schema v2 扩展，已登记预留位）；V3 multiset→顺序平均可排列数 3.7×10³¹（本质一对多）；**V4 监督目标 14.4 词 vs gold 249.3 词（17× 压缩）**——Planner 目标极小且与 Task 可预测成分对齐。
+- **待 owner**：④ 小规模 Planner SFT（需新训练脚本=⑦ 外代码变更+GPU 窗口，训练时长预计远小于全 Plan SFT）；⑤⑥ 对比实验设计。数据已就绪。
