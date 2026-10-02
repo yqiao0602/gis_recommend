@@ -1099,3 +1099,10 @@
 - **评测三指标**：① Blueprint parse 率 ② Family bag-F1（选对没选对）③ Count/Length 准确率（family 对但 count 错的模式）。之后 Planner→Rule Serializer→冻结 W3 evaluator vs Direct 0.499（预期 0.60+ 则核心假设成立；0.58-0.60 ≈ 组件天花板区域也算成功；0.75+ = 强提取）。
 - **定位与解读上限**：可行性验证；0.60 ≈ 现有组件信息可达区域（L1+L2 assembly 0.60 / oracle 0.846），不是失败。
 - **实验序列冻结**：CD-2/3/4 ✓ → Schema v1 ✓ → Gold Blueprint ✓ → **④ Planner SFT（现在做）** → ⑤ Planner+Rule Serializer → ⑥ 对比 → ⑦ 正式 Planner→Serializer → ⑧ Stage-1 Gate → ⑨ Stage-2 → ⑩ RL。
+
+## 2026-10-03：R3-PLANNER-P0 smoke 通过 + 全量启动（干净起跑，无 resume）
+
+- **smoke 通过**（独立目录 stage1_run_planner_p0_smoke）：[done] steps=9 examples=300 tokens=14,466 tgt_trunc=0 task_too_long=0 elapsed=313s——**每行仅 ~48 tokens**（task ~100 + blueprint ~40），Pipeline 零新训练代码（Stage1PlanCollator 通用行格式直接复用）。
+- **数据集**：planner_p0_train.jsonl（33,339 行，SHA `2bfc0ad7…`）+ planner_p0_eval.jsonl（3,705 行 held-out，SHA `30d19cb0…`），90/10 seed 20260924；行格式 {task, context="", target=blueprint紧凑JSON, separator=含输出格式指令}；tokenizer 实测 ~48 tokens/行。
+- **全量启动**：PID 217843，00:12 起，`[release] full run: 33,339 rows x 1 epoch`，无 [resume] 行，GPU 11.5GB/39%。1,042 optimizer steps × ~41.6s ≈ **12h，预计 10-03 ~12:15 完成**。
+- **训练后评测计划**（新诊断脚本，非冻结评测器）：① Blueprint parse 率 ② family bag-F1（与冻结 gate 同口径）③ count/length 准确率；然后 Planner→Rule Serializer→bag-F1 vs Direct 0.499。判读带：0.58-0.60 ≈ 组件可达区（成功）；0.75+ = 强提取；<0.5 = Planner 假说存疑。
