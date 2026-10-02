@@ -969,3 +969,8 @@
 - 10-02 03:07 ✅ Tier-A 正常：存活 7h21m，GPU 15.5GB / 85%，step 660/1,101（60%），loss 0.84-0.98；ETA ~08:00-08:30 不变。本批（23:07/01:07/03:07）合并 commit。
 - 10-02 05:07 ✅ Tier-A 正常：存活 9h21m，GPU 15.5GB / 66%，step 840/1,101（76%），loss 0.76-0.85；剩 261 步 ≈ 2.9h，完成预计 ~08:05。
 - 10-02 07:07 ✅ Tier-A 正常：存活 11h21m，GPU 15.5GB / 72%，step 1,020/1,101（93%），loss 0.76-0.78；剩 81 步 ≈ 55 分钟，完成预计 ~08:05。本批（05:07/07:07）合并 commit。
+
+## 2026-10-02：R3-B Tier-A-only 训练完成（[done] 07:58，12.19h）——gate-dev 已启动
+
+- `[done] mode=release steps=1101 examples=35,246 tokens=7,743,885 tgt_trunc=1,716 task_too_long=0 elapsed=43,889s`（12.19h，符合预估）。末段 loss ~0.73。adapter `/root/data/stage1_run_tierA/stage1_adapter`，账本 run_ledger.json。GPU 已清空。
+- gate-dev 已启动：PID 195656（08:45 起，GPU 7.6GB），label `stage1_tierA_ep1`、out-dir `/root/data/gate_stage1_tierA_dev`（独立目录）。参数与冻结评测器一致。预计 ~6.5-7h，**出分窗口今日 15:00-16:00**。出分后出三列对比表（A+B ep1 / A+B ep2 / A-only）报 owner。
