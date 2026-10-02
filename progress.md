@@ -974,3 +974,10 @@
 
 - `[done] mode=release steps=1101 examples=35,246 tokens=7,743,885 tgt_trunc=1,716 task_too_long=0 elapsed=43,889s`（12.19h，符合预估）。末段 loss ~0.73。adapter `/root/data/stage1_run_tierA/stage1_adapter`，账本 run_ledger.json。GPU 已清空。
 - gate-dev 已启动：PID 195656（08:45 起，GPU 7.6GB），label `stage1_tierA_ep1`、out-dir `/root/data/gate_stage1_tierA_dev`（独立目录）。参数与冻结评测器一致。预计 ~6.5-7h，**出分窗口今日 15:00-16:00**。出分后出三列对比表（A+B ep1 / A+B ep2 / A-only）报 owner。
+
+## 2026-10-02 gate-dev Tier-A 评测监控
+
+- 09:07 ✅ 评测正常：PID 195656 存活 21m，GPU 7.6GB / 21%，输出未写（一次写出设计）。出分窗口 15:00-16:00 维持。
+- 11:07 ✅ Tier-A 评测正常：存活 2h21m（≈ep2 节奏 37%），GPU 8.0GB / 20%。出分窗口 15:00-16:00 维持。
+- 12:07 ✅ Tier-A 评测正常：存活 3h21m（≈48%），GPU 8.1GB / 20%。出分窗口 15:00-16:00 维持。
+- 13:07 ✅ Tier-A 评测正常：存活 4h21m（≈ep2 节奏 67%），GPU 8.1GB / 20%。出分窗口 15:00-16:00 维持。本批（11:07/13:07）合并 commit。
