@@ -1028,3 +1028,9 @@
 - **>21 slice 双重结构受限**：金标 p50 1,160 词 ≫ 冻结推理 560-token 生成上限（F1 天花板）；实证三臂预测全部停在 ~140 词、exact=0——**无法区分三臂**。建议降级为"记录不解读"。
 - **新行为学发现**：三臂、全 slice 预测长度恒定 ~140-160 词（≈训练 Plan p50 148 词），与金标 154↔1,160 词无关——**输出长度不随任务调节**，Task-conditioning 未形成的直接行为证据，支持 R3-C/D 方向。
 - 建议已登记：训练 notrunc 后报告 W3-all（主结果对照冻结 gate）+ W3-≤21（主诊断）+ 长度条件化分析（事后指标）。等 owner 放行训练。
+- 10-02 18:07 例行检查：GPU 空闲（11 MiB / 0%），无训练或评测进程（pgrep 命中为远程 shell 自匹配）；当前状态 = 等 owner 对 TRUNC-exclusion 训练的放行（notrunc 数据集在本地未上传）。
+
+## 2026-10-02：owner 裁定——暂停 TRUNC-exclusion（不上传/不训练），进入 R3-C/R3-D Contract/转换审计（CPU-only）
+
+- **裁定要点**：① 输出长度不条件化（三臂恒 ~140-160 词）比"有无 1,766 截断"更基础——现在跑 TRUNC-exclusion 仍无法回答"supervision 变干净 vs 更集中典型长度"；② TRUNC-exclusion 降级为后续验证实验（届时若链条确认无损，可作真正独立的数据完整性变量）；③ W2-Yes 归档为 training-budget/emergence 假说，不专门烧 GPU，未来 2-epoch 顺手观察；④ **R3-C/D 顺序**：先 CPU 审计再考虑改数据——沿 Task→GEE 原始 workflow→chain extraction→chain_to_plan→Plan schema→training target 全链，定位"任务复杂度→长度/结构"信息丢失点；⑤ TRUNC 是数据完整性问题（仍须处理），固定长度输出是 Task-conditioned planning 能力问题——后者是核心目标。
+- **审计设计**（本地 CPU）：A. 逐阶段信息清单（原始链 vs convert 输出 vs 渲染 target，抽样对比）；B. 任务复杂度 ↔ Plan 长度相关性（若弱 = 任务文本本身不编码长度信息）；C. chain_to_plan 压缩率/参数损失/分支线性化量化（对照已知 F-STRUCT-01/D-MOD-01/DATA-FRAG）；D. 约束覆盖率。数据源：SRC=b1_gee_stage_train.jsonl（含 gee_canonical_chain 原始链）+ 池子结构化 plan + 冻结 v2_2。
