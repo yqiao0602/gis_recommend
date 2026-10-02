@@ -1062,3 +1062,11 @@
 
 - **裁定要点**：① Stage-1 问题定性升级："模型没训好" → "监督信号本身怎么定义"；W3=0.50 混合了 Task understanding / workflow inference / workflow construction 三层能力，需拆解；② 证据链闭合确认（R3-A/B/TRUNC/转换器/CD-2 全排除或定位）；③ **纠正一个大结论**：不说"GEE 数据不好"，而说"Task 字段是自然语言任务描述，不是 workflow specification"；④ **不做 Contract 重设计**（避免因果链难讲），先做 R3-CD-3：Task 信息量/可预测性分析——① Task→operation family ② Task→length/stage count 分箱 ③ Task→first/last op ④ Task→operation pair（局部依赖）；⑤ W3 重理解：W3-a Goal / W3-b Op set / W3-c Ordered set / W3-d Complete——若 a 高 d 低 → GEE 能教 task understanding 但不足以监督完整 construction（分层 Workflow Reasoning 方向）；若 a 都低 → GEE 的角色需重估。⑥ 不训练、不改 frozen asset、不碰 RL/Stage-2。
 - **实现方案**：TF-IDF + 线性探针 + 80/20 固定种子切分，对 family 多标签 / 长度分箱 / 首-尾 family / 转移对 分别测（含 majority 基线）；解读限定为"线性可提取信号"参考。
+
+## 2026-10-02：R3-CD-3 Task 信息充分性审计完成——信息阶梯：组件层全强（AUC 0.90+），缺口在完整序列组装
+
+- 报告：`r3cd_audit/R3_CD3_AUDIT_REPORT_v1.md`。TF-IDF+线性探针（n=37,044，80/20，seed 20260924），解读限定为线性可提取信号下界。
+- **信息阶梯**：L1 family 集合 **AUC 0.913**（20 类多标签，最差 family 也有 0.86）/ L2 长度分箱 **0.628 vs 基线 0.389**（1.6× lift，混淆集中相邻箱）/ L3a 首 family **无信号**（0.961 vs 0.943，纯 provisioning 惯例，结构性）/ L3b 末 family **0.626 vs 0.352**（+27pp 真信号）/ L4 相邻转移对 **AUC 0.904**（228 对，top 对 1.0）/ **L-full 完整序列（训练后模型）0.499**。
+- **判读**：组件层（做哪些操作、什么连什么、大致多长）信息全部在场且不弱；**缺口精确定位在"把局部正确的转移拼成全局一致序列"的组装层**——对应 owner 预判"GEE 能教 task understanding/operation 语义/局部依赖，但不足以监督完整 workflow construction"成立，支持分层 Workflow Reasoning 重设计，无需推翻 GEE 角色。
+- **局限**：线性探针为下界；family/长度标签来自自动分层池。
+- 待 owner：是否启动分层监督重设计（⑦ 外协议变更，owner 级）；TRUNC/run-cap/W2-2ep 维持冻结。零训练零 GPU，冻结物未动。
