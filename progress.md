@@ -1092,3 +1092,10 @@
 - **Schema v1**：`{families（首现顺序去重）, counts（每 family 次数）, length}`——**counts 必须在 schema 里**（R3-CD-4 oracle 15% 计数缺口的补齐手段，已验证）；Serializer v1 = 按 counts 展开（规则程序）。
 - **验证**：V1 oracle blueprint → serializer → **bag-F1 = 1.0000**（全量，冻结口径下无损）；V2 展开顺序==gold 顺序仅 **44.1%**（blueprint 保 bag 损顺序——当前 gate 兼容，未来顺序敏感口径需 schema v2 扩展，已登记预留位）；V3 multiset→顺序平均可排列数 3.7×10³¹（本质一对多）；**V4 监督目标 14.4 词 vs gold 249.3 词（17× 压缩）**——Planner 目标极小且与 Task 可预测成分对齐。
 - **待 owner**：④ 小规模 Planner SFT（需新训练脚本=⑦ 外代码变更+GPU 窗口，训练时长预计远小于全 Plan SFT）；⑤⑥ 对比实验设计。数据已就绪。
+
+## 2026-10-02：owner 放行 R3-PLANNER-P0（Planner 可行性实验）——严格定位可行性验证，非正式 Stage-1
+
+- **放行条件**：Task→Blueprint JSON；QLoRA/NF4/bf16 与之前尽量相同；1 epoch；无 curriculum/RL/Serializer 学习；不动冻结 Stage-1 数据集；独立实验目录与 checkpoint。
+- **评测三指标**：① Blueprint parse 率 ② Family bag-F1（选对没选对）③ Count/Length 准确率（family 对但 count 错的模式）。之后 Planner→Rule Serializer→冻结 W3 evaluator vs Direct 0.499（预期 0.60+ 则核心假设成立；0.58-0.60 ≈ 组件天花板区域也算成功；0.75+ = 强提取）。
+- **定位与解读上限**：可行性验证；0.60 ≈ 现有组件信息可达区域（L1+L2 assembly 0.60 / oracle 0.846），不是失败。
+- **实验序列冻结**：CD-2/3/4 ✓ → Schema v1 ✓ → Gold Blueprint ✓ → **④ Planner SFT（现在做）** → ⑤ Planner+Rule Serializer → ⑥ 对比 → ⑦ 正式 Planner→Serializer → ⑧ Stage-1 Gate → ⑨ Stage-2 → ⑩ RL。
