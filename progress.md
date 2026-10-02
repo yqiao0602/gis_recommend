@@ -1044,3 +1044,7 @@
 - **F4**：三臂固定长度输出（恒 ~140 词）= p(plan|task)≈p(plan) 的最优策略——**模型忠实学习了我们给它的条件结构**，非失灵。
 - **定位更新**：R3-D 修复点在转换上游（重跑数据管道级变更）；R3-C 重新表述为"任务如何描述 workflow"的数据工程；TRUNC-exclusion 降级为次级因素实验（是否跑归 owner）；W2-Yes 维持归档。
 - 零训练、零服务器写入、冻结物未动。待 owner 裁定下一步。
+
+## 2026-10-02：owner 裁定 R3-CD-2 CPU audit——区分"run-cap 破坏 task-结构信号" vs "Task↔Original 本身就弱"
+
+- **裁定要点**：① 三层问题固定：上游压缩（R3-D）/ 任务弱编码（R3-C）/ 固定长度输出=忠实学习（非失灵）；② 暂停 TRUNC-exclusion（次级）、W2-Yes、RL、Stage-2 全冻结；③ **R3-CD-2**（CPU）：逐级统计 Original→Final→Plan（步数/intent 多样性/I-O/dependency/被删步骤性质/位置/任务特异性）+ 全覆盖三段相关（Task↔Orig/Final/Plan，含任务复杂度多代理）+ 长度条件下 Task 分组。判读：若 Task↔Orig 有信号但 run-cap 后明显下降 → 上游瓶颈实锤；若 Task↔Orig 本身弱且后级无进一步恶化 → 数据缺乏 Task→Workflow 对齐监督（根本问题）。
