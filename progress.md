@@ -1034,3 +1034,13 @@
 
 - **裁定要点**：① 输出长度不条件化（三臂恒 ~140-160 词）比"有无 1,766 截断"更基础——现在跑 TRUNC-exclusion 仍无法回答"supervision 变干净 vs 更集中典型长度"；② TRUNC-exclusion 降级为后续验证实验（届时若链条确认无损，可作真正独立的数据完整性变量）；③ W2-Yes 归档为 training-budget/emergence 假说，不专门烧 GPU，未来 2-epoch 顺手观察；④ **R3-C/D 顺序**：先 CPU 审计再考虑改数据——沿 Task→GEE 原始 workflow→chain extraction→chain_to_plan→Plan schema→training target 全链，定位"任务复杂度→长度/结构"信息丢失点；⑤ TRUNC 是数据完整性问题（仍须处理），固定长度输出是 Task-conditioned planning 能力问题——后者是核心目标。
 - **审计设计**（本地 CPU）：A. 逐阶段信息清单（原始链 vs convert 输出 vs 渲染 target，抽样对比）；B. 任务复杂度 ↔ Plan 长度相关性（若弱 = 任务文本本身不编码长度信息）；C. chain_to_plan 压缩率/参数损失/分支线性化量化（对照已知 F-STRUCT-01/D-MOD-01/DATA-FRAG）；D. 约束覆盖率。数据源：SRC=b1_gee_stage_train.jsonl（含 gee_canonical_chain 原始链）+ 池子结构化 plan + 冻结 v2_2。
+
+## 2026-10-02：R3-C/D Contract/转换审计完成——信息丢失点定位：上游 run-cap（R3-D 实锤）+ 任务文本先天弱编码（R3-C 实锤）
+
+- 报告：`r3cd_audit/R3_CD_AUDIT_REPORT_v1.md`。数据源：SRC 原始件 101,513 train 行（tar 解包）+ 池子 + 冻结 v2_2；本地 CPU，零训练。
+- **F1（R3-D 实锤）**：上游 run-cap 在转换前压缩 **79.3% 的 workflow**（80,509 行，平均砍 12.1 步，最多 3,783 步）；语义链 p50 11→7、p99 177→87。`run_cap_applied` 标记（14.4%）严重低估实际压缩。
+- **F2**：逐级长度 13.0 → 9.2 → 7.0（总压缩 −46%）；**chain_to_plan 忠实**（plan↔final_sem ρ=0.857）——丢失点在转换器上游。
+- **F3（R3-C 实锤）**：task 词数 ↔ original_semantic 仅 ρ=0.199——instruction 是散文摘要而非规格说明，**长度信息在源头就弱**；四分位条件均值 5.45→9.53 步（梯度弱）。
+- **F4**：三臂固定长度输出（恒 ~140 词）= p(plan|task)≈p(plan) 的最优策略——**模型忠实学习了我们给它的条件结构**，非失灵。
+- **定位更新**：R3-D 修复点在转换上游（重跑数据管道级变更）；R3-C 重新表述为"任务如何描述 workflow"的数据工程；TRUNC-exclusion 降级为次级因素实验（是否跑归 owner）；W2-Yes 维持归档。
+- 零训练、零服务器写入、冻结物未动。待 owner 裁定下一步。
