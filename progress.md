@@ -1057,3 +1057,8 @@
 - **F3 裁定**：**假说 B 成立** + 细化：RLE 是表示选择（Plan=阶段序列，无法表达迭代次数；32.1% instruction 含迭代措辞），即"任务描述 workflow 规模"与"Plan=阶段数"之间存在表示鸿沟。
 - **F4 修复方向含义**：修 run-cap 不是方向（展开迭代只会加长重复监督）；真正缺口在 Task 表示（需要结构化 workflow 规格——子目标/数据组/规模），属 Contract 重设计/数据工程（owner 级）。TRUNC-exclusion 与 run-cap 修复均降级。Stage-1 诊断链闭合：W3≈0.50 ← 长度/结构条件信号弱（源头 ρ≈0.2，RLE 继承）← 任务=散文摘要 + Plan=阶段序列。
 - 零训练、零服务器写入、冻结物未动。待 owner 裁定。
+
+## 2026-10-02：owner 裁定 R3-CD-3 Task 信息充分性审计（CPU-only）——主线冻结于当前状态
+
+- **裁定要点**：① Stage-1 问题定性升级："模型没训好" → "监督信号本身怎么定义"；W3=0.50 混合了 Task understanding / workflow inference / workflow construction 三层能力，需拆解；② 证据链闭合确认（R3-A/B/TRUNC/转换器/CD-2 全排除或定位）；③ **纠正一个大结论**：不说"GEE 数据不好"，而说"Task 字段是自然语言任务描述，不是 workflow specification"；④ **不做 Contract 重设计**（避免因果链难讲），先做 R3-CD-3：Task 信息量/可预测性分析——① Task→operation family ② Task→length/stage count 分箱 ③ Task→first/last op ④ Task→operation pair（局部依赖）；⑤ W3 重理解：W3-a Goal / W3-b Op set / W3-c Ordered set / W3-d Complete——若 a 高 d 低 → GEE 能教 task understanding 但不足以监督完整 construction（分层 Workflow Reasoning 方向）；若 a 都低 → GEE 的角色需重估。⑥ 不训练、不改 frozen asset、不碰 RL/Stage-2。
+- **实现方案**：TF-IDF + 线性探针 + 80/20 固定种子切分，对 family 多标签 / 长度分箱 / 首-尾 family / 转移对 分别测（含 majority 基线）；解读限定为"线性可提取信号"参考。
