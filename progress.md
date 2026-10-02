@@ -1007,3 +1007,8 @@
 - **F6 TRUNC 回答**：截断不是砍无害尾巴——**70.1% 被截行丢失含约束步骤**、中位丢 8 整步/31% 文本；导出步很少丢（1%）；分支步 0（已线性化）。伤害核心=约束信息+中后段步骤监督。
 - completion 流：B 以 32% 行数贡献 89 种 vs A 80 种下一意图（密度 2.2 倍）；核心 tokens A 57.9%/B 42.1%。
 - 待 owner：R3-C / R3-D / W2 阈值验证（A-only 2 epoch）/ TRUNC 整形，四选一或组合。
+
+## 2026-10-02：owner 裁定 R3-B-TRUNC clean ablation——先数据构建与 CPU 审计，不训练
+
+- **裁定要点**：① W2-Yes 归档为 training-budget/emergence hypothesis（不专门烧 GPU 验证，未来若有 2 epoch 训练顺手观察）；② Tier B 保留为主线数据（B 含高密度 workflow 意图/类型转移多样性，删之 W3 降 8pp）；③ 优先级：**TRUNC clean ablation（高）** > R3-C/R3-D（中）> W2-Yes 2ep（低）；④ R3-C 顺序理由：若不同时去除损坏监督，Contract 改善与去污效应无法区分；⑤ **第一刀=删除而非重建**（重建长 Plan 会同时改表达/tokens/监督内容/长链分布）；⑥ **max_len=1024 与 runtime 截断完全不动**（build-time 与 runtime 分开，保单变量）。
+- **本轮执行**：从冻结 v2_2 识别 1,766 条 build-time 截断核心行 → 构造"仅排除这 1,766 条"的新数据集（保持其余行与顺序不动，不做再平衡/重采样）→ CPU 审计（行数/tokens/比例漂移/W3 长度分布/Tier A-B 变化/是否引入新偏移）。审计通过后是否正式训练归 owner。
