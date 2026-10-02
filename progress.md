@@ -1070,3 +1070,12 @@
 - **判读**：组件层（做哪些操作、什么连什么、大致多长）信息全部在场且不弱；**缺口精确定位在"把局部正确的转移拼成全局一致序列"的组装层**——对应 owner 预判"GEE 能教 task understanding/operation 语义/局部依赖，但不足以监督完整 workflow construction"成立，支持分层 Workflow Reasoning 重设计，无需推翻 GEE 角色。
 - **局限**：线性探针为下界；family/长度标签来自自动分层池。
 - 待 owner：是否启动分层监督重设计（⑦ 外协议变更，owner 级）；TRUNC/run-cap/W2-2ep 维持冻结。零训练零 GPU，冻结物未动。
+
+## 2026-10-02：R3-CD-4 Local-to-Global Assembly Audit 完成——结局 2 成立：瓶颈在生成/序列化，不在组装监督
+
+- 报告：`r3cd_audit/R3_CD4_AUDIT_REPORT_v1.md`。**设计前提（读冻结评测器源码确认）**：W3 指标=family 多重集 bag-F1（overlap_counts+f1_from_counts），顺序完全不计分——"组装"=选对 family 多重集。
+- **主结果**：L1 预测 + L2b 长度预算 → 确定性分配 → **bag-F1 0.60**（三策略一致）> 训练后 LLM 0.499（+10pp）>> 同切分平凡基线 0.211（+39pp）；**oracle 上界 0.846**（剩余 15%=计数分配子问题；预测组装达选择上界 71%）。
+- **LLM 失败模式**（评测器自身解析函数复算，n=206，复算 F1 0.553 验证管线一致）：**系统性欠发射**——COLLECTION_MGMT −435 / SPATIAL_FILTER −355 / TEMPORAL_FILTER −195，稀有 family（BAND_SELECT/ATTRIBUTE_FILTER/THRESHOLD_LOGIC）pred_rate≈0，几乎零过发射——向高频"小曲目库"收缩，与固定长度输出同源（回退先验）。
+- **裁定**：结局 2 成立——信息与组合逻辑都在，自回归生成没利用；优先方向 = structured decoding / intermediate representation / planner→serializer 两阶段（selection head 出多重集+长度 → 序列化器渲染），而非单纯加 SFT 或改 Task 表示。
+- **附带登记**：①当前 W3 gate 对顺序不敏感（bag 口径任意置换同分）——顺序敏感口径是 gate 设计层观察，冻结物不动；②L4 转移 AUC 0.904 对当前 gate 无直接贡献（未来顺序敏感口径有价值）；③计数分配为独立子问题（oracle 下占 15% 缺口）。
+- 零训练、零 GPU、冻结物未动。planner→serializer 设计草案归 owner。
