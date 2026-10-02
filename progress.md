@@ -1048,3 +1048,12 @@
 ## 2026-10-02：owner 裁定 R3-CD-2 CPU audit——区分"run-cap 破坏 task-结构信号" vs "Task↔Original 本身就弱"
 
 - **裁定要点**：① 三层问题固定：上游压缩（R3-D）/ 任务弱编码（R3-C）/ 固定长度输出=忠实学习（非失灵）；② 暂停 TRUNC-exclusion（次级）、W2-Yes、RL、Stage-2 全冻结；③ **R3-CD-2**（CPU）：逐级统计 Original→Final→Plan（步数/intent 多样性/I-O/dependency/被删步骤性质/位置/任务特异性）+ 全覆盖三段相关（Task↔Orig/Final/Plan，含任务复杂度多代理）+ 长度条件下 Task 分组。判读：若 Task↔Orig 有信号但 run-cap 后明显下降 → 上游瓶颈实锤；若 Task↔Orig 本身弱且后级无进一步恶化 → 数据缺乏 Task→Workflow 对齐监督（根本问题）。
+
+## 2026-10-02：R3-CD-2 审计完成——假说 B 成立（附细化）：run-cap 是"循环折叠"的表示选择，Task 信号源头就弱
+
+- 报告：`r3cd_audit/R3_CD2_AUDIT_REPORT_v1.md`（全量 37,044 行匹配 + 101,513 行 RLE 结构验证）。
+- **F1**：`semantic_chain_rle` 是 raw 的保序子序列（99.96%，mismatch=0）；被删 976,094 步**全部是连续重复操作的折叠**（原始脚本的逐波段/逐要素循环，最长单游程 600 次重复）；**family 多样性零损失**（raw 30 = final 30），被删步骤不比保留步骤更任务特异——**假说 A（run-cap 破坏任务特异信息）不成立**。
+- **F2**：全覆盖相关性 task×orig 0.193 / ×final 0.157 / ×plan 0.152（动词代理 0.250/0.210）；任务四分位梯度倍数在三级几乎不变（1.71×→1.67×）——**RLE 没有进一步破坏信号，源头就弱**。
+- **F3 裁定**：**假说 B 成立** + 细化：RLE 是表示选择（Plan=阶段序列，无法表达迭代次数；32.1% instruction 含迭代措辞），即"任务描述 workflow 规模"与"Plan=阶段数"之间存在表示鸿沟。
+- **F4 修复方向含义**：修 run-cap 不是方向（展开迭代只会加长重复监督）；真正缺口在 Task 表示（需要结构化 workflow 规格——子目标/数据组/规模），属 Contract 重设计/数据工程（owner 级）。TRUNC-exclusion 与 run-cap 修复均降级。Stage-1 诊断链闭合：W3≈0.50 ← 长度/结构条件信号弱（源头 ρ≈0.2，RLE 继承）← 任务=散文摘要 + Plan=阶段序列。
+- 零训练、零服务器写入、冻结物未动。待 owner 裁定。
