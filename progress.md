@@ -992,3 +992,8 @@
 - **判读（按 owner 预注册树）**：A-only W3 < .50 → **"B 中复杂 workflow 对 W3 有正贡献"分支成立，H2（B 是瓶颈）排除且证据反转**。W3 剩余嫌疑收敛：R3-B-TRUNC（截断，两臂同受）→ R3-C（Contract）→ R3-D（转换损失）。
 - **新机制证据**：A-only W2 No 类 0.9017 但 **Yes 类塌缩 0.0016**——模型只学会拒绝、几乎不会接受；对照 A+B ep2 双类掌握（.748/.994），指向 **Tier B 的高分支合法依赖模式是"识别合法连接（Yes）"的信号来源**。建议后续专项验证。
 - 动作边界：未启动 ep3/test/R3-C/D/TRUNC 处理、未动冻结物；下一步归 owner。
+
+## 2026-10-02：owner 裁定 R3-B-1 数据诊断（纯分析零训练）——先解 W2-Yes 异常，暂不进 R3-C/D
+
+- **裁定要点**：① Tier-A-only 已回答"删 B 使 W3 降 8pp"，但不能断言 B 必有益（A-only 同时改变了规模/tokens/复杂度/分支/组合多样性五件事）；② **W2-Yes 崩溃（0.0016）比 W3 更值得追**，但暂不接受"B 教会 Yes"解释——竞争解释：A-only 训练分布/规模效应（Yes 类覆盖不足 → No 偏置）；③ 顺序改为：R3-B-1 诊断 → （视结果）小型 W2 机制验证 → R3-B-TRUNC 诊断 → R3-C → R3-D → 最后才考虑更长训练/objective；④ TRUNC 修正定位：两臂共同的上限因素，关键看截断位置与被截字段（后半段尾步骤 vs 关键 dependency/branch/constraint）；⑤ 不跑 ep3、不碰 RL。
+- **执行**：全本地 CPU。W2 dev 探针带标签（Yes 610/No 173）可按 task 文本回连池子取 Tier；训练行带 source_row_id（=SRC 行号=池子 row_id）可精确 join；TRUNC 分析需 Qwen tokenizer（走附录 C 镜像模板下载 tokenizer 小件）。
