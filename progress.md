@@ -1148,3 +1148,8 @@
 - **放行条件**：Schema v1 / train-eval split / LoRA / lr / batch / max_len / loss / 数据 / Serializer 全部不变；不碰冻结 Stage-1/Gate/RL；**从 P0 checkpoint 精确 resume**，额外 1 epoch（总 2 epoch）= 干净的"训练预算增加"因果比较。
 - **评测要求**：三判据（M3≥0.65 / M4±1≥0.65 / M2≥P0−0.02）之外，必须保存 **count-error curve**（gold count 分桶的 bias/exact，P0 vs P1-B 对照）——验证"饱和曲线整体右移"而非只看 M3 数字；**phantom family 率**（~1.05/行）顺手追踪——若 count/length 修复而 phantom 不动，则 family selection 与 count allocation 是两个独立误差源（影响 P2 设计）。
 - 定位：P1 专项实验，不提前宣布 Stage-1 新路线成立；失败判据 = 曲线不动 → 停止堆 epoch 转 P1-C。
+
+## 2026-10-03：R3-PLANNER-P1-B-2EP 启动——严格 resume 自 P0（step 1041），再训 1 epoch
+
+- P0 checkpoint 确认在位（latest.pt，09:14 收尾保存）；resume 验证：`[resume] step 1041 (rows 33339)` = P0 精确终点，adapter+optimizer+scheduler+RNG 全量恢复。PID 327343，17:25 起，GPU 13.3GB / 50%。
+- 预算：+1,041 步 ≈ 9h，**预计 10-04 ~02:30 完成**；完成后用同一 eval 脚本（held-out 3,705 行不变）+ 新增 count-error curve（P0 vs P1-B 同图）+ phantom family 率。
