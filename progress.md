@@ -1153,3 +1153,6 @@
 
 - P0 checkpoint 确认在位（latest.pt，09:14 收尾保存）；resume 验证：`[resume] step 1041 (rows 33339)` = P0 精确终点，adapter+optimizer+scheduler+RNG 全量恢复。PID 327343，17:25 起，GPU 13.3GB / 50%。
 - 预算：+1,041 步 ≈ 9h，**预计 10-04 ~02:30 完成**；完成后用同一 eval 脚本（held-out 3,705 行不变）+ 新增 count-error curve（P0 vs P1-B 同图）+ phantom family 率。
+- 10-03 18:07 ✅ P1-B 正常：存活 43m，GPU 16.9GB / 36%，ep2 段进度 79/1,041 步（31.1s/步，planner 短行更快），loss 2.08-2.16（第二轮起步形态，与 ep2 同型）；ETA ~10-04 02:25。
+- 19:07 ✅ P1-B 正常：存活 1h43m，GPU 19.0GB / 42%，ep2 段 179/1,041 步（30.6s/步稳定），loss 2.09-2.11；ETA ~02:25 不变。
+- 20:07 ✅ P1-B 正常：存活 2h43m，GPU 19.0GB / 56%，ep2 段 309/1,041 步（30.5s/步稳定），loss 2.01-2.07，ckpt@1350 已存；ETA ~02:25 不变。本批（18:07/19:07/20:07）合并 commit。
