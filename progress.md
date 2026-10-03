@@ -1112,3 +1112,7 @@
 - `[done] mode=release steps=1041 examples=33,339 tokens=1,694,098 tgt_trunc=0 task_too_long=0 elapsed=32,460s`（9.02h）。adapter `/root/data/stage1_run_planner_p0/stage1_adapter`。
 - 评测脚本一次启动失败（`load_in_4bit` 重复传参 TypeError），修复后重跑成功（PID 299410，GPU 7.9GB）——诊断脚本为独立新工具，不涉及冻结评测器。
 - 评测：3,705 held-out 行逐条生成 blueprint（max_new_tokens=192, greedy），输出 M1 parse 率 / M2 family bag-F1 / M3 count 精确率 / M4 length exact/±1 → metrics json。预计 ~1.5-2h（今日 ~13:30-14:00 出结果）。出结果后与 Direct 0.499 对比（判读带 0.58-0.60 成功 / 0.75+ 强提取 / <0.5 存疑）。
+- 12:07 ✅ P0 评测进行中（11%）：**实时读数 parse=1.000、family bag-F1=0.642**——已高于组件组装估计（0.60）与 Direct 0.499；全量指标 ~13:30 出。
+- 13:07 ✅ P0 评测进行中（32%）：parse=1.000 稳定，f1=0.649（800→1200 行微幅波动，0.642→0.660→0.649——稳定在 0.64-0.66 区间）；全量指标 ~14:00 出。
+- 14:07 ✅ P0 评测进行中（54%）：parse=1.000、f1=0.648（稳定）；全量 ~14:50 出。
+- 15:07 ✅ P0 评测进行中（65%）：parse=1.000、f1=0.647（稳定）；全量 ~14:50-15:40 出。本批（13:07/14:07/15:07）合并 commit。
