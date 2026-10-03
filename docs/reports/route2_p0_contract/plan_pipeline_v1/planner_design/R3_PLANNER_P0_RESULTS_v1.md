@@ -16,13 +16,36 @@
 
 ## 2. 判读（按 owner 预设判读带）
 
+> **owner 措辞修正（2026-10-03，追加）**：不是"决定性证明 Task 信息充分"，
+> 而是**在当前冻结数据、当前 bag-F1 口径和 P0 训练预算（仅 1.69M tokens feasibility run）下，
+> 强支持 Planner 假说**。
+
 - **0.6448 落在"成功"区间（>0.60），接近但未达"强提取"（0.75+）**。
-- **核心假设成立**：Planner+RuleSerializer（0.645）> Direct Generation（0.499，+14.6pp）——
+- **核心假设获强支持**：Planner+RuleSerializer（0.645）> Direct Generation（0.499，+14.6pp）——
   **"一步生成完整 Plan"确实是瓶颈，而不是 Task 缺少 workflow 信息。**
 - Planner（0.645）甚至超过了 R3-CD-4 的线性探针+规则组装器（0.60）——
   LLM 从 Task 中提取的信息**多于**线性可提取成分，说明有超出 TF-IDF 的语义利用。
 - **M1 = 1.0000 本身就是重大对照**：Direct Generation 86% 输出无效（退回先验/格式崩塌），
   而结构化小目标下**格式问题完全消失**——保守化/回退先验是"任务太大"的症状，不是模型缺陷。
+
+## 2b. 路线节点（owner 裁定，2026-10-03）
+
+```text
+R3-PLANNER-P0（可行性 ✓）
+  ↓
+R3-PLANNER-P1：count/length 专项监督（M3 0.5027 / M4 ±1 0.5231 为目标缺口）
+  ↓
+R3-PLANNER-P2：顺序敏感 Blueprint v2（当前 blueprint 不表达顺序）
+  ↓
+Stage-1 新正式候选 → Stage-2 QGIS Grounding
+```
+
+- **架构方向确立**：`Task → Structured Planner → Workflow Serializer → QGIS Grounding`，
+  替代 `Task → 一次性生成完整 Workflow → QGIS Grounding`。
+- **RL 继续冻结**；未来若引入，定位在结构化 Blueprint / QGIS Graph 的规划优化阶段，
+  **不用于修补长文本生成**。
+- 剩余缺口画像："做什么"已学得不错（M2 0.645），"做几次/做多长"偏弱（M3 0.50 / M4 ±1 0.52），
+  "怎么排序"Blueprint v1 尚未表达（P2）。
 
 ## 3. 与诊断链的闭环
 

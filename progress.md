@@ -1125,3 +1125,11 @@
 - 剩余缺口 = 计数分配（M3 0.50）+ 长度保守（5.98 vs 8.4），对应 oracle 差距 0.846−0.645。
 - 报告：`planner_design/R3_PLANNER_P0_RESULTS_v1.md`（含 metrics json + 3,705 逐项）。
 - **建议已登记**：进入 ⑦ 正式 Planner→Serializer Stage-1 重设计（计数专项/长度校准/顺序敏感口径设计）；原冻结 Stage-1 v2_2 主线与 gate 不动，切换归 owner。零冻结物变更。
+
+## 2026-10-03：owner 确认 P0 为路线节点——措辞收紧 + P1/P2 路线冻结 + RL 定位修正
+
+- **措辞修正**：P0 不是"决定性证明 Task 信息充分"，而是"**在当前冻结数据、当前 bag-F1 口径和 P0 训练预算（1.69M tokens）下强支持 Planner 假说**"（P0 报告 §2 已加 owner 修正附注）。
+- **路线冻结**：P0 ✓ → **P1 = count/length 专项监督**（缺口画像："做什么"已不错 M2 0.645，"做几次/多长"偏弱 M3 0.50/M4±1 0.52，"怎么排序"v1 未表达）→ **P2 = 顺序敏感 Blueprint v2** → Stage-1 新正式候选 → Stage-2 QGIS Grounding。不一次改掉所有东西。
+- **架构方向确立**：Task → Structured Planner → Workflow Serializer → QGIS Grounding（替代 Task→一次性生成→Grounding）。
+- **RL**：继续冻结；未来若引入，定位在结构化 Blueprint / QGIS Graph 的规划优化阶段，不用于修补长文本生成——理由：现在知道 Structured Planner 就能把 0.499→0.645，应先把监督学习路线做稳。
+- `aa16937` 定性为路线节点：R3 从"诊断 SFT 为何不行"进入"下一代模型接口的实验证据"阶段。
