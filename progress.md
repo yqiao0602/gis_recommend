@@ -1106,3 +1106,9 @@
 - **数据集**：planner_p0_train.jsonl（33,339 行，SHA `2bfc0ad7…`）+ planner_p0_eval.jsonl（3,705 行 held-out，SHA `30d19cb0…`），90/10 seed 20260924；行格式 {task, context="", target=blueprint紧凑JSON, separator=含输出格式指令}；tokenizer 实测 ~48 tokens/行。
 - **全量启动**：PID 217843，00:12 起，`[release] full run: 33,339 rows x 1 epoch`，无 [resume] 行，GPU 11.5GB/39%。1,042 optimizer steps × ~41.6s ≈ **12h，预计 10-03 ~12:15 完成**。
 - **训练后评测计划**（新诊断脚本，非冻结评测器）：① Blueprint parse 率 ② family bag-F1（与冻结 gate 同口径）③ count/length 准确率；然后 Planner→Rule Serializer→bag-F1 vs Direct 0.499。判读带：0.58-0.60 ≈ 组件可达区（成功）；0.75+ = 强提取；<0.5 = Planner 假说存疑。
+
+## 2026-10-03：R3-PLANNER-P0 训练完成（09:54，9.02h）——评测已启动
+
+- `[done] mode=release steps=1041 examples=33,339 tokens=1,694,098 tgt_trunc=0 task_too_long=0 elapsed=32,460s`（9.02h）。adapter `/root/data/stage1_run_planner_p0/stage1_adapter`。
+- 评测脚本一次启动失败（`load_in_4bit` 重复传参 TypeError），修复后重跑成功（PID 299410，GPU 7.9GB）——诊断脚本为独立新工具，不涉及冻结评测器。
+- 评测：3,705 held-out 行逐条生成 blueprint（max_new_tokens=192, greedy），输出 M1 parse 率 / M2 family bag-F1 / M3 count 精确率 / M4 length exact/±1 → metrics json。预计 ~1.5-2h（今日 ~13:30-14:00 出结果）。出结果后与 Direct 0.499 对比（判读带 0.58-0.60 成功 / 0.75+ 强提取 / <0.5 存疑）。
