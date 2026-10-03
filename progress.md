@@ -1142,3 +1142,9 @@
 - **三方案比较**：A 格式显著化（预期收益低——parse 100% + count=1 命中 70% 说明不是读的问题）/ **B 预算 2-4 epoch（推荐先行，饱和曲线+双峰+W2 阈值先例三证据同向；2ep 18h，可 resume 阶梯到 4ep）** / C 计数加权（与 B 混合破坏归因，后置）。
 - 成功判据：M3 ≥0.65 且 M2 不降（±0.02）且 M4±1 ≥0.65；失败判据：饱和形态不变 → 转 C。
 - 未训练；P1 放行归 owner。
+
+## 2026-10-03：owner 放行 R3-PLANNER-P1-B-2EP——严格 resume，只加训练预算
+
+- **放行条件**：Schema v1 / train-eval split / LoRA / lr / batch / max_len / loss / 数据 / Serializer 全部不变；不碰冻结 Stage-1/Gate/RL；**从 P0 checkpoint 精确 resume**，额外 1 epoch（总 2 epoch）= 干净的"训练预算增加"因果比较。
+- **评测要求**：三判据（M3≥0.65 / M4±1≥0.65 / M2≥P0−0.02）之外，必须保存 **count-error curve**（gold count 分桶的 bias/exact，P0 vs P1-B 对照）——验证"饱和曲线整体右移"而非只看 M3 数字；**phantom family 率**（~1.05/行）顺手追踪——若 count/length 修复而 phantom 不动，则 family selection 与 count allocation 是两个独立误差源（影响 P2 设计）。
+- 定位：P1 专项实验，不提前宣布 Stage-1 新路线成立；失败判据 = 曲线不动 → 停止堆 epoch 转 P1-C。
