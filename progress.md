@@ -1133,3 +1133,12 @@
 - **架构方向确立**：Task → Structured Planner → Workflow Serializer → QGIS Grounding（替代 Task→一次性生成→Grounding）。
 - **RL**：继续冻结；未来若引入，定位在结构化 Blueprint / QGIS Graph 的规划优化阶段，不用于修补长文本生成——理由：现在知道 Structured Planner 就能把 0.499→0.645，应先把监督学习路线做稳。
 - `aa16937` 定性为路线节点：R3 从"诊断 SFT 为何不行"进入"下一代模型接口的实验证据"阶段。
+- 10-03 17:07 例行检查：GPU 空闲（11 MiB / 0%），无训练/评测进程（pgrep 命中为远程 shell 自匹配）；状态 = 主线冻结于 P0 ✓ 节点，等 owner 对 P1 的裁定。
+
+## 2026-10-03：P1 设计比较文档完成（CPU）——P0 误差画像支持"先 B"
+
+- 报告：`planner_design/R3_PLANNER_P1_DESIGN_v1.md`。新增 P0 全量误差画像（n=3,705 parsed）：
+  ① 长度偏差双峰（mean −3.07 / p50=0 / 23.6% 行严重低估 <−2 步）；② **计数饱和曲线**：误差随 gold 计数单调恶化（count=1 exact 0.70 → count=10 −6.80 → ≥50 −25~−365），模型计数在 1-3 饱和——欠训练回归的教科书形态；③ 虚报 family ~1.05 个/行；④ per-family 高计数者最差（THRESHOLD_LOGIC exact 0.07）。
+- **三方案比较**：A 格式显著化（预期收益低——parse 100% + count=1 命中 70% 说明不是读的问题）/ **B 预算 2-4 epoch（推荐先行，饱和曲线+双峰+W2 阈值先例三证据同向；2ep 18h，可 resume 阶梯到 4ep）** / C 计数加权（与 B 混合破坏归因，后置）。
+- 成功判据：M3 ≥0.65 且 M2 不降（±0.02）且 M4±1 ≥0.65；失败判据：饱和形态不变 → 转 C。
+- 未训练；P1 放行归 owner。
