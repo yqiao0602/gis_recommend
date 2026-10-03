@@ -1,8 +1,14 @@
 # 当前项目状态
 
-最后更新：2026-10-01（晚）
+最后更新：2026-10-03
 
 ## Route-2 v2 当前交接
+
+**R3 诊断链完整闭环，架构方向已确立（2026-10-03）**：从"Stage-1 W3 卡 0.50"出发，逐层排除 epoch 不足（R3-A）、Tier B 噪声（R3-B，A-only 反降 8pp）、截断（R3-B-1/TRUNC 审计）、chain_to_plan（ρ=0.857 忠实）、run-cap（RLE 循环折叠，零 family 损失）→ 定位 **Task（散文摘要）与 Plan（阶段序列）的表示鸿沟** → R3-CD-3 信息阶梯证明**组件层信号全强**（family AUC 0.913/转移 0.904/长度 F1 0.614）→ R3-CD-4 证明**确定性组装可解**（0.60 > Direct 0.499）→ **R3-PLANNER-P0 可行性实验成功**：Task→Blueprint JSON 的 QLoRA Planner（1.69M tokens，9h）达成 **parse 100% / family bag-F1 0.645**（vs Direct 0.499，+14.6pp）。
+
+**架构方向（owner 冻结路线）**：`Task → Structured Planner → Workflow Serializer → QGIS Grounding`。序列：**P1 = count/length 专项监督**（缺口：M3 0.5027 / M4±1 0.5231，长度偏保守 5.98 vs 8.4）→ **P2 = 顺序敏感 Blueprint v2** → Stage-1 新正式候选 → Stage-2。措辞口径：P0 = "在当前冻结数据/bag 口径/训练预算下**强支持** Planner 假说"（非"决定性证明"）。**RL 冻结**，未来定位在结构化 Blueprint/QGIS Graph 规划优化层。原冻结 Stage-1 v2_2 主线与 gate 不动。
+
+**关键产物**（全部入 git）：诊断链报告 `r3b0/r3b1/r3btrunc/r3cd_audit/`，Planner 设计与 P0 结果 `planner_design/`，blueprint 数据 `planner_gold_blueprints_v1.jsonl`（37,044 行）与 `planner_p0_train/eval.jsonl`（本地+服务器）。
 
 **R3 诊断链进行中**：ep2 Gate-dev 仍 FAIL 但能力分化（W2 0.802 逼近门+No 类 0.994 过门 / W3 两轮持平 0.499 / W4 退化归零 / W1 confound 持续）→ owner 裁定走 R3-B。R3-B-0 数据诊断完成：Tier B 占训练 37.5% 且分支率 4 倍；**长 Plan 监督被构建期（1,766 行/2.5M tokens）+运行期双重截断**而 W3 探针偏长；Task↔Plan 文本级干净。报告 `r3b0_diagnosis/R3_B0_DIAGNOSIS_REPORT_v1.md`。
 
