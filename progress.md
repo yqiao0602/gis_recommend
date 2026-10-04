@@ -1327,3 +1327,11 @@
 - **S1-S5**：S1 parse 0.3585/schema 同（36% 稳定 blueprint，其余回退散文先验——PARTIAL）；**S2 ordered stage LCS-F1 0.6235、首 stage 0.8158（PASS：输出有序 stage 序列而非 unordered list）**；**S3 repetition-presence F1 = 1.0（PASS 决定性：repeat>1 family 签名与 gold 完全一致）**；S4/S5 不可评（模型完全省略 iteration_hint 字段，0 组发射）；**E4：pred repeat 全部 =1（gold 1.29，2→69/3→9）——repeat=1 塌缩出现，owner 预警命中**。
 - **Smoke Gate：条件性 PASS**——v2 结构表示可学成立（核心问题）；格式稳定性需正式 SFT 预算；hint 发射留待正式 SFT 观察。
 - 报告：`planner_design/R3_PLANNER_V2_SMOKE_RESULTS_v1.md`。**建议**：Planner-v2 正式 SFT 设计启动（全量 37,044 行、独立 dev/test、S4/S5 与 repeat 塌缩为观察项）；主线切换等独立 dev/test 证据。零冻结物变更。
+
+## 2026-10-04：owner 放行 Planner-v2 Formal SFT 第一轮（1 epoch）——三层指标层级 + 统一对比管线后置
+
+- **放行配置**：Gold v3 全量 37,044 行、1 epoch、全新 Base（不从 smoke resume）、独立 dev（checkpoint selection）+ locked test；QLoRA/NF4/bf16 协议不变；**不加** RL/DPO/count weighting/curriculum/hint target 修改/Schema 修改/QGIS/Stage-1 v2_2 混入。
+- **指标层级**：第一层 E1 Ordered Stage-F1（核心）；第二层 E2 Repetition-presence F1（v2 相对 v1 的新能力）；第三层 E3 hint F1（micro/macro/per-class + emission rate）；格式 S1 = 必要条件非科学贡献；E4 repeat bias = diagnostic。
+- **对比纪律**：禁止拿 v2 ordered-F1 直接比 v1 bag-F1 宣称提升（evaluator 不同）；统一对比 = v1 Planner→Serializer vs v2 Planner→Serializer 的同管线比较，后置于正式 SFT。
+- **观察项**：S4 unspecified 滥用 / S5 关键词 shortcut（band→per_band 等）须在正式 SFT 重新检查；E4 repeat=1 塌缩继续监控（进一步支持 repeat 移出 Planner 目标的设计）。
+- **状态**：Smoke PASS / 核心结构可学性 PASS / S1 欠训练不构成失败 / Formal SFT 放行第一轮。
