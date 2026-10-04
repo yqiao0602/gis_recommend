@@ -1312,3 +1312,11 @@
 - **全量最终重打**：per_year v1 + generic_each（stage 级定义）+ per_feature disabled 应用于全量 → `blueprint_v2_gold_v3.jsonl`（37,044 行，SHA `621090bc…`）。最终 hint 分布（组级）：unspecified 27,259 / generic_each 16,111 / per_year 9,917 / per_band 494 / per_class 28 / per_feature 0（7,188 诊断槽位单列）。行级：71.7% 无 confirmed dimension。
 - **Planner-v2 Hint Contract FREEZE v1 落盘**：`planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`——Schema v2 + 五维度规则版本与校准记录 + ABSTAIN 语义 + GEE/Planner 层次边界 + E1-E4 + smoke 设计 + 冻结清单。**自此 Planner-v2 训练目标不得再按模型结果修改。**
 - 状态：**Planner-v2：Data/Schema/Evaluator Gate PASS；Human Hint Validation DONE（6/6）；SFT NOT AUTHORIZED（待 owner 放行）**。零 GPU，冻结物未动。
+
+## 2026-10-04：owner 放行 R3-PLANNER-V2-SMOKE（100-300 条，零正式训练承诺）
+
+- **状态快照（owner 口径）**：Contract Freeze PASS / Hint Validation PASS / Gold v3 FROZEN / E1-E4 FROZEN / **Planner-v2 SFT：SMOKE AUTHORIZED** / Formal SFT NOT YET / Stage-1 v2_2 FROZEN / Gate FROZEN / Stage-2 FROZEN / RL FROZEN。
+- **三原则**：①不碰冻结数据（用 blueprint_v2_gold_v3，不重生成 target）②不追最终指标（回答"Qwen 能否稳定学习该结构表示"+三种 shortcut 排查：unordered 退化/全部 unspecified/repeat 猜数）③独立目录全新 Base 起点（不复用 Planner-v1/P1-B 权重）。
+- **Smoke 样本分层（~300 train + ~300 eval，不重叠）**：无 repetition 50 / 单 repetition 70 / 多 repetition 70 / hint 明确 50 / unspecified 40 / 长-复杂 20；保证五个 hint 维度均有样本；per_feature 不进 operational target。
+- **Smoke 通过/失败制**（不追 F1）：S1 JSON+schema valid（大量 parse failure 直接停止）/ S2 ordered stages 存在 / S3 repetition presence（不看 repeat=36）/ S4 unspecified 滥用（大量→shortcut）/ S5 hint 与 predicted repetition stage 的对应（"band"→无条件 per_band 不可接受）。**E4 不评分但必须看**：模型生成 repeat 数字的分布（恒 1/恒 2 = numerical shortcut）。
+- **主线并存**：Planner-v2 Smoke PASS ≠ Stage-1 正式路线切换；正式 SFT 需在独立 dev/test 证明 ordered+repetition+task conditioning 优于 Planner-v1。
