@@ -1208,3 +1208,10 @@
 - **A4**：~80% instruction 含至少一个迭代维度线索（per_band 47%/per_class 29.9%/per_year 19.4%/per_feature 14%），20.2% 无 hint——iteration_hint 分类目标可学习（弱标注需抽验）。
 - **A5**：RLE→plan 比值 0.863（chain_to_plan 再合并 14%）——v2 需自己的语义粒度评测口径，现有 plan-family gate 冻结不动。
 - 待 owner：Schema v2 定稿（hint 标注规则/无 hint 行处理）；是否启动 Planner-v2 小规模 SFT。
+
+## 2026-10-04：owner 裁定 Schema v2 修订定稿 + evaluator E1-E4 + CPU preflight（不训练）
+
+- **Schema 修订**：`loop_groups` → **`repetition_groups`**（repetition=数据事实，loop=解释，不把未验证的循环语义硬编码进 gold）；`iteration_hint` = 关键词弱标注多标签（per_band/per_class/per_year/per_feature/generic_each/unspecified），**300-500 条抽样人工验证**；20.2% 无 hint 行**保留为 unspecified**（≠no repetition，避免 selection bias）；绝对 repeat **降为 diagnostic**。
+- **Evaluator E1-E4**：E1 Ordered Stage-F1（LCS-F1/edit distance/exact，核心）；E2 Repetition-group F1（结构对即可，不判数值）；E3 iteration-hint（micro/macro/per-class，弱标注域内）；E4 repeat 数值 bias 仅 diagnostic。
+- **三层职责确立**：Planner=结构（stages/repetition/hint）；Serializer/Grounding=实例化（cardinality/参数/QGIS 算子）；绝对次数不再要求 Planner 预测。
+- **下一步**：CPU preflight——E1-E4 可计算性 + 自洽测试（gold vs gold）+ **关键判别：v2 语义 stage 是"可从 Task 推断的结构"还是"只是原始链全量转储"**（线性探针对比 v2 语义 30 类 vs v1 plan 19 类的可预测性 + repetition-presence 可预测性）+ 400 条弱标注抽样（供 owner 人工验证）。Planner-v2 SFT 暂缓。
