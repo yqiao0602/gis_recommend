@@ -1,0 +1,99 @@
+{
+ "schema_v2_final": {
+  "stages": "semantic pre-RLE runs {seq, family, repeat}",
+  "repetition_groups": "{stage_seq, family, repeat, iteration_hint[]}",
+  "iteration_hint_labels": [
+   "per_band",
+   "per_class",
+   "per_year",
+   "per_feature",
+   "generic_each",
+   "unspecified"
+  ],
+  "weak_label": "keyword multi-label; unspecified legal; no LLM labeling"
+ },
+ "gold_rows": 37044,
+ "review_sample": {
+  "file": "E:/Route2_Migration_20260928/04_DIAG_WORK/iteration_hint_review_sample_v1.jsonl",
+  "n": 396,
+  "pattern_coverage": {
+   "('no_repetition',)": 12,
+   "('unspecified',)": 12,
+   "('per_band',)": 12,
+   "('per_class',)": 12,
+   "('per_band', 'per_class')": 12,
+   "('generic_each', 'per_band')": 12,
+   "('generic_each',)": 12,
+   "('per_year',)": 12,
+   "('generic_each', 'per_class')": 12,
+   "('per_band', 'per_class', 'per_feature')": 12,
+   "('generic_each', 'per_year')": 12,
+   "('generic_each', 'per_band', 'per_class')": 12,
+   "('per_band', 'per_year')": 12,
+   "('per_class', 'per_feature')": 12,
+   "('generic_each', 'per_band', 'per_year')": 12,
+   "('per_band', 'per_feature')": 12,
+   "('per_feature',)": 12,
+   "('per_class', 'per_year')": 12,
+   "('generic_each', 'per_band', 'per_feature')": 12,
+   "('generic_each', 'per_class', 'per_year')": 12,
+   "('generic_each', 'per_feature')": 12,
+   "('per_band', 'per_class', 'per_year')": 12,
+   "('generic_each', 'per_class', 'per_feature')": 12,
+   "('generic_each', 'per_band', 'per_class', 'per_feature')": 12,
+   "('generic_each', 'per_band', 'per_class', 'per_year')": 12,
+   "('generic_each', 'per_feature', 'per_year')": 12,
+   "('generic_each', 'per_band', 'per_feature', 'per_year')": 12,
+   "('per_feature', 'per_year')": 12,
+   "('per_band', 'per_feature', 'per_year')": 12,
+   "('per_band', 'per_class', 'per_feature', 'per_year')": 12,
+   "('generic_each', 'per_band', 'per_class', 'per_feature', 'per_year')": 12,
+   "('per_class', 'per_feature', 'per_year')": 12,
+   "('generic_each', 'per_class', 'per_feature', 'per_year')": 12
+  }
+ },
+ "selftest": {
+  "E1_gold_vs_gold": {
+   "p": 1.0,
+   "r": 1.0,
+   "f1": 1.0
+  },
+  "E1_shifted_vs_gold": {
+   "p": 0.75,
+   "r": 0.75,
+   "f1": 0.75
+  },
+  "E2_gold_vs_gold": {
+   "p": 1.0,
+   "r": 1.0,
+   "f1": 1.0
+  }
+ },
+ "learnability": {
+  "P_sem30": {
+   "tag": "v2 semantic stage set (30)",
+   "n_targets": 20,
+   "macro_auc": 0.922,
+   "min_auc": 0.845
+  },
+  "P_plan19": {
+   "tag": "v1 plan family set (19)",
+   "n_targets": 19,
+   "macro_auc": 0.915,
+   "min_auc": 0.856
+  },
+  "P_repetition": {
+   "tag": "v2 repetition-presence per family",
+   "n_targets": 10,
+   "macro_auc": 0.94,
+   "min_auc": 0.883
+  },
+  "P_hint": {
+   "tag": "iteration_hint",
+   "n_targets": 6,
+   "macro_auc": 0.968,
+   "min_auc": 0.935
+  }
+ },
+ "verdict_note": "v2 learnable if P_sem30 ~ P_plan19 (finer granularity is not noise) and P_rep meaningfully > chance"
+}

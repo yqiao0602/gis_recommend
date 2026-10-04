@@ -1215,3 +1215,11 @@
 - **Evaluator E1-E4**：E1 Ordered Stage-F1（LCS-F1/edit distance/exact，核心）；E2 Repetition-group F1（结构对即可，不判数值）；E3 iteration-hint（micro/macro/per-class，弱标注域内）；E4 repeat 数值 bias 仅 diagnostic。
 - **三层职责确立**：Planner=结构（stages/repetition/hint）；Serializer/Grounding=实例化（cardinality/参数/QGIS 算子）；绝对次数不再要求 Planner 预测。
 - **下一步**：CPU preflight——E1-E4 可计算性 + 自洽测试（gold vs gold）+ **关键判别：v2 语义 stage 是"可从 Task 推断的结构"还是"只是原始链全量转储"**（线性探针对比 v2 语义 30 类 vs v1 plan 19 类的可预测性 + repetition-presence 可预测性）+ 400 条弱标注抽样（供 owner 人工验证）。Planner-v2 SFT 暂缓。
+
+## 2026-10-04：Blueprint v2 preflight 完成——E1-E4 全过 + 可学习性判别 PASS（v2 不是原始链转储）
+
+- 报告：`planner_design/BLUEPRINT_V2_PREFLIGHT_REPORT_v1.md`；Gold v2（修订版：repetition_groups + 弱标注 hint）`blueprint_v2_gold_v2.jsonl`；人工抽样 `iteration_hint_review_sample_v1.jsonl`（396 条 / 33 种 hint 模式分层）。
+- **E1-E4 preflight 全过**：E1 Ordered Stage-F1 可计算且顺序敏感（旋转罚至 0.75）；E2 repetition 签名构造性唯一（空集约定已修）；E3 弱标注 396 条待 owner 人工 precision 验证；E4 repeat bias diagnostic 位 ✓。过程修正：E2 空集约定 + hint 字段误读（V22 无 instruction，已改用 SRC instruction 重建）。
+- **可学习性判别 PASS（本轮最关键）**：v2 语义 stage 集合 AUC **0.922** ≈ v1 plan family 0.915（细粒度不是噪声）；**v2 独有的 repetition-presence AUC 0.940（全场最强）**——v2 是"Task 可支持的可学习结构表示"，非原始链全量转储。Planner-v2 SFT 的信息前提成立。
+- 附注：P_hint AUC 0.968 含弱标注自洽成分（标签来自关键词），语义质量以 396 条人工验证为准。
+- 待 owner：人工验证 396 条 → precision 达标（≥0.8-0.9）则 E3 冻结，进入 Planner-v2 smoke 设计（100-300 条，目的=格式稳定性/可学性初检，训练另放行）。
