@@ -1197,3 +1197,14 @@
 - **v2 schema 要求**：阶段顺序 + 数据依赖 + 重复/循环结构 + 循环体 + 循环语义条件；绝对 count/length 不再是 Planner 核心目标。
 - **执行序列**：Schema v2 → Gold 转换 → 可表达性验证 → lossless/coverage 审计 → evaluator 设计。**不训练**；不改冻结 Stage-1 v2_2 与现有 gate（v2 为并行候选路线）。
 - **蓝本来源**：pre-RLE 原始链的游程结构（R3-CD-2：RLE 折叠的就是循环迭代；原始链保留完整迭代信息）。
+
+## 2026-10-04：Blueprint v2 Schema 审计完成——无损性 100%；重要细化：家族级 95% 重复主要是粒度伪影
+
+- 报告：`planner_design/BLUEPRINT_V2_AUDIT_REPORT_v1.md`；Gold v2 数据 `blueprint_v2_gold_v1.jsonl`（37,044 行，SHA `46d51db9…`）。
+- **Schema v2**：stages = 原始语义链极大游程序列（语义粒度 30 类，细于 plan family 19 类）+ repeat 计数 + iteration_hint 分类；量级只注记不预测。
+- **A1 无损**：expand(stages)==原始链 37,044/37,044；Σrepeat==original_semantic_length 37,044/37,044。
+- **A2/A3**：65.3% workflow 含循环（24,186/37,044）；loops/workflow 1.31→9.35（51+ 桶）；游程最长 584。
+- **⚠️ 重要细化（诚实修正）**：51+ 原始桶的**语义级** repeat_share 仅 0.245——原始长 workflow 的主体是**大量不同语义操作**（stages 均值 114），v1 plan 层的 95.1% family 重复**主要是 family 粒度粗化（30→19）的合并伪影**，非字面循环。**v2 必须定义在语义粒度**——这正是 stages 取语义游程的原因。
+- **A4**：~80% instruction 含至少一个迭代维度线索（per_band 47%/per_class 29.9%/per_year 19.4%/per_feature 14%），20.2% 无 hint——iteration_hint 分类目标可学习（弱标注需抽验）。
+- **A5**：RLE→plan 比值 0.863（chain_to_plan 再合并 14%）——v2 需自己的语义粒度评测口径，现有 plan-family gate 冻结不动。
+- 待 owner：Schema v2 定稿（hint 标注规则/无 hint 行处理）；是否启动 Planner-v2 小规模 SFT。
