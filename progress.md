@@ -1343,3 +1343,15 @@
 - **训练后**：dev 评测（E1-E4 全口径 + S4/S5 观察项 + E4 repeat 分布）；locked test 本轮不动。
 
 ### 勘误（同日）：planner_v2_train 行数为 33,339（非 33,192——后者是 P0 行数的误记）；dev 1,852 / test locked 1,853；SHAs 不变。日志 "33,339 rows" 与构建一致。
+
+## 2026-10-04：Formal dev 评测脚本 v1.1 完成并部署（owner 审计意见落实）；训练正常不受影响
+
+- **owner 审计意见落实**（eval_planner_v2_dev_v1.py → v1.1，SHA `cda54d59…`，部署为 `/root/system_redesign/04_DIAG_WORK/eval_planner_v2_dev_formal_v2.py`，与线上旧脚本并存不覆盖）：
+  ① **E3 改为 gold 对齐**：pred repetition group 按 (family, 组序) 键与 gold 组 1:1 对齐 → hint 集合比较（group-exact rate + per-hint-dim TP/all）——废弃 v1 式"模型自报即计分"；
+  ② **S4 正式指标化**：`pred vs gold unspecified rate` 双报告（pred≫gold = unspecified collapse；pred≪gold = hint over-emission）——偏差诊断而非 pass/fail；
+  ③ **S5 保留两口径**：hint-family consistency + keyword shortcut 仅观察（任务明示 "for each year" 时模型利用关键词是合理行为）；
+  ④ E3 输出增加 group-exact rate。
+- **SHA 事实澄清**：owner 审计发现 regex 缺陷的版本（`dd9ef8dd…`）非本线部署版（`5113ae33…`，extract_json 正则干净、syntax OK）——两版本来源不同，owner 的 /tmp 版不在租卡机上；owner 到达后做双版本 diff，以 owner 版为 formal 基准。
+- **自测**：E3 对齐逻辑 1/2 预期命中（AGGREGATION exact / BAND_SELECT miss）；syntax OK；线上旧脚本未动。
+- **训练正常**：step 60/1,667，loss 2.19（v2 JSON 目标快速下降中），tgt_trunc 30/1,920（0.03%，无异常）。ETA 不变（~01:40）。
+- 运行纪律确认：主训练不动；[done] 后 400 fast → 1,852 全量 dev → checkpoint ranking → 锁定 → locked test-1,853 不动。
