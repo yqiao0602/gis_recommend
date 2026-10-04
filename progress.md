@@ -1239,3 +1239,10 @@
 - **负词典建立**：C-band（频段专名）/ QA60 band（QA 数据层）/ Sentinel-2A/B（平台型号）/ BAND_SELECT（操作名）/ NDVI/NDWI/SAVI（指数）/ RGB/true-color composite（涉及 band ≠ 逐 band 重复）。
 - **Batch 1 结果**：TP = B8、B12；FP = B2、B3、B4、B6、B9、B10、B11（7 个）；ABSTAIN = B1、B5、B7。系统性 FP 形态 = "band" 字面命中专名/操作名/指数名。
 - **裁定**：现在修订 per_band 规则（非 freeze 后再修）→ 对同 12 条重跑 → owner 复验 → 再进下一批。Contract Freeze 冻结的是人工校准后的规则。
+
+## 2026-10-04：per_band 规则 v3.1 校准完成——与 owner 裁定一致 11/12
+
+- 规则演进：v2（初版结构规则，4 分歧）→ v3（负词典修正 + 指数签名 + 结构对齐判 TP）→ **v3.1（index 上下文使 B-code 枚举失效：NDVI 公式里的 B4/B8 是算术标识，非迭代枚举）**。
+- **v3.1 vs owner Batch 1 裁定：11/12 一致**（TP 2/2、FP 5/7、ABSTAIN 4/3——唯一残余 48503：owner FP（×13 多集合过滤链），规则 ABSTAIN——词汇层不可判定，ABSTAIN 为安全方向输出）。
+- 规则要点（v3.1）：proper-neg（C-band/QA60/Sentinel-2A/B）+ band 枚举（B-code 连续列表或 red/green/blue 共现）+ 迭代短语或结构对齐（repeat ∈ {n_enum, 2×n_enum}）→ TP；proper-neg 或指数签名且无枚举 → FP；其余 ABSTAIN。
+- 待 owner 确认：规则 v3.1 定稿 → 全 396 条重打 per_band 标签 → 继续后续批次（per_class/per_year/per_feature/generic_each/unspecified/no_repetition）。
