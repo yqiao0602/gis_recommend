@@ -1355,3 +1355,13 @@
 - **自测**：E3 对齐逻辑 1/2 预期命中（AGGREGATION exact / BAND_SELECT miss）；syntax OK；线上旧脚本未动。
 - **训练正常**：step 60/1,667，loss 2.19（v2 JSON 目标快速下降中），tgt_trunc 30/1,920（0.03%，无异常）。ETA 不变（~01:40）。
 - 运行纪律确认：主训练不动；[done] 后 400 fast → 1,852 全量 dev → checkpoint ranking → 锁定 → locked test-1,853 不动。
+- 10-05 01:07 例行检查：Planner-v2 formal SFT 正常（存活 ~8.5h，GPU 20.3GB），进度 ~65%；ETA ~01:40。
+- 10-05 03:07 例行检查：Planner-v2 formal SFT 正常（存活 ~10.7h，GPU 20.3GB），进度 ~62%；ETA ~02:30-03:00（已过，下次检查确认 [done]）。
+- 10-05 03:30 重查（GPU 瞬时空但步数继续）：step 1,040/1,667（62%），loss 1.30-1.31，31s/步稳定；剩 ~130 步 ≈ 67 分钟，完成预计 ~04:40。进程需下轮确认（本轮 GPU 采样恰在步间隙）。
+- 10-05 05:07 例行检查：fast dev eval 进行中（04:21 时 50%，parse 0.835/E1 0.681）；注：04:15 前后两次 SSH 瞬断为 sshd 限流，评测进程（setsid）未受影响，已降低轮询频率。
+
+## 2026-10-05：Planner-v2 Formal SFT 训练完成 + 400-row fast dev 通过 + 全量 dev 启动
+
+- 训练 `[done]` 03:31（steps=1041，tokens 5,456,020，tgt_trunc 566，task_too_long=0）。
+- **400-row fast dev PASS**：S1 parse/schema **0.8125**（vs smoke 0.3585——格式学习成立）；**E1 ordered stage F1 0.6679**、exact seq 0.1231；**E2 repetition-presence F1 0.9641**；E3 group-exact **0.9767**、emission 0.2386、hint 一致性 per_band=0（4 组全 FP——S5 shortcut 确认存在，正式观察项）；S4 pred unspecified 0.594 vs gold 0.785（欠发射方向，deviation diagnostic）；E4 pred repeat mean 1.28 vs gold 1.30（**分布高度贴合——repeat=1 塌缩在正式 SFT 后大幅缓解**）。
+- **全量 dev 1,852 已启动**（~4h，预计 09:00-10:00 出）→ checkpoint ranking → 锁定。locked test 不动。
