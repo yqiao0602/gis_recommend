@@ -1269,3 +1269,10 @@
 - **per_class v2 FREEZE 建议**（同 per_band 先例）："calibrated/frozen for P0 validation"，Human agreement 8/12 exact（4 残余安全方向），precision-first policy，known limitation（枚举清单深层对齐不可 lexical 判定 → ABSTAIN）。
 - **待 owner 裁定的一个口径问题**：ABSTAIN 行的 hint 处理——(a) 保留但标记 unverified（覆盖率优先）或 (b) 置为 unspecified（精度优先）。影响 E3 口径与 Contract Freeze 文本。
 - per_class 全量重打在口径确认后执行；然后 Batch 3 per_year。
+
+## 2026-10-04：ABSTAIN 语义定稿 + per_class v2 FREEZE + 全量重打完成
+
+- **Contract 语义（owner 原话，入 Contract Freeze 文本）**："ABSTAIN is not treated as a negative semantic judgment; it is an abstention from providing the corresponding hint. For Planner input, ABSTAIN is normalized to `unspecified` to preserve precision-first behavior." 论文表述：**ABSTAIN = insufficient evidence → no hint emitted**（不得写成 ABSTAIN = negative）。
+- **人工验证标签 vs Planner 可用 hint 分离**：TP→保留；FP→删除；ABSTAIN→不送入 Contract（=unspecified）。理由：保留 per_class (unverified) 仍会被模型当有效信号利用，破坏 high precision > high coverage 原则。
+- **per_class v2 FREEZE**（同 per_band 先例）：calibrated/frozen for P0 validation；8/12 exact + 4 安全方向 ABSTAIN；precision-first。
+- **全量重打完成**：per_class 校准作用于 gold v2.1 → **v2.2** 与 review sample → v1.2（per_band v3.1 + per_class v2 双校准叠加）。
