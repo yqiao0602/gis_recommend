@@ -1253,3 +1253,10 @@
 - **owner 三确认**：6460 FP 正确（index context 的 B4/B8 是算术输入标识）；48503 ABSTAIN 是正确工程选择（规则目标=高 precision 产出可接受 hint，非强行复现人工标签）；Landsat 5/7 平台标识不入负词典（平台数可参与 repetition 对齐，如 B12 的 3 RGB × 2 sensors = 6——由语义角色/context 决定）。
 - **纪律确立**：每个新 hint dimension 先人工抽样校准规则、再全量重打；不在 396 条间反复改规则。最终产出 = 经独立人工验证的 Planner-v2 Hint Contract → Contract Freeze → SFT authorization gate。
 - **序列**：① v3.1 全量重打 396 条 per_band → ② P0/P1-B baseline 表更新（M1/M2 与 hint 无关，不变；E3 口径更新）→ ③ Batch 2 per_class。
+
+## 2026-10-04：Hint 人工验证 Batch 2（per_class，12 条）——1 TP / 8 FP / 3 ABSTAIN；class 四角色 taxonomy 确立
+
+- **裁定**：TP = C3（显式类别枚举 + "within specific land cover classes" + AGGREGATION×8 强对应）；FP = C1/C2/C4/C6/C7/C8/C9/C12；**ABSTAIN 锚点 = C5/C10/C11**（不硬压成 FP）。
+- **class 四角色 taxonomy（owner 确立）**：① 输入属性 class label（样本属性）② 输出类别空间（RF 输出 N classes）③ QA/flag 类别 ④ 真 class-wise iteration——**只有 ④ 支持 per_class TP**；①-③ 默认不产生 TP，除非另有逐类处理证据。
+- **per_class 规则指令**：优先"逐类动作语义"（for each class / within each class / separately for each class / for each land-cover type / group/aggregate by class）= iteration evidence；"classify into N classes"/"N classes:"/"class labels"/"land cover classification" 仅 = class presence（不能 TP）。
+- **ABSTAIN 锚点纪律**：C5/C10/C11 类（枚举存在但对齐不明）保留 ABSTAIN，不为覆盖率硬压成 FP。
