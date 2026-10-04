@@ -1223,3 +1223,12 @@
 - **可学习性判别 PASS（本轮最关键）**：v2 语义 stage 集合 AUC **0.922** ≈ v1 plan family 0.915（细粒度不是噪声）；**v2 独有的 repetition-presence AUC 0.940（全场最强）**——v2 是"Task 可支持的可学习结构表示"，非原始链全量转储。Planner-v2 SFT 的信息前提成立。
 - 附注：P_hint AUC 0.968 含弱标注自洽成分（标签来自关键词），语义质量以 396 条人工验证为准。
 - 待 owner：人工验证 396 条 → precision 达标（≥0.8-0.9）则 E3 冻结，进入 Planner-v2 smoke 设计（100-300 条，目的=格式稳定性/可学性初检，训练另放行）。
+
+## 2026-10-04：owner 裁定——Planner-v2 Gate PASS + Human Hint Validation PENDING + SFT NOT AUTHORIZED；人工验证协议确定
+
+- **状态正式化**：Planner-v2 = Data/Schema/Evaluator Gate PASS；Human Hint Validation PENDING；SFT NOT AUTHORIZED。零 GPU/零训练/冻结物不动 维持。
+- **人工验证协议**：三级判断 TP/FP/ABSTAIN（ambiguous 不强判 FP，如 "for each input…" 应 ABSTAIN 而非 generic_each）；Precision = TP/(TP+FP)，Abstention rate = ABSTAIN/396。
+- **验证通过后 Contract Freeze**：Schema v2 / Gold v2 / hint 规则 / unspecified 规则 / E1-E4 全部冻结（防止"训练→看结果→改 schema→再训"的因果劣化）。
+- **Smoke 设计（验证后）**：100-300 条，目的限定 S1 JSON compliance / S2 ordered structure（防退化 unordered list）/ S3 repetition presence（不要求 exact count）/ S4 unspecified 滥用检查 / S5 hint shortcut 检查；新增 **Structure-only validity** 指标（family/order/repetition/hint 分项，不看 absolute repeat）。
+- **证据链定格**：R3-CD-3（信息在）→ CD-4（结构化+serializer 优于直接生成）→ Planner-v1（0.499→0.645→0.672）→ P1 长尾审计（absolute count 不可识别）→ Blueprint-v2（semantic order + repetition structure）→ v2 preflight（AUC 0.922/0.940）→ **v2 是可学习的结构目标**。P1-C 正式关闭（其目标被 v2 数据审计解释：Planner 不应承担不可识别的绝对计数）。
+- **现在开始**：与 owner 逐批人工验证 396 条。
