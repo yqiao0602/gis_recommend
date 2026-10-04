@@ -1260,3 +1260,12 @@
 - **class 四角色 taxonomy（owner 确立）**：① 输入属性 class label（样本属性）② 输出类别空间（RF 输出 N classes）③ QA/flag 类别 ④ 真 class-wise iteration——**只有 ④ 支持 per_class TP**；①-③ 默认不产生 TP，除非另有逐类处理证据。
 - **per_class 规则指令**：优先"逐类动作语义"（for each class / within each class / separately for each class / for each land-cover type / group/aggregate by class）= iteration evidence；"classify into N classes"/"N classes:"/"class labels"/"land cover classification" 仅 = class presence（不能 TP）。
 - **ABSTAIN 锚点纪律**：C5/C10/C11 类（枚举存在但对齐不明）保留 ABSTAIN，不为覆盖率硬压成 FP。
+
+## 2026-10-04：per_class 规则 v2 校准——8/12 精确一致，4 残余全部为安全方向 ABSTAIN；建议冻结
+
+- 迭代过程：v1（7/12，词数枚举缺失）→ 精修（ALT 计数对齐 + 枚举清单长度对齐 + 输入产品 FP + classif_op ABSTAIN）→ v2 **8/12 精确一致**；4 残余（40518/63576/28513/41306）**全部 = 规则 ABSTAIN vs owner FP** 的安全方向偏差（规则拒绝在词汇证据不足时判 FP）——符合 precision-first 与"ambiguous → ABSTAIN"协议。
+- 中途发现并修复：ENUM 漏配 "types including"；ALT 需计数对齐（"cloud masking" 不解释 ×4 重复——29220 根因）。
+- **新行为学信号**：per_class 的 lexical FP 率甚至高于 per_band（关键词命中 192/396，owner FP 8/12）——"class/land cover" 在本数据集中几乎总是主题词/输出空间/QA 语境。
+- **per_class v2 FREEZE 建议**（同 per_band 先例）："calibrated/frozen for P0 validation"，Human agreement 8/12 exact（4 残余安全方向），precision-first policy，known limitation（枚举清单深层对齐不可 lexical 判定 → ABSTAIN）。
+- **待 owner 裁定的一个口径问题**：ABSTAIN 行的 hint 处理——(a) 保留但标记 unverified（覆盖率优先）或 (b) 置为 unspecified（精度优先）。影响 E3 口径与 Contract Freeze 文本。
+- per_class 全量重打在口径确认后执行；然后 Batch 3 per_year。
