@@ -1232,3 +1232,10 @@
 - **Smoke 设计（验证后）**：100-300 条，目的限定 S1 JSON compliance / S2 ordered structure（防退化 unordered list）/ S3 repetition presence（不要求 exact count）/ S4 unspecified 滥用检查 / S5 hint shortcut 检查；新增 **Structure-only validity** 指标（family/order/repetition/hint 分项，不看 absolute repeat）。
 - **证据链定格**：R3-CD-3（信息在）→ CD-4（结构化+serializer 优于直接生成）→ Planner-v1（0.499→0.645→0.672）→ P1 长尾审计（absolute count 不可识别）→ Blueprint-v2（semantic order + repetition structure）→ v2 preflight（AUC 0.922/0.940）→ **v2 是可学习的结构目标**。P1-C 正式关闭（其目标被 v2 数据审计解释：Planner 不应承担不可识别的绝对计数）。
 - **现在开始**：与 owner 逐批人工验证 396 条。
+
+## 2026-10-04：Hint 人工验证 Batch 1（per_band，12 条）——2 TP / 7 FP / 3 ABSTAIN；规则立即修订
+
+- **owner 裁定标准（确立）**：不以"任务提到 band"为 TP 证据；需三条件结构判定——① Band evidence（可枚举多波段：B2/B3/B4、red/green/blue 等）② Iteration evidence（任务语义明确"逐个/分别处理这些 band"）③ Repetition alignment（repetition 结构与 band 维度可解释对应）。缺乏关键证据 → ABSTAIN 不升级。
+- **负词典建立**：C-band（频段专名）/ QA60 band（QA 数据层）/ Sentinel-2A/B（平台型号）/ BAND_SELECT（操作名）/ NDVI/NDWI/SAVI（指数）/ RGB/true-color composite（涉及 band ≠ 逐 band 重复）。
+- **Batch 1 结果**：TP = B8、B12；FP = B2、B3、B4、B6、B9、B10、B11（7 个）；ABSTAIN = B1、B5、B7。系统性 FP 形态 = "band" 字面命中专名/操作名/指数名。
+- **裁定**：现在修订 per_band 规则（非 freeze 后再修）→ 对同 12 条重跑 → owner 复验 → 再进下一批。Contract Freeze 冻结的是人工校准后的规则。
