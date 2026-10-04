@@ -1305,3 +1305,10 @@
 - **generic_each Contract 重定义**：不再是"text contains each/per-*"，而是 "**Task semantics indicate multiple homogeneous workflow stages, with repetition structure supporting that interpretation**"。三分 taxonomy：stage 级重复 → eligible；intra-stage bulk / collection.map() → ABSTAIN/unspecified（不产生 plan stages）；对比/配置 → FP。
 - **理论边界（论文级）**：**GEE execution-level iteration ≠ Planner graph-level stage repetition**——GEE collection.map() 内部遍历 N 元素是单阶段；Planner 只关心是否形成 N 个可表达、可排序、可 grounding 的 workflow stages。这是 workflow abstraction / cross-platform transfer 的理论边界。
 - G7/G11/G12 保持 ABSTAIN 而非 FP：per-image 语义在 GEE 执行层是真实的，只是不构成 Planner 级重复。
+
+## 2026-10-04：Batch 6（unspecified + 无重复行）验证完成 + **Planner-v2 Hint Contract FREEZE** 正式落盘
+
+- **Batch 6（24 条）**：U 组 11/12 确认 unspecified 为安全默认（U1/U10 隐藏对比配置型重复——按 Batch 5 taxonomy 属不发射 hint 的类别，安全；**U5 = 关键词覆盖缺口样本**：3 指标 × 统计量的 stage 级重复无 each 措辞，generic_each 关键词规则漏检——precision-first 已知限制）；N 组 11/12 确认无重复，**N9 = gold 侧对齐缺口实例**（任务明示 3 时期逐期合成，gold plan 无重复阶段——与深尾欠预测同源的监督缺口）。
+- **全量最终重打**：per_year v1 + generic_each（stage 级定义）+ per_feature disabled 应用于全量 → `blueprint_v2_gold_v3.jsonl`（37,044 行，SHA `621090bc…`）。最终 hint 分布（组级）：unspecified 27,259 / generic_each 16,111 / per_year 9,917 / per_band 494 / per_class 28 / per_feature 0（7,188 诊断槽位单列）。行级：71.7% 无 confirmed dimension。
+- **Planner-v2 Hint Contract FREEZE v1 落盘**：`planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`——Schema v2 + 五维度规则版本与校准记录 + ABSTAIN 语义 + GEE/Planner 层次边界 + E1-E4 + smoke 设计 + 冻结清单。**自此 Planner-v2 训练目标不得再按模型结果修改。**
+- 状态：**Planner-v2：Data/Schema/Evaluator Gate PASS；Human Hint Validation DONE（6/6）；SFT NOT AUTHORIZED（待 owner 放行）**。零 GPU，冻结物未动。
