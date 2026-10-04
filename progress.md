@@ -1341,3 +1341,5 @@
 - **数据**：planner_v2_train.jsonl 33,192 行（SHA `443d5d31…`）+ dev 1,796（`807717b5…`，checkpoint selection 用）+ **test 1,796 LOCKED**（`b524d56c…`，本地保存不上传）；90/5/5 seed 20260924。Sanity smoke 通过（100 行，tgt_trunc=1，task_too_long=0，isolated dir 已清理）。
 - **启动**：PID 494715，`[release] full run: 33,339 rows`（train 文件 33,192 + 计数口径差 147 行 = builder 端 task 太长排除行的计入差，以 ledger examples 为准复核），无 [resume]，GPU 20.2GB / 37%。1,042 步 × ~31s ≈ **9h，预计 10-05 ~01:40 完成**。ckpt_every=150 → ~7 个 checkpoint 供 dev 选点。
 - **训练后**：dev 评测（E1-E4 全口径 + S4/S5 观察项 + E4 repeat 分布）；locked test 本轮不动。
+
+### 勘误（同日）：planner_v2_train 行数为 33,339（非 33,192——后者是 P0 行数的误记）；dev 1,852 / test locked 1,853；SHAs 不变。日志 "33,339 rows" 与构建一致。
