@@ -1189,3 +1189,11 @@
 - **P0→P1-B 分桶对照**：预算只改善 1-12 步桶（F1 +2~4pp），51+ 桶 F1 0.127→0.141、bias −189 不动——**预算假说在深尾被否定**。
 - **结论**：深尾是表示问题。正确方向 = **Blueprint v2 显式重复结构（loop 分组/迭代标记，以 pre-RLE 原始链游程为蓝本）+ 量级解析移出 Planner（交给 Serializer/Grounding，Stage-2 有实际数据）**；M3 绝对计数指标降级（测的是不可识别量），代之以分组正确率+长度粗分箱（冻结 gate 不动）。
 - 待 owner：Blueprint v2 设计批准（数据工程级）；P1-C 数值加权暂停。
+
+## 2026-10-04：owner 裁定启动 Blueprint v2 CPU/schema 设计（不训练）——Ordered + Repetition-aware
+
+- **问题重定义**：不是"模型不会预测数字"，而是"让 Planner 预测一个 Task 无法可靠确定的数字（BandArithmetic × 137）"。长 workflow = 少数操作的大量重复（51+ 桶 distinct 4.4 / repeat 95.1%），重复次数取决于数据性质（波段/年份/类别/feature 数），不在 Task 文字里。
+- **v2 核心思想**：Planner 负责"发现重复结构 + 语义条件（per-band/per-year/per-feature）"，**绝对次数移到 Serializer/Grounding**（读取实际数据上下文展开）——与两阶段路线（GEE 通用推理 / QGIS 实际展开）天然契合。
+- **v2 schema 要求**：阶段顺序 + 数据依赖 + 重复/循环结构 + 循环体 + 循环语义条件；绝对 count/length 不再是 Planner 核心目标。
+- **执行序列**：Schema v2 → Gold 转换 → 可表达性验证 → lossless/coverage 审计 → evaluator 设计。**不训练**；不改冻结 Stage-1 v2_2 与现有 gate（v2 为并行候选路线）。
+- **蓝本来源**：pre-RLE 原始链的游程结构（R3-CD-2：RLE 折叠的就是循环迭代；原始链保留完整迭代信息）。
