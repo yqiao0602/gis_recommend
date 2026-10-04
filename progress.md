@@ -1291,3 +1291,10 @@
 - **方法论修正（owner 确立，重要）**：人工验证必须基于**完整 task text**——"真实 TP → 摘录缺关键句 → 人工 ABSTAIN → 规则被错误收紧"比规则误判更危险；拒绝"摘录可见性限定"，正确链条 = 完整文本 → Human judgment → Rule calibration；Planner-v2 Contract 将 full task text availability 列为数据前提。
 - **验证原则保留**：规则与人工标签不一致时，先查完整文本与语义角色，再改规则；不直接调规则追标签（Y5/Y11 为范例）。
 - 后续批次呈现改为全文。
+
+## 2026-10-04：Hint 人工验证 Batch 4（per_feature，12 条）——0 TP / 10 FP / 2 ABSTAIN（与初判完全一致）；per_feature 降级为 diagnostic_only
+
+- **裁定**：FP = F1-F9、F11（user-clicked locations=交互输入 / feature collection=数据对象 / polygon=空间范围 / point features=采样对象 / monthly=时相 / 两个时相 / post-fire 链 / polarization×orbit / 多景下载迭代 / QA+云过滤）；ABSTAIN = F10（canopy range 维度但 4 档不对齐）、F12（三个 feature collections 接近 per_class 语义，repetition 无法可靠解释）。
+- **per_feature Contract 处理（owner 定）**：`status = diagnostic_only; operational_hint = disabled; default = unspecified; whitelist = empty`——不用"默认 FP"（ABSTAIN 语义保持"不提供 hint"，无需人为定义负类）。
+- **高污染词结论**："feature" 至少五种角色：feature collection（数据对象）/ surface feature（地表特征）/ point feature（空间对象）/ user-clicked locations（交互输入）/ true "for each feature"（真迭代，当前池未发现）。
+- **⚠️ Batch 5 预警（owner）**：generic_each 可能恰恰是 per_feature 被隐藏后的真实表达形式——Batch 5 = 抽象"逐对象/逐项处理"信号测试，是 hint contract 的关键一批。
