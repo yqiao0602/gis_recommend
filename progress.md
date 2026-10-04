@@ -1276,3 +1276,11 @@
 - **人工验证标签 vs Planner 可用 hint 分离**：TP→保留；FP→删除；ABSTAIN→不送入 Contract（=unspecified）。理由：保留 per_class (unverified) 仍会被模型当有效信号利用，破坏 high precision > high coverage 原则。
 - **per_class v2 FREEZE**（同 per_band 先例）：calibrated/frozen for P0 validation；8/12 exact + 4 安全方向 ABSTAIN；precision-first。
 - **全量重打完成**：per_class 校准作用于 gold v2.1 → **v2.2** 与 review sample → v1.2（per_band v3.1 + per_class v2 双校准叠加）。
+
+## 2026-10-04：per_year 规则 v1 校准——10/12 一致；两处"待重裁"发现（完整文本含 per-year 处理语句）
+
+- 规则演进：v1（9/12，"annual" 光杆词误判 + season-only 误 FP）→ 精修：① **annual 必须伴随逐年处理动作**（annual median/mean/maximum/composites、aggregated annually）——光杆 annual → ABSTAIN；② season-only → ABSTAIN（结构性季节证据才 FP，如 Y9 的 "three seasonal periods... ascending and descending"）；③ 结构对齐判 TP（RASTER_LOAD×n == 年份跨度，Y7 强正例）。
+- **当前 10/12**（TP 5/5、FP 2/2、ABSTAIN 3/5）。
+- **两处 differs = 建议重裁（新证据）**：87169 与 28819 的**完整任务文本**含明确 per-year 处理语句——87169: "It computes **annual DOY (day of year) composites by year**"；28819: "creates three time-series charts: **annual DOY trends by year**"。你的 ABSTAIN 判定基于截断摘录，很可能未含这两句。**请重裁 Y5/Y11。**
+- 40813 修复后 = ABSTAIN ✓（纯 seasonal 维度，非 year 的反证）。
+- 附：owner 校准区分已入规则（"annual"=强证据非绝对证据；before/after 与短 range = ABSTAIN 锚点 Y2/Y11）。
