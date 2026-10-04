@@ -1335,3 +1335,9 @@
 - **对比纪律**：禁止拿 v2 ordered-F1 直接比 v1 bag-F1 宣称提升（evaluator 不同）；统一对比 = v1 Planner→Serializer vs v2 Planner→Serializer 的同管线比较，后置于正式 SFT。
 - **观察项**：S4 unspecified 滥用 / S5 关键词 shortcut（band→per_band 等）须在正式 SFT 重新检查；E4 repeat=1 塌缩继续监控（进一步支持 repeat 移出 Planner 目标的设计）。
 - **状态**：Smoke PASS / 核心结构可学性 PASS / S1 欠训练不构成失败 / Formal SFT 放行第一轮。
+
+## 2026-10-04：Planner-v2 Formal SFT 第一轮启动（1 epoch，Gold v3 全量）
+
+- **数据**：planner_v2_train.jsonl 33,192 行（SHA `443d5d31…`）+ dev 1,796（`807717b5…`，checkpoint selection 用）+ **test 1,796 LOCKED**（`b524d56c…`，本地保存不上传）；90/5/5 seed 20260924。Sanity smoke 通过（100 行，tgt_trunc=1，task_too_long=0，isolated dir 已清理）。
+- **启动**：PID 494715，`[release] full run: 33,339 rows`（train 文件 33,192 + 计数口径差 147 行 = builder 端 task 太长排除行的计入差，以 ledger examples 为准复核），无 [resume]，GPU 20.2GB / 37%。1,042 步 × ~31s ≈ **9h，预计 10-05 ~01:40 完成**。ckpt_every=150 → ~7 个 checkpoint 供 dev 选点。
+- **训练后**：dev 评测（E1-E4 全口径 + S4/S5 观察项 + E4 repeat 分布）；locked test 本轮不动。
