@@ -1179,3 +1179,13 @@
 - **按 owner 预注册规则**：曲线介于中间偏"不动"（深尾冻结）→ **建议停止堆 epoch，转 P1-C（count/length loss 加权）**。最终裁定归 owner。
 - 工具事件：eval 脚本输出路径硬编码导致 P1-B 覆盖服务器上 P0 metrics 文件——P0 结果 10-03 已拉回本地仓库无损失；P1-B 文件已改名 `planner_p1b_eval_metrics.json`；后续脚本参数化输出路径（已登记）。
 - 报告：`planner_design/R3_PLANNER_P1B_RESULTS_v1.md`。GPU 空闲，冻结物未动。
+- 10-04 08:0x 例行检查：GPU 空闲，无训练/评测进程；状态 = P1-B 结果已报，等 owner 对 P1-C / P2 / 其他下一步的裁定。
+- 10-04 11:0x 例行检查：GPU 空闲，无训练/评测进程；状态不变 = 等 owner 对 P1-C / P2 的裁定。
+
+## 2026-10-04：长度分桶画像完成——决定性证据支持 owner 判断：深尾是表示问题，P1-C 数值加权应暂停
+
+- 报告：`planner_design/R3_P1_LENBUCKET_PROFILE_v1.md`（脚本 `lenbucket_profile_v1.py`；P1-C smoke 已按指令停止，GPU 空闲）。
+- **决定性发现**：gold distinct family 数在所有长度桶恒定 ~2.9-4.5，而 repeat_share 随长度单调升至 **95.1%**（51+ 桶）——长 workflow = 同 4-5 种 family 的重复，**不是更多种操作**。Planner 的 family 数预测与 gold distinct 一致，学不会的只是"重复次数"这个数字，而次数由数据性质（波段数/类别数/年份跨度）决定，**从 Task 文本不可识别**。
+- **P0→P1-B 分桶对照**：预算只改善 1-12 步桶（F1 +2~4pp），51+ 桶 F1 0.127→0.141、bias −189 不动——**预算假说在深尾被否定**。
+- **结论**：深尾是表示问题。正确方向 = **Blueprint v2 显式重复结构（loop 分组/迭代标记，以 pre-RLE 原始链游程为蓝本）+ 量级解析移出 Planner（交给 Serializer/Grounding，Stage-2 有实际数据）**；M3 绝对计数指标降级（测的是不可识别量），代之以分组正确率+长度粗分箱（冻结 gate 不动）。
+- 待 owner：Blueprint v2 设计批准（数据工程级）；P1-C 数值加权暂停。

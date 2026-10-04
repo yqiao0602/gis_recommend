@@ -19,7 +19,7 @@ from peft import PeftModel
 BASE = "/root/models/Qwen3.5-9B-Base"
 ADAPTER = sys.argv[1] if len(sys.argv) > 1 else "/root/data/stage1_run_planner_p0/stage1_adapter"
 EVAL = "/root/data/planner_p0_eval.jsonl"
-OUT = "/root/data/planner_p0_eval_metrics.json"
+OUT = sys.argv[2] if len(sys.argv) > 2 else "/root/data/planner_p0_eval_metrics.json"
 SEP = "\nWorkflow blueprint: output JSON with keys families (first-use order), counts (times each family is used), length (total steps)."
 
 def overlap_counts(pred, gold):
