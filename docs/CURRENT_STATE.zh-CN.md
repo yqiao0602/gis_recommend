@@ -1,8 +1,14 @@
 # 当前项目状态
 
-最后更新：2026-10-03
+最后更新：2026-10-04（晚）
 
 ## Route-2 v2 当前交接
+
+**R3 诊断链完整闭环，架构方向确立，Planner-v2 Hint Contract 已 FREEZE（2026-10-04）**。链条：R3-A/B/TRUNC/CD-2 逐层排除并定位 **Task（散文摘要）与 Plan（阶段序列）的表示鸿沟** → R3-CD-3 信息阶梯（组件信号全强：family AUC 0.913/转移 0.904）→ R3-CD-4（确定性组装 0.60 > Direct 0.499；LLM 系统性欠发射）→ **R3-PLANNER-P0 可行性成功**（Task→Blueprint JSON，parse 100%，bag-F1 0.645 vs Direct 0.499）→ P1-B（预算提升仅改善小计数区，深尾冻结）→ 长度分桶画像（**深尾=表示问题：长 workflow = ~4.4 distinct family 重复至 95%**）→ **Blueprint v2（Ordered + Repetition-aware，语义粒度，pre-RLE 游程蓝本，无损 100%）** → v2 preflight（E1-E4 全过；可学习性判别 PASS：语义 stage AUC 0.922 ≈ v1 0.915，repetition-presence 0.940 全场最强）→ **6 批人工 hint 验证完成（396 条，各维度规则校准冻结）** → **PLANNER-V2 HINT CONTRACT FREEZE v1**（`planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`）。
+
+**Contract 数据定稿**：`blueprint_v2_gold_v3.jsonl`（37,044 行，SHA `621090bc…`）；hint 分布（组级）：unspecified 27,259 / generic_each 16,111 / per_year 9,917 / per_band 494 / per_class 28 / per_feature 0（diagnostic_only）。**ABSTAIN 语义**：insufficient evidence → no hint emitted（归一为 unspecified）。**GEE/Planner 层次边界**：execution-level iteration ≠ graph-level stage repetition。
+
+**架构方向**：`Task → Structured Planner → Workflow Serializer → QGIS Grounding`（量级由 Grounding 解析，Planner 只管结构）。**待 owner：Planner-v2 SFT 放行**（smoke S1-S5 设计已备）；原冻结 Stage-1 v2_2 主线与 gate 不动；RL/Stage-2 冻结。
 
 **R3 诊断链完整闭环，架构方向已确立（2026-10-03）**：从"Stage-1 W3 卡 0.50"出发，逐层排除 epoch 不足（R3-A）、Tier B 噪声（R3-B，A-only 反降 8pp）、截断（R3-B-1/TRUNC 审计）、chain_to_plan（ρ=0.857 忠实）、run-cap（RLE 循环折叠，零 family 损失）→ 定位 **Task（散文摘要）与 Plan（阶段序列）的表示鸿沟** → R3-CD-3 信息阶梯证明**组件层信号全强**（family AUC 0.913/转移 0.904/长度 F1 0.614）→ R3-CD-4 证明**确定性组装可解**（0.60 > Direct 0.499）→ **R3-PLANNER-P0 可行性实验成功**：Task→Blueprint JSON 的 QLoRA Planner（1.69M tokens，9h）达成 **parse 100% / family bag-F1 0.645**（vs Direct 0.499，+14.6pp）。
 
