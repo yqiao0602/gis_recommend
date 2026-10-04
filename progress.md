@@ -1298,3 +1298,10 @@
 - **per_feature Contract 处理（owner 定）**：`status = diagnostic_only; operational_hint = disabled; default = unspecified; whitelist = empty`——不用"默认 FP"（ABSTAIN 语义保持"不提供 hint"，无需人为定义负类）。
 - **高污染词结论**："feature" 至少五种角色：feature collection（数据对象）/ surface feature（地表特征）/ point feature（空间对象）/ user-clicked locations（交互输入）/ true "for each feature"（真迭代，当前池未发现）。
 - **⚠️ Batch 5 预警（owner）**：generic_each 可能恰恰是 per_feature 被隐藏后的真实表达形式——Batch 5 = 抽象"逐对象/逐项处理"信号测试，是 hint contract 的关键一批。
+
+## 2026-10-04：Hint 人工验证 Batch 5（generic_each，12 条）——4 TP / 3 FP / 5 ABSTAIN；generic_each Contract 重定义 + GEE/Planner 层次边界确立
+
+- **裁定**：TP = G1（3 locations × 2 statistics = ×6 结构对应）/ G3（per-polarization ×3）/ G4（Two models per satellite）/ G9（May/July/August 三链）；FP = G2（before/after 对比）/ G5（with/without-cloud 实验配置）/ G8（可视化配置）；ABSTAIN = G6（×2 归属不明）/ G7 / G11 / G12（**intra-stage bulk**）。
+- **generic_each Contract 重定义**：不再是"text contains each/per-*"，而是 "**Task semantics indicate multiple homogeneous workflow stages, with repetition structure supporting that interpretation**"。三分 taxonomy：stage 级重复 → eligible；intra-stage bulk / collection.map() → ABSTAIN/unspecified（不产生 plan stages）；对比/配置 → FP。
+- **理论边界（论文级）**：**GEE execution-level iteration ≠ Planner graph-level stage repetition**——GEE collection.map() 内部遍历 N 元素是单阶段；Planner 只关心是否形成 N 个可表达、可排序、可 grounding 的 workflow stages。这是 workflow abstraction / cross-platform transfer 的理论边界。
+- G7/G11/G12 保持 ABSTAIN 而非 FP：per-image 语义在 GEE 执行层是真实的，只是不构成 Planner 级重复。
