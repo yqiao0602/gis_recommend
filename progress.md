@@ -1284,3 +1284,10 @@
 - **两处 differs = 建议重裁（新证据）**：87169 与 28819 的**完整任务文本**含明确 per-year 处理语句——87169: "It computes **annual DOY (day of year) composites by year**"；28819: "creates three time-series charts: **annual DOY trends by year**"。你的 ABSTAIN 判定基于截断摘录，很可能未含这两句。**请重裁 Y5/Y11。**
 - 40813 修复后 = ABSTAIN ✓（纯 seasonal 维度，非 year 的反证）。
 - 附：owner 校准区分已入规则（"annual"=强证据非绝对证据；before/after 与短 range = ABSTAIN 锚点 Y2/Y11）。
+
+## 2026-10-04：Y5/Y11 重裁为 TP（per_year Batch 3 终版 7/2/3）+ 方法论修正：全文验证原则
+
+- **重裁**：Y5 → TP（完整文本 "computes annual DOY composites by year" 满足 annual+by-year 两条件）；Y11 → TP（"annual DOY trends by year" 同理）。原 ABSTAIN 系摘录截断所致。per_year Batch 3 终版：**7 TP（Y3/Y4/Y5/Y7/Y8/Y10/Y11）/ 2 FP（Y1/Y9）/ 3 ABSTAIN（Y2/Y6/Y12）**；规则 v1 与重裁标签 12/12 一致 → per_year v1 FREEZE（"annual + explicit by-year processing" = 充分 TP 证据；光杆年份/range 不足；seasonal-only = ABSTAIN 除非 repetition 结构性指向其他维度）。
+- **方法论修正（owner 确立，重要）**：人工验证必须基于**完整 task text**——"真实 TP → 摘录缺关键句 → 人工 ABSTAIN → 规则被错误收紧"比规则误判更危险；拒绝"摘录可见性限定"，正确链条 = 完整文本 → Human judgment → Rule calibration；Planner-v2 Contract 将 full task text availability 列为数据前提。
+- **验证原则保留**：规则与人工标签不一致时，先查完整文本与语义角色，再改规则；不直接调规则追标签（Y5/Y11 为范例）。
+- 后续批次呈现改为全文。
