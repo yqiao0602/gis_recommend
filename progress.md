@@ -1320,3 +1320,10 @@
 - **Smoke 样本分层（~300 train + ~300 eval，不重叠）**：无 repetition 50 / 单 repetition 70 / 多 repetition 70 / hint 明确 50 / unspecified 40 / 长-复杂 20；保证五个 hint 维度均有样本；per_feature 不进 operational target。
 - **Smoke 通过/失败制**（不追 F1）：S1 JSON+schema valid（大量 parse failure 直接停止）/ S2 ordered stages 存在 / S3 repetition presence（不看 repeat=36）/ S4 unspecified 滥用（大量→shortcut）/ S5 hint 与 predicted repetition stage 的对应（"band"→无条件 per_band 不可接受）。**E4 不评分但必须看**：模型生成 repeat 数字的分布（恒 1/恒 2 = numerical shortcut）。
 - **主线并存**：Planner-v2 Smoke PASS ≠ Stage-1 正式路线切换；正式 SFT 需在独立 dev/test 证明 ordered+repetition+task conditioning 优于 Planner-v1。
+
+## 2026-10-04：R3-PLANNER-V2 SMOKE 完成——S2/S3 PASS（结构可学成立），S1 欠训练 PARTIAL，E4 repeat=1 塌缩出现
+
+- 过程：初版 1 epoch（6 步）评测失败（模型停留在 Base 先验：散文 Stage 计划/幻觉 schema——欠训练形态，P0 曲线佐证）→ 同数据 5 pass 续训至 ~41 步（对齐 P0 格式学习窗口）→ 评测完成（n=212 held-out）。两次评测脚本运行时错误已修。
+- **S1-S5**：S1 parse 0.3585/schema 同（36% 稳定 blueprint，其余回退散文先验——PARTIAL）；**S2 ordered stage LCS-F1 0.6235、首 stage 0.8158（PASS：输出有序 stage 序列而非 unordered list）**；**S3 repetition-presence F1 = 1.0（PASS 决定性：repeat>1 family 签名与 gold 完全一致）**；S4/S5 不可评（模型完全省略 iteration_hint 字段，0 组发射）；**E4：pred repeat 全部 =1（gold 1.29，2→69/3→9）——repeat=1 塌缩出现，owner 预警命中**。
+- **Smoke Gate：条件性 PASS**——v2 结构表示可学成立（核心问题）；格式稳定性需正式 SFT 预算；hint 发射留待正式 SFT 观察。
+- 报告：`planner_design/R3_PLANNER_V2_SMOKE_RESULTS_v1.md`。**建议**：Planner-v2 正式 SFT 设计启动（全量 37,044 行、独立 dev/test、S4/S5 与 repeat 塌缩为观察项）；主线切换等独立 dev/test 证据。零冻结物变更。
