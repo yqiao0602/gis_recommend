@@ -1246,3 +1246,10 @@
 - **v3.1 vs owner Batch 1 裁定：11/12 一致**（TP 2/2、FP 5/7、ABSTAIN 4/3——唯一残余 48503：owner FP（×13 多集合过滤链），规则 ABSTAIN——词汇层不可判定，ABSTAIN 为安全方向输出）。
 - 规则要点（v3.1）：proper-neg（C-band/QA60/Sentinel-2A/B）+ band 枚举（B-code 连续列表或 red/green/blue 共现）+ 迭代短语或结构对齐（repeat ∈ {n_enum, 2×n_enum}）→ TP；proper-neg 或指数签名且无枚举 → FP；其余 ABSTAIN。
 - 待 owner 确认：规则 v3.1 定稿 → 全 396 条重打 per_band 标签 → 继续后续批次（per_class/per_year/per_feature/generic_each/unspecified/no_repetition）。
+
+## 2026-10-04：per_band rule v3.1 FREEZE（owner 定稿）——"calibrated/frozen for P0 validation"
+
+- **冻结记录（owner 原话口径）**：per_band v3.1 — calibrated/frozen for P0 validation；Human agreement **11/12**；TP precision-first policy maintained；Known limitation: multi-collection/filter repetition may remain ABSTAIN when lexical/structural evidence is insufficient。
+- **owner 三确认**：6460 FP 正确（index context 的 B4/B8 是算术输入标识）；48503 ABSTAIN 是正确工程选择（规则目标=高 precision 产出可接受 hint，非强行复现人工标签）；Landsat 5/7 平台标识不入负词典（平台数可参与 repetition 对齐，如 B12 的 3 RGB × 2 sensors = 6——由语义角色/context 决定）。
+- **纪律确立**：每个新 hint dimension 先人工抽样校准规则、再全量重打；不在 396 条间反复改规则。最终产出 = 经独立人工验证的 Planner-v2 Hint Contract → Contract Freeze → SFT authorization gate。
+- **序列**：① v3.1 全量重打 396 条 per_band → ② P0/P1-B baseline 表更新（M1/M2 与 hint 无关，不变；E3 口径更新）→ ③ Batch 2 per_class。
