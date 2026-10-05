@@ -1400,3 +1400,10 @@
 - **repeat 处理**：从核心输出移除；未来如需表达"逐波段执行"，加可选语义属性（scope: per_band）——属后续 schema 设计。
 - **Planner-v2 重新定位**：从"最终方案"退回**能力验证实验**（已证明 Task → Ordered Workflow Planning 可学习，E1 0.664）；核心待验证问题 = **"ordered stages 能否作为 processes+links Planner 的前置能力"**。
 - **待 CPU 侦察**：processes+links 格式的 gold 数据在资产中的位置与规模（Stage-2 QGIS assets：v2a_A 1,334/120/111 SFT 文件等）。
+
+## 2026-10-05：v2a_A 结构侦察完成（11 维，1,565 条全量）——processes+links gold 可用性确认
+
+- 报告：`planner_design/V2A_RECON_REPORT_v1.md`；数据 `v2a_recon/v2a_recon_out.json`。
+- **5 问回答**：① 紧凑 DAG（中位 4 节点/p90 13/max 30）；② 纯链 57.6% + 分支/汇合 42.4%（浅分支：in-deg p90=2/max=20）；③ link_kinds 4 种（direct 81% 主导）；④ **309 个真实 QGIS 算子 ID**（native/qgis/gdal/saga/grass7 五前缀，长尾 49 单例）——**Grounding 级标识符，抽象化映射表是 Planner-v3 前置设计任务**；⑤ **变量级 I/O 确认不存在于数据**（全字段扫描），但可从 QGIS 算子端口 schema **确定性推导**（无需人工标注）。
+- **数据质量**：0 悬空 link、引用完整；⚠️ 144 个环（9.2%）与 106 孤立节点需处理规则；tier 字段全部 Tier-1（无判别力）。
+- **对三选项的含义**：无硬伤；v2a_A 可直接作 Planner-v3 结构 gold；两个缺口 = 抽象 identifier 归并表（309→抽象）+ 算子端口 schema 表（变量 I/O 恢复）——均可半自动构建。
