@@ -1417,3 +1417,11 @@
 - **Q4 变量级 I/O**：**穷尽扫描确认 absent**（sourceVariable/targetVariable/inputs/outputs/ports/parameters 全部 0 命中）；但可从 QGIS 算子端口 schema 确定性推导（无需人工、无需伪标注）。
 - **taskType × 结构**：12+ 类，branch/merge 率 0.37-0.52（Surface water 最高 0.52）——类型间结构差异温和。
 - **结论**：42.4% 含分支/汇合（GEE 线性目标无法提供的监督）+ operator OOD 风险极低 + 变量 I/O 可从 schema 推导——**QGIS gold 对 processes+links Planner 的支撑力充分**，schema 裁定的数据基础就绪。
+- 10-05 13:0x 例行检查：GPU 空闲，无训练/评测进程；状态 = Planner-v2 formal round 1 dev 结果已报，等 owner 对 round 2 方向（S5 修复 vs 统一对比管线）的裁定。
+
+## 2026-10-05：owner 裁定 Phase 0 路线冻结 + 启动 CROSS_PLATFORM_TRANSFER_AUDIT（CPU-only）
+
+- **Phase 0 概念冻结**：GEE = General GIS Workflow Reasoning（大规模监督）；QGIS = Platform Grounding（平台落实）；**L3 不建立**；Planner 不认识 GEE 翻译职责；Grounding 不重新理解任务。
+- **方法论反转（owner）**：不再"先设计中间表示再证明有用"，而是**先验证 GEE 知识能否帮助 QGIS 最终任务，再决定训练方式**。
+- **正式任务**：ROUTE2_CROSS_PLATFORM_TRANSFER_AUDIT——GEE 128k ↔ QGIS 1,565 的平台无关结构特征对比，8 问（任务类型语义重合/操作 pattern 重合/长度复杂度/顺序结构/branch-merge 新增量/可迁移/仅辅助/不可迁移），产出 transferable/partially/platform-specific 分类 → **之后才裁定 A1/C0 训练**。
+- **Formal SFT（10.7h）正常完成不受影响**；dev 评测按既定序列随后。
