@@ -1444,3 +1444,5 @@
 - **新增评估维度（P0-3 Registry 审计）**：registry 算子数核实（≈1,200 待验证）/ gold coverage 25.8% / provider 分布 / 未覆盖能力类型 / operator schema 完整度 / semantic redundancy（多算子同功能）。
 - **执行序列更新**：P0-1（GEE reasoning 证据 ✓）→ P0-2（QGIS Gold 结构研究 ✓ 大部分）→ **P0-3 Registry 审计（新）** → P0-4 三者连接验证。
 - 待 P0-3 数据源：QGIS 文档/安装实例的处理算法注册表（native ~300 + qgis ~100 + GDAL ~60 + GRASS ~80 + SAGA ~400+ 需核实）。
+
+### 补充（同日）：v2a recon 报告升级 v1.1——加入三知识空间口径修正附注（309 = coverage 非 space）。

@@ -1,7 +1,13 @@
-# v2a_A 结构侦察报告（v1，2026-10-05，CPU-only 只读，1,565 条全量）
+# v2a_A 结构侦察报告（v1.1，2026-10-05，CPU-only 只读，1,565 条全量）
 
 > 依据 owner 指令：11 维结构侦察，回答 5 个问题，为 Planner-v3 路线裁定提供输入。
 > 脚本 `v2a_recon_v1.py`；结果 `v2a_recon_out.json`。零训练、冻结物未动。
+>
+> **⚠️ 口径修正（owner 确立三知识空间框架后追加）**：本报告的 "309 unique operators"
+> 是 **workflow supervision coverage**（gold 中实际出现的算子），**不是 QGIS 算子空间规模**
+> （QGIS Registry ≈ 1,200）。两者的区分与三级 operator 分类（Seen / Registry-known-but-
+> gold-unseen / true-OOD）见 progress.md 2026-10-05 条目及 P0-3 Registry 审计（待执行）。
+> 本报告所有 operator 分布数字均应在此口径下解读。
 
 ## 1. 图规模（Graph size）
 
