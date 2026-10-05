@@ -1513,3 +1513,11 @@
 - **修正 4（定位）**：正向结果命名 **A1' reasoning-prior transfer assay**，暂不命名 Planner-v3；五形态判读表登记（selection↑graph↑ / selection↑graph≈ / selection≈graph↑ / 全≈ / A1'<C0）。
 - **基线口径**：历史 C0 test-111 0.343 = 参考线（不同条件），**不进主因果比较**；核心比较 = 同 QGIS train 双臂 → 同 dev-120 → paired Δ(A1'−C0)。
 - **科学问题**：在完全相同的 QGIS grounding supervision 下，仅改变初始化（先获得 GEE 学到的 General GIS Workflow Reasoning），能否改善 QGIS operator grounding？
+
+## 2026-10-05：A1'/C0 双臂 QGIS SFT 启动（串行：C0 → A1'，同数据同 seed 同超参）
+
+- QGIS SFT 数据：qgis_sft_train.jsonl（1,334 行，SHA 前缀见日志；行格式 {task_text → {processes, links} JSON}）。
+- 双臂配置：c0_qgis.yaml（Base 起点）/ a1_qgis.yaml（planner_v2_merged_A1init 起点，merge 后 17G bf16）；唯一变量 = 初始化；seed 20260924 相同 → 数据顺序相同。
+- 串行执行（bash && 链）：C0 → A1'，日志 /root/data/p1c_twin_arms.log；每臂 ~42 steps ≈ 22 min。
+- 完成后：dev-120 paired evaluation（E 系列全口径 + per-example Δ + bootstrap CI）→ 报告。
+- ⚠️ sshd 限流：本时段多次连接瞬断（连接后即恢复），已改用低频批处理操作。
