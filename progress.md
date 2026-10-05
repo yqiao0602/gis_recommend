@@ -1521,3 +1521,9 @@
 - 串行执行（bash && 链）：C0 → A1'，日志 /root/data/p1c_twin_arms.log；每臂 ~42 steps ≈ 22 min。
 - 完成后：dev-120 paired evaluation（E 系列全口径 + per-example Δ + bootstrap CI）→ 报告。
 - ⚠️ sshd 限流：本时段多次连接瞬断（连接后即恢复），已改用低频批处理操作。
+
+## 2026-10-05：owner 十步执行序列确立（Planner 定线 → Operator Audit → A1' 因果实验）；当前 GPU 空闲，先 CPU
+
+- **冻结项**：RL/DAG 专项训练/GEE 数据修改/QGIS frozen Gold 修改/Planner-v2 schema 修改/Planner-v2 重训/立即 A1'/L3 恢复——全部不做。
+- **序列**：STEP 0 数据/checkpoint/test 冻结 → STEP 1-2 Planner unified evaluator + v1 vs v2 并排（CPU）→ STEP 3 mainline 判定 → STEP 4 Registry manifest → STEP 5-6 No-RAG Operator Knowledge Audit → 分支判定 → STEP 7-10 C0→A1' paired→最终架构判断。
+- **当前 GPU 空闲**：STEP 1-2 为纯 CPU（统一表示转换 + 已有 dev metrics 重算 + 补算 v1 侧 ordered 指标），立即执行；STEP 4 Registry manifest 需 QGIS 算子清单数据源（待确认：本地 QGIS 安装/文档抓取）；STEP 5-6 需 GPU（模型推理），执行前另请放行。
