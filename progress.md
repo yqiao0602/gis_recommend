@@ -1446,3 +1446,13 @@
 - 待 P0-3 数据源：QGIS 文档/安装实例的处理算法注册表（native ~300 + qgis ~100 + GDAL ~60 + GRASS ~80 + SAGA ~400+ 需核实）。
 
 ### 补充（同日）：v2a recon 报告升级 v1.1——加入三知识空间口径修正附注（309 = coverage 非 space）。
+
+## 2026-10-05：Historical Experiment Reconciliation 完成——对账矩阵 + A/B/C 分类；两个真缺口浮出
+
+- 报告：`planner_design/HISTORICAL_EXPERIMENT_RECONCILIATION_v1.md`（基于仓库真实实验文档：Gate 0/1/2、FA/DC、A1 机制结论、M3、Planner-v1/v2、v2a recon、Transfer audit）。
+- **最重要的对账发现**：**A1 机制结论的设计原则 3（09-24 冻结）已预写今天的两层架构**（"GEE 不是 DAPT 数据源，其合理位置 = 结构/workflow composition supervision"）。今日 Transfer Audit（69.7% 词汇共享 + 42.7% DAG 新增）为该原则提供定量支撑。**Gate 2 负迁移在新架构下自动解释：旧 A1 混层（DAPT 直接优化 QGIS decoder）→ 控制失效；新架构分层 → 预测无此失效。Planner-v2 成功与 A1 失败不是矛盾，是监督形式不同。**
+- **A 类（已回答，不重做）**：GEE 泛型 DAPT 负迁移 / A1 失败机制 / GEE 正确角色 / v2 可学性 / QGIS gold 结构价值 / 17-family 共享。
+- **B 类（重析不重训）**：B1 = C0 checkpoint + test-111 预测用新 E1-E4 口径分解；B2 = D1① 78.8% 重解读；B3 = M3 83.7% 历史佐证；B4 = P0/P1-B 统一对比（管线就绪后）。
+- **C 类（真缺口）**：**C1 = GEE-as-planning-supervision → QGIS Grounding 迁移（新架构核心 assay，从未隔离测试）**；C2 = DAG 结构生成（42.7% branch/merge 从未作为训练目标）；C3 = hint 绑定（已裁定 P2 前置）；C4 = Registry 级 Grounding（依赖 P0-3）。
+- **最小实验建议（待 owner 放行）**：先 B1（C0 重评，零训练）→ C1 最小对照（Planner-v2 + grounding head vs C0）。
+- Formal SFT 正常运行中，不受影响。locked test 未动。
