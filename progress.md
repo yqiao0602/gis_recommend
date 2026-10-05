@@ -1472,3 +1472,9 @@
 - **Q2（checkpoint 复用）**：**可行且即最小成本路径**——Planner-v2 adapter 与 C0 基线均在位，assay 只需生成、零新训练；A1' 训练实验的形态（grounding head）在 assay 正面结果后再设计。
 - **Q3（C2 DAG）**：定位 = **系统能力验证 + 论文第二阶段**，非核心 transfer 实验——核心 transfer 在语义 stage 层面即可测；DAG 序列化表示未定（先定表示再训练，避免重蹈覆辙）；与 QGIS 端口 schema 表（P0-3）衔接。
 - **行动队列**：1 = zero-shot assay（待放行，GPU 30-60 min）→ 2 = A1' 设计裁定 → 3 = A1' 训练（若放行）；C2 → system track；P0-3 可并行。
+
+## 2026-10-05：owner 放行 C1-2a Zero-shot Cross-platform Reasoning Transfer（零训练，GPU ~30-60 min）
+
+- **命名与因果分层（owner 确立）**：**C1-2a = zero-shot cross-platform reasoning transfer**（本实验——证明/否定 reasoning prior 的跨平台迁移能力）；**C1-2b = reasoning prior → QGIS grounding gain**（由 A1' 训练实验回答）——两者不得混淆；assay 结果**不得宣称"GEE 提升 QGIS grounding"**（grounding 尚未进入）。
+- **实验设计**：Planner-v2 adapter（GEE 训练）× v2a_A dev+test 231 行（全部为 Planner-v2 OOD——QGIS 数据从未进入其训练）；生成 semantic stage plan（max_new_tokens 384）；gold = operator 序列经 69.7% 关键词映射表转语义 family；对照三参照：① trivial baseline（GEE 训练分布 modal 序列）② Planner-v2 in-domain 0.6636 ③ C0 op 口径 0.343/0.370。
+- **纪律**：全线冻结维持；不重跑 C0/A1；不碰 locked test；P2/system track 不动。
