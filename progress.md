@@ -1486,3 +1486,12 @@
 - **判定（预注册判读树）**：零样本迁移失败 → **A1'（reasoning prior → grounding gain）训练实验成为唯一判据**。三个解释注意事项已登记：粒度伪影（stage vs instance）、gold 映射覆盖 69.7%、域差真实性（栅格 vs 矢量本质不同，非模型缺陷）。
 - **对 A1' 设计的关键输入**：零样本失败 ≠ A1' 无价值——它证明 **QGIS grounding 知识必须从 QGIS gold 训练**；GEE reasoning prior 的价值（更好的初始化）只能由 A1' 对照实验检验（vs C0 fresh SFT），且必须纳入 Gate 2 式负迁移风险的对照设计。
 - 报告：`planner_design/R3_C12A_ZERO_SHOT_RESULTS_v1.md`。GPU 空闲；locked test 未动；冻结物未动。待 owner：A1' 实验裁定。
+
+## 2026-10-05：owner 概念修正——Raster/Vector 分布差 = 数据审计变量，非模型能力边界；C1-2a 作废；C1-2 重新定义
+
+- **概念修正（owner）**："GEE 的 Raster 多 ≠ GEE 教模型 Raster 怎么做；QGIS 的 Vector 多 ≠ QGIS 教 Vector 怎么做"。真正关注的是：**模型是否学会"面对 GIS 任务需要调用什么类型的 GIS 操作并按什么依赖关系组合"**——任务语义→操作类型→依赖关系→组合，与数据模态无关。
+- **模型能力三层拆解**：① 任务理解（GEE 大规模监督）② 工作流规划（General GIS Workflow Reasoning，仍属 GEE 层）③ QGIS Grounding（operator 选择与组合——QGIS registry/Gold/operator semantics 层）。
+- **Raster/Vector 差异重定位**：数据审计变量（后续分析报告 GEE/QGIS 数据类型分布差异与共享任务语义），**不是实验主轴，不是迁移边界**。
+- **C1-2a 作废**：该 assay 把实验问题错误变成"Raster→Raster 能否迁移"；不纳入裁决文档。其产物保留为数据点（不删除）。
+- **C1-2 重新定义**：核心问题 = **"加入 GEE 学到的 workflow reasoning 后，模型选择和组合 QGIS operators 的能力有没有提升？"**——同一 QGIS task 双臂对照：C0（QGIS-only SFT）vs GEE reasoning prior + QGIS grounding。
+- **QGIS registry 重定位**：≠ Vector knowledge；= **QGIS 的可操作能力空间（capability space）**。QGIS Gold = operator 组合成真实 workflow 的实例监督。三知识源各司其职：GEE 学解决问题 / registry 学 QGIS 能力 / gold 学组合。
