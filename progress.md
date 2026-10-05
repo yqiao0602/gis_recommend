@@ -1543,3 +1543,10 @@
 - **STEP 4-6**：QGIS Registry manifest（≈1,200，三组：Gold-seen 309/Registry-unseen ≈900/absent）→ Operator Knowledge Audit dataset → **No-RAG Audit**（Recognition/Semantic Understanding/Similarity Discrimination/Task→Operator/Composition × Seen/Unseen 矩阵；情况 A/B/C 判定）。
 - **STEP 7-10**：C0 grounding baseline（QGIS SFT 1,334）→ A1'（paired，唯一变量=Initialization，paired bootstrap CI）→ 最终架构判断。
 - **纪律**：A1' = 有前置条件的待执行实验；当前 GPU 最优先 = unified evaluation + Operator Audit。
+
+## 2026-10-06：STEP 1-2 进行中——Planner-v2 dev 预测重生成（GPU 长任务）
+
+- unified evaluator 模块已就绪（planner_unified_eval_v1.py：统一 SemanticWorkflow 表示 + 7 指标；v1 侧 pred_seq 从 P0 metrics items 直接提取；行级对齐验证 1,852/1,852 task 全匹配 + 顺序一致）。
+- **Planner-v2 dev 预测重生成运行中**（regen_v2_dev_preds_v1.py，PID 在租卡机 setsid 会话）：1,852 行 × 384-token 生成 ≈ 36s/行 → **ETA ~18.5h（10-06 全天，预计明日出）**。完成后 CPU 侧完成统一 7 指标对照表（STEP 2 交付）。
+- 连接注意事项：服务器 sshd 对高频轮询限流（多次 Connection closed）——监控已降频；再生进程 setsid 独立会话不受影响。
+- 零冻结物变更；locked test 不动。
