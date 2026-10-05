@@ -1495,3 +1495,12 @@
 - **C1-2a 作废**：该 assay 把实验问题错误变成"Raster→Raster 能否迁移"；不纳入裁决文档。其产物保留为数据点（不删除）。
 - **C1-2 重新定义**：核心问题 = **"加入 GEE 学到的 workflow reasoning 后，模型选择和组合 QGIS operators 的能力有没有提升？"**——同一 QGIS task 双臂对照：C0（QGIS-only SFT）vs GEE reasoning prior + QGIS grounding。
 - **QGIS registry 重定位**：≠ Vector knowledge；= **QGIS 的可操作能力空间（capability space）**。QGIS Gold = operator 组合成真实 workflow 的实例监督。三知识源各司其职：GEE 学解决问题 / registry 学 QGIS 能力 / gold 学组合。
+
+## 2026-10-04：C1-2 最小 assay 设计提案完成（待 owner 批准，未执行）
+
+- 报告：`planner_design/C12_MINIMAL_ASSAY_DESIGN_v1.md`。
+- **双臂设计**：C0-QGIS（Base + QGIS 1,334 行 SFT）vs A1'-QGIS（Planner-v2 formal adapter + 同 QGIS SFT）——同数据/同超参/同预算，唯一变量 = GEE blueprint 预训练有无；每臂 ~22 min，合计 ~45 min GPU。
+- **评测**（v2a_A_dev-120，双臂均未训练）：Op selection F1 / sequence F1 / exact graph rate / graph edit distance / coverage / 长度比；三参照（Base 零样本 / C0 臂 / 历史 v1 bag 参考）。
+- **判读树**：A1' > C0 → 两层架构核心假设成立（Planner-v3 = GEE reasoning + QGIS grounding 正式路线）；≈ → 稀缺问题另行解决；< → Gate 2 式负迁移复现警示。
+- **待 owner 批准**：① assay 执行 ② A1' 臂实现方式（Planner-v2 adapter 预合并 vs trainer 加载逻辑修改）③ v2a_A_test-111 保持 locked。
+- GPU 空闲；冻结物未动；Planner-v2 formal adapter 在位。
