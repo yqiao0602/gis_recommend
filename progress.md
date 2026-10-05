@@ -1384,3 +1384,11 @@
 - **Round 2 设计**：同一 Task → v1 Planner→Serializer-v1 vs v2 Planner→Serializer-v2 → **同一个 bag-F1**；只改 Planner，不改评价口径；输出六项同口径指标（parse/family bag-F1/count multiplicity/length±1/over-under emission/rare-family recall）。CPU-only/确定性/不碰 locked test。
 - **执行顺序**：① 统一管线 → ② 公平比较 → ③ v2 主线裁定 → ④（若成立）P2 hint binding supervision（只修 S5）→ ⑤ QGIS Grounding。
 - **关键工程问题（本回合解决）**：v2 预测在语义粒度（30），v1 在 plan-family 粒度（19）——统一单位需 semantic→plan 映射表（从训练行位置对齐学习，映射保真度需 ≥90% 才可用）。
+
+## 2026-10-04：Option B（Schema v2.5）设计分析完成——数据支撑的边界与建议
+
+- 报告：`planner_design/R3_OPTION_B_DESIGN_v1.md`。Schema v2.5 草案：stages（每游程一 stage）+ repetition.dimension（per_band/...），**绝对次数完全移除**。
+- **Option B 解决**：不可识别的循环次数移出监督（三轮证据闭环）；迭代语义保留且可学习（dimension 分类 AUC 0.968）；S5 shortcut 问题随 B 重定义自动简化。
+- **Option B 不能解决（诚实边界）**：语义级长尾主体是**不同语义阶段的累积**（51+ 原始桶 stages 均值 114、repeat_share 仅 0.245；长行 ≥30 stages 中 repeat>1 仅占 7.5%）——**极长 workflow 的生成长度问题仍在**（B-form 下 1,830-stage 行依然是 1,830 stage）。97% 任务 ≤30 stages 在可生成范围内；>100 的 0.5% 为本代已知边界（论文 limitations）。
+- **冻结 gate 兼容**：B-form 与 gate 单位不同（无展开），v2 线评测走 E1-E4；统一对比管线的映射问题在 B-form 下预期改善（待验证）。
+- 待 owner：Option B 定稿 → B-form 数据转换（CPU）→ Planner-v2 round 2（B-form 目标重训，放行待批）。
