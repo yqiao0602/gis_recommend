@@ -1534,3 +1534,12 @@
 - **v2（formal）当前可得**：ordered-LCS-F1 **0.6658**（逐项，n=1,852）——**略高于 v1 的 0.6338**；bag/P/R/count/length 需 pred_seq，而 formal eval 未存储预测序列（items 仅 e1）。
 - **STEP 2b 提案（待 owner 批准，GPU ~3.5h）**：修改 formal eval 脚本存储 pred_seq 后在服务器重跑 v2 dev 推理一次（模型/adapter 在位，纯推理），即可补齐 v2 侧全部 7 指标 → 完成并排表。
 - 初步对照（ordered 口径）：v2 0.6658 ≥ v1 0.6338（+3.2pp）——与"v2 是 v1 的结构增强版"假设一致，待 bag 口径确认。
+
+## 2026-10-05：三步执行计划确立（owner）——Planner 定线 → Operator Knowledge 审计 → A1' 因果实验；当前零训练
+
+- **STEP 0 冻结**：全部数据/checkpoint/locked test；❌ RL/DAG 专项训练/改 GEE 数据/改 QGIS Gold/改 Planner-v2 schema/重训 Planner-v2/立即 A1'/恢复 L3。
+- **STEP 1**：Planner-v1/v2 unified evaluator——统一内部格式 SemanticWorkflow{stages:[{family,repeat}], total_length}；7 指标（bag-F1/family P-R/count acc/length error/over-emission/under-emission/ordered LCS-F1；exact seq 仅参考）。
+- **STEP 2**：P1 vs P2 统一评估（同一批 dev 行）→ **STEP 3 Planner mainline 裁定**（判据：v2 Bag-F1 ≈ v1 且保留 order/repetition → v2 = v1 结构增强版）。
+- **STEP 4-6**：QGIS Registry manifest（≈1,200，三组：Gold-seen 309/Registry-unseen ≈900/absent）→ Operator Knowledge Audit dataset → **No-RAG Audit**（Recognition/Semantic Understanding/Similarity Discrimination/Task→Operator/Composition × Seen/Unseen 矩阵；情况 A/B/C 判定）。
+- **STEP 7-10**：C0 grounding baseline（QGIS SFT 1,334）→ A1'（paired，唯一变量=Initialization，paired bootstrap CI）→ 最终架构判断。
+- **纪律**：A1' = 有前置条件的待执行实验；当前 GPU 最优先 = unified evaluation + Operator Audit。
