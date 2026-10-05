@@ -1365,3 +1365,14 @@
 - 训练 `[done]` 03:31（steps=1041，tokens 5,456,020，tgt_trunc 566，task_too_long=0）。
 - **400-row fast dev PASS**：S1 parse/schema **0.8125**（vs smoke 0.3585——格式学习成立）；**E1 ordered stage F1 0.6679**、exact seq 0.1231；**E2 repetition-presence F1 0.9641**；E3 group-exact **0.9767**、emission 0.2386、hint 一致性 per_band=0（4 组全 FP——S5 shortcut 确认存在，正式观察项）；S4 pred unspecified 0.594 vs gold 0.785（欠发射方向，deviation diagnostic）；E4 pred repeat mean 1.28 vs gold 1.30（**分布高度贴合——repeat=1 塌缩在正式 SFT 后大幅缓解**）。
 - **全量 dev 1,852 已启动**（~4h，预计 09:00-10:00 出）→ checkpoint ranking → 锁定。locked test 不动。
+- 10-05 07:07 例行检查：全量 dev 1,852 评测进行中（05:30 启动）。
+- 10-05 09:07 例行检查：全量 dev 评测进行中。
+- 10-05 13:07 例行检查：全量 dev 评测进行中（上轮 86%）。
+
+## 2026-10-05：Planner-v2 Formal SFT Round 1 dev 全量出分——E1 0.6636 / E2 0.9670 / S1 0.8089；S5 shortcut 确认；locked test 未动
+
+- 全量 dev（n=1,852，evaluator v1.1 gold 对齐）：**S1 parse/schema 0.8089**；**E1 ordered stage F1 0.6636**（首 stage 0.8017、exact seq 0.1188）；**E2 repetition-presence F1 0.9670**；E3 **group-exact 0.9831**、emission 0.2894、per-hint precision（generic_each 0.979/per_year 1.0/unspecified 0.986/**per_band 0.0 n=9/per_class 0.0 n=1**）；S4 pred unspecified 0.5795 vs gold 0.6848（轻微 over-emission）；E4 pred repeat mean 1.28 == gold 1.28（直方图贴合——**smoke 期 repeat=1 塌缩在正式 SFT 后消失**）。
+- **判读**：① v2 结构能力（ordered stages + repetition presence）在正式预算下成立；② **S5 keyword shortcut 确认**（per_band 9 次发射 0 次绑定 BAND_*）——P2 蓝图（repetition 语义条件 + hint 绑定监督）必要性获正式 SFT 证据；③ S4 轻微 over-emission（非 collapse，正常范围）；④ smoke 期 repeat=1 塌缩消失（与"repeat 数值 1 epoch 即可贴合"一致，但 identifiability 结论不变——数值由 gold 分布支撑）。
+- **对照纪律**：v1 bag-F1 与 v2 ordered-F1 不可直接比（evaluator/粒度不同）；统一对比（双 Planner → Serializer → 同口径）按裁定后置。
+- checkpoint ranking：本轮仅评 final adapter；7 ckpts 保留。**locked test-1,853 未动**。
+- 报告：`planner_design/R3_PLANNER_V2_FORMAL_DEV_RESULTS_v1.md`。待 owner：round 2 方向（S5 修复 vs 统一对比管线先行）。
