@@ -1456,3 +1456,9 @@
 - **C 类（真缺口）**：**C1 = GEE-as-planning-supervision → QGIS Grounding 迁移（新架构核心 assay，从未隔离测试）**；C2 = DAG 结构生成（42.7% branch/merge 从未作为训练目标）；C3 = hint 绑定（已裁定 P2 前置）；C4 = Registry 级 Grounding（依赖 P0-3）。
 - **最小实验建议（待 owner 放行）**：先 B1（C0 重评，零训练）→ C1 最小对照（Planner-v2 + grounding head vs C0）。
 - Formal SFT 正常运行中，不受影响。locked test 未动。
+
+## 2026-10-05：ROUTE2_EXPERIMENT_MASTER_TABLE_v1 整理完成——全期实验总表
+
+- 报告：`planner_design/ROUTE2_EXPERIMENT_MASTER_TABLE_v1.md`。五个时代（QGIS 资产构建 / GEE 语料构建 / M1-M3 / Phase 2 v1 三臂与诊断链 / Route-2 v2）的全部可查实验：类型/数据/配置/核心结果/两层架构归属/溯源路径。
+- 对账矩阵重述 + "？"汇总（6 项 C 类缺口）+ 关键数字速查表。
+- 数字可靠性分级：v2 时代全部为本会话直接核查；v1 时代与构建时代来自冻结报告文档（campaign 级活动的细节指标未逐一展开，溯源路径已给）。
