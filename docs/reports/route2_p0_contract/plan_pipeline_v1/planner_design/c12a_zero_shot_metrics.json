@@ -1,0 +1,3733 @@
+{
+ "metrics": {
+  "experiment": "C1-2a zero-shot cross-platform reasoning transfer",
+  "rows": 231,
+  "S1_parse_rate": 0.4892,
+  "S1_schema_rate": 0.4892,
+  "M_family_bag_f1_mean": 0.0472,
+  "M_ordered_lcs_f1_mean": 0.0473,
+  "M_references": {
+   "trivial_modal_baseline_same_rows": 0.0,
+   "in_domain_gee_dev_reference": 0.6636,
+   "C0_qgis_operator_reference": "0.343/0.370 (operator metric, not directly comparable)"
+  },
+  "M_length": {
+   "pred_mean": 1.8,
+   "gold_mapped_mean": 4.5
+  },
+  "gold_unmapped_op_share": 0.307,
+  "pred_family_top": [
+   [
+    "RASTER_LOAD",
+    122
+   ],
+   [
+    "BAND_SELECT",
+    110
+   ],
+   [
+    "AGGREGATION",
+    89
+   ],
+   [
+    "ATTRIBUTE_FILTER",
+    51
+   ],
+   [
+    "VECTOR_LOAD",
+    15
+   ],
+   [
+    "SPATIAL_FILTER",
+    11
+   ],
+   [
+    "TEMPORAL_FILTER",
+    7
+   ],
+   [
+    "BAND_ARITHMETIC",
+    6
+   ]
+  ],
+  "gold_family_top": [
+   [
+    "VECTOR_GEOMETRY",
+    373
+   ],
+   [
+    "BAND_ARITHMETIC",
+    203
+   ],
+   [
+    "SPATIAL_CLIP",
+    87
+   ],
+   [
+    "RESAMPLE_REPROJECT",
+    81
+   ],
+   [
+    "REGIONAL_STATS",
+    53
+   ],
+   [
+    "COMPOSITE",
+    52
+   ],
+   [
+    "SPATIAL_JOIN",
+    52
+   ],
+   [
+    "ATTRIBUTE_FILTER",
+    34
+   ]
+  ]
+ },
+ "items": [
+  {
+   "k": 0,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "COMPOSITE",
+    "TERRAIN_DERIVED",
+    "REGIONAL_STATS",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 1,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": []
+  },
+  {
+   "k": 2,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER",
+    "RASTER_LOAD"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 3,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "BAND_SELECT"
+   ]
+  },
+  {
+   "k": 4,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "TEMPORAL_FILTER",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "BAND_SELECT"
+   ]
+  },
+  {
+   "k": 5,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "BAND_SELECT"
+   ]
+  },
+  {
+   "k": 6,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 7,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 8,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "MASKING"
+   ]
+  },
+  {
+   "k": 9,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "TERRAIN_DERIVED",
+    "BAND_ARITHMETIC",
+    "TERRAIN_DERIVED",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "THRESHOLD_LOGIC"
+   ]
+  },
+  {
+   "k": 10,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": []
+  },
+  {
+   "k": 11,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "VECTOR_LOAD",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_LOAD",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 12,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 13,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 14,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "RASTER_LOAD",
+    "BAND_SELECT"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "TERRAIN_DERIVED",
+    "TERRAIN_DERIVED",
+    "TERRAIN_DERIVED"
+   ]
+  },
+  {
+   "k": 15,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 16,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "ATTRIBUTE_FILTER",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 17,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "SPATIAL_FILTER",
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "COMPOSITE",
+    "SPATIAL_FILTER"
+   ]
+  },
+  {
+   "k": 18,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 19,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 20,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "NEIGHBORHOOD",
+    "MASKING",
+    "NEIGHBORHOOD"
+   ]
+  },
+  {
+   "k": 21,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "MASKING",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 22,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "BAND_SELECT"
+   ]
+  },
+  {
+   "k": 23,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 24,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_FILTER",
+    "RESAMPLE_REPROJECT",
+    "COMPOSITE",
+    "THRESHOLD_LOGIC",
+    "THRESHOLD_LOGIC",
+    "THRESHOLD_LOGIC",
+    "THRESHOLD_LOGIC",
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 25,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 26,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "SPATIAL_FILTER",
+    "RASTER_LOAD",
+    "SPATIAL_FILTER",
+    "RASTER_LOAD",
+    "SPATIAL_FILTER",
+    "RASTER_LOAD",
+    "SPATIAL_FILTER",
+    "RASTER_LOAD",
+    "SPATIAL_FILTER"
+   ],
+   "gold_sem": [
+    "SPATIAL_FILTER"
+   ]
+  },
+  {
+   "k": 27,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "SPATIAL_FILTER",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 28,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 29,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 30,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "SPATIAL_FILTER",
+    "TEMPORAL_FILTER",
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 31,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "TEMPORAL_FILTER",
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 32,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "SPATIAL_FILTER",
+    "AGGREGATION",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 33,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 34,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 35,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPECTRAL_INDEX",
+    "ATTRIBUTE_FILTER",
+    "ATTRIBUTE_FILTER"
+   ]
+  },
+  {
+   "k": 36,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "MASKING",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 37,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 38,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC",
+    "ATTRIBUTE_FILTER",
+    "SPATIAL_CLIP",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 39,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 40,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": [
+    "ATTRIBUTE_FILTER",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 41,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 42,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 43,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": []
+  },
+  {
+   "k": 44,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 45,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_FILTER",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 46,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_SELECT"
+   ]
+  },
+  {
+   "k": 47,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": []
+  },
+  {
+   "k": 48,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 49,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "NEIGHBORHOOD",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 50,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "ATTRIBUTE_FILTER",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 51,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 52,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "BAND_ARITHMETIC",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 53,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 54,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 55,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_FILTER"
+   ]
+  },
+  {
+   "k": 56,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION",
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 57,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 58,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION",
+    "ATTRIBUTE_FILTER",
+    "EXPORT_OUTPUT"
+   ],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 59,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "MASKING",
+    "SPATIAL_CLIP",
+    "REGIONAL_STATS",
+    "MASKING",
+    "SPATIAL_CLIP",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 60,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 61,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 62,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 63,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 64,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": [
+    "SPATIAL_FILTER",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 65,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 66,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 67,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 68,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "RESAMPLE_REPROJECT",
+    "MASKING",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 69,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "ATTRIBUTE_FILTER",
+    "EXPORT_OUTPUT"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 70,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 71,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 72,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "SPECTRAL_INDEX"
+   ]
+  },
+  {
+   "k": 73,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 74,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY",
+    "SPECTRAL_INDEX",
+    "VECTOR_GEOMETRY",
+    "SPECTRAL_INDEX",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPECTRAL_INDEX",
+    "SPECTRAL_INDEX",
+    "SPATIAL_JOIN",
+    "SPECTRAL_INDEX",
+    "SPATIAL_JOIN",
+    "VECTOR_GEOMETRY",
+    "SPECTRAL_INDEX",
+    "SPATIAL_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPECTRAL_INDEX",
+    "SPATIAL_JOIN",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 75,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "ATTRIBUTE_FILTER",
+    "BAND_ARITHMETIC",
+    "COMPOSITE",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 76,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 77,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "THRESHOLD_LOGIC"
+   ]
+  },
+  {
+   "k": 78,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "SPATIAL_CLIP",
+    "MASKING"
+   ]
+  },
+  {
+   "k": 79,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 80,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "MASKING",
+    "THRESHOLD_LOGIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "MASKING",
+    "THRESHOLD_LOGIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 81,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 82,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 83,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 84,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "TERRAIN_DERIVED",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 85,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT"
+   ],
+   "gold_sem": [
+    "BAND_SELECT"
+   ]
+  },
+  {
+   "k": 86,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SAMPLE_EXTRACTION",
+    "SAMPLE_EXTRACTION"
+   ]
+  },
+  {
+   "k": 87,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 88,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "VECTOR_LOAD",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 89,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 90,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 91,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 92,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 93,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 94,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "MASKING"
+   ]
+  },
+  {
+   "k": 95,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "COMPOSITE",
+    "COMPOSITE",
+    "SPATIAL_FILTER",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 96,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 97,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 98,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_FILTER",
+    "BAND_ARITHMETIC",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "SPATIAL_FILTER",
+    "SPATIAL_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 99,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "SPATIAL_FILTER",
+    "SPATIAL_CLIP",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 100,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "RASTER_LOAD",
+    "BAND_SELECT"
+   ],
+   "gold_sem": []
+  },
+  {
+   "k": 101,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_DEFINE",
+    "BAND_ARITHMETIC",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 102,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 103,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": []
+  },
+  {
+   "k": 104,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "TERRAIN_DERIVED",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 105,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 106,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "MASKING"
+   ]
+  },
+  {
+   "k": 107,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "COMPOSITE",
+    "TERRAIN_DERIVED",
+    "REGIONAL_STATS",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 108,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "BAND_ARITHMETIC",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "TERRAIN_DERIVED",
+    "BAND_SELECT",
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 109,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 110,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "VECTOR_LOAD",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_LOAD",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPECTRAL_INDEX",
+    "SPECTRAL_INDEX"
+   ]
+  },
+  {
+   "k": 111,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 112,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 113,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "RESAMPLE_REPROJECT",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 114,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 115,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "SPATIAL_CLIP"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "MASKING"
+   ]
+  },
+  {
+   "k": 116,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 117,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "SPATIAL_FILTER",
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 118,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "COMPOSITE",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 119,
+   "src": "v2a_A_dev.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "BAND_SELECT"
+   ]
+  },
+  {
+   "k": 120,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 121,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_SELECT",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 122,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 123,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "VECTOR_LOAD",
+    "ATTRIBUTE_FILTER",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": []
+  },
+  {
+   "k": 124,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 125,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "SPATIAL_CLIP",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "ATTRIBUTE_FILTER"
+   ]
+  },
+  {
+   "k": 126,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "NEIGHBORHOOD",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 127,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_JOIN",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 128,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 129,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "MASKING",
+    "RASTER_LOAD",
+    "MASKING"
+   ],
+   "gold_sem": [
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 130,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 131,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 132,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 133,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 134,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "TEMPORAL_FILTER"
+   ],
+   "gold_sem": [
+    "BAND_SELECT"
+   ]
+  },
+  {
+   "k": 135,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": []
+  },
+  {
+   "k": 136,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 137,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 138,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "TERRAIN_DERIVED",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "ATTRIBUTE_FILTER",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "SPECTRAL_INDEX",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 139,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 140,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 141,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 142,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": []
+  },
+  {
+   "k": 143,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 144,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_FILTER"
+   ]
+  },
+  {
+   "k": 145,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "ATTRIBUTE_FILTER"
+   ]
+  },
+  {
+   "k": 146,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_FILTER",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": []
+  },
+  {
+   "k": 147,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 148,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "ATTRIBUTE_FILTER",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 149,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_FILTER",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_FILTER",
+    "SPATIAL_CLIP",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 150,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": []
+  },
+  {
+   "k": 151,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 152,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 153,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 154,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 155,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "MASKING",
+    "MASKING"
+   ]
+  },
+  {
+   "k": 156,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 157,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 158,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 159,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 160,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "NEIGHBORHOOD"
+   ]
+  },
+  {
+   "k": 161,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "SPATIAL_FILTER",
+    "ATTRIBUTE_FILTER",
+    "TEMPORAL_FILTER",
+    "ATTRIBUTE_FILTER",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "COMPOSITE",
+    "MASKING"
+   ]
+  },
+  {
+   "k": 162,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 163,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 164,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 165,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 166,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 167,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 168,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "COMPOSITE",
+    "SPATIAL_CLIP",
+    "ATTRIBUTE_FILTER",
+    "ATTRIBUTE_FILTER",
+    "ATTRIBUTE_FILTER",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 169,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": []
+  },
+  {
+   "k": 170,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": []
+  },
+  {
+   "k": 171,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "TEMPORAL_FILTER",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "COMPOSITE",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 172,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "GEOMETRY_DEFINE",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 173,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "RESAMPLE_REPROJECT",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 174,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 175,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "MASKING",
+    "MASKING",
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 176,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "MASKING"
+   ]
+  },
+  {
+   "k": 177,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "NEIGHBORHOOD",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 178,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 179,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION",
+    "EXPORT_OUTPUT"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 180,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 181,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "MASKING",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 182,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "SPATIAL_JOIN",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "ATTRIBUTE_FILTER",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 183,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 184,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 185,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 186,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "CLASSIFICATION",
+    "AGGREGATION",
+    "BAND_ARITHMETIC",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS"
+   ]
+  },
+  {
+   "k": 187,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 188,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER",
+    "BAND_SELECT"
+   ],
+   "gold_sem": [
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 189,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "SPECTRAL_INDEX",
+    "SPECTRAL_INDEX"
+   ]
+  },
+  {
+   "k": 190,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 191,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "COMPOSITE",
+    "TERRAIN_DERIVED",
+    "REGIONAL_STATS",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 192,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 193,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "TEMPORAL_FILTER",
+    "ATTRIBUTE_FILTER",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 194,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 195,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_FILTER",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "ATTRIBUTE_FILTER",
+    "ATTRIBUTE_FILTER",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "ATTRIBUTE_FILTER"
+   ]
+  },
+  {
+   "k": 196,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 197,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE"
+   ]
+  },
+  {
+   "k": 198,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 199,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 200,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_SELECT",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 201,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "COMPOSITE",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 202,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "REGIONAL_STATS",
+    "TERRAIN_DERIVED",
+    "THRESHOLD_LOGIC",
+    "RESAMPLE_REPROJECT",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "MASKING",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 203,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "COMPOSITE",
+    "COMPOSITE",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 204,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP"
+   ]
+  },
+  {
+   "k": 205,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "TERRAIN_DERIVED",
+    "TERRAIN_DERIVED",
+    "TERRAIN_DERIVED"
+   ]
+  },
+  {
+   "k": 206,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "MASKING",
+    "TERRAIN_DERIVED",
+    "REGIONAL_STATS",
+    "BAND_ARITHMETIC",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 207,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "MASKING"
+   ]
+  },
+  {
+   "k": 208,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 209,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN",
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 210,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 211,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": []
+  },
+  {
+   "k": 212,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "ATTRIBUTE_FILTER"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 213,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_FILTER",
+    "CLASSIFICATION",
+    "BAND_ARITHMETIC",
+    "BAND_SELECT"
+   ],
+   "gold_sem": [
+    "SPATIAL_FILTER",
+    "SPATIAL_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_CLIP",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 214,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 215,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "SPATIAL_JOIN",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 216,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": []
+  },
+  {
+   "k": 217,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "MASKING",
+    "SPATIAL_CLIP",
+    "MASKING",
+    "BAND_ARITHMETIC"
+   ]
+  },
+  {
+   "k": 218,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "MASKING"
+   ]
+  },
+  {
+   "k": 219,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 220,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "BAND_ARITHMETIC",
+    "SPATIAL_JOIN"
+   ]
+  },
+  {
+   "k": 221,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION",
+    "VECTOR_LOAD"
+   ],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 222,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "MASKING",
+    "MASKING",
+    "MASKING",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 223,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "VECTOR_GEOMETRY",
+    "RESAMPLE_REPROJECT"
+   ]
+  },
+  {
+   "k": 224,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": true,
+   "schema_ok": true,
+   "pred_seq": [
+    "ATTRIBUTE_FILTER",
+    "RASTER_LOAD",
+    "BAND_SELECT",
+    "AGGREGATION"
+   ],
+   "gold_sem": [
+    "ATTRIBUTE_FILTER",
+    "ATTRIBUTE_FILTER"
+   ]
+  },
+  {
+   "k": 225,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 226,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": []
+  },
+  {
+   "k": 227,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "TERRAIN_DERIVED",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "ATTRIBUTE_FILTER",
+    "BAND_ARITHMETIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY",
+    "REGIONAL_STATS",
+    "REGIONAL_STATS",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 228,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_CLIP",
+    "SPATIAL_FILTER"
+   ]
+  },
+  {
+   "k": 229,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "SPATIAL_FILTER",
+    "MASKING",
+    "BAND_ARITHMETIC",
+    "BAND_ARITHMETIC",
+    "ATTRIBUTE_FILTER",
+    "VECTOR_GEOMETRY",
+    "VECTOR_GEOMETRY"
+   ]
+  },
+  {
+   "k": 230,
+   "src": "v2a_A_test.jsonl",
+   "parse_ok": false,
+   "schema_ok": false,
+   "pred_seq": [],
+   "gold_sem": [
+    "RESAMPLE_REPROJECT",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPATIAL_CLIP",
+    "SPECTRAL_INDEX",
+    "SPECTRAL_INDEX",
+    "SPECTRAL_INDEX"
+   ]
+  }
+ ]
+}

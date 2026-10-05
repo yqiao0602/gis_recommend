@@ -1478,3 +1478,11 @@
 - **命名与因果分层（owner 确立）**：**C1-2a = zero-shot cross-platform reasoning transfer**（本实验——证明/否定 reasoning prior 的跨平台迁移能力）；**C1-2b = reasoning prior → QGIS grounding gain**（由 A1' 训练实验回答）——两者不得混淆；assay 结果**不得宣称"GEE 提升 QGIS grounding"**（grounding 尚未进入）。
 - **实验设计**：Planner-v2 adapter（GEE 训练）× v2a_A dev+test 231 行（全部为 Planner-v2 OOD——QGIS 数据从未进入其训练）；生成 semantic stage plan（max_new_tokens 384）；gold = operator 序列经 69.7% 关键词映射表转语义 family；对照三参照：① trivial baseline（GEE 训练分布 modal 序列）② Planner-v2 in-domain 0.6636 ③ C0 op 口径 0.343/0.370。
 - **纪律**：全线冻结维持；不重跑 C0/A1；不碰 locked test；P2/system track 不动。
+
+## 2026-10-05：C1-2a Zero-shot Transfer Assay 出分——**零样本 family 迁移失败（bag-F1 0.047）**；A1' 成为唯一判据
+
+- 全量（n=231 QGIS OOD）：S1 parse **0.4892**；**M family bag-F1 = 0.0472**（trivial 0.0；in-domain 0.6636）；ordered 0.0473；pred 长度 1.8 vs gold mapped 4.5。
+- **机制（family 分布对比）**：pred = raster 三族（RASTER_LOAD 122/BAND_SELECT 110/AGGREGATION 89——GEE 遥感先验）；gold = **VECTOR_GEOMETRY 373（32%）**/BAND_ARITHMETIC 203/SPATIAL_CLIP 87——**两个分布几乎不相交**（GEE=栅格遥感 workflow；QGIS=矢量空间分析 workflow）。
+- **判定（预注册判读树）**：零样本迁移失败 → **A1'（reasoning prior → grounding gain）训练实验成为唯一判据**。三个解释注意事项已登记：粒度伪影（stage vs instance）、gold 映射覆盖 69.7%、域差真实性（栅格 vs 矢量本质不同，非模型缺陷）。
+- **对 A1' 设计的关键输入**：零样本失败 ≠ A1' 无价值——它证明 **QGIS grounding 知识必须从 QGIS gold 训练**；GEE reasoning prior 的价值（更好的初始化）只能由 A1' 对照实验检验（vs C0 fresh SFT），且必须纳入 Gate 2 式负迁移风险的对照设计。
+- 报告：`planner_design/R3_C12A_ZERO_SHOT_RESULTS_v1.md`。GPU 空闲；locked test 未动；冻结物未动。待 owner：A1' 实验裁定。
