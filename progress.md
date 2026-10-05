@@ -1392,3 +1392,11 @@
 - **Option B 不能解决（诚实边界）**：语义级长尾主体是**不同语义阶段的累积**（51+ 原始桶 stages 均值 114、repeat_share 仅 0.245；长行 ≥30 stages 中 repeat>1 仅占 7.5%）——**极长 workflow 的生成长度问题仍在**（B-form 下 1,830-stage 行依然是 1,830 stage）。97% 任务 ≤30 stages 在可生成范围内；>100 的 0.5% 为本代已知边界（论文 limitations）。
 - **冻结 gate 兼容**：B-form 与 gate 单位不同（无展开），v2 线评测走 E1-E4；统一对比管线的映射问题在 B-form 下预期改善（待验证）。
 - 待 owner：Option B 定稿 → B-form 数据转换（CPU）→ Planner-v2 round 2（B-form 目标重训，放行待批）。
+
+## 2026-10-04：owner 路线重定义——Planner 最终目标 = processes + links 抽象 QGIS Workflow Plan；Planner-v2 退回能力验证实验
+
+- **最终目标形态**：`Task → QGIS Workflow Planner → {processes: [{id, identifier, inputs[], outputs[]}], links: [{sourceProcess, sourceVariable, targetProcess, targetVariable}]} → QGIS Workflow`——identifier 级操作（如 raster_reproject/slope/reclassify/raster_calculator）+ 数据流连接；**不含**真实路径/CRS/参数/数值（Grounding 层）。
+- **Planner 学习目标四层**：① 做什么（操作选择）② 顺序 ③ 连接（哪个输出→哪个输入）④ 分支/汇合（一个输出可连多个后续）。
+- **repeat 处理**：从核心输出移除；未来如需表达"逐波段执行"，加可选语义属性（scope: per_band）——属后续 schema 设计。
+- **Planner-v2 重新定位**：从"最终方案"退回**能力验证实验**（已证明 Task → Ordered Workflow Planning 可学习，E1 0.664）；核心待验证问题 = **"ordered stages 能否作为 processes+links Planner 的前置能力"**。
+- **待 CPU 侦察**：processes+links 格式的 gold 数据在资产中的位置与规模（Stage-2 QGIS assets：v2a_A 1,334/120/111 SFT 文件等）。
