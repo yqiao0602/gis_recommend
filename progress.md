@@ -1376,3 +1376,11 @@
 - **对照纪律**：v1 bag-F1 与 v2 ordered-F1 不可直接比（evaluator/粒度不同）；统一对比（双 Planner → Serializer → 同口径）按裁定后置。
 - checkpoint ranking：本轮仅评 final adapter；7 ckpts 保留。**locked test-1,853 未动**。
 - 报告：`planner_design/R3_PLANNER_V2_FORMAL_DEV_RESULTS_v1.md`。待 owner：round 2 方向（S5 修复 vs 统一对比管线先行）。
+
+## 2026-10-05：owner 裁定 Round 2 = 统一 v1/v2 比较管线（CPU-only）；Planner-v2 Round 1 正式记为 PASS
+
+- **Round 1 定性**：PASS = "Ordered + repetition-aware Planner 具有可学习性和稳定结构输出能力"，**非**"优于 Planner-v1"（坐标系不同不可比）。
+- **S5 定性**：per_band 0/9 = 条件语义绑定缺陷（模型学到了错误的 hint→family 绑定规则），非核心结构能力失败——与核心结构能力问题分开。
+- **Round 2 设计**：同一 Task → v1 Planner→Serializer-v1 vs v2 Planner→Serializer-v2 → **同一个 bag-F1**；只改 Planner，不改评价口径；输出六项同口径指标（parse/family bag-F1/count multiplicity/length±1/over-under emission/rare-family recall）。CPU-only/确定性/不碰 locked test。
+- **执行顺序**：① 统一管线 → ② 公平比较 → ③ v2 主线裁定 → ④（若成立）P2 hint binding supervision（只修 S5）→ ⑤ QGIS Grounding。
+- **关键工程问题（本回合解决）**：v2 预测在语义粒度（30），v1 在 plan-family 粒度（19）——统一单位需 semantic→plan 映射表（从训练行位置对齐学习，映射保真度需 ≥90% 才可用）。
