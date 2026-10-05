@@ -1527,3 +1527,10 @@
 - **冻结项**：RL/DAG 专项训练/GEE 数据修改/QGIS frozen Gold 修改/Planner-v2 schema 修改/Planner-v2 重训/立即 A1'/L3 恢复——全部不做。
 - **序列**：STEP 0 数据/checkpoint/test 冻结 → STEP 1-2 Planner unified evaluator + v1 vs v2 并排（CPU）→ STEP 3 mainline 判定 → STEP 4 Registry manifest → STEP 5-6 No-RAG Operator Knowledge Audit → 分支判定 → STEP 7-10 C0→A1' paired→最终架构判断。
 - **当前 GPU 空闲**：STEP 1-2 为纯 CPU（统一表示转换 + 已有 dev metrics 重算 + 补算 v1 侧 ordered 指标），立即执行；STEP 4 Registry manifest 需 QGIS 算子清单数据源（待确认：本地 QGIS 安装/文档抓取）；STEP 5-6 需 GPU（模型推理），执行前另请放行。
+
+## 2026-10-05：STEP 1-2 部分完成——v1 侧 7 指标全算出；STEP 2b（v2 侧 bag 指标）需服务器重评，待 owner 批准
+
+- **v1（P1-B）held-out 3,705 行统一口径 7 指标（本地全算）**：bag-F1 **0.6718** / family P 0.7436 / R 0.6805 / count-exact **0.1501** / length-error −2.95 / over-emission 2.05 / under-emission 5.00 / **ordered-LCS-F1 0.6338** / exact-seq 0.1379。
+- **v2（formal）当前可得**：ordered-LCS-F1 **0.6658**（逐项，n=1,852）——**略高于 v1 的 0.6338**；bag/P/R/count/length 需 pred_seq，而 formal eval 未存储预测序列（items 仅 e1）。
+- **STEP 2b 提案（待 owner 批准，GPU ~3.5h）**：修改 formal eval 脚本存储 pred_seq 后在服务器重跑 v2 dev 推理一次（模型/adapter 在位，纯推理），即可补齐 v2 侧全部 7 指标 → 完成并排表。
+- 初步对照（ordered 口径）：v2 0.6658 ≥ v1 0.6338（+3.2pp）——与"v2 是 v1 的结构增强版"假设一致，待 bag 口径确认。
