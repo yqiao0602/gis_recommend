@@ -1407,3 +1407,13 @@
 - **5 问回答**：① 紧凑 DAG（中位 4 节点/p90 13/max 30）；② 纯链 57.6% + 分支/汇合 42.4%（浅分支：in-deg p90=2/max=20）；③ link_kinds 4 种（direct 81% 主导）；④ **309 个真实 QGIS 算子 ID**（native/qgis/gdal/saga/grass7 五前缀，长尾 49 单例）——**Grounding 级标识符，抽象化映射表是 Planner-v3 前置设计任务**；⑤ **变量级 I/O 确认不存在于数据**（全字段扫描），但可从 QGIS 算子端口 schema **确定性推导**（无需人工标注）。
 - **数据质量**：0 悬空 link、引用完整；⚠️ 144 个环（9.2%）与 106 孤立节点需处理规则；tier 字段全部 Tier-1（无判别力）。
 - **对三选项的含义**：无硬伤；v2a_A 可直接作 Planner-v3 结构 gold；两个缺口 = 抽象 identifier 归并表（309→抽象）+ 算子端口 schema 表（变量 I/O 恢复）——均可半自动构建。
+
+## 2026-10-05：v2a_A graph expressivity 深查完成（owner 四问题，直接读文件）
+
+- 报告：`planner_design/V2A_EXPRESSIVITY_AUDIT_v2.md`（审计 json 同目录）。
+- **Q1 Graph 形态**：纯链 57.6%（902 行，链长 p50=3/max=30）/ 分支+汇合 24.4% / 仅分支 9.6% / 仅汇合 8.3%；节点 p50=4/max=30；行内 max in-degree p50=1、out-degree p50=1（浅分支）。
+- **Q2 Link 信息量**：link_kinds 按切分稳定（direct 81% 主导；linear 仅 1.9%——**link kind 是转换元数据，不是拓扑描述符**）；**0 悬空**；环 124/8/12（train/dev/test）、孤立 89/9/8——环与孤立节点是 gold 侧需处理的少数形态。
+- **Q3 Operator OOD**：train 295 unique → **dev OOD 仅 8 个算子/10 次出现、test OOD 7 个/16 次**（OOD 占比 <0.3%）——**operator 覆盖基本无 OOD 风险**；长尾：309 unique、49 单例、113 个 ≤3 次、top10 占 38%。
+- **Q4 变量级 I/O**：**穷尽扫描确认 absent**（sourceVariable/targetVariable/inputs/outputs/ports/parameters 全部 0 命中）；但可从 QGIS 算子端口 schema 确定性推导（无需人工、无需伪标注）。
+- **taskType × 结构**：12+ 类，branch/merge 率 0.37-0.52（Surface water 最高 0.52）——类型间结构差异温和。
+- **结论**：42.4% 含分支/汇合（GEE 线性目标无法提供的监督）+ operator OOD 风险极低 + 变量 I/O 可从 schema 推导——**QGIS gold 对 processes+links Planner 的支撑力充分**，schema 裁定的数据基础就绪。

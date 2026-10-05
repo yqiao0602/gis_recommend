@@ -1,0 +1,705 @@
+{
+ "rows": 1565,
+ "Q1_shape_overall": {
+  "n": 1565,
+  "topology": {
+   "pure_chain": 902,
+   "merge_only": 130,
+   "branch_and_merge": 382,
+   "branch_only": 151
+  },
+  "nodes": {
+   "p50": 4,
+   "max": 30,
+   "mean": 6.14
+  },
+  "row_max_in_degree": {
+   "p50": 1,
+   "max": 20
+  },
+  "row_max_out_degree": {
+   "p50": 1,
+   "max": 9
+  },
+  "pure_chain_length": {
+   "p50": 3,
+   "max": 30,
+   "n": 902
+  }
+ },
+ "Q1_shape_train": {
+  "n": 1334,
+  "topology": {
+   "pure_chain": 764,
+   "merge_only": 115,
+   "branch_and_merge": 328,
+   "branch_only": 127
+  },
+  "nodes": {
+   "p50": 4,
+   "max": 30,
+   "mean": 6.08
+  },
+  "row_max_in_degree": {
+   "p50": 1,
+   "max": 20
+  },
+  "row_max_out_degree": {
+   "p50": 1,
+   "max": 9
+  },
+  "pure_chain_length": {
+   "p50": 3,
+   "max": 30,
+   "n": 764
+  }
+ },
+ "Q1_shape_dev": {
+  "n": 120,
+  "topology": {
+   "pure_chain": 78,
+   "branch_and_merge": 26,
+   "merge_only": 9,
+   "branch_only": 7
+  },
+  "nodes": {
+   "p50": 4,
+   "max": 28,
+   "mean": 5.59
+  },
+  "row_max_in_degree": {
+   "p50": 1,
+   "max": 5
+  },
+  "row_max_out_degree": {
+   "p50": 1,
+   "max": 6
+  },
+  "pure_chain_length": {
+   "p50": 2,
+   "max": 14,
+   "n": 78
+  }
+ },
+ "Q1_shape_test": {
+  "n": 111,
+  "topology": {
+   "pure_chain": 60,
+   "branch_only": 17,
+   "branch_and_merge": 28,
+   "merge_only": 6
+  },
+  "nodes": {
+   "p50": 5,
+   "max": 28,
+   "mean": 7.56
+  },
+  "row_max_in_degree": {
+   "p50": 1,
+   "max": 6
+  },
+  "row_max_out_degree": {
+   "p50": 1,
+   "max": 6
+  },
+  "pure_chain_length": {
+   "p50": 3,
+   "max": 18,
+   "n": 60
+  }
+ },
+ "Q2_train": {
+  "link_kinds": {
+   "linear": 153,
+   "direct": 6634,
+   "patched": 724,
+   "projected": 1021
+  },
+  "cycles": 124,
+  "dangling": 0,
+  "isolated": 89
+ },
+ "Q2_dev": {
+  "link_kinds": {
+   "direct": 509,
+   "patched": 57,
+   "projected": 34,
+   "linear": 12
+  },
+  "cycles": 8,
+  "dangling": 0,
+  "isolated": 9
+ },
+ "Q2_test": {
+  "link_kinds": {
+   "direct": 662,
+   "patched": 94,
+   "linear": 17,
+   "projected": 42
+  },
+  "cycles": 12,
+  "dangling": 0,
+  "isolated": 8
+ },
+ "Q3_operator_ood": {
+  "train_unique": 295,
+  "dev_unique": 133,
+  "dev_ood_operators": 8,
+  "dev_ood_occurrences": 10,
+  "dev_ood_top": [
+   [
+    "saga:rastercalculator",
+    2
+   ],
+   [
+    "native:setprojectvariable",
+    2
+   ],
+   [
+    "native:hublines",
+    1
+   ],
+   [
+    "saga:convertpolygonstolines",
+    1
+   ],
+   [
+    "saga:triangulation",
+    1
+   ],
+   [
+    "saga:simplefilter",
+    1
+   ],
+   [
+    "saga:intersect",
+    1
+   ],
+   [
+    "qgis:randomselectionwithinsubsets",
+    1
+   ]
+  ],
+  "test_unique": 148,
+  "test_ood_operators": 7,
+  "test_ood_occurrences": 16,
+  "test_ood_top": [
+   [
+    "qgis:setstyleforvectorlayer",
+    9
+   ],
+   [
+    "grass7:r.drain",
+    2
+   ],
+   [
+    "gdal:rearrange_bands",
+    1
+   ],
+   [
+    "grass7:r.walk.coords",
+    1
+   ],
+   [
+    "gdal:pansharp",
+    1
+   ],
+   [
+    "grass7:v.split",
+    1
+   ],
+   [
+    "saga:intersect",
+    1
+   ]
+  ]
+ },
+ "Q3_longtail": {
+  "unique": 309,
+  "total": 9615,
+  "singletons": 49,
+  "le_3_occurrences": 113,
+  "top10_share": 0.38
+ },
+ "Q3_taskType_structure": {
+  "Topography": {
+   "n": 212,
+   "nodes_mean": 5.65,
+   "branch_merge_rate": 0.443
+  },
+  "Infrastructure": {
+   "n": 202,
+   "nodes_mean": 6.03,
+   "branch_merge_rate": 0.386
+  },
+  "Land use/land cover": {
+   "n": 159,
+   "nodes_mean": 5.52,
+   "branch_merge_rate": 0.371
+  },
+  "Surface water": {
+   "n": 125,
+   "nodes_mean": 6.56,
+   "branch_merge_rate": 0.52
+  },
+  "Boundaries": {
+   "n": 123,
+   "nodes_mean": 6.41,
+   "branch_merge_rate": 0.358
+  },
+  "Human settlements": {
+   "n": 122,
+   "nodes_mean": 7.3,
+   "branch_merge_rate": 0.492
+  },
+  "Geomorphic landforms/processes": {
+   "n": 74,
+   "nodes_mean": 7.54,
+   "branch_merge_rate": 0.568
+  },
+  "Natural hazards": {
+   "n": 65,
+   "nodes_mean": 5.83,
+   "branch_merge_rate": 0.431
+  },
+  "Terrestrial hydrosphere indicators": {
+   "n": 50,
+   "nodes_mean": 5.38,
+   "branch_merge_rate": 0.36
+  },
+  "Forest science": {
+   "n": 43,
+   "nodes_mean": 5.74,
+   "branch_merge_rate": 0.512
+  },
+  "Environmental governance/management": {
+   "n": 37,
+   "nodes_mean": 5.59,
+   "branch_merge_rate": 0.189
+  },
+  "Habitat conversion/fragmentation": {
+   "n": 29,
+   "nodes_mean": 6.34,
+   "branch_merge_rate": 0.517
+  },
+  "Vegetation": {
+   "n": 25,
+   "nodes_mean": 5.28,
+   "branch_merge_rate": 0.32
+  },
+  "Environmental impacts": {
+   "n": 23,
+   "nodes_mean": 6.09,
+   "branch_merge_rate": 0.522
+  },
+  "Population": {
+   "n": 22,
+   "nodes_mean": 6,
+   "branch_merge_rate": 0.273
+  },
+  "Geodetics": {
+   "n": 22,
+   "nodes_mean": 4.05,
+   "branch_merge_rate": 0.227
+  },
+  "Soils": {
+   "n": 17,
+   "nodes_mean": 4.94,
+   "branch_merge_rate": 0.412
+  },
+  "Land surface/agriculture indicators": {
+   "n": 17,
+   "nodes_mean": 3.18,
+   "branch_merge_rate": 0.235
+  },
+  "Erosion/sedimentation": {
+   "n": 14,
+   "nodes_mean": 7.71,
+   "branch_merge_rate": 0.5
+  },
+  "?": {
+   "n": 13,
+   "nodes_mean": 10.23,
+   "branch_merge_rate": 0.538
+  },
+  "Agricultural plant science": {
+   "n": 12,
+   "nodes_mean": 7.5,
+   "branch_merge_rate": 0.583
+  },
+  "Surface thermal properties": {
+   "n": 11,
+   "nodes_mean": 7.18,
+   "branch_merge_rate": 0.727
+  },
+  "Ecosystems": {
+   "n": 11,
+   "nodes_mean": 11.82,
+   "branch_merge_rate": 0.727
+  },
+  "Surface radiative properties": {
+   "n": 10,
+   "nodes_mean": 4.4,
+   "branch_merge_rate": 0.6
+  },
+  "Precipitation": {
+   "n": 10,
+   "nodes_mean": 6.3,
+   "branch_merge_rate": 0.5
+  },
+  "Glaciers/ice sheets": {
+   "n": 7,
+   "nodes_mean": 5.71,
+   "branch_merge_rate": 0
+  },
+  "Air quality": {
+   "n": 7,
+   "nodes_mean": 5.57,
+   "branch_merge_rate": 0.714
+  },
+  "Platform characteristics": {
+   "n": 6,
+   "nodes_mean": 5.67,
+   "branch_merge_rate": 0.167
+  },
+  "Atmospheric temperature": {
+   "n": 5,
+   "nodes_mean": 5.8,
+   "branch_merge_rate": 0.4
+  },
+  "Water quality": {
+   "n": 5,
+   "nodes_mean": 10.6,
+   "branch_merge_rate": 0.6
+  },
+  "Sustainability": {
+   "n": 5,
+   "nodes_mean": 15.8,
+   "branch_merge_rate": 0.6
+  },
+  "Atmospheric winds": {
+   "n": 4,
+   "nodes_mean": 2.75,
+   "branch_merge_rate": 0
+  },
+  "None": {
+   "n": 2,
+   "nodes_mean": 4.5,
+   "branch_merge_rate": 0.5
+  },
+  "Biological classification": {
+   "n": 2,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Salinity/density": {
+   "n": 2,
+   "nodes_mean": 4,
+   "branch_merge_rate": 0.5
+  },
+  "Human dimensions": {
+   "n": 2,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0.5
+  },
+  "Grid generation": {
+   "n": 2,
+   "nodes_mean": 4,
+   "branch_merge_rate": 0.5
+  },
+  "Join attributes by location": {
+   "n": 2,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0.5
+  },
+  "Raster pixels to points": {
+   "n": 2,
+   "nodes_mean": 5,
+   "branch_merge_rate": 0
+  },
+  "Zonal statistics": {
+   "n": 2,
+   "nodes_mean": 2.5,
+   "branch_merge_rate": 0
+  },
+  "Geospatial data conversion": {
+   "n": 2,
+   "nodes_mean": 3.5,
+   "branch_merge_rate": 0.5
+  },
+  "Ground water": {
+   "n": 2,
+   "nodes_mean": 6.5,
+   "branch_merge_rate": 0.5
+  },
+  "Spatial aggregation": {
+   "n": 2,
+   "nodes_mean": 6.5,
+   "branch_merge_rate": 0.5
+  },
+  "Spectral/Engineering": {
+   "n": 2,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Agricultural aquatic sciences": {
+   "n": 2,
+   "nodes_mean": 4,
+   "branch_merge_rate": 0
+  },
+  "Plants": {
+   "n": 2,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0
+  },
+  "Clouds": {
+   "n": 2,
+   "nodes_mean": 9.5,
+   "branch_merge_rate": 0.5
+  },
+  "Coordinate transformation": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Geometric data processing": {
+   "n": 1,
+   "nodes_mean": 4,
+   "branch_merge_rate": 1
+  },
+  "Flow mapping": {
+   "n": 1,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0
+  },
+  "Data preparation": {
+   "n": 1,
+   "nodes_mean": 4,
+   "branch_merge_rate": 1
+  },
+  "Sampling": {
+   "n": 1,
+   "nodes_mean": 6,
+   "branch_merge_rate": 1
+  },
+  "Animal movement tracking": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Raster/vector comparison": {
+   "n": 1,
+   "nodes_mean": 20,
+   "branch_merge_rate": 1
+  },
+  "Geospatial data packaging and delivery": {
+   "n": 1,
+   "nodes_mean": 5,
+   "branch_merge_rate": 1
+  },
+  "Terrestrial hydrosphere": {
+   "n": 1,
+   "nodes_mean": 30,
+   "branch_merge_rate": 1
+  },
+  "Geometric network analysis": {
+   "n": 1,
+   "nodes_mean": 10,
+   "branch_merge_rate": 1
+  },
+  "Topographic analysis": {
+   "n": 1,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0
+  },
+  "Altitude": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Urban morphology": {
+   "n": 1,
+   "nodes_mean": 13,
+   "branch_merge_rate": 1
+  },
+  "Raster statistics": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Geospatial data packaging and reprojection": {
+   "n": 1,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0
+  },
+  "Raster cropping": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Statistical analysis": {
+   "n": 1,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0
+  },
+  "Vector analysis": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Count points in polygon": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Geometric data cleaning": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Geometric processing": {
+   "n": 1,
+   "nodes_mean": 7,
+   "branch_merge_rate": 1
+  },
+  "Climate indicators": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Save vector layers to GeoPackage": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Raster sampling": {
+   "n": 1,
+   "nodes_mean": 4,
+   "branch_merge_rate": 1
+  },
+  "Fire detection": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Spatial join": {
+   "n": 1,
+   "nodes_mean": 5,
+   "branch_merge_rate": 1
+  },
+  "Vector data integration": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Geographic information processing": {
+   "n": 1,
+   "nodes_mean": 4,
+   "branch_merge_rate": 0
+  },
+  "Raster processing": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Export": {
+   "n": 1,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0
+  },
+  "Raster preprocessing": {
+   "n": 1,
+   "nodes_mean": 3,
+   "branch_merge_rate": 1
+  },
+  "Image articulation": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Atmospheric/ocean indicators": {
+   "n": 1,
+   "nodes_mean": 7,
+   "branch_merge_rate": 0
+  },
+  "Biospheric indicators": {
+   "n": 1,
+   "nodes_mean": 6,
+   "branch_merge_rate": 0
+  },
+  "Sea surface topography": {
+   "n": 1,
+   "nodes_mean": 7,
+   "branch_merge_rate": 1
+  },
+  "Carbon flux": {
+   "n": 1,
+   "nodes_mean": 17,
+   "branch_merge_rate": 1
+  },
+  "Land surface": {
+   "n": 1,
+   "nodes_mean": 4,
+   "branch_merge_rate": 0
+  },
+  "Surface mass": {
+   "n": 1,
+   "nodes_mean": 3,
+   "branch_merge_rate": 0
+  },
+  "Package Layers to KMZ": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Oceans": {
+   "n": 1,
+   "nodes_mean": 7,
+   "branch_merge_rate": 0
+  },
+  "Spatial analysis": {
+   "n": 1,
+   "nodes_mean": 26,
+   "branch_merge_rate": 1
+  },
+  "Land Use/Land Cover": {
+   "n": 1,
+   "nodes_mean": 13,
+   "branch_merge_rate": 1
+  },
+  "Synthetic spatial data generation": {
+   "n": 1,
+   "nodes_mean": 5,
+   "branch_merge_rate": 0
+  },
+  "Rasterize vector layers over raster": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Distance measurement": {
+   "n": 1,
+   "nodes_mean": 19,
+   "branch_merge_rate": 1
+  },
+  "Atmospheric radiation": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  },
+  "Persistent homology analysis": {
+   "n": 1,
+   "nodes_mean": 8,
+   "branch_merge_rate": 1
+  },
+  "Path creation": {
+   "n": 1,
+   "nodes_mean": 2,
+   "branch_merge_rate": 0
+  }
+ },
+ "Q4_variable_io": {
+  "pattern_hits": {},
+  "verdict": "absent"
+ }
+}
