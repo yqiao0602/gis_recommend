@@ -1462,3 +1462,13 @@
 - 报告：`planner_design/ROUTE2_EXPERIMENT_MASTER_TABLE_v1.md`。五个时代（QGIS 资产构建 / GEE 语料构建 / M1-M3 / Phase 2 v1 三臂与诊断链 / Route-2 v2）的全部可查实验：类型/数据/配置/核心结果/两层架构归属/溯源路径。
 - 对账矩阵重述 + "？"汇总（6 项 C 类缺口）+ 关键数字速查表。
 - 数字可靠性分级：v2 时代全部为本会话直接核查；v1 时代与构建时代来自冻结报告文档（campaign 级活动的细节指标未逐一展开，溯源路径已给）。
+- 10-05 17:0x 例行检查：Planner-v2 formal SFT 正常（存活 ~12.5h，GPU 20.3GB），进度 ~75%；ETA ~01:40（10-06）。
+- 10-05 17:07 重查确认：服务器 GPU 空闲（11 MiB），无运行中进程；**Planner-v2 formal round 1 全链（训练→fast dev→全量 dev）已于今日完成**，结果已报（E1 0.6636/E2 0.9670/S1 0.8089/E4 1.28==1.28，见 R3_PLANNER_V2_FORMAL_DEV_RESULTS_v1.md）；旧监控模板（stage1_run_v1/PID 103666）已过时，当前等待 owner 对 round 2 的裁定。无异常。
+
+## 2026-10-05：C 类二次裁决完成（CPU-only）——C1-2 分两步（zero-shot assay 先行）；C2 定位为系统能力；C3 维持前置；C4 待 P0-3
+
+- 报告：`planner_design/C_CLASS_SECONDARY_ADJUDICATION_v1.md`。**事实前提更正**：Formal SFT 已于 03:31 完成（dev 全量已评），GPU 空闲——"还在跑"的顾虑不存在。
+- **Q1（C1-2）**：完整因果论证需 A1' 训练实验（defer），**但第一步 = 零训练的 zero-shot transfer assay**（Planner-v2 adapter × QGIS held-out 200-400 行，GPU 30-60 min）——判读树三分支（远超 baseline → 先验提升 / ≈baseline → A1' 成唯一判据 / 低于 → 负迁移警示）。历史数据不可替代（Gate 2 测的是 DAPT 混层；Planner-v2 从未在 QGIS 任务上测过）。
+- **Q2（checkpoint 复用）**：**可行且即最小成本路径**——Planner-v2 adapter 与 C0 基线均在位，assay 只需生成、零新训练；A1' 训练实验的形态（grounding head）在 assay 正面结果后再设计。
+- **Q3（C2 DAG）**：定位 = **系统能力验证 + 论文第二阶段**，非核心 transfer 实验——核心 transfer 在语义 stage 层面即可测；DAG 序列化表示未定（先定表示再训练，避免重蹈覆辙）；与 QGIS 端口 schema 表（P0-3）衔接。
+- **行动队列**：1 = zero-shot assay（待放行，GPU 30-60 min）→ 2 = A1' 设计裁定 → 3 = A1' 训练（若放行）；C2 → system track；P0-3 可并行。
