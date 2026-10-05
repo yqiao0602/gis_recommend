@@ -1425,3 +1425,12 @@
 - **方法论反转（owner）**：不再"先设计中间表示再证明有用"，而是**先验证 GEE 知识能否帮助 QGIS 最终任务，再决定训练方式**。
 - **正式任务**：ROUTE2_CROSS_PLATFORM_TRANSFER_AUDIT——GEE 128k ↔ QGIS 1,565 的平台无关结构特征对比，8 问（任务类型语义重合/操作 pattern 重合/长度复杂度/顺序结构/branch-merge 新增量/可迁移/仅辅助/不可迁移），产出 transferable/partially/platform-specific 分类 → **之后才裁定 A1/C0 训练**。
 - **Formal SFT（10.7h）正常完成不受影响**；dev 评测按既定序列随后。
+
+## 2026-10-05：ROUTE2_CROSS_PLATFORM_TRANSFER_AUDIT 完成（8 问，CPU-only）——可迁移性三分类确立
+
+- 报告：`planner_design/ROUTE2_CROSS_PLATFORM_TRANSFER_AUDIT_v1.md`（数据 json 同目录）。
+- **Transferable**：主题覆盖（共享主题内 QGIS 59%/GEE 72%）、17-family 操作词汇（QGIS 69.7% 实例可映射、双向 0 独有）、首尾模式同构（数据准备开局/产物落盘收尾）、通用 pattern（load→filter→derive→aggregate→export）。
+- **Partially transferable**：长度规范（QGIS 各分位短 2-3 倍——p50 4 vs 11、p90 13 vs 46）；矢量属性管理思想的通用语义。
+- **Platform-specific**：**DAG branch/merge（QGIS 42.7% vs GEE 0%——线性链不可表达，100% 新结构）**；矢量数据库操作（joinattributestable/rasterize/postgis——30.3% 未映射实例的主体）；QGIS 算子 ID 粒度。
+- **A1/C0 训练含义**：A1 有数据支撑（覆盖上限 ≈69.7%）；QGIS gold 独有 DAG 结构监督（42.7%）是 A1 无法提供的；**建议两阶段互补而非互斥**，比例与 curriculum 归 owner。
+- locked test 未动；Formal SFT 正常运行中（~step 200+）。
