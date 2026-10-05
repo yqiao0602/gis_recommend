@@ -1504,3 +1504,12 @@
 - **判读树**：A1' > C0 → 两层架构核心假设成立（Planner-v3 = GEE reasoning + QGIS grounding 正式路线）；≈ → 稀缺问题另行解决；< → Gate 2 式负迁移复现警示。
 - **待 owner 批准**：① assay 执行 ② A1' 臂实现方式（Planner-v2 adapter 预合并 vs trainer 加载逻辑修改）③ v2a_A_test-111 保持 locked。
 - GPU 空闲；冻结物未动；Planner-v2 formal adapter 在位。
+
+## 2026-10-05：owner 放行 A1'（含 4 项修正）——merge_and_unload 起点 + 严格单变量 + paired evaluation + assay 定位
+
+- **修正 1（批准）**：A1' 起点 = Planner-v2 adapter **merge_and_unload 进 Base** 后作为普通 Base checkpoint——双臂同一 trainer 代码路径，零特殊处理；**merge 一致性 sanity check**（同输入 logits/greedy 基本一致、tokenizer/special tokens/generation config 完全一致、保存新 immutable checkpoint、不覆盖 Planner-v2 原 adapter）。
+- **修正 2（核心纪律）**：双臂唯一变量 = 初始化（C0 = fresh Base / A1' = Base+GEE Planner-v2 merged）；数据顺序/epoch/batch/LR/scheduler/max_len/**seed**/trainer code/dev-120/locked test 全部相同。
+- **修正 3（评测）**：dev-120 **paired comparison**——Δ bag-F1/Δ LCS-F1/Δ exact graph/Δ graph edit distance/Δ operator coverage/Δ length ratio + per-example 差值 bootstrap CI + **多数任务改善检查**（非少数任务拉均值）。
+- **修正 4（定位）**：正向结果命名 **A1' reasoning-prior transfer assay**，暂不命名 Planner-v3；五形态判读表登记（selection↑graph↑ / selection↑graph≈ / selection≈graph↑ / 全≈ / A1'<C0）。
+- **基线口径**：历史 C0 test-111 0.343 = 参考线（不同条件），**不进主因果比较**；核心比较 = 同 QGIS train 双臂 → 同 dev-120 → paired Δ(A1'−C0)。
+- **科学问题**：在完全相同的 QGIS grounding supervision 下，仅改变初始化（先获得 GEE 学到的 General GIS Workflow Reasoning），能否改善 QGIS operator grounding？
