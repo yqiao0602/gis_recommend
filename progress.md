@@ -1434,3 +1434,13 @@
 - **Platform-specific**：**DAG branch/merge（QGIS 42.7% vs GEE 0%——线性链不可表达，100% 新结构）**；矢量数据库操作（joinattributestable/rasterize/postgis——30.3% 未映射实例的主体）；QGIS 算子 ID 粒度。
 - **A1/C0 训练含义**：A1 有数据支撑（覆盖上限 ≈69.7%）；QGIS gold 独有 DAG 结构监督（42.7%）是 A1 无法提供的；**建议两阶段互补而非互斥**，比例与 curriculum 归 owner。
 - locked test 未动；Formal SFT 正常运行中（~step 200+）。
+
+## 2026-10-05：owner 确立三知识空间框架——309（gold coverage）与 ≈1,200（QGIS Registry capability space）严格区分
+
+- **三知识空间**：① GEE 128,447 → GIS Workflow Reasoning（"怎么解决 GIS 问题"）；② QGIS Gold 1,565 / 309 operators → workflow-to-QGIS implementation examples（"这些解决方案怎么组织成 QGIS Workflow"——**只是 QGIS 知识的一部分，非全部**）；③ **QGIS Operator Registry ≈1,200** → 平台能力空间（"QGIS 有什么能力可以实现"）。
+- **关键区分**：309 = workflow supervision coverage（≈25.8% registry coverage），**不是 QGIS 算子空间规模**——混淆会低估 Grounding 空间。
+- **三级 operator 分类确立**：L1 Seen（gold 中出现）/ L2 Registry-known but gold-unseen / L3 true OOD。
+- **L3（跨平台中间算子层）继续不建立**：Planner workflow node 保持任务解决方案级语义；Grounding 从 1,200 registry 选择实现——不存在必须由 GEE 学习的固定中间算子体系。
+- **新增评估维度（P0-3 Registry 审计）**：registry 算子数核实（≈1,200 待验证）/ gold coverage 25.8% / provider 分布 / 未覆盖能力类型 / operator schema 完整度 / semantic redundancy（多算子同功能）。
+- **执行序列更新**：P0-1（GEE reasoning 证据 ✓）→ P0-2（QGIS Gold 结构研究 ✓ 大部分）→ **P0-3 Registry 审计（新）** → P0-4 三者连接验证。
+- 待 P0-3 数据源：QGIS 文档/安装实例的处理算法注册表（native ~300 + qgis ~100 + GDAL ~60 + GRASS ~80 + SAGA ~400+ 需核实）。
