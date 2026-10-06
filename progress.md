@@ -1558,3 +1558,11 @@
 - **新发现**：stage1_run_a1_qgis 与 stage1_run_c0_qgis 双臂 artifact 在服务器上存在（本线未执行该实验——疑为桌面线并行产物，来源待考，已拉回）。
 - 连接过程：sshd 限流致多次瞬断，分组 tar-over-ssh + 逐目录重试全部成功；regen 任务按 owner 指令停止（11% 进度，部分输出不可恢复，已登记）。
 - Manifest：`RENTED_SERVER_PULL_20261005/PULL_MANIFEST_20261005.md`（含待考项与 SHA 补验说明）。
+
+## 2026-10-06：STEP 1-2 完成——Planner-v1/v2 统一评估（双读数）；STEP 3 结论"有代价的结构增强"
+
+- 统一评估完成（共同评测集 = v2 dev 1,852 行，行级对齐验证通过；统一格式 = 有序展开 family 序列；7 指标同公式）。
+- **双读数主表**：parse-exclusive（结构质量）：v2 全面优于 v1（bag +3.6pp、precision +8.5pp、LCS +3.6pp、over-emission 更少）；parse-inclusive（端到端可靠性）：v2 的 19.1% parse 失败反转优势（bag −9.4pp）——**v2 = 有代价的结构增强：JSON 格式稳定性（0.809 vs ≈1.0）是最大短板**。
+- **STEP 3 结论**："v2 = v1 结构增强版"在格式稳定性达标条件下成立；两选项（v2+格式专项 epoch / 接受现状双读数并陈）**归 owner**。
+- 报告：`planner_design/PLANNER_UNIFIED_EVAL_REPORT_v1.md`（数据 json 同目录）。
+- Formal SFT 全链完成、locked test 未动、零冻结物变更。GPU 空闲。

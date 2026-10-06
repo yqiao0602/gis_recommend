@@ -12,11 +12,11 @@ Unified internal format: SemanticWorkflow = ordered expanded family sequence.
   bag-F1 / family P/R / count accuracy / length error / over-emit / under-emit / ordered LCS-F1
 Common rows: v2 dev (1,852) subset of v1 eval (verified 1,852/1,852 task match).
 """
-import json, re
-from collections import Counter, defaultdict
+import json, re, statistics as st
+from collections import Counter, defaultdict, defaultdict
 
 P0_METRICS = r"E:/Route2_Migration_20260928/01_REPO/system_redesign/docs/reports/route2_p0_contract/plan_pipeline_v1/planner_design/planner_p0_eval_metrics.json"
-V2_METRICS = r"E:/Route2_Migration_20260928/01_REPO/system_redesign/docs/reports/route2_p0_contract/plan_pipeline_v1/planner_design/planner_v2_dev_metrics_full.json"
+V2_FULLPREDS = r"E:/Route2_Migration_20260928/RENTED_SERVER_PULL_20261005/root/data/planner_v2_dev_full_preds.json"
 V1EVAL = r"E:/Route2_Migration_20260928/04_DIAG_WORK/planner_p0_eval.jsonl"
 V2DEV = r"E:/Route2_Migration_20260928/04_DIAG_WORK/planner_v2_dev.jsonl"
 OUT = r"E:/Route2_Migration_20260928/01_REPO/system_redesign/docs/reports/route2_p0_contract/plan_pipeline_v1/planner_design/PLANNER_UNIFIED_EVAL_v1.json"
@@ -97,7 +97,12 @@ def parse_pred_json(text):
 v1 = [json.loads(l) for l in open(V1EVAL, encoding="utf-8")]
 v2 = [json.loads(l) for l in open(V2DEV, encoding="utf-8")]
 p0_items = json.load(open(P0_METRICS, encoding="utf-8"))["items"]
-v2_items = json.load(open(V2_METRICS, encoding="utf-8"))["items"]
+v2_items = json.load(open(V2_FULLPREDS, encoding="utf-8"))["items"]
+def parse_pred_stages(text):
+    m = re.search(r"\{.*\}", text or "", re.S)
+    if not m: return None
+    try: return json.loads(m.group(0)).get("stages")
+    except Exception: return None
 
 # v2 dev = first 1,852 rows of v1 eval (verified same shuffle; verify by task order)
 assert len(v2) == 1852
@@ -113,8 +118,9 @@ for i in range(len(v2)):
     assert r1["task"] == r2["task"]
     # v1 planner prediction: P0 metrics items store parsed pred_seq directly (P1-B)
     seq1 = p0_items[i].get("pred_seq") if i < len(p0_items) else None
-    # v2 planner prediction: from the REGENERATED dev predictions file (pred_seq saved)
-    seq2 = v2_items[i].get("pred_seq") if i < len(v2_items) else None
+    # v2 planner prediction: regenerate file pred_text -> parse stages -> ordered expanded seq
+    st2 = parse_pred_stages(v2_items[i].get("pred_text")) if i < len(v2_items) else None
+    seq2 = expand_v2(st2) if st2 else None
     # golds
     g1 = expand_v1(*parse_v1_target(r1["target"]))
     g2 = expand_v2(parse_v2_target(r2["target"]))
@@ -138,12 +144,17 @@ def agg_mean(agg, key):
     return round(st.mean(xs), 4) if xs else None
 
 summary = {}
+total_rows = len(v2)
 for who in ("v1", "v2"):
     summary[who] = {k: agg_mean(agg[who], k) for k in
         ("bag_f1","family_precision","family_recall","family_f1","count_accuracy",
          "over_emission","under_emission","ordered_lcs_f1")}
-    summary[who]["n_evaluable"] = len(agg[who]["bag_f1"])
+    n_ev = len(agg[who]["bag_f1"])
+    summary[who]["n_evaluable"] = n_ev
     summary[who]["length_error_mean"] = round(st.mean(agg[who]["length_error"]), 2) if agg[who]["length_error"] else None
+    # parse-inclusive reading: unparseable rows score 0 on all sequence metrics
+    summary[who]["bag_f1_parse_inclusive"] = round(st.mean(agg[who]["bag_f1"]) * n_ev / total_rows, 4)
+    summary[who]["ordered_lcs_f1_parse_inclusive"] = round(st.mean(agg[who]["ordered_lcs_f1"]) * n_ev / total_rows, 4) if agg[who]["ordered_lcs_f1"] else 0.0
 
 out = {"alignment": {"order_match_first1852": order_match},
        "summary": summary, "rows": rows_out}
