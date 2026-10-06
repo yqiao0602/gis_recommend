@@ -1550,3 +1550,11 @@
 - **Planner-v2 dev 预测重生成运行中**（regen_v2_dev_preds_v1.py，PID 在租卡机 setsid 会话）：1,852 行 × 384-token 生成 ≈ 36s/行 → **ETA ~18.5h（10-06 全天，预计明日出）**。完成后 CPU 侧完成统一 7 指标对照表（STEP 2 交付）。
 - 连接注意事项：服务器 sshd 对高频轮询限流（多次 Connection closed）——监控已降频；再生进程 setsid 独立会话不受影响。
 - 零冻结物变更；locked test 不动。
+
+## 2026-10-05：租卡机全量拉回完成（~1.27GB）——RENTED_SERVER_PULL_20261005
+
+- 背景：租卡机租约今日到期（owner 指令：全量拉回保存至 E:\Route2_Migration_20260928\RENTED_SERVER_PULL_20261005，后续 owner 同步）。
+- **全部 12 个实验/checkpoint 目录尺寸与服务器逐一核对一致**（route2_C0 301M 含 qgis_sft_ep1-ep11 全部 ckpts；stage1_run_v1 159M 冻结主线 artifact；Planner-v2 formal/P0/A1'-QGIS/C0-QGIS/tierA/各 smoke 各 80M）；metrics jsons、日志、脚本、P1-C 工作目录（28K）。
+- **新发现**：stage1_run_a1_qgis 与 stage1_run_c0_qgis 双臂 artifact 在服务器上存在（本线未执行该实验——疑为桌面线并行产物，来源待考，已拉回）。
+- 连接过程：sshd 限流致多次瞬断，分组 tar-over-ssh + 逐目录重试全部成功；regen 任务按 owner 指令停止（11% 进度，部分输出不可恢复，已登记）。
+- Manifest：`RENTED_SERVER_PULL_20261005/PULL_MANIFEST_20261005.md`（含待考项与 SHA 补验说明）。
