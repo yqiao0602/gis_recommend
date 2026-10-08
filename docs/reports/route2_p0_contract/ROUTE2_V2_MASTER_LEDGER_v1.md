@@ -221,3 +221,24 @@ Stage-1 1 epoch → gate-dev
    硬过滤天花板层（1.0/.989/.892）与合同层 UG（.774/.731/.419/.419）。
    引用时必须注明口径，否则会高估 Plan 的独立 grounding 能力。
 3. 其余数字（46,265 / 59,835 / 56,710 / W4 子类型 / v1.3.1 修复史）逐项核对无误。
+
+---
+
+## 2026-09-30 owner 实验总纲修订：Performance First → Explanation 两阶段
+
+**第一阶段 Performance First（当前）**：只推 Qwen3.5-9B 在任务上的最终指标——
+SFT → 数据配方 → 训练策略 → 推理策略 → 必要时 DAPT/RL → Best Model。
+GEE/DAPT/RL"为什么有效"的归因问题**全部推迟**。
+
+**第二阶段 Explanation（触发条件 = 拿到显著强于当前 baseline 的 Best Model）**：
+届时跑 w/o GEE / w/o QGIS / w/o DAPT / w/o structural / w/o RL 消融——
+"消融只在有 Best Model 之后才有意义"。
+
+**对既有结构的修订**：本账本 §0 的"三扇门"框架中，门三（Causal Comparison 对照臂）
+降级为第二阶段内容；双臂 artifact（C0-QGIS/A1'-QGIS）保留并核验完毕，其 paired eval
+降级为**选型依据**（为 Best Model 的 grounding 阶段选最优 init）而非归因证明——
+因仅 ~2–4h GPU 且可与空闲档并行，保留在队列中但优先级最低。
+
+当前 Phase-1 主线（不变）：**P0 Planner-v2 格式修复续训**（mdzhang A10 运行中）
+→ checkpoint 曲线评估（parse .809→.95+ 过程中守住结构）→ 双臂 eval（选型）
+→ Planner-v2 + QGIS grounding 三方对比 → Best Model → 进入第二阶段消融。
