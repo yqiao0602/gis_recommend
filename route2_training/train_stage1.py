@@ -274,8 +274,9 @@ def main() -> int:
             accum_tokens += sum(batch["target_tokens"])
             stats["examples"] += len(chunk)
             stats["tokens"] += sum(batch["target_tokens"])
-            stats["target_truncated"] += sum(batch["target_truncated_tokens"] > 0)
-            stats["context_truncated"] += sum(batch["context_truncated_tokens"] > 0)
+            stats["target_truncated"] += sum(1 for t in batch["target_truncated_tokens"] if t > 0)
+            # context_truncated_tokens is computed in encode_example but not
+            # returned by the frozen collator's __call__; preflight reports it.
             rows_done += len(chunk)
             if (k // micro_bs) % accum == accum - 1:
                 torch.nn.utils.clip_grad_norm_(
