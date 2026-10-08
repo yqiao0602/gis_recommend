@@ -242,3 +242,30 @@ GEE/DAPT/RL"为什么有效"的归因问题**全部推迟**。
 当前 Phase-1 主线（不变）：**P0 Planner-v2 格式修复续训**（mdzhang A10 运行中）
 → checkpoint 曲线评估（parse .809→.95+ 过程中守住结构）→ 双臂 eval（选型）
 → Planner-v2 + QGIS grounding 三方对比 → Best Model → 进入第二阶段消融。
+
+## 2026-09-30 Current Best Model Audit 立项（Performance-First 第一步：盘家底）
+
+**候选人清单**（全部现存、可加载）：
+
+| # | 候选 | 任务 | 训练 | 当前最好读数 | 产物位置 |
+|---|---|---|---|---|---|
+| 1 | **route2_C0**（旧三臂 C0，20ep QGIS SFT） | Task→QGIS graph | v1 era, A10 | **dev opF1 0.5611 / test 0.5059**（至今最高 QGIS 图分） | mdzhang 备份 + RENTED_PULL route2_C0/（ep1-11 ckpts） |
+| 2 | A1'-QGIS twin arm | Task→QGIS graph | 41 步 from Planner-v2-merged | **未评测** | RENTED_PULL stage1_run_a1_qgis |
+| 3 | C0-QGIS twin arm | Task→QGIS graph | 41 步 from 裸 Base | **未评测**（历史参考 0.343 为更早配方） | RENTED_PULL stage1_run_c0_qgis |
+| 4 | Planner-v1/P0 | Task→Blueprint JSON | 1,041 步 | unified: bag-excl .645–.646，parse ≈1.0 | RENTED_PULL stage1_run_planner_p0 |
+| 5 | Planner-v2 | Task→Blueprint v2 JSON | 1,041 步 | parse .8089 / bag-excl .6820 / precision .8324 / 端到端 .5517 | RENTED_PULL stage1_run_planner_v2 + full preds |
+| 6 | **Planner-v2-fmt（P0 续训）** | 同 5 | +1 epoch 续训中 | 今晚出 | mdzhang stage1_run_planner_v2_fmt |
+| 7 | Tier-A ablation | 消融件 | — | — | RENTED_PULL stage1_run_tierA |
+
+**当前冠军（按任务分）**：
+- QGIS 图任务：**route2_C0**（opF1 0.5611）——从未被挑战（twin arms 未评测）
+- Planner 任务：端到端口径 v1（.646）/ 结构口径 v2（.682 excl）——P0 续训今晚可能改写
+
+**审计缺口**：① twin arms 未评测；② P0 未完成；③ **主评价协议未冻结**——Planner 线与
+QGIS 线数字不可互比，且两任务是同一系统的两段。
+
+**主评价协议提案（待 owner 确认后冻结）**：
+- 主基准 = **dev-120 QGIS processes+links**（opF1/linkF1/graph EM + parse；与旧三臂可直接可比）
+- 端到端对比臂 = route2_C0（历史冠军）vs 最强 Planner+grounding vs C0/A1'-QGIS twin
+- 中间诊断 = Planner unified 6-metric（1,852 dev，不作为主门）
+- 灾难行为四类（empty / invalid JSON / hallucinated operators / runaway）全模型必查
