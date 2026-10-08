@@ -1,0 +1,71 @@
+# Stage-1 ep1 Gate-dev 判定报告（v1，2026-09-30）
+
+> 评测：gate-eval-v1.3.1（冻结），adapter `stage1_ep1`（Stage-1 v2_2 全量 1 epoch，
+> 训练报告见 progress.md 2026-09-30 条目）。dev 探针 3,236，elapsed 25,087s（6.97h），
+> 零 OOM / 零超时 / 零批减半。三 SHA 对账：probe `c3d95f67…` ✓ / config `6355bab4…` ✓ /
+> evaluator v1.3.1 ✓。产物：`gate_report_stage1_ep1_dev.json` + `gate_items_stage1_ep1_dev.jsonl`（本目录）。
+
+## 1. 五注册条件判定（PASS 需全过）——**FAIL（4/4 未过）**
+
+| 条件 | 注册门 | 实测 | 判定 |
+|---|---|---|---|
+| W1 | ≥ 0.20 | **0.0000**（0/1,690） | ❌ FAIL |
+| W2 overall | ≥ 0.85 | **0.3052**（239/783） | ❌ FAIL |
+| W2 No-class | ≥ 0.70 | **0.6185**（107/173，items 事后计算） | ❌ FAIL |
+| W3 as-is | ≥ 0.60 | **0.4829**（macro；micro 0.4534） | ❌ FAIL |
+| W4 | ≥ 0.20 | **0.0346**（10/289） | ❌ FAIL |
+
+W3 rewrite = 0.4772，仅诊断：rewrite gap macro 0.0057 / micro 0.0126——**无表面模板依赖信号**。
+
+## 2. 对照锚点判读（机械对比，不含裁定）
+
+| 能力 | Base zero-shot (dev) | 本模型 | 平凡基线 (dev) | 注册门 |
+|---|---|---|---|---|
+| W1 | 0.000 | 0.000 | ≈0 | 0.20 |
+| W2 | 0.000 | **0.305** | 0.7791（恒 Yes） | 0.85 |
+| W3 as-is | 0.000 | **0.483** | 0.4973（众数序列） | 0.60 |
+| W4 | 0.000 | **0.035** | ≡0 | 0.20 |
+
+- **学习确实发生**（Base 全 0 → W2 0.305 / W3 0.483 / W4 0.035），但**四项全部低于注册门**；
+  且 W2、W3 仍低于各自平凡基线——Gate 的判别力成立（正确地拒绝了本 checkpoint）。
+- **invalid 2,238/3,236（69.2%）**，较 Base 86.4% 下降 17.2pp：格式服从部分习得但仍是主瓶颈。
+
+## 3. W2 分解诊断（items 事后计算）
+
+- Yes 类 132/610 = 0.2164；No 类 107/173 = 0.6185。
+- No 类错题中 66/66 为**空预测**（未输出有效 Yes/No），仅 0 例"把 No 判成 Yes"——
+  **判别方向正确、产出格式不完整**：模型在能产出有效答案时倾向答对，主损失在 parse 失败。
+
+## 4. R3 四分叉归因（仅列出，裁定归 owner）
+
+- A. 模型没学会（1 epoch / 配方容量）→ ⑦ FAIL 同协议续训条款
+- B. 数据噪声 → Tier A-only 消融等
+- C. Plan Contract 缺信息 → ④/⑤ 审计（B7 两个 SCHEMA_GAP 嫌疑）
+- D. GEE→Plan 转换损失 → R1-R5 转换器迭代
+
+高 invalid + W1 全零 + W2 空预测为主的形态初看偏 A（格式服从不足）/C（信息不足导致无法判断），
+但**归因与后续动作（含是否触发 ⑦ 续训）由 owner 裁定**。本线未启动 test 半边、未续训、未改任何冻结物。
+
+---
+
+## 5. owner 复核修正与裁定（2026-09-30，追加，不改动上文原始判定）
+
+1. **本轮 FAIL 保持有效**：它回答的是"按预注册 Stage-1 Gate，模型未达标"，不因任何后续解释而无效。
+2. **W1 判读限制登记（validity concern / contract-format confound）**：W1 Gate 要求的
+   `accepts.../produces...` 接口格式未进入 Stage-1 训练目标，故 W1=0.000 混合了
+   "知识不会 + 接口格式没训练过"，**不能单独解释为 W1 能力缺失**。实测佐证：
+   W1 parse_ok 仅 42/1,690（2.5%），而 Base W1 parse ≈9% → Stage-1 后反降至 2.5%，
+   说明训练确实改变了行为但方向未必有利——该现象保留为证据。**禁止**为此修改 W1 Gate
+   或重算分数宣布原 FAIL 无效。R3-A 续训中按四条观察项跟踪（parse 是否仍≈0 /
+   是否出现结构化输出 / 有效样本数是否增加 / 据此判定接口是否被训练目标建立）。
+3. **W2 表述收紧**：.6185（No 类）能证明的仅仅是"输出并非完全随机/恒答 Yes、拒绝倾向已经出现"，
+   **不足以证明已掌握可靠的依赖合法性判别能力**（overall .3052，正例识别仅 21.6%）。
+   正确诊断 = "判别方向发生变化"，而非"W2 能力已经形成"。论文表述按此收紧。
+4. **R3 顺序裁定**：现在执行 **R3-A 同协议续训 1 epoch**（定位=训练充分性诊断，唯一变化=训练时间），
+   不改数据/Tier/能力定义/evaluator/probe/tokenizer/loss/QLoRA 配置，不加 W1 格式样本、
+   不做 curriculum/RL/B2，QGIS 数据仍不进入 Stage-1。若 ep2 后 W3 仍≈0.5、W1 仍 0、
+   W2 无突破 → 依次进入 R3-B（Tier A-only）→ R3-C（Plan Contract/Schema）→ R3-D（GEE→Plan 转换损失）。
+   **Teacher Plan、B2 production、Stage-2 QGIS grounding、RL 继续冻结。**
+5. **执行记录**：R3-A 于 2026-09-30 由本线在租卡机启动（同 yaml、同 out-dir、resume 从
+   step 1772 自动续跑；ep1 ledger 备份为 `run_ledger_ep1.json`，无删除）。ep2 完成后
+   gate-dev 以新 label `stage1_ep2`、新 out-dir `gate_stage1_ep2_dev` 评测（不覆盖 ep1 产物）。

@@ -1,8 +1,30 @@
 # 当前项目状态
 
-最后更新：2026-09-27
+最后更新：2026-10-04（晚）
 
 ## Route-2 v2 当前交接
+
+**R3 诊断链完整闭环，架构方向确立，Planner-v2 Hint Contract 已 FREEZE（2026-10-04）**。链条：R3-A/B/TRUNC/CD-2 逐层排除并定位 **Task（散文摘要）与 Plan（阶段序列）的表示鸿沟** → R3-CD-3 信息阶梯（组件信号全强：family AUC 0.913/转移 0.904）→ R3-CD-4（确定性组装 0.60 > Direct 0.499；LLM 系统性欠发射）→ **R3-PLANNER-P0 可行性成功**（Task→Blueprint JSON，parse 100%，bag-F1 0.645 vs Direct 0.499）→ P1-B（预算提升仅改善小计数区，深尾冻结）→ 长度分桶画像（**深尾=表示问题：长 workflow = ~4.4 distinct family 重复至 95%**）→ **Blueprint v2（Ordered + Repetition-aware，语义粒度，pre-RLE 游程蓝本，无损 100%）** → v2 preflight（E1-E4 全过；可学习性判别 PASS：语义 stage AUC 0.922 ≈ v1 0.915，repetition-presence 0.940 全场最强）→ **6 批人工 hint 验证完成（396 条，各维度规则校准冻结）** → **PLANNER-V2 HINT CONTRACT FREEZE v1**（`planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`）。
+
+**Contract 数据定稿**：`blueprint_v2_gold_v3.jsonl`（37,044 行，SHA `621090bc…`）；hint 分布（组级）：unspecified 27,259 / generic_each 16,111 / per_year 9,917 / per_band 494 / per_class 28 / per_feature 0（diagnostic_only）。**ABSTAIN 语义**：insufficient evidence → no hint emitted（归一为 unspecified）。**GEE/Planner 层次边界**：execution-level iteration ≠ graph-level stage repetition。
+
+**架构方向**：`Task → Structured Planner → Workflow Serializer → QGIS Grounding`（量级由 Grounding 解析，Planner 只管结构）。**待 owner：Planner-v2 SFT 放行**（smoke S1-S5 设计已备）；原冻结 Stage-1 v2_2 主线与 gate 不动；RL/Stage-2 冻结。
+
+**R3 诊断链完整闭环，架构方向已确立（2026-10-03）**：从"Stage-1 W3 卡 0.50"出发，逐层排除 epoch 不足（R3-A）、Tier B 噪声（R3-B，A-only 反降 8pp）、截断（R3-B-1/TRUNC 审计）、chain_to_plan（ρ=0.857 忠实）、run-cap（RLE 循环折叠，零 family 损失）→ 定位 **Task（散文摘要）与 Plan（阶段序列）的表示鸿沟** → R3-CD-3 信息阶梯证明**组件层信号全强**（family AUC 0.913/转移 0.904/长度 F1 0.614）→ R3-CD-4 证明**确定性组装可解**（0.60 > Direct 0.499）→ **R3-PLANNER-P0 可行性实验成功**：Task→Blueprint JSON 的 QLoRA Planner（1.69M tokens，9h）达成 **parse 100% / family bag-F1 0.645**（vs Direct 0.499，+14.6pp）。
+
+**架构方向（owner 冻结路线）**：`Task → Structured Planner → Workflow Serializer → QGIS Grounding`。序列：**P1 = count/length 专项监督**（缺口：M3 0.5027 / M4±1 0.5231，长度偏保守 5.98 vs 8.4）→ **P2 = 顺序敏感 Blueprint v2** → Stage-1 新正式候选 → Stage-2。措辞口径：P0 = "在当前冻结数据/bag 口径/训练预算下**强支持** Planner 假说"（非"决定性证明"）。**RL 冻结**，未来定位在结构化 Blueprint/QGIS Graph 规划优化层。原冻结 Stage-1 v2_2 主线与 gate 不动。
+
+**关键产物**（全部入 git）：诊断链报告 `r3b0/r3b1/r3btrunc/r3cd_audit/`，Planner 设计与 P0 结果 `planner_design/`，blueprint 数据 `planner_gold_blueprints_v1.jsonl`（37,044 行）与 `planner_p0_train/eval.jsonl`（本地+服务器）。
+
+**R3 诊断链进行中**：ep2 Gate-dev 仍 FAIL 但能力分化（W2 0.802 逼近门+No 类 0.994 过门 / W3 两轮持平 0.499 / W4 退化归零 / W1 confound 持续）→ owner 裁定走 R3-B。R3-B-0 数据诊断完成：Tier B 占训练 37.5% 且分支率 4 倍；**长 Plan 监督被构建期（1,766 行/2.5M tokens）+运行期双重截断**而 W3 探针偏长；Task↔Plan 文本级干净。报告 `r3b0_diagnosis/R3_B0_DIAGNOSIS_REPORT_v1.md`。
+
+**R3-B Tier-A-only 消融已启动（owner 批准，严格单变量）**：数据 `stage1_train_v2_2A.jsonl`（SHA `8a9337ae…`，23,030 核心行，构建器字节级相同副本，审计全绿），PID 189898 于 10-01 19:46 干净起跑（smoke 检查点污染事故已发现+隔离+纠正），预计 **10-02 ~08:30 完成**，随后 gate-dev（label `stage1_tierA_ep1`）。判读树：W3>>0.499→数据构成主嫌疑；≈0.50→R3-C/D；<0.50→B 有正贡献。1,766 截断样本冻结（R3-B-TRUNC）。ep1/ep2 判定与全部数字见 `stage1_ep1_v1/`、`stage1_ep2_v1/`。
+
+**Stage-1 ep1 Gate-dev = FAIL（4/4 未过门，2026-09-30）**：W1 0.0000（门0.20）/ W2 0.3052+No类0.6185（门0.85+0.70）/ W3 as-is 0.4829（门0.60）/ W4 0.0346（门0.20）。学习真实发生（Base 全 0 → W2 0.305/W3 0.483/W4 0.035）但低于注册下限，且 W2/W3 低于平凡基线——Gate 判别力成立、正确拒绝。主瓶颈=格式服从（invalid 69.2%，Base 86.4%）。判定报告：`stage1_ep1_v1/STAGE1_EP1_GATE_DEV_VERDICT_v1.md`。
+
+**owner 裁定（2026-09-30）：FAIL 保持有效；执行 R3-A 同协议续训 1 epoch（=训练充分性诊断）**。W1 登记 contract-format confound（Gate 格式未入训练目标，parse 2.5% vs Base≈9%）；W2 表述收紧为"判别方向变化，非能力形成"。R3 顺序 A→B(Tier A-only)→C(Contract/Schema)→D(转换损失)。**R3-A 已启动**（同 yaml 同 out-dir，resume 自 step 1772；PID 156537，13:41 起，预计 ~20h → 10-01 上午完成）；ep2 完成后 gate-dev 以新 label `stage1_ep2`/新 out-dir 评测。**Teacher Plan、B2、Stage-2、RL 继续冻结。**
+
+**Base zero-shot test 完成（2026-09-29 03:44，租卡机）**：三 SHA 对账全绿（probe `866c3762…` / config `6355bab4…` / evaluator v1.3.1），W1-W4 全 0.000（invalid 2,752/3,256 = 84.5%，零 OOM/超时/批减半）。**Base 零样本 = 地板在 dev+test 双 split 上确立**，Δ 条件无判别力（R2 共识）获 test 侧确证。R2 阈值评审一页表已组装：`route2_p0_contract/ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`——**当前唯一等待事件 = owner 逐项裁定 W1-W4 绝对下限**（W2 双条件门 / W3 rewrite 仅诊断 / W1-W4 可达性推理，数值只由 owner 定）。裁定后：注册 `ROUTE2_V2_STAGE1_THRESHOLDS_v1.md` → owner 显式放行 → Stage-1 训练。
 
 **计算服务器 mdzhang (10.191.2.38) 已于 2026-09-27 关机**（owner "方案 B" 裁定：先保全、保全完立即关机，不等在跑的 Base zero-shot test 半边）。关机前已完成全部延续性资产的 SHA 校验备份（288 tar 条目 / 248 文件，双端 SHA256 全部一致）：压缩包 `../server_backup_mdzhang_20260927.tar.gz`（sha256 6542ac1f5bee451a…）+ 解包目录 + `BACKUP_README.md`（范围、显式不拉清单、复用说明）。已保全：`stage1_train_v2_2.jsonl`（150MB 冻结 Stage-1 训练数据）、`b1_gee_stage_train.jsonl`（264MB，本地原本没有）、`plan_pool_tiered_v2.jsonl`（234MB 冻结 B2 池）、gate-v3 探针 + `gate_evaluator_v1` + plan_pipeline_v1 全套、`v2a_A_train/dev/test.jsonl`（QGIS 1,334/120/111 SFT 文件）、**Phase R qgis_sft_ep1/2/3 checkpoint**（evaluator-repair rerun 可直接复用、免重训）、route2_C0 checkpoint（可做悬置的 test-111 终评）、configs、Qwen3.5-9B-Base config/tokenizer 指纹（权重未拉——公开模型，租卡机器上重新下载）。
 

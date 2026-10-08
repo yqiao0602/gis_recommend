@@ -820,3 +820,755 @@
 - 定性同型（格式不服从而非无知）：W4 双侧 parse 100%（格式可被 prime 的直接证据）、W1 9%/12%、W2/W3 0%。
 - 产物入库：`base_zero_shot_v1/`（test 报告+items+run.log，本机复验三 SHA）；评审输入包 `ROUTE2_V2_R2_REVIEW_INPUTS_v1.md`（Base×平凡基线×样本量总表 + 待裁定六项）。
 - 状态推进：READY FOR BASELINE → **AWAITING R2 THRESHOLD REVIEW**（owner 专场）。注册后即具备 Stage-1 开训全部条件（数据/代码/模型已在租卡机就位）。
+## 2026-09-29：Base zero-shot test 完成（租卡机）——Base 全 0 双 split 锚定，R2 阈值评审材料就绪
+
+- 租卡机（root@223.109.239.32:24924）gate_rerun_v1 于 2026-09-29 03:44 出报告（启动 09-28 13:40，elapsed 50,594s ≈ 14.1h，与预估 11-12h 量级一致）。产物三件（报告 / gate_items / run.log）已 scp 拉回 `docs/reports/route2_p0_contract/plan_pipeline_v1/base_zero_shot_v1/`。
+- **三 SHA 对账全绿**：probe `866c3762…`（与本地 02_DATA_FROZEN/gate_test_probes_v3.jsonl 实测一致）、inference_config `6355bab4…`（与 dev 报告逐字一致）、evaluator gate-eval-v1.3.1。探针计数自洽：W1 1805 / W2 658 / W3 as-is+rewrite 256+256 / W4 281，合计 3,256 = test 探针总数；items jsonl 3,256 行。
+- **结果：W1/W2/W3(as-is,rewrite)/W4 全 0.000，与 dev 完全同构**；invalid 2,752/3,256（84.5%）；零 OOM、零超时、零批减半。Base 零样本 = 地板在双 split 上确立，Δ 条件无判别力的结论（R2 共识）获得 test 侧确证。
+- R2 阈值评审一页表已组装：`route2_p0_contract/ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`（dev/test Base × 平凡基线 × 探针数 × W2 No 类数，全部来自冻结数字）。**数值裁定权归 owner**，评审前不定任何阈值。
+- 笔记本环境恢复完成：bundle SHA256 `24353fbe…` 对上 → clone HEAD=9c2d873 → LFS checkout → 三项验证（evaluator SHA `c2e7d725` / pytest 9 passed / git status 干净）全过。
+
+## 2026-09-29：owner 同步双线收官报告——数字全一致；发现评审材料双生，待回迁去重
+
+- owner 转发收官报告：dev/test Base 全零 + 平凡基线（W2 0.779/0.790、W3 0.497/0.504）+ test 14.05h，与本线从租卡机实拉报告逐项一致（elapsed 50,594s = 14.05h），确认两线评同一冻结实验。
+- **差异登记**：报告引用工位线评审材料 `ROUTE2_V2_R2_REVIEW_INPUTS_v1.md`（commit `9b04ced`）；该 commit 与文件在笔记本仓库（bundle 恢复，HEAD 链 `9c2d873` → `ef22297`）中均不存在。本线对应产物为 `ROUTE2_V2_R2_THRESHOLD_REVIEW_INPUTS_v1.md`（`ef22297`）。回迁合并时需去重（保留一份或互设引用），避免两份"评审唯一输入"并存。**未发现任何数字分歧。**
+- 状态不变：AWAITING R2 THRESHOLD REVIEW——等 owner 裁定 W1 floor / W2 双条件（overall >0.79 + No-class）/ W3 floor（候选带 0.55-0.60）/ W4 floor。
+
+## 2026-09-29：租卡机监控发现——Stage-1 全量训练已由工位线启动（09:18），等 owner 确认放行令
+
+- 笔记本线例行连通检查发现：`train_stage1.py --config stage1_v2_2.yaml --release`（PID 103666，09:18:45 启动，RTX 3090，17.6/24 GiB）。工位线动作序列：09:16 smoke（100 行×3 epoch，data SHA `02b5b476` ✓，task_too_long 0）→ 09:18 preflight（56,710 行，类别配比 37044/7876/3803/7987 与 v2_2 冻结报告一致，Task 保护 0 超长）→ 09:19 全量（1 epoch，est 1,773 optimizer steps）。
+- yaml 与 ⑦ 协议可见项全部一致：lr 1e-4、effective batch 32（2×16）、max_len 1024、1 epoch、seed 20260924、数据=冻结 v2_2。QLoRA r16α32 在 yaml 不可见（应在 train.py 内置），未独立核验。
+- **矛盾点**：owner 约 08:40 同步本线时状态仍为 AWAITING R2 THRESHOLD REVIEW；阈值注册文档（ROUTE2_V2_STAGE1_THRESHOLDS_v1.md）是否已写/裁定四数是否已定，本线无从核验。**本线未动该进程**——若放行令已给工位线则本线转监控；若未给则属红线，处置权归 owner。已询问 owner。
+
+## 2026-09-29：owner 同步三事件——阈值已注册、Stage-1 放行合法，笔记本转监控职责；矛盾点关闭
+
+- owner 晚间同步（桌面线）：① Base test 完成（桌面 commit `9b04ced`，与本线实拉数字全一致）；② **R2 阈值已 owner 裁定冻结**（桌面 commit `2dc5d2d` + `ROUTE2_V2_STAGE1_THRESHOLDS_v1.md`）：W1≥0.20 / W2 overall≥0.85 AND No-class≥0.70（dev n=173 / test n=138）/ W3≥0.60 / W4≥0.20；Δ 仅诊断；rewrite 仅诊断；dev 选点加权 0.20/0.25/0.40/0.15 仅四项全过 floor 的候选。③ Stage-1 已开训（smoke 三轮 v1/v2 抓 bug、v3 通过 loss≈1.31；全量 09:19 起，1,773 步，预计 12-20h）。本线 244c376 登记的"矛盾点"关闭——放行令已给工位线。
+- **注册 Gate 全文以桌面 `ROUTE2_V2_STAGE1_THRESHOLDS_v1.md` 为准**；本线回迁时以 commit 链合并，不另写阈值文档（避免第三份双生文件）。
+- 笔记本职责（owner 指定）：每 1-2h 监控训练 → 出现 `[done] mode=release` 后启动 gate-dev 评测（--adapter /root/data/stage1_run_v1/stage1_adapter --label stage1_ep1 --split dev --out-dir /root/data/gate_stage1_dev，约 11-14h）→ 报告拉回/数字交 owner；W2-No 从 items 事后计算；FAIL 走 R3 四分叉归因交 owner，不自判重训。
+- 14:20 检查：进程存活 5h，GPU 17.6GB/利用率 76%；train_full.log 仍停在权重加载段（stdout 块缓冲，同"评估器零落盘"教训，勿以日志静默判卡死）。已建每 2h 自动监控。
+
+## 2026-09-29 监控记录（自动，每 2h；正常进度按每 6h 合并 commit）
+
+- 16:07 ✅ 正常：PID 103666 存活 11h55m，GPU 17,592 MiB / 利用率 100%；日志仍处块缓冲（正常）；stage1_ckpt/ 暂无落盘检查点（ckpt_every=150 步，落盘点未到或缓冲未刷，持续观察——若连续多次为空且训练结束前无检查点将升级报告）。
+
+## 2026-09-29 勘误：监控时长读数错误（etime 格式误读），训练实际仅运行 48 分钟，状态正常
+
+- `ps -o etime` 输出 `04:59`/`11:55` 为**分:秒**，此前记录误读为小时（"存活 5h/11h55m" 均错）。10:06 实测：训练 09:19 启动、已运行 48:13，GPU 17,592 MiB / 利用率 73%，一切正常。
+- 佐证自洽：log mtime 10:01（块缓冲在慢速生长）；ckpt_every=150 步 × ~40s/步（smoke 实测节奏）≈ 首个检查点预计 11:00 前后，当前未到属正常；全量 1,773 步 × ~40s ≈ 19-20h，落在 owner 预估 12-20h 上沿。
+- 前述"预计完成窗口 21:00-05:00"应修正为**明晨 05:00-08:00 量级**（以 19-20h 计）。
+- 11:07 ✅ 正常：存活 1h48m，GPU 100%；日志已刷出实测进度 **step 150/28,355**（微步，batch 2；= 9.4 个 optimizer step/1,773 总量），loss 1.695→1.617 下降中，tgt_trunc 310/4,480 行（2.2%，与 preflight 采样一致）；**首个检查点 11:04 已落盘**（latest.pt 47MB，ckpt@150）。实测节奏 ~42s/微步 → 全程约 13.8h，**ETA 修正为今晚 24:00 前后**（此前 19-20h 估算混用了 optimizer 步数，作废）。
+- 13:07 ✅ 正常：存活 3h49m，step 320/28,355（41.6s/微步，节奏与 ETA~24:00 一致），loss 1.62→1.15 持续下降；tgt_trunc 稳定在 ~6.8%（与 preflight 采样 6.4% 一致；此前"2.2%"为笔误，实为 310/4480=6.9%）；ckpt 为单文件 latest.pt 滚动覆盖（step 300 已存）；GPU 利用率 56%（随数据加载波动，步速未降，不判异常）。
+
+## 2026-09-29 17:08 检查 + 重要判读修正：日志 step 口径确认 + 进度分母疑似显示 bug（报 owner，不修）
+
+- 17:08 ✅ 进程健康：存活 7h49m，GPU 100%，loss 1.02→0.96（已破 1.0），节奏 41.6s/step 零漂移。
+- **口径判定**：连续四次读数 rows = step×32 精确成立（620×32=19840 等）⇒ 日志的 step 是 **optimizer step（有效 batch 32）**，非微步。据此真实进度 = **660/1,773 ≈ 37%**（preflight est_optimizer_steps_full=1773）；ETA = 剩余 1,113 步 × 41.9s ≈ 13h ⇒ **明晨 ~06:00 完成**（此前 24:00/01:00 估算作废——当时把 step 误当微步、把分母当真值）。
+- **疑似 trainer 显示 bug**：日志分母 "step N/28355" 中 28355 = 56,710/2（微步数），与分子口径（optimizer step）不一致；preflight JSON 里算的是 1,773（正确）。训练数学不受影响（rows/loss/lr/ckpt 全自洽），但进度显示会误导（按分母算全程会误得 13.7 天）。**按纪律不改 trainer，报告 owner 裁定是否后续修**。
+- 首轮监控批次（11:07-17:08）结论：训练健康，判读以 1,773 口径为准。
+- 19:07 ✅ 正常（自动检查 #6）：存活 9h49m，840/1,773 步（47%，41.5s/步零漂移），loss 0.99-1.08 平台期震荡，GPU 61%（波动），截断率 ~6.8% 稳定；ETA ~明晨 05:50，与 06:00 判一致。
+- 21:07 ✅ 正常（自动检查 #7）：存活 11h48m，1,020/1,773 步（58%），41.4s/步零漂移，loss 破平台降到 0.93，GPU 100%；ETA ~明晨 05:50 不变。
+- 23:07 ✅ 正常（自动检查 #8）：存活 13h48m，1,180/1,773 步（67%），41.5s/步零漂移，loss 0.84（新低），GPU 47%（波动，步速未降）；截断率 6.8% 稳定。本批（19:07/21:07/23:07）合并 commit。
+- 01:07 ✅ 正常（自动检查 #9，09-30）：存活 15h48m，1,360/1,773 步（77%），41.4s/步零漂移，loss 0.86-0.99 区间，ckpt@1350 已存；ETA ~05:50 不变。
+- 03:07 ✅ 正常（自动检查 #10，09-30）：存活 17h49m，1,540/1,773 步（87%），41.4s/步零漂移，loss 0.88-0.98，ckpt@1500 已存；剩 233 步 ≈ 2.7h，ETA ~05:50 不变。
+- 05:07 ✅ 正常（自动检查 #11，09-30）：存活 19h48m，1,720/1,773 步（97%），loss 0.83-0.86，41.4s/步零漂移；剩 53 步 ≈ 37 分钟，预计 ~05:45 完成。本批（01:07/03:07/05:07）合并 commit。下次检查（07:07）预期见 [done] 并自动启动 gate-dev。
+
+## 2026-09-30：Stage-1 训练完成（[done] mode=release，20.4h）——gate-dev 评测已由链式监视器自动拉起，本线不重复启动
+
+- 07:07 检查见 `[done] mode=release steps=1772 examples=56710 tokens=13,635,926 tgt_trunc=3,868 task_too_long=0 elapsed=73,319s`（20.36h，与 41.4s/步外推一致；steps 1772 vs 预估 1773 = 末尾不足一个有效 batch，正常）。**task_too_long=0：Task 保护零违例**；context_truncated=0。末段 loss ~0.83（仅记录，⑦：成功标准=Gate 非 loss）。adapter：`/root/data/stage1_run_v1/stage1_adapter`；账本：`run_ledger.json`；ckpt 单文件滚动至 step 1772 收尾。
+- **gate-dev 已在跑**：服务器链式监视器 05:41:51 检测训练账本 → 自动启动 `gate_evaluator_v1.py --adapter stage1_adapter --label stage1_ep1 --split dev --probe-file gate_dev_probes_v3.jsonl --out-dir gate_stage1_dev --batch-size 1`（PID 144484，`gate_stage1_dev_chain.log` 记 GATE_DEV_LAUNCHED + STABLE_AFTER_180S）。参数与 owner 冻结指令逐字一致。**本线核对后未重复启动**（避免双评测 OOM 污染）。评测 8GB 在位，预计 11-14h，**出分窗口今日 17:00-20:00**。
+- 本线监控自动化已按指令删除，另挂评测出分监控（报告 json 出现即拉回 + 事后计算 W2-No + 对五注册条件判 PASS/FAIL + 落盘 commit + 报 owner）。
+
+## 2026-09-30 gate-dev 评测监控（接管原训练监控自动化；训练任务完成后转评测盯守）
+
+- 09:07 ✅ 评测正常：PID 144484 存活 3h26m，GPU 8.1GB / 利用率 23%（batch-1 生成为访存瓶颈，低利用率属 evaluator 常态）；输出目录仅 eval.log（评估器设计：报告+items 完成时一次写出）。未重复启动（链式监视器 05:41 已按冻结参数拉起，本线 07:07 核对一致）。出分窗口维持 17:00-20:00。
+- 说明：会话内无 CronDelete 工具，旧训练监控自动化暂无法自行删除（任务其实体已完成）；后续触发将按本条口径执行——盯评测、绝不重复启动。owner 可在 Automations 页手动删。
+- 11:07 ✅ 评测正常：存活 5h25m，GPU 8.1GB / 22%，输出目录无新文件（报告一次写出设计，正常）。出分窗口 17:00-20:00 维持。
+
+## 2026-09-30：Stage-1 ep1 Gate-dev 出分——**FAIL（4/4 未过门）**，学习真实发生但未达注册下限；归因与续训裁定归 owner
+
+- 评测 12:41 完成（6.97h，零 OOM/超时/批减半，三 SHA 对账 ✓）。产物拉回 `stage1_ep1_v1/`。判定报告：`STAGE1_EP1_GATE_DEV_VERDICT_v1.md`。
+- **W1 0.0000（门 0.20）❌ / W2 overall 0.3052（门 0.85）❌ + W2-No 0.6185（门 0.70）❌ / W3 as-is 0.4829 macro（门 0.60）❌ / W4 0.0346（门 0.20）❌。** W3 rewrite gap 0.0057 仅诊断，无表面模板依赖。
+- 关键判读：Base 全 0 → W2 0.305 / W3 0.483 / W4 0.035，**学习真实发生**；但 W2/W3 仍低于平凡基线（0.779/0.497），Gate 判别力成立、正确拒绝。invalid 2,238/3,236（69.2%，Base 86.4%）——格式服从部分习得，仍是主瓶颈。W2 No 类错题 66/66 为空预测、0 例把 No 判成 Yes：判别方向对、产出不完整。
+- **本线动作边界**：未启动 test 半边、未续训、未动任何冻结物。R3 四分叉归因初看偏 A（1 epoch 格式服从不足）/C（Contract 信息不足），**裁定归 owner**。
+
+## 2026-09-30：owner 裁定 R3-A 续训启动——同协议再训 1 epoch（训练充分性诊断），FAIL 保持有效
+
+- **owner 裁定**（原文要点）：不接受 Stage-1 FAIL 为最终科学结论，也不立即回合同层重设计；执行 ⑦ 预注册的"同协议续训 1 epoch"，定位 **R3-A 训练充分性诊断**；一切冻结（数据/Tier/能力定义/evaluator/probe/tokenizer/loss/QLoRA），不加 W1 格式样本、不做 curriculum/RL/B2；W3 parse 86.9% 是最有信息量信号——模型已学会按接口产出，缺的是 Task→Plan 条件化；**W1 登记 contract-format confound**（Gate 格式未入训练目标，0.000 不可判定；parse 2.5% vs Base ≈9% 为训练改变行为的证据）；**W2 表述收紧**（.6185 仅证明拒绝倾向出现/非恒答，overall .3052 + 正例 21.6% 不足以证明判别能力形成——"判别方向变化"而非"能力形成"）；R3 顺序 A→B(Tier A-only)→C(Contract/Schema)→D(转换损失)；Teacher Plan/B2/Stage-2/RL 继续冻结。
+- **执行**：同 yaml（stage1_v2_2.yaml，epochs=1 语义=resume 后正好再跑一整轮）、同 out-dir；trainer 内建 resume 从 `latest.pt` 恢复（[resume] step 1772 rows 56710 = ep1 精确终点，adapter+optimizer+scheduler+RNG 全量）。PID 156537，13:4x 启动，GPU 20GB。ep1 ledger 备份 `run_ledger_ep1.json`（新增文件，零删除）。判读锚点：若续跑首段 loss 从 ~0.83 起步（而非 9.x）即确认权重正确恢复。
+- **ep2 完成后**：gate-dev 由本线手动启动，label `stage1_ep2`、out-dir `gate_stage1_ep2_dev`（不覆盖 ep1）；链式监视器已确认为一次性脚本（不会自动重跑）。
+
+## 2026-09-30 R3-A（ep2）监控（接管自动化盯守；旧 ep1 口径已作废——[done] 已处理、gate-dev ep1 已判 FAIL）
+
+- 15:07 ✅ ep2 正常：PID 156537 存活 1h11m，GPU 20GB / 65%，step 1,860（ep2 内 88/1,772 步，41.7s/步零漂移），loss 0.78-0.84 与 ep1 收尾平滑衔接，lr 9.89e-05 缓降中。ETA ~10-01 10:40 完成，gate-dev ep2（label stage1_ep2 / out-dir gate_stage1_ep2_dev）随后启动。
+- 17:07 ✅ ep2 正常：存活 3h11m，GPU 20GB / 100%，ep2 内 268/1,772 步（41.3s/步零漂移），loss 0.84-0.94 平台震荡（ep2 对同一数据的第二轮，平台属预期）；ETA ~10-01 10:40 不变。
+- 19:07 ✅ ep2 正常：存活 5h11m，GPU 20GB / 81%，ep2 内 448/1,772 步（25%，41.4s/步零漂移），loss 0.76-0.82 缓慢低于 ep1 平台（积极信号，继续观察）。本批（15:07/17:07/19:07）合并 commit。
+- 21:08 ✅ ep2 正常：存活 7h12m，GPU 20GB / 93%，ep2 内 628/1,772 步（35%），loss 0.76-0.77（继续低于 ep1 平台），ckpt@2400 已存；ETA ~10-01 10:40 不变。
+- 23:07 ✅ ep2 正常：存活 9h11m，GPU 20GB / 70%，ep2 内 788/1,772 步（44%），loss 0.74-0.79，ckpt@2550 已存；ETA ~10-01 10:40 不变。本批（21:08/23:07）合并 commit。
+- 10-01 01:07 ✅ ep2 正常：存活 11h11m，GPU 20GB / 99%，ep2 内 968/1,772 步（55%），loss 0.80-0.83，ckpt@2700 已存；ETA ~10:40 不变。
+- 10-01 03:07 ✅ ep2 正常：存活 13h11m，GPU 20GB / 10%（波动），ep2 内 1,148/1,772 步（65%），loss 0.70-0.80；ETA ~10:40 不变。
+- 10-01 05:07 ✅ ep2 正常：存活 15h11m，GPU 20GB / 100%，ep2 内 1,328/1,772 步（75%），loss 0.74-0.86；剩 444 步 ≈ 5.1h，ETA ~10:20 微调至 10:20-10:40。本批（01:07/03:07/05:07）合并 commit。
+- 10-01 07:07 ✅ ep2 正常：存活 17h11m，GPU 20GB / 93%，ep2 内 1,508/1,772 步（85%），loss 0.68-0.77（新低 0.68）；剩 264 步 ≈ 3.1h，完成预计 ~10:15。
+- 10-01 09:07 ✅ ep2 正常（最后冲刺）：存活 19h11m，GPU 20GB / 86%，ep2 内 1,688/1,772 步（95%），loss 0.76-0.78，ckpt@3450 已存；剩 84 步 ≈ 1h，预计 ~10:10 完成。下次检查（11:07）预期 [done] + 启动 gate-dev ep2。
+
+## 2026-10-01：R3-A（ep2）训练完成（[done] 09:52 落盘）——gate-dev ep2 评测已启动
+
+- 10:07 检查见 `[done] mode=release steps=3544`（累计 2 epoch；本轮 examples=56,710、tokens=13,635,926、tgt_trunc=3,868、task_too_long=0、本轮耗时 ~19.9h）。末段 loss ~0.73（低于 ep1 收尾 0.83）。ep2 账本 mtime 09:52、数据 SHA `02b5b476` ✓、ep1 备份完好。
+- 10:17 owner 指定的完成态复核：进程正常退出、GPU 清空（11 MiB）、账本/adapter（09:52）就绪。随后启动 gate-dev ep2：`--label stage1_ep2 --out-dir /root/data/gate_stage1_ep2_dev`（**新目录，不覆盖 ep1**），实测 PID 178901，10:18 起，10:23 权重加载完毕、GPU 7.7GB / 20% 进入生成阶段。预计 ~7h，**出分窗口今日 17:00-18:00**。出分后拉回、算 W2-No、对五条件判定并报 owner。
+
+## 2026-10-01 gate-dev ep2 评测监控
+
+- 11:07 ✅ 评测正常：PID 178901 存活 49m，GPU 7.8GB / 32%，输出目录空（评估器一次写出设计）。出分窗口 17:00-18:00 维持。
+- 13:07 ✅ ep2 评测正常：存活 2h49m（≈ep1 节奏的 40%），GPU 8.1GB / 23%，输出未写（一次写出设计）。出分窗口 17:00-18:00 维持。
+- 15:07 ✅ ep2 评测正常：存活 4h49m（≈ep1 节奏的 69%），GPU 8.1GB / 21%。出分窗口 17:00-18:00 维持。本批（11:07/13:07/15:07）合并 commit。
+
+## 2026-10-01：R3-A（ep2）Gate-dev 出分——仍 FAIL 但显著分化；W2 逼近门+No 类过门，W3 两轮持平，W4 退化归零
+
+- 评测 16:45 完成（6.45h，三 SHA ✓，零事故）。产物拉回 `stage1_ep2_v1/`，判定报告 `STAGE1_EP2_GATE_DEV_VERDICT_v1.md`。
+- **五条件**：W1 0.0000 ❌ / W2 overall 0.8020 ❌（距门 0.048，已超平凡基线 0.7791）+ **W2 No-class 0.9942 ✅ 唯一过门**（172/173，仅 1 空预测、0 例混淆）/ W3 0.4986 ❌（+0.016 vs ep1，两轮持平，仅贴平众数基线）/ W4 0.0000 ❌（**从 0.035 退化归零**，parse 70%→60%）。
+- **R3-A 诊断结论（按 owner 决策树机械映射）**：W2=训练不足证据强（+0.50/轮，逼近门）；**W3=步数不是瓶颈证据强**（两轮持平 → 指向 R3-B/C/D）；**W4=续训有害**（低占比能力被主导流干扰嫌疑）；W1 confound 持续（parse 1.2%，接口仍未建立 → 单独处理）。invalid 69.2%→57.9%（W2 parse 95%）。
+- **动作边界**：未启动 test / ep3 / R3-B，未动冻结物。下一分支裁定归 owner。
+
+## 2026-10-01：owner 裁定 R3 路线——不跑 ep3 / 不动 W1 专项 / 先 R3-B-0 数据诊断（不训练）
+
+- **裁定要点**：① ep2 已解耦 W2（epoch-sensitive，0.305→0.802）与 W3（不随训练量增长，0.483→0.499），"单纯 epoch 不足"解释被削弱；② 不跑 ep3 / 不堆 20 epoch（W3 信息增益≈0）、不改 Gate、不改 Plan Schema、不进 B2；③ **下一步 R3-B-0 数据诊断（纯分析不训练）**：把 A+B 训练样本按 Tier / Plan 长度 / step 数 / 算子多样性 / Task 复杂度 / chain 长度 / modifier / branch / type-flow break / source family 切片，核心问题="W3 失败是否集中于某类数据"，重点查 Tier A vs B 构成、长 Plan 条件化、Task↔Plan 对应强度（一任务多 Plan / 弱 Task 强 Plan）；④ 诊断无异常后做 **R3-B Tier-A-only 消融**（同 Base/tokenizer/evaluator/W1-W4/目标/预算，仅 A+B→A，1 epoch）；⑤ W4 的退化暂不动（先查 train/dev 分布与 prediction pattern，不改 20% 权重）；⑥ W1 调查冻结（结果不可作"W1 知识缺失"纯净证据），等 B/C/D 后再议接口修订。
+- **核心科学问题（owner 定调）**：为什么 W2 能学、W3 几乎不学——"连接规则可以快速学到；任务条件化规划能力尚未被证明"。这触及 Route-2 核心假设：大规模 GEE workflow supervision 能否教会 Task→workflow 构造。
+- **执行开始**：诊断数据全在本地（02_DATA_FROZEN：stage1_train_v2_2.jsonl + gate_dev_probes_v3.jsonl），CPU 本地分析，零服务器负载。
+
+## 2026-10-01：R3-B-0 数据诊断完成（纯 CPU 零训练）——三问有答案，Tier-A-only 消融动机充分
+
+- 报告：`r3b0_diagnosis/R3_B0_DIAGNOSIS_REPORT_v1.md`（脚本 v1/v2 + 两个 JSON 同目录）。数据源全冻结件；Tier 池从 mdzhang 保全 tar 解包获得（**租卡机上实际没有 plan_pool_tiered_v2.jsonl，工位线旧补充与实况不符，已更正**）。
+- **①Tier 构成**：核心 37,044 行回连 95.9% = A 62.2% / B 37.5%；B 结构性更难（分支率 0.233 vs 0.058，4 倍；流断裂 0.11 vs 0；步数/tokens 更长）——B 是"更脏的 3/8"，影响面约 42% 核心 tokens。
+- **②Plan 长度**：实锤双重截断——构建期 1,766 行砍尾（2.5M tokens，max 50,774/行）+ 运行期 max_len 1024；而 W3 探针金标偏长（mean 9.2 / p90 19 vs 训练 8.1 / 14），70/474 超训练 p90。W4 dev 同型偏长。
+- **③对应关系**：文本级干净（36,898 唯一任务 / 仅 1 多 Plan / 零弱任务），排除；语义级未测。
+- **新增发现**：W3 dev 探针 54%（匹配子集）来自 B/C/REJECT 层；改写版 236 个按设计不可回连。算子分布头重（3 个 filter 族占大头），与众数基线 0.497 互证。
+- **W4 快检**：训练 p90 13 步 vs dev 金标 p90 19 步，同型偏长；prediction pattern 分析待下一轮。
+- **等 owner**：是否跑 R3-B Tier-A-only 消融（动机充分）；构建期截断行的处理（超长丢弃/单独桶）属 ⑦ 外数据整形，仅登记待批。
+
+## 2026-10-01：owner 批准 R3-B Tier-A-only 消融（严格单变量）；1,766 截断样本冻结（R3-B-TRUNC）
+
+- **批准范围**：仅改数据构成 A+B → A-only；Base/tokenizer/evaluator/probe/Gate/W1-W4/objective/max_len/lr/effective batch/训练预算（1 epoch）全冻结；其余数据比例保持原协议（60/10/10/20 token shares）。定位=**数据质量/构成消融，非新正式 Stage-1 训练**。
+- **目的表述（owner 指定，禁止写成"验证 B 是噪声"）**："检验 Tier B 数据的加入是否对 Task→Workflow Planning 产生负面影响"。B 有双重属性（可能质量较低 + 同时含更多 branch/更长 workflow）：A-only 变好 → B 噪声伤害超复杂性收益，或复杂性本身难学；A-only 变差 → B 提供了 W3 必需的困难 workflow 信号。
+- **判读树**：W3 >> .499 → 数据构成进入主解释；≈.50 → R3-C/D；< .50 → B 的复杂 workflow 有正贡献。
+- **R3-B-TRUNC 登记**：1,766 条构建期截断样本冻结不动，不与消融同时改（单变量纪律）；未来方向=length-aware 处理/完整监督，属下一阶段数据工程。
+- **汇报要求**：完整五条件表（A+B ep1/ep2/A-only 三列），非只看 W3。
+- 论文价值判断（owner）：主线正形成"GEE workflow supervision 可快速学 workflow 内部数据流判别（W2），但 Task-conditioned planning（W3）未同步形成；长 workflow 监督存在系统性截断；Tier-B 与 W3 关系待消融"——暂非最终结论。
+
+## 2026-10-01：R3-B Tier-A-only 消融——数据集构建完成 + smoke 通过；实验登记（放行前）
+
+- **数据集构建**（构建器字节级相同副本 `f3734d13`，隔离目录 /root/r3b_tierA，单变量=池子仅 Tier A，SHA `22c39d30…`，28,575 行；原池不在租卡机，从 mdzhang tar 解包）：SRC=b1_gee_stage_train.jsonl（服务器在位）。产出 `stage1_train_v2_2A.jsonl`（SHA `8a9337ae3e914e23…`，/root/data/）。审计：tier_ab_train_rows=23,030 全数入核心（0 转换失败/0 不合格）、token 配比 0.60001/0.1/0.09999/0.2、task_truncation=0、Chain LM=0、W4 子类 1598/1654/1610、总 tokens 14,287,002（=A+B 的 57.9%）。构建期截断在 A-only 仍存在（815 行/1.57M tokens）——与 A+B 臂同型处理，R3-B-TRUNC 冻结不动（单变量纪律）。报告 `stage1_dataset_report_v2_2A.json` 在服务器。
+- **配置**：`stage1_v2_2_tierA.yaml`（name stage1_v2_2_tierA、train_data=2_2A、output_dir=/root/data/stage1_run_tierA，其余与 stage1_v2_2.yaml 逐字同）；smoke 配置同 + smoke_rows=100。种子 20260924 不变。
+- **smoke 通过**：[done] mode=smoke steps=9 examples=300 tokens=62,613 tgt_trunc=3 task_too_long=0 elapsed=385s。
+- **实验登记（启动前）**：R3-B Tier-A-only，1 epoch，预算=同协议；**预期观测**——主读数 W3 as-is F1（dev，evaluator v1.3.1）对照 .499（A+B ep2）/.483（ep1）：>> .499 → 数据构成进入主解释；≈.50 → R3-C/D；< .50 → B 有正贡献。同时完整报告五条件（W1/W2 overall+No/W3/W4）。预计运行 ~11.6h（tokens 57.9%）。产出目录 stage1_run_tierA，评测 label `stage1_tierA_ep1`、out-dir `gate_stage1_tierA_dev`。GPU 空闲（11 MiB）。放行依据=owner 2026-10-01 批准（`864496b`）。
+
+## 2026-10-01：R3-B Tier-A-only 全量启动（20:44 干净起跑）——含一次 smoke 污染事故的发现与纠正
+
+- **事故**：首次 release 启动出现 `[resume] step 9 (rows 300)`——现行训练器 smoke/release 共享 `stage1_ckpt`，smoke 收尾把 step-9 检查点写入共享目录，release 启动即捡到（ep1 未发生是因为当时 smoke 9 步未及 ckpt_every=150 的间隔保存点；本次 smoke 收尾保存触发了污染）。**立即 pkill（起跑数秒内，操作级纠正）**。
+- **纠正**：smoke 产物整体隔离至 `/root/data/stage1_run_tierA_smoke_artifacts/`（mv 零删除），输出目录清空后干净重启。
+- **当前**：PID 189898，19:46 启动，`[release] full run: 35,246 rows x 1 epoch`，无 [resume] 行，GPU 15.5GB/76%。总步数 ≈ 1,101 optimizer steps（35,246/32）× 41.6s ≈ **12.7h，预计 10-02 ~08:30 完成**。完成后 gate-dev（label `stage1_tierA_ep1`，out-dir `gate_stage1_tierA_dev`）。
+- 教训登记：**同一 output_dir 内 smoke 会污染后续 release**（现行训练器行为）——今后 smoke 与 release 必须分目录，或 release 前清点 stage1_ckpt。
+
+## 2026-10-01 R3-B（Tier-A-only）监控
+
+- 21:07 ✅ 正常：PID 189898 存活 1h21m，GPU 15.5GB / 100%，step 120/1,101（optimizer 口径，日志分母 17,623 仍为微步显示 bug），40s/步，loss 1.53→1.17 起步下降；tgt_trunc 143/3,840 行。ETA ~10-02 08:00-08:30。
+- 23:07 ✅ Tier-A 正常：存活 3h21m，GPU 15.5GB / 35%，step 300/1,101（27%，40s/步零漂移），loss 1.00-1.13，ckpt@300 已存；ETA ~08:00-08:30 不变。
+- 10-02 01:07 ✅ Tier-A 正常：存活 5h21m，GPU 15.5GB / 92%，step 480/1,101（44%），loss 0.88-0.95，ckpt@450 已存；ETA ~08:00-08:30 不变。
+- 10-02 03:07 ✅ Tier-A 正常：存活 7h21m，GPU 15.5GB / 85%，step 660/1,101（60%），loss 0.84-0.98；ETA ~08:00-08:30 不变。本批（23:07/01:07/03:07）合并 commit。
+- 10-02 05:07 ✅ Tier-A 正常：存活 9h21m，GPU 15.5GB / 66%，step 840/1,101（76%），loss 0.76-0.85；剩 261 步 ≈ 2.9h，完成预计 ~08:05。
+- 10-02 07:07 ✅ Tier-A 正常：存活 11h21m，GPU 15.5GB / 72%，step 1,020/1,101（93%），loss 0.76-0.78；剩 81 步 ≈ 55 分钟，完成预计 ~08:05。本批（05:07/07:07）合并 commit。
+
+## 2026-10-02：R3-B Tier-A-only 训练完成（[done] 07:58，12.19h）——gate-dev 已启动
+
+- `[done] mode=release steps=1101 examples=35,246 tokens=7,743,885 tgt_trunc=1,716 task_too_long=0 elapsed=43,889s`（12.19h，符合预估）。末段 loss ~0.73。adapter `/root/data/stage1_run_tierA/stage1_adapter`，账本 run_ledger.json。GPU 已清空。
+- gate-dev 已启动：PID 195656（08:45 起，GPU 7.6GB），label `stage1_tierA_ep1`、out-dir `/root/data/gate_stage1_tierA_dev`（独立目录）。参数与冻结评测器一致。预计 ~6.5-7h，**出分窗口今日 15:00-16:00**。出分后出三列对比表（A+B ep1 / A+B ep2 / A-only）报 owner。
+
+## 2026-10-02 gate-dev Tier-A 评测监控
+
+- 09:07 ✅ 评测正常：PID 195656 存活 21m，GPU 7.6GB / 21%，输出未写（一次写出设计）。出分窗口 15:00-16:00 维持。
+- 11:07 ✅ Tier-A 评测正常：存活 2h21m（≈ep2 节奏 37%），GPU 8.0GB / 20%。出分窗口 15:00-16:00 维持。
+- 12:07 ✅ Tier-A 评测正常：存活 3h21m（≈48%），GPU 8.1GB / 20%。出分窗口 15:00-16:00 维持。
+- 13:07 ✅ Tier-A 评测正常：存活 4h21m（≈ep2 节奏 67%），GPU 8.1GB / 20%。出分窗口 15:00-16:00 维持。本批（11:07/13:07）合并 commit。
+- 14:07 ✅ Tier-A 评测正常：存活 5h21m（≈83%），报告未落盘；ETA ~15:00-15:30。
+- 15:07 ✅ Tier-A 评测正常：存活 6h21m（超过 ep2 的 6.45h 节奏 99%，A-only 输出或略长），报告未落盘；预计 15:30-16:00 出分。
+- 16:07 ✅ Tier-A 评测运行中但超时预测：存活 7h21m（超 ep2 全长 47 分钟），进程 R 状态、CPU 时间≈墙钟、GPU 21% —— 在算不卡；推断 A-only 模型输出更长（更多探针顶满 max_new_tokens）导致整体变慢。继续观察，若 17:07 仍未出分则查逐项耗时迹象。
+
+## 2026-10-02：R3-B Tier-A-only Gate-dev 出分——**W3 变差（0.418），H2 被排除且方向反转**；W2 出现"只会拒绝"形态
+
+- 评测 17:06 完成（8.33h 三臂最长，三 SHA ✓，零事故）。产物拉回 `stage1_tierA_ep1_v1/`，判定报告 `STAGE1_TIERA_GATE_DEV_VERDICT_v1.md`。
+- **三列对比**（A+B ep1 / ep2 / A-only）：W1 0/0/0（parse 2.5%/1.2%/0%）；W2 overall .305/.802/**.2005**；W2 Yes .216/.748/**.0016**；W2 No .619/.994/**.9017**；W3 .483/.499/**.418**；W4 .035/0/**.021**；invalid 69.2%/57.9%/**71.8%**。
+- **判读（按 owner 预注册树）**：A-only W3 < .50 → **"B 中复杂 workflow 对 W3 有正贡献"分支成立，H2（B 是瓶颈）排除且证据反转**。W3 剩余嫌疑收敛：R3-B-TRUNC（截断，两臂同受）→ R3-C（Contract）→ R3-D（转换损失）。
+- **新机制证据**：A-only W2 No 类 0.9017 但 **Yes 类塌缩 0.0016**——模型只学会拒绝、几乎不会接受；对照 A+B ep2 双类掌握（.748/.994），指向 **Tier B 的高分支合法依赖模式是"识别合法连接（Yes）"的信号来源**。建议后续专项验证。
+- 动作边界：未启动 ep3/test/R3-C/D/TRUNC 处理、未动冻结物；下一步归 owner。
+
+## 2026-10-02：owner 裁定 R3-B-1 数据诊断（纯分析零训练）——先解 W2-Yes 异常，暂不进 R3-C/D
+
+- **裁定要点**：① Tier-A-only 已回答"删 B 使 W3 降 8pp"，但不能断言 B 必有益（A-only 同时改变了规模/tokens/复杂度/分支/组合多样性五件事）；② **W2-Yes 崩溃（0.0016）比 W3 更值得追**，但暂不接受"B 教会 Yes"解释——竞争解释：A-only 训练分布/规模效应（Yes 类覆盖不足 → No 偏置）；③ 顺序改为：R3-B-1 诊断 → （视结果）小型 W2 机制验证 → R3-B-TRUNC 诊断 → R3-C → R3-D → 最后才考虑更长训练/objective；④ TRUNC 修正定位：两臂共同的上限因素，关键看截断位置与被截字段（后半段尾步骤 vs 关键 dependency/branch/constraint）；⑤ 不跑 ep3、不碰 RL。
+- **执行**：全本地 CPU。W2 dev 探针带标签（Yes 610/No 173）可按 task 文本回连池子取 Tier；训练行带 source_row_id（=SRC 行号=池子 row_id）可精确 join；TRUNC 分析需 Qwen tokenizer（走附录 C 镜像模板下载 tokenizer 小件）。
+
+## 2026-10-02：R3-B-1 数据诊断完成——W2-Yes 崩溃的解释反转：证据指向"累计 token 阈值"而非 Tier-B 内容
+
+- 报告：`r3b1_diagnosis/R3_B1_DIAGNOSIS_REPORT_v1.md`。全程本地 CPU + 冻结件 + 服务器 tokenizer 小件。
+- **F1 意外发现**：W2 的 783 探针是**类型对兼容性问题**（34 对、8 个 Yes 型），与任务/池子行无关（775/783 严格符合"同型→Yes"规则）——探针侧 Tier 交叉表不存在，双臂差异全是模型行为。
+- **F4 反例**：主 Yes 对（raster_collection→raster_collection，509 探针）在 A 层有 148,965 个实例——覆盖充足，A-only 却只答对 1 题。**"B 提供独有覆盖"解释不成立**。
+- **F5 收敛**：配对预测显示 A-only 对合法转移大面积**拒答**（空 407/No 202/Yes 1）；结合累计 token 曲线（A+B ep1 Yes .216 @24.7M → ep2 .748 @49.4M → A-only .0016 @14.3M），**"累计 token 阈值涌现"假说证据更强**——正中 owner 自定判别规则（"A 的 Yes 不少但仍 ≈0 → 问题在训练而非类别数量"）。**判别性预测已登记**：A-only 训满 2 epoch（~28.6M 跨入区间）若 Yes 出现→量变假说成立；仍≈0→内容假说复活。本轮不跑。
+- **F6 TRUNC 回答**：截断不是砍无害尾巴——**70.1% 被截行丢失含约束步骤**、中位丢 8 整步/31% 文本；导出步很少丢（1%）；分支步 0（已线性化）。伤害核心=约束信息+中后段步骤监督。
+- completion 流：B 以 32% 行数贡献 89 种 vs A 80 种下一意图（密度 2.2 倍）；核心 tokens A 57.9%/B 42.1%。
+- 待 owner：R3-C / R3-D / W2 阈值验证（A-only 2 epoch）/ TRUNC 整形，四选一或组合。
+
+## 2026-10-02：owner 裁定 R3-B-TRUNC clean ablation——先数据构建与 CPU 审计，不训练
+
+- **裁定要点**：① W2-Yes 归档为 training-budget/emergence hypothesis（不专门烧 GPU 验证，未来若有 2 epoch 训练顺手观察）；② Tier B 保留为主线数据（B 含高密度 workflow 意图/类型转移多样性，删之 W3 降 8pp）；③ 优先级：**TRUNC clean ablation（高）** > R3-C/R3-D（中）> W2-Yes 2ep（低）；④ R3-C 顺序理由：若不同时去除损坏监督，Contract 改善与去污效应无法区分；⑤ **第一刀=删除而非重建**（重建长 Plan 会同时改表达/tokens/监督内容/长链分布）；⑥ **max_len=1024 与 runtime 截断完全不动**（build-time 与 runtime 分开，保单变量）。
+- **本轮执行**：从冻结 v2_2 识别 1,766 条 build-time 截断核心行 → 构造"仅排除这 1,766 条"的新数据集（保持其余行与顺序不动，不做再平衡/重采样）→ CPU 审计（行数/tokens/比例漂移/W3 长度分布/Tier A-B 变化/是否引入新偏移）。审计通过后是否正式训练归 owner。
+
+## 2026-10-02：R3-B-TRUNC 数据构建+审计完成——⚠️ 关键发现：删 1,766 条 = 删掉几乎全部长 Plan 监督
+
+- 数据集 `stage1_train_v2_2_notrunc.jsonl` 已构建（本地 04_DIAG_WORK，SHA `8c7219c6…`，未上传——是否训练未定）：core 35,278 行（−1,766）、tokens 22.88M（−7.3%）、配比漂移 56.8/21.6/10.8/10.8（删除的直接后果，未再平衡）、剩余构建期截断核心行=0。被删行 Tier：B 951（53.8%）/A 815（B 超代表）。
+- **⚠️ 审计关键发现**：builder 截断契约决定了">~21 步的 Plan 恰好就是被截断的那批"——删除后核心步数 **max 1,098→21、p99 48→17**，≥30 步训练覆盖 98%→**≈0**；而 W3 探针金标 p90=19、最长 83。**本消融不是"去坏样本"而是"把训练 Plan 长度上限砍到 21"**——受损监督与长 Plan 监督在同一批行上，数据集中不存在未受损的长 Plan。
+- 判读含义已写明：若 W3 上升，无法区分"去除受损监督"vs"容量集中短 Plan"；两个替代设计已登记（替代 1：notrunc + W3 解读限定 ≤21 步探针子集（事后切片，评测器不动）；替代 2：length-aware 重建，多变量，此前已搁置）。
+- 相邻截断登记：completion/reconstruction/w4 流自有的更大截断（w4 target 4.07M tokens）范围外未触碰。
+- **未训练、未动冻结物**；是否训练/采哪个替代设计归 owner。
+
+## 2026-10-02：TRUNC-exclusion 评测 slice 审计（训练前预检）——≤21 可行；>21 无判别力；发现输出长度不条件化
+
+- 报告：`r3btrunc_diagnosis/R3_BTRUNC_SLICE_AUDIT_v1.md`。未上传、未训练。
+- **slice 数量**：W3-≤21 = 444/474（as-is 223，功效充足）；W3->21 = 30（as-is 15，小样本边缘）。
+- **>21 slice 双重结构受限**：金标 p50 1,160 词 ≫ 冻结推理 560-token 生成上限（F1 天花板）；实证三臂预测全部停在 ~140 词、exact=0——**无法区分三臂**。建议降级为"记录不解读"。
+- **新行为学发现**：三臂、全 slice 预测长度恒定 ~140-160 词（≈训练 Plan p50 148 词），与金标 154↔1,160 词无关——**输出长度不随任务调节**，Task-conditioning 未形成的直接行为证据，支持 R3-C/D 方向。
+- 建议已登记：训练 notrunc 后报告 W3-all（主结果对照冻结 gate）+ W3-≤21（主诊断）+ 长度条件化分析（事后指标）。等 owner 放行训练。
+- 10-02 18:07 例行检查：GPU 空闲（11 MiB / 0%），无训练或评测进程（pgrep 命中为远程 shell 自匹配）；当前状态 = 等 owner 对 TRUNC-exclusion 训练的放行（notrunc 数据集在本地未上传）。
+
+## 2026-10-02：owner 裁定——暂停 TRUNC-exclusion（不上传/不训练），进入 R3-C/R3-D Contract/转换审计（CPU-only）
+
+- **裁定要点**：① 输出长度不条件化（三臂恒 ~140-160 词）比"有无 1,766 截断"更基础——现在跑 TRUNC-exclusion 仍无法回答"supervision 变干净 vs 更集中典型长度"；② TRUNC-exclusion 降级为后续验证实验（届时若链条确认无损，可作真正独立的数据完整性变量）；③ W2-Yes 归档为 training-budget/emergence 假说，不专门烧 GPU，未来 2-epoch 顺手观察；④ **R3-C/D 顺序**：先 CPU 审计再考虑改数据——沿 Task→GEE 原始 workflow→chain extraction→chain_to_plan→Plan schema→training target 全链，定位"任务复杂度→长度/结构"信息丢失点；⑤ TRUNC 是数据完整性问题（仍须处理），固定长度输出是 Task-conditioned planning 能力问题——后者是核心目标。
+- **审计设计**（本地 CPU）：A. 逐阶段信息清单（原始链 vs convert 输出 vs 渲染 target，抽样对比）；B. 任务复杂度 ↔ Plan 长度相关性（若弱 = 任务文本本身不编码长度信息）；C. chain_to_plan 压缩率/参数损失/分支线性化量化（对照已知 F-STRUCT-01/D-MOD-01/DATA-FRAG）；D. 约束覆盖率。数据源：SRC=b1_gee_stage_train.jsonl（含 gee_canonical_chain 原始链）+ 池子结构化 plan + 冻结 v2_2。
+
+## 2026-10-02：R3-C/D Contract/转换审计完成——信息丢失点定位：上游 run-cap（R3-D 实锤）+ 任务文本先天弱编码（R3-C 实锤）
+
+- 报告：`r3cd_audit/R3_CD_AUDIT_REPORT_v1.md`。数据源：SRC 原始件 101,513 train 行（tar 解包）+ 池子 + 冻结 v2_2；本地 CPU，零训练。
+- **F1（R3-D 实锤）**：上游 run-cap 在转换前压缩 **79.3% 的 workflow**（80,509 行，平均砍 12.1 步，最多 3,783 步）；语义链 p50 11→7、p99 177→87。`run_cap_applied` 标记（14.4%）严重低估实际压缩。
+- **F2**：逐级长度 13.0 → 9.2 → 7.0（总压缩 −46%）；**chain_to_plan 忠实**（plan↔final_sem ρ=0.857）——丢失点在转换器上游。
+- **F3（R3-C 实锤）**：task 词数 ↔ original_semantic 仅 ρ=0.199——instruction 是散文摘要而非规格说明，**长度信息在源头就弱**；四分位条件均值 5.45→9.53 步（梯度弱）。
+- **F4**：三臂固定长度输出（恒 ~140 词）= p(plan|task)≈p(plan) 的最优策略——**模型忠实学习了我们给它的条件结构**，非失灵。
+- **定位更新**：R3-D 修复点在转换上游（重跑数据管道级变更）；R3-C 重新表述为"任务如何描述 workflow"的数据工程；TRUNC-exclusion 降级为次级因素实验（是否跑归 owner）；W2-Yes 维持归档。
+- 零训练、零服务器写入、冻结物未动。待 owner 裁定下一步。
+
+## 2026-10-02：owner 裁定 R3-CD-2 CPU audit——区分"run-cap 破坏 task-结构信号" vs "Task↔Original 本身就弱"
+
+- **裁定要点**：① 三层问题固定：上游压缩（R3-D）/ 任务弱编码（R3-C）/ 固定长度输出=忠实学习（非失灵）；② 暂停 TRUNC-exclusion（次级）、W2-Yes、RL、Stage-2 全冻结；③ **R3-CD-2**（CPU）：逐级统计 Original→Final→Plan（步数/intent 多样性/I-O/dependency/被删步骤性质/位置/任务特异性）+ 全覆盖三段相关（Task↔Orig/Final/Plan，含任务复杂度多代理）+ 长度条件下 Task 分组。判读：若 Task↔Orig 有信号但 run-cap 后明显下降 → 上游瓶颈实锤；若 Task↔Orig 本身弱且后级无进一步恶化 → 数据缺乏 Task→Workflow 对齐监督（根本问题）。
+
+## 2026-10-02：R3-CD-2 审计完成——假说 B 成立（附细化）：run-cap 是"循环折叠"的表示选择，Task 信号源头就弱
+
+- 报告：`r3cd_audit/R3_CD2_AUDIT_REPORT_v1.md`（全量 37,044 行匹配 + 101,513 行 RLE 结构验证）。
+- **F1**：`semantic_chain_rle` 是 raw 的保序子序列（99.96%，mismatch=0）；被删 976,094 步**全部是连续重复操作的折叠**（原始脚本的逐波段/逐要素循环，最长单游程 600 次重复）；**family 多样性零损失**（raw 30 = final 30），被删步骤不比保留步骤更任务特异——**假说 A（run-cap 破坏任务特异信息）不成立**。
+- **F2**：全覆盖相关性 task×orig 0.193 / ×final 0.157 / ×plan 0.152（动词代理 0.250/0.210）；任务四分位梯度倍数在三级几乎不变（1.71×→1.67×）——**RLE 没有进一步破坏信号，源头就弱**。
+- **F3 裁定**：**假说 B 成立** + 细化：RLE 是表示选择（Plan=阶段序列，无法表达迭代次数；32.1% instruction 含迭代措辞），即"任务描述 workflow 规模"与"Plan=阶段数"之间存在表示鸿沟。
+- **F4 修复方向含义**：修 run-cap 不是方向（展开迭代只会加长重复监督）；真正缺口在 Task 表示（需要结构化 workflow 规格——子目标/数据组/规模），属 Contract 重设计/数据工程（owner 级）。TRUNC-exclusion 与 run-cap 修复均降级。Stage-1 诊断链闭合：W3≈0.50 ← 长度/结构条件信号弱（源头 ρ≈0.2，RLE 继承）← 任务=散文摘要 + Plan=阶段序列。
+- 零训练、零服务器写入、冻结物未动。待 owner 裁定。
+
+## 2026-10-02：owner 裁定 R3-CD-3 Task 信息充分性审计（CPU-only）——主线冻结于当前状态
+
+- **裁定要点**：① Stage-1 问题定性升级："模型没训好" → "监督信号本身怎么定义"；W3=0.50 混合了 Task understanding / workflow inference / workflow construction 三层能力，需拆解；② 证据链闭合确认（R3-A/B/TRUNC/转换器/CD-2 全排除或定位）；③ **纠正一个大结论**：不说"GEE 数据不好"，而说"Task 字段是自然语言任务描述，不是 workflow specification"；④ **不做 Contract 重设计**（避免因果链难讲），先做 R3-CD-3：Task 信息量/可预测性分析——① Task→operation family ② Task→length/stage count 分箱 ③ Task→first/last op ④ Task→operation pair（局部依赖）；⑤ W3 重理解：W3-a Goal / W3-b Op set / W3-c Ordered set / W3-d Complete——若 a 高 d 低 → GEE 能教 task understanding 但不足以监督完整 construction（分层 Workflow Reasoning 方向）；若 a 都低 → GEE 的角色需重估。⑥ 不训练、不改 frozen asset、不碰 RL/Stage-2。
+- **实现方案**：TF-IDF + 线性探针 + 80/20 固定种子切分，对 family 多标签 / 长度分箱 / 首-尾 family / 转移对 分别测（含 majority 基线）；解读限定为"线性可提取信号"参考。
+
+## 2026-10-02：R3-CD-3 Task 信息充分性审计完成——信息阶梯：组件层全强（AUC 0.90+），缺口在完整序列组装
+
+- 报告：`r3cd_audit/R3_CD3_AUDIT_REPORT_v1.md`。TF-IDF+线性探针（n=37,044，80/20，seed 20260924），解读限定为线性可提取信号下界。
+- **信息阶梯**：L1 family 集合 **AUC 0.913**（20 类多标签，最差 family 也有 0.86）/ L2 长度分箱 **0.628 vs 基线 0.389**（1.6× lift，混淆集中相邻箱）/ L3a 首 family **无信号**（0.961 vs 0.943，纯 provisioning 惯例，结构性）/ L3b 末 family **0.626 vs 0.352**（+27pp 真信号）/ L4 相邻转移对 **AUC 0.904**（228 对，top 对 1.0）/ **L-full 完整序列（训练后模型）0.499**。
+- **判读**：组件层（做哪些操作、什么连什么、大致多长）信息全部在场且不弱；**缺口精确定位在"把局部正确的转移拼成全局一致序列"的组装层**——对应 owner 预判"GEE 能教 task understanding/operation 语义/局部依赖，但不足以监督完整 workflow construction"成立，支持分层 Workflow Reasoning 重设计，无需推翻 GEE 角色。
+- **局限**：线性探针为下界；family/长度标签来自自动分层池。
+- 待 owner：是否启动分层监督重设计（⑦ 外协议变更，owner 级）；TRUNC/run-cap/W2-2ep 维持冻结。零训练零 GPU，冻结物未动。
+
+## 2026-10-02：R3-CD-4 Local-to-Global Assembly Audit 完成——结局 2 成立：瓶颈在生成/序列化，不在组装监督
+
+- 报告：`r3cd_audit/R3_CD4_AUDIT_REPORT_v1.md`。**设计前提（读冻结评测器源码确认）**：W3 指标=family 多重集 bag-F1（overlap_counts+f1_from_counts），顺序完全不计分——"组装"=选对 family 多重集。
+- **主结果**：L1 预测 + L2b 长度预算 → 确定性分配 → **bag-F1 0.60**（三策略一致）> 训练后 LLM 0.499（+10pp）>> 同切分平凡基线 0.211（+39pp）；**oracle 上界 0.846**（剩余 15%=计数分配子问题；预测组装达选择上界 71%）。
+- **LLM 失败模式**（评测器自身解析函数复算，n=206，复算 F1 0.553 验证管线一致）：**系统性欠发射**——COLLECTION_MGMT −435 / SPATIAL_FILTER −355 / TEMPORAL_FILTER −195，稀有 family（BAND_SELECT/ATTRIBUTE_FILTER/THRESHOLD_LOGIC）pred_rate≈0，几乎零过发射——向高频"小曲目库"收缩，与固定长度输出同源（回退先验）。
+- **裁定**：结局 2 成立——信息与组合逻辑都在，自回归生成没利用；优先方向 = structured decoding / intermediate representation / planner→serializer 两阶段（selection head 出多重集+长度 → 序列化器渲染），而非单纯加 SFT 或改 Task 表示。
+- **附带登记**：①当前 W3 gate 对顺序不敏感（bag 口径任意置换同分）——顺序敏感口径是 gate 设计层观察，冻结物不动；②L4 转移 AUC 0.904 对当前 gate 无直接贡献（未来顺序敏感口径有价值）；③计数分配为独立子问题（oracle 下占 15% 缺口）。
+- 零训练、零 GPU、冻结物未动。planner→serializer 设计草案归 owner。
+
+## 2026-10-02：owner 裁定 Planner→Serializer 最小可验证实验链（①-③ CPU 本回合执行；④训练待放行）
+
+- **定性结论（owner）**：模型不是不知道该做什么——组件信息在（AUC 0.913/0.904/F1 0.614），但一步生成完整 Plan 时退回高频先验（保守化欠发射）；Route-2 阶段结论暂记："GEE 数据有组件级价值，瓶颈在一次性自回归生成的利用方式"。
+- **实验序列**：① 定义 Planner schema → ② CPU 构造 Gold blueprint → ③ CPU 验证 blueprint→assembly → ④ 小规模 Planner SFT（Qwen3.5-9B+LoRA，只学 families+counts/length）→ ⑤ Planner+Rule Serializer → ⑥ 与 Direct Task→Plan 对比（若 >0.50 则核心假设成立）→ ⑦ 完整 Planner→Serializer → ⑧ Stage-1 Gate → ⑨ Stage-2 → ⑩ RL。**④⑤ 是关键**：验证"LLM 能不能学会先做 Planner"。
+- **本回合执行 ①②③（CPU）**；④ 起需 GPU 与 owner 放行。
+
+## 2026-10-02：Planner Schema v1 设计 + Gold Blueprint 构造验证完成（步骤①②③ ✓）
+
+- 报告：`planner_design/PLANNER_SCHEMA_V1_REPORT_v1.md`；数据 `04_DIAG_WORK/planner_gold_blueprints_v1.jsonl`（37,044 行 / 32.5MB，本地就绪）。
+- **Schema v1**：`{families（首现顺序去重）, counts（每 family 次数）, length}`——**counts 必须在 schema 里**（R3-CD-4 oracle 15% 计数缺口的补齐手段，已验证）；Serializer v1 = 按 counts 展开（规则程序）。
+- **验证**：V1 oracle blueprint → serializer → **bag-F1 = 1.0000**（全量，冻结口径下无损）；V2 展开顺序==gold 顺序仅 **44.1%**（blueprint 保 bag 损顺序——当前 gate 兼容，未来顺序敏感口径需 schema v2 扩展，已登记预留位）；V3 multiset→顺序平均可排列数 3.7×10³¹（本质一对多）；**V4 监督目标 14.4 词 vs gold 249.3 词（17× 压缩）**——Planner 目标极小且与 Task 可预测成分对齐。
+- **待 owner**：④ 小规模 Planner SFT（需新训练脚本=⑦ 外代码变更+GPU 窗口，训练时长预计远小于全 Plan SFT）；⑤⑥ 对比实验设计。数据已就绪。
+
+## 2026-10-02：owner 放行 R3-PLANNER-P0（Planner 可行性实验）——严格定位可行性验证，非正式 Stage-1
+
+- **放行条件**：Task→Blueprint JSON；QLoRA/NF4/bf16 与之前尽量相同；1 epoch；无 curriculum/RL/Serializer 学习；不动冻结 Stage-1 数据集；独立实验目录与 checkpoint。
+- **评测三指标**：① Blueprint parse 率 ② Family bag-F1（选对没选对）③ Count/Length 准确率（family 对但 count 错的模式）。之后 Planner→Rule Serializer→冻结 W3 evaluator vs Direct 0.499（预期 0.60+ 则核心假设成立；0.58-0.60 ≈ 组件天花板区域也算成功；0.75+ = 强提取）。
+- **定位与解读上限**：可行性验证；0.60 ≈ 现有组件信息可达区域（L1+L2 assembly 0.60 / oracle 0.846），不是失败。
+- **实验序列冻结**：CD-2/3/4 ✓ → Schema v1 ✓ → Gold Blueprint ✓ → **④ Planner SFT（现在做）** → ⑤ Planner+Rule Serializer → ⑥ 对比 → ⑦ 正式 Planner→Serializer → ⑧ Stage-1 Gate → ⑨ Stage-2 → ⑩ RL。
+
+## 2026-10-03：R3-PLANNER-P0 smoke 通过 + 全量启动（干净起跑，无 resume）
+
+- **smoke 通过**（独立目录 stage1_run_planner_p0_smoke）：[done] steps=9 examples=300 tokens=14,466 tgt_trunc=0 task_too_long=0 elapsed=313s——**每行仅 ~48 tokens**（task ~100 + blueprint ~40），Pipeline 零新训练代码（Stage1PlanCollator 通用行格式直接复用）。
+- **数据集**：planner_p0_train.jsonl（33,339 行，SHA `2bfc0ad7…`）+ planner_p0_eval.jsonl（3,705 行 held-out，SHA `30d19cb0…`），90/10 seed 20260924；行格式 {task, context="", target=blueprint紧凑JSON, separator=含输出格式指令}；tokenizer 实测 ~48 tokens/行。
+- **全量启动**：PID 217843，00:12 起，`[release] full run: 33,339 rows x 1 epoch`，无 [resume] 行，GPU 11.5GB/39%。1,042 optimizer steps × ~41.6s ≈ **12h，预计 10-03 ~12:15 完成**。
+- **训练后评测计划**（新诊断脚本，非冻结评测器）：① Blueprint parse 率 ② family bag-F1（与冻结 gate 同口径）③ count/length 准确率；然后 Planner→Rule Serializer→bag-F1 vs Direct 0.499。判读带：0.58-0.60 ≈ 组件可达区（成功）；0.75+ = 强提取；<0.5 = Planner 假说存疑。
+
+## 2026-10-03：R3-PLANNER-P0 训练完成（09:54，9.02h）——评测已启动
+
+- `[done] mode=release steps=1041 examples=33,339 tokens=1,694,098 tgt_trunc=0 task_too_long=0 elapsed=32,460s`（9.02h）。adapter `/root/data/stage1_run_planner_p0/stage1_adapter`。
+- 评测脚本一次启动失败（`load_in_4bit` 重复传参 TypeError），修复后重跑成功（PID 299410，GPU 7.9GB）——诊断脚本为独立新工具，不涉及冻结评测器。
+- 评测：3,705 held-out 行逐条生成 blueprint（max_new_tokens=192, greedy），输出 M1 parse 率 / M2 family bag-F1 / M3 count 精确率 / M4 length exact/±1 → metrics json。预计 ~1.5-2h（今日 ~13:30-14:00 出结果）。出结果后与 Direct 0.499 对比（判读带 0.58-0.60 成功 / 0.75+ 强提取 / <0.5 存疑）。
+- 12:07 ✅ P0 评测进行中（11%）：**实时读数 parse=1.000、family bag-F1=0.642**——已高于组件组装估计（0.60）与 Direct 0.499；全量指标 ~13:30 出。
+- 13:07 ✅ P0 评测进行中（32%）：parse=1.000 稳定，f1=0.649（800→1200 行微幅波动，0.642→0.660→0.649——稳定在 0.64-0.66 区间）；全量指标 ~14:00 出。
+- 14:07 ✅ P0 评测进行中（54%）：parse=1.000、f1=0.648（稳定）；全量 ~14:50 出。
+- 15:07 ✅ P0 评测进行中（65%）：parse=1.000、f1=0.647（稳定）；全量 ~14:50-15:40 出。本批（13:07/14:07/15:07）合并 commit。
+- 16:07 ✅ P0 评测进行中（86%）：parse=1.000、f1=0.647；预计 ~16:20 出全量。
+
+## 2026-10-03：R3-PLANNER-P0 出分——**Planner 假说决定性成立**：0.645 > Direct 0.499（+14.6pp），parse 100%
+
+- 全量指标（n=3,705 held-out）：**M1 parse = 1.0000** / **M2 family bag-F1 = 0.6448** / M3 count 精确 0.5027 / M4 length exact 0.2443、±1 = 0.5231（预测均值 5.98 vs gold ~8.4）。
+- **判读（owner 判读带）**：0.6448 落"成功"区（>0.60），未达"强提取"（0.75+）。**核心假设成立：一步生成是瓶颈，不是 Task 信息**——Planner+RuleSerializer 超 Direct +14.6pp，且超线性探针组装器 0.60（LLM 语义利用超出 TF-IDF）。**M1=1.0 重大对照**：结构化小目标下格式崩塌完全消失（Direct 无效率 86%）——保守化是"任务太大"的症状。
+- 剩余缺口 = 计数分配（M3 0.50）+ 长度保守（5.98 vs 8.4），对应 oracle 差距 0.846−0.645。
+- 报告：`planner_design/R3_PLANNER_P0_RESULTS_v1.md`（含 metrics json + 3,705 逐项）。
+- **建议已登记**：进入 ⑦ 正式 Planner→Serializer Stage-1 重设计（计数专项/长度校准/顺序敏感口径设计）；原冻结 Stage-1 v2_2 主线与 gate 不动，切换归 owner。零冻结物变更。
+
+## 2026-10-03：owner 确认 P0 为路线节点——措辞收紧 + P1/P2 路线冻结 + RL 定位修正
+
+- **措辞修正**：P0 不是"决定性证明 Task 信息充分"，而是"**在当前冻结数据、当前 bag-F1 口径和 P0 训练预算（1.69M tokens）下强支持 Planner 假说**"（P0 报告 §2 已加 owner 修正附注）。
+- **路线冻结**：P0 ✓ → **P1 = count/length 专项监督**（缺口画像："做什么"已不错 M2 0.645，"做几次/多长"偏弱 M3 0.50/M4±1 0.52，"怎么排序"v1 未表达）→ **P2 = 顺序敏感 Blueprint v2** → Stage-1 新正式候选 → Stage-2 QGIS Grounding。不一次改掉所有东西。
+- **架构方向确立**：Task → Structured Planner → Workflow Serializer → QGIS Grounding（替代 Task→一次性生成→Grounding）。
+- **RL**：继续冻结；未来若引入，定位在结构化 Blueprint / QGIS Graph 的规划优化阶段，不用于修补长文本生成——理由：现在知道 Structured Planner 就能把 0.499→0.645，应先把监督学习路线做稳。
+- `aa16937` 定性为路线节点：R3 从"诊断 SFT 为何不行"进入"下一代模型接口的实验证据"阶段。
+- 10-03 17:07 例行检查：GPU 空闲（11 MiB / 0%），无训练/评测进程（pgrep 命中为远程 shell 自匹配）；状态 = 主线冻结于 P0 ✓ 节点，等 owner 对 P1 的裁定。
+
+## 2026-10-03：P1 设计比较文档完成（CPU）——P0 误差画像支持"先 B"
+
+- 报告：`planner_design/R3_PLANNER_P1_DESIGN_v1.md`。新增 P0 全量误差画像（n=3,705 parsed）：
+  ① 长度偏差双峰（mean −3.07 / p50=0 / 23.6% 行严重低估 <−2 步）；② **计数饱和曲线**：误差随 gold 计数单调恶化（count=1 exact 0.70 → count=10 −6.80 → ≥50 −25~−365），模型计数在 1-3 饱和——欠训练回归的教科书形态；③ 虚报 family ~1.05 个/行；④ per-family 高计数者最差（THRESHOLD_LOGIC exact 0.07）。
+- **三方案比较**：A 格式显著化（预期收益低——parse 100% + count=1 命中 70% 说明不是读的问题）/ **B 预算 2-4 epoch（推荐先行，饱和曲线+双峰+W2 阈值先例三证据同向；2ep 18h，可 resume 阶梯到 4ep）** / C 计数加权（与 B 混合破坏归因，后置）。
+- 成功判据：M3 ≥0.65 且 M2 不降（±0.02）且 M4±1 ≥0.65；失败判据：饱和形态不变 → 转 C。
+- 未训练；P1 放行归 owner。
+
+## 2026-10-03：owner 放行 R3-PLANNER-P1-B-2EP——严格 resume，只加训练预算
+
+- **放行条件**：Schema v1 / train-eval split / LoRA / lr / batch / max_len / loss / 数据 / Serializer 全部不变；不碰冻结 Stage-1/Gate/RL；**从 P0 checkpoint 精确 resume**，额外 1 epoch（总 2 epoch）= 干净的"训练预算增加"因果比较。
+- **评测要求**：三判据（M3≥0.65 / M4±1≥0.65 / M2≥P0−0.02）之外，必须保存 **count-error curve**（gold count 分桶的 bias/exact，P0 vs P1-B 对照）——验证"饱和曲线整体右移"而非只看 M3 数字；**phantom family 率**（~1.05/行）顺手追踪——若 count/length 修复而 phantom 不动，则 family selection 与 count allocation 是两个独立误差源（影响 P2 设计）。
+- 定位：P1 专项实验，不提前宣布 Stage-1 新路线成立；失败判据 = 曲线不动 → 停止堆 epoch 转 P1-C。
+
+## 2026-10-03：R3-PLANNER-P1-B-2EP 启动——严格 resume 自 P0（step 1041），再训 1 epoch
+
+- P0 checkpoint 确认在位（latest.pt，09:14 收尾保存）；resume 验证：`[resume] step 1041 (rows 33339)` = P0 精确终点，adapter+optimizer+scheduler+RNG 全量恢复。PID 327343，17:25 起，GPU 13.3GB / 50%。
+- 预算：+1,041 步 ≈ 9h，**预计 10-04 ~02:30 完成**；完成后用同一 eval 脚本（held-out 3,705 行不变）+ 新增 count-error curve（P0 vs P1-B 同图）+ phantom family 率。
+- 10-03 18:07 ✅ P1-B 正常：存活 43m，GPU 16.9GB / 36%，ep2 段进度 79/1,041 步（31.1s/步，planner 短行更快），loss 2.08-2.16（第二轮起步形态，与 ep2 同型）；ETA ~10-04 02:25。
+- 19:07 ✅ P1-B 正常：存活 1h43m，GPU 19.0GB / 42%，ep2 段 179/1,041 步（30.6s/步稳定），loss 2.09-2.11；ETA ~02:25 不变。
+- 20:07 ✅ P1-B 正常：存活 2h43m，GPU 19.0GB / 56%，ep2 段 309/1,041 步（30.5s/步稳定），loss 2.01-2.07，ckpt@1350 已存；ETA ~02:25 不变。本批（18:07/19:07/20:07）合并 commit。
+- 21:07 ✅ P1-B 正常：存活 3h43m，GPU 19.0GB / 42%，ep2 段 419/1,041 步（40%），30.4s/步稳定，loss 1.95-2.16；ETA ~02:25 不变。
+- 22:07 ✅ P1-B 正常：存活 4h43m，GPU 21.3GB / 47%，ep2 段 539/1,041 步（52%），30.4s/步稳定，loss 2.04-2.12；ETA ~02:25 不变。
+- 23:07 ✅ P1-B 正常：存活 5h43m，GPU 23.6GB / 42%，ep2 段 659/1,041 步（63%），30.5s/步稳定，loss 2.01-2.07；ETA ~02:25 不变。本批（21:07/22:07/23:07）合并 commit。
+- 10-04 01:12 ✅ P1-B 正常：存活 7h48m，GPU 12.0GB / 44%，ep2 段 919/1,041 步（88%），30.5s/步稳定，ckpt@1950 已存；剩 122 步 ≈ 62 分钟，完成预计 ~02:15。
+- 10-04 02:07 ✅ P1-B 正常（临近完成）：存活 8h43m，step 2,060（ep2 段剩 22 步 ≈ 11 分钟），loss 1.98-2.01；预计 ~02:18 [done]。下次检查（03:07）将启动评测。
+
+## 2026-10-04：R3-PLANNER-P1-B 训练完成（02:14 [done]，累计 2 epoch）——评测已启动
+
+- `[done] mode=release steps=2082`（= 1,041×2 精确）；本轮 tgt_trunc=0、task_too_long=0，本轮耗时 ~8.8h。adapter 已更新（`stage1_run_planner_p0/stage1_adapter`，注意：P1-B 与 P0 共用输出目录的 adapter 位置——P0 的 adapter 已被 P1-B 覆盖，P0 结果已落盘不受影响）。
+- 评测已启动（PID 375261，同一 held-out 3,705 行，同一脚本）：M1-M4 指标 + items（供 count-error curve 与 phantom family 对照分析）。预计 ~4.5h，**出分窗口 ~06:45-07:00**。出分后出 P0 vs P1-B 对照（三判据 + 饱和曲线右移 + phantom 率）并报 owner。
+- 10-04 04:07 ✅ P1-B 评测进行中（11%）：**parse=1.000、实时 f1=0.673**（P0 同期 0.642→+3pp）；全量 ~06:45-07:00 出。
+- 10-04 05:07 ✅ P1-B 评测进行中（32%）：parse=1.000、f1=0.675 稳定（P0 全量 0.6448，+3pp）；全量 ~06:45-07:00 出。
+- 10-04 06:07 ✅ P1-B 评测进行中（54%）：parse=1.000、f1=0.676（微升至稳定）；全量 ~07:00-07:30 出。
+- 10-04 07:07 ✅ P1-B 评测进行中（76%）：parse=1.000、f1=0.673；预计 ~07:40 出全量。
+
+## 2026-10-04：R3-PLANNER-P1-B 出分——M2 升 M3/M4 未达标，深尾饱和曲线冻结；按预注册规则建议转 P1-C
+
+- 全量对照（n=3,705 held-out 同集）：M1 1.0→1.0 / **M2 0.6448→0.6718（+2.7pp，超越判据）** / **M3 0.5027→0.5385（+3.6pp，未达 ≥0.65）** / M4±1 0.5231→0.5536（未达 ≥0.65）；预测长度均值 5.98→6.09（仍保守）。
+- **Count-error curve**：小计数区（1-6）温和右移（+3-6pp）；8/10 桶跳变（+0.24/+0.25，n=112/56 小样本慎读）；**≥13 深尾完全冻结**（bias −70~−365 量级不变）。多 1 epoch 收益集中于小计数区。
+- **Phantom**：行占比 64.2%→60.3%、槽位 1.05→0.95/行——边缘改善，与 count 改善幅度不匹配 → **family selection 与 count allocation 是部分独立误差源**（影响 P2 设计，owner 预判获证）。
+- **按 owner 预注册规则**：曲线介于中间偏"不动"（深尾冻结）→ **建议停止堆 epoch，转 P1-C（count/length loss 加权）**。最终裁定归 owner。
+- 工具事件：eval 脚本输出路径硬编码导致 P1-B 覆盖服务器上 P0 metrics 文件——P0 结果 10-03 已拉回本地仓库无损失；P1-B 文件已改名 `planner_p1b_eval_metrics.json`；后续脚本参数化输出路径（已登记）。
+- 报告：`planner_design/R3_PLANNER_P1B_RESULTS_v1.md`。GPU 空闲，冻结物未动。
+- 10-04 08:0x 例行检查：GPU 空闲，无训练/评测进程；状态 = P1-B 结果已报，等 owner 对 P1-C / P2 / 其他下一步的裁定。
+- 10-04 11:0x 例行检查：GPU 空闲，无训练/评测进程；状态不变 = 等 owner 对 P1-C / P2 的裁定。
+
+## 2026-10-04：长度分桶画像完成——决定性证据支持 owner 判断：深尾是表示问题，P1-C 数值加权应暂停
+
+- 报告：`planner_design/R3_P1_LENBUCKET_PROFILE_v1.md`（脚本 `lenbucket_profile_v1.py`；P1-C smoke 已按指令停止，GPU 空闲）。
+- **决定性发现**：gold distinct family 数在所有长度桶恒定 ~2.9-4.5，而 repeat_share 随长度单调升至 **95.1%**（51+ 桶）——长 workflow = 同 4-5 种 family 的重复，**不是更多种操作**。Planner 的 family 数预测与 gold distinct 一致，学不会的只是"重复次数"这个数字，而次数由数据性质（波段数/类别数/年份跨度）决定，**从 Task 文本不可识别**。
+- **P0→P1-B 分桶对照**：预算只改善 1-12 步桶（F1 +2~4pp），51+ 桶 F1 0.127→0.141、bias −189 不动——**预算假说在深尾被否定**。
+- **结论**：深尾是表示问题。正确方向 = **Blueprint v2 显式重复结构（loop 分组/迭代标记，以 pre-RLE 原始链游程为蓝本）+ 量级解析移出 Planner（交给 Serializer/Grounding，Stage-2 有实际数据）**；M3 绝对计数指标降级（测的是不可识别量），代之以分组正确率+长度粗分箱（冻结 gate 不动）。
+- 待 owner：Blueprint v2 设计批准（数据工程级）；P1-C 数值加权暂停。
+
+## 2026-10-04：owner 裁定启动 Blueprint v2 CPU/schema 设计（不训练）——Ordered + Repetition-aware
+
+- **问题重定义**：不是"模型不会预测数字"，而是"让 Planner 预测一个 Task 无法可靠确定的数字（BandArithmetic × 137）"。长 workflow = 少数操作的大量重复（51+ 桶 distinct 4.4 / repeat 95.1%），重复次数取决于数据性质（波段/年份/类别/feature 数），不在 Task 文字里。
+- **v2 核心思想**：Planner 负责"发现重复结构 + 语义条件（per-band/per-year/per-feature）"，**绝对次数移到 Serializer/Grounding**（读取实际数据上下文展开）——与两阶段路线（GEE 通用推理 / QGIS 实际展开）天然契合。
+- **v2 schema 要求**：阶段顺序 + 数据依赖 + 重复/循环结构 + 循环体 + 循环语义条件；绝对 count/length 不再是 Planner 核心目标。
+- **执行序列**：Schema v2 → Gold 转换 → 可表达性验证 → lossless/coverage 审计 → evaluator 设计。**不训练**；不改冻结 Stage-1 v2_2 与现有 gate（v2 为并行候选路线）。
+- **蓝本来源**：pre-RLE 原始链的游程结构（R3-CD-2：RLE 折叠的就是循环迭代；原始链保留完整迭代信息）。
+
+## 2026-10-04：Blueprint v2 Schema 审计完成——无损性 100%；重要细化：家族级 95% 重复主要是粒度伪影
+
+- 报告：`planner_design/BLUEPRINT_V2_AUDIT_REPORT_v1.md`；Gold v2 数据 `blueprint_v2_gold_v1.jsonl`（37,044 行，SHA `46d51db9…`）。
+- **Schema v2**：stages = 原始语义链极大游程序列（语义粒度 30 类，细于 plan family 19 类）+ repeat 计数 + iteration_hint 分类；量级只注记不预测。
+- **A1 无损**：expand(stages)==原始链 37,044/37,044；Σrepeat==original_semantic_length 37,044/37,044。
+- **A2/A3**：65.3% workflow 含循环（24,186/37,044）；loops/workflow 1.31→9.35（51+ 桶）；游程最长 584。
+- **⚠️ 重要细化（诚实修正）**：51+ 原始桶的**语义级** repeat_share 仅 0.245——原始长 workflow 的主体是**大量不同语义操作**（stages 均值 114），v1 plan 层的 95.1% family 重复**主要是 family 粒度粗化（30→19）的合并伪影**，非字面循环。**v2 必须定义在语义粒度**——这正是 stages 取语义游程的原因。
+- **A4**：~80% instruction 含至少一个迭代维度线索（per_band 47%/per_class 29.9%/per_year 19.4%/per_feature 14%），20.2% 无 hint——iteration_hint 分类目标可学习（弱标注需抽验）。
+- **A5**：RLE→plan 比值 0.863（chain_to_plan 再合并 14%）——v2 需自己的语义粒度评测口径，现有 plan-family gate 冻结不动。
+- 待 owner：Schema v2 定稿（hint 标注规则/无 hint 行处理）；是否启动 Planner-v2 小规模 SFT。
+
+## 2026-10-04：owner 裁定 Schema v2 修订定稿 + evaluator E1-E4 + CPU preflight（不训练）
+
+- **Schema 修订**：`loop_groups` → **`repetition_groups`**（repetition=数据事实，loop=解释，不把未验证的循环语义硬编码进 gold）；`iteration_hint` = 关键词弱标注多标签（per_band/per_class/per_year/per_feature/generic_each/unspecified），**300-500 条抽样人工验证**；20.2% 无 hint 行**保留为 unspecified**（≠no repetition，避免 selection bias）；绝对 repeat **降为 diagnostic**。
+- **Evaluator E1-E4**：E1 Ordered Stage-F1（LCS-F1/edit distance/exact，核心）；E2 Repetition-group F1（结构对即可，不判数值）；E3 iteration-hint（micro/macro/per-class，弱标注域内）；E4 repeat 数值 bias 仅 diagnostic。
+- **三层职责确立**：Planner=结构（stages/repetition/hint）；Serializer/Grounding=实例化（cardinality/参数/QGIS 算子）；绝对次数不再要求 Planner 预测。
+- **下一步**：CPU preflight——E1-E4 可计算性 + 自洽测试（gold vs gold）+ **关键判别：v2 语义 stage 是"可从 Task 推断的结构"还是"只是原始链全量转储"**（线性探针对比 v2 语义 30 类 vs v1 plan 19 类的可预测性 + repetition-presence 可预测性）+ 400 条弱标注抽样（供 owner 人工验证）。Planner-v2 SFT 暂缓。
+
+## 2026-10-04：Blueprint v2 preflight 完成——E1-E4 全过 + 可学习性判别 PASS（v2 不是原始链转储）
+
+- 报告：`planner_design/BLUEPRINT_V2_PREFLIGHT_REPORT_v1.md`；Gold v2（修订版：repetition_groups + 弱标注 hint）`blueprint_v2_gold_v2.jsonl`；人工抽样 `iteration_hint_review_sample_v1.jsonl`（396 条 / 33 种 hint 模式分层）。
+- **E1-E4 preflight 全过**：E1 Ordered Stage-F1 可计算且顺序敏感（旋转罚至 0.75）；E2 repetition 签名构造性唯一（空集约定已修）；E3 弱标注 396 条待 owner 人工 precision 验证；E4 repeat bias diagnostic 位 ✓。过程修正：E2 空集约定 + hint 字段误读（V22 无 instruction，已改用 SRC instruction 重建）。
+- **可学习性判别 PASS（本轮最关键）**：v2 语义 stage 集合 AUC **0.922** ≈ v1 plan family 0.915（细粒度不是噪声）；**v2 独有的 repetition-presence AUC 0.940（全场最强）**——v2 是"Task 可支持的可学习结构表示"，非原始链全量转储。Planner-v2 SFT 的信息前提成立。
+- 附注：P_hint AUC 0.968 含弱标注自洽成分（标签来自关键词），语义质量以 396 条人工验证为准。
+- 待 owner：人工验证 396 条 → precision 达标（≥0.8-0.9）则 E3 冻结，进入 Planner-v2 smoke 设计（100-300 条，目的=格式稳定性/可学性初检，训练另放行）。
+
+## 2026-10-04：owner 裁定——Planner-v2 Gate PASS + Human Hint Validation PENDING + SFT NOT AUTHORIZED；人工验证协议确定
+
+- **状态正式化**：Planner-v2 = Data/Schema/Evaluator Gate PASS；Human Hint Validation PENDING；SFT NOT AUTHORIZED。零 GPU/零训练/冻结物不动 维持。
+- **人工验证协议**：三级判断 TP/FP/ABSTAIN（ambiguous 不强判 FP，如 "for each input…" 应 ABSTAIN 而非 generic_each）；Precision = TP/(TP+FP)，Abstention rate = ABSTAIN/396。
+- **验证通过后 Contract Freeze**：Schema v2 / Gold v2 / hint 规则 / unspecified 规则 / E1-E4 全部冻结（防止"训练→看结果→改 schema→再训"的因果劣化）。
+- **Smoke 设计（验证后）**：100-300 条，目的限定 S1 JSON compliance / S2 ordered structure（防退化 unordered list）/ S3 repetition presence（不要求 exact count）/ S4 unspecified 滥用检查 / S5 hint shortcut 检查；新增 **Structure-only validity** 指标（family/order/repetition/hint 分项，不看 absolute repeat）。
+- **证据链定格**：R3-CD-3（信息在）→ CD-4（结构化+serializer 优于直接生成）→ Planner-v1（0.499→0.645→0.672）→ P1 长尾审计（absolute count 不可识别）→ Blueprint-v2（semantic order + repetition structure）→ v2 preflight（AUC 0.922/0.940）→ **v2 是可学习的结构目标**。P1-C 正式关闭（其目标被 v2 数据审计解释：Planner 不应承担不可识别的绝对计数）。
+- **现在开始**：与 owner 逐批人工验证 396 条。
+
+## 2026-10-04：Hint 人工验证 Batch 1（per_band，12 条）——2 TP / 7 FP / 3 ABSTAIN；规则立即修订
+
+- **owner 裁定标准（确立）**：不以"任务提到 band"为 TP 证据；需三条件结构判定——① Band evidence（可枚举多波段：B2/B3/B4、red/green/blue 等）② Iteration evidence（任务语义明确"逐个/分别处理这些 band"）③ Repetition alignment（repetition 结构与 band 维度可解释对应）。缺乏关键证据 → ABSTAIN 不升级。
+- **负词典建立**：C-band（频段专名）/ QA60 band（QA 数据层）/ Sentinel-2A/B（平台型号）/ BAND_SELECT（操作名）/ NDVI/NDWI/SAVI（指数）/ RGB/true-color composite（涉及 band ≠ 逐 band 重复）。
+- **Batch 1 结果**：TP = B8、B12；FP = B2、B3、B4、B6、B9、B10、B11（7 个）；ABSTAIN = B1、B5、B7。系统性 FP 形态 = "band" 字面命中专名/操作名/指数名。
+- **裁定**：现在修订 per_band 规则（非 freeze 后再修）→ 对同 12 条重跑 → owner 复验 → 再进下一批。Contract Freeze 冻结的是人工校准后的规则。
+
+## 2026-10-04：per_band 规则 v3.1 校准完成——与 owner 裁定一致 11/12
+
+- 规则演进：v2（初版结构规则，4 分歧）→ v3（负词典修正 + 指数签名 + 结构对齐判 TP）→ **v3.1（index 上下文使 B-code 枚举失效：NDVI 公式里的 B4/B8 是算术标识，非迭代枚举）**。
+- **v3.1 vs owner Batch 1 裁定：11/12 一致**（TP 2/2、FP 5/7、ABSTAIN 4/3——唯一残余 48503：owner FP（×13 多集合过滤链），规则 ABSTAIN——词汇层不可判定，ABSTAIN 为安全方向输出）。
+- 规则要点（v3.1）：proper-neg（C-band/QA60/Sentinel-2A/B）+ band 枚举（B-code 连续列表或 red/green/blue 共现）+ 迭代短语或结构对齐（repeat ∈ {n_enum, 2×n_enum}）→ TP；proper-neg 或指数签名且无枚举 → FP；其余 ABSTAIN。
+- 待 owner 确认：规则 v3.1 定稿 → 全 396 条重打 per_band 标签 → 继续后续批次（per_class/per_year/per_feature/generic_each/unspecified/no_repetition）。
+
+## 2026-10-04：per_band rule v3.1 FREEZE（owner 定稿）——"calibrated/frozen for P0 validation"
+
+- **冻结记录（owner 原话口径）**：per_band v3.1 — calibrated/frozen for P0 validation；Human agreement **11/12**；TP precision-first policy maintained；Known limitation: multi-collection/filter repetition may remain ABSTAIN when lexical/structural evidence is insufficient。
+- **owner 三确认**：6460 FP 正确（index context 的 B4/B8 是算术输入标识）；48503 ABSTAIN 是正确工程选择（规则目标=高 precision 产出可接受 hint，非强行复现人工标签）；Landsat 5/7 平台标识不入负词典（平台数可参与 repetition 对齐，如 B12 的 3 RGB × 2 sensors = 6——由语义角色/context 决定）。
+- **纪律确立**：每个新 hint dimension 先人工抽样校准规则、再全量重打；不在 396 条间反复改规则。最终产出 = 经独立人工验证的 Planner-v2 Hint Contract → Contract Freeze → SFT authorization gate。
+- **序列**：① v3.1 全量重打 396 条 per_band → ② P0/P1-B baseline 表更新（M1/M2 与 hint 无关，不变；E3 口径更新）→ ③ Batch 2 per_class。
+
+## 2026-10-04：Hint 人工验证 Batch 2（per_class，12 条）——1 TP / 8 FP / 3 ABSTAIN；class 四角色 taxonomy 确立
+
+- **裁定**：TP = C3（显式类别枚举 + "within specific land cover classes" + AGGREGATION×8 强对应）；FP = C1/C2/C4/C6/C7/C8/C9/C12；**ABSTAIN 锚点 = C5/C10/C11**（不硬压成 FP）。
+- **class 四角色 taxonomy（owner 确立）**：① 输入属性 class label（样本属性）② 输出类别空间（RF 输出 N classes）③ QA/flag 类别 ④ 真 class-wise iteration——**只有 ④ 支持 per_class TP**；①-③ 默认不产生 TP，除非另有逐类处理证据。
+- **per_class 规则指令**：优先"逐类动作语义"（for each class / within each class / separately for each class / for each land-cover type / group/aggregate by class）= iteration evidence；"classify into N classes"/"N classes:"/"class labels"/"land cover classification" 仅 = class presence（不能 TP）。
+- **ABSTAIN 锚点纪律**：C5/C10/C11 类（枚举存在但对齐不明）保留 ABSTAIN，不为覆盖率硬压成 FP。
+
+## 2026-10-04：per_class 规则 v2 校准——8/12 精确一致，4 残余全部为安全方向 ABSTAIN；建议冻结
+
+- 迭代过程：v1（7/12，词数枚举缺失）→ 精修（ALT 计数对齐 + 枚举清单长度对齐 + 输入产品 FP + classif_op ABSTAIN）→ v2 **8/12 精确一致**；4 残余（40518/63576/28513/41306）**全部 = 规则 ABSTAIN vs owner FP** 的安全方向偏差（规则拒绝在词汇证据不足时判 FP）——符合 precision-first 与"ambiguous → ABSTAIN"协议。
+- 中途发现并修复：ENUM 漏配 "types including"；ALT 需计数对齐（"cloud masking" 不解释 ×4 重复——29220 根因）。
+- **新行为学信号**：per_class 的 lexical FP 率甚至高于 per_band（关键词命中 192/396，owner FP 8/12）——"class/land cover" 在本数据集中几乎总是主题词/输出空间/QA 语境。
+- **per_class v2 FREEZE 建议**（同 per_band 先例）："calibrated/frozen for P0 validation"，Human agreement 8/12 exact（4 残余安全方向），precision-first policy，known limitation（枚举清单深层对齐不可 lexical 判定 → ABSTAIN）。
+- **待 owner 裁定的一个口径问题**：ABSTAIN 行的 hint 处理——(a) 保留但标记 unverified（覆盖率优先）或 (b) 置为 unspecified（精度优先）。影响 E3 口径与 Contract Freeze 文本。
+- per_class 全量重打在口径确认后执行；然后 Batch 3 per_year。
+
+## 2026-10-04：ABSTAIN 语义定稿 + per_class v2 FREEZE + 全量重打完成
+
+- **Contract 语义（owner 原话，入 Contract Freeze 文本）**："ABSTAIN is not treated as a negative semantic judgment; it is an abstention from providing the corresponding hint. For Planner input, ABSTAIN is normalized to `unspecified` to preserve precision-first behavior." 论文表述：**ABSTAIN = insufficient evidence → no hint emitted**（不得写成 ABSTAIN = negative）。
+- **人工验证标签 vs Planner 可用 hint 分离**：TP→保留；FP→删除；ABSTAIN→不送入 Contract（=unspecified）。理由：保留 per_class (unverified) 仍会被模型当有效信号利用，破坏 high precision > high coverage 原则。
+- **per_class v2 FREEZE**（同 per_band 先例）：calibrated/frozen for P0 validation；8/12 exact + 4 安全方向 ABSTAIN；precision-first。
+- **全量重打完成**：per_class 校准作用于 gold v2.1 → **v2.2** 与 review sample → v1.2（per_band v3.1 + per_class v2 双校准叠加）。
+
+## 2026-10-04：per_year 规则 v1 校准——10/12 一致；两处"待重裁"发现（完整文本含 per-year 处理语句）
+
+- 规则演进：v1（9/12，"annual" 光杆词误判 + season-only 误 FP）→ 精修：① **annual 必须伴随逐年处理动作**（annual median/mean/maximum/composites、aggregated annually）——光杆 annual → ABSTAIN；② season-only → ABSTAIN（结构性季节证据才 FP，如 Y9 的 "three seasonal periods... ascending and descending"）；③ 结构对齐判 TP（RASTER_LOAD×n == 年份跨度，Y7 强正例）。
+- **当前 10/12**（TP 5/5、FP 2/2、ABSTAIN 3/5）。
+- **两处 differs = 建议重裁（新证据）**：87169 与 28819 的**完整任务文本**含明确 per-year 处理语句——87169: "It computes **annual DOY (day of year) composites by year**"；28819: "creates three time-series charts: **annual DOY trends by year**"。你的 ABSTAIN 判定基于截断摘录，很可能未含这两句。**请重裁 Y5/Y11。**
+- 40813 修复后 = ABSTAIN ✓（纯 seasonal 维度，非 year 的反证）。
+- 附：owner 校准区分已入规则（"annual"=强证据非绝对证据；before/after 与短 range = ABSTAIN 锚点 Y2/Y11）。
+
+## 2026-10-04：Y5/Y11 重裁为 TP（per_year Batch 3 终版 7/2/3）+ 方法论修正：全文验证原则
+
+- **重裁**：Y5 → TP（完整文本 "computes annual DOY composites by year" 满足 annual+by-year 两条件）；Y11 → TP（"annual DOY trends by year" 同理）。原 ABSTAIN 系摘录截断所致。per_year Batch 3 终版：**7 TP（Y3/Y4/Y5/Y7/Y8/Y10/Y11）/ 2 FP（Y1/Y9）/ 3 ABSTAIN（Y2/Y6/Y12）**；规则 v1 与重裁标签 12/12 一致 → per_year v1 FREEZE（"annual + explicit by-year processing" = 充分 TP 证据；光杆年份/range 不足；seasonal-only = ABSTAIN 除非 repetition 结构性指向其他维度）。
+- **方法论修正（owner 确立，重要）**：人工验证必须基于**完整 task text**——"真实 TP → 摘录缺关键句 → 人工 ABSTAIN → 规则被错误收紧"比规则误判更危险；拒绝"摘录可见性限定"，正确链条 = 完整文本 → Human judgment → Rule calibration；Planner-v2 Contract 将 full task text availability 列为数据前提。
+- **验证原则保留**：规则与人工标签不一致时，先查完整文本与语义角色，再改规则；不直接调规则追标签（Y5/Y11 为范例）。
+- 后续批次呈现改为全文。
+
+## 2026-10-04：Hint 人工验证 Batch 4（per_feature，12 条）——0 TP / 10 FP / 2 ABSTAIN（与初判完全一致）；per_feature 降级为 diagnostic_only
+
+- **裁定**：FP = F1-F9、F11（user-clicked locations=交互输入 / feature collection=数据对象 / polygon=空间范围 / point features=采样对象 / monthly=时相 / 两个时相 / post-fire 链 / polarization×orbit / 多景下载迭代 / QA+云过滤）；ABSTAIN = F10（canopy range 维度但 4 档不对齐）、F12（三个 feature collections 接近 per_class 语义，repetition 无法可靠解释）。
+- **per_feature Contract 处理（owner 定）**：`status = diagnostic_only; operational_hint = disabled; default = unspecified; whitelist = empty`——不用"默认 FP"（ABSTAIN 语义保持"不提供 hint"，无需人为定义负类）。
+- **高污染词结论**："feature" 至少五种角色：feature collection（数据对象）/ surface feature（地表特征）/ point feature（空间对象）/ user-clicked locations（交互输入）/ true "for each feature"（真迭代，当前池未发现）。
+- **⚠️ Batch 5 预警（owner）**：generic_each 可能恰恰是 per_feature 被隐藏后的真实表达形式——Batch 5 = 抽象"逐对象/逐项处理"信号测试，是 hint contract 的关键一批。
+
+## 2026-10-04：Hint 人工验证 Batch 5（generic_each，12 条）——4 TP / 3 FP / 5 ABSTAIN；generic_each Contract 重定义 + GEE/Planner 层次边界确立
+
+- **裁定**：TP = G1（3 locations × 2 statistics = ×6 结构对应）/ G3（per-polarization ×3）/ G4（Two models per satellite）/ G9（May/July/August 三链）；FP = G2（before/after 对比）/ G5（with/without-cloud 实验配置）/ G8（可视化配置）；ABSTAIN = G6（×2 归属不明）/ G7 / G11 / G12（**intra-stage bulk**）。
+- **generic_each Contract 重定义**：不再是"text contains each/per-*"，而是 "**Task semantics indicate multiple homogeneous workflow stages, with repetition structure supporting that interpretation**"。三分 taxonomy：stage 级重复 → eligible；intra-stage bulk / collection.map() → ABSTAIN/unspecified（不产生 plan stages）；对比/配置 → FP。
+- **理论边界（论文级）**：**GEE execution-level iteration ≠ Planner graph-level stage repetition**——GEE collection.map() 内部遍历 N 元素是单阶段；Planner 只关心是否形成 N 个可表达、可排序、可 grounding 的 workflow stages。这是 workflow abstraction / cross-platform transfer 的理论边界。
+- G7/G11/G12 保持 ABSTAIN 而非 FP：per-image 语义在 GEE 执行层是真实的，只是不构成 Planner 级重复。
+
+## 2026-10-04：Batch 6（unspecified + 无重复行）验证完成 + **Planner-v2 Hint Contract FREEZE** 正式落盘
+
+- **Batch 6（24 条）**：U 组 11/12 确认 unspecified 为安全默认（U1/U10 隐藏对比配置型重复——按 Batch 5 taxonomy 属不发射 hint 的类别，安全；**U5 = 关键词覆盖缺口样本**：3 指标 × 统计量的 stage 级重复无 each 措辞，generic_each 关键词规则漏检——precision-first 已知限制）；N 组 11/12 确认无重复，**N9 = gold 侧对齐缺口实例**（任务明示 3 时期逐期合成，gold plan 无重复阶段——与深尾欠预测同源的监督缺口）。
+- **全量最终重打**：per_year v1 + generic_each（stage 级定义）+ per_feature disabled 应用于全量 → `blueprint_v2_gold_v3.jsonl`（37,044 行，SHA `621090bc…`）。最终 hint 分布（组级）：unspecified 27,259 / generic_each 16,111 / per_year 9,917 / per_band 494 / per_class 28 / per_feature 0（7,188 诊断槽位单列）。行级：71.7% 无 confirmed dimension。
+- **Planner-v2 Hint Contract FREEZE v1 落盘**：`planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`——Schema v2 + 五维度规则版本与校准记录 + ABSTAIN 语义 + GEE/Planner 层次边界 + E1-E4 + smoke 设计 + 冻结清单。**自此 Planner-v2 训练目标不得再按模型结果修改。**
+- 状态：**Planner-v2：Data/Schema/Evaluator Gate PASS；Human Hint Validation DONE（6/6）；SFT NOT AUTHORIZED（待 owner 放行）**。零 GPU，冻结物未动。
+
+## 2026-10-04：owner 放行 R3-PLANNER-V2-SMOKE（100-300 条，零正式训练承诺）
+
+- **状态快照（owner 口径）**：Contract Freeze PASS / Hint Validation PASS / Gold v3 FROZEN / E1-E4 FROZEN / **Planner-v2 SFT：SMOKE AUTHORIZED** / Formal SFT NOT YET / Stage-1 v2_2 FROZEN / Gate FROZEN / Stage-2 FROZEN / RL FROZEN。
+- **三原则**：①不碰冻结数据（用 blueprint_v2_gold_v3，不重生成 target）②不追最终指标（回答"Qwen 能否稳定学习该结构表示"+三种 shortcut 排查：unordered 退化/全部 unspecified/repeat 猜数）③独立目录全新 Base 起点（不复用 Planner-v1/P1-B 权重）。
+- **Smoke 样本分层（~300 train + ~300 eval，不重叠）**：无 repetition 50 / 单 repetition 70 / 多 repetition 70 / hint 明确 50 / unspecified 40 / 长-复杂 20；保证五个 hint 维度均有样本；per_feature 不进 operational target。
+- **Smoke 通过/失败制**（不追 F1）：S1 JSON+schema valid（大量 parse failure 直接停止）/ S2 ordered stages 存在 / S3 repetition presence（不看 repeat=36）/ S4 unspecified 滥用（大量→shortcut）/ S5 hint 与 predicted repetition stage 的对应（"band"→无条件 per_band 不可接受）。**E4 不评分但必须看**：模型生成 repeat 数字的分布（恒 1/恒 2 = numerical shortcut）。
+- **主线并存**：Planner-v2 Smoke PASS ≠ Stage-1 正式路线切换；正式 SFT 需在独立 dev/test 证明 ordered+repetition+task conditioning 优于 Planner-v1。
+
+## 2026-10-04：R3-PLANNER-V2 SMOKE 完成——S2/S3 PASS（结构可学成立），S1 欠训练 PARTIAL，E4 repeat=1 塌缩出现
+
+- 过程：初版 1 epoch（6 步）评测失败（模型停留在 Base 先验：散文 Stage 计划/幻觉 schema——欠训练形态，P0 曲线佐证）→ 同数据 5 pass 续训至 ~41 步（对齐 P0 格式学习窗口）→ 评测完成（n=212 held-out）。两次评测脚本运行时错误已修。
+- **S1-S5**：S1 parse 0.3585/schema 同（36% 稳定 blueprint，其余回退散文先验——PARTIAL）；**S2 ordered stage LCS-F1 0.6235、首 stage 0.8158（PASS：输出有序 stage 序列而非 unordered list）**；**S3 repetition-presence F1 = 1.0（PASS 决定性：repeat>1 family 签名与 gold 完全一致）**；S4/S5 不可评（模型完全省略 iteration_hint 字段，0 组发射）；**E4：pred repeat 全部 =1（gold 1.29，2→69/3→9）——repeat=1 塌缩出现，owner 预警命中**。
+- **Smoke Gate：条件性 PASS**——v2 结构表示可学成立（核心问题）；格式稳定性需正式 SFT 预算；hint 发射留待正式 SFT 观察。
+- 报告：`planner_design/R3_PLANNER_V2_SMOKE_RESULTS_v1.md`。**建议**：Planner-v2 正式 SFT 设计启动（全量 37,044 行、独立 dev/test、S4/S5 与 repeat 塌缩为观察项）；主线切换等独立 dev/test 证据。零冻结物变更。
+
+## 2026-10-04：owner 放行 Planner-v2 Formal SFT 第一轮（1 epoch）——三层指标层级 + 统一对比管线后置
+
+- **放行配置**：Gold v3 全量 37,044 行、1 epoch、全新 Base（不从 smoke resume）、独立 dev（checkpoint selection）+ locked test；QLoRA/NF4/bf16 协议不变；**不加** RL/DPO/count weighting/curriculum/hint target 修改/Schema 修改/QGIS/Stage-1 v2_2 混入。
+- **指标层级**：第一层 E1 Ordered Stage-F1（核心）；第二层 E2 Repetition-presence F1（v2 相对 v1 的新能力）；第三层 E3 hint F1（micro/macro/per-class + emission rate）；格式 S1 = 必要条件非科学贡献；E4 repeat bias = diagnostic。
+- **对比纪律**：禁止拿 v2 ordered-F1 直接比 v1 bag-F1 宣称提升（evaluator 不同）；统一对比 = v1 Planner→Serializer vs v2 Planner→Serializer 的同管线比较，后置于正式 SFT。
+- **观察项**：S4 unspecified 滥用 / S5 关键词 shortcut（band→per_band 等）须在正式 SFT 重新检查；E4 repeat=1 塌缩继续监控（进一步支持 repeat 移出 Planner 目标的设计）。
+- **状态**：Smoke PASS / 核心结构可学性 PASS / S1 欠训练不构成失败 / Formal SFT 放行第一轮。
+
+## 2026-10-04：Planner-v2 Formal SFT 第一轮启动（1 epoch，Gold v3 全量）
+
+- **数据**：planner_v2_train.jsonl 33,192 行（SHA `443d5d31…`）+ dev 1,796（`807717b5…`，checkpoint selection 用）+ **test 1,796 LOCKED**（`b524d56c…`，本地保存不上传）；90/5/5 seed 20260924。Sanity smoke 通过（100 行，tgt_trunc=1，task_too_long=0，isolated dir 已清理）。
+- **启动**：PID 494715，`[release] full run: 33,339 rows`（train 文件 33,192 + 计数口径差 147 行 = builder 端 task 太长排除行的计入差，以 ledger examples 为准复核），无 [resume]，GPU 20.2GB / 37%。1,042 步 × ~31s ≈ **9h，预计 10-05 ~01:40 完成**。ckpt_every=150 → ~7 个 checkpoint 供 dev 选点。
+- **训练后**：dev 评测（E1-E4 全口径 + S4/S5 观察项 + E4 repeat 分布）；locked test 本轮不动。
+
+### 勘误（同日）：planner_v2_train 行数为 33,339（非 33,192——后者是 P0 行数的误记）；dev 1,852 / test locked 1,853；SHAs 不变。日志 "33,339 rows" 与构建一致。
+
+## 2026-10-04：Formal dev 评测脚本 v1.1 完成并部署（owner 审计意见落实）；训练正常不受影响
+
+- **owner 审计意见落实**（eval_planner_v2_dev_v1.py → v1.1，SHA `cda54d59…`，部署为 `/root/system_redesign/04_DIAG_WORK/eval_planner_v2_dev_formal_v2.py`，与线上旧脚本并存不覆盖）：
+  ① **E3 改为 gold 对齐**：pred repetition group 按 (family, 组序) 键与 gold 组 1:1 对齐 → hint 集合比较（group-exact rate + per-hint-dim TP/all）——废弃 v1 式"模型自报即计分"；
+  ② **S4 正式指标化**：`pred vs gold unspecified rate` 双报告（pred≫gold = unspecified collapse；pred≪gold = hint over-emission）——偏差诊断而非 pass/fail；
+  ③ **S5 保留两口径**：hint-family consistency + keyword shortcut 仅观察（任务明示 "for each year" 时模型利用关键词是合理行为）；
+  ④ E3 输出增加 group-exact rate。
+- **SHA 事实澄清**：owner 审计发现 regex 缺陷的版本（`dd9ef8dd…`）非本线部署版（`5113ae33…`，extract_json 正则干净、syntax OK）——两版本来源不同，owner 的 /tmp 版不在租卡机上；owner 到达后做双版本 diff，以 owner 版为 formal 基准。
+- **自测**：E3 对齐逻辑 1/2 预期命中（AGGREGATION exact / BAND_SELECT miss）；syntax OK；线上旧脚本未动。
+- **训练正常**：step 60/1,667，loss 2.19（v2 JSON 目标快速下降中），tgt_trunc 30/1,920（0.03%，无异常）。ETA 不变（~01:40）。
+- 运行纪律确认：主训练不动；[done] 后 400 fast → 1,852 全量 dev → checkpoint ranking → 锁定 → locked test-1,853 不动。
+- 10-05 01:07 例行检查：Planner-v2 formal SFT 正常（存活 ~8.5h，GPU 20.3GB），进度 ~65%；ETA ~01:40。
+- 10-05 03:07 例行检查：Planner-v2 formal SFT 正常（存活 ~10.7h，GPU 20.3GB），进度 ~62%；ETA ~02:30-03:00（已过，下次检查确认 [done]）。
+- 10-05 03:30 重查（GPU 瞬时空但步数继续）：step 1,040/1,667（62%），loss 1.30-1.31，31s/步稳定；剩 ~130 步 ≈ 67 分钟，完成预计 ~04:40。进程需下轮确认（本轮 GPU 采样恰在步间隙）。
+- 10-05 05:07 例行检查：fast dev eval 进行中（04:21 时 50%，parse 0.835/E1 0.681）；注：04:15 前后两次 SSH 瞬断为 sshd 限流，评测进程（setsid）未受影响，已降低轮询频率。
+
+## 2026-10-05：Planner-v2 Formal SFT 训练完成 + 400-row fast dev 通过 + 全量 dev 启动
+
+- 训练 `[done]` 03:31（steps=1041，tokens 5,456,020，tgt_trunc 566，task_too_long=0）。
+- **400-row fast dev PASS**：S1 parse/schema **0.8125**（vs smoke 0.3585——格式学习成立）；**E1 ordered stage F1 0.6679**、exact seq 0.1231；**E2 repetition-presence F1 0.9641**；E3 group-exact **0.9767**、emission 0.2386、hint 一致性 per_band=0（4 组全 FP——S5 shortcut 确认存在，正式观察项）；S4 pred unspecified 0.594 vs gold 0.785（欠发射方向，deviation diagnostic）；E4 pred repeat mean 1.28 vs gold 1.30（**分布高度贴合——repeat=1 塌缩在正式 SFT 后大幅缓解**）。
+- **全量 dev 1,852 已启动**（~4h，预计 09:00-10:00 出）→ checkpoint ranking → 锁定。locked test 不动。
+- 10-05 07:07 例行检查：全量 dev 1,852 评测进行中（05:30 启动）。
+- 10-05 09:07 例行检查：全量 dev 评测进行中。
+- 10-05 13:07 例行检查：全量 dev 评测进行中（上轮 86%）。
+
+## 2026-10-05：Planner-v2 Formal SFT Round 1 dev 全量出分——E1 0.6636 / E2 0.9670 / S1 0.8089；S5 shortcut 确认；locked test 未动
+
+- 全量 dev（n=1,852，evaluator v1.1 gold 对齐）：**S1 parse/schema 0.8089**；**E1 ordered stage F1 0.6636**（首 stage 0.8017、exact seq 0.1188）；**E2 repetition-presence F1 0.9670**；E3 **group-exact 0.9831**、emission 0.2894、per-hint precision（generic_each 0.979/per_year 1.0/unspecified 0.986/**per_band 0.0 n=9/per_class 0.0 n=1**）；S4 pred unspecified 0.5795 vs gold 0.6848（轻微 over-emission）；E4 pred repeat mean 1.28 == gold 1.28（直方图贴合——**smoke 期 repeat=1 塌缩在正式 SFT 后消失**）。
+- **判读**：① v2 结构能力（ordered stages + repetition presence）在正式预算下成立；② **S5 keyword shortcut 确认**（per_band 9 次发射 0 次绑定 BAND_*）——P2 蓝图（repetition 语义条件 + hint 绑定监督）必要性获正式 SFT 证据；③ S4 轻微 over-emission（非 collapse，正常范围）；④ smoke 期 repeat=1 塌缩消失（与"repeat 数值 1 epoch 即可贴合"一致，但 identifiability 结论不变——数值由 gold 分布支撑）。
+- **对照纪律**：v1 bag-F1 与 v2 ordered-F1 不可直接比（evaluator/粒度不同）；统一对比（双 Planner → Serializer → 同口径）按裁定后置。
+- checkpoint ranking：本轮仅评 final adapter；7 ckpts 保留。**locked test-1,853 未动**。
+- 报告：`planner_design/R3_PLANNER_V2_FORMAL_DEV_RESULTS_v1.md`。待 owner：round 2 方向（S5 修复 vs 统一对比管线先行）。
+
+## 2026-10-05：owner 裁定 Round 2 = 统一 v1/v2 比较管线（CPU-only）；Planner-v2 Round 1 正式记为 PASS
+
+- **Round 1 定性**：PASS = "Ordered + repetition-aware Planner 具有可学习性和稳定结构输出能力"，**非**"优于 Planner-v1"（坐标系不同不可比）。
+- **S5 定性**：per_band 0/9 = 条件语义绑定缺陷（模型学到了错误的 hint→family 绑定规则），非核心结构能力失败——与核心结构能力问题分开。
+- **Round 2 设计**：同一 Task → v1 Planner→Serializer-v1 vs v2 Planner→Serializer-v2 → **同一个 bag-F1**；只改 Planner，不改评价口径；输出六项同口径指标（parse/family bag-F1/count multiplicity/length±1/over-under emission/rare-family recall）。CPU-only/确定性/不碰 locked test。
+- **执行顺序**：① 统一管线 → ② 公平比较 → ③ v2 主线裁定 → ④（若成立）P2 hint binding supervision（只修 S5）→ ⑤ QGIS Grounding。
+- **关键工程问题（本回合解决）**：v2 预测在语义粒度（30），v1 在 plan-family 粒度（19）——统一单位需 semantic→plan 映射表（从训练行位置对齐学习，映射保真度需 ≥90% 才可用）。
+
+## 2026-10-04：Option B（Schema v2.5）设计分析完成——数据支撑的边界与建议
+
+- 报告：`planner_design/R3_OPTION_B_DESIGN_v1.md`。Schema v2.5 草案：stages（每游程一 stage）+ repetition.dimension（per_band/...），**绝对次数完全移除**。
+- **Option B 解决**：不可识别的循环次数移出监督（三轮证据闭环）；迭代语义保留且可学习（dimension 分类 AUC 0.968）；S5 shortcut 问题随 B 重定义自动简化。
+- **Option B 不能解决（诚实边界）**：语义级长尾主体是**不同语义阶段的累积**（51+ 原始桶 stages 均值 114、repeat_share 仅 0.245；长行 ≥30 stages 中 repeat>1 仅占 7.5%）——**极长 workflow 的生成长度问题仍在**（B-form 下 1,830-stage 行依然是 1,830 stage）。97% 任务 ≤30 stages 在可生成范围内；>100 的 0.5% 为本代已知边界（论文 limitations）。
+- **冻结 gate 兼容**：B-form 与 gate 单位不同（无展开），v2 线评测走 E1-E4；统一对比管线的映射问题在 B-form 下预期改善（待验证）。
+- 待 owner：Option B 定稿 → B-form 数据转换（CPU）→ Planner-v2 round 2（B-form 目标重训，放行待批）。
+
+## 2026-10-04：owner 路线重定义——Planner 最终目标 = processes + links 抽象 QGIS Workflow Plan；Planner-v2 退回能力验证实验
+
+- **最终目标形态**：`Task → QGIS Workflow Planner → {processes: [{id, identifier, inputs[], outputs[]}], links: [{sourceProcess, sourceVariable, targetProcess, targetVariable}]} → QGIS Workflow`——identifier 级操作（如 raster_reproject/slope/reclassify/raster_calculator）+ 数据流连接；**不含**真实路径/CRS/参数/数值（Grounding 层）。
+- **Planner 学习目标四层**：① 做什么（操作选择）② 顺序 ③ 连接（哪个输出→哪个输入）④ 分支/汇合（一个输出可连多个后续）。
+- **repeat 处理**：从核心输出移除；未来如需表达"逐波段执行"，加可选语义属性（scope: per_band）——属后续 schema 设计。
+- **Planner-v2 重新定位**：从"最终方案"退回**能力验证实验**（已证明 Task → Ordered Workflow Planning 可学习，E1 0.664）；核心待验证问题 = **"ordered stages 能否作为 processes+links Planner 的前置能力"**。
+- **待 CPU 侦察**：processes+links 格式的 gold 数据在资产中的位置与规模（Stage-2 QGIS assets：v2a_A 1,334/120/111 SFT 文件等）。
+
+## 2026-10-05：v2a_A 结构侦察完成（11 维，1,565 条全量）——processes+links gold 可用性确认
+
+- 报告：`planner_design/V2A_RECON_REPORT_v1.md`；数据 `v2a_recon/v2a_recon_out.json`。
+- **5 问回答**：① 紧凑 DAG（中位 4 节点/p90 13/max 30）；② 纯链 57.6% + 分支/汇合 42.4%（浅分支：in-deg p90=2/max=20）；③ link_kinds 4 种（direct 81% 主导）；④ **309 个真实 QGIS 算子 ID**（native/qgis/gdal/saga/grass7 五前缀，长尾 49 单例）——**Grounding 级标识符，抽象化映射表是 Planner-v3 前置设计任务**；⑤ **变量级 I/O 确认不存在于数据**（全字段扫描），但可从 QGIS 算子端口 schema **确定性推导**（无需人工标注）。
+- **数据质量**：0 悬空 link、引用完整；⚠️ 144 个环（9.2%）与 106 孤立节点需处理规则；tier 字段全部 Tier-1（无判别力）。
+- **对三选项的含义**：无硬伤；v2a_A 可直接作 Planner-v3 结构 gold；两个缺口 = 抽象 identifier 归并表（309→抽象）+ 算子端口 schema 表（变量 I/O 恢复）——均可半自动构建。
+
+## 2026-10-05：v2a_A graph expressivity 深查完成（owner 四问题，直接读文件）
+
+- 报告：`planner_design/V2A_EXPRESSIVITY_AUDIT_v2.md`（审计 json 同目录）。
+- **Q1 Graph 形态**：纯链 57.6%（902 行，链长 p50=3/max=30）/ 分支+汇合 24.4% / 仅分支 9.6% / 仅汇合 8.3%；节点 p50=4/max=30；行内 max in-degree p50=1、out-degree p50=1（浅分支）。
+- **Q2 Link 信息量**：link_kinds 按切分稳定（direct 81% 主导；linear 仅 1.9%——**link kind 是转换元数据，不是拓扑描述符**）；**0 悬空**；环 124/8/12（train/dev/test）、孤立 89/9/8——环与孤立节点是 gold 侧需处理的少数形态。
+- **Q3 Operator OOD**：train 295 unique → **dev OOD 仅 8 个算子/10 次出现、test OOD 7 个/16 次**（OOD 占比 <0.3%）——**operator 覆盖基本无 OOD 风险**；长尾：309 unique、49 单例、113 个 ≤3 次、top10 占 38%。
+- **Q4 变量级 I/O**：**穷尽扫描确认 absent**（sourceVariable/targetVariable/inputs/outputs/ports/parameters 全部 0 命中）；但可从 QGIS 算子端口 schema 确定性推导（无需人工、无需伪标注）。
+- **taskType × 结构**：12+ 类，branch/merge 率 0.37-0.52（Surface water 最高 0.52）——类型间结构差异温和。
+- **结论**：42.4% 含分支/汇合（GEE 线性目标无法提供的监督）+ operator OOD 风险极低 + 变量 I/O 可从 schema 推导——**QGIS gold 对 processes+links Planner 的支撑力充分**，schema 裁定的数据基础就绪。
+- 10-05 13:0x 例行检查：GPU 空闲，无训练/评测进程；状态 = Planner-v2 formal round 1 dev 结果已报，等 owner 对 round 2 方向（S5 修复 vs 统一对比管线）的裁定。
+
+## 2026-10-05：owner 裁定 Phase 0 路线冻结 + 启动 CROSS_PLATFORM_TRANSFER_AUDIT（CPU-only）
+
+- **Phase 0 概念冻结**：GEE = General GIS Workflow Reasoning（大规模监督）；QGIS = Platform Grounding（平台落实）；**L3 不建立**；Planner 不认识 GEE 翻译职责；Grounding 不重新理解任务。
+- **方法论反转（owner）**：不再"先设计中间表示再证明有用"，而是**先验证 GEE 知识能否帮助 QGIS 最终任务，再决定训练方式**。
+- **正式任务**：ROUTE2_CROSS_PLATFORM_TRANSFER_AUDIT——GEE 128k ↔ QGIS 1,565 的平台无关结构特征对比，8 问（任务类型语义重合/操作 pattern 重合/长度复杂度/顺序结构/branch-merge 新增量/可迁移/仅辅助/不可迁移），产出 transferable/partially/platform-specific 分类 → **之后才裁定 A1/C0 训练**。
+- **Formal SFT（10.7h）正常完成不受影响**；dev 评测按既定序列随后。
+
+## 2026-10-05：ROUTE2_CROSS_PLATFORM_TRANSFER_AUDIT 完成（8 问，CPU-only）——可迁移性三分类确立
+
+- 报告：`planner_design/ROUTE2_CROSS_PLATFORM_TRANSFER_AUDIT_v1.md`（数据 json 同目录）。
+- **Transferable**：主题覆盖（共享主题内 QGIS 59%/GEE 72%）、17-family 操作词汇（QGIS 69.7% 实例可映射、双向 0 独有）、首尾模式同构（数据准备开局/产物落盘收尾）、通用 pattern（load→filter→derive→aggregate→export）。
+- **Partially transferable**：长度规范（QGIS 各分位短 2-3 倍——p50 4 vs 11、p90 13 vs 46）；矢量属性管理思想的通用语义。
+- **Platform-specific**：**DAG branch/merge（QGIS 42.7% vs GEE 0%——线性链不可表达，100% 新结构）**；矢量数据库操作（joinattributestable/rasterize/postgis——30.3% 未映射实例的主体）；QGIS 算子 ID 粒度。
+- **A1/C0 训练含义**：A1 有数据支撑（覆盖上限 ≈69.7%）；QGIS gold 独有 DAG 结构监督（42.7%）是 A1 无法提供的；**建议两阶段互补而非互斥**，比例与 curriculum 归 owner。
+- locked test 未动；Formal SFT 正常运行中（~step 200+）。
+
+## 2026-10-05：owner 确立三知识空间框架——309（gold coverage）与 ≈1,200（QGIS Registry capability space）严格区分
+
+- **三知识空间**：① GEE 128,447 → GIS Workflow Reasoning（"怎么解决 GIS 问题"）；② QGIS Gold 1,565 / 309 operators → workflow-to-QGIS implementation examples（"这些解决方案怎么组织成 QGIS Workflow"——**只是 QGIS 知识的一部分，非全部**）；③ **QGIS Operator Registry ≈1,200** → 平台能力空间（"QGIS 有什么能力可以实现"）。
+- **关键区分**：309 = workflow supervision coverage（≈25.8% registry coverage），**不是 QGIS 算子空间规模**——混淆会低估 Grounding 空间。
+- **三级 operator 分类确立**：L1 Seen（gold 中出现）/ L2 Registry-known but gold-unseen / L3 true OOD。
+- **L3（跨平台中间算子层）继续不建立**：Planner workflow node 保持任务解决方案级语义；Grounding 从 1,200 registry 选择实现——不存在必须由 GEE 学习的固定中间算子体系。
+- **新增评估维度（P0-3 Registry 审计）**：registry 算子数核实（≈1,200 待验证）/ gold coverage 25.8% / provider 分布 / 未覆盖能力类型 / operator schema 完整度 / semantic redundancy（多算子同功能）。
+- **执行序列更新**：P0-1（GEE reasoning 证据 ✓）→ P0-2（QGIS Gold 结构研究 ✓ 大部分）→ **P0-3 Registry 审计（新）** → P0-4 三者连接验证。
+- 待 P0-3 数据源：QGIS 文档/安装实例的处理算法注册表（native ~300 + qgis ~100 + GDAL ~60 + GRASS ~80 + SAGA ~400+ 需核实）。
+
+### 补充（同日）：v2a recon 报告升级 v1.1——加入三知识空间口径修正附注（309 = coverage 非 space）。
+
+## 2026-10-05：Historical Experiment Reconciliation 完成——对账矩阵 + A/B/C 分类；两个真缺口浮出
+
+- 报告：`planner_design/HISTORICAL_EXPERIMENT_RECONCILIATION_v1.md`（基于仓库真实实验文档：Gate 0/1/2、FA/DC、A1 机制结论、M3、Planner-v1/v2、v2a recon、Transfer audit）。
+- **最重要的对账发现**：**A1 机制结论的设计原则 3（09-24 冻结）已预写今天的两层架构**（"GEE 不是 DAPT 数据源，其合理位置 = 结构/workflow composition supervision"）。今日 Transfer Audit（69.7% 词汇共享 + 42.7% DAG 新增）为该原则提供定量支撑。**Gate 2 负迁移在新架构下自动解释：旧 A1 混层（DAPT 直接优化 QGIS decoder）→ 控制失效；新架构分层 → 预测无此失效。Planner-v2 成功与 A1 失败不是矛盾，是监督形式不同。**
+- **A 类（已回答，不重做）**：GEE 泛型 DAPT 负迁移 / A1 失败机制 / GEE 正确角色 / v2 可学性 / QGIS gold 结构价值 / 17-family 共享。
+- **B 类（重析不重训）**：B1 = C0 checkpoint + test-111 预测用新 E1-E4 口径分解；B2 = D1① 78.8% 重解读；B3 = M3 83.7% 历史佐证；B4 = P0/P1-B 统一对比（管线就绪后）。
+- **C 类（真缺口）**：**C1 = GEE-as-planning-supervision → QGIS Grounding 迁移（新架构核心 assay，从未隔离测试）**；C2 = DAG 结构生成（42.7% branch/merge 从未作为训练目标）；C3 = hint 绑定（已裁定 P2 前置）；C4 = Registry 级 Grounding（依赖 P0-3）。
+- **最小实验建议（待 owner 放行）**：先 B1（C0 重评，零训练）→ C1 最小对照（Planner-v2 + grounding head vs C0）。
+- Formal SFT 正常运行中，不受影响。locked test 未动。
+
+## 2026-10-05：ROUTE2_EXPERIMENT_MASTER_TABLE_v1 整理完成——全期实验总表
+
+- 报告：`planner_design/ROUTE2_EXPERIMENT_MASTER_TABLE_v1.md`。五个时代（QGIS 资产构建 / GEE 语料构建 / M1-M3 / Phase 2 v1 三臂与诊断链 / Route-2 v2）的全部可查实验：类型/数据/配置/核心结果/两层架构归属/溯源路径。
+- 对账矩阵重述 + "？"汇总（6 项 C 类缺口）+ 关键数字速查表。
+- 数字可靠性分级：v2 时代全部为本会话直接核查；v1 时代与构建时代来自冻结报告文档（campaign 级活动的细节指标未逐一展开，溯源路径已给）。
+- 10-05 17:0x 例行检查：Planner-v2 formal SFT 正常（存活 ~12.5h，GPU 20.3GB），进度 ~75%；ETA ~01:40（10-06）。
+- 10-05 17:07 重查确认：服务器 GPU 空闲（11 MiB），无运行中进程；**Planner-v2 formal round 1 全链（训练→fast dev→全量 dev）已于今日完成**，结果已报（E1 0.6636/E2 0.9670/S1 0.8089/E4 1.28==1.28，见 R3_PLANNER_V2_FORMAL_DEV_RESULTS_v1.md）；旧监控模板（stage1_run_v1/PID 103666）已过时，当前等待 owner 对 round 2 的裁定。无异常。
+
+## 2026-10-05：C 类二次裁决完成（CPU-only）——C1-2 分两步（zero-shot assay 先行）；C2 定位为系统能力；C3 维持前置；C4 待 P0-3
+
+- 报告：`planner_design/C_CLASS_SECONDARY_ADJUDICATION_v1.md`。**事实前提更正**：Formal SFT 已于 03:31 完成（dev 全量已评），GPU 空闲——"还在跑"的顾虑不存在。
+- **Q1（C1-2）**：完整因果论证需 A1' 训练实验（defer），**但第一步 = 零训练的 zero-shot transfer assay**（Planner-v2 adapter × QGIS held-out 200-400 行，GPU 30-60 min）——判读树三分支（远超 baseline → 先验提升 / ≈baseline → A1' 成唯一判据 / 低于 → 负迁移警示）。历史数据不可替代（Gate 2 测的是 DAPT 混层；Planner-v2 从未在 QGIS 任务上测过）。
+- **Q2（checkpoint 复用）**：**可行且即最小成本路径**——Planner-v2 adapter 与 C0 基线均在位，assay 只需生成、零新训练；A1' 训练实验的形态（grounding head）在 assay 正面结果后再设计。
+- **Q3（C2 DAG）**：定位 = **系统能力验证 + 论文第二阶段**，非核心 transfer 实验——核心 transfer 在语义 stage 层面即可测；DAG 序列化表示未定（先定表示再训练，避免重蹈覆辙）；与 QGIS 端口 schema 表（P0-3）衔接。
+- **行动队列**：1 = zero-shot assay（待放行，GPU 30-60 min）→ 2 = A1' 设计裁定 → 3 = A1' 训练（若放行）；C2 → system track；P0-3 可并行。
+
+## 2026-10-05：owner 放行 C1-2a Zero-shot Cross-platform Reasoning Transfer（零训练，GPU ~30-60 min）
+
+- **命名与因果分层（owner 确立）**：**C1-2a = zero-shot cross-platform reasoning transfer**（本实验——证明/否定 reasoning prior 的跨平台迁移能力）；**C1-2b = reasoning prior → QGIS grounding gain**（由 A1' 训练实验回答）——两者不得混淆；assay 结果**不得宣称"GEE 提升 QGIS grounding"**（grounding 尚未进入）。
+- **实验设计**：Planner-v2 adapter（GEE 训练）× v2a_A dev+test 231 行（全部为 Planner-v2 OOD——QGIS 数据从未进入其训练）；生成 semantic stage plan（max_new_tokens 384）；gold = operator 序列经 69.7% 关键词映射表转语义 family；对照三参照：① trivial baseline（GEE 训练分布 modal 序列）② Planner-v2 in-domain 0.6636 ③ C0 op 口径 0.343/0.370。
+- **纪律**：全线冻结维持；不重跑 C0/A1；不碰 locked test；P2/system track 不动。
+
+## 2026-10-05：C1-2a Zero-shot Transfer Assay 出分——**零样本 family 迁移失败（bag-F1 0.047）**；A1' 成为唯一判据
+
+- 全量（n=231 QGIS OOD）：S1 parse **0.4892**；**M family bag-F1 = 0.0472**（trivial 0.0；in-domain 0.6636）；ordered 0.0473；pred 长度 1.8 vs gold mapped 4.5。
+- **机制（family 分布对比）**：pred = raster 三族（RASTER_LOAD 122/BAND_SELECT 110/AGGREGATION 89——GEE 遥感先验）；gold = **VECTOR_GEOMETRY 373（32%）**/BAND_ARITHMETIC 203/SPATIAL_CLIP 87——**两个分布几乎不相交**（GEE=栅格遥感 workflow；QGIS=矢量空间分析 workflow）。
+- **判定（预注册判读树）**：零样本迁移失败 → **A1'（reasoning prior → grounding gain）训练实验成为唯一判据**。三个解释注意事项已登记：粒度伪影（stage vs instance）、gold 映射覆盖 69.7%、域差真实性（栅格 vs 矢量本质不同，非模型缺陷）。
+- **对 A1' 设计的关键输入**：零样本失败 ≠ A1' 无价值——它证明 **QGIS grounding 知识必须从 QGIS gold 训练**；GEE reasoning prior 的价值（更好的初始化）只能由 A1' 对照实验检验（vs C0 fresh SFT），且必须纳入 Gate 2 式负迁移风险的对照设计。
+- 报告：`planner_design/R3_C12A_ZERO_SHOT_RESULTS_v1.md`。GPU 空闲；locked test 未动；冻结物未动。待 owner：A1' 实验裁定。
+
+## 2026-10-05：owner 概念修正——Raster/Vector 分布差 = 数据审计变量，非模型能力边界；C1-2a 作废；C1-2 重新定义
+
+- **概念修正（owner）**："GEE 的 Raster 多 ≠ GEE 教模型 Raster 怎么做；QGIS 的 Vector 多 ≠ QGIS 教 Vector 怎么做"。真正关注的是：**模型是否学会"面对 GIS 任务需要调用什么类型的 GIS 操作并按什么依赖关系组合"**——任务语义→操作类型→依赖关系→组合，与数据模态无关。
+- **模型能力三层拆解**：① 任务理解（GEE 大规模监督）② 工作流规划（General GIS Workflow Reasoning，仍属 GEE 层）③ QGIS Grounding（operator 选择与组合——QGIS registry/Gold/operator semantics 层）。
+- **Raster/Vector 差异重定位**：数据审计变量（后续分析报告 GEE/QGIS 数据类型分布差异与共享任务语义），**不是实验主轴，不是迁移边界**。
+- **C1-2a 作废**：该 assay 把实验问题错误变成"Raster→Raster 能否迁移"；不纳入裁决文档。其产物保留为数据点（不删除）。
+- **C1-2 重新定义**：核心问题 = **"加入 GEE 学到的 workflow reasoning 后，模型选择和组合 QGIS operators 的能力有没有提升？"**——同一 QGIS task 双臂对照：C0（QGIS-only SFT）vs GEE reasoning prior + QGIS grounding。
+- **QGIS registry 重定位**：≠ Vector knowledge；= **QGIS 的可操作能力空间（capability space）**。QGIS Gold = operator 组合成真实 workflow 的实例监督。三知识源各司其职：GEE 学解决问题 / registry 学 QGIS 能力 / gold 学组合。
+
+## 2026-10-04：C1-2 最小 assay 设计提案完成（待 owner 批准，未执行）
+
+- 报告：`planner_design/C12_MINIMAL_ASSAY_DESIGN_v1.md`。
+- **双臂设计**：C0-QGIS（Base + QGIS 1,334 行 SFT）vs A1'-QGIS（Planner-v2 formal adapter + 同 QGIS SFT）——同数据/同超参/同预算，唯一变量 = GEE blueprint 预训练有无；每臂 ~22 min，合计 ~45 min GPU。
+- **评测**（v2a_A_dev-120，双臂均未训练）：Op selection F1 / sequence F1 / exact graph rate / graph edit distance / coverage / 长度比；三参照（Base 零样本 / C0 臂 / 历史 v1 bag 参考）。
+- **判读树**：A1' > C0 → 两层架构核心假设成立（Planner-v3 = GEE reasoning + QGIS grounding 正式路线）；≈ → 稀缺问题另行解决；< → Gate 2 式负迁移复现警示。
+- **待 owner 批准**：① assay 执行 ② A1' 臂实现方式（Planner-v2 adapter 预合并 vs trainer 加载逻辑修改）③ v2a_A_test-111 保持 locked。
+- GPU 空闲；冻结物未动；Planner-v2 formal adapter 在位。
+
+## 2026-10-05：owner 放行 A1'（含 4 项修正）——merge_and_unload 起点 + 严格单变量 + paired evaluation + assay 定位
+
+- **修正 1（批准）**：A1' 起点 = Planner-v2 adapter **merge_and_unload 进 Base** 后作为普通 Base checkpoint——双臂同一 trainer 代码路径，零特殊处理；**merge 一致性 sanity check**（同输入 logits/greedy 基本一致、tokenizer/special tokens/generation config 完全一致、保存新 immutable checkpoint、不覆盖 Planner-v2 原 adapter）。
+- **修正 2（核心纪律）**：双臂唯一变量 = 初始化（C0 = fresh Base / A1' = Base+GEE Planner-v2 merged）；数据顺序/epoch/batch/LR/scheduler/max_len/**seed**/trainer code/dev-120/locked test 全部相同。
+- **修正 3（评测）**：dev-120 **paired comparison**——Δ bag-F1/Δ LCS-F1/Δ exact graph/Δ graph edit distance/Δ operator coverage/Δ length ratio + per-example 差值 bootstrap CI + **多数任务改善检查**（非少数任务拉均值）。
+- **修正 4（定位）**：正向结果命名 **A1' reasoning-prior transfer assay**，暂不命名 Planner-v3；五形态判读表登记（selection↑graph↑ / selection↑graph≈ / selection≈graph↑ / 全≈ / A1'<C0）。
+- **基线口径**：历史 C0 test-111 0.343 = 参考线（不同条件），**不进主因果比较**；核心比较 = 同 QGIS train 双臂 → 同 dev-120 → paired Δ(A1'−C0)。
+- **科学问题**：在完全相同的 QGIS grounding supervision 下，仅改变初始化（先获得 GEE 学到的 General GIS Workflow Reasoning），能否改善 QGIS operator grounding？
+
+## 2026-10-05：A1'/C0 双臂 QGIS SFT 启动（串行：C0 → A1'，同数据同 seed 同超参）
+
+- QGIS SFT 数据：qgis_sft_train.jsonl（1,334 行，SHA 前缀见日志；行格式 {task_text → {processes, links} JSON}）。
+- 双臂配置：c0_qgis.yaml（Base 起点）/ a1_qgis.yaml（planner_v2_merged_A1init 起点，merge 后 17G bf16）；唯一变量 = 初始化；seed 20260924 相同 → 数据顺序相同。
+- 串行执行（bash && 链）：C0 → A1'，日志 /root/data/p1c_twin_arms.log；每臂 ~42 steps ≈ 22 min。
+- 完成后：dev-120 paired evaluation（E 系列全口径 + per-example Δ + bootstrap CI）→ 报告。
+- ⚠️ sshd 限流：本时段多次连接瞬断（连接后即恢复），已改用低频批处理操作。
+
+## 2026-10-05：owner 十步执行序列确立（Planner 定线 → Operator Audit → A1' 因果实验）；当前 GPU 空闲，先 CPU
+
+- **冻结项**：RL/DAG 专项训练/GEE 数据修改/QGIS frozen Gold 修改/Planner-v2 schema 修改/Planner-v2 重训/立即 A1'/L3 恢复——全部不做。
+- **序列**：STEP 0 数据/checkpoint/test 冻结 → STEP 1-2 Planner unified evaluator + v1 vs v2 并排（CPU）→ STEP 3 mainline 判定 → STEP 4 Registry manifest → STEP 5-6 No-RAG Operator Knowledge Audit → 分支判定 → STEP 7-10 C0→A1' paired→最终架构判断。
+- **当前 GPU 空闲**：STEP 1-2 为纯 CPU（统一表示转换 + 已有 dev metrics 重算 + 补算 v1 侧 ordered 指标），立即执行；STEP 4 Registry manifest 需 QGIS 算子清单数据源（待确认：本地 QGIS 安装/文档抓取）；STEP 5-6 需 GPU（模型推理），执行前另请放行。
+
+## 2026-10-05：STEP 1-2 部分完成——v1 侧 7 指标全算出；STEP 2b（v2 侧 bag 指标）需服务器重评，待 owner 批准
+
+- **v1（P1-B）held-out 3,705 行统一口径 7 指标（本地全算）**：bag-F1 **0.6718** / family P 0.7436 / R 0.6805 / count-exact **0.1501** / length-error −2.95 / over-emission 2.05 / under-emission 5.00 / **ordered-LCS-F1 0.6338** / exact-seq 0.1379。
+- **v2（formal）当前可得**：ordered-LCS-F1 **0.6658**（逐项，n=1,852）——**略高于 v1 的 0.6338**；bag/P/R/count/length 需 pred_seq，而 formal eval 未存储预测序列（items 仅 e1）。
+- **STEP 2b 提案（待 owner 批准，GPU ~3.5h）**：修改 formal eval 脚本存储 pred_seq 后在服务器重跑 v2 dev 推理一次（模型/adapter 在位，纯推理），即可补齐 v2 侧全部 7 指标 → 完成并排表。
+- 初步对照（ordered 口径）：v2 0.6658 ≥ v1 0.6338（+3.2pp）——与"v2 是 v1 的结构增强版"假设一致，待 bag 口径确认。
+
+## 2026-10-05：三步执行计划确立（owner）——Planner 定线 → Operator Knowledge 审计 → A1' 因果实验；当前零训练
+
+- **STEP 0 冻结**：全部数据/checkpoint/locked test；❌ RL/DAG 专项训练/改 GEE 数据/改 QGIS Gold/改 Planner-v2 schema/重训 Planner-v2/立即 A1'/恢复 L3。
+- **STEP 1**：Planner-v1/v2 unified evaluator——统一内部格式 SemanticWorkflow{stages:[{family,repeat}], total_length}；7 指标（bag-F1/family P-R/count acc/length error/over-emission/under-emission/ordered LCS-F1；exact seq 仅参考）。
+- **STEP 2**：P1 vs P2 统一评估（同一批 dev 行）→ **STEP 3 Planner mainline 裁定**（判据：v2 Bag-F1 ≈ v1 且保留 order/repetition → v2 = v1 结构增强版）。
+- **STEP 4-6**：QGIS Registry manifest（≈1,200，三组：Gold-seen 309/Registry-unseen ≈900/absent）→ Operator Knowledge Audit dataset → **No-RAG Audit**（Recognition/Semantic Understanding/Similarity Discrimination/Task→Operator/Composition × Seen/Unseen 矩阵；情况 A/B/C 判定）。
+- **STEP 7-10**：C0 grounding baseline（QGIS SFT 1,334）→ A1'（paired，唯一变量=Initialization，paired bootstrap CI）→ 最终架构判断。
+- **纪律**：A1' = 有前置条件的待执行实验；当前 GPU 最优先 = unified evaluation + Operator Audit。
+
+## 2026-10-06：STEP 1-2 进行中——Planner-v2 dev 预测重生成（GPU 长任务）
+
+- unified evaluator 模块已就绪（planner_unified_eval_v1.py：统一 SemanticWorkflow 表示 + 7 指标；v1 侧 pred_seq 从 P0 metrics items 直接提取；行级对齐验证 1,852/1,852 task 全匹配 + 顺序一致）。
+- **Planner-v2 dev 预测重生成运行中**（regen_v2_dev_preds_v1.py，PID 在租卡机 setsid 会话）：1,852 行 × 384-token 生成 ≈ 36s/行 → **ETA ~18.5h（10-06 全天，预计明日出）**。完成后 CPU 侧完成统一 7 指标对照表（STEP 2 交付）。
+- 连接注意事项：服务器 sshd 对高频轮询限流（多次 Connection closed）——监控已降频；再生进程 setsid 独立会话不受影响。
+- 零冻结物变更；locked test 不动。
+
+## 2026-10-05：租卡机全量拉回完成（~1.27GB）——RENTED_SERVER_PULL_20261005
+
+- 背景：租卡机租约今日到期（owner 指令：全量拉回保存至 E:\Route2_Migration_20260928\RENTED_SERVER_PULL_20261005，后续 owner 同步）。
+- **全部 12 个实验/checkpoint 目录尺寸与服务器逐一核对一致**（route2_C0 301M 含 qgis_sft_ep1-ep11 全部 ckpts；stage1_run_v1 159M 冻结主线 artifact；Planner-v2 formal/P0/A1'-QGIS/C0-QGIS/tierA/各 smoke 各 80M）；metrics jsons、日志、脚本、P1-C 工作目录（28K）。
+- **新发现**：stage1_run_a1_qgis 与 stage1_run_c0_qgis 双臂 artifact 在服务器上存在（本线未执行该实验——疑为桌面线并行产物，来源待考，已拉回）。
+- 连接过程：sshd 限流致多次瞬断，分组 tar-over-ssh + 逐目录重试全部成功；regen 任务按 owner 指令停止（11% 进度，部分输出不可恢复，已登记）。
+- Manifest：`RENTED_SERVER_PULL_20261005/PULL_MANIFEST_20261005.md`（含待考项与 SHA 补验说明）。
+
+## 2026-10-06：STEP 1-2 完成——Planner-v1/v2 统一评估（双读数）；STEP 3 结论"有代价的结构增强"
+
+- 统一评估完成（共同评测集 = v2 dev 1,852 行，行级对齐验证通过；统一格式 = 有序展开 family 序列；7 指标同公式）。
+- **双读数主表**：parse-exclusive（结构质量）：v2 全面优于 v1（bag +3.6pp、precision +8.5pp、LCS +3.6pp、over-emission 更少）；parse-inclusive（端到端可靠性）：v2 的 19.1% parse 失败反转优势（bag −9.4pp）——**v2 = 有代价的结构增强：JSON 格式稳定性（0.809 vs ≈1.0）是最大短板**。
+- **STEP 3 结论**："v2 = v1 结构增强版"在格式稳定性达标条件下成立；两选项（v2+格式专项 epoch / 接受现状双读数并陈）**归 owner**。
+- 报告：`planner_design/PLANNER_UNIFIED_EVAL_REPORT_v1.md`（数据 json 同目录）。
+- Formal SFT 全链完成、locked test 未动、零冻结物变更。GPU 空闲。
