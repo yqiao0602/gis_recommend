@@ -1,0 +1,19 @@
+# Planner-v2 Format Recovery — 续训配置（P0，mdzhang）
+
+# 恢复语义：epochs=2 使 trainer 从 latest.pt（step 1041）续训至 2082；
+# 数据/schema/tokenizer/split 与 Planner-v2 Round-1 完全一致（SHA 443d5d31…）
+# 仅"增加训练量"——owner P0 裁定的格式专项修复。
+name: "planner_v2_fmt_recovery"
+base_model: "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base"
+train_data: "/home/qy/planner_v2_train.jsonl"
+output_dir: "/home/qy/stage1_run_planner_v2_fmt"
+max_lr: 0.0001
+batch_size: 2
+grad_accum: 16
+max_len: 1024
+seed: 20260924
+epochs: 2
+smoke_rows: 0
+smoke_epochs: 3
+ckpt_every: 130
+log_every: 20

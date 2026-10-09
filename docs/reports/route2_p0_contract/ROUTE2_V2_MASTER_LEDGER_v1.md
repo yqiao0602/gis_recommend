@@ -269,3 +269,9 @@ QGIS 线数字不可互比，且两任务是同一系统的两段。
 - 端到端对比臂 = route2_C0（历史冠军）vs 最强 Planner+grounding vs C0/A1'-QGIS twin
 - 中间诊断 = Planner unified 6-metric（1,852 dev，不作为主门）
 - 灾难行为四类（empty / invalid JSON / hallucinated operators / runaway）全模型必查
+
+## 2026-10-09 P0 Planner-v2 格式修复续训收口
+
+- P0 在 mdzhang A10 完成：resume step 1041 → step 3123（增训约 1 epoch），66,678 exposures，10,912,040 target tokens，TaskTooLong=0，context truncation=0，target truncation=1,132；adapter `/home/qy/stage1_run_planner_v2_fmt/stage1_adapter`（16MB），ledger 已落盘。
+- **P0 dev 评测尚未运行**：没有 gate/Planner eval output；下一步是按统一 Planner-v2 6-metric 协议评估 P0（parse / bag-F1 inclusive+exclusive / ordered LCS / family precision / over-under emission / disaster rates），再做 QGIS dev-120 grounding 比较。
+- P0 训练日志末尾 loss 约 1.0–1.2；loss 不作为 Planner 主结论，必须等统一评估。
