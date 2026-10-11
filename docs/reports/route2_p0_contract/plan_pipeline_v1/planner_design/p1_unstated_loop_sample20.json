@@ -1,0 +1,1688 @@
+[
+ {
+  "row_idx": 34,
+  "task": "Task: Classify crop types using NDVI time series\nClassify agricultural land cover types (paddy, palm, coconut, others) by computing NDVI from Sentinel-2 surface reflectance data across multiple bi-monthly periods between March and August 2022, generating a stacked NDVI image used as input for Random Forest classification, with accuracy assessment and export of the classified cropland map.",
+  "n_stages": 25,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "CLASSIFICATION"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "SPATIAL_FILTER"
+  ],
+  "loop_count": 12,
+  "loop_start_pos": 1,
+  "repetition_groups": [],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 391
+ },
+ {
+  "row_idx": 251,
+  "task": "Task: Generate NDVI time series composite\nGenerate a multi-temporal NDVI composite stack from Sentinel-2 surface reflectance data over the Bijapur district for agricultural monitoring. It processes 12 bi-monthly image collections from October 2022 to March 2023, computes NDVI for each period, applies greenest-pixel compositing using qualityMosaic, masks clouds and non-agricultural areas, and exports a scaled 12-band NDVI composite raster clipped to the study area. Additionally, it creates and exports a true-color mosaic from a specific date for reference.",
+  "n_stages": 28,
+  "stage_families_full": [
+   "VECTOR_LOAD",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 13,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 27,
+    "family": "RASTER_LOAD",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 561
+ },
+ {
+  "row_idx": 289,
+  "task": "Task: Smooth NDVI time series\nCompute a smoothed annual NDVI time series from 2013 to 2020 using Savitzky-Golay filtering on mean NDVI images. It first fills missing values in the image collection by interpolating neighboring years, then applies temporal smoothing to reduce noise and reconstruct a consistent NDVI trajectory. The output includes both the original and smoothed NDVI layers, as well as Land Productivity Dynamics Index (LPD) maps derived before and after smoothing for land degradation assessment.",
+  "n_stages": 51,
+  "stage_families_full": [
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "RASTER_LOAD"
+  ],
+  "loop_window": [
+   "AGGREGATION",
+   "RASTER_LOAD"
+  ],
+  "loop_count": 24,
+  "loop_start_pos": 1,
+  "repetition_groups": [
+   {
+    "stage_seq": 51,
+    "family": "RASTER_LOAD",
+    "repeat": 8,
+    "iteration_hint": [
+     "per_year"
+    ]
+   }
+  ],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 513
+ },
+ {
+  "row_idx": 322,
+  "task": "Task: Analyze annual temperature extremes\nCalculate and visualizes mean annual maximum and minimum temperatures for Central American countries and the Dominican Republic using TerraClimate data from 2018. It computes regional averages via reduceRegion, generates histograms of temperature distributions, and creates time series charts of monthly min/max temperatures from 2000 to 2020. Outputs include printed statistics, histograms, and interactive charts showing thermal patterns over time and space.",
+  "n_stages": 35,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "loop_window": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "loop_count": 14,
+  "loop_start_pos": 5,
+  "repetition_groups": [],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 502
+ },
+ {
+  "row_idx": 421,
+  "task": "Task: Estimate evapotranspiration from satellite data\nEstimate daily actual evapotranspiration (ETa) and related biophysical variables over a specified study area using the CMRSET model. It integrates multi-source satellite data (MODIS, VIIRS, Landsat, Sentinel-2, MCD43) with climate datasets (precipitation and PET) to simulate ETa, vegetation indices (EVI, GVMI), and surface reflectances. The workflow includes spatiotemporal alignment of climate and optical imagery, preprocessing for sensor-specific corrections, and model execution via the cmrset.run() function. Outputs include an image collection with bands such as 'aet_cmrset', 'ETa', 'evi', 'P', 'PET', and reflectance bands (blue, green, red, NIR, swir), which are used to generate time-series charts of evapotranspiration and environmental drivers over the Calperum site.",
+  "n_stages": 24,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "VECTOR_LOAD",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "AGGREGATION"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "BAND_SELECT"
+  ],
+  "loop_count": 10,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 1,
+    "family": "RASTER_LOAD",
+    "repeat": 3,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 2,
+    "family": "VECTOR_LOAD",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 5,
+    "family": "RASTER_LOAD",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 6,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 8,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 10,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 12,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 14,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 16,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 18,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 20,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 22,
+    "family": "BAND_SELECT",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 23,
+    "family": "RASTER_LOAD",
+    "repeat": 6,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 24,
+    "family": "AGGREGATION",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 835
+ },
+ {
+  "row_idx": 433,
+  "task": "Task: Monitor cotton vegetation health\nMonitor cotton crop health in Kalaburgi district using time-series NDVI derived from Sentinel-2 imagery between August and December 2022. It computes NDVI for nine bi-monthly periods, applies cloud masking using B2 threshold, masks non-agricultural areas using an agricultural mask, scales the NDVI values to uint8, and generates a stacked composite of scaled NDVI layers. The output includes individual NDVI maps visualized with SLD styling, a composite image for export, and a true-color mosaic from November 2022 for reference. Final outputs are exported to Google Drive as a layer stack and a sentinel reference image.",
+  "n_stages": 22,
+  "stage_families_full": [
+   "VECTOR_LOAD",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 10,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 21,
+    "family": "RASTER_LOAD",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 661
+ },
+ {
+  "row_idx": 476,
+  "task": "Task: Extract vegetation and moisture indices\nCompute multiple spectral indices (NDSI, NDVI, NBR, QNIR_SSWIR, QLSWIR_NIR, QLSWIR_SSWIR) from a mosaicked Landsat 5 TM image collected in summer 2004 over a specific WRS path/row region. It generates a composite index stack (StackVI) and exports both the original reflectance mosaic (CropLandsatVer) and the derived spectral index stack to Google Drive at 30m resolution clipped to a user-defined area (AreaTrabajo).",
+  "n_stages": 16,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD",
+   "BAND_SELECT",
+   "RASTER_LOAD"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "BAND_SELECT"
+  ],
+  "loop_count": 6,
+  "loop_start_pos": 4,
+  "repetition_groups": [],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 463
+ },
+ {
+  "row_idx": 641,
+  "task": "Task: Monitor cotton vegetation health\nMonitor cotton crop health in Haveri district using NDVI derived from Sentinel-2 imagery between September and December 2022. It computes NDVI for seven biweekly periods, applies quality mosaicking (greenest pixel), masks non-agricultural areas and bright pixels (B2 < 2500), clips to the cotton vector layer, and stacks the NDVI bands into a single composite. The output includes a time-series NDVI stack scaled to uint8 for export and individual NDVI layers visualized with a custom SLD color ramp. Two exports are performed: one of the stacked NDVI composite and another of a true-color Sentinel-2 mosaic from mid-November 2022 for reference.",
+  "n_stages": 18,
+  "stage_families_full": [
+   "VECTOR_LOAD",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 8,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 17,
+    "family": "RASTER_LOAD",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 684
+ },
+ {
+  "row_idx": 701,
+  "task": "Task: Classify land cover in positive and negative segments\nClassify land cover in segmented regions derived from Landsat surface reflectance imagery using Random Forest classification. It processes four temporal segments (SEG_01 to SEG_04), separates pixels into positive and negative magnitude classes based on band 'b5', applies thresholds on spectral bands (b3, b4, b5) to isolate specific conditions, trains a Random Forest classifier using labeled samples (DF_SGx, BE_SGx, DD_SGx, Reg_SG2), and produces classified raster outputs for each segment. The final output includes multiple classified maps such as 'Segmento_1_Positivo_ClaRF' and exports one of the filtered segmentation results ('SEGM_04_Negat300final') to Google Drive.",
+  "n_stages": 42,
+  "stage_families_full": [
+   "CLASSIFICATION",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 20,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 1,
+    "family": "CLASSIFICATION",
+    "repeat": 5,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 736
+ },
+ {
+  "row_idx": 733,
+  "task": "Task: Classify agricultural and natural land cover\nClassify land cover types in a rural area using Sentinel-2 imagery from August 2018. It trains a Random Forest classifier on labeled sample regions (classesLagoa) using spectral features from the median composite (B11, B8, B4). The output is a classified raster map with four classes—'Área Plantio', 'Solo', 'Vegetação Natural', 'Agua'—and an area statistics table showing pixel count, hectares, and percentage per class. The classification result is exported to Google Drive, and a legend is added to the map for visualization.",
+  "n_stages": 29,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "AGGREGATION"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "SPATIAL_FILTER"
+  ],
+  "loop_count": 13,
+  "loop_start_pos": 1,
+  "repetition_groups": [
+   {
+    "stage_seq": 29,
+    "family": "AGGREGATION",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 579
+ },
+ {
+  "row_idx": 845,
+  "task": "Task: Identify vegetation anomaly periods\nAnalyze MODIS NDVI time series from 2000 to 2020 over Argentina to compute a historical baseline of NDVI values and their standard deviation for each 16-day period. It then evaluates the 2020 NDVI data across nine consecutive 16-day intervals, calculates z-score anomalies by comparing current conditions with the historical mean and standard deviation, and classifies areas with significant negative anomalies (below -0.52 standard deviations) as anomalous. These classified anomalies are stacked into a multi-band image and summed to produce a final frequency map showing how many times each pixel experienced anomalous vegetation decline during January–May 2020. The output is a single-band summary raster visualized with a custom color palette and exported to Google Drive.",
+  "n_stages": 25,
+  "stage_families_full": [
+   "VECTOR_LOAD",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "BAND_ARITHMETIC",
+   "TEMPORAL_FILTER",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "AGGREGATION"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 10,
+  "loop_start_pos": 2,
+  "repetition_groups": [
+   {
+    "stage_seq": 4,
+    "family": "BAND_ARITHMETIC",
+    "repeat": 4,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 6,
+    "family": "AGGREGATION",
+    "repeat": 3,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 819
+ },
+ {
+  "row_idx": 899,
+  "task": "Task: Calculate vegetation indices and coverage fraction\nCalculate multiple vegetation indices (RVI, NDVI, EVI, PSRI, WDRVI, SIPI, AFRI, SAVI, MSAVI, MSAVI_af) from Landsat 5 surface reflectance data, derives fractional vegetation cover (FC) from MSAVI_af, and exports zonal statistics for these indices over sample regions. It also visualizes the results on the map and exports the MSAVI image to Google Drive.",
+  "n_stages": 24,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER"
+  ],
+  "loop_window": [
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER"
+  ],
+  "loop_count": 10,
+  "loop_start_pos": 5,
+  "repetition_groups": [],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 411
+ },
+ {
+  "row_idx": 935,
+  "task": "Task: Monitor cotton vegetation health\nMonitor cotton crop health in Haveri district using NDVI derived from Sentinel-2 imagery between October and December 2022. It computes NDVI for five bi-monthly periods, applies agricultural mask and top-of-atmosphere reflectance filtering (B2 < 2500), generates a stacked NDVI composite scaled to 0–100 range (offset +100), visualizes it with a custom SLD color scheme, and exports the result as a multi-band raster. The workflow includes cloud-free compositing via qualityMosaic('NDVI'), masking with an external agriculture mask, and visualization of individual NDVI layers for each time segment.",
+  "n_stages": 14,
+  "stage_families_full": [
+   "VECTOR_LOAD",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 6,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 13,
+    "family": "RASTER_LOAD",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 638
+ },
+ {
+  "row_idx": 1078,
+  "task": "Task: Analyze median NDVI over time\nAnalyze the temporal evolution of vegetation health by computing NDVI from Landsat 8 surface reflectance data between April 2013 and August 2021, excluding specific date ranges due to cloud or data issues. It generates a median NDVI composite map after masking low-vegetation areas using a thresholded maximum NDVI image with morphological filtering, and exports this median image. Outputs include a chart of median NDVI over time, stacked NDVI images, and the final masked median NDVI layer for the region of interest.",
+  "n_stages": 28,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ITERATIVE_APPLY",
+   "AGGREGATION"
+  ],
+  "loop_window": [
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "loop_count": 12,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 3,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 4,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 5,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 6,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 7,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 8,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 9,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 10,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 11,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 12,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 13,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 14,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 15,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 16,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 17,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 18,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 19,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 20,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 21,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 22,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 23,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 24,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 25,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 26,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 3,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 555
+ },
+ {
+  "row_idx": 1152,
+  "task": "Task: Compute annual NDVI composite\nCalculate the annual mean NDVI composite for the Heihe River Basin using MODIS MCD43A4 data for the years 2019 and 2020. It processes monthly NDVI images, clips them to the study area, computes maximum-value composites per month, then averages all months to produce an annual mean NDVI image for each year. The resulting images are exported to Google Drive.",
+  "n_stages": 28,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "RASTER_LOAD",
+   "COLLECTION_MGMT",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "SPATIAL_FILTER"
+  ],
+  "loop_count": 12,
+  "loop_start_pos": 1,
+  "repetition_groups": [],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 393
+ },
+ {
+  "row_idx": 1234,
+  "task": "Task: Map land surface changes over time\nGenerate median composite images from multiple Landsat and Sentinel-2 surface reflectance datasets across five time periods (2000, 2005, 2010, 2015, 2020) to visualize and export land surface changes. It applies sensor-specific cloud masking functions (for Landsat 4–8 and Sentinel-2) to improve data quality, computes median pixel values within each period, clips to a region of interest (roi), and visualizes the results using a near-infrared false-color composite (B4, B5, B3). Outputs include layered maps for visualization and five separate GeoTIFF exports of the median composites at 30m resolution for change analysis.",
+  "n_stages": 34,
+  "stage_families_full": [
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 15,
+  "loop_start_pos": 2,
+  "repetition_groups": [
+   {
+    "stage_seq": 28,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 31,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 34,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 666
+ },
+ {
+  "row_idx": 1335,
+  "task": "Task: Classify land use with Random Forest\nthe workflow performs land use and land cover classification for six cities in Fujian Province (Ningde, Fuzhou, Putian, Quanzhou, Xiamen, Zhangzhou) using Landsat 5 and 7 surface reflectance data from 2012. It computes spectral indices (NDVI, MNDWI, LSWI, RVI), incorporates SRTM-derived elevation and slope, trains a Random Forest classifier on labeled samples, and generates classified maps for each region. Accuracy assessment is performed via confusion matrices and variable importance charts. The final outputs include classified raster maps exported to Google Drive and area counts for specific classes (e.g., Spartina alterniflora, mangroves, Phragmites australis, soil).",
+  "n_stages": 13,
+  "stage_families_full": [
+   "ATTRIBUTE_FILTER",
+   "CLASSIFICATION",
+   "ATTRIBUTE_FILTER",
+   "CLASSIFICATION",
+   "ATTRIBUTE_FILTER",
+   "CLASSIFICATION",
+   "ATTRIBUTE_FILTER",
+   "CLASSIFICATION",
+   "ATTRIBUTE_FILTER",
+   "CLASSIFICATION",
+   "ATTRIBUTE_FILTER",
+   "CLASSIFICATION",
+   "AGGREGATION"
+  ],
+  "loop_window": [
+   "ATTRIBUTE_FILTER",
+   "CLASSIFICATION"
+  ],
+  "loop_count": 6,
+  "loop_start_pos": 1,
+  "repetition_groups": [
+   {
+    "stage_seq": 1,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 3,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 5,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 7,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 9,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 11,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 13,
+    "family": "AGGREGATION",
+    "repeat": 24,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 721
+ },
+ {
+  "row_idx": 1341,
+  "task": "Task: Monitor cotton vegetation health\nMonitor cotton crop health in Belgaum district using NDVI derived from Sentinel-2 imagery between October and December 2022. It processes five temporal image composites, computes NDVI for each period, applies cloud masking and agricultural land masking, then generates a stacked NDVI composite. The output includes a multi-temporal NDVI raster map visualized with a custom SLD color scheme and exported as a clipped uint8 image for further analysis, along with a true-color Sentinel-2 mosaic for reference.",
+  "n_stages": 14,
+  "stage_families_full": [
+   "VECTOR_LOAD",
+   "ATTRIBUTE_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_window": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 6,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 13,
+    "family": "RASTER_LOAD",
+    "repeat": 2,
+    "iteration_hint": [
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 545
+ },
+ {
+  "row_idx": 1365,
+  "task": "Task: Estimate forest fuel moisture\nEstimate Live Fuel Moisture Content (LFMC) in forested areas using MODIS MOD09A1 surface reflectance data. It computes the Visible Atmospherically Resistant Index (VARI) from red, green, and NIR bands, normalizes it between seasonal min/max extremes (RVARI), and applies an empirical exponential equation to derive LFMC. A fire history mask excludes recently burned areas (within 5 years), and a forest mask based on tree cover (>10% from Hansen dataset) restricts output to woody vegetation. Monthly composites (2005–2020) are generated, and for each month (Jan, Feb, Aug–Dec), pixel-wise maximum, minimum, and 10th/30th/70th/90th percentiles of LFMC are exported as rasters clipped to the East_Bioreg region.",
+  "n_stages": 97,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "SPATIAL_FILTER",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "TEMPORAL_FILTER",
+   "SPATIAL_FILTER",
+   "AGGREGATION",
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "TEMPORAL_FILTER",
+   "AGGREGATION",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "loop_window": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "loop_count": 42,
+  "loop_start_pos": 14,
+  "repetition_groups": [
+   {
+    "stage_seq": 12,
+    "family": "AGGREGATION",
+    "repeat": 2,
+    "iteration_hint": [
+     "per_year",
+     "generic_each"
+    ]
+   },
+   {
+    "stage_seq": 13,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "per_year",
+     "generic_each"
+    ]
+   }
+  ],
+  "declaration_covers_loop": false,
+  "instruction_char_len": 746
+ },
+ {
+  "row_idx": 1378,
+  "task": "Task: Analyze wetland surface area change\nCalculate NDVI, NDWI, and NDSI indices from Landsat 8 surface reflectance data over the Antuco watershed, then identifies and quantifies the extent of wetland areas by applying an NDVI threshold (>0.18). It outputs a time series chart showing the variation in wetland surface area (in km²) over time.",
+  "n_stages": 38,
+  "stage_families_full": [
+   "RASTER_LOAD",
+   "SPATIAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ITERATIVE_APPLY",
+   "BAND_ARITHMETIC",
+   "AGGREGATION"
+  ],
+  "loop_window": [
+   "ATTRIBUTE_FILTER",
+   "TEMPORAL_FILTER"
+  ],
+  "loop_count": 16,
+  "loop_start_pos": 3,
+  "repetition_groups": [
+   {
+    "stage_seq": 4,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 5,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 6,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 7,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 8,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 9,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 10,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 11,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 12,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 13,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 14,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 15,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 16,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 17,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 18,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 19,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 20,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 21,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 22,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 23,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 24,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 25,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 26,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 27,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 28,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 29,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 30,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 31,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 32,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 33,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 34,
+    "family": "TEMPORAL_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 35,
+    "family": "ATTRIBUTE_FILTER",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   },
+   {
+    "stage_seq": 36,
+    "family": "ITERATIVE_APPLY",
+    "repeat": 2,
+    "iteration_hint": [
+     "unspecified"
+    ]
+   }
+  ],
+  "declaration_covers_loop": true,
+  "instruction_char_len": 342
+ }
+]
