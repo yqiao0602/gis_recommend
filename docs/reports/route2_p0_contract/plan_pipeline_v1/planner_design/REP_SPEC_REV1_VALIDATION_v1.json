@@ -1,0 +1,54 @@
+{
+ "results": [
+  {
+   "test": "T1 short/no-repeat round-trip",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "test": "T2 long/no-repeat round-trip",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "test": "T3 single-stage repeat x12 (total semantics)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "test": "T4 multi-stage ordered repeat x24 + termination boundary",
+   "pass": true,
+   "detail": "expanded 49 ops, intra-order=True"
+  },
+  {
+   "test": "T5 explicit termination stage after pattern group",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "test": "T6 unequal interleaved counts via pattern-group + trailing stage (canonical decomposition)",
+   "pass": true,
+   "detail": "expanded 36 ops vs gold 36"
+  },
+  {
+   "test": "T7 tail same-family different objects stays unfolded (anti-fold)",
+   "pass": true,
+   "detail": "family identity alone is not fold evidence - owner check #2"
+  },
+  {
+   "test": "T8 over-budget sample: folded representation is compact & round-trips",
+   "pass": true,
+   "detail": "literal 500 ops -> folded spec ~217 chars"
+  }
+ ],
+ "findings": [
+  {
+   "ambiguity": "T6: uniform pattern group cannot express unequal true counts (AGG x24 vs LOAD x12); v1-draft forces a wrong uniform expansion",
+   "proposal": "proposal: allow pattern groups with per-stage counts {\"pattern\":[\"AGGREGATION\",\"RASTER_LOAD\"],\"per_stage_counts\":[24,12]} OR represent as literal stages with individual repeats; owner to choose canonical form"
+  }
+ ],
+ "summary": {
+  "passed": 8,
+  "total": 8
+ }
+}
