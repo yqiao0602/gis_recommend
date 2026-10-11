@@ -64,6 +64,11 @@ def sha256_file(path: str) -> str:
     return h.hexdigest()
 
 
+def get_peft_model_state_dict_local(peft_model):
+    from peft.utils.save_and_load import get_peft_model_state_dict
+    return get_peft_model_state_dict(peft_model)
+
+
 def load_rows(path: str) -> list[dict]:
     rows = []
     with open(path, encoding="utf-8") as fh:
@@ -151,11 +156,16 @@ def main() -> int:
     ap.add_argument("--config", required=True)
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--release", action="store_true")
+    ap.add_argument("--init-adapter", default=None,
+                    help="Peft adapter dir to load as starting weights "
+                         "(fresh optimizer/step counter); P1 rep-pivot use")
     a = ap.parse_args()
     if a.dry_run == a.release:
         print("pass exactly one of --dry-run / --release")
         return 2
     cfg = load_config(a.config)
+    if getattr(a, "init_adapter", None) is None and cfg.get("init_adapter"):
+        a.init_adapter = cfg["init_adapter"]
     t0 = time.time()
     rows = load_rows(cfg["train_data"])
     print(f"[data] {len(rows)} rows from {cfg['train_data']}", flush=True)
@@ -200,6 +210,13 @@ def main() -> int:
         r=16, lora_alpha=32, lora_dropout=0.05, bias="none",
         target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
         task_type="CAUSAL_LM"))
+    if getattr(a, "init_adapter", None):
+        from safetensors.torch import load_file
+        from peft.utils.save_and_load import set_peft_model_state_dict
+        sd = load_file(str(Path(a.init_adapter) / "adapter_model.safetensors"))
+        set_peft_model_state_dict(model, sd)
+        print(f"[init-adapter] weights loaded from {a.init_adapter} "
+              "(fresh optimizer, step 0)", flush=True)
 
     smoke = int(cfg.get("smoke_rows", 0) or 0)
     epochs = int(cfg["epochs"])
