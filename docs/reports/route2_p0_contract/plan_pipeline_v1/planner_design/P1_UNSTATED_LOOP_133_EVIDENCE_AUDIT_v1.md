@@ -43,3 +43,23 @@
 ## 证据文件
 
 `p1_unstated_133_evidence_audit.json`（216 行逐行：G0 长度/截断标记/load 次数/判定/任务信号）
+
+---
+
+## ⚠️ 重大更正（2026-10-11 晚，逐例对齐后）
+
+本报告初版结论"P0 循环 = 忠实复现被 cap 截断的金标"**有误**。逐例对齐（sid 39969 等 208 行重建配对）显示：
+
+- **planner_v2_train 的金标 = G0 raw 的完整展开**（98 行与 raw 逐 family 完全一致；110 行仅尾部清理差异；**0 行**匹配 G0 的 RLE 折叠短版）
+- G0 的 `final_len 3-9` / RLE 折叠描述的是 **G0 自身 B1 时代语义链文件的状态**，Planner 线转换时用的是 raw 全量展开——**训练金标没有被截断**
+
+**修正后的判定**（与 owner 机制假设一致，且有直接证据）：
+
+> 金标把合法迭代任务**显式展开为 6–24 次无终止边界的字面循环**（sid 39969：AGGREGATION→RASTER_LOAD ×24 字面展开，无 repetition_group 声明，尾部另有 RASTER_LOAD ×8 连发），且无终止监督。P0 的 2-stage 循环失控 = **忠实复现了这种过度展开、无终止监督的金标模式**。run-cap 伪影存在于 G0 的 RLE/final 字段层面，但不在 Planner 训练目标的路径上。
+
+**未决设计问题（须 owner 裁定，影响全部 8,959+ 合法重复行）**：长迭代任务的 Planner-v2 正确表示应为哪种——
+(i) 字面展开 + declaration（现行约定，但正是教会循环失控的形态）
+(ii) 折叠 repeat stage + declaration（AGGREGATION repeat=24 → RASTER_LOAD repeat=24，终止自然）
+(iii) 单次覆盖声明（一次遍历声明覆盖全部对象，最抽象）
+
+此裁定决定 213+ 行重建件的目标形态，也决定 P1 的数据方向。
