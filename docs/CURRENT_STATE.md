@@ -1,10 +1,59 @@
 # Current Project State
 
-Last updated: 2026-09-27
+Last updated: 2026-10-13
+
+## (0) Planner representation-pivot line: P1/P2 closed; P0 = current best (2026-10-13)
+
+- **Current best model on the frozen planner benchmark: P0 fmt checkpoint**
+  (`/home/qy/stage1_run_planner_v2_fmt/stage1_adapter`, dev-1852 parse
+  .8445 under the batched three-way instrument). Historical bs=1 reference:
+  .8423 (a153dfe9 preds).
+- **P1 (mixed-format SFT) FAIL, mechanism identified**: same-prompt dual-
+  format supervision (208 folded + 1,200 old) gives the model no fold-
+  trigger signal -> parse dropped to .789, fold adoption 11/1,545 rows.
+- **P2 (uniform-target SFT, owner-approved) trained + evaluated**:
+  data gate 1,161/1,200 converted (39 isolated undeclared-window rows, no
+  forced folds), G5 100% exact; fold adoption fixed to 100% of parsed rows
+  and P2 beats P1 everywhere (+4.5pp parse, -9.5pp hit-cap), but dual
+  criteria vs P0 NOT met: parse .8342 (-1.0pp, within noise), fidelity
+  -0.7~-1.5pp. **Failure mode precisely localized**: 291/307 P2 failures are
+  literal stage-list loops on window-bearing rows -> window-folding
+  supervision too thin (only the 208 rebuilt rows teach window folds).
+  Authority: `plan_pipeline_v1/planner_design/p2_uniform_gate_v1/`
+  (gate report + three-way eval), commits 9195219b / 1f30d625.
+- **Next step pending owner ruling**: (A) P3 window-folding completion
+  (literal k>=3 repetition in old gold treated as declaration) / (B) accept
+  P0, close representation pivot, move to Phase-2 ablations or downstream
+  grounding / (C) await parallel-line budget-arm (768 vs 2048) results.
+- **Eval instrument note**: dev-1852 evals now use the batched three-arm
+  script (bs=8 left-padding, symmetric across arms; aggregate drift vs bs=1
+  <=0.3pp; EOS termination absent in ALL arms - p50=384 tokens burned, JSON-
+  completeness-before-cap is the effective parse condition).
+
+### Superseded but referenced (2026-10-10 snapshot)
+
+- GEE detector audit (A1-A4) + frozen-data impact analysis: CLOSED, no
+  rebuild (owner ruling a). Authority:
+  `docs/reports/gee_frozen_data_impact_v1/`,
+  `docs/reports/gee_semantic_planner_v1_pilot_round3/`.
+- Stage-1 (GEE stage) gate FAILED all five conditions -> owner froze
+  Task->Blueprint->Serializer->Grounding pivot (line remains closed).
+- Current Best Model Audit protocol v1 frozen (e21b5e47): primary benchmark
+  = QGIS dev-120 processes+links, unified inference; test-111 never used
+  for selection.
 
 ## Active Route-2 v2 handoff
 
-**Compute server mdzhang (10.191.2.38) is POWERED OFF (2026-09-27, owner "plan B" ruling: preserve, then shut down immediately)**. All continuation-critical assets were preserved BEFORE shutdown with dual-end SHA256 verification (288 tar entries / 248 files, all match): archive `../server_backup_mdzhang_20260927.tar.gz` (sha256 6542ac1f5bee451a...) plus extracted tree and `BACKUP_README.md` (scope, explicit skips, next-use notes). Preserved: stage1_train_v2_2.jsonl (150MB frozen Stage-1 data), b1_gee_stage_train.jsonl (264MB, not present locally before), plan_pool_tiered_v2.jsonl (234MB frozen B2 pool), gate-v3 probes + gate_evaluator_v1 + plan_pipeline_v1, v2a_A train/dev/test (QGIS 1,334/120/111 SFT files), Phase R qgis_sft_ep1/2/3 checkpoints (evaluator-repair rerun can reuse them without retraining), route2_C0 checkpoint (enables the pending test-111 final eval), configs, Qwen3.5-9B-Base config/tokenizer fingerprints (weights NOT backed up - public model, re-download on the rented GPU).
+**Compute server mdzhang (10.191.2.38) is ONLINE (repowered ~2026-10-11,
+owner coordination)**. Live assets there: P0 fmt adapter
+`/home/qy/stage1_run_planner_v2_fmt/stage1_adapter`, P1
+`/home/qy/stage1_run_p1_v1/`, P2 `/home/qy/stage1_run_p2_v1/`, paired-set
+`/home/qy/pairs_with_task_208.json`, three-way eval outputs
+`/home/qy/p*_dev_full_preds*.json` + `/home/qy/p2_three_way_eval.json`.
+Co-tenancy protocol: check `nvidia-smi --query-compute-apps` before GPU
+launches; yyt (labmate SAM training) and the parallel C0/A1' line share the
+GPU — never kill foreign processes; A1 decode-contrast (protocol v1.1) is
+the parallel line's experiment, not this line's.
 
 **Base zero-shot dev result (2026-09-27, evaluator v1.3.1, zero OOM/timeout/batch-halving)**: W1/W2/W3(as-is,rewrite)/W4 all 0.0; invalid 2795/3236 (86.4%). Untrained Base sits at the floor -> absolute-floor thresholds are trivially satisfiable; the pre-registered W1-W4 judgment weight falls on the delta (zero-shot + Delta_i) conditions. Formal reading belongs to the owner. Dev artifacts committed by the holder line (0a41a6d) and mirrored in the backup.
 
