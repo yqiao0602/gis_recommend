@@ -18,7 +18,7 @@ from collections import Counter, defaultdict
 DEV = "/home/qy/planner_v2_dev.jsonl"
 SYSTEMS = {
     "P0": "/home/qy/p0_fmt_dev_preds_rec.json",
-    "P1": "/home/qy/p1_dev_full_preds.json",
+    "P1": "/home/qy/p1_dev_full_preds_rec.json",
     "P2": "/home/qy/p2_dev_full_preds.json",
 }
 OUT = "/home/qy/p2_three_way_eval.json"
