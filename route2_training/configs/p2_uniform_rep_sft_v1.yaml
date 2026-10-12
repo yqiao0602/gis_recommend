@@ -1,0 +1,17 @@
+# P2 统一目标格式受控 SFT — 训练配置（owner 裁定 2026-10-12）
+# 冻结条件：与 P1 相同的基座/prompt(SEP)/超参/轮数/seed；唯一变量 = 目标格式统一
+# 起点 = 冻结 P0 fmt checkpoint（与 P1 同起点，保证 P0/P1/P2 三方可比）
+name: "p2_uniform_rep_sft_v1"
+base_model: "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base"
+train_data: "/home/qy/p2_sft_train_v1.jsonl"
+output_dir: "/home/qy/stage1_run_p2_v1"
+init_adapter: "/home/qy/stage1_run_planner_v2_fmt/stage1_adapter"
+max_lr: 0.0001
+batch_size: 2
+grad_accum: 16
+max_len: 1024
+seed: 20260924
+epochs: 2
+smoke_rows: 0
+ckpt_every: 44
+log_every: 10
