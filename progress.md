@@ -1572,3 +1572,184 @@
 - **STEP 3 结论**："v2 = v1 结构增强版"在格式稳定性达标条件下成立；两选项（v2+格式专项 epoch / 接受现状双读数并陈）**归 owner**。
 - 报告：`planner_design/PLANNER_UNIFIED_EVAL_REPORT_v1.md`（数据 json 同目录）。
 - Formal SFT 全链完成、locked test 未动、零冻结物变更。GPU 空闲。
+
+## 2026-10-12：WS1/WS2 人工裁定全量收口（93/93 + 181/181）+ owner 五步指令 + B2-P1 审计 v2
+
+- **WS2 末项 k=370 受托裁定并经 owner 确认**：结构解码 38 年(1984–2021)×3 传感器(L5/7/8)×19 阶段 + 1 = 723 精确对齐任务文本——"结构异常"假设撤销；维持 suspicious（invariant fold 缺陷 VECTOR_LOAD repeat=38、年×传感器循环未入 repetition_groups、源级不可验证）。k=994 为同任务孪生（同 723 阶段序列，仅 rg 提示词异），至多取一入可信子集。裁定落盘 WS2_BAND_ISOLATED_181.json / WS2_REMAINING_REVIEW.json。
+- **冻结**：`planner_design/WS1_WS2_ADJUDICATION_FREEZE_V1.json`（六文件 SHA + k=370 裁定记录 + 边界声明：收口≠90 组绑定错误已全证、≠可信子集已冻结、suspicious 不自动升级）。
+- **owner 五步指令（2026-10-12）**：①冻结 WS1/WS2（已完成）→ ②B2-P1 修复（重复组身份/范围/次数一致性；区分源级真实性与表示完整性）→ ③修复前后差异报告（stages/rg/total_iterations）→ ④可信 dev 子集冻结（排除确认绑定错误/重复/不可核验项，记 SHA）+ 重算 BAND_SELECT P/R/F1 与多家族联合漏检 → ⑤之后才议训练。暂不启动全量重训/P1 格式改造/RL。
+- **B2-P1 重复组审计 v2（dev 1,852 行，只读）**：内部一致性零缺陷（rg.repeat 与 stage.repeat 2,645/2,645 完全一致；C1/C2/C5 全 0）——v1 审计的"全 phantom"为口径错误已标记 superseded。缺陷轴=折叠语义正确性：C3 condition_count_suspect 1,411（ATTRIBUTE_FILTER 1,387 + THRESHOLD_LOGIC 24，即 owner A 裁定类：过滤条件数≠执行次数）/ unverifiable 986 / task_loop_supported 243 / invariant_fold_suspect 5（k=370 VECTOR_LOAD×38 类，含 idx 468/958/1014/1181）；C4 长周期字面展开无 rg 覆盖 99 行（表示粒度不一致轴）。受影响行 885/1,852（47.8%）。报告：REP_GROUP_CONSISTENCY_AUDIT_DEV_V2.json；脚本 scripts/audit_repetition_group_consistency_v2.py。
+- 注：dev 语料无 total_iterations 字段（owner 差异报告要求项）——展开操作数按 sum(stage.repeat) 计算（dev 全量 28,004）。
+
+## 2026-10-12（续）：重复语义生成链追平——三机制定位完成
+
+- **生成器定位**：`planner_design/blueprint_v2_preflight_v1.py`（写 blueprint_v2_gold_v2.jsonl → v3 仅 per_band hint 重标 → planner_v2_dev/train/test）。机制：`runs_of()` 语义链相邻同族 RLE → stage.repeat；rg = count>1 游程；iteration_hint = `hints_of(instruction)` 任务关键词匹配（per_band/per_class/per_year/per_feature/generic_each/unspecified，**整行所有 rg 共享同一 hint**，generic_each 匹配 "each|every|per|all"）。v2 gold 原有 total_iterations=len(raw)，进 corpus schema 时被丢弃。
+- **三机制裁定**：M1（重复次数推断错误）→ **蓝图层计数无误**，是机械 RLE；k=370 VECTOR_LOAD×38 经 sid=60463 链实证——上游语义链字面以 38 连续 VECTOR_LOAD 结尾，RLE 忠实压缩。不变量归属问题在上游链生成（本仓库外，服务器已关）。M2（条件计数混淆）→ 机制在代码层证实：repeat=相邻 token 数，无执行语义；根源在链 token 粒度（条件被展开为连续同族 token）。1,411 分层抽样材料已出（COND_COUNT_ADJUDICATION_SAMPLE_V1.json：family×length×repeat 三维 15 层 28 样本，含 sid 与链 run 上下文，全部 join 成功）。M3（长展开无 rg）→ 代码层证实：corpus 生成器无交错模式检测（该逻辑只在 216 行重建线 reconstruct_planner_gold_v2 存在）。
+- **repeat 结构统计（owner 差异报告规格）**：repeat=1 阶段 19,379；repeat>1 阶段 2,645（repeat 和 8,625）；展开操作 28,004。
+- **关键推论**：蓝图层是上游链的忠实机械镜像——所有重复语义（循环/条件/不变量）都在链生成时决定。蓝图修复 = 表示政策裁定（保留 38 vs 归一+标记），不是字段错误修复。"模型忠实学会了错误标签"假设获得机制支持。
+
+## 2026-10-12（续二）：C6 canonical 一致性审计 + loop_invariant 修复1 + 25 例预裁定落盘
+
+- **C6 审计（audit_canonical_agreement_c6_v1.py，dev 全量 2,645 个 repeat>1 阶段，1,214/1,214 行 join 成功）**：canonical token 全异 **1,083（40.9%）=机械证实不同调用折叠，repeat 非循环次数**；mixed 543（20.5%）；全同 231（8.7%，真重复候选）；链长失配 788（29.8%，1:1 位置对齐不可靠，待对齐算法修复）。ATTRIBUTE_FILTER 1,387 中仅 14 全同——owner 的 A 判定（条件计数）获机械证据。注意：全同=同方法名 N 次，必要非充分（参数不在 canonical 链中），循环确认仍需任务级/源级证据。
+- **优先案例答复**：idx 988 AF×8 = mixed（listContains/filter/eq 交替）→ 非统一执行，支持 A；idx 854 TL 5×20 = 全部全同（同方法×20×5），机械展开风险与 owner 判断一致但参数级不可分，维持 A+优先核验。
+- **loop_invariant 修复1（方案 a，owner 五项检查全 PASS）**：仅修 canonical 证实的 2 行——dev 370（38×ee.Feature，repeat 38→1）与 1014（2×ee.Feature，2→1），stage 级 iteration_hint=["loop_invariant"]，对应 rg 移除（维持 rg=repeat>1 契约与 C2 同步不变量）。产物 `04_DIAG_WORK/planner_v2_dev_fix1_loopinv.jsonl`（修正副本，原件未动）；1,850 非修复行字节级一致。报告 `REP_FIX1_COMPAT_PROBES_V1.json`。
+- **468/958/1181 未标记**（owner 前提：疑似不修）：canonical 显示不同调用折叠（ee.Feature+ee.String / select+mean / float+paint）——新缺陷类 **distinct_call_collapse**；待裁（展开为多阶段/保留 repeat=2+注记）。41 与 1196 文本与蓝图 hash 均不同，非重复行。
+- **25 例预裁定落盘** `COND_COUNT_PRERULING_V1.json`（A10/B6/C2/U7，owner 汇总计差 A9/U8 已登记，以逐行表为准）；升级路径 = C6 上下文 → owner 确认。
+
+## 2026-10-12（续三）：P0-P1 完成——证据冻结 + 对齐修复（零回归）；P2/P3 材料就绪
+
+- **P0 证据冻结**：`C6_EVIDENCE_FREEZE_V1.json`（8 文件 SHA 含原始 dev 与 fix1 副本、b1 链源；分类定义与已知限制入册：all_identical≠已证循环、失配≠已证 Gold 错误、C6 比例禁止用于批量改写）。
+- **P1 对齐修复（repair_alignment_c6_v2.py）**：根因=上游语义链是 canonical 链过滤子序列（AUX/presentation 丢弃，如 ee.String/ee.Image.paint→AUX_VALUE）。方法=SequenceMatcher 保序对齐 sem vs [classify(canonical)]。结果：1,211/1,214 行全对齐；788 失配全部重分类（354→all_distinct / 171→mixed / 260→all_identical / 3→alignment_partial 保留不可核验）。**零回归**：v1 的 1,083 all_distinct + 543 mixed 在新对齐下全部保持原类。新口径：all_distinct 1,437 / mixed 714 / all_identical 491 / partial 3。每行带对齐比率、未匹配 token、跳过 canonical+本地类、链哈希（验收标准=每个重分类有可查证据，非归零）。
+- **P2 政策草案**：`GOLD_REPAIR_POLICY_V0_DRAFT.md`（owner 四类处置表转写 + distinct_call_collapse 展开建议 + 粒度门槛前提 + 可信子集四条准入 + 双评测安排 + 执行边界）。DRAFT 待 owner 确认后生效。
+- **P3 证据升级**：`COND_COUNT_PRERULING_EVIDENCE_V2.json`（25 例 × 对齐 canonical span + C6 v2 类 + 完整任务文本）。交叉表：U→all_distinct 4（原证据不足者获机械证据，可升 A）；B→all_identical 4（原多规则候选实为同方法重复，需重看）；A→all_distinct/mixed 8（与 owner 预裁定一致）。裁定权仍归 owner。
+
+## 2026-10-12（续四）：P2 政策 FROZEN + 25 例终裁表冻结（口径修正）+ all_identical 60 例分层抽样
+
+- **P2 生效**：`GOLD_REPAIR_POLICY_V1_FROZEN.md`（v0 标记 superseded 保留溯源）。新增 owner 粒度门槛操作化表：逻辑操作一体（Filter.lt+filter 类）保留单阶段 repeat=1 / 独立操作拆多阶段 / 同任务多阈值规则=单阶段多规则（不以 where 次数定阶段数）/ 不可区分→unresolved_granularity 排除。**all_distinct 触发粒度审查而非自动展开；不授权批量改写；每修复保留原值/新值/理由/证据定位。semantic_ruling 与 repair_action 双轴分离，诊断升级不触发改写。**
+- **25 例终裁冻结** `COND_COUNT_FINAL_RULING_25_V1.json`。口径修正（owner 指出）：统计单位=（案例，游程出现次），**废除去重+主类聚合**——41 例 9 个 AF×6 游程此前只显示 1 个、490 例三类打平任意取主类。裁定分配：1773/744/1505/738→non_uniform_count_confirmed+granularity_pending；A 组 9 例+854→non_uniform_count_likely（854 优先核验）；B 组 6 例（41/1196/490/673/674/1088）→multi_rule_candidate+keep_pending（41/1196 文本+hash 均不同不合并）；C 组 2 例→loop_candidate_unverified；U 余 3 例（931/123/1060）→insufficient_evidence。
+- **阶段级 v2 类落盘** `C6_V2_STAGE_CLASSES_DEV.json`（2,645 阶段含 canonical_span，单位=游程出现次：all_distinct 1,437 / mixed 714 / all_identical 491 / partial 3）。
+- **all_identical 分层初审启动** `ALL_IDENTICAL_SAMPLE60_V1.json`：491→任务封顶（每源任务≤2 游程）372→27 层（family×repeat 档 2-3/4-7/8+）实取 49；双轴裁定字段（repeat_meaning / granularity_disposition / evidence / confidence）待裁。证据边界已声明：canonical 仅方法名无参数。
+
+## 2026-10-12（续五）：49 例初审裁定写回 + 抽样口径修正 + 停止条件登记
+
+- **抽样口径修正（owner 指出）**：先前 strata 数字是 372 总体的层分布而非样本分配。`ALL_IDENTICAL_SAMPLE49_V1.json`（v60 标记 superseded，命名统一，种子/方法不变→49 个 ID 与冻结集逐一相同断言通过）按层分列 population_n / sample_n / 抽样方式。**层分布≠样本分布，49 例可用于发现问题、不可用于估计 491 总体比例**（owner 口径已写入）。
+- **49 例裁定机械核对**：owner 49 裁定行 = 49 冻结样本 ID，49/49 全配对、零未配对（表头组计数差如 F/J/K/L/M 已由运行级行数澄清；951 双导出游程、1732/1204/744 双游程全部按 (dev_idx,seq) 对位，API 抽查全中）。裁定以 preliminary_semantic_ruling_NOT_repair_action 状态写回，同任务游程按 dev_idx 分组统计权重（owner 规则）。
+- **初步分布**：repeat_meaning = multi_call_likely 20 / multi_rule_candidate 11 / insufficient_evidence 8 / repeated_data_source_candidate 8 / loop_candidate_unverified 2；granularity = keep_pending 39 / unresolved_granularity 10。
+- **owner 停止条件登记**：49 例后不扩样，先答三问（多少确认 repeat 语义问题/多少确定粒度应调/多少必须源码+参数）；问题集中在特定层才补审，无规律即停——不让数据治理取代模型实验。源码优先核验清单：854/114/994/631/697/1204/951×2；粒度优先家族：Image.where/Filter.calendarRange/ImageCollection.map/高次 Image+Feature。
+- **边界**：不启动全量 Gold 改写、不训练、不 RL。下一步=可信 dev 候选集（只纳入有足够证据的修订；未决样本保留原版+单独标记）→ 原始/可信双轨评测。三问的回答被源码/参数证据门控（服务器已关，本地不可答的记 unresolved）。
+
+## 2026-10-12（终）：repeat 审计封盘 → 可信 dev 候选集 + 双轨评测完成（CPU-only）
+
+- **owner 三结论固定**：零确认 repeat 语义错误、零确认粒度调整、49 例价值=证据缺口（canonical 无参数、源码在已关服务器）。不再扩大审计。
+- **可信 dev 候选集** `DUAL_TRACK_EVAL_V1.json`：1,276/1,852（68.9%）入集，576 行排除且逐行带理由——binding_error_confirmed 96（B1 四组）/ 重复去重 90→保留每组首行（去 58+70=128 shared 未证去重）/ binding_error_suspect ~354（diff-task 共享蓝图未核验，strict 口径）/ ws2_suspicious 28（含 370/994）/ audited_pending ~65 / alignment_partial 2。长度与家族覆盖保持（long 90→68；主要家族支持率 >90%）。
+- **双轨评测（现有 P0-B 预测，四视图）**：E1 原始 Gold×全集 bag-incl 0.6165/excl 0.7277/LCS 0.5815/parse 0.8472；E2 可信 Gold×全集**逐位一致**（唯一证据支持修订=fix1 两行：370 bag 0.063→0.066、1014 0.5455→0.6000）；E3 可信 Gold×可信子集 0.5589/0.6890/0.5181；E4 原始 Gold×子集 ≤0.0001 差。
+- **关键发现——排除影响方向反转**：被排除行原始 bag 均值 0.7442 **高于**保留行 0.5588。绑定错误/重复行=模型轻松复现的短模板（3 阶段），原始全集指标被模板重复**抬高**；可信子集是更诚实的能力地板（bag-incl 0.5589 vs 0.6165；BAND_SELECT F1 0.4465 vs 0.4691）。长度构成相近（short 77.4% vs 74.5%），降幅主要来自去除模板重复而非长度偏斜。
+- **对 owner 三问的回答**：以当前证据支持的修订集（仅 2 行），评测标签对聚合指标无显著影响；Gold 表示问题的影响在**结构可信度**（子集构成）与**未抽样的 repeat 语义**上，不在当前聚合数上。
+- **边界**：可信 Gold 标注"证据覆盖有限"；无 GPU、无训练、无 RL；源码级修复价值待 owner 依本轮结果裁定。
+
+## 2026-10-12（收口）：评测基线冻结 + 可信子集错误分解——瓶颈判定
+
+- **基线冻结** `EVAL_BASELINE_FREEZE_V1.json`：七文件 SHA（含可信 Gold、冻结预测、政策、裁定表）；术语按 owner 裁定收紧——0.5589/0.4465 = **trusted-subset 条件性评测基线**，非统计能力下界；汇报语言固定为"已验证的局部 Gold 修订影响有限，但样本构成清理揭示了原始全集指标的乐观偏差"。
+- **错误分解** `ERROR_DECOMPOSITION_TRUSTED_V1.json`（可信子集 1,276 行 × 冻结预测，多标签+主归因双层）：
+  - **多标签行率**：repeat_count_error 58.2% > stage_selection_miss 53.3% > over_emission 43.6% > parse_failure 18.9% > order_error 12.6%；good_match 仅 24.1%
+  - **主归因**：stage_selection_miss **52.9%**（第一瓶颈）> parse_failure 18.9% > over_emission 14.1% > repeat_count 7.1% > order 0.7%
+  - **parse_failure 241/241 (100%) = hit_max_tokens**——全部是生成预算耗尽截断，零 JSON 格式错误；长链（>25 阶段）截断率 52.9%，GEOMETRY/TERRAIN 行 32.1%，BAND_SELECT 行 26.9%（对照基线 18.9%）——**终止控制问题**，与冻结的 A1 机制结论（Generation Control）一致
+  - **计数错误方向**：低发 980 vs 超发 532（2:1）——模型系统性**少报**重复；与 gold repeat=机械 RLE 计数的审计发现互恰：部分"少报"可能是模型未复现机械折叠，属表示错位而非纯能力缺陷
+  - **漏检家族 Top**：BAND_SELECT 170 / ITERATIVE_APPLY 164 / SPATIAL_FILTER 136（BAND_SELECT 金标行漏检率 ~39%）
+  - order 0.7% 主归因——**非瓶颈**（与 Phase 1 一致；注意口径不同：此处 bag-LCS 差>0.15）
+- **三问判定（owner step 3）**：瓶颈 = ①阶段选择（规划能力）②长链终止控制（解码侧）③重复量化（部分为 gold 机械计数错位）。**非**顺序、非 JSON 格式。最小对照实验候选：A 解码预算/终止控制（零训练）；B presence 辅助监督（训练侧）；C repeat 量化（训练侧，但 gold 计数部分不可信须谨慎）。实验设计待 owner 裁定后进行。
+- 更正：前一条 progress 记录中"能力地板"措辞按 owner 裁定收紧为"trusted-subset 条件性评测基线"。
+
+## 2026-10-12（A/B/C 裁定落地）：A 协议冻结 + A1 样本冻结
+
+- **owner A/B/C 裁定**：A 优先批准（协议+小规模对照）；B 有条件设计准入（A 完成后冻结方案；漏选先拆"金标合理未生成 vs 金标粒度不可靠"两类；presence 标签两种定义不得混同）；C 暂停（不训练、不批量修 Gold——机械 RLE 计数下加计数监督可能强化错误表示）。
+- **A 协议冻结** `A_EXPERIMENT_PROTOCOL_V1_FROZEN.md`：机制假设（241 parse fail 100% hit_max；长链 52.9% 截断）；A1 单变量对照（基线 max_new_tokens=768 → 实验臂 **2048 预注册**，其余逐项相同，禁新停止规则）；131 行 6 层样本 `A1_SAMPLE_131.json`（T2 截断长链全取 36/T1 截断短中 30/NT 长 15/BS 20/GEO-TERRAIN 15/对照 15，种子 20261012）；A1 三条入门判定（截断降+解析成+覆盖升不被超发/成本抵消）；A2 全子集复核六指标表；执行前置=模型工件 SHA 对账+GPU 恢复（推理 ~2.5h 起）。
+- **边界**：原始预测与新预测并存；冻结预测/基线/可信子集口径不变；B 不启动训练。
+
+## 2026-10-12（A1 执行前核验完成）：协议 v1.1 修正案 + 样本 v1.1 加固
+
+- **owner 三项执行前核验落地**：①样本索引核验通过——131 行 idx 唯一无缺失、全在冻结可信子集、层配比一致；升级 v1.1 加稳定 ID（source_row_id 经 gold_v3 join 零缺失 + task_sha256），执行不再依赖文件行号；每行加 gold_target_chars 供运行时预算核对。②协议 v1.1 修正案 `A_EXPERIMENT_PROTOCOL_V1_1.md`——终止原因四分法（EOS/MAX_TOKENS/OTHER_STOP/PARSE_FAIL 与截断分开记录，以生成终止状态为准）；统计口径预注册（逐行配对+分母+Wilson CI；T2=36 行全取普查，报实际改善数不称显著性；NT 对照 15 行谨慎措辞；预算充分性以实际 token 分布与 MAX_TOKENS 残余率为准）。③已知例外行确认：idx=1024（1,464 gold 阶段/71,030 字符，NT_long，基线 768 内已解析——模型未复现巨型展开的对照行）。
+- **状态（owner）**：A1 批准等 GPU+SHA 对账；A2 未解锁；B 仅设计准入；C 暂停。执行按 v1+v1.1 冻结口径，无需再议。
+
+## 2026-10-12（本轮收口）：A1 执行前准备全部完成，等待 GPU
+
+- owner 确认收口；五步执行顺序固定并入协议 v1.1（SHA 对账门禁优先、双臂条件一致、产物并存不覆盖、v1.1 汇总口径、A1 过门才解锁 A2）。
+- idx=1024 定性获 owner 确认：机械膨胀诱导风险对照——2048 下观察长度暴增/超发/结构偏离，生成更长≠进步。
+- **当前等待态**：A1 批准等 GPU+SHA 对账（执行会话按协议 v1+v1.1 直接跑，无需再议）；A2 未解锁；B 仅设计准入；C 暂停。审计封盘、协议不再改。
+- **下一讨论节点 = A1 结果**（截断改善/解析成功/阶段覆盖/超发风险/生成成本 → 判 A 通过与否、是否进 B 方案设计）。
+- 本轮全链产物索引：EVAL_BASELINE_FREEZE_V1 / DUAL_TRACK_EVAL_V1 / ERROR_DECOMPOSITION_TRUSTED_V1 / A_EXPERIMENT_PROTOCOL_V1_FROZEN+v1_1 / A1_SAMPLE_131(v1.1) / GOLD_REPAIR_POLICY_V1_FROZEN / COND_COUNT_FINAL_RULING_25_V1 / ALL_IDENTICAL_SAMPLE49_V1 / C6_EVIDENCE_FREEZE_V1 / WS1_WS2_ADJUDICATION_FREEZE_V1。
+
+## 2026-10-12（服务器恢复）：mdzhang 在线——SHA 门禁通过 + A1 全量预置 + GPU 监视挂载
+
+- **服务器状态确认（owner）**：mdzhang 10.191.2.38 在线（A10 24GB）；租卡机两 IP sshd 限流拒连（不再需要）。
+- **A1 SHA 门禁 PASS**（`A1_SHA_GATE_V1.json`）：adapter weights+config 与拉回包（租卡机 provenance）逐字节一致（27dca22a…/a4cb9a26…，`/home/qy/planner_v2_adapter_staging`）；`_fmt` 变体不同已排除；base 模型在位（指纹 0078a3cf…，21 文件），按协议以 768 臂复现 p0b_768 做功能验证，不符即停。
+- **发现 owner 作业**：qy 账户 `train_stage1.py --config p2_uniform_rep_sft_v1.yaml` 运行中（owner 确认为本人有意启动——P2 统一格式受控 SFT，owner 2026-10-12 裁定，起点=冻结 P0-fmt checkpoint，与 P1 同条件唯一变量=目标格式统一；step 80/1370，~70-85s/step，**ETA ~25-30h**）。A1 排其后；yyt 的 SAM 作业（6.2GB）不构成阻塞。
+- **A1 全量预置完成**：runner+样本+可信 Gold+a1_run.sh 已上传 `/home/qy/a1/`；dry-run 通过（指纹+131 行校验）；一键脚本含 GPU≥9.5GB 门禁+dry-run 前置+nohup 双臂执行。
+- **监视器挂载**（会话内存活期）：每 300s 轮询空闲显存，≥9500MiB 即按冻结协议自动启动 A1。若会话结束：服务器端 `bash /home/qy/a1/a1_run.sh` 一条命令可随时手动触发。
+- 预计：P2 训练结束后 A1 双臂运行 ~5-7h；完成后做 768 臂功能门禁比对 + v1.1 汇总裁定。
+
+## 2026-10-12（A1 执行中）：P2 训练完成 + A1 自动启动
+
+- **owner 的 P2 训练正常完成**：`[done] steps=84 examples=2738 tokens=550352 tgt_trunc=64 task_too_long=0 elapsed=4201.8s (~70min)`；adapter → `/home/qy/stage1_run_p2_v1/stage1_adapter`，run_ledger 在册。（前记 25-30h ETA 系误读进度显示口径 1370，实际 84 步——更正。）
+- **A1 自动启动（冻结协议授权范围内）**：GPU 空闲 16.4GB 触发监视器 → a1_run.sh → dry-run 过 → 双臂启动，PID 2450138，768 臂生成中（GPU 14.1GB used）。
+- 产出目录 `/home/qy/a1/results_20261012_122658`（nohup，log=/home/qy/a1/a1_run.log）；完成监视器已挂（600s 轮询进程退出）。
+- 预计 ~6-7.5h（768 臂 ~2.5h + 2048 臂 ~3.5-5h）。完成后：拉回产物 → 768 臂 vs p0b_768 功能门禁比对（不符即停）→ v1.1 汇总（五问：截断改善/解析成功/阶段覆盖/超发风险/生成成本）→ A1 判定。
+
+## 2026-10-12（A1 判定）：A FAIL（预算修复不成立）——决定性机制诊断：结构性不终止
+
+- **A1 双臂完成**（3.5h，mdzhang A10）：768 重跑 + 2048 臂，131 行，产物 server `/home/qy/a1/results_20261012_122658/` + 本地 `04_DIAG_WORK/a1_pull/`（gzip 已拉）。
+- **五问（v1.1 口径）**：截断 52→52 **零救回**；解析零新增；bag 逐层零差异；对照层超发未恶化；2048 臂截断行全部撞满 2048（成本翻倍零收益）。三条入门判定全不过 → **A FAIL**（owner 冻结判据原文适用）。
+- **机制发现（本轮真正产出）**：截断=**结构性不终止**——截断行 gold 长度 2/4/5/6/9...（gold 2 阶段的行生成 135+ 阶段，idx 1287 合法 JSON 无限延续到撞上限）；非 n-gram 重复（top-20gram 比率 0.033）；终止行为在数值边缘随机翻转（重跑 52 vs 冻结 66，双向分歧）；idx=1024 双臂一致（EOS@82/5 阶段）——膨胀诱导未发生。**模型不会在工作流终点发射 EOS。**
+- **功能门禁 FAIL（附带）**：768 重跑 vs 冻结 p0b_768 pred_text 一致率仅 8.4%（跨主机 4-bit 数值差异）——跨主机对比作废，同模型对比限同主机同栈；`A1_VERDICT_V1.md` 已登记处置。
+- **分支待 owner 裁定**：A' 终止专项解码（结构性停止规则，p0b2-C 臂思路）/ A'' EOS 监督小步 SFT（V2a 负结果教训须预注册）/ B presence 监督（动机独立成立）/ C 继续暂停。分析 `A1_RESULT_ANALYSIS_V1.json`；判定 `A1_VERDICT_V1.md`。
+
+## 2026-10-12（A′ 完成）：停止规则诊断——有效围堵、非修复；owner 分支裁定材料就绪
+
+- **A′ 离线执行**（零 GPU：前缀规则离线截断 ≡ 解码时停止，同机同栈数据）：R1 结构循环检测（p≤6/3 次/边界触发/预注册）应用于 A1 双臂产物。脚本 `run_aprime_stop_rule_diag_v1.py`；结果 `A_PRIME_RESULTS_V1.json` + 判读 `A_PRIME_RESULTS_READING_V1.md`。
+- **四指标**：M1 失控终止 48/52 触发但**保留前缀中位=gold 4.4×**（触发晚，stage ~124/130）；M2 保护 短 47/47 全保护/长 30/32（2 例真实小循环边界误伤）/ctrl 安全；M3 closure-parse 100%（首版 0.0 系我方检查函数多括号 bug，已修正登记）；M4 平均仅省 372 字符。
+- **判读**：R1=有效围堵非修复——把不可解析灾难转为可解析但严重过长；**过生成从早期开始**，语法侧不存在能砍在正确终点的前缀信号（正确终点是语义的）→ A″（终止点监督训练）动机增强；B 评测口径须先冻结（围堵部署与否+过长输出计分）；围堵可作正交推理层护栏。
+- **A1 终裁层已并入** `A1_VERDICT_V1.md`（owner 两层结论：预算修复否定；结构性不终止=最强假设但 EOS 失准未单独证实）。
+
+## 2026-10-12（A″ 训练完成）：owner 授权开训 → 19 分钟完成 → 推断中
+
+- **owner 开训终裁**：批准 A″ λ=2 单次实验（边界：冻结 P0 起点/冻结清单/1 epoch/LR 1e-5/ckpt≤20/新目录零覆盖；停止规则照录；五条件全过才算过）。
+- **启动曲折（全部工程性，零预注册偏差）**：①派生 trainer NameError（函数级 torch 导入修复）；②首个 loss OOM（.float() 上转多 1.2GB fp32 + yyt 作业共占——改 bf16 CE，与模型内部 loss 同画像）；③第三次启动成功。
+- **训练完成**：`[done] steps=9 examples=300 tokens=100559 tgt_trunc=0 task_too_long=0 elapsed=1140.4s (~19min)`；adapter → `/home/qy/a1/adprime_run_v1/stage1_adapter`；ledger 在册。
+- **训练后推断已启动**：131 行 × 768 臂（同机同栈同提示词同 greedy，与冻结 pre 臂完全对齐），产出 `/home/qy/a1/adprime_eval_131/`；监控已挂。
+- 推断完成 → 拉回 → `analyze_adprime_paired_v1.py` 五条件判定（G1 McNemar 配对 / G2 C2·C3 误伤 / G3 覆盖不退化 / G4 过生成中位 / G5 成本+20%）→ PASS/FAIL 材料。
+
+## 2026-10-12（A″ 判定）：五条件全不过 → FAIL（方向性反结果）——回滚生效
+
+- **训练后全链完成**：推断 131 行 × 768（同机同栈同配置）→ `analyze_adprime_paired_v1.py` 五条件自动判定。
+- **判定：VERDICT = FAIL，五条件全不过**：
+  - G1 失控配对：**b=1/c=45/net=−44，失控 52→96**（p=1.0）——EOS 加权使终止**恶化**；
+  - G2 误伤：C2-short **2**（违 0）；C3-long 1（合规）；
+  - G3 覆盖：bag-excl **0.313→0.165**，BAND_SELECT **0.346→0.149**，10 家族退化>0.01；
+  - G4 过生成中位 0.6→**0.8**（升）；
+  - G5 成本 **+57.8%**（超 20% 上限）。
+- **判读**：终点 EOS 加权（λ=2）反向——与 V2a-P1 λ=20 构成**第二个独立负点**（不同线不同量级同方向），EOS-加权杠杆双点证伪；9 步小训练即致广谱退化（bag 近半降、10 家族回归）——P0 adapter 覆盖能力脆弱；**预注册框架按设计工作**（边界先冻、判定自动、回滚即刻）。
+- **回滚生效**：adprime adapter 隔离弃用（`/home/qy/a1/adprime_run_v1/` 保留不复用）；现行基线 = 冻结 P0 adapter；λ=5 与追加训练自动关闭。
+- **分支现状（待 owner 裁定）**：终止失控经 A′（围堵候选）/A″（EOS 监督负）双重探索后，剩余 = R1 护栏（评测稳定性收益已证）+ B（唯一在途训练侧分支，动机需在 EOS 证伪背景下重估）；C 暂停。产物：`ADPRIME_PAIRED_VERDICT_V1.json` / `A_DPRIME_RESULT_READING_V1.md`。
+
+## 2026-10-12（A″ 三问归因完成）：单一故障机制——结构闭合能力损坏
+
+- **owner 终裁落地**：A″ 正式 FAIL 入册；adprime adapter 服务器端标记 FAILED/DO NOT USE（STATUS_FAILED_DO_NOT_USE.md）；EOS 加权路线关闭（论文表述限定于已测配置）；P0 脆弱性限定表述（"该干预高回归风险"，不泛化）；预注册框架价值确认。冻结态：P0=现行基线；A″ adapter 仅限复现/误差分析；RL 暂停。
+- **三问归因（纯现有产物，零训练零 Gold 改动；ADPRIME_FAILURE_ATTRIBUTION_V1.json）**：
+  - **Q1 轨迹**：loss 1.28→0.33 收敛正常；梯度范数未记录（仪表缺口）——异常单步更新**不可判定**（诚实结论）；
+  - **Q2 集中位置**：45 失控行 ∩ 53 覆盖退化行 = **44 交（Jaccard 0.815）**——同一批行；全层受击含对照短链 3/15；
+  - **Q3 机制**：**45/45 = 无界前缀（从未闭合 JSON 对象）**，"JSON 完成+尾随"零例；45 行 pre 全为 EOS 正常终止（idx 814：EOS@148/7 阶段 → 768 撞帽）。
+- **机制结论**：λ=2 破坏的是**上游结构闭合能力**（收尾括号不再发射），EOS 因此永不到达——既非 (a) EOS 消失亦非 (b) EOS 后移，而是 (c) 的更早形态。覆盖崩塌=同一故障从属结果（不可解析→bag 0）。
+- **含义**：R1 围堵护栏（治标已证）+ B 唯一在途训练侧分支（动机待 owner 在 EOS 证伪+P0 脆弱两背景下重估）；未来训练必须补记梯度范数与 EOS-token 损失（仪表要求入册）。
+
+## 2026-10-12（R1 部署验证启动）：P0+R1 解码期回归集复跑
+
+- **owner 裁定落地**：A″ 归因闭环三结论入册（结构闭合故障=最优支持机制；失控/覆盖耦合 Jaccard 0.815；训练 loss 降≠能力升）+ 表述边界（单次训练不充分分离混杂，不得归因 EOS 权重内部效应）；**R1 进入独立部署验证**（非无条件上线）；B 暂缓+轻量训练前门禁设立（梯度范数/终点 EOS loss/结构闭合指标逐记录、checkpoint 级解析率+覆盖评估、冻结 P0 对照、回滚阈值预冻、单因素原则；**结构解析率升格为早期停止指标**）；RL 暂停。
+- **R1 部署形态实现**：`r1_guardrail_v1.py`（共享规则模块，参数与 A′ 冻结一致 p≤6/3 次/边界触发）+ `run_p0_r1_regression_v1.py`（transformers StoppingCriteria 真·解码期拦截：每 16 tokens 扫描生成段、触发即停；触发标志独立于 EOS/MAX_TOKENS/OTHER 终止分类）。
+- **回归集复跑启动**（PID 824001）：131 行全量（覆盖 owner 列举全部子集：52 失控/47 C2/32 C3/idx 1503+1181/4 无循环行），768 预算+greedy 同 pre 臂配置；产出目录 `/home/qy/a1/p0_r1_regression_131/`；监控已挂。
+- 判定将报告 owner 全指标：触发率/未检出率/误停率/保留前缀-Gold 阶段覆盖/结构闭合率/平均省 token——并做在线触发 vs 离线 A′ 等价性核验。R1 定位保持：推理可靠性护栏，非规划能力修复。
+
+## 2026-10-12（R1 部署验证完成）：六指标全达——127/131 预算内终止，待 owner 部署终裁
+
+- **真·解码期回归跑完**（StoppingCriteria 每 16 tokens 扫描，131 行 × 768 + greedy 同 pre 配置）。
+- **owner 六指标**：触发率 **48/52（92.3%）**；未检出 4/52=恰为已知无循环行（零新增）；误停 **2/79（2.5%）**（idx 324/162）且**已知两例 1503/1181 本次 EOS 正常终止**——误停行身份逐轮随机（同机生成边缘涨落实证），稳定量=比率非行清单；closure-parse **48/48=100%**；kept/gold 中位 0.2（失控行语义覆盖原本即未达成，pre-R1 替代结局=不可解析倾倒 bag=0）；**平均省 584 tokens/触发行（76% 预算）**。
+- **端到端**：127/131（96.9%）预算内终止（EOS 77 + R1 50），pre 臂 79/131（60.3%）。终止分布 EOS 77/R1 50/MAX 4/OTHER 0。
+- **等价性**：触发集合与离线 A′ **逐行一致**（48=48 零差）；kept 量差异=生成逐轮涨落使失控轨迹入检早晚不同，在线版围堵更早更省。
+- **两风险登记**：4 行未检出类；2.5% 误停率（行随机，回归须锚定比率）。
+- **建议（待 owner 终裁）**：R1 可作默认推理配置启用（带开关）；每次评测并报原始/围堵双视图（B_EVAL_CALIBER v1.1）。定位不变：可靠性护栏，非能力提升。报告 `R1_DEPLOYMENT_VERIFICATION_V1.md`。
+
+## 2026-10-12（A 线收束）：R1 受控部署终裁落地——部署配置+记忆归档
+
+- **owner 部署终裁**：R1 批准为 P0 受控推理护栏（非质量修复、非无条件默认）；四条件：①开关保留默认 P0_RAW ②终止类型四分（R1 截断可解析 JSON 不得标完整工作流）③双风险告警持续监控（锚定比率+逐行留痕）④上线后回归监控五指标（禁仅预算内终止率）。48/48 闭合率边界入册（仅触发行）。
+- **`R1_DEPLOY_CONFIG_V1.json`** 双侧落盘（开关语义/冻结参数/终止词表/监控规格/已验证运行指引）。
+- **研究路线定格**：P0=能力基线；R1=可靠性护栏受控部署；A″ EOS 加权维持失败不恢复；B 与 RL 暂不启动直到训练方案有明确防回归设计。
+- **下一阶段核心任务（owner）**：提升模型工作流规划能力本身——阶段选择/覆盖、顺序依赖、适当终点停止、QGIS grounding/DAG 四能力分开测量；不以更激进截断为目标。
+- **跨会话记忆归档**：`memory/planner-a-line-guardrail-2026-10.md`（A 线全收束态+方法学资产：预注册框架、同机纪律、配对统计口径）。
+
+## 2026-10-13 P2 统一目标格式受控 SFT：训练+三方评测完成，双条件未通过（对 P0）
+
+- P2 数据门禁：1,200 防遗忘行 → 1,161 转换 / 39 隔离（未声明交替窗，不强行折叠）；G5 独立展开器 100% 精确一致；发现并修正转换器相邻连发编码（208 权威规范 = stage repeat=N + 镜像单 family 组）
+- P2 训练：1,369 行（208 新表示 + 1,161 转换）× 2 epochs，84 步零异常，SHA 5fbf94ec 三重核验
+- 三方评测（dev-1852，同批量仪器 bs=8）：P0 parse .8445 / P1 .7889 / P2 .8342；P2 折叠采纳率 100%（vs P1 的 11 行）但对 P0 双条件未通过（保真 −0.7~−1.5pp）
+- 失败解剖：全部 parse 失败为真截断；P2 的 307 失败中 291 行为旧式字面列表循环——窗口折叠监督只来自 208 行，证据太薄
+- 结论：P0 仍为当前最强；表示转向"采纳成功、端到端未转化"；下一步选项（A 窗口折叠补全 / B 收束转 Phase-2 / C 等预算臂）已呈 owner 裁定
+- 仪器变更披露：dev 评测转批量生成（三臂对称，聚合漂移 ≤0.3pp，16 行抽检 parse 翻转 1/16）
