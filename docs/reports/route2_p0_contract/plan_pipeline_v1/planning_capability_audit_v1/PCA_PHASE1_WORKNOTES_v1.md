@@ -106,3 +106,17 @@ planner_v2_train 文本池双重判定）；若最终 gold 候选池无法定位
 - **Stage-3 启动**：A 组金标（原生 GEE instruction 文体=域内构念，金标按语义独立写）、
   C 组起草+金标（覆盖矩阵）、≥6 对配对（依据=同分析目标）。产出 owner 审核后进 Stage-4
   账本冻结。模型生成继续未启动。
+
+## 6. Round-9 终裁落实（2026-10-13）
+
+- **W056058 分支①采纳并回填账本**：`adjudication_resolved` + `owner_disposition`
+  （EXCLUDED_FROM_MAIN_SCORING / BASELINE-INVALID / 金标 0dc643980e8d4b8e 唯一基准 /
+  日期 / round）已写入 `pca_b_chain_audit_v1.json`（新 SHA `ce224ec3bdb6f6d3`；
+  回填前状态保留于 commit f7c8c256）——排除规则落账本字段而非仅说明文件。
+- **评分规则文件 round-9 增补**：W056058 终裁节；A 组文体四行管理表（含配对审核扩展：
+  必需步骤/分支循环/参数约束/输出要求核对——同目标≠同难度）；Stage-4 冻结确认条款
+  （评分代码路径机械验证：原链覆盖率/逐步一致不得为扣分依据；evidence_source 必填 ∈
+  {task_text, gold_constraint, model_output}）。
+- **Stage-3 侦察完成**：A 组 20 条题面全部就位（line_id/split/task_type/instruction
+  全文于 `pca_a_group_candidates_v1.json`；域内文体确认）。下一步 = A 组金标编写
+  （20 条 × 八字段，题面从候选文件零转录读取），随后 C 组起草与配对设计。
