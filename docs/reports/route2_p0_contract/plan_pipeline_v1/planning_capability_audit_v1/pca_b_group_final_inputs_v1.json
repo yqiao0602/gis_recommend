@@ -1,0 +1,154 @@
+{
+ "_meta": {
+  "freeze": "PCA B-group final model-facing inputs v1",
+  "rule": "owner round-4: freeze only after 3 checks; assembled by extraction from ledgers (no transcription)",
+  "sources": {
+   "restatement_v1": "docs/reports/route2_p0_contract/plan_pipeline_v1/planning_capability_audit_v1/pca_b_group_restatement_v1.md",
+   "final_status_v1": "docs/reports/route2_p0_contract/plan_pipeline_v1/planning_capability_audit_v1/pca_b_group_final_status_v1.md"
+  },
+  "excluded": [
+   "W023206"
+  ],
+  "n_rows": 19,
+  "checks": {
+   "A1_count_19": true,
+   "A2_W067268_consistency": true,
+   "A3_wid_set": true
+  }
+ },
+ "rows": [
+  {
+   "wid": "W000473",
+   "group": "B",
+   "status": "APPROVED",
+   "final_text": "Identify the areas covered by exactly one of two polygon layers (an exterior-extent layer and a survey layer) — regions present in one layer but not in both. Output: a polygon layer of the non-overlapping areas. Any valid route to this result is acceptable.",
+   "text_sha256": "d4690a8d64390eff"
+  },
+  {
+   "wid": "W000635",
+   "group": "B",
+   "status": "APPROVED",
+   "final_text": "Generate a polygon layer of uniform-width bands tracing the boundaries of input polygons, for tactile-map edge rendering. The band width is user-specified and bands must be centred on the original outlines, free of geometry artefacts, and combined into a clean output. Output: polygon features representing the edge bands.",
+   "text_sha256": "5e498c7b08ab0391"
+  },
+  {
+   "wid": "W000674",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "From a high-resolution DEM, produce three terrain-derivative rasters: slope in degrees, aspect in degrees, and a hillshade. The derivatives must be geometrically meaningful, which requires working in a projected metric CRS. Output: three georeferenced raster files added to the project.",
+   "text_sha256": "7f8fb8f3731f9620"
+  },
+  {
+   "wid": "W000890",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT(verified, text kept)",
+   "final_text": "Produce a per-municipality dominant drought-class map from a drought-severity polygon layer whose classes overlap. Overlaps must be resolved so that more severe classes take precedence (hierarchical exclusivity). For each municipality, determine the drought class covering the largest area within it. Output: (1) a municipality layer symbolized by dominant drought class and (2) a table listing each municipality's dominant class code/name and the corresponding area.",
+   "text_sha256": "9651c8727abf92a4"
+  },
+  {
+   "wid": "W007046",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "From a vector layer, select the features whose string attribute matches a given case-insensitive pattern. Report (a) the total number of input features and (b) the number of matching features, and produce (c) the centroid of the matching features' merged geometry as a single point. Output: the matching features carrying both counts, and one centroid point feature carrying the same counts.",
+   "text_sha256": "e870cc9584cfd057"
+  },
+  {
+   "wid": "W033927",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT(verified, text kept)",
+   "final_text": "Map seafloor substrate units from ROV navigation tracks and annotations: for each annotated location, represent the area of seafloor visible to the camera as a substrate-classified polygon oriented along the track, then combine overlapping areas so each final unit carries a single substrate class. Output: a polygon layer of substrate mapping units with standardized styling.",
+   "text_sha256": "34b1d5490f95ad18"
+  },
+  {
+   "wid": "W055494",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "Merge small forest-stand polygons into adjacent, similar, larger stands. A small stand is eligible only when it touches a larger neighbour, the relative difference in dominant height stays within the given threshold, and the neighbour is of a qualifying type ('classified'). Each merged group must retain the attributes of its largest stand, and each output feature must state whether it was merged (merged = 1) or not (merged = 0). Output: a merged polygon layer.",
+   "text_sha256": "84ebdfdf5c7a8836"
+  },
+  {
+   "wid": "W055534",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "Compute per-country mean values of several raster indicators using country boundaries as zones: land quality (one epoch) and population density for the years 1500, 1990, and 2000. Retain the country name and ISO code fields, attach one distinctly prefixed set of statistics per indicator epoch, and export the final attribute table as CSV. Output: a countries layer carrying all statistics, plus the exported CSV file.",
+   "text_sha256": "7492cf7d07ada727"
+  },
+  {
+   "wid": "W055908",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "Draw a representative sample of points from an input point layer based on the values of a numeric attribute. The sampling must support both a simple random mode and a stratified mode, in which the numeric field is first divided into classes (e.g., by quantiles or equal intervals) and points are sampled within each class. Output: a new point layer containing the sampled features with X and Y coordinate fields added.",
+   "text_sha256": "fc01518d62a94740"
+  },
+  {
+   "wid": "W055913",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "Combine two polygon zoning layers (e.g., management zones and soil zones) into a single layer of non-overlapping atomic zones, where each output polygon represents a unique combination of the two zonings. The output must consist of valid single-part polygons, each uniquely identified. Output: one polygon layer with a unique zone ID and geometry attributes (area, perimeter) per zone.",
+   "text_sha256": "09bb03ffce027a6a"
+  },
+  {
+   "wid": "W056058",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "For a water-network vector layer restricted to a study area, produce results organized by the network's three hierarchical levels (Principal, Secundaria, Terciaria) according to the level attribute: one layer per level and a buffer zone around each level with its own specified radius (each level has a distinct radius). Output: the study-area network, one filtered layer per level, and one buffer layer per level.",
+   "text_sha256": "bd5db7d418215711"
+  },
+  {
+   "wid": "W056274",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT(refill, inside-points semantics verified)",
+   "final_text": "For each paddock polygon, produce a distance raster giving, for every location inside the paddock, the distance to the nearest water point located within that same paddock, in map units of the working CRS. Paddocks containing at least one water point each yield their own georeferenced distance raster named after the paddock; the set of per-paddock rasters is the final output — no additional summary statistic is required.",
+   "text_sha256": "7ddab55b1fea782f"
+  },
+  {
+   "wid": "W066995",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "Assemble a natural-resource dataset for a specified property: obtain the relevant natural-resource features from the government feature service for the given lot/plan boundaries or extent, so that the final dataset covers exactly the target property area. Output: a single styled GeoPackage layer containing the property's natural-resource data.",
+   "text_sha256": "99edb6c1f7ff98d1"
+  },
+  {
+   "wid": "W067092",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "For each polygon in an input layer, compute the area-weighted average of a numeric attribute from an overlay polygon layer, ensuring duplicated overlay geometry is not counted twice. Output: the input features with the area-weighted average attached, plus a report layer with per-feature details; a CRS check is expected for geographic or mismatched layers.",
+   "text_sha256": "b64e89d92b2cf9d2"
+  },
+  {
+   "wid": "W067268",
+   "group": "B",
+   "status": "PENDING -> frozen pending owner final verbatim check",
+   "final_text": "Estimate noise levels (dBA) at receptor locations around a point noise source according to the BS 5228 standard, accounting for terrain between source and receptors, distance attenuation, ground type, and barriers. Input: a point source, receptor polygons, and a DEM; layers must be handled in a projected CRS. Output: a noise-level value per receptor and a styled source-point layer.",
+   "text_sha256": "ec967f7e2a719e85"
+  },
+  {
+   "wid": "W067404",
+   "group": "B",
+   "status": "APPROVED",
+   "final_text": "For each species-occurrence point, summarise a continuous environmental raster within a circular neighbourhood of a user-specified radius: compute the requested statistics of the raster inside each neighbourhood and attach them to the original point locations. Output: the occurrence points enriched with the neighbourhood statistics.",
+   "text_sha256": "6fb8d38cae07c912"
+  },
+  {
+   "wid": "W068342",
+   "group": "B",
+   "status": "APPROVED",
+   "final_text": "Select valid canopy-photo locations from a set of candidate points, an optimized flight grid, and an area plot polygon. The selected locations must satisfy the specified spatial safety constraints and use the required projected coordinate reference system. Output: a 'Safe Points' layer of locations valid for canopy photo capture.",
+   "text_sha256": "63e6b022b9351afc"
+  },
+  {
+   "wid": "W068582",
+   "group": "B",
+   "status": "APPROVED",
+   "final_text": "Within a user-defined area of interest, assign a Manning roughness coefficient to CORINE 2018 land-cover polygons, using the provided CODE_18→n lookup table, and compute each polygon's area in square metres and hectares. All outputs must be in a common CRS. Output: the AOI land-cover polygons with Manning and area attributes, loaded for visualization.",
+   "text_sha256": "4c41ab7a8511c6a6"
+  },
+  {
+   "wid": "W068833",
+   "group": "B",
+   "status": "APPROVED_AFTER_EDIT",
+   "final_text": "Align multiple input rasters to a common grid — identical CRS, extent, and pixel size — so they can be stacked for a multi-criteria suitability analysis. Alignment must honour a reference (snap) grid where provided. Output: a set of aligned rasters with identical grid structure, plus a manifest summarizing the alignment parameters used.",
+   "text_sha256": "a0713a6db8b6a85e"
+  }
+ ]
+}

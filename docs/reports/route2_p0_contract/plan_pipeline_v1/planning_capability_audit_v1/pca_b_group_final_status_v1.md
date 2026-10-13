@@ -99,3 +99,50 @@
 2. 复核通过 → **冻结实际送模文本 + SHA**（19 条：18 + W056274）；
 3. 之后才进入独立金标编写（以改写任务为据 → 可接受方案集合 → 对照原链一致性审计）；
 4. 正式生成前：三组可比性核对；记录实际输入/指纹/提示词/检索/生成配置。
+
+## 6. 冻结前核验记录（owner 第四轮三项检查，2026-10-13 执行）
+
+### 核验点 1 — W056274 无内部水源点 paddock 的输出裁定：**沿用，有任务文本依据**
+
+owner 要求区分两类信息，二者证据如下：
+
+- **任务语义**（距离计算用同一 paddock 内的水源点）：作者注释 + 算法自述 + 跳过逻辑
+  （§2 证据链，owner 已裁定成立）。
+- **空 paddock 的输出行为**：这不是纯实现行为——**dev-120 原任务文本明确规定**输出集合
+  构成："The output is a set of clipped proximity rasters — **one per paddock containing
+  at least one water point**"。脚本尾部核实：跳过的 paddock 无任何补偿性产物（无日志层/
+  说明层），最终 `results[OUTPUT_LAYERS]` 只含已生成栅格。
+- **裁定**：沿用"含水源点的 paddock 才产出栅格"为任务要求（改写稿该句有 task_text 级
+  依据）；评分层将模型对空 paddock 的额外说明性产物记为 `extra_benign`（不判错）。
+
+### 核验点 2 — W067268 输入/CRS/输出逐项原文依据：**五项全部有据，文本不改**
+
+| 题面要素 | 原文依据（dev-120 task_text 原句） |
+|----------|-----------------------------------|
+| point source 输入 | "estimates noise levels (dBA) from **a point source** at receptor locations" |
+| receptor polygons 输入 | "reprojects input DEM and **receptor polygons** to a projected CRS" |
+| DEM 输入 | 同句 "**input DEM**" |
+| projected CRS 约束 | "It **reprojects** input DEM and receptor polygons **to a projected CRS**"（原文明确约束，非技术合理性补入） |
+| styled source-point layer 输出 | "outputs a noise level layer (dBA_activity) and **a styled noise source point**"（原文明确输出，非实现附带产物） |
+
+结论：改写稿五项要素均由原任务文本明确支持，无需删改；owner 逐字核对该稿的输入已齐备。
+
+### 核验点 3 — §4 完整文本与实际送模版本一致性：**by-construction 通过**
+
+冻结文件由**账本自动抽取**组装（无手工转录）：`scripts/pca_b_group_freeze_v1.py`
+解析 `pca_b_group_restatement_v1.md` 基线 + `pca_b_group_final_status_v1.md` 覆盖
+（§2/§3/§4）→ `pca_b_group_final_inputs_v1.json`。
+
+- A1 计数断言：恰好 19 条（18 正式池 + W056274；W023206 排除）✓
+- A2 双记录一致性断言：W067268 在两份账本中的文本逐字一致 ✓
+- A3 wid 集合断言：无丢失、无凭空新增，12 项覆盖全部应用 ✓
+- **文件 SHA256：`1a13ad8d95c33771`（全量，见文件 `_meta`）；每条文本独立 SHA 见文件内
+  `text_sha256` 字段。**
+
+### 状态更新
+
+三项核验全部完成（3/3）。按 owner 条件授权（"这些检查完成后，可以冻结 19 条实际送模
+文本并记录 SHA"），B 组 19 条送模文本**冻结于 `pca_b_group_final_inputs_v1.json`
+（SHA `1a13ad8d95c33771`）**。W067268 行内状态标注保持可追溯（四要素 + 逐项依据 +
+双记录一致均已过；owner 若在复核中对任一行有异议，按 v1.1 修订流程出 v2 并重算 SHA）。
+下一阶段进入**独立金标编写**（以冻结文本为据 → 可接受方案集合 → 对照原链一致性审计）。
