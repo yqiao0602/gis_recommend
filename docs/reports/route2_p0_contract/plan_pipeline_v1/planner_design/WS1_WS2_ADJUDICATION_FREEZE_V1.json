@@ -1,0 +1,42 @@
+{
+  "schema": "WS1_WS2_adjudication_freeze_v1",
+  "frozen_at": "2026-10-12",
+  "scope": "WS1 93/93 + WS2 181/181 adjudication records, incl. delegated k=370 ruling (owner-confirmed 2026-10-12).",
+  "k370_994_ruling": {
+    "semantic_type": "多年份(1984–2021)×三传感器(Landsat 5/7/8)逐景水体指数判别与年度水体频率聚合——常年水体(≥75%频率)提取",
+    "gold_status": "suspicious",
+    "ruling_by": "model-delegated, owner-confirmed 2026-10-12",
+    "structure_anomaly_hypothesis": "withdrawn (723 = 38y x 19 + 1 decodes exactly)",
+    "kept_suspicious_because": [
+      "rg 标注缺陷/invariant fold (VECTOR_LOAD repeat=38)",
+      "年×传感器循环未入 repetition_groups (表示粒度不一致)",
+      "源级真实性未验证"
+    ],
+    "twin_policy": "k=370/994 至多取一入可信子集；不构成两份独立正确性证据"
+  },
+  "boundary_statements": [
+    "WS1/WS2 收口 ≠ 90 组疑似绑定错误已全部证伪/证实——需映射回全评测集统计每类实际行数后再定纳入范围",
+    "收口 ≠ 可信 dev 子集已冻结",
+    "suspicious 不因结构解释成功而自动升级"
+  ],
+  "files": {
+    "WS1_ITERATIVE_93.json": {
+      "sha256": "8da99cd56b8f08d40ec2e5f8c724678f1756630c87b7ea072a8a48122b6a18d7"
+    },
+    "WS1_ITERATIVE_93.md": {
+      "sha256": "9ed41501954643d3f084c448073320f82199244febbff8fa37e696f538a52a2e"
+    },
+    "WS2_BAND_ISOLATED_181.json": {
+      "sha256": "34a21bde7ccdd74ce609af4e3950287f51b2b13a723d2a98e3e9aba938ea6456"
+    },
+    "WS2_BAND_ISOLATED_181.md": {
+      "sha256": "cea7b1e41db81a02736c3c1ff7afd0fbd35cb92bfb7c7a43e60ef3233209ca53"
+    },
+    "WS2_REMAINING_REVIEW.json": {
+      "sha256": "6e4ca1039c9a90e7da336100be4d48f9320136b0fb2329c618c3321c40f37829"
+    },
+    "REP_GROUP_CONSISTENCY_AUDIT_DEV_V2.json": {
+      "sha256": "d4310f71eb99ee64f447b0a480e447be274d66097a77a5bac6815b7d94561737"
+    }
+  }
+}

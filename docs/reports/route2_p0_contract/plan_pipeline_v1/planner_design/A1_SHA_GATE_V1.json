@@ -1,0 +1,44 @@
+{
+  "schema": "A1_SHA_GATE_V1",
+  "checked_at": "2026-10-12",
+  "execution_host": "mdzhang 10.191.2.38 (A10 24GB, ONLINE per owner 2026-10-12)",
+  "gate_items": {
+    "adapter_weights": {
+      "baseline_provenance": "RENTED_SERVER_PULL_20261005/root/data/stage1_run_planner_v2/stage1_adapter (rented-box copy of p0b artifacts)",
+      "baseline_sha256": "27dca22a311d41e4defb401dd147826866c0cdce78d217c497294446d4aba14e",
+      "execution_host_path": "/home/qy/planner_v2_adapter_staging/adapter_model.safetensors",
+      "execution_host_sha256": "27dca22a311d41e4defb401dd147826866c0cdce78d217c497294446d4aba14e",
+      "match": true
+    },
+    "adapter_config": {
+      "baseline_sha256": "a4cb9a26444d5a900cf3a578b8d1662dd14696f5c8e232a776051349ea19812a",
+      "execution_host_sha256": "a4cb9a26444d5a900cf3a578b8d1662dd14696f5c8e232a776051349ea19812a",
+      "match": true
+    },
+    "adapter_dir_fingerprint_local_pull": {
+      "dir_sha256": "7cf3abdfb67b52fb778ccf22d405ce09654ac80d8acd50130bcf383ff100b781",
+      "n_files": 6,
+      "note": "README/adapter_config/adapter_model/chat_template/tokenizer.json/tokenizer_config"
+    },
+    "excluded_variant": {
+      "path": "/home/qy/stage1_run_planner_v2_fmt/stage1_adapter",
+      "weights_sha256": "82095811dc11d10613cd351513a40a568134f3d646e84942591310dd177a65bb",
+      "note": "_fmt variant is DIFFERENT — must NOT be used for A1"
+    },
+    "base_model": {
+      "execution_host_path": "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base",
+      "status": "present; no rented-box reference SHA available locally",
+      "verification_plan": "functional equivalence: 768-arm re-run on the 131 frozen rows must reproduce p0b_768 predictions (greedy); mismatch => STOP per protocol"
+    }
+  },
+  "gate_verdict": "ADAPTER PASS (weights+config byte-identical); base model via functional reproduction check at run time",
+  "gpu_status_at_check": {
+    "total_MiB": 23028,
+    "used_MiB": 21552,
+    "processes": [
+      {"pid": 2110204, "user": "qy", "cmd": "train_stage1.py --config route2_training/configs/p2_uniform_rep_sft_v1.yaml", "mem_MiB": 15354, "etime": "~1h"},
+      {"pid": 2274907, "user": "yyt", "cmd": "cropland_sam3_adapter.train", "mem_MiB": 6188, "etime": "~28m"}
+    ],
+    "note": "A1 needs ~9-10GB; blocked until qy training job finishes (yyt's 6.2GB alone still leaves ~16.8GB — sufficient)"
+  }
+}

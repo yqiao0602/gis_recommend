@@ -1,0 +1,48 @@
+{
+  "schema": "R1_DEPLOY_CONFIG_V1",
+  "ruled_at": "2026-10-12",
+  "deployment_ruling": "R1 approved as CONTROLLED inference guardrail for P0. NOT a workflow-quality fix. NOT unconditional default. Switchable, instant rollback to pure P0.",
+  "switch": {
+    "default_state": "P0_RAW (guardrail off until explicitly enabled per run)",
+    "enable_flag": "stopping_criteria=[R1Stopping] at decode time",
+    "rollback": "remove flag; P0 raw path unchanged and always preserved"
+  },
+  "rule_params_frozen": {
+    "P_max": 6,
+    "R_min": 3,
+    "boundary_only": true,
+    "check_every_tokens": 16,
+    "budget": 768,
+    "decoding": "greedy"
+  },
+  "termination_typing": {
+    "vocabulary": [
+      "EOS",
+      "R1_GUARDRAIL",
+      "MAX_TOKENS",
+      "OTHER"
+    ],
+    "rule": "R1-truncated parseable JSON must NOT be marked as complete workflow; syntax_valid and semantic_complete remain separate flags per B_EVAL_CALIBER v1.1"
+  },
+  "monitoring_requirements": {
+    "metrics": [
+      "trigger_rate",
+      "false_stop_rate",
+      "miss_rate",
+      "structural_closure_rate",
+      "semantic_coverage"
+    ],
+    "anchoring": "false-stop/miss judged by RATE on fixed eval sets (row identity varies per run); keep per-row records",
+    "forbidden": "budget-within-termination rate alone is NOT a success criterion",
+    "known_risks_carried": [
+      "4/52 no-cycle undetectable class",
+      "~2.5% false-stop rate (stochastic rows)"
+    ],
+    "boundary": "48/48 closure rate applies to TRIGGERED rows only"
+  },
+  "verification_run": {
+    "date": "2026-10-12",
+    "report": "R1_DEPLOYMENT_VERIFICATION_V1.md",
+    "raw": "/home/qy/a1/p0_r1_regression_131/ (server) + 04_DIAG_WORK/a1_pull/ (local)"
+  }
+}

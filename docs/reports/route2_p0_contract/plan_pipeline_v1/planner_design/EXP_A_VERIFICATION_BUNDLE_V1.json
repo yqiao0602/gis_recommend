@@ -1,0 +1,296 @@
+{
+  "spearman_correction": {
+    "n": 7,
+    "prevalence_vs_recall": {
+      "rho": 0.9643,
+      "bootstrap_ci95": [
+        0.698,
+        1.0
+      ]
+    },
+    "prevalence_vs_fp_rate": {
+      "rho": 0.9286,
+      "bootstrap_ci95": [
+        0.412,
+        1.0
+      ]
+    },
+    "note": "n=7 families — preliminary association only, not a strong causal conclusion; wording corrected from 'monotonic' to 'clear overall association with family-level exceptions'"
+  },
+  "experiment_b_frequency_baseline": {
+    "train_rows": 33339,
+    "per_family": {
+      "BAND_SELECT": {
+        "train_prevalence": 0.316,
+        "model_recall_presence": 0.4718,
+        "model_fp_rate": 0.0941,
+        "baseline_majority": {
+          "recall": 0.0,
+          "fp_rate": 0.0
+        },
+        "baseline_prevalence_matched": {
+          "expected_recall": 0.316,
+          "expected_fp_rate": 0.316
+        },
+        "model_minus_baseline_recall": 0.1558,
+        "verdict": "model conditions on task (recall above prevalence)"
+      },
+      "TEMPORAL_FILTER": {
+        "train_prevalence": 0.7863,
+        "model_recall_presence": 0.896,
+        "model_fp_rate": 0.4118,
+        "baseline_majority": {
+          "recall": 1.0,
+          "fp_rate": 1.0
+        },
+        "baseline_prevalence_matched": {
+          "expected_recall": 0.7863,
+          "expected_fp_rate": 0.7863
+        },
+        "model_minus_baseline_recall": 0.1098,
+        "verdict": "model conditions on task (recall above prevalence)"
+      },
+      "SPATIAL_FILTER": {
+        "train_prevalence": 0.5493,
+        "model_recall_presence": 0.7965,
+        "model_fp_rate": 0.3655,
+        "baseline_majority": {
+          "recall": 1.0,
+          "fp_rate": 1.0
+        },
+        "baseline_prevalence_matched": {
+          "expected_recall": 0.5493,
+          "expected_fp_rate": 0.5493
+        },
+        "model_minus_baseline_recall": 0.2472,
+        "verdict": "model conditions on task (recall above prevalence)"
+      },
+      "ATTRIBUTE_FILTER": {
+        "train_prevalence": 0.6667,
+        "model_recall_presence": 0.9052,
+        "model_fp_rate": 0.4246,
+        "baseline_majority": {
+          "recall": 1.0,
+          "fp_rate": 1.0
+        },
+        "baseline_prevalence_matched": {
+          "expected_recall": 0.6667,
+          "expected_fp_rate": 0.6667
+        },
+        "model_minus_baseline_recall": 0.2385,
+        "verdict": "model conditions on task (recall above prevalence)"
+      },
+      "RASTER_LOAD": {
+        "train_prevalence": 0.9737,
+        "model_recall_presence": 0.9954,
+        "model_fp_rate": 0.55,
+        "baseline_majority": {
+          "recall": 1.0,
+          "fp_rate": 1.0
+        },
+        "baseline_prevalence_matched": {
+          "expected_recall": 0.9737,
+          "expected_fp_rate": 0.9737
+        },
+        "model_minus_baseline_recall": 0.0218,
+        "verdict": "model close to frequency prior"
+      },
+      "AGGREGATION": {
+        "train_prevalence": 0.5861,
+        "model_recall_presence": 0.8697,
+        "model_fp_rate": 0.2697,
+        "baseline_majority": {
+          "recall": 1.0,
+          "fp_rate": 1.0
+        },
+        "baseline_prevalence_matched": {
+          "expected_recall": 0.5861,
+          "expected_fp_rate": 0.5861
+        },
+        "model_minus_baseline_recall": 0.2836,
+        "verdict": "model conditions on task (recall above prevalence)"
+      },
+      "ITERATIVE_APPLY": {
+        "train_prevalence": 0.2245,
+        "model_recall_presence": 0.3618,
+        "model_fp_rate": 0.0862,
+        "baseline_majority": {
+          "recall": 0.0,
+          "fp_rate": 0.0
+        },
+        "baseline_prevalence_matched": {
+          "expected_recall": 0.2245,
+          "expected_fp_rate": 0.2245
+        },
+        "model_minus_baseline_recall": 0.1373,
+        "verdict": "model conditions on task (recall above prevalence)"
+      }
+    },
+    "reading": "comparison of model presence recall vs train prevalence per family; deltas near zero => frequency-only behavior for that family"
+  },
+  "experiment_c_first_pass": {
+    "BAND_SELECT_FN": {
+      "total": 234,
+      "category_proxy_distribution": {
+        "a_or_b_needs_review": 181,
+        "c_likely_real_error": 53
+      },
+      "interpretation": "rows with downstream SPECTRAL_INDEX/BAND_ARITHMETIC consumers => gold internally consistent => model omission likely a real selection error (category c). Isolated BAND_SELECT => needs review (possible pipeline artifact or alternative workflow).",
+      "examples": [
+        {
+          "k": 1,
+          "task_head": "Task: Compute NDVI time series",
+          "gold_downstream_consumers": [],
+          "gold_consistency_proxy": "isolated BAND_SELECT (gold consistency questionable — possible pipeline artifact)",
+          "category_proxy": "a_or_b_needs_review"
+        },
+        {
+          "k": 4,
+          "task_head": "Task: Analyze NDVI temporal trend",
+          "gold_downstream_consumers": [
+            "BAND_ARITHMETIC"
+          ],
+          "gold_consistency_proxy": "consistent (downstream spectral/arithmetic consumers)",
+          "category_proxy": "c_likely_real_error"
+        },
+        {
+          "k": 8,
+          "task_head": "Task: Extract VV backscatter over orbit 131",
+          "gold_downstream_consumers": [],
+          "gold_consistency_proxy": "isolated BAND_SELECT (gold consistency questionable — possible pipeline artifact)",
+          "category_proxy": "a_or_b_needs_review"
+        },
+        {
+          "k": 18,
+          "task_head": "Task: Classify land cover in 1995",
+          "gold_downstream_consumers": [],
+          "gold_consistency_proxy": "isolated BAND_SELECT (gold consistency questionable — possible pipeline artifact)",
+          "category_proxy": "a_or_b_needs_review"
+        },
+        {
+          "k": 19,
+          "task_head": "Task: Classify land cover types",
+          "gold_downstream_consumers": [],
+          "gold_consistency_proxy": "isolated BAND_SELECT (gold consistency questionable — possible pipeline artifact)",
+          "category_proxy": "a_or_b_needs_review"
+        },
+        {
+          "k": 26,
+          "task_head": "Task: Map artisanal gold mining sites",
+          "gold_downstream_consumers": [],
+          "gold_consistency_proxy": "isolated BAND_SELECT (gold consistency questionable — possible pipeline artifact)",
+          "category_proxy": "a_or_b_needs_review"
+        }
+      ]
+    },
+    "ITERATIVE_APPLY_FN": {
+      "total": 217,
+      "category_proxy_distribution": {
+        "c_likely_real_error": 93,
+        "a_or_b_needs_review": 124
+      },
+      "examples": [
+        {
+          "k": 1,
+          "task_head": "Task: Compute NDVI time series",
+          "task_iterative_keyword": true,
+          "gold_neighbors": [
+            "ATTRIBUTE_FILTER",
+            "BAND_SELECT",
+            "RASTER_LOAD",
+            "TEMPORAL_FILTER"
+          ],
+          "category_proxy": "c_likely_real_error"
+        },
+        {
+          "k": 4,
+          "task_head": "Task: Analyze NDVI temporal trend",
+          "task_iterative_keyword": true,
+          "gold_neighbors": [
+            "AGGREGATION",
+            "ATTRIBUTE_FILTER",
+            "BAND_ARITHMETIC",
+            "BAND_SELECT",
+            "RASTER_LOAD",
+            "SPATIAL_FILTER",
+            "TEMPORAL_FILTER"
+          ],
+          "category_proxy": "c_likely_real_error"
+        },
+        {
+          "k": 7,
+          "task_head": "Task: Analyze NDVI time series",
+          "task_iterative_keyword": true,
+          "gold_neighbors": [
+            "AGGREGATION",
+            "RASTER_LOAD",
+            "SPATIAL_FILTER",
+            "TEMPORAL_FILTER"
+          ],
+          "category_proxy": "c_likely_real_error"
+        },
+        {
+          "k": 10,
+          "task_head": "Task: Identify plume extent using classification",
+          "task_iterative_keyword": false,
+          "gold_neighbors": [
+            "ATTRIBUTE_FILTER",
+            "COLLECTION_MGMT",
+            "RASTER_LOAD",
+            "SPATIAL_FILTER",
+            "TEMPORAL_FILTER",
+            "VECTOR_LOAD"
+          ],
+          "category_proxy": "a_or_b_needs_review"
+        },
+        {
+          "k": 12,
+          "task_head": "Task: Compute NDVI and LSWI indices",
+          "task_iterative_keyword": false,
+          "gold_neighbors": [
+            "ATTRIBUTE_FILTER",
+            "RASTER_LOAD",
+            "SPATIAL_FILTER",
+            "TEMPORAL_FILTER"
+          ],
+          "category_proxy": "a_or_b_needs_review"
+        },
+        {
+          "k": 18,
+          "task_head": "Task: Classify land cover in 1995",
+          "task_iterative_keyword": false,
+          "gold_neighbors": [
+            "AGGREGATION",
+            "ATTRIBUTE_FILTER",
+            "BAND_SELECT",
+            "CLASSIFICATION",
+            "RASTER_LOAD",
+            "TEMPORAL_FILTER"
+          ],
+          "category_proxy": "a_or_b_needs_review"
+        }
+      ]
+    },
+    "status": "first-pass proxy classification; final three-way ruling requires owner/annotator semantic review"
+  },
+  "k956_model_prediction_semantic_check": {
+    "prediction_stages": [
+      "RASTER_LOAD",
+      "TEMPORAL_FILTER",
+      "ATTRIBUTE_FILTER",
+      "TEMPORAL_FILTER",
+      "ATTRIBUTE_FILTER",
+      "ITERATIVE_APPLY",
+      "SPATIAL_FILTER"
+    ],
+    "repetition_groups": [],
+    "owner_checklist": [
+      "2002-2021 年度划分",
+      "每年日降水求和",
+      "20 个年总量平均",
+      "裁剪+可视化"
+    ],
+    "result": "模型 7 阶段未表达年度划分、逐年求和与最终平均（缺 AGGREGATION 平均节点；ITERATIVE_APPLY 模糊指向但无重复组）——压缩表示非语义等价，owner 谨慎被个案证实",
+    "conclusion": "compact ≠ semantically equivalent; 表示归一化评价必须保留年度过滤条件后比较语义"
+  }
+}

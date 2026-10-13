@@ -1,0 +1,42 @@
+{
+  "schema": "B0_P0_BASELINE_FREEZE_V1",
+  "frozen_at": "2026-10-13",
+  "purpose": "B line (P0 workflow planning capability diagnosis) canonical same-host baseline. All B-line comparisons use THIS decode, not the rented-box frozen predictions (8.4% cross-host text agreement — unusable as paired baseline).",
+  "model": {
+    "base": "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base (dir 0078a3cf...)",
+    "adapter": "planner_v2_adapter_staging (weights 27dca22a... config a4cb9a26... dir 8f2c4330...) — NO guardrail (pure P0)"
+  },
+  "decode_config": {
+    "max_new_tokens": 768,
+    "do_sample": false,
+    "prompt_SEP": "A1-protocol SEP (identical)",
+    "truncation": "max_length=1024 task-protected",
+    "termination_typing": [
+      "EOS",
+      "MAX_TOKENS",
+      "OTHER_STOP"
+    ]
+  },
+  "eval_list": {
+    "file": "B0_TRUSTED_EVAL_LIST_V1.json",
+    "n": 1276,
+    "sha256": "b017fb9642b42d35043266b959cef7a82cf327d0ff6898dc8b5bf1193fee8bcb",
+    "basis": "DUAL_TRACK_EVAL_V1 trusted subset (frozen exclusions)",
+    "gold_file": "planner_v2_dev_fix1_loopinv.jsonl (trusted gold)"
+  },
+  "run": {
+    "host": "mdzhang qwen35 env",
+    "pid": 4189809,
+    "started": "2026-10-13",
+    "resume": "partial flush every 25 rows; restart skips done rows",
+    "eta": "~16-25h (bs=1 protocol purity; batching rejected to avoid padding numerics divergence)"
+  },
+  "comparison_targets": {
+    "trusted_subset_conditional_baseline": {
+      "bag_excl": 0.5589,
+      "band_select_f1": 0.4465,
+      "caveat": "rented-box numbers; same-host decode will re-baseline these"
+    },
+    "A1_131_arm": "already same-host (subset overlap expected identical up to margin)"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "EVAL_BASELINE_FREEZE_V1",
+  "frozen_at": "2026-10-12",
+  "terminology_ruling": "owner 2026-10-12: 0.5589/0.4465 = trusted-subset CONDITIONAL baseline, NOT a statistical capability lower bound (576 exclusions are heterogeneous; coverage 68.9%; un-audited repeat semantics remain).",
+  "baselines": {
+    "original_full_dev": {
+      "n": 1852,
+      "bag_incl": 0.6165,
+      "bag_excl": 0.7277,
+      "lcs_f1": 0.5815,
+      "parse_rate": 0.8472,
+      "label": "historical baseline, inflated by template duplicates + confirmed binding errors"
+    },
+    "trusted_subset": {
+      "n": 1276,
+      "bag_incl": 0.5589,
+      "bag_excl": 0.689,
+      "lcs_f1": 0.5181,
+      "parse_rate": 0.8111,
+      "label": "trusted-subset conditional baseline"
+    },
+    "trusted_subset_band_select_presence_f1": 0.4465,
+    "fix1_effect": {
+      "rows": [
+        370,
+        1014
+      ],
+      "aggregate_delta": 0.0,
+      "per_row": {
+        "370": {
+          "bag": "0.063->0.066"
+        },
+        "1014": {
+          "bag": "0.5455->0.6000"
+        }
+      }
+    },
+    "exclusion_impact": {
+      "excluded_mean_bag": 0.7442,
+      "trusted_mean_bag": 0.5588,
+      "finding": "original full-dev metrics inflated by easy template rows (binding errors/duplicates)"
+    },
+    "reporting_language": "已验证的局部 Gold 修订影响有限，但样本构成清理揭示了原始全集指标的乐观偏差 —— 两者不得混同"
+  },
+  "next": [
+    "error-type decomposition on trusted subset (no new audits, no training, no RL, no GPU)",
+    "bottleneck determination -> minimal controlled experiment design"
+  ],
+  "files": {
+    "DUAL_TRACK_EVAL_V1.json": {
+      "sha256": "5135c07eb4db8059f8ea96277efcf4c8f836cc7f813a682655eeb6754de7fc44"
+    },
+    "planner_v2_dev.jsonl (ORIGINAL)": {
+      "sha256": "807717b5612b93e8b4be18e9e30d7ebd04c3d9acec2ed2a6c2cb286fb716018b"
+    },
+    "planner_v2_dev_fix1_loopinv.jsonl (TRUSTED GOLD)": {
+      "sha256": "cc209036f5b1b928d1e107bbad16ef9c354ecd1c18cafa9d2176cddbec8a65cb"
+    },
+    "p0b_768/predictions.json (frozen predictions)": {
+      "sha256": "8e154a779036ac41950691a4f718eb2773ebc08e0aa7765b3a08aebd408d3c66"
+    },
+    "GOLD_REPAIR_POLICY_V1_FROZEN.md": {
+      "sha256": "2d9db8b86e2f3aa20b94f5e4b574ebb5e4e9f5006b0b4393cd4cb228ee951e65"
+    },
+    "COND_COUNT_FINAL_RULING_25_V1.json": {
+      "sha256": "11e2c3d3d9e6a61fe9ff36e4f8a96518d4613773d902ae73e60af215e716f791"
+    },
+    "ALL_IDENTICAL_SAMPLE49_V1.json": {
+      "sha256": "4be48e7d006ab76074131e95b13d5ee7899b3149d830e7b23f28f1127ddb1987"
+    }
+  }
+}

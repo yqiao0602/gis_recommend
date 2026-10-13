@@ -1,0 +1,1521 @@
+{
+  "schema": "cond_count_preruling_evidence_v2",
+  "note": "Evidence upgrade for the 25 pre-ruling cases: aligned canonical spans + C6 v2 class per run + full task text. Rulings remain OWNER-final; this file only upgrades evidence. all_identical = same method name repeated, necessary-not-sufficient for a loop.",
+  "prelabel_x_c6_cross": {
+    "U->all_distinct": 4,
+    "C->mixed": 1,
+    "U->mixed": 3,
+    "A->all_distinct": 5,
+    "A->mixed": 3,
+    "A->all_identical": 2,
+    "B->all_identical": 4,
+    "B->all_distinct": 2,
+    "C->all_identical": 1
+  },
+  "cases": [
+    {
+      "dev_idx": 1773,
+      "sid": 73241,
+      "pre_label": "U",
+      "pre_reason": "季节性任务可能涉多条件或多时段；上下文不能确定两个连续过滤 token 含义，保留原链",
+      "task_full": "Task: Map seasonal land cover\nCreate median composite images from Sentinel-2 and Landsat 8 surface reflectance data for three time periods (dry season, early wet season, late wet season) over a region in Cameroon to support seasonal land cover analysis, with cloud masking applied and study area boundaries visualized.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 4,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 9,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 14,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 19,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 24,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 29,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Map seasonal land cover\nCreate median composite images from Sentinel-2 and Landsat 8 surface reflectance data for three time periods (dry season, early wet season, late wet season) over a region in Cameroon to support seasonal land cover analysis, with cloud masking applied and study area boun"
+    },
+    {
+      "dev_idx": 744,
+      "sid": 70621,
+      "pre_label": "U",
+      "pre_reason": "多个 ATTRIBUTE_FILTER 游程分布长链，无条件内容/对象绑定，不能判定",
+      "task_full": "Task: Identify wetland loss and gain\nIdentify areas of potential wetland loss and gain following Hurricane Ida by analyzing changes in Sentinel-1 (VH polarization) backscatter and Sentinel-2 (mNDWI) spectral index across five post-hurricane time periods, combining results into a confidence-level map of surface change.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 2,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 5,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 30,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 32,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        }
+      ],
+      "instruction_excerpt": "Task: Identify wetland loss and gain\nIdentify areas of potential wetland loss and gain following Hurricane Ida by analyzing changes in Sentinel-1 (VH polarization) backscatter and Sentinel-2 (mNDWI) spectral index across five post-hurricane time periods, combining results into a confidence-level map"
+    },
+    {
+      "dev_idx": 1844,
+      "sid": 53924,
+      "pre_label": "C",
+      "pre_reason": "时间序列任务支持重复处理可能；repeat=3 仍可能为多条件，待核验（重复提交已合并）",
+      "task_full": "Task: Extract VV backscatter time series\nCompute temporal statistics of Sentinel-1 C-band VV polarization backscatter from descending orbit observations over the Province of Valencia for the year 2021. It processes 24 biweekly image composites from January to December 2021, filtering for IW mode and dual-polarization (VV+VH) acquisitions, then calculates mean VV intensity per feature in a user-defined geometry. The output is a table exported to Google Drive containing mean VV values for each polygon, intended for monitoring agricultural or land surface dynamics using radar backscatter.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 3,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.Filter.listContains",
+            "ee.Filter.eq"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 3,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 6,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 9,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 12,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 15,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 18,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 21,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 24,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 27,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 30,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 33,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 36,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 39,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 42,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 45,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 48,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 51,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 54,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 57,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 60,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 63,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 66,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 69,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 72,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        }
+      ],
+      "instruction_excerpt": "Task: Extract VV backscatter time series\nCompute temporal statistics of Sentinel-1 C-band VV polarization backscatter from descending orbit observations over the Province of Valencia for the year 2021. It processes 24 biweekly image composites from January to December 2021, filtering for IW mode and"
+    },
+    {
+      "dev_idx": 931,
+      "sid": 39791,
+      "pre_label": "U",
+      "pre_reason": "ATTRIBUTE_FILTER×6 无法从标题推断六次执行，优先核验 token 语义",
+      "task_full": "Task: Monitor agricultural vegetation change\nCreate a multi-temporal composite of Sentinel-1 SAR VH backscatter data from June to August 2021 over Beed district, India, using median reduction to analyze surface structural and moisture changes, likely for agricultural monitoring purposes. The output is a clipped image composite exported to Google Drive.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 6,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 2,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 6,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 10,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 14,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 18,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 22,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 26,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        }
+      ],
+      "instruction_excerpt": "Task: Monitor agricultural vegetation change\nCreate a multi-temporal composite of Sentinel-1 SAR VH backscatter data from June to August 2021 over Beed district, India, using median reduction to analyze surface structural and moisture changes, likely for agricultural monitoring purposes. The output "
+    },
+    {
+      "dev_idx": 123,
+      "sid": 117215,
+      "pre_label": "U",
+      "pre_reason": "过滤游程与载入/空间/时间过滤交错，无按年/传感器明确映射",
+      "task_full": "Task: Analyze agricultural surface moisture\nCompute a Radar Vegetation Index (RVI) using dual-polarized Sentinel-1 GRD data (VV and VH) over an agricultural area, with additional multi-temporal stacking of VV and VH backscatter for analysis. It also visualizes a median Sentinel-2 image for the region in false color (B8, B4, B3), suggesting integration of optical and SAR data for land surface monitoring.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 7,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq"
+          ]
+        },
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 4,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 3,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 6,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 9,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 12,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 15,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 18,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 21,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 24,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 27,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 30,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 33,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 36,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 39,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 42,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 45,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 48,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 51,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 7
+        },
+        {
+          "seq": 55,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 4
+        }
+      ],
+      "instruction_excerpt": "Task: Analyze agricultural surface moisture\nCompute a Radar Vegetation Index (RVI) using dual-polarized Sentinel-1 GRD data (VV and VH) over an agricultural area, with additional multi-temporal stacking of VV and VH backscatter for analysis. It also visualizes a median Sentinel-2 image for the regio"
+    },
+    {
+      "dev_idx": 1069,
+      "sid": 79807,
+      "pre_label": "A",
+      "pre_reason": "短中任务连续两属性过滤 token 更易对应多条件，无两轮执行证据",
+      "task_full": "Task: Compute EVI from Sentinel-2 imagery\nCalculate the Enhanced Vegetation Index (EVI) from Sentinel-2A/B Surface Reflectance data over a specific region for four overlapping weekly periods in April 2020. It applies cloud and cirrus masking using the QA60 band, filters images by cloud cover (<10%), computes EVI using blue (B2), red (B4), and near-infrared (B8) bands scaled by 10,000, then generates a median EVI composite for each period. Outputs include printed image collections, map visualizations of mean EVI with a color palette, and exports of GeoTIFF files to Google Drive with COG format, each labeled by date range.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 4,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 9,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 14,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 19,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Compute EVI from Sentinel-2 imagery\nCalculate the Enhanced Vegetation Index (EVI) from Sentinel-2A/B Surface Reflectance data over a specific region for four overlapping weekly periods in April 2020. It applies cloud and cirrus masking using the QA60 band, filters images by cloud cover (<10%),"
+    },
+    {
+      "dev_idx": 1505,
+      "sid": 108305,
+      "pre_label": "U",
+      "pre_reason": "有 ITERATIVE_APPLY 但不能据此判定相邻过滤 token 为迭代执行",
+      "task_full": "Task: Extract surface reflectance for land analysis\nProcess Landsat 5 Surface Reflectance (SR) and Brightness Temperature (ST) data over Shanghai for the years 2000, 2005, and 2010. It applies scaling factors to optical and thermal bands, filters images by cloud cover, computes median composites, clips to the region of interest, and exports the resulting surface reflectance images to Google Drive. The output includes three median composite images (2000, 2005, 2010) in true-color visualization and a vector boundary overlay on the map for spatial context.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 5,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 13,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 21,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Extract surface reflectance for land analysis\nProcess Landsat 5 Surface Reflectance (SR) and Brightness Temperature (ST) data over Shanghai for the years 2000, 2005, and 2010. It applies scaling factors to optical and thermal bands, filters images by cloud cover, computes median composites, cl"
+    },
+    {
+      "dev_idx": 506,
+      "sid": 119631,
+      "pre_label": "A",
+      "pre_reason": "AF×4 后另有 AF×1，可能不同过滤阶段；4 不能当作四次执行",
+      "task_full": "Task: Assess wildfire severity using NBR\nthe workflow assesses the severity of a wildfire by computing the difference in Normalized Burn Ratio (NBR) between pre-fire and during-fire satellite imagery from Sentinel-2, using cloud-masked image collections from July and August 2019. It visualizes burn severity, vegetation health (NDVI), false-color composites, carbon monoxide levels, radar backscatter, and ocean color data across the period.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 4,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 17,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 4
+        },
+        {
+          "seq": 19,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        }
+      ],
+      "instruction_excerpt": "Task: Assess wildfire severity using NBR\nthe workflow assesses the severity of a wildfire by computing the difference in Normalized Burn Ratio (NBR) between pre-fire and during-fire satellite imagery from Sentinel-2, using cloud-masked image collections from July and August 2019. It visualizes burn "
+    },
+    {
+      "dev_idx": 545,
+      "sid": 39795,
+      "pre_label": "A",
+      "pre_reason": "游程 1,1,4,2 分段更像不同处理位置，四 token 是否四条件未确认",
+      "task_full": "Task: Classify land cover change\nClassify land use and land cover (LULC) for the years 2015 and 2022 using Landsat surface reflectance data and a Random Forest classifier trained on user-provided samples. It generates classified maps for both years, computes the difference to detect changes, and exports the results as GeoTIFFs to Google Drive.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 4,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.eq",
+            "ee.Filter.eq",
+            "ee.Filter.lt",
+            "ee.Filter.gte"
+          ]
+        },
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.eq",
+            "ee.Filter.eq"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 5,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 9,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 11,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 4
+        },
+        {
+          "seq": 13,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Classify land cover change\nClassify land use and land cover (LULC) for the years 2015 and 2022 using Landsat surface reflectance data and a Random Forest classifier trained on user-provided samples. It generates classified maps for both years, computes the difference to detect changes, and exp"
+    },
+    {
+      "dev_idx": 988,
+      "sid": 42347,
+      "pre_label": "A",
+      "pre_reason": "AF×8 出现在短链，优先核查；不足认定八次执行",
+      "task_full": "Task: Classify land cover with Sentinel-2 and SAR\nClassify land cover types using Sentinel-2 optical data combined with Sentinel-1 SAR data, computes vegetation and moisture indices, applies Random Forest classification, validates accuracy, and performs post-classification smoothing using SNIC superpixels. Outputs include classified maps before and after segmentation-based refinement, with exports to Google Drive.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        },
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 8,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 3,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 6,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 8
+        },
+        {
+          "seq": 11,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 14,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Classify land cover with Sentinel-2 and SAR\nClassify land cover types using Sentinel-2 optical data combined with Sentinel-1 SAR data, computes vegetation and moisture indices, applies Random Forest classification, validates accuracy, and performs post-classification smoothing using SNIC super"
+    },
+    {
+      "dev_idx": 838,
+      "sid": 83432,
+      "pre_label": "A",
+      "pre_reason": "两个 AF×6 之间有 BAND_SELECT/SPATIAL_FILTER，需分别核对",
+      "task_full": "Task: Classify land cover types\nClassify land cover in Guimaras using Sentinel-1 and Sentinel-2 satellite imagery from 2017 to 2018. It first separates water (sea and inland) using radar backscatter thresholds and NDWI/MNDWI indices, then distinguishes vegetation, agriculture, forest, bare soil, built-up areas, and roads through a multi-step threshold-based classification using EVI, MSAVI, GNDVI, LAI, and a custom newBUI index derived from optical bands. The output includes masked raster layers for Water_sea, Land, Forest, Agri, Bare1, BuiltUp, and other intermediate products, with final manual editing recommended for accuracy refinement in specific features like rivers and urban areas.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 6,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        },
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 2,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 8,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 16,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Classify land cover types\nClassify land cover in Guimaras using Sentinel-1 and Sentinel-2 satellite imagery from 2017 to 2018. It first separates water (sea and inland) using radar backscatter thresholds and NDWI/MNDWI indices, then distinguishes vegetation, agriculture, forest, bare soil, bui"
+    },
+    {
+      "dev_idx": 54,
+      "sid": 127560,
+      "pre_label": "A",
+      "pre_reason": "AF×2 可能为两条件，链中无循环证据",
+      "task_full": "Task: Assess band importance for land classification\nthe workflow evaluates the contribution of individual spectral bands and indices to land cover classification accuracy using a leave-one-out approach with Random Forest. It trains classifiers on a composite of Landsat-derived spectral indices and PCA components, iteratively excluding one band at a time, computes out-of-sample accuracy via confusion matrix on a test partition, and exports a CSV table listing each excluded band and its corresponding overall accuracy to assess relative importance.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.Filter.gte"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 2,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Assess band importance for land classification\nthe workflow evaluates the contribution of individual spectral bands and indices to land cover classification accuracy using a leave-one-out approach with Random Forest. It trains classifiers on a composite of Landsat-derived spectral indices and "
+    },
+    {
+      "dev_idx": 207,
+      "sid": 36836,
+      "pre_label": "A",
+      "pre_reason": "两相邻过滤 token 可能为多云条件，不能解释为执行两次",
+      "task_full": "Task: Generate cloud-minimized Sentinel-2 mosaic\nCreate a cloud-filtered, median pixel composite from Sentinel-2 imagery for a specific region and time period, then exports a true-color (B4-B3-B2) clipped image mosaic with gamma correction applied for visual enhancement.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 2,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Generate cloud-minimized Sentinel-2 mosaic\nCreate a cloud-filtered, median pixel composite from Sentinel-2 imagery for a specific region and time period, then exports a true-color (B4-B3-B2) clipped image mosaic with gamma correction applied for visual enhancement."
+    },
+    {
+      "dev_idx": 1060,
+      "sid": 88136,
+      "pre_label": "U",
+      "pre_reason": "游程 4,1,3 分布可能多条件或不同阶段，缺 token 级语义",
+      "task_full": "Task: Generate surface reflectance composite\nGenerate a median surface reflectance composite from Landsat 8 TOA data by applying pixel and radiometric saturation masks, scaling optical and thermal bands, and filtering images by path, row, season, year, and cloud cover for the Iberian Peninsula.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 4,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        },
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 3,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.ImageCollection.filter",
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 2,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 4
+        },
+        {
+          "seq": 4,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 6,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        }
+      ],
+      "instruction_excerpt": "Task: Generate surface reflectance composite\nGenerate a median surface reflectance composite from Landsat 8 TOA data by applying pixel and radiometric saturation masks, scaling optical and thermal bands, and filtering images by path, row, season, year, and cloud cover for the Iberian Peninsula."
+    },
+    {
+      "dev_idx": 738,
+      "sid": 29908,
+      "pre_label": "U",
+      "pre_reason": "日期筛选可能但不能确认三 token 是三条件还是重复执行",
+      "task_full": "Task: Extract Sentinel-2 acquisition dates\nExtract and exports the list of Sentinel-2 image acquisition dates from April to September between 2015 and 2020 for tile 33TYN with less than 30% cloud cover, formatted as YYYY-MM-dd.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 3,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.ImageCollection.filter",
+            "ee.ImageCollection.filterMetadata",
+            "ee.Filter.lt"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 3,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 5,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        }
+      ],
+      "instruction_excerpt": "Task: Extract Sentinel-2 acquisition dates\nExtract and exports the list of Sentinel-2 image acquisition dates from April to September between 2015 and 2020 for tile 33TYN with less than 30% cloud cover, formatted as YYYY-MM-dd."
+    },
+    {
+      "dev_idx": 1182,
+      "sid": 88841,
+      "pre_label": "A",
+      "pre_reason": "AF×5 不能直接解释为五次执行",
+      "task_full": "Task: Extract water bodies using NDWI\nIdentify surface water bodies in the Rio Grande region using NDWI derived from Landsat 7 ETM+ TOA reflectance imagery between 1999 and 2020. It computes NDWI using bands B4 (NIR) and B2 (Green), applies cloud filtering (<30% cloud cover), and clips results to a user-defined polygon (SLE). The output includes a mapped visualization of the NDWI layer with a custom color palette, the original RGB composite, and the NDWI-enhanced collection for visual analysis. No classification or thresholding is applied; the result remains a continuous index.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 5,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.ImageCollection.filterMetadata",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 4,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 5
+        }
+      ],
+      "instruction_excerpt": "Task: Extract water bodies using NDWI\nIdentify surface water bodies in the Rio Grande region using NDWI derived from Landsat 7 ETM+ TOA reflectance imagery between 1999 and 2020. It computes NDWI using bands B4 (NIR) and B2 (Green), applies cloud filtering (<30% cloud cover), and clips results to a "
+    },
+    {
+      "dev_idx": 1161,
+      "sid": 119448,
+      "pre_label": "A",
+      "pre_reason": "两个 AF×6 位置不同，可能两组条件或上游重复模式",
+      "task_full": "Task: Map urban and land cover with SAR\nAnalyze Sentinel-1 C-band SAR imagery over a region in Indonesia (based on the administrative dataset path) to generate VV and VH polarization composites. It computes median VV and VH intensity images, visualizes them individually, and creates a three-period RGB composite using seasonal median VV backscatter from early (2020-01–04), mid (2020-05–08), and late (2020-09–12) 2020. The output includes single-band median layers for VV and VH, and a false-color seasonal RGB composite for change and land cover interpretation, likely targeting urban areas, built-up surfaces, or agricultural dynamics using temporal backscatter variation.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 6,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 2,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 5,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        }
+      ],
+      "instruction_excerpt": "Task: Map urban and land cover with SAR\nAnalyze Sentinel-1 C-band SAR imagery over a region in Indonesia (based on the administrative dataset path) to generate VV and VH polarization composites. It computes median VV and VH intensity images, visualizes them individually, and creates a three-period R"
+    },
+    {
+      "dev_idx": 41,
+      "sid": 5409,
+      "pre_label": "B",
+      "pre_reason": "TL×4 可能为四个阈值规则而非执行四次",
+      "task_full": "Task: Classify paddy cultivation area\nClassify paddy (rice) cultivation areas in Balod district using multi-temporal Sentinel-1 VH polarization SAR imagery from June to September 2022. It applies a Random Forest classifier trained on ground truth data, followed by post-classification masking using WorldCover land cover and a land area mask derived from class thresholds. Connected component analysis removes small, disconnected regions below a pixel count threshold. The output includes a classified raster map of paddy fields, a binary paddy/non-paddy map, accuracy assessment metrics (confusion matrix, overall accuracy), and exported results including classification maps and training data in shapefile format. Area calculations in square meters are also performed for each class within the stud",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 6,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        },
+        {
+          "family": "THRESHOLD_LOGIC",
+          "run_len": 4,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 1,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 4,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 1
+        },
+        {
+          "seq": 6,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 8,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 11,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 15,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 19,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 23,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 27,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 31,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 35,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 39,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 43,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 50,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 4
+        },
+        {
+          "seq": 56,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        }
+      ],
+      "instruction_excerpt": "Task: Classify paddy cultivation area\nClassify paddy (rice) cultivation areas in Balod district using multi-temporal Sentinel-1 VH polarization SAR imagery from June to September 2022. It applies a Random Forest classifier trained on ground truth data, followed by post-classification masking using W"
+    },
+    {
+      "dev_idx": 1196,
+      "sid": 66207,
+      "pre_label": "B",
+      "pre_reason": "与 dev41 任务标题/链长相同，先核对是否同任务重复行",
+      "task_full": "Task: Classify paddy cultivation area\nClassify paddy (rice) cultivation areas in Dakshin Bastar Dantewada using multi-temporal Sentinel-1 SAR imagery from June to September 2022. It computes VH backscatter time series, trains a Random Forest classifier on labeled ground truth data, applies land cover and spatial connectivity masking, and produces a final classified raster map. The output includes a masked classification map, accuracy assessment (confusion matrix and overall accuracy), and exported area statistics and shapefiles for training data and classified results.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 6,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.listContains",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter"
+          ]
+        },
+        {
+          "family": "THRESHOLD_LOGIC",
+          "run_len": 4,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 1,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 4,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 1
+        },
+        {
+          "seq": 6,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 8,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 11,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 15,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 19,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 23,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 27,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 31,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 35,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 39,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 43,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 6
+        },
+        {
+          "seq": 50,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 4
+        }
+      ],
+      "instruction_excerpt": "Task: Classify paddy cultivation area\nClassify paddy (rice) cultivation areas in Dakshin Bastar Dantewada using multi-temporal Sentinel-1 SAR imagery from June to September 2022. It computes VH backscatter time series, trains a Random Forest classifier on labeled ground truth data, applies land cove"
+    },
+    {
+      "dev_idx": 490,
+      "sid": 63674,
+      "pre_label": "B",
+      "pre_reason": "TL×2 后另有一个独立阈值阶段，可能不同判定条件",
+      "task_full": "Task: Identify flood frequency areas\nIdentify flood-prone areas by analyzing multi-temporal Landsat imagery (L4, L5, L7, L8) using sun elevation and azimuth-derived hillshading from SRTM DEM to mask shadows, then computes a vegetation index ratio-based water detection index (im1, im2, im3) across all collections. It merges the results to compute a cumulative flood frequency surface, which is exported along with hillshade and DEM layers for the specified region.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        },
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 3,
+          "c6_class": "mixed",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.eq",
+            "ee.ImageCollection.filter",
+            "ee.Filter.eq"
+          ]
+        },
+        {
+          "family": "THRESHOLD_LOGIC",
+          "run_len": 2,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Image.where",
+            "ee.Image.where"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 1,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 3,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 5,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 7,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 9,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 11,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 13,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 15,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 17,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 3
+        },
+        {
+          "seq": 19,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 2
+        },
+        {
+          "seq": 21,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 1
+        }
+      ],
+      "instruction_excerpt": "Task: Identify flood frequency areas\nIdentify flood-prone areas by analyzing multi-temporal Landsat imagery (L4, L5, L7, L8) using sun elevation and azimuth-derived hillshading from SRTM DEM to mask shadows, then computes a vegetation index ratio-based water detection index (im1, im2, im3) across al"
+    },
+    {
+      "dev_idx": 673,
+      "sid": 128108,
+      "pre_label": "B",
+      "pre_reason": "多个 TL×4 交替，可能不同指数/规则（重复提交已合并）",
+      "task_full": "Task: Analyze vegetation density and water index\nAnalyze vegetation health, water content, and fuel moisture in a study area using Sentinel-2A/B surface reflectance data from 2020. It applies cloud masking via the QA60 band, computes NDVI, NDWI, and NDFI indices, and classifies each into discrete categories representing varying levels of vegetation density and moisture conditions. The output includes a median composite image, three classified raster maps (NDVI, NDWI, NDFI) visualized with color palettes, and the addition of these indices as bands to the dataset for further analysis.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_distinct",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.ImageCollection.filter"
+          ]
+        },
+        {
+          "family": "THRESHOLD_LOGIC",
+          "run_len": 4,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 3,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 7,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 4
+        },
+        {
+          "seq": 9,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 4
+        },
+        {
+          "seq": 11,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 4
+        }
+      ],
+      "instruction_excerpt": "Task: Analyze vegetation density and water index\nAnalyze vegetation health, water content, and fuel moisture in a study area using Sentinel-2A/B surface reflectance data from 2020. It applies cloud masking via the QA60 band, computes NDVI, NDWI, and NDFI indices, and classifies each into discrete ca"
+    },
+    {
+      "dev_idx": 269,
+      "sid": 93718,
+      "pre_label": "C",
+      "pre_reason": "over time 支持时间维度可能，但 TL×7 也可能多条规则，待核验",
+      "task_full": "Task: Analyze vegetation and water indices over time\nAnalyze temporal patterns of vegetation and surface water using Sentinel-2 MSI data, computing NDVI, EVI, MNDWI, NDWI, LSWI, and SAVI indices. It generates a monthly time series of median index values over a study area, visualizes elevation zones from SRTM, and overlays JRC Global Surface Water occurrence data. Outputs include mapped composites and a chart showing mean index responses from 2017 to 2021.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "THRESHOLD_LOGIC",
+          "run_len": 7,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 4,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 7,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 7
+        }
+      ],
+      "instruction_excerpt": "Task: Analyze vegetation and water indices over time\nAnalyze temporal patterns of vegetation and surface water using Sentinel-2 MSI data, computing NDVI, EVI, MNDWI, NDWI, LSWI, and SAVI indices. It generates a monthly time series of median index values over a study area, visualizes elevation zones "
+    },
+    {
+      "dev_idx": 854,
+      "sid": 73749,
+      "pre_label": "A",
+      "pre_reason": "TL×20 且同游程五次出现，机械展开风险高；无阈值明细前不能认定 20 次执行。优先核验",
+      "task_full": "Task: Classify NDVI levels over time\nCompute and classifies median NDVI values from Landsat surface reflectance imagery over a region of interest (aoi1) for six different years (2000, 2005, 2010, 2015, 2020). It calculates NDVI using band ratios (B4/B3 for Landsat 5/7 and B5/B4 for Landsat 8), applies cloud masking using pixel QA bands, generates annual median composites, and then reclassifies continuous NDVI into discrete stepwise values (e.g., 0.1, 0.15, 0.2, etc.) to emphasize vegetation change thresholds. The output includes classified NDVI maps for each year, visualized with a custom color palette and exported to Google Drive as GeoTIFFs, along with a map legend added to the interactive viewer.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "THRESHOLD_LOGIC",
+          "run_len": 20,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 1,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 3,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 20
+        },
+        {
+          "seq": 4,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 6,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 20
+        },
+        {
+          "seq": 8,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 10,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 20
+        },
+        {
+          "seq": 11,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 13,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 20
+        },
+        {
+          "seq": 14,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 1
+        },
+        {
+          "seq": 16,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 20
+        }
+      ],
+      "instruction_excerpt": "Task: Classify NDVI levels over time\nCompute and classifies median NDVI values from Landsat surface reflectance imagery over a region of interest (aoi1) for six different years (2000, 2005, 2010, 2015, 2020). It calculates NDVI using band ratios (B4/B3 for Landsat 5/7 and B5/B4 for Landsat 8), appli"
+    },
+    {
+      "dev_idx": 674,
+      "sid": 17490,
+      "pre_label": "B",
+      "pre_reason": "TL×2 可能为两个判定条件",
+      "task_full": "Task: Identify flooded areas using NDWI\nIdentify flooded areas by computing and comparing NDWI (Normalized Difference Water Index) from Sentinel-2 imagery during dry and rainy seasons. It calculates NDWI using bands B3 and B11, reclassifies the results into water and non-water classes, performs a ratio analysis between rainy and dry season water extent, and generates a final classification of inundated zones. The output includes visualizations of RGB composites, NDWI maps, reclassified water layers, and a chart showing area distribution by land cover class (soil vs. water).",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "ATTRIBUTE_FILTER",
+          "run_len": 2,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Filter.lt",
+            "ee.Filter.lt"
+          ]
+        },
+        {
+          "family": "THRESHOLD_LOGIC",
+          "run_len": 2,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Image.where",
+            "ee.Image.where"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 1,
+          "family": "ATTRIBUTE_FILTER",
+          "repeat": 2
+        },
+        {
+          "seq": 3,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 1
+        },
+        {
+          "seq": 5,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 1
+        },
+        {
+          "seq": 7,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 2
+        }
+      ],
+      "instruction_excerpt": "Task: Identify flooded areas using NDWI\nIdentify flooded areas by computing and comparing NDWI (Normalized Difference Water Index) from Sentinel-2 imagery during dry and rainy seasons. It calculates NDWI using bands B3 and B11, reclassifies the results into water and non-water classes, performs a ra"
+    },
+    {
+      "dev_idx": 1088,
+      "sid": 13765,
+      "pre_label": "B",
+      "pre_reason": "两个 TL×3 与两次 RASTER_LOAD 交错，可能两套输入分别判定（重复提交已合并）",
+      "task_full": "Task: Compare tree cover classification\nCompare tree cover classification between a user-defined map (myTrees) and Hansen's global forest change data (treecover2000) using a threshold of 10% canopy cover, generating an agreement map with four categories: agreement on presence, Hansen-only, user-only, and agreement on absence. It also computes area statistics by class and visualizes the results on a chart.",
+      "align_ratio": 1.0,
+      "evidence_runs": [
+        {
+          "family": "THRESHOLD_LOGIC",
+          "run_len": 3,
+          "c6_class": "all_identical",
+          "in_target_as_repeat": true,
+          "canonical_span": [
+            "ee.Image.where",
+            "ee.Image.where",
+            "ee.Image.where"
+          ]
+        }
+      ],
+      "target_AF_TL_stages": [
+        {
+          "seq": 2,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 3
+        },
+        {
+          "seq": 4,
+          "family": "THRESHOLD_LOGIC",
+          "repeat": 3
+        }
+      ],
+      "instruction_excerpt": "Task: Compare tree cover classification\nCompare tree cover classification between a user-defined map (myTrees) and Hansen's global forest change data (treecover2000) using a threshold of 10% canopy cover, generating an agreement map with four categories: agreement on presence, Hansen-only, user-only"
+    }
+  ]
+}

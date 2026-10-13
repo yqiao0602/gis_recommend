@@ -1,0 +1,44 @@
+{
+  "schema": "rep_fix1_compat_probes_v1",
+  "fix": {
+    "file": "04_DIAG_WORK/planner_v2_dev_fix1_loopinv.jsonl",
+    "rows": {
+      "370": "VECTOR_LOAD seq723 38->1 + stage.iteration_hint=[loop_invariant] + rg removed",
+      "1014": "VECTOR_LOAD seq5 2->1 + stage.iteration_hint=[loop_invariant] + rg removed"
+    }
+  },
+  "checks": {
+    "1_schema_enum": {
+      "verdict": "PASS",
+      "evidence": "corpus 与全部 loader 无 hint 枚举校验；blueprint_v2_preflight 文档化词表仅为生成侧词表，无 validator"
+    },
+    "2_parser_unknown_hint": {
+      "verdict": "PASS",
+      "evidence": "全部消费者 (eval_planner_v2_dev_v1 / eval_p0b2_arm_v1 / run_workline_ab_v1 / planner_unified_eval) 以 .get() 取 family/repeat；stage 级未知字段惰性"
+    },
+    "3_evaluator_hint_semantics": {
+      "verdict": "PASS_WITH_NOTES",
+      "evidence": "E3 hint 比对仅作用于 repetition_groups 级；stage 级 loop_invariant 不进任何比对。rg 条目已随 repeat=1 移除（维持 rg=repeat>1 契约与 C2 全语料同步不变量）",
+      "notes": [
+        "SEP prompt 向模型宣告封闭 hint 词表；模型不会产出 loop_invariant——370/1014 行模型若仍发 VECTOR_LOAD rg 将成为 unmatched pred group（正确行为）",
+        "build_v2_smoke 的 hint_explicit 分层若未来重建会受新标签影响；已冻结 split 不受影响"
+      ]
+    },
+    "4_roundtrip": {
+      "verdict": "PASS",
+      "evidence": "apply 脚本内建断言：repeat=1 与 loop_invariant 写后读回完整保留"
+    },
+    "5_regression": {
+      "verdict": "PASS",
+      "evidence": "1,850 非修复行字节级一致；仅 370/1014 指定字段变化；rg<->stage 同步全语料 0 违例"
+    }
+  },
+  "not_fixed": {
+    "rows": [
+      468,
+      958,
+      1181
+    ],
+    "reason": "canonical 证据显示不同调用折叠（ee.Feature+ee.String / select+mean / float+paint），非循环不变量——新缺陷类 distinct_call_collapse；且三行链长失配(32v36 等)定位可靠性待对齐修复。按 owner 前提不提前定案，维持原状待裁"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "C6_EVIDENCE_FREEZE_V1",
+  "frozen_at": "2026-10-12",
+  "phase_plan": "P0 freeze (this) -> P1 alignment repair -> P2 repair policy -> P3 per-case rulings + trusted dev -> dual re-eval -> then decide training",
+  "classification_definitions": {
+    "all_distinct": "canonical methods under the run all differ -> repeat is NOT a uniform loop count (distinct calls collapsed by family RLE). Expansion candidate, per-case granularity judgment required.",
+    "mixed": "both identical and distinct calls under the run -> neither loop nor condition-count wholesale; per-group structure recovery required.",
+    "all_identical": "same canonical METHOD NAME repeated -> necessary-but-NOT-sufficient for a loop (canonical chain carries no arguments; same method with different args is NOT excluded).",
+    "alignment_mismatch": "semantic vs canonical chain lengths differ -> positional mapping unreliable; NOT a confirmed gold error; evidence-alignment problem first."
+  },
+  "known_limitations": [
+    "all_identical != confirmed loop; owner ruling 2026-10-12",
+    "C6 positional alignment is 1:1; 788 stages flagged alignment_mismatch pending P1",
+    "C6 proportions must NOT be used for batch gold rewrites (owner ruling)",
+    "no source scripts locally; source-level verification stays a separate axis",
+    "fix1 corrected copy coexists with original; future changes emit diff lists, never overwrite"
+  ],
+  "files": {
+    "REP_GROUP_CONSISTENCY_AUDIT_DEV_V2.json": {
+      "sha256": "d4310f71eb99ee64f447b0a480e447be274d66097a77a5bac6815b7d94561737",
+      "bytes": 476008
+    },
+    "CANONICAL_AGREEMENT_C6_DEV_V1.json": {
+      "sha256": "137638c331e3b941831e24f3a351565e2c355d381983dac61383a9a8a2bae7b7",
+      "bytes": 794439
+    },
+    "COND_COUNT_ADJUDICATION_SAMPLE_V1.json": {
+      "sha256": "03d5d24f33c90bdf3f49cb7c4fe059c912d03411196047da2285b29ee106b8c7",
+      "bytes": 28223
+    },
+    "COND_COUNT_PRERULING_V1.json": {
+      "sha256": "101e1ea7e95b499101f916792de005dd5e12d66629a3202a19e35213126858af",
+      "bytes": 5288
+    },
+    "REP_FIX1_COMPAT_PROBES_V1.json": {
+      "sha256": "d844ca1540b531bbf9c97f18bb863a47a9fed161cd347af0239a88bf3cf7090c",
+      "bytes": 2156
+    },
+    "planner_v2_dev.jsonl (ORIGINAL, immutable)": {
+      "sha256": "807717b5612b93e8b4be18e9e30d7ebd04c3d9acec2ed2a6c2cb286fb716018b",
+      "bytes": 3053256
+    },
+    "planner_v2_dev_fix1_loopinv.jsonl (corrected copy)": {
+      "sha256": "cc209036f5b1b928d1e107bbad16ef9c354ecd1c18cafa9d2176cddbec8a65cb",
+      "bytes": 3055993
+    },
+    "b1_gee_stage_train.jsonl (chain source)": {
+      "sha256": "09c37104d2fd33138cbc15d5d23676d4d169acf1d0cfb8057a0baf3a100c02a2",
+      "bytes": 264158037
+    }
+  }
+}

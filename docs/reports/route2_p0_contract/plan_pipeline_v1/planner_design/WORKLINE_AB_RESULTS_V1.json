@@ -1,0 +1,176 @@
+{
+  "schema": "workline_AB_results_v1",
+  "work_line_A_eval_audit": {
+    "total_dev": 1852,
+    "singleton_blueprints": 1192,
+    "multi_blueprints": 176,
+    "affected_rows": 660,
+    "affected_pct": 35.6,
+    "classification": {
+      "binding_error_suspect": 90,
+      "true_duplicate": 35,
+      "possible_valid_shared": 51
+    },
+    "high_priority_binding_error_groups": [
+      {
+        "hash": "233b0472cac6",
+        "size": 48,
+        "unique_tasks": 33,
+        "families": [
+          "ATTRIBUTE_FILTER",
+          "RASTER_LOAD",
+          "TEMPORAL_FILTER"
+        ],
+        "sample_tasks": [
+          "Task: Extract cloud-masked Sentinel-2 imagery",
+          "Task: Analyze crop reflectance spectra",
+          "Task: Map land cover features"
+        ]
+      },
+      {
+        "hash": "abeef159d19f",
+        "size": 18,
+        "unique_tasks": 13,
+        "families": [
+          "AGGREGATION",
+          "RASTER_LOAD",
+          "TEMPORAL_FILTER"
+        ],
+        "sample_tasks": [
+          "Task: Extract surface reflectance in Inle Lake",
+          "Task: Map land surface reflectance",
+          "Task: Export mangrove and saltmarsh vector data"
+        ]
+      },
+      {
+        "hash": "f748c3df5c8b",
+        "size": 15,
+        "unique_tasks": 14,
+        "families": [
+          "ITERATIVE_APPLY",
+          "RASTER_LOAD",
+          "TEMPORAL_FILTER"
+        ],
+        "sample_tasks": [
+          "Task: Generate Landsat 8 surface reflectance composite",
+          "Task: Generate true color composite",
+          "Task: Map urban land cover"
+        ]
+      },
+      {
+        "hash": "c74fe277c898",
+        "size": 15,
+        "unique_tasks": 15,
+        "families": [
+          "AGGREGATION",
+          "RASTER_LOAD",
+          "TEMPORAL_FILTER"
+        ],
+        "sample_tasks": [
+          "Task: Analyze vegetation greenness and spectral ratio",
+          "Task: Identify green vegetation and water areas",
+          "Task: Calculate total precipitation"
+        ]
+      },
+      {
+        "hash": "8918914d0282",
+        "size": 13,
+        "unique_tasks": 11,
+        "families": [
+          "ATTRIBUTE_FILTER",
+          "RASTER_LOAD",
+          "TEMPORAL_FILTER"
+        ],
+        "sample_tasks": [
+          "Task: Extract greenest pixel NDVI and LSWI",
+          "Task: Extract cloud-masked Sentinel-2 imagery",
+          "Task: Analyze chlorophyll-a concentration"
+        ]
+      },
+      {
+        "hash": "3ad7630b313a",
+        "size": 11,
+        "unique_tasks": 11,
+        "families": [
+          "AGGREGATION",
+          "RASTER_LOAD",
+          "SPATIAL_FILTER",
+          "TEMPORAL_FILTER"
+        ],
+        "sample_tasks": [
+          "Task: Analyze SAVI vegetation changes",
+          "Task: Identify spi-affected agricultural areas",
+          "Task: Analyze NDVI over time"
+        ]
+      },
+      {
+        "hash": "67954bc53a88",
+        "size": 10,
+        "unique_tasks": 9,
+        "families": [
+          "AGGREGATION",
+          "ATTRIBUTE_FILTER",
+          "RASTER_LOAD",
+          "TEMPORAL_FILTER"
+        ],
+        "sample_tasks": [
+          "Task: Analyze NDWI time series",
+          "Task: Extract air temperature at 2m",
+          "Task: Estimate annual NPP in India"
+        ]
+      },
+      {
+        "hash": "cdb5084f15d6",
+        "size": 10,
+        "unique_tasks": 10,
+        "families": [
+          "ATTRIBUTE_FILTER",
+          "RASTER_LOAD",
+          "SPATIAL_FILTER",
+          "TEMPORAL_FILTER"
+        ],
+        "sample_tasks": [
+          "Task: Generate cloud-masked median composite",
+          "Task: Compute NDVI for vegetation analysis",
+          "Task: Generate land cover mosaic"
+        ]
+      }
+    ]
+  },
+  "work_line_B_band_select": {
+    "gold_has_TARGET_rows": 576,
+    "gold_lacks_TARGET_rows": 1276,
+    "miss_rate_all": 0.6372,
+    "miss_rate_parsed_only": 0.5282,
+    "hit_count": 209,
+    "miss_count": 367,
+    "length_stratified_miss": {
+      "long(>25)": "27/41 = 0.659",
+      "mid(11-25)": "78/109 = 0.716",
+      "short(<=10)": "129/293 = 0.44"
+    },
+    "cooccurring_missed_families": {
+      "ITERATIVE_APPLY": 45,
+      "BAND_ARITHMETIC": 38,
+      "SPATIAL_FILTER": 28,
+      "VECTOR_LOAD": 24,
+      "TEMPORAL_FILTER": 20,
+      "AGGREGATION": 19,
+      "ATTRIBUTE_FILTER": 16,
+      "GEOMETRY_DEFINE": 12,
+      "COLLECTION_MGMT": 11,
+      "MASKING": 7
+    },
+    "interpretation": "BAND_SELECT miss rate 63.7% is substantial. Top co-occurring misses: {'ITERATIVE_APPLY': 45, 'BAND_ARITHMETIC': 38, 'SPATIAL_FILTER': 28}. This suggests a stable family-selection deficiency, not random noise.",
+    "contingency_table": {
+      "a_TP": 209,
+      "b_FN": 367,
+      "c_FP": 106,
+      "d_TN": 1170
+    }
+  },
+  "training_gate_status": {
+    "eval_gate": "pending — dev audit incomplete",
+    "training_gate": "pending — BAND_SELECT diagnosis in progress"
+  }
+}

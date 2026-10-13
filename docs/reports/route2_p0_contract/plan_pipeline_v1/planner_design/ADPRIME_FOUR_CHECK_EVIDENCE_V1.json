@@ -1,0 +1,206 @@
+{
+  "schema": "adprime_four_check_evidence_v1_1",
+  "generated_at": "2026-10-12",
+  "seed": 20261012,
+  "dedup_rule": "dedup_rule_v1: per blueprint-hash group keep MIN line index",
+  "eval_sets_frozen": {
+    "C2_short": {
+      "n": 47,
+      "idx": [
+        7,
+        104,
+        223,
+        267,
+        271,
+        321,
+        322,
+        324,
+        332,
+        362,
+        396,
+        408,
+        481,
+        499,
+        512,
+        547,
+        576,
+        736,
+        756,
+        797,
+        1000,
+        1013,
+        1091,
+        1180,
+        1186,
+        1189,
+        1193,
+        1247,
+        1308,
+        1348,
+        1358,
+        1427,
+        1515,
+        1627,
+        1633,
+        1640,
+        1642,
+        1679,
+        1703,
+        1739,
+        1791,
+        1804,
+        1807,
+        1830,
+        1831,
+        1838,
+        1842
+      ],
+      "threshold": 0
+    },
+    "C3_long": {
+      "n": 32,
+      "idx": [
+        49,
+        57,
+        87,
+        162,
+        303,
+        313,
+        377,
+        415,
+        454,
+        502,
+        552,
+        569,
+        640,
+        814,
+        831,
+        876,
+        907,
+        987,
+        1024,
+        1026,
+        1167,
+        1181,
+        1393,
+        1403,
+        1503,
+        1509,
+        1608,
+        1629,
+        1638,
+        1712,
+        1760,
+        1812
+      ],
+      "threshold": 2
+    }
+  },
+  "train_corpus": {
+    "path": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\04_DIAG_WORK\\planner_v2_train.jsonl",
+    "rows": 33339,
+    "file_sha256": "443d5d310c1875ad668c12b65c8255d54da8da3bc5c97500c3fc126f18e7fa4e"
+  },
+  "dedup": {
+    "rule": "dedup_rule_v1: per blueprint-hash group keep MIN line index",
+    "pool_rows": 14008,
+    "dropped": 19331
+  },
+  "training_list": {
+    "n": 300,
+    "strata": {
+      "short": {
+        "population": 9296,
+        "sample_n": 100
+      },
+      "mid": {
+        "population": 3702,
+        "sample_n": 100
+      },
+      "long": {
+        "population": 1010,
+        "sample_n": 100
+      }
+    },
+    "list_sha256": "f038a8ffe0db083b786259de854d9531b45e8e33ce002231ac0fc811cf25dad1"
+  },
+  "isolation_assertions": {
+    "final_list_vs_131_task_sha": {
+      "intersection": 0,
+      "conflicts": []
+    },
+    "final_list_vs_trusted_dev_task_sha": {
+      "intersection": 0,
+      "conflicts": []
+    },
+    "source_row_level": "train/dev are disjoint corpus splits (formal split); record-level separation by construction; task_sha checks above are the frozen-time verification",
+    "all_zero_required": true,
+    "pass": true
+  },
+  "four_check_2": {
+    "pass": true,
+    "note": "list frozen with SHA"
+  },
+  "four_check_4": {
+    "pass": true
+  },
+  "check2_update": {
+    "reason": "preflight found 37/300 rows with truncated targets at max_len 1024 - truncated targets cannot serve as termination labels (owner label-reliability principle); list rebuilt with collator-based target-complete filter (387 excluded from pool)",
+    "pool_after_filter": 13621,
+    "final_list_v2": {
+      "n": 300,
+      "strata": {
+        "short": 100,
+        "mid": 100,
+        "long": 100
+      },
+      "list_sha256": "21da3c927af10fee9f853916c9d1eace84d7dc4239700aa021f327abd3b45d0e"
+    },
+    "train_jsonl": {
+      "path": "/home/qy/a1/adprime_train_v1.jsonl",
+      "sha256": "be6bb8e6c3aa57df309a5877728db9c7b2773fef5e4013ff54ac4e19a949ef6b",
+      "rows": 300
+    },
+    "redryrun": {
+      "sample_task_too_long": 0,
+      "tgt_truncated_rows": 0
+    }
+  },
+  "check1": {
+    "adapter_weights_sha256": "27dca22a311d41e4defb401dd147826866c0cdce78d217c497294446d4aba14e",
+    "adapter_config_sha256": "a4cb9a26444d5a900cf3a578b8d1662dd14696f5c8e232a776051349ea19812a",
+    "match_frozen": true,
+    "verified_on": "mdzhang 2026-10-12"
+  },
+  "check3": {
+    "test": "check_adprime_eos_mask_v1.py (local + mdzhang, identical PASS)",
+    "assertions": {
+      "A1_one_lambda_pos_per_row": true,
+      "A2_terminal_label_is_eos": true,
+      "A3_position_is_last_nonmasked": true,
+      "A4_lambda1_equals_plain_mean": true,
+      "A5_finite_and_monotone": true
+    },
+    "lambda": 2.0,
+    "note": "weight-denominator bug found and fixed during evidence test (masked-out positions excluded); trainer route2_training/train_adprime_eos_v1.py integrates the verified loss with per-batch fail-fast terminal-EOS assertion"
+  },
+  "check4_update": {
+    "rebuilt_list_isolation": {
+      "vs_131": 0,
+      "vs_trusted_dev": 0
+    }
+  },
+  "trainer_artifacts": {
+    "script": "route2_training/train_adprime_eos_v1.py (derived from frozen train_stage1.py; [ADPRIME] blocks only)",
+    "config": "/home/qy/a1/adprime_eos_v1.yaml (lr 1e-5, 1 epoch, ckpt 20, seed 20260924, lambda 2.0)",
+    "dry_run_preflight": "PASS (CPU, no GPU load)"
+  },
+  "overall": {
+    "check1": "PASS",
+    "check2": "PASS (v2 list)",
+    "check3": "PASS",
+    "check4": "PASS",
+    "training_authorized": false,
+    "note": "awaiting owner final authorization per gate"
+  }
+}

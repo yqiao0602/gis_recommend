@@ -1,0 +1,77 @@
+{
+  "schema": "a1_result_analysis_v1",
+  "functional_gate_768_vs_frozen": {
+    "n": 131,
+    "termination_agreement": 0.7252,
+    "parse_agreement": 0.7252,
+    "pred_text_exact_agreement": 0.084,
+    "termination_disagreement_rows": [
+      814,
+      502,
+      1629,
+      1026,
+      1509,
+      415,
+      552,
+      313,
+      1812,
+      1403,
+      1830,
+      1739,
+      1640,
+      1638,
+      797,
+      987,
+      1842,
+      57,
+      640,
+      1627
+    ],
+    "verdict": "FAIL",
+    "note": "cross-host greedy: frozen = rented-box RTX3090; re-run = mdzhang A10; 4-bit numerics diverge at margin"
+  },
+  "runaway_2048": {
+    "n": 52,
+    "all_at_cap": true,
+    "gold_len_of_truncated": [
+      2,
+      2,
+      4,
+      4,
+      4,
+      5,
+      5,
+      6,
+      6,
+      9,
+      9,
+      9,
+      10,
+      11,
+      12,
+      14,
+      15,
+      19,
+      20,
+      21
+    ],
+    "note": null
+  },
+  "runaway_sample": {
+    "idx": 1287,
+    "tail400": "ILTER\",\"repeat\":1},{\"seq\":128,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":129,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":130,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":131,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":132,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":133,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":134,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":135,\"family\":\"SPATIAL"
+  },
+  "runaway_repeat_signature": {
+    "mean_top20gram_ratio_tail1k": 0.033,
+    "rows_with_ratio_gt_0.5": 0
+  },
+  "rescue": {
+    "count": 0,
+    "rows": []
+  },
+  "truncation_counts": {
+    "baseline_768_rerun": 52,
+    "experiment_2048": 52,
+    "frozen_p0b768_on_these_131": 66
+  }
+}

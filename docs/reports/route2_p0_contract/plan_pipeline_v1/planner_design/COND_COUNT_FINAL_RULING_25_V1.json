@@ -1,0 +1,400 @@
+{
+  "schema": "cond_count_final_ruling_25_v1",
+  "frozen_at": "2026-10-12",
+  "unit_rule": "statistical unit = (case, run occurrence); case profile lists every repeat>1 run of AF/TL with its own C6 v2 class. No per-case dominant-class aggregation.",
+  "axis_rule": "semantic_ruling = diagnosis axis; repair_action = data-change axis. A diagnosis label upgrade NEVER triggers a data rewrite by itself (owner boundary).",
+  "label_legend": {
+    "non_uniform_count_confirmed": "已证非统一循环计数（canonical 全异）",
+    "non_uniform_count_likely": "非循环计数/条件粒度方向，诊断保留，非修复确认",
+    "multi_rule_candidate": "多规则/多阶段候选，非循环认定",
+    "loop_candidate_unverified": "循环候选未证（时间维度≠循环）",
+    "insufficient_evidence": "证据不足"
+  },
+  "cases": [
+    {
+      "dev_idx": 1773,
+      "task_head": "Task: Map seasonal land cover",
+      "semantic_ruling": "non_uniform_count_confirmed",
+      "repair_action": "granularity_pending",
+      "ruling_note": "Filter.lt+ImageCollection.filter 很可能构成一个逻辑过滤操作，不拆两阶段",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 744,
+      "task_head": "Task: Identify wetland loss and gain",
+      "semantic_ruling": "non_uniform_count_confirmed",
+      "repair_action": "granularity_pending",
+      "ruling_note": "listContains+集合过滤可能为一个逻辑过滤操作",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "AGGREGATIONx2:all_identical",
+        "TEMPORAL_FILTERx4:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx4:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx4:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx4:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx4:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "BAND_ARITHMETICx2:all_distinct",
+        "AGGREGATIONx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical",
+        "TEMPORAL_FILTERx2:all_identical"
+      ]
+    },
+    {
+      "dev_idx": 1505,
+      "task_head": "Task: Extract surface reflectance for land analysis",
+      "semantic_ruling": "non_uniform_count_confirmed",
+      "repair_action": "granularity_pending",
+      "ruling_note": "两个不同方法不能直接解释为两个独立节点",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 738,
+      "task_head": "Task: Extract Sentinel-2 acquisition dates",
+      "semantic_ruling": "non_uniform_count_confirmed",
+      "repair_action": "granularity_pending",
+      "ruling_note": "日期/瓦片/云量背景支持多条件过滤，但 span 不足以定阶段数",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx3:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 931,
+      "task_head": "Task: Monitor agricultural vegetation change",
+      "semantic_ruling": "insufficient_evidence",
+      "repair_action": "keep_pending",
+      "ruling_note": "AF×6 无 token 语义，无法判定",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed"
+      ]
+    },
+    {
+      "dev_idx": 123,
+      "task_head": "Task: Analyze agricultural surface moisture",
+      "semantic_ruling": "insufficient_evidence",
+      "repair_action": "keep_pending",
+      "ruling_note": "交错结构无按年/传感器映射",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx7:mixed",
+        "ATTRIBUTE_FILTERx4:mixed"
+      ]
+    },
+    {
+      "dev_idx": 1060,
+      "task_head": "Task: Generate surface reflectance composite",
+      "semantic_ruling": "insufficient_evidence",
+      "repair_action": "keep_pending",
+      "ruling_note": "游程 4,1,3 缺 token 级语义",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx4:mixed",
+        "ATTRIBUTE_FILTERx3:mixed"
+      ]
+    },
+    {
+      "dev_idx": 1069,
+      "task_head": "Task: Compute EVI from Sentinel-2 imagery",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "A 诊断方向保留，非修复确认",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 506,
+      "task_head": "Task: Assess wildfire severity using NBR",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "A 诊断方向保留",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx4:mixed"
+      ]
+    },
+    {
+      "dev_idx": 545,
+      "task_head": "Task: Classify land cover change",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "A 诊断方向保留",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx4:mixed",
+        "ATTRIBUTE_FILTERx2:all_identical"
+      ]
+    },
+    {
+      "dev_idx": 988,
+      "task_head": "Task: Classify land cover with Sentinel-2 and SAR",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "AF×8 mixed（listContains/filter/eq 交替），非统一执行",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx8:mixed",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 838,
+      "task_head": "Task: Classify land cover types",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "A 诊断方向保留",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "AGGREGATIONx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "AGGREGATIONx4:mixed"
+      ]
+    },
+    {
+      "dev_idx": 54,
+      "task_head": "Task: Assess band importance for land classification",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "A 诊断方向保留",
+      "run_class_profile": [
+        "CLASSIFICATIONx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 207,
+      "task_head": "Task: Generate cloud-minimized Sentinel-2 mosaic",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "A 诊断方向保留",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx2:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 1182,
+      "task_head": "Task: Extract water bodies using NDWI",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "A 诊断方向保留",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx5:mixed"
+      ]
+    },
+    {
+      "dev_idx": 1161,
+      "task_head": "Task: Map urban and land cover with SAR",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "granularity_pending",
+      "ruling_note": "A 诊断方向保留",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed"
+      ]
+    },
+    {
+      "dev_idx": 854,
+      "task_head": "Task: Classify NDVI levels over time",
+      "semantic_ruling": "non_uniform_count_likely",
+      "repair_action": "keep_pending",
+      "ruling_note": "TL×20×5：任务描述多 NDVI 等级，多规则解释有据；repeat=20 与真实规则数是否一致待更细上下文。优先核验",
+      "run_class_profile": [
+        "THRESHOLD_LOGICx20:all_identical",
+        "THRESHOLD_LOGICx20:all_identical",
+        "THRESHOLD_LOGICx20:all_identical",
+        "THRESHOLD_LOGICx20:all_identical",
+        "THRESHOLD_LOGICx20:all_identical"
+      ]
+    },
+    {
+      "dev_idx": 1844,
+      "task_head": "Task: Extract VV backscatter time series",
+      "semantic_ruling": "loop_candidate_unverified",
+      "repair_action": "keep_pending",
+      "ruling_note": "时间维度≠循环；需核验游程是否对应不同影像/时间点",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx3:mixed"
+      ]
+    },
+    {
+      "dev_idx": 269,
+      "task_head": "Task: Analyze vegetation and water indices over time",
+      "semantic_ruling": "loop_candidate_unverified",
+      "repair_action": "keep_pending",
+      "ruling_note": "over time≠循环；TL×7 可能是多条规则",
+      "run_class_profile": [
+        "THRESHOLD_LOGICx7:all_identical",
+        "TEMPORAL_FILTERx2:all_identical"
+      ]
+    },
+    {
+      "dev_idx": 41,
+      "task_head": "Task: Classify paddy cultivation area",
+      "semantic_ruling": "multi_rule_candidate",
+      "repair_action": "keep_pending",
+      "ruling_note": "分类/掩膜/阈值任务；保留多规则或多阶段候选，不认定循环",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "THRESHOLD_LOGICx4:all_identical",
+        "AGGREGATIONx2:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 1196,
+      "task_head": "Task: Classify paddy cultivation area",
+      "semantic_ruling": "multi_rule_candidate",
+      "repair_action": "keep_pending",
+      "ruling_note": "与 41 文本+蓝图 hash 均不同，不按重复样本合并",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "ATTRIBUTE_FILTERx6:mixed",
+        "THRESHOLD_LOGICx4:all_identical",
+        "AGGREGATIONx2:all_distinct"
+      ]
+    },
+    {
+      "dev_idx": 490,
+      "task_head": "Task: Identify flood frequency areas",
+      "semantic_ruling": "multi_rule_candidate",
+      "repair_action": "keep_pending",
+      "ruling_note": "多时相水体检测；两次 where 可能不同规则",
+      "run_class_profile": [
+        "RASTER_LOADx2:all_distinct",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "ATTRIBUTE_FILTERx3:mixed",
+        "THRESHOLD_LOGICx2:all_identical"
+      ]
+    },
+    {
+      "dev_idx": 673,
+      "task_head": "Task: Analyze vegetation density and water index",
+      "semantic_ruling": "multi_rule_candidate",
+      "repair_action": "keep_pending",
+      "ruling_note": "NDVI/NDWI/NDFI 分别分类支持多规则",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx2:all_distinct",
+        "THRESHOLD_LOGICx4:all_identical",
+        "THRESHOLD_LOGICx4:all_identical",
+        "THRESHOLD_LOGICx4:all_identical"
+      ]
+    },
+    {
+      "dev_idx": 674,
+      "task_head": "Task: Identify flooded areas using NDWI",
+      "semantic_ruling": "multi_rule_candidate",
+      "repair_action": "keep_pending",
+      "ruling_note": "干湿季对比；两次同方法调用无法区分阈值与循环",
+      "run_class_profile": [
+        "ATTRIBUTE_FILTERx2:all_identical",
+        "THRESHOLD_LOGICx2:all_identical"
+      ]
+    },
+    {
+      "dev_idx": 1088,
+      "task_head": "Task: Compare tree cover classification",
+      "semantic_ruling": "multi_rule_candidate",
+      "repair_action": "keep_pending",
+      "ruling_note": "多一致性类别可能涉及不同判断规则",
+      "run_class_profile": [
+        "THRESHOLD_LOGICx3:all_identical",
+        "THRESHOLD_LOGICx3:all_identical"
+      ]
+    }
+  ]
+}

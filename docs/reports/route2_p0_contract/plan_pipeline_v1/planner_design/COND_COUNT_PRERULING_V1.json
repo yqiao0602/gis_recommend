@@ -1,0 +1,163 @@
+{
+  "schema": "cond_count_pre_adjudication_v1",
+  "status": "PRELIMINARY — owner per-case pre-rulings on 28-sample material (25 independent cases). NOT the final adjudication freeze; upgrade path = canonical token-level context (CANONICAL_AGREEMENT_C6_DEV_V1.json) then owner confirmation.",
+  "label_taxonomy": {
+    "A": "条件计数/token 粒度问题——repeat 不能解释为执行次数，保留原链、修正表示",
+    "B": "合理重复候选——多操作/条件/规则有合理解释，但未证明执行循环",
+    "C": "循环执行候选——任务语义/结构支持按维度重复，需更完整上下文确认",
+    "U": "证据不足——不自动修复"
+  },
+  "owner_tally_note": "owner 汇总 A9/B6/C2/U8 与逐行表(A10 含 854/B6/C2/U7)存在计差；以逐行表为准，854 记 A 且优先核验。差异已登记。",
+  "cases": [
+    {
+      "dev_idx": 1773,
+      "sid": 73241,
+      "label": "U",
+      "reason": "季节性任务可能涉多条件或多时段；上下文不能确定两个连续过滤 token 含义，保留原链"
+    },
+    {
+      "dev_idx": 744,
+      "sid": 70621,
+      "label": "U",
+      "reason": "多个 ATTRIBUTE_FILTER 游程分布长链，无条件内容/对象绑定，不能判定"
+    },
+    {
+      "dev_idx": 1844,
+      "sid": 53924,
+      "label": "C",
+      "reason": "时间序列任务支持重复处理可能；repeat=3 仍可能为多条件，待核验（重复提交已合并）"
+    },
+    {
+      "dev_idx": 931,
+      "sid": 39791,
+      "label": "U",
+      "reason": "ATTRIBUTE_FILTER×6 无法从标题推断六次执行，优先核验 token 语义"
+    },
+    {
+      "dev_idx": 123,
+      "sid": 117215,
+      "label": "U",
+      "reason": "过滤游程与载入/空间/时间过滤交错，无按年/传感器明确映射"
+    },
+    {
+      "dev_idx": 1069,
+      "sid": 79807,
+      "label": "A",
+      "reason": "短中任务连续两属性过滤 token 更易对应多条件，无两轮执行证据"
+    },
+    {
+      "dev_idx": 1505,
+      "sid": 108305,
+      "label": "U",
+      "reason": "有 ITERATIVE_APPLY 但不能据此判定相邻过滤 token 为迭代执行"
+    },
+    {
+      "dev_idx": 506,
+      "sid": 119631,
+      "label": "A",
+      "reason": "AF×4 后另有 AF×1，可能不同过滤阶段；4 不能当作四次执行"
+    },
+    {
+      "dev_idx": 545,
+      "sid": 39795,
+      "label": "A",
+      "reason": "游程 1,1,4,2 分段更像不同处理位置，四 token 是否四条件未确认"
+    },
+    {
+      "dev_idx": 988,
+      "sid": 42347,
+      "label": "A",
+      "reason": "AF×8 出现在短链，优先核查；不足认定八次执行"
+    },
+    {
+      "dev_idx": 838,
+      "sid": 83432,
+      "label": "A",
+      "reason": "两个 AF×6 之间有 BAND_SELECT/SPATIAL_FILTER，需分别核对"
+    },
+    {
+      "dev_idx": 54,
+      "sid": 127560,
+      "label": "A",
+      "reason": "AF×2 可能为两条件，链中无循环证据"
+    },
+    {
+      "dev_idx": 207,
+      "sid": 36836,
+      "label": "A",
+      "reason": "两相邻过滤 token 可能为多云条件，不能解释为执行两次"
+    },
+    {
+      "dev_idx": 1060,
+      "sid": 88136,
+      "label": "U",
+      "reason": "游程 4,1,3 分布可能多条件或不同阶段，缺 token 级语义"
+    },
+    {
+      "dev_idx": 738,
+      "sid": 29908,
+      "label": "U",
+      "reason": "日期筛选可能但不能确认三 token 是三条件还是重复执行"
+    },
+    {
+      "dev_idx": 1182,
+      "sid": 88841,
+      "label": "A",
+      "reason": "AF×5 不能直接解释为五次执行"
+    },
+    {
+      "dev_idx": 1161,
+      "sid": 119448,
+      "label": "A",
+      "reason": "两个 AF×6 位置不同，可能两组条件或上游重复模式"
+    },
+    {
+      "dev_idx": 41,
+      "sid": 5409,
+      "label": "B",
+      "reason": "TL×4 可能为四个阈值规则而非执行四次"
+    },
+    {
+      "dev_idx": 1196,
+      "sid": 66207,
+      "label": "B",
+      "reason": "与 dev41 任务标题/链长相同，先核对是否同任务重复行"
+    },
+    {
+      "dev_idx": 490,
+      "sid": 63674,
+      "label": "B",
+      "reason": "TL×2 后另有一个独立阈值阶段，可能不同判定条件"
+    },
+    {
+      "dev_idx": 673,
+      "sid": 128108,
+      "label": "B",
+      "reason": "多个 TL×4 交替，可能不同指数/规则（重复提交已合并）"
+    },
+    {
+      "dev_idx": 269,
+      "sid": 93718,
+      "label": "C",
+      "reason": "over time 支持时间维度可能，但 TL×7 也可能多条规则，待核验"
+    },
+    {
+      "dev_idx": 854,
+      "sid": 73749,
+      "label": "A",
+      "reason": "TL×20 且同游程五次出现，机械展开风险高；无阈值明细前不能认定 20 次执行。优先核验"
+    },
+    {
+      "dev_idx": 674,
+      "sid": 17490,
+      "label": "B",
+      "reason": "TL×2 可能为两个判定条件"
+    },
+    {
+      "dev_idx": 1088,
+      "sid": 13765,
+      "label": "B",
+      "reason": "两个 TL×3 与两次 RASTER_LOAD 交错，可能两套输入分别判定（重复提交已合并）"
+    }
+  ]
+}

@@ -1,0 +1,3818 @@
+[
+  {
+    "k": 1,
+    "task_head": "Task: Compute NDVI time series",
+    "task_excerpt": "Task: Compute NDVI time series\nCompute a cloud-masked NDVI time series from Sentinel-2 Level-2A (SR Harmonized) imagery for a user-defined AOI (identified by 'id' = 1 in a feature collection), spanning 2023. It applies a strict cloud filter (≤5% cloudy pixels), masks clouds and cirrus using QA60 bits 10 and 11, scales reflectance to physical units (÷10000), calculates NDVI as normalizedDifference(['B3','B8']), selects only the NDVI band, clips to the AOI, and exports the full ImageCollection as ",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "2023 S2 NDVI 时序需逐影像处理；集合映射可表达，未必需独立循环节点",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 4,
+    "task_head": "Task: Analyze NDVI temporal trend",
+    "task_excerpt": "Task: Analyze NDVI temporal trend\nCompute a pixel-wise linear regression of NDVI over time (1984–2021) using Landsat 5, 7, and 8 surface reflectance data to quantify long-term vegetation greenness trends. It outputs: (1) an interactive scatter plot of the NDVI time series at the ROI with a fitted trendline; (2) mean, first, and last NDVI composite images for visualization; and (3) two spatial layers — 'gain' (slope, units: NDVI/year) and 'constant' (intercept) — representing the linear trend par",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 9,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 15,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 21,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 22,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "undetermined",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "Landsat 多传感器多年份+回归/合成/空间多分支；3 处 ITERATIVE_APPLY 可能对应不同过程，需节点级信息",
+    "semantic_type": "undetermined",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 7,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nCalculate and visualizes the mean NDVI over time from Landsat 8 TOA reflectance data within a user-defined polygon, generating a time series chart of average NDVI values and displaying the mean NDVI composite on the map.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "NDVI 时序逐影像计算+均值统计",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 27,
+    "task_head": "Task: Analyze snow cover change",
+    "task_excerpt": "Task: Analyze snow cover change\nCalculate and compares the Normalized Difference Snow Index (NDSI) from Landsat 7 surface reflectance data for two winter periods: 2000–2015 and 2016–2020, over a user-defined study area. It computes the mean NDSI for each period, masks clouds and cloud shadows, clips to the study boundary, and generates a difference layer showing changes in snow cover between the two time intervals. The outputs include visualizations of true-color and false-color composites, NDSI",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 7,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 14,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 14,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "两个冬季时段独立计算 NDSI 再差分——并列分支，非累积循环",
+    "semantic_type": "batch_same_op",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 38,
+    "task_head": "Task: Extract cloud-masked Sentinel-2 imagery",
+    "task_excerpt": "Task: Extract cloud-masked Sentinel-2 imagery\nExtract cloud-masked Sentinel-2 surface reflectance images over a user-defined region of interest (ROI) for December 2021. It filters images by low cloud cover (<10%), applies a scaling factor (dividing by 100), selects specific spectral bands, and exports each individual image as a clipped GeoTIFF to Google Drive. The output consists of multiple 8-bit GeoTIFF files named by their 'system:index', representing true-color and multispectral surface refl",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 7,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "每幅影像分别导出 GeoTIFF；批处理可能是更准确抽象",
+    "semantic_type": "batch_same_op",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 39,
+    "task_head": "Task: Model wind speed at 10m",
+    "task_excerpt": "Task: Model wind speed at 10m\nCalculate wind speed from u and v components of wind at 10m height from ERA5-Land data, applies a logarithmic adjustment, filters days with wind speed greater than 5 m/s, and exports the cumulative sum of daily maximum wind speeds as a single raster image.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 8,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 11,
+    "pre_classified_type": "loop_structure(cumulative/iterative computation)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 3,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "loop_structure",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "每日最大风速累积求和，可能状态累积；需源码核验",
+    "semantic_type": "loop_structure",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 52,
+    "task_head": "Task: Classify land cover types",
+    "task_excerpt": "Task: Classify land cover types\nClassify land cover in a specified region using Sentinel-2 surface reflectance imagery from three seasonal periods in 2021. It computes median composites for winter (Jan–Apr), summer (May–Aug), and fall (Sep–Dec), then combines them into a multi-temporal stack. Training samples are extracted from labeled points to train a CART classifier, which is applied to generate a land cover classification map with three classes. the workflow outputs include the trained class",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 11,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 17,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 20,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 3,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "冬/夏/秋三时段中值合成再组合——独立时间窗同类处理",
+    "semantic_type": "batch_same_op",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 100,
+    "task_head": "Task: Generate Landsat 8 surface reflectance RGB mosaics",
+    "task_excerpt": "Task: Generate Landsat 8 surface reflectance RGB mosaics\nGenerate daily-mosaic RGB composites from Landsat 8 Collection 2 Level 2 Surface Reflectance (SR) imagery over the Monterey County, CA region for a one-year period (2014–2015). It applies radiometric scaling to SR bands (SR_B4, SR_B3, SR_B2) using the official C2 L2 scale factor (0.0000275) and offset (−0.2), clips to both a bounding rectangle and the Monterey county FeatureCollection, creates one image per day via mosaic (retaining earlie",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "按日生成马赛克——按时间分组重复",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 101,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nAnalyze NDVI time series from Landsat surface reflectance data between 1999-12-01 and 2021-01-31 over a defined polygon, and compares it with MODIS MOD13Q1 NDVI annual data for 2020. It enables interactive charting of NDVI values at clicked locations by generating temporal profiles from both Landsat and MODIS collections.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 18,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "GEOMETRY_DEFINE"
+      }
+    ],
+    "gold_stage_count": 20,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "Landsat 与 MODIS 独立分支；需检查实际算子",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 112,
+    "task_head": "Task: Estimate annual population distribution",
+    "task_excerpt": "Task: Estimate annual population distribution\nEstimate the spatial distribution of population in China for the year 2020 using WorldPop 100m resolution gridded population data. It filters the WorldPop ImageCollection by country (CHN) and date (2001, though likely intended to be 2020), computes the mean annual population surface, clips it to a user-defined geometry, visualizes it with a custom color palette, and generates a time series chart of total population summed over the region across all a",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "ATTRIBUTE_FILTER"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "undetermined",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "目标年份 2020 与筛选 2001 矛盾；先核实时间范围",
+    "semantic_type": "undetermined",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 118,
+    "task_head": "Task: Classify land cover using GLCM texture features",
+    "task_excerpt": "Task: Classify land cover using GLCM texture features\nCompute and integrates Gray-Level Co-occurrence Matrix (GLCM) texture features from NIR band of Landsat 8 TOA imagery into seasonal composites, then generates a full-year high-quality composite image for land cover classification. The output is a 24-band image combining original spectral bands and derived GLCM textures (e.g., ASM, CONTRAST, CORR) across four seasonal periods, masked and merged to optimize spatial coverage and quality, intende",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "四季 GLCM 纹理合成多波段——独立分支汇合",
+    "semantic_type": "batch_same_op",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 133,
+    "task_head": "Task: Estimate fractional vegetation cover",
+    "task_excerpt": "Task: Estimate fractional vegetation cover\nEstimate Fractional Vegetation Cover (FVC) in the Saihanba region using Landsat 7 SR imagery from August 2007. It computes NDVI from bands B4 and B3, then derives FVC by normalizing NDVI between pre-defined minimum (Vs) and maximum (Vv) vegetation endmembers. A dynamic mask is applied using a thresholded FVC difference layer (dif) to exclude non-vegetated areas. The final output includes a clipped and masked FVC raster, NDVI and FVC time-series charts o",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "undetermined",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "FVC 端元归一化+动态掩膜；摘要不足以定位节点语义",
+    "semantic_type": "undetermined",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 162,
+    "task_head": "Task: Analyze NDVI trend over time",
+    "task_excerpt": "Task: Analyze NDVI trend over time\nAnalyze long-term vegetation trends in a specified region using NDVI derived from Landsat surface reflectance imagery (1984–2019). It processes Landsat 5, 7, and 8 data by applying cloud masking, band renaming for consistency, and calculating annual mean NDVI composites. A linear regression (linearFit) is applied to the time series to estimate the slope (trend) of NDVI change per year, which is then visualized and summarized by region. Outputs include an NDVI t",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 16,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 32,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "1984-2019 年度 NDVI 合成+趋势回归",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 178,
+    "task_head": "Task: Monitor dry-season NDVI trends",
+    "task_excerpt": "Task: Monitor dry-season NDVI trends\nCompute and compares annual dry-season (April–September) NDVI composites for Kebumen Regency, Central Java, Indonesia, across 2020–2024 using Sentinel-2 SR imagery. It applies SCL-based cloud/shadow/snow masking, generates per-year median NDVI rasters, classifies NDVI into four vegetation health classes (1: bare/low, 2: sparse, 3: moderate, 4: dense), calculates mean NDVI per kecamatan (subdistrict) via reduceRegions, exports a merged FeatureCollection of all",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 7,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 5,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "2020-2024 逐年干季 NDVI+分类+区域统计；是否需显式节点取决于 gold 表示规范",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 182,
+    "task_head": "Task: Estimate Chl_a concentration",
+    "task_excerpt": "Task: Estimate Chl_a concentration\nEstimate chlorophyll-a (Chl_a) concentration in the Pearl River Basin using Landsat 8 surface reflectance imagery from 2013 to 2022. It applies atmospheric correction and cloud masking via QA bands, computes NDVI, and derives Chl_a using a linear regression model based on NDVI. A time series of mean annual Chl_a values per region (OBJECTID) is generated and visualized as a scatter chart, with outputs including mapped Chl_a images and regional trend analysis.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 7,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "2013-2022 年度 Chl-a+区域趋势",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 216,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nAnalyze the temporal evolution of NDVI, EVI, and SAVI vegetation indices over a merged agricultural area using Landsat 5 surface reflectance data from 1993 to 2008. It computes vegetation indices, generates a median composite for visualization, and displays a time-series chart of NDVI values within the region of interest.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 4,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "附条件：若为逐多时相影像算指数则合理；若为 NDVI/EVI/SAVI 三不同指数组合则应重裁定",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 220,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nAnalyze the phenological patterns of vegetation using NDVI derived from MODIS MYD13Q1 imagery over a 20-year period (2002–2022). It computes both a median composite and a full time series collection, applies scaling to NDVI values, and visualizes the results on the map. Upon user click, it generates an interactive time series chart showing temporal dynamics of NDVI at the selected point, enabling phenological analysis such as detecting growing seasons, trends, or a",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 9,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 6,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "MODIS 中值合成+完整时序交互分析",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 240,
+    "task_head": "Task: Compute monthly mean LST",
+    "task_excerpt": "Task: Compute monthly mean LST\nCompute monthly mean land surface temperature (LST) from MODIS MOD11A1 daily imagery over the period 2000–2008. It preprocesses the daily LST data by applying a scale factor (0.02), clips to a specified region (ne095), aggregates daily values into monthly means, and generates a time series chart of monthly LST. Outputs include the processed ImageCollection of monthly LST composites and a UI chart visualizing the temporal trend.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "TEMPORAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 7,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 18,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "月度 LST 合成跨日期重复；需确认逐影像预处理 vs 月度分组",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 246,
+    "task_head": "Task: Classify land cover in district",
+    "task_excerpt": "Task: Classify land cover in district\nClassify land cover in Kanpur Nagar using Sentinel-2 imagery. It trains a Random Forest classifier on labeled regions from a feature collection (table3) using spectral bands from a median composite image (2019-01-01 to 2019-05-30). The trained model is then applied to monthly images of Kanpur Nagar for the years 2016 and 2019, producing classified land cover maps for each month. Outputs are exported as raster images to Google Drive, named by district, month,",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "COLLECTION_MGMT",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 16,
+        "repeat": 1,
+        "prev": "COLLECTION_MGMT",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 17,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 3,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "不同月份分类分别导出，无累积依赖",
+    "semantic_type": "batch_same_op",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 256,
+    "task_head": "Task: Compare L8 and S2 MNDWI",
+    "task_excerpt": "Task: Compare L8 and S2 MNDWI\nCompute and compares the Modified Normalized Difference Water Index (MNDWI) from Landsat 8 and Sentinel-2 imagery over a specified region and time period. It generates monthly median MNDWI images, performs linear regression between the two sensor datasets, and visualizes the relationship through time series and spatial layers. Outputs include a fitted linear model (scale and offset), point-based time series charts, and spatial visualizations of corrected MNDWI value",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "TEMPORAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 15,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 6,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "L8 与 S2 分别算 MNDWI 再跨传感器回归——独立分支同类处理",
+    "semantic_type": "batch_same_op",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 274,
+    "task_head": "Task: Analyze vegetation and land cover characteristics",
+    "task_excerpt": "Task: Analyze vegetation and land cover characteristics\nAnalyze multi-temporal Landsat 8 surface reflectance imagery over a defined region from 2014 to 2019 during a specific day-of-year range (330–15), applying cloud masking and computing a suite of spectral indices (NDVI, LSWI, NBR, NVI, RGRI, RGRI-NDVI, RGRI-LSWI, NRWI, and derived min/max composites) to characterize land surface conditions. It generates mean, minimum, and maximum composite images for these indices and produces histograms of ",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 4,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "多时相云掩膜+多指数；不能把不同指数都算同一操作重复",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 291,
+    "task_head": "Task: Analyze NDVI and EVI time series",
+    "task_excerpt": "Task: Analyze NDVI and EVI time series\nCompute NDVI and EVI vegetation indices from Sentinel-2 imagery over the Kilimanjaro region from 2020 to 2022. It processes a cloud-filtered image collection by applying spectral index calculations (NDVI and EVI) using specific bands, generates time series charts for both polygon and point regions of interest, computes mean composite images, and exports clipped NDVI and EVI rasters to Google Drive. Outputs include line charts of temporal VI trends, mapped m",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 8,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 9,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S2 多时相 NDVI/EVI+时序+合成；两指数为不同操作",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 303,
+    "task_head": "Task: Extract NDVI time series for vegetation analysis",
+    "task_excerpt": "Task: Extract NDVI time series for vegetation analysis\nCompute monthly NDVI values from Sentinel-2 imagery between May 2020 and May 2021 over a specified region (table). It applies cloud masking using the QA60 band to remove cloudy pixels, then calculates NDVI using the near-infrared (B8) and red (B4) bands. These monthly NDVI images are combined into a multitemporal image stack, which is used to extract mean NDVI values for regions defined in 'alfalfa' via reduceRegions. Additionally, the multi",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 15,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 20,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 25,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 30,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 35,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 40,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 45,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 50,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 55,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 60,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 65,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 67,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 6,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "月度 NDVI 重复明确；但 13 节点/67 阶段提示可能过度展开，暂不裁定全部节点正确",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 325,
+    "task_head": "Task: Analyze NDVI trends annually",
+    "task_excerpt": "Task: Analyze NDVI trends annually\nCalculate annual mean NDVI values from the NASA GIMMS 3GV0 dataset over a user-defined geometry, generating a time series of regional NDVI means aggregated by year from 1982 onward, and exports the results as a CSV file containing mean NDVI per year along with start and end timestamps.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "SPATIAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "1982 起逐年区域 NDVI+导出",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 328,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nAnalyze the temporal dynamics of vegetation using the Normalized Difference Vegetation Index (NDVI) derived from the MODIS/Terra MOD13A2 product, spanning from January 1, 2012, to a user-defined end date. It processes an ImageCollection by filtering for the date range, selecting the NDVI band, clipping to a study area using a user-defined function (ZonasClip), scaling pixel values to a standard range (-0.2 to 1), adding time and constant auxiliary bands via addVari",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "MODIS 逐影像波段选择/裁剪/缩放/辅助波段；是否需独立节点取决于 gold 约定",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 362,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nCompute and analyzes the Normalized Difference Vegetation Index (NDVI) from Landsat 8 Surface Reflectance imagery over a specified geometry for the year 2020. It applies cloud and shadow masking using the pixel_qa band, calculates NDVI using bands B5 and B4, and generates a mean NDVI composite map. Additionally, it creates a time series chart of mean NDVI values over the region with a linear trendline and exports individual NDVI images to Google Drive every four im",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 2,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 8,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 5,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "多时相 NDVI+均值合成+按月导出；无状态累积证据",
+    "semantic_type": "repeated_execution",
+    "gold_status": "task_semantics_confirmed_pending_gold_check"
+  },
+  {
+    "k": 370,
+    "task_head": "Task: Identify perennial water bodies",
+    "task_excerpt": "Task: Identify perennial water bodies\nCalculate the frequency of water occurrence in a fixed region (34°N–36°N, 114°E–119°E) using Landsat 5, 7, and 8 surface reflectance data from 1984 to 2021. It computes multiple vegetation and water indices (NDVI, EVI, LSWI, mNDWI), applies a water detection rule based on mNDWI > EVI or NDVI and low EVI, and aggregates annual water observations. The output is a binary map indicating areas with ≥75% water frequency over each year, exported annually as 'imgPer",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 12,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 18,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 25,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 31,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 37,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 44,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 50,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 56,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 63,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 69,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 75,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 82,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 88,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 94,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 101,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 107,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 113,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 120,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 126,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 132,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 139,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 145,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 151,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 158,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 164,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 170,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 177,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 183,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 189,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 196,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 202,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 208,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 215,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 221,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 227,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 234,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 240,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 246,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 253,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 259,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 265,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 272,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 278,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 284,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 291,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 297,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 303,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 310,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 316,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 322,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 329,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 335,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 341,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 348,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 354,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 360,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 367,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 373,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 379,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 386,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 392,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 398,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 405,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 411,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 417,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 424,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 430,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 436,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 443,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 449,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 455,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 462,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 468,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 474,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 481,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 487,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 493,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 500,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 506,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 512,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 519,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 525,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 531,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 538,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 544,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 550,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 557,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 563,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 569,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 576,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 582,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 588,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 595,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 601,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 607,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 614,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 620,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 626,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 633,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 639,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 645,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 652,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 658,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 664,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 671,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 677,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 683,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 690,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 696,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 702,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 709,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 715,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 721,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 723,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 3,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "任务层面成立；gold 结构异常（723 阶段/100+ 同邻接模式）待核验",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 377,
+    "task_head": "Task: Estimate land surface temperature",
+    "task_excerpt": "Task: Estimate land surface temperature\nEstimate monthly Land Surface Temperature (LST) from Landsat 8 Collection 1 Tier 1 Surface Reflectance data using a radiative transfer-based algorithm that incorporates NDVI-derived vegetation fraction and emissivity corrections over the Sinni area between April 2017 and March 2019.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 2,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 14,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 18,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 22,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 26,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 30,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 34,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 38,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 42,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 46,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 50,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 54,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 58,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 62,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 66,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 70,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 74,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 78,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 82,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 86,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 90,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 94,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 96,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "gold 风险:24 个相同邻接/96 阶段——需核验逐景展开 vs 冗余复制",
+    "semantic_type": "repeated_execution",
+    "gold_status": "suspicious"
+  },
+  {
+    "k": 398,
+    "task_head": "Task: Generate annual max NDVI composite",
+    "task_excerpt": "Task: Generate annual max NDVI composite\nCreate an annual cloud-masked Landsat 8 surface reflectance composite for 2020 using the maximum NDVI value from each pixel over time. It processes a regional image collection by applying cloud masking, computing NDVI for each image, and compositing using the max-NDVI criterion. Outputs include a false-color mosaic, NDVI layer, and a final composite exported to Earth Engine Assets.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 10,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "逐景云掩膜+NDVI+最大值合成；共同参与同一合成，非批处理",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 425,
+    "task_head": "Task: Count good observations by time window",
+    "task_excerpt": "Task: Count good observations by time window\nthe workflow counts the number of valid (good quality) optical satellite observations across seven monthly time windows in 2022 over Hainan Island. It processes Landsat 7, Landsat 8, and Sentinel-2 surface reflectance data, applying sensor-specific cloud and shadow masking using QA bands and terrain-based shadow detection. For each time window, it merges observations from all sensors, sums them into a single band indicating observation frequency, clip",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 13,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 20,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 24,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 2
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "七个月窗 vs 仅 3 gold 节点——对应关系待核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "suspicious"
+  },
+  {
+    "k": 442,
+    "task_head": "Task: Estimate urban heat island intensity",
+    "task_excerpt": "Task: Estimate urban heat island intensity\nEstimate Urban Heat Island (UHI) intensity by comparing land surface temperature (LST) between urban and non-urban areas using MODIS LST data from 2017. It first masks MODIS land cover data to separate urban (LC_Type1 = 13) and non-urban regions, applies these masks to MOD11A1 LST data, computes mean LST for each region over time, calculates the difference (UHI = urban LST - non-urban LST), and outputs a UHI image collection, time series chart, and poin",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 8,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 11,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 15,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 22,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 3,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "城市/非城市两分支 LST 差分 UHI；4 节点分支归属待核",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 494,
+    "task_head": "Task: Estimate land surface temperature",
+    "task_excerpt": "Task: Estimate land surface temperature\nEstimate land surface temperature (LST) in Sarepole Zahab using Landsat 8 Top of Atmosphere (TOA) reflectance and thermal data from November 2016 and October–December 2017. It computes NDVI from visible and near-infrared bands, derives land surface emissivity through a threshold-based classification of NDVI values, and calculates at-sensor radiance and brightness temperature from Band 10 (TIRS). LST is then retrieved using a radiative transfer equation tha",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 7,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 8,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "多日期 NDVI/发射率/LST；TEMPORAL→AGGREGATION 似逐时段汇总",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 514,
+    "task_head": "Task: Analyze surface water extent and climate variables",
+    "task_excerpt": "Task: Analyze surface water extent and climate variables\nAnalyze monthly surface water extent from the JRC Global Surface Water dataset and climate variables (actual evapotranspiration and PDSI) from the TerraClimate dataset over a specific Arctic region between 2000 and 2001, with reprojected and resolution-reduced outputs for consistent analysis.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 7,
+        "repeat": 2,
+        "prev": "AGGREGATION",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 10,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "repeat:2 或对应 JRC 水体与 TerraClimate 两对象；需核节点操作",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 561,
+    "task_head": "Task: Analyze vegetation and water indices",
+    "task_excerpt": "Task: Analyze vegetation and water indices\nCalculate and visualizes NDVI, EVI, and LSWI vegetation and moisture indices from Landsat 8 TOA reflectance data over a specified region of interest. It generates mean composite images of these indices, displays them on the map with custom visualization parameters, creates a time-series chart of average NDVI and EVI values, and exports the index maps to Google Drive.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 2,
+        "prev": "SPATIAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 8,
+        "repeat": 2,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 9,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "NDVI/EVI/LSWI 多指数分支；repeat:2 或为分支非迭代",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 572,
+    "task_head": "Task: Analyze vegetation change over time",
+    "task_excerpt": "Task: Analyze vegetation change over time\nAnalyze changes in vegetation over two time periods using Sentinel-2 imagery. It computes median NDVI images before and after a given event (aE, bE), applies cloud masking, clips to a region of interest, and calculates the relative change (normalized difference) between the two periods. The output includes false-color composite images for each period and a change map highlighting areas of increase or decrease in vegetation, visualized using near-infrared",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 9,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 9,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "事件前后两期中值 NDVI 差分——独立时间窗",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 580,
+    "task_head": "Task: Analyze NDVI over time",
+    "task_excerpt": "Task: Analyze NDVI over time\nCalculate and visualizes NDVI over Utah from MODIS MOD09Q1 data between 2010 and 2019, applying a water mask and hillshade for enhanced visualization, and provides an interactive time series chart of NDVI at clicked locations.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 10,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "MODIS NDVI 时序交互图；是否需显式节点取决于表示方式",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 638,
+    "task_head": "Task: Analyze vegetation indices over time",
+    "task_excerpt": "Task: Analyze vegetation indices over time\nCalculate and visualizes NDVI, NDWI, and EVI vegetation indices from Landsat 8 surface reflectance data over a buffered geometry between 2013 and 2021, producing a time series chart of median values at 30m scale.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "NDVI/NDWI/EVI 多指数时序统计；不得误判为单循环体累积",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 673,
+    "task_head": "Task: Analyze vegetation density and water index",
+    "task_excerpt": "Task: Analyze vegetation density and water index\nAnalyze vegetation health, water content, and fuel moisture in a study area using Sentinel-2A/B surface reflectance data from 2020. It applies cloud masking via the QA60 band, computes NDVI, NDWI, and NDFI indices, and classifies each into discrete categories representing varying levels of vegetation density and moisture conditions. The output includes a median composite image, three classified raster maps (NDVI, NDWI, NDFI) visualized with color ",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 11,
+    "pre_classified_type": "undetermined",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 0,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "undetermined",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "三指数+分类：多分支或逐景皆可能，摘要不足以区分",
+    "semantic_type": "undetermined",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 706,
+    "task_head": "Task: Analyze NDVI time series by land type",
+    "task_excerpt": "Task: Analyze NDVI time series by land type\nAnalyze and compares NDVI time series from Landsat 8 and MODIS over different land cover types (canyon, residential, built-up) near San Diego in 2018, generating temporal charts of mean NDVI and EVI values for spatial comparison.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 15,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "L8/MODIS×canyon/residential/built-up 多分支；节点对象不明确",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 710,
+    "task_head": "Task: Analyze NDVI time series for farm",
+    "task_excerpt": "Task: Analyze NDVI time series for farm\nAnalyze the NDVI time series from Sentinel-2 data over a specific farm (Farm_ID: Farmer_39) between 2020 and 2023, generating a median composite, NDVI visualization, and a line chart of mean NDVI values over time. It also exports the NDVI image collection to Google Drive.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S2 NDVI 时序+中值合成+导出；中值合成是聚合非循环",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 745,
+    "task_head": "Task: Map surface water extent",
+    "task_excerpt": "Task: Map surface water extent\nAnalyze surface water dynamics in a study area using MNDWI derived from Landsat 5, 7, and 8 surface reflectance imagery between 1997 and 2021. It applies sensor-specific cloud masking to ensure data quality, computes MNDWI for water detection, and generates two composite water maps: one for the rainy season (June–October) using the 90th percentile and another for the dry season (November–May). Additionally, it calculates annual surface water extent (in km²) by comp",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 14,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 24,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "多传感器水体按季节合成+年度统计；三节点对应关系需 DAG 核实",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 762,
+    "task_head": "Task: Analyze NDVI and backscatter time series",
+    "task_excerpt": "Task: Analyze NDVI and backscatter time series\nAnalyze temporal patterns of vegetation (via NDVI from Landsat 8 and Sentinel-2) and radar backscatter (VV/VH from Sentinel-1) over a specified region and time period. It computes NDVI for optical collections, applies cloud masking to Landsat and Sentinel-2, merges NDVI results, and generates two time series charts: one for VV/VH backscatter coefficients from Sentinel-1 and another for mean NDVI values from both sensors. The output includes interact",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 8,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 12,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 13,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "光学 NDVI 与 S1 雷达并行支路+两类时序图",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 817,
+    "task_head": "Task: Extract cloud-masked Landsat imagery",
+    "task_excerpt": "Task: Extract cloud-masked Landsat imagery\nFilter and processes Landsat 8 surface reflectance data within a user-defined boundary, removes clouds and cloud shadows using pixel_qa band, clips images to the region of interest, and exports each image in the collection to Google Drive. The output is a series of clipped, cloud-cleared Landsat 8 images from 2015.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 8,
+    "pre_classified_type": "undetermined",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 0,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "2015 Landsat 逐景掩膜/裁剪/逐景导出——典型重复执行",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 847,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nAnalyze the temporal dynamics of vegetation health in the DryPunaSajama region using MODIS NDVI data from 2000 to 2021, generating a time-series line chart of mean NDVI values and visualizing the NDVI imagery over the study area.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 9,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 14,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 19,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 20,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "gold 风险:4 个相同邻接模式——需核对应不同年份分段还是重复展开",
+    "semantic_type": "repeated_execution",
+    "gold_status": "suspicious"
+  },
+  {
+    "k": 848,
+    "task_head": "Task: Analyze cloud and cirrus presence",
+    "task_excerpt": "Task: Analyze cloud and cirrus presence\nAnalyze cloud and cirrus pixel coverage in Sentinel-2 surface reflectance images over a specific region between January and June 2020, using the QA60 band to derive per-pixel cloud/cirrus masks. It generates time-series charts of cloudiness distribution, identifies the least cloudy image, and exports NDVI visualizations and masked imagery for further analysis.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 7,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 12,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "2020 S2 逐景云/卷云分析+最少云影像导出",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 849,
+    "task_head": "Task: Extract riparian forest NDVI along rivers",
+    "task_excerpt": "Task: Extract riparian forest NDVI along rivers\nAnalyze riparian forests along three major rivers in California (Santa Clara River, Salinas River, and South Fork Kern River) using NDVI derived from Landsat 7 Collection 2 Level 2 surface reflectance data from 2000 to 2021. It first identifies riparian forest areas by clipping a precomputed forest layer to 500-meter buffers around river segments. Then, for each cloud-masked image within the summer season (July 1–September 30) and with less than 20",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 20,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 22,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 3,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "夏季逐景云筛/NDVI/河岸森林统计；三缓冲区为独立空间对象",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 872,
+    "task_head": "Task: Extract tropospheric CO time series",
+    "task_excerpt": "Task: Extract tropospheric CO time series\nExtract daily mean tropospheric carbon monoxide (CO) column number density values over a 7-km buffered region centered on the Port of Sines, Portugal (coordinates [-8.8667, 37.9500]), using Sentinel-5P Level 3 offline CO data for 2024. It applies cloud masking (cloud_fraction < 0.3), computes spatial means within the buffered region, handles null/missing values by assigning -9999, generates a FeatureCollection with date and CO value attributes, prints th",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 6,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S5P 每日 CO 云过滤+区域均值——逐日观测重复",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 921,
+    "task_head": "Task: Filter non-cloudy MODIS images",
+    "task_excerpt": "Task: Filter non-cloudy MODIS images\nCalculate the non-cloud ratio for each 8-day MODIS MOD09A1 image by masking cloudy pixels using the StateQA band, then filters the collection to retain only those images where at least 98% of the region of interest is free of clouds.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 11,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "ATTRIBUTE_FILTER"
+      }
+    ],
+    "gold_stage_count": 12,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "8 天 MODIS 逐影像无云比例+98% 阈值筛选",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 936,
+    "task_head": "Task: Analyze NBR over time",
+    "task_excerpt": "Task: Analyze NBR over time\nCalculate the Normalized Burn Ratio (NBR) from Landsat 8 TOA reflectance data within a point of interest, masks pixels based on cloud score (≤20), computes mean NBR values at the point, and generates a time series line chart of NBR values versus acquisition dates.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "逐景 NBR+点位均值时序；TEMPORAL→AGGREGATION 吻合",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 985,
+    "task_head": "Task: Analyze vegetation health using indices",
+    "task_excerpt": "Task: Analyze vegetation health using indices\nGenerate a median composite of Sentinel-2 surface reflectance data over Ethiopia, computes spectral indices (NDVI, EVI, NDWI, NBR), and visualizes them with color palettes. It allows interactive selection of compositing periods, cloud thresholds, band combinations, and exports the resulting image. Clicking on the map produces a time series chart of the selected index at that location.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "EXPORT_OUTPUT"
+      }
+    ],
+    "gold_stage_count": 8,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "NDVI/EVI/NDWI/NBR 多指数分支 vs 逐景，邻接无法确认，暂偏多分支",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1002,
+    "task_head": "Task: Estimate annual population distribution",
+    "task_excerpt": "Task: Estimate annual population distribution\nEstimate the mean annual population distribution for 2020 using WorldPop high-resolution gridded population data. It filters the WorldPop ImageCollection to China within a user-defined geometry, computes the temporal mean of population counts across 2020, clips the result to the study area, and visualizes it on the map with a custom color palette. Additionally, it generates a time series chart of total population dynamics by region using sum reductio",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "ATTRIBUTE_FILTER"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "WorldPop 2020 均值+区域时序；逐影像 vs 集合级待核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1011,
+    "task_head": "Task: Detect surface water change",
+    "task_excerpt": "Task: Detect surface water change\nDetect changes in surface water extent between two time periods (2020 and 2021) using NDWI derived from Landsat 8 Surface Reflectance imagery. It applies cloud masking, computes median composites before and after the period, thresholds NDWI at 0.05 to identify water, calculates water loss and gain by differencing pre- and post-period images, masks non-water and no-data pixels, computes area in km² using pixel area, and outputs map visualizations of before/after ",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_ARITHMETIC"
+      }
+    ],
+    "gold_stage_count": 12,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "2020/2021 NDWI 合成差分——独立分支",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1034,
+    "task_head": "Task: Extract cloud-scored Sentinel-2 imagery",
+    "task_excerpt": "Task: Extract cloud-scored Sentinel-2 imagery\nProcess Sentinel-2 Surface Reflectance (S2_SR) imagery over a defined region from 2020 to 2021, applying scaling, cloud masking using a custom cloud scoring algorithm and QA60 band filtering, and clipping to the region of interest. It outputs the processed image collection size for inspection, with each image including a computed cloud score band and masked pixels based on cloud likelihood. The final output is a cleaned, cloud-filtered image collecti",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 4,
+    "pre_classified_type": "undetermined",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 0,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "语义修正:摘要明确集合逐景云评分/掩膜/裁剪（原预分类 undetermined）；gold 仍需单独判断",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1061,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nAnalyze temporal changes in vegetation health across multiple locations in Uzbekistan using NDVI derived from Landsat 5 and Landsat 8 surface reflectance imagery between 1984 and 2019. It computes NDVI for two different sensor configurations (Landsat 5 TM: B4/B3; Landsat 8 OLI: B5/B4), applies no cloud masking beyond fmask usage in function definition (though not applied in final collections), and generates a time-series scatter chart of mean NDVI values per locati",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 12,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 18,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 24,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 30,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 36,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 42,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 48,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 54,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 60,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 66,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 72,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 78,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 84,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 90,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 96,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 97,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 5,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "gold 风险:16 个同邻接/97 阶段——需核查重复展开",
+    "semantic_type": "repeated_execution",
+    "gold_status": "suspicious"
+  },
+  {
+    "k": 1069,
+    "task_head": "Task: Compute EVI from Sentinel-2 imagery",
+    "task_excerpt": "Task: Compute EVI from Sentinel-2 imagery\nCalculate the Enhanced Vegetation Index (EVI) from Sentinel-2A/B Surface Reflectance data over a specific region for four overlapping weekly periods in April 2020. It applies cloud and cirrus masking using the QA60 band, filters images by cloud cover (<10%), computes EVI using blue (B2), red (B4), and near-infrared (B8) bands scaled by 10,000, then generates a median EVI composite for each period. Outputs include printed image collections, map visualizat",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 15,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 20,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 20,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "四个重叠周窗独立 EVI 中值——非状态迭代",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1090,
+    "task_head": "Task: Classify land cover types",
+    "task_excerpt": "Task: Classify land cover types\nClassify land cover types in Olavarría using training samples for five classes: Agua, Area_no_vegetada, Cultivos, Lenosas, and Herbacea_natural. It leverages Landsat 8 surface reflectance imagery from 2016 to 2020 and MODIS NDVI data from 2020 to compute NDVI time series. The workflow includes cloud masking, NDVI calculation, and the creation of interactive charts via click events on a map, where users can view temporal NDVI profiles from Landsat and MODIS at spec",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 19,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "GEOMETRY_DEFINE"
+      }
+    ],
+    "gold_stage_count": 21,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "undetermined",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "单节点 RASTER_LOAD→GEOMETRY_DEFINE 不足以判断重复对象",
+    "semantic_type": "undetermined",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1138,
+    "task_head": "Task: Analyze NDMI vegetation moisture",
+    "task_excerpt": "Task: Analyze NDMI vegetation moisture\nAnalyze vegetation moisture conditions in Thailand using the Normalized Difference Moisture Index (NDMI) derived from Sentinel-2A/B SR surface reflectance data between January and July 2022. It applies cloud masking based on QA60 band, computes NDMI using bands B8 and B11, generates a maximum-value composite of NDMI over time, clips it to Thailand's boundary, and visualizes the result on the map. Additionally, it creates a time series line chart of maximum ",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 9,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 10,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S2 多时相 NDMI+最大值合成；最大值合成非循环累积",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1160,
+    "task_head": "Task: Map surface water extent monthly",
+    "task_excerpt": "Task: Map surface water extent monthly\nAnalyze surface water dynamics from January 2000 to January 2021 using the JRC Global Surface Water (GSW) Monthly History dataset. It filters the image collection to the specified time range, applies pixel reduction using mean resampling to handle mixed pixels, reprojects the images to a common CRS (EPSG:4326) at 1000m scale, selects the 'water' band indicating water occurrence states (no water, seasonal, permanent), and visualizes the first image in the pr",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 2,
+        "prev": "AGGREGATION",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 4,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 10,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "JRC 月度水体重采样/重投影/波段选择；repeat:2 对象待核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1163,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nAnalyze the temporal pattern of NDVI at a specific point location using Sentinel-2 surface reflectance imagery from 2016 to 2022. It applies cloud masking based on the Scene Classification Layer (SCL), computes NDVI using bands B8 and B4, and generates a time series chart of mean NDVI values over the point. The output is an interactive chart visualizing NDVI dynamics over time, intended for monitoring vegetation behavior at that location.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S2 NDVI 时序逐影像云掩膜+点位均值",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1211,
+    "task_head": "Task: Compute NDVI for summer period",
+    "task_excerpt": "Task: Compute NDVI for summer period\nCompute the maximum NDVI value over the austral summer period (2019-12-21 to 2020-03-20) using Landsat 8 surface reflectance imagery. It applies cloud filtering (CLOUD_COVER < 99%), calculates NDVI via an expression using NIR (B4) and red (B3) bands, takes the pixel-wise maximum across the time series, clips the result to the 'puq' region, and visualizes it with a color palette from red to dark green. The final NDVI raster is exported to Google Drive.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 4,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "Landsat 夏季逐景 NDVI+像元最大值",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1232,
+    "task_head": "Task: Monitor wheat and rice cultivation NDVI",
+    "task_excerpt": "Task: Monitor wheat and rice cultivation NDVI\nAnalyze NDVI time series for wheat and rice cultivation areas in Uttar Pradesh, India, using Sentinel-2 surface reflectance data from 2019. It masks clouds and shadows, computes NDVI from bands B8 and B4, samples farm locations within the cropped area identified by GFSAD, and generates a temporal NDVI chart at a single farm point. Outputs include a median composite image of the study area, mapped farm sample points, and a time-series chart of NDVI va",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 7,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "SPATIAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 8,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S2 NDVI 时序+农田采样点位图表",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1262,
+    "task_head": "Task: Map forest change and hydrology",
+    "task_excerpt": "Task: Map forest change and hydrology\nthe workflow quantifies forest cover change between 2000 and 2020 in the Nilgiris District using NDVI-derived binary forest/non-forest classifications from Landsat 5 and Landsat 8 surface reflectance data. It computes forest loss, gain, and stability classes via pixel-wise logical comparison, integrates JRC Global Surface Water occurrence data (≥50% threshold) to map permanent water bodies, calculates area statistics in km² for each class, visualizes four th",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 11,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 16,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "2000 vs 2020 森林变化+JRC 水体——优先多分支",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1274,
+    "task_head": "Task: Estimate annual population distribution",
+    "task_excerpt": "Task: Estimate annual population distribution\nEstimate the mean annual population distribution for China in 2020 using WorldPop 100m resolution data. It filters the WorldPop Global Population dataset for China within a user-defined geometry, computes the yearly mean population density, clips it to the region of interest, and visualizes it on the map with a custom palette. Additionally, it generates a time series chart of total population dynamics by region using sum reduction over time and expor",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "ATTRIBUTE_FILTER"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "WorldPop 年度筛选/均值/区域时序；逐年 vs 单年集合待核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1292,
+    "task_head": "Task: Analyze forest NBR change",
+    "task_excerpt": "Task: Analyze forest NBR change\nAnalyze changes in the Normalized Burn Ratio (NBR) over forested areas in Europe before and after a fire event by using MODIS MCD43A4 surface reflectance data from 2005 to 2012, masked with CORINE Land Cover data to retain only forest areas (class values >=24). It computes mean NBR for pre-fire (2006), fire-year (2007), and post-fire (2011–2012) periods, then generates a time series chart of regional mean NBR values over Europe.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 18,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 24,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 26,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 30,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 32,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 36,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 38,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 42,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 44,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 48,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 54,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "gold 风险:12 个 ITERATIVE_APPLY/54 阶段 vs 摘要仅三个时期——疑多源展开/冗余复制，重点审计",
+    "semantic_type": "batch_same_op",
+    "gold_status": "suspicious"
+  },
+  {
+    "k": 1296,
+    "task_head": "Task: Estimate lake surface area",
+    "task_excerpt": "Task: Estimate lake surface area\nEstimate monthly lake surface areas using MNDWI from Landsat 5 and 7 data between February 1990 and March 2022, applying cloud masking, SLC-off gap correction for Landsat 7, and filtering composites based on cloud cover and pixel coverage within the region of interest. Outputs include a time series of lake surface areas in km², exported as a CSV file and visualized as a scatter chart.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "TEMPORAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 15,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "L5/7 月度湖泊面积+SLC-off 缺口校正；节点或分属传感器处理与月度统计",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1303,
+    "task_head": "Task: Extract snow cover from MODIS",
+    "task_excerpt": "Task: Extract snow cover from MODIS\nExtract daily NDSI-based snow cover data from the MODIS MYD10A1 product over a user-defined region of interest (roi) for February 2020, visualizes the first image in the collection with a custom color palette, and exports each clipped image as a GeoTIFF to Google Drive with filenames prefixed by 'Snow_Cover_' followed by the system:index. The output includes a printed list of image IDs and individual export tasks triggered via iteration.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "逐幅导出 MODIS 雪盖——迭代触发单幅导出，直接成立",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1365,
+    "task_head": "Task: Analyze NDVI time series at clicked points",
+    "task_excerpt": "Task: Analyze NDVI time series at clicked points\nAnalyze NDVI time series from Sentinel-2 surface reflectance imagery between 2019 and 2020. It applies cloud masking using the QA60 band and computes NDVI using bands B8 (NIR) and B4 (red). the workflow enables interactive point selection on the map, dynamically generating a chart of mean NDVI values over time for each clicked location, displayed in a panel. Outputs include mapped point locations and interactive NDVI time series charts per point.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "GEOMETRY_DEFINE"
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 7,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S2 多时相 NDVI+点击动态时序图；点击点是交互输入非批处理",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1376,
+    "task_head": "Task: Compute median cloud fraction by day",
+    "task_excerpt": "Task: Compute median cloud fraction by day\nCompute the median cloud fraction for each day from May 1 to May 10, 2019, using Sentinel-5P NRTI L3 data over a specified region (krasPoly), producing a time-composited image collection where each image represents the median cloud condition for a specific day of year.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "TEMPORAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 7,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "S5P 按日独立聚合中值云量——时间窗重复非累积循环",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1386,
+    "task_head": "Task: Identify maize and soybean fields",
+    "task_excerpt": "Task: Identify maize and soybean fields\nIdentify maize and soybean cropland areas in Iowa using the USDA/NASS Cropland Data Layer (CDL) for 2018–2019. It filters the CDL image collection to a point-based region around Iowa, extracts maize (class 1) and soybean (class 5) classifications by thresholding the 'cropland' band, clips the result to the study area, and visualizes each crop type separately using random color visualization. Additionally, it processes GEDI L2A monthly data from July to Sep",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "SPATIAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 7,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "玉米/大豆分别提取+GEDI 月度；单节点指向待核",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1388,
+    "task_head": "Task: Assess wildfire impact using NDVI",
+    "task_excerpt": "Task: Assess wildfire impact using NDVI\nthe workflow assesses the impact of a wildfire by computing and comparing NDVI from Landsat 9 imagery before and after the event in summer 2022. It creates median pre- and post-fire NDVI composites, calculates a difference NDVI image (dNDVI), and generates a time series chart of NDVI trends over user-defined regions (poligonos). Outputs include mapped layers for visualization, a scatter chart of NDVI temporal dynamics, and exports individual images and a s",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      },
+      {
+        "seq": 16,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 20,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "火前/火后 NDVI 差值+时序图——独立窗口非状态迭代",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1391,
+    "task_head": "Task: Map annual burn date extent",
+    "task_excerpt": "Task: Map annual burn date extent\nCalculate the total annual burned area extent from MODIS MCD64A1 Burn Date data between 2010 and 2019, clipped to a user-defined region (table). For each year, it processes the 'BurnDate' band by summing pixel values after clipping, visualizes each year with a unique color palette, and exports the 2010 result as a GeoTIFF to Google Drive. The output is a time-series of annual fire-affected areas represented as summed burn dates per pixel, intended for change ana",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 8,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 13,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 18,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 23,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 28,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 33,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 38,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 43,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 48,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 53,
+        "repeat": 1,
+        "prev": "BAND_SELECT",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 54,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 7,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "gold 风险:10 个同邻接/54 阶段；摘要仅明确导出 2010——需核逐年展开合理性",
+    "semantic_type": "repeated_execution",
+    "gold_status": "suspicious"
+  },
+  {
+    "k": 1472,
+    "task_head": "Task: Analyze vegetation reflectance trends",
+    "task_excerpt": "Task: Analyze vegetation reflectance trends\nAnalyze time-series surface reflectance values in the near-infrared (B7) and red (B3) bands from Landsat 7 over a specified geometry, generating a chart of mean pixel values over time to observe vegetation dynamics or land surface changes between 1999 and 2005.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "L7 反射率时序逐影像均值+时间图",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1475,
+    "task_head": "Task: Classify land cover using optical and radar data",
+    "task_excerpt": "Task: Classify land cover using optical and radar data\nClassify land cover in the Niayes region using a combination of Landsat 8 surface reflectance, Sentinel-1 SAR, and derived spectral indices (NDVI, NDWI). It applies cloud masking to Landsat and Sentinel-2-like QA60-based masking (though not used), computes NDVI and NDWI, fuses optical, radar, and index bands, and performs Random Forest classification using training samples. Three classifications are generated: (1) using only Landsat spectral",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 7,
+        "repeat": 1,
+        "prev": "COLLECTION_MGMT",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 14,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 2
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "光学/S1 雷达/指数融合三种配置分类——并行分支；单节点不证明时间循环",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1497,
+    "task_head": "Task: Extract NDVI and export Sentinel-2 imagery",
+    "task_excerpt": "Task: Extract NDVI and export Sentinel-2 imagery\nProcess Sentinel-2 surface reflectance data from May to December 2020 over a defined ROI, computes NDVI, sorts images by cloud coverage, and exports the top 1000 images (clipped to the ROI) containing B2, B3, B4, B8, and NDVI bands to Google Drive. It also visualizes each image in the map viewer using true-color composite.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 4,
+    "pre_classified_type": "undetermined",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 0,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "语义修正:逐景导出/显示最多 1000 幅（原预分类 undetermined）；gold 待核查",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1503,
+    "task_head": "Task: Analyze NDVI change over time",
+    "task_excerpt": "Task: Analyze NDVI change over time\nCalculate and visualizes changes in NDVI between multiple dry-season periods (1987–1999, 1999–2013, 2014–2020) using Landsat surface reflectance data, focusing on detecting significant vegetation changes above a threshold of 0.1, masked by land and clipped to a region of interest. Outputs include mapped NDVI change layers and time-series charts for a specified geometry.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "COLLECTION_MGMT"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "COLLECTION_MGMT"
+      },
+      {
+        "seq": 15,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "COLLECTION_MGMT"
+      },
+      {
+        "seq": 20,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "COLLECTION_MGMT"
+      },
+      {
+        "seq": 25,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "COLLECTION_MGMT"
+      },
+      {
+        "seq": 30,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "COLLECTION_MGMT"
+      }
+    ],
+    "gold_stage_count": 33,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 3,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "gold 风险:6 个同邻接 vs 摘要三时段——疑双传感器×三时段展开或冗余",
+    "semantic_type": "batch_same_op",
+    "gold_status": "suspicious"
+  },
+  {
+    "k": 1545,
+    "task_head": "Task: Analyze land surface temperature",
+    "task_excerpt": "Task: Analyze land surface temperature\nCalculate and visualizes land surface temperature from Landsat 8 thermal band (B10) data, masked for clouds and cloud shadows, using a median composite from 2018. It also generates a time-series chart of mean temperature values over a specified geometry.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 2,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 4,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "单 ITERATIVE 节点/4 阶段——必要性待核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1546,
+    "task_head": "Task: Map surface water extent monthly",
+    "task_excerpt": "Task: Map surface water extent monthly\nAnalyze monthly surface water dynamics from 2000 to 2021 using the JRC Global Surface Water (GSW) dataset. It processes the 'MonthlyHistory' collection by reducing resolution via mean aggregation, reprojecting to a fixed scale and CRS (EPSG:4326 at 1000m), and selecting the 'water' band. The output is a time-series image collection of processed monthly water occurrence images, with the first image visualized on the map using a three-class palette (no water,",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 2,
+        "prev": "AGGREGATION",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 4,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 12,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "repeat:2 与 next:null 需核:集合映射 vs 两次独立执行",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1590,
+    "task_head": "Task: Compute EVI from Sentinel-2 imagery",
+    "task_excerpt": "Task: Compute EVI from Sentinel-2 imagery\nCalculate the Enhanced Vegetation Index (EVI) from Sentinel-2 Surface Reflectance imagery over a specific region for four overlapping weekly periods in March 2022. It applies cloud and cirrus masking using the QA60 band, filters images by cloud cover (<10%), computes EVI using B2 (blue), B4 (red), and B8 (NIR) bands scaled by 10,000, then generates a median composite of EVI for each period. The output includes four mean EVI raster maps clipped to the reg",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 15,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 20,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 20,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "四周窗独立 EVI 中值；4 模式与 4 窗吻合，需核其他分支",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1594,
+    "task_head": "Task: Analyze surface reflectance trends",
+    "task_excerpt": "Task: Analyze surface reflectance trends\nAnalyze time-series surface reflectance values in bands B7 and B3 from Landsat 7 SR data over a specified geometry, generating a chart of mean pixel values over time after applying cloud masking.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "B7/B3 时序；TEMPORAL→ITERATIVE→AGGREGATION 疑似表达逐时相统计",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1595,
+    "task_head": "Task: Analyze NDVI in study area",
+    "task_excerpt": "Task: Analyze NDVI in study area\nCalculate and visualizes NDVI time series from MODIS MOD09Q1 data for a specified study area between day of year 232 and 274 across 2000–2017, masking out permanent water bodies using the JRC Global Surface Water dataset, and generates an animated video of the NDVI progression exported to Google Drive.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "单节点 next:null——集合处理或输出端结构标记，需完整 DAG",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1608,
+    "task_head": "Task: Analyze vegetation and land cover temporal patterns",
+    "task_excerpt": "Task: Analyze vegetation and land cover temporal patterns\nAnalyze temporal patterns of multiple vegetation and land surface indices (NDVI, LSWI, EVI, NBR, etc.) and spectral bands across different land cover types (cropland, forest, tea plantations, etc.) in Xishuangbanna, Yunnan, using Landsat 8 and Landsat 7 data from 2018 to 2020. It generates day-of-year composite charts for each index and band, aggregated by region, to compare seasonal dynamics across land cover classes.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 34,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 41,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 42,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 2
+    },
+    "owner_ruling": "undetermined",
+    "notes": null,
+    "ruling_confidence": "中",
+    "ruling_notes": "3 节点前后类型各异；时间维度 vs 地类/指数维度需源码定",
+    "semantic_type": "undetermined",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1623,
+    "task_head": "Task: Analyze EVI time series trend",
+    "task_excerpt": "Task: Analyze EVI time series trend\nAnalyze the temporal trend of Enhanced Vegetation Index (EVI) derived from Sentinel-2 surface reflectance data over Uganda, computes a linear regression to model the trend, and generates both the original and detrended EVI time series charts at a specific point of interest. It also visualizes the trend as a coefficient image.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 2,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "SPATIAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "EVI 时序+线性回归+去趋势；回归是整体统计不应误判为循环",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1630,
+    "task_head": "Task: Identify land cover clusters",
+    "task_excerpt": "Task: Identify land cover clusters\nthe workflow segments Sentinel-2 surface reflectance imagery over a user-defined region of interest (initially set to 'congzuo' in Guangxi) using the SNIC (Simple Non-Iterative Clustering) superpixel algorithm. It first applies cloud masking and scaling to the image collection, computes a median composite for 2019, then clips a precomputed UNVI index (Urban Normalized Vegetation Index) to the ROI. The SNIC algorithm generates homogeneous spectral-spatial cluste",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "BAND_SELECT"
+      }
+    ],
+    "gold_stage_count": 8,
+    "pre_classified_type": "undetermined",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 0,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "undetermined",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "SNIC 聚类+中值合成+UNVI 裁剪并存；SPATIAL→ITERATIVE→BAND_SELECT 语义待源码",
+    "semantic_type": "undetermined",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1718,
+    "task_head": "Task: Analyze NDVI time series at clicked points",
+    "task_excerpt": "Task: Analyze NDVI time series at clicked points\nGenerate a time series of NDVI values from Sentinel-2A/B Surface Reflectance data between 2017 and 2020, masked for clouds using the QA60 band. It enables interactive point selection on the map, where each click creates a mean NDVI time series chart for that location. The output is a dynamic panel displaying the NDVI temporal profile across the specified period, with points visualized in red on the map.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "GEOMETRY_DEFINE"
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 6,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S2 NDVI 时序 2017-2020；节点前后类型像时序处理，具体语义待核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1738,
+    "task_head": "Task: Map annual mean LST and vegetation indices",
+    "task_excerpt": "Task: Map annual mean LST and vegetation indices\nCompute and maps the yearly mean values of NDVI (vegetation health), NDBI (urban/built-up intensity), NDWI (surface water presence), and LST (land surface temperature in °C) across Australia for 2025 using cloud-masked Landsat 8 and 9 Collection 2 Level 2 surface reflectance and surface temperature data. It outputs four clipped, spatially continuous raster layers (one per index) visualized in the GEE Code Editor, plus a monthly time-series line ch",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 12,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "NDVI/NDBI/NDWI/LST 多指标分支+年度/月度并存；两节点对象待核",
+    "semantic_type": "batch_same_op",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1753,
+    "task_head": "Task: Analyze NDCI variability in water bodies",
+    "task_excerpt": "Task: Analyze NDCI variability in water bodies\nCalculate the Normalized Difference Chlorophyll Index (NDCI) from Landsat 5 and 7 surface reflectance data, applies cloud and water masking using pixel QA and NDWI, and computes the standard deviation of NDCI across the combined time series to assess temporal variability of chlorophyll-related water quality in water bodies within the region of interest.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 7,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      },
+      {
+        "seq": 11,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 12,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "L5/7 NDCI 时序+标准差；两同邻接或为双传感器分支或双时段，需核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1761,
+    "task_head": "Task: Analyze NDVI time series",
+    "task_excerpt": "Task: Analyze NDVI time series\nAnalyze NDVI time series from Landsat and MODIS satellite data over a user-defined region, enabling comparison of vegetation dynamics through interactive charts generated upon clicking the map.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 18,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "GEOMETRY_DEFINE"
+      }
+    ],
+    "gold_stage_count": 20,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "Landsat+MODIS NDVI 时序；节点处 RASTER_LOAD→ITERATIVE→GEOMETRY_DEFINE 顺序可疑，或为多源加载",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1773,
+    "task_head": "Task: Map seasonal land cover",
+    "task_excerpt": "Task: Map seasonal land cover\nCreate median composite images from Sentinel-2 and Landsat 8 surface reflectance data for three time periods (dry season, early wet season, late wet season) over a region in Cameroon to support seasonal land cover analysis, with cloud masking applied and study area boundaries visualized.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 10,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 15,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 20,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 25,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      },
+      {
+        "seq": 30,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 31,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "batch_same_op",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "gold 风险:6 同邻接 vs 摘要三季节——或 S2×L8 双传感器展开（若然六组合理）",
+    "semantic_type": "batch_same_op",
+    "gold_status": "suspicious"
+  },
+  {
+    "k": 1788,
+    "task_head": "Task: Classify land cover types",
+    "task_excerpt": "Task: Classify land cover types\nClassify land use and land cover (LULC) into two classes—built-up and non-built-up areas—using a CART classifier applied to Landsat 8 TOA reflectance data from 2013–2015. It generates a classified raster, accuracy assessment via confusion matrix, area calculations per class, and exports masked rasters for each class and the full classification.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 3,
+        "repeat": 1,
+        "prev": "TEMPORAL_FILTER",
+        "next": "AGGREGATION"
+      }
+    ],
+    "gold_stage_count": 9,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 1,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 1
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "中高",
+    "ruling_notes": "L8 分类前多时相处理；TEMPORAL→ITERATIVE→AGGREGATION 是否对应集合操作待核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1796,
+    "task_head": "Task: Analyze NDVI over time",
+    "task_excerpt": "Task: Analyze NDVI over time\nCalculate monthly mean NDVI values from Landsat 8 surface reflectance data over Guangdong Province between 2021 and 2022, generating a time series chart of vegetation greenness and displaying the mean NDVI map.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 2,
+        "repeat": 1,
+        "prev": "RASTER_LOAD",
+        "next": "TEMPORAL_FILTER"
+      },
+      {
+        "seq": 5,
+        "repeat": 1,
+        "prev": "SPATIAL_FILTER",
+        "next": "TEMPORAL_FILTER"
+      }
+    ],
+    "gold_stage_count": 7,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 4,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "月度 NDVI 时序；两节点邻接不同，或分别表示加载与空间筛选重复，或标注不一致",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1817,
+    "task_head": "Task: Map land cover in OKU",
+    "task_excerpt": "Task: Map land cover in OKU\nGenerate a cloud-masked median composite of Sentinel-2A surface reflectance imagery over Ogan Komering Ulu (OKU) from January to September 2022. It applies QA60-based cloud and cirrus masking, filters images with less than 10% cloud coverage, computes the median across the time series, and visualizes the result in true color (B4, B3, B2). The output includes a true-color RGB visualization on the map and exports a GeoTIFF containing bands B11, B8, B4, B3, and B2 for of",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 6,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "S2 云掩膜+中值合成；ATTRIBUTE→ITERATIVE→END 需确认逐景 vs 集合级",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1819,
+    "task_head": "Task: Analyze GNVDI in agricultural lot",
+    "task_excerpt": "Task: Analyze GNVDI in agricultural lot\nCalculate and visualizes the Green Normalized Difference Vegetation Index (GNDVI) for a specific agricultural lot (antuco) using Landsat 8 surface reflectance data. It generates a time-series image collection of GNDVI values, clips it to the lot boundary, and creates a composite band stack for visualization and analysis.",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 5,
+        "repeat": 2,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": null
+      }
+    ],
+    "gold_stage_count": 5,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 2,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "GNDVI 时序+堆叠；repeat:2 且后继为空——两次独立或压缩表示待核",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  },
+  {
+    "k": 1821,
+    "task_head": "Task: Calculate albedo from Landsat imagery",
+    "task_excerpt": "Task: Calculate albedo from Landsat imagery\nCalculate surface albedo using a weighted sum of reflectance bands from Landsat 5 TM surface reflectance data, applying specific coefficients to bands B1, B3, B4, B5, and B7. It generates a time series of albedo values (albedo2) for a region of interest (lote), creates a multiband stack of albedo images over time, and visualizes both individual albedo images and a chart of median albedo values over time. The output includes a mapped layer of the albedo",
+    "gold_ITERATIVE_positions": [
+      {
+        "seq": 4,
+        "repeat": 1,
+        "prev": "ATTRIBUTE_FILTER",
+        "next": "RASTER_LOAD"
+      }
+    ],
+    "gold_stage_count": 6,
+    "pre_classified_type": "repeated_execution(same op over time/objects)",
+    "keyword_scores": {
+      "repeated_execution(same op over time/objects)": 6,
+      "loop_structure(cumulative/iterative computation)": 0,
+      "batch_same_op(apply op to multiple objects)": 0
+    },
+    "owner_ruling": "repeated_execution",
+    "notes": null,
+    "ruling_confidence": "高",
+    "ruling_notes": "L5 反照率时序；ATTRIBUTE→ITERATIVE→RASTER_LOAD 需核集合处理与后续展开",
+    "semantic_type": "repeated_execution",
+    "gold_status": "undetermined"
+  }
+]
