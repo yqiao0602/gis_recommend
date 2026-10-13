@@ -1,0 +1,643 @@
+{
+ "_meta": {
+  "stage": "PCA Stage-1 gold authoring v2 (owner round-1 revisions applied)",
+  "supersedes": "pca_b_gold_worksheet_v1.json (SHA 06b30b9c810a2e6d) — kept immutable",
+  "revision_source": "owner 8-item minimal revision list, 2026-10-13",
+  "authority": "frozen inputs ONLY; chains not read",
+  "frozen_inputs_sha256": "1a13ad8d95c33771275a5ee8aca1f8940000dafc8ed5053c07ac6920b53bc7c9",
+  "new_field": "underdetermined_aspects (partial-scoring boundaries, nothing improvised)",
+  "chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+  "n_rows": 19
+ },
+ "rows": [
+  {
+   "task_id": "W000473",
+   "task_text": "Identify the areas covered by exactly one of two polygon layers (an exterior-extent layer and a survey layer) — regions present in one layer but not in both. Output: a polygon layer of the non-overlapping areas. Any valid route to this result is acceptable.",
+   "task_sha256": "d4690a8d64390eff",
+   "required_outcome": "A polygon layer containing exactly the areas covered by one and only one of the two input polygon layers (symmetric difference / XOR of extent vs survey).",
+   "required_constraints": [
+    "Two polygon inputs (exterior-extent layer, survey layer)",
+    "Output = polygons of non-overlapping areas",
+    "Any valid route is acceptable (stated in the task)"
+   ],
+   "required_capabilities": [
+    "Pairwise spatial overlay reasoning (what XOR means geometrically)",
+    "Producing a clean POLYGON result (geometry type matters)"
+   ],
+   "acceptable_alternatives": [
+    "Direct symmetric-difference operator",
+    "(A−B) ∪ (B−A) via two differences + merge",
+    "XOR after prior dissolution to single parts",
+    "Union + subtract intersection",
+    "Line-based routes ONLY if they reliably rebuild the required polygon areas (conditional)"
+   ],
+   "failure_conditions": [
+    "Overlap (covered by both) appears in output",
+    "One side's exclusive area missing",
+    "Result area deviates materially from true XOR",
+    "Output delivered as lines/points instead of polygons",
+    "Input layers silently dropped/unprocessed"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "R7: line-difference route made conditional (must rebuild polygon result)",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'regions present in one layer but not in both'; 'Any valid route to this result is acceptable.'"
+  },
+  {
+   "task_id": "W000635",
+   "task_text": "Generate a polygon layer of uniform-width bands tracing the boundaries of input polygons, for tactile-map edge rendering. The band width is user-specified and bands must be centred on the original outlines, free of geometry artefacts, and combined into a clean output. Output: polygon features representing the edge bands.",
+   "task_sha256": "5e498c7b08ab0391",
+   "required_outcome": "A polygon layer of uniform-width bands tracing input polygon boundaries (tactile-map edge rendering).",
+   "required_constraints": [
+    "Band width = user-specified TOTAL band width (not one-sided offset distance)",
+    "Bands centred on original outlines",
+    "Free of geometry artefacts",
+    "Bands combined into a clean output"
+   ],
+   "required_capabilities": [
+    "Offset/band geometry construction",
+    "Geometry cleaning",
+    "Dissolving artifacts"
+   ],
+   "acceptable_alternatives": [
+    "Inward+outward buffer difference (half-width each side)",
+    "Polygon→boundary line→centred line buffer (width = total)",
+    "Boundary extraction then buffer with cleanup — every route must deliver the SAME geometry semantics: total-width band centred on the outline"
+   ],
+   "failure_conditions": [
+    "Band not centred (one-sided)",
+    "Width used as one-sided offset (doubles total width)",
+    "Self-intersections/slivers retained",
+    "Polygon interior filled instead of edge band"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "R7: width defined as TOTAL band width; alternative routes gated on identical geometry semantics",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'uniform-width bands … centred on the original outlines' — centring + uniform width fixes the total-width interpretation"
+  },
+  {
+   "task_id": "W000674",
+   "task_text": "From a high-resolution DEM, produce three terrain-derivative rasters: slope in degrees, aspect in degrees, and a hillshade. The derivatives must be geometrically meaningful, which requires working in a projected metric CRS. Output: three georeferenced raster files added to the project.",
+   "task_sha256": "7f8fb8f3731f9620",
+   "required_outcome": "Three georeferenced terrain rasters: slope (degrees), aspect (degrees), hillshade.",
+   "required_constraints": [
+    "Computation in projected metric CRS (geometric meaningfulness)",
+    "Slope/aspect in degrees",
+    "Hillshade produced (illumination parameters are free — the task does not require reporting them)",
+    "Three files added to project"
+   ],
+   "required_capabilities": [
+    "CRS management prior to derivation",
+    "Terrain derivative computation ×3"
+   ],
+   "acceptable_alternatives": [
+    "Reproject→derive each",
+    "Native-CRS-derive routes are NOT generally equivalent (derivatives depend on coordinate scale at computation time) — acceptable ONLY if the route demonstrably satisfies the task's projected-metric computation requirement",
+    "GDAL/GRASS/SAGA derivative families (any honoring the CRS requirement)"
+   ],
+   "failure_conditions": [
+    "Derivatives computed in geographic CRS",
+    "Slope/aspect not in degrees",
+    "A derivative missing",
+    "Outputs not georeferenced",
+    "NOTE: absence of reported illumination parameters is NOT a failure"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "R7: illumination-report requirement removed; native-CRS-derive route demoted from general equivalence to proof-required conditional",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'must be geometrically meaningful, which requires working in a projected metric CRS'; 'slope in degrees, aspect in degrees, and a hillshade' (no reporting requirement)"
+  },
+  {
+   "task_id": "W000890",
+   "task_text": "Produce a per-municipality dominant drought-class map from a drought-severity polygon layer whose classes overlap. Overlaps must be resolved so that more severe classes take precedence (hierarchical exclusivity). For each municipality, determine the drought class covering the largest area within it. Output: (1) a municipality layer symbolized by dominant drought class and (2) a table listing each municipality's dominant class code/name and the corresponding area.",
+   "task_sha256": "9651c8727abf92a4",
+   "required_outcome": "(1) Municipality layer symbolized by dominant drought class; (2) table of municipality → dominant class code/name + area.",
+   "required_constraints": [
+    "Overlapping severity classes resolved by hierarchical exclusivity (more severe takes precedence; original-text requirement)",
+    "Dominant = class covering the largest AREA within each municipality (area-based semantics)",
+    "Two outputs (map layer + table)"
+   ],
+   "required_capabilities": [
+    "Ranked overlap resolution",
+    "Spatial intersection with municipalities",
+    "Per-group area aggregation and argmax"
+   ],
+   "acceptable_alternatives": [
+    "Sequential difference chain by severity order",
+    "Sort-by-severity layered overwrite",
+    "Raster-based approaches ONLY if they explicitly compute or reliably approximate per-class area shares, with the accuracy/tolerance standard declared in advance (conditional; not an unconditional equivalent)"
+   ],
+   "failure_conditions": [
+    "Overlaps resolved without severity precedence",
+    "Dominant class chosen wrongly (not largest area)",
+    "Missing table fields (code/name/area)",
+    "Municipal boundaries not intersected",
+    "NOTE: class flips caused solely by raster resolution/boundary discretization are resolution artifacts — judged separately from semantic errors"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "R7-1: raster majority-vote removed as an unconditional equivalent; conditional with pre-declared area-accuracy standard; resolution artifacts separated from semantic errors",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'more severe classes take precedence (hierarchical exclusivity)' — verified as original-text requirement; 'drought class covering the largest area within it' — area semantics, not pixel votes"
+  },
+  {
+   "task_id": "W007046",
+   "task_text": "From a vector layer, select the features whose string attribute matches a given case-insensitive pattern. Report (a) the total number of input features and (b) the number of matching features, and produce (c) the centroid of the matching features' merged geometry as a single point. Output: the matching features carrying both counts, and one centroid point feature carrying the same counts.",
+   "task_sha256": "e870cc9584cfd057",
+   "required_outcome": "Matching features carrying both counts + ONE centroid point feature carrying the same counts.",
+   "required_constraints": [
+    "Case-insensitive pattern match on a string attribute",
+    "Count (a)=total input features, (b)=matching features",
+    "Point (c) = centroid of matching features' MERGED geometry"
+   ],
+   "required_capabilities": [
+    "Attribute pattern selection",
+    "Counting",
+    "Merged-geometry centroid computation"
+   ],
+   "acceptable_alternatives": [
+    "collect→centroids",
+    "Aggregate statistics + single-point construction",
+    "ANY construction acceptable as long as the result IS the single centroid of the merged matched-geometry set"
+   ],
+   "failure_conditions": [
+    "Match case-sensitive or wrong field",
+    "Counts wrong or attached to wrong layer",
+    "Centroid computed per-feature or on the unmatched set",
+    "Multiple centroid points emitted"
+   ],
+   "underdetermined_aspects": [
+    "Empty match set: task text does not define centroid/count-point behaviour — recorded as an undefined edge case; do not default to requiring a centroid"
+   ],
+   "revision_note": "R7: construction freedom affirmed (result-semantic gating); empty-match edge case declared undefined",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'the centroid of the matching features' merged geometry as a single point'"
+  },
+  {
+   "task_id": "W033927",
+   "task_text": "Map seafloor substrate units from ROV navigation tracks and annotations: for each annotated location, represent the area of seafloor visible to the camera as a substrate-classified polygon oriented along the track, then combine overlapping areas so each final unit carries a single substrate class. Output: a polygon layer of substrate mapping units with standardized styling.",
+   "task_sha256": "34b1d5490f95ad18",
+   "required_outcome": "Polygon layer of seafloor substrate mapping units, each carrying a single substrate class, with standardized styling.",
+   "required_constraints": [
+    "Inputs: ROV navigation tracks + annotations",
+    "Each annotated location's camera-visible area represented as substrate-classified polygon",
+    "Overlapping areas combined so each final unit has one class",
+    "Styled output"
+   ],
+   "required_capabilities": [
+    "Viewshed-like polygon construction consistent with camera coverage and track orientation",
+    "Class-wise merging of overlapping units"
+   ],
+   "acceptable_alternatives": [
+    "Wedge buffers oriented along track (matches original visibility semantics)",
+    "Other geometry constructions ONLY if they respect the task's camera-coverage and track-orientation definition",
+    "Sector/limited-rectangle approximations are directly equivalent ONLY if the original task explicitly endorses them (no such endorsement found → conditional, default NOT equivalent)",
+    "Dissolve-by-class after union vs merge-then-assign"
+   ],
+   "failure_conditions": [
+    "Final units carry mixed substrate classes",
+    "Annotation class ignored",
+    "Unit geometry unrelated to track/visibility semantics",
+    "Unstyled/unordered output"
+   ],
+   "underdetermined_aspects": [
+    "Priority rule among overlapping DIFFERENT substrate classes is NOT defined by the task text — recorded UNDERDETERMINED; adjudication must not invent a priority (class-conflict outcomes are case-by-case, not automatic failures)"
+   ],
+   "revision_note": "R7-2: geometry-approximation admission conditions stated; cross-class overlap priority declared UNDERDETERMINED (task text defines none; none invented)",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'represent the area of seafloor visible to the camera as a substrate-classified polygon oriented along the track, then combine overlapping areas so each final unit carries a single substrate class'"
+  },
+  {
+   "task_id": "W055494",
+   "task_text": "Merge small forest-stand polygons into adjacent, similar, larger stands. A small stand is eligible only when it touches a larger neighbour, the relative difference in dominant height stays within the given threshold, and the neighbour is of a qualifying type ('classified'). Each merged group must retain the attributes of its largest stand, and each output feature must state whether it was merged (merged = 1) or not (merged = 0). Output: a merged polygon layer.",
+   "task_sha256": "84ebdfdf5c7a8836",
+   "required_outcome": "A merged polygon layer; each feature flagged merged=1/0; merged groups retain the largest stand's attributes.",
+   "required_constraints": [
+    "Eligibility: touches a larger neighbour AND relative dominant-height difference within threshold AND neighbour type 'classified'",
+    "Every merge must satisfy the listed eligibility criteria",
+    "Attribute retention rule (largest stand per group)",
+    "Per-feature merged flag with defined semantics"
+   ],
+   "required_capabilities": [
+    "Adjacency/touch detection",
+    "Threshold-based candidate filtering",
+    "Group-wise merge with attribute inheritance"
+   ],
+   "acceptable_alternatives": [
+    "Aggregate/dissolve after spatial-join screening",
+    "Pairwise merge iteration",
+    "Expression-based eligibility then dissolve by target id",
+    "ANY merge order/grouping in which every merge satisfies the eligibility criteria and the attribute rule — multiple valid final groupings are acceptable"
+   ],
+   "failure_conditions": [
+    "A merge violating any eligibility criterion",
+    "Attributes inherited from a smaller stand",
+    "Flag missing or semantics inverted",
+    "Neighbour type constraint ignored",
+    "NOTE: different valid merge orders yielding different (each valid) groupings are NOT failures"
+   ],
+   "underdetermined_aspects": [
+    "Exact 'relative difference' formula and tie-breaking among multiple qualifying neighbours are not fixed by the task text (threshold is data-given; formula delegates to data semantics) — multiple valid outcomes acceptable"
+   ],
+   "revision_note": "R7: no formula/iteration-order/unique-path prescriptions; relative-difference formula and merge-order ties declared multiple-valid/underdetermined",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: three eligibility criteria verbatim; 'each output feature must state whether it was merged (merged = 1) or not (merged = 0)'"
+  },
+  {
+   "task_id": "W055534",
+   "task_text": "Compute per-country mean values of several raster indicators using country boundaries as zones: land quality (one epoch) and population density for the years 1500, 1990, and 2000. Retain the country name and ISO code fields, attach one distinctly prefixed set of statistics per indicator epoch, and export the final attribute table as CSV. Output: a countries layer carrying all statistics, plus the exported CSV file.",
+   "task_sha256": "7492cf7d07ada727",
+   "required_outcome": "Countries layer carrying all statistics + exported CSV of the final attribute table.",
+   "required_constraints": [
+    "Zones = country boundaries",
+    "Indicators: land quality (single epoch) + population density (1500, 1990, 2000)",
+    "Retain country name and ISO fields",
+    "Distinct prefix per indicator epoch",
+    "CSV export"
+   ],
+   "required_capabilities": [
+    "Multi-raster zonal-statistics orchestration",
+    "Field retention management",
+    "Table export"
+   ],
+   "acceptable_alternatives": [
+    "Per-raster zonal stats then field merge",
+    "Multi-band batch statistics",
+    "Per-year loops then combined export"
+   ],
+   "failure_conditions": [
+    "Years attached to land quality or dropped from population density",
+    "Name/ISO fields dropped",
+    "Prefixes colliding/ambiguous",
+    "CSV missing or schema inconsistent with layer"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "approved as-is (owner)",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'land quality (one epoch) and population density for the years 1500, 1990, and 2000'; 'distinctly prefixed set of statistics per indicator epoch'; 'export the final attribute table as CSV'"
+  },
+  {
+   "task_id": "W055908",
+   "task_text": "Draw a representative sample of points from an input point layer based on the values of a numeric attribute. The sampling must support both a simple random mode and a stratified mode, in which the numeric field is first divided into classes (e.g., by quantiles or equal intervals) and points are sampled within each class. Output: a new point layer containing the sampled features with X and Y coordinate fields added.",
+   "task_sha256": "fc01518d62a94740",
+   "required_outcome": "A new point layer with the sampled features, carrying X and Y coordinate fields.",
+   "required_constraints": [
+    "Support simple random mode AND stratified mode",
+    "Strata derived from a numeric attribute (method flexible, e.g., quantiles/equal intervals)",
+    "Sampling occurs within each stratum",
+    "Output = subset of input points + X/Y coordinate fields"
+   ],
+   "required_capabilities": [
+    "Numeric-field classification",
+    "Within-class random selection",
+    "Coordinate field generation"
+   ],
+   "acceptable_alternatives": [
+    "Classification operator + per-class random selection",
+    "Dedicated stratified-sampling tool",
+    "Quantile/equal-interval boundary computation then filtered selection"
+   ],
+   "failure_conditions": [
+    "Only simple random sampling implemented (stratified mode unsupported)",
+    "Classes ignored (sampling across strata rather than within)",
+    "X/Y fields absent",
+    "Sample not a subset of input points",
+    "NOTE: sample size, ratio, per-stratum quotas, and 'representativeness' are UNDEFINED by the task text — they are NOT failure conditions and no threshold may be improvised"
+   ],
+   "underdetermined_aspects": [
+    "Sampling quantity/proportion/stratum quotas/random seed: unspecified in task text — unjudgeable by design"
+   ],
+   "revision_note": "R7-3: failure conditions restricted to task-supported judgments; sample size/ratio/quotas declared undefined — representativeness never a failure",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'must support both a simple random mode and a stratified mode, in which the numeric field is first divided into classes (e.g., by quantiles or equal intervals)'"
+  },
+  {
+   "task_id": "W055913",
+   "task_text": "Combine two polygon zoning layers (e.g., management zones and soil zones) into a single layer of non-overlapping atomic zones, where each output polygon represents a unique combination of the two zonings. The output must consist of valid single-part polygons, each uniquely identified. Output: one polygon layer with a unique zone ID and geometry attributes (area, perimeter) per zone.",
+   "task_sha256": "09bb03ffce027a6a",
+   "required_outcome": "One polygon layer of non-overlapping atomic zones (unique combination of the two zonings), single-part, uniquely identified, with area/perimeter.",
+   "required_constraints": [
+    "Each output polygon = unique combination of the two zonings",
+    "Valid single-part polygons",
+    "Unique zone ID",
+    "Geometry attributes (area, perimeter)"
+   ],
+   "required_capabilities": [
+    "Two-layer overlay algebra",
+    "Multipart resolution",
+    "Unique ID generation",
+    "Atomic-completeness awareness (all combinations present, none duplicated)"
+   ],
+   "acceptable_alternatives": [
+    "Union operator route",
+    "(Intersection + two differences) acceptable ONLY with a completeness verification that all atomic combinations are present with correct attributes (conditional)",
+    "REMOVED: 'intersect then symmetrical-difference cleanup' as an unconditional equivalent — it does not generally guarantee atomic completeness"
+   ],
+   "failure_conditions": [
+    "Zones not atomic (overlaps remain or combinations duplicated/missing)",
+    "Multiparts unresolved",
+    "IDs not unique",
+    "Area/perimeter missing"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "R7-4: Intersect+SymDiff-cleanup route removed as unconditional equivalent; intersection+differences route made completeness-verification-conditional",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'each output polygon represents a unique combination of the two zonings'; 'must consist of valid single-part polygons, each uniquely identified'"
+  },
+  {
+   "task_id": "W056058",
+   "task_text": "For a water-network vector layer restricted to a study area, produce results organized by the network's three hierarchical levels (Principal, Secundaria, Terciaria) according to the level attribute: one layer per level and a buffer zone around each level with its own specified radius (each level has a distinct radius). Output: the study-area network, one filtered layer per level, and one buffer layer per level.",
+   "task_sha256": "bd5db7d418215711",
+   "required_outcome": "Study-area network + one filtered layer per level + one buffer layer per level.",
+   "required_constraints": [
+    "Restrict to study area",
+    "Three levels (Principal, Secundaria, Terciaria) per level attribute",
+    "Each level buffered at its own distinct radius"
+   ],
+   "required_capabilities": [
+    "Attribute-based level separation",
+    "Differentiated buffer parameters per group",
+    "Multi-output organization"
+   ],
+   "acceptable_alternatives": [
+    "Clip→filter→buffer or filter→buffer→clip (order-free)",
+    "Expression filters + three buffer runs",
+    "Level loop with parameter table"
+   ],
+   "failure_conditions": [
+    "Level misclassification (wrong attribute mapping)",
+    "Radius assigned to wrong level",
+    "A level's layer/buffer missing",
+    "Results exceed study area"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "approved as-is (owner)",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'three hierarchical levels (Principal, Secundaria, Terciaria) according to the level attribute'; 'each level has a distinct radius'; 'Output: the study-area network, one filtered layer per level, and one buffer layer per level'"
+  },
+  {
+   "task_id": "W056274",
+   "task_text": "For each paddock polygon, produce a distance raster giving, for every location inside the paddock, the distance to the nearest water point located within that same paddock, in map units of the working CRS. Paddocks containing at least one water point each yield their own georeferenced distance raster named after the paddock; the set of per-paddock rasters is the final output — no additional summary statistic is required.",
+   "task_sha256": "7ddab55b1fea782f",
+   "required_outcome": "One georeferenced distance raster per paddock (named after the paddock): for every location inside the paddock, distance to the nearest water point located within that same paddock.",
+   "required_constraints": [
+    "Water points restricted to the SAME paddock (verified task semantics) — NOT bypassable",
+    "Distances in map units of the working CRS",
+    "Results spatially limited to the corresponding paddock extent",
+    "Only paddocks containing ≥1 water point produce output (task_text-defined)",
+    "The per-paddock raster set is the final output — no extra summary statistic"
+   ],
+   "required_capabilities": [
+    "Group-wise processing per polygon",
+    "Distance-field computation (rasterize→proximity OR vector distance field then rasterized — rasterization and clipping are common capabilities, NOT mandated steps)"
+   ],
+   "acceptable_alternatives": [
+    "Rasterize points→proximity→clip by paddock",
+    "Vector nearest-point distance field then rasterize",
+    "Any route honouring the distance semantics, per-paddock scoping, naming, and output-organization constraints"
+   ],
+   "failure_conditions": [
+    "Distance computed to GLOBAL nearest water point (violates inside-paddock semantics)",
+    "Units not map units / CRS inconsistent",
+    "Empty paddocks silently included or naming lost",
+    "Unrequested aggregation (max extraction etc.) presented as the deliverable",
+    "NOTE: different-but-reasonable resolution choices are NOT errors"
+   ],
+   "underdetermined_aspects": [
+    "Raster resolution, cell origin, and reference grid are unspecified by the task text — pixel-level comparison requires a separately declared alignment/tolerance rule (not improvised at scoring time)"
+   ],
+   "revision_note": "R7-5: unspecified grid parameters (resolution/origin/reference grid) declared NOT hard scoring conditions; pixel-level comparison deferred to a separately declared alignment/tolerance rule; rasterize/clip demoted from mandated steps to common capabilities",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'distance to the nearest water point located within that same paddock, in map units of the working CRS'; original task_text defines output set 'one per paddock containing at least one water point'"
+  },
+  {
+   "task_id": "W066995",
+   "task_text": "Assemble a natural-resource dataset for a specified property: obtain the relevant natural-resource features from the government feature service for the given lot/plan boundaries or extent, so that the final dataset covers exactly the target property area. Output: a single styled GeoPackage layer containing the property's natural-resource data.",
+   "task_sha256": "99edb6c1f7ff98d1",
+   "required_outcome": "A single styled GeoPackage layer covering exactly the target property area with the property's natural-resource features.",
+   "required_constraints": [
+    "Source: government feature service",
+    "Selection by lot/plan boundaries or given extent",
+    "Final DATA coverage restricted to the target property extent (interpretive note: features need not spatially fill the parcel — the dataset must be confined to it)",
+    "Single merged layer; GeoPackage; styled"
+   ],
+   "required_capabilities": [
+    "Service query/download",
+    "Spatial restriction to property/extent",
+    "Combining multi-part retrieval"
+   ],
+   "acceptable_alternatives": [
+    "Download all then clip",
+    "Server-side spatial filter",
+    "Batch download + merge + clip",
+    "Extent-from-boundary construction then service query"
+   ],
+   "failure_conditions": [
+    "Data extends beyond the property extent or falls short of the selected lot/plan scope",
+    "Multiple unmerged outputs",
+    "Wrong format / unstyled layer",
+    "Features unrelated to the property included"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "R7: interpretive note — 'covers exactly' constrains the DATA extent to the property, not spatial filling of the parcel",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'so that the final dataset covers exactly the target property area' — read as a data-extent restriction (owner interpretive ruling), not a tessellation requirement"
+  },
+  {
+   "task_id": "W067092",
+   "task_text": "For each polygon in an input layer, compute the area-weighted average of a numeric attribute from an overlay polygon layer, ensuring duplicated overlay geometry is not counted twice. Output: the input features with the area-weighted average attached, plus a report layer with per-feature details; a CRS check is expected for geographic or mismatched layers.",
+   "task_sha256": "b64e89d92b2cf9d2",
+   "required_outcome": "Input features with area-weighted average attached + a report layer with per-feature details.",
+   "required_constraints": [
+    "Weighting strictly by overlay fragment area",
+    "Duplicated overlay geometry (same geometry re-appearing) not counted twice; genuine overlaps between distinct overlay areas remain in the calculation",
+    "CRS check expected for geographic/mismatched layers"
+   ],
+   "required_capabilities": [
+    "Overlay decomposition into fragments",
+    "Area weighting and per-input aggregation",
+    "Numeric consistency (weights sum to overlay area)"
+   ],
+   "acceptable_alternatives": [
+    "Intersect→weight→aggregate-by-input",
+    "Area-join after dedup",
+    "Per-feature overlay iteration"
+   ],
+   "failure_conditions": [
+    "Unweighted average used",
+    "Duplicate overlay counted twice",
+    "Aggregation keyed wrongly (not per input feature)",
+    "Report layer missing",
+    "NOTE: identical geometry carrying CONFLICTING numeric attribute values must NOT be resolved by implicit value choice — flagged case-by-case"
+   ],
+   "underdetermined_aspects": [
+    "Duplicate geometry with conflicting attribute values: weighted-average semantics become non-unique — recorded as adjudication cases, not auto-failures and not auto-merges"
+   ],
+   "revision_note": "R7: duplicate-vs-overlap scope refined; conflicting-attribute duplicates declared adjudication cases (no implicit value choice)",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'area-weighted average … ensuring duplicated overlay geometry is not counted twice'; 'a report layer with per-feature details'"
+  },
+  {
+   "task_id": "W067268",
+   "task_text": "Estimate noise levels (dBA) at receptor locations around a point noise source according to the BS 5228 standard, accounting for terrain between source and receptors, distance attenuation, ground type, and barriers. Input: a point source, receptor polygons, and a DEM; layers must be handled in a projected CRS. Output: a noise-level value per receptor and a styled source-point layer.",
+   "task_sha256": "ec967f7e2a719e85",
+   "required_outcome": "A noise-level value (dBA) per receptor location + a styled source-point layer.",
+   "required_constraints": [
+    "BS 5228 as the governing standard (hard semantic constraint)",
+    "Account for terrain (DEM), distance attenuation, ground type, and barriers",
+    "Inputs: point source, receptor polygons, DEM",
+    "Handle in projected CRS"
+   ],
+   "required_capabilities": [
+    "Source–receptor geometric relationship (distance/visibility)",
+    "Multi-factor attenuation combination",
+    "Attaching results to receptors"
+   ],
+   "acceptable_alternatives": [
+    "Any implementation is acceptable ONLY if its resulting per-receptor noise estimates follow the applicable BS 5228 calculation requirements and account for terrain, distance attenuation, ground type, and barriers.",
+    "A generic viewshed analysis or arbitrary attenuation surface is NOT automatically compliant — route names never substitute for the standard's semantics"
+   ],
+   "failure_conditions": [
+    "Terrain/barrier/ground-type factor ignored",
+    "No per-receptor noise value produced",
+    "CRS mishandled (geographic units)",
+    "Source-point layer missing",
+    "Standard invoked by name while the plan's computation contradicts its requirements"
+   ],
+   "underdetermined_aspects": [
+    "Scoring boundary: from WORKFLOW STRUCTURE alone one can judge presence of source–receptor relationship, terrain factor, attenuation factors, and barrier handling; NUMERICAL BS 5228 compliance of computed values is NOT judgeable from structure alone (this PCA evaluates workflow plans, not executed numerics) — declared partial-scoring boundary"
+   ],
+   "revision_note": "R7-6: BS 5228 semantic compliance is the hard constraint, not route names; structural vs domain-semantic scoring boundary declared",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task text (all five elements traced to original task sentences; see final_status §6 check#2)"
+  },
+  {
+   "task_id": "W067404",
+   "task_text": "For each species-occurrence point, summarise a continuous environmental raster within a circular neighbourhood of a user-specified radius: compute the requested statistics of the raster inside each neighbourhood and attach them to the original point locations. Output: the occurrence points enriched with the neighbourhood statistics.",
+   "task_sha256": "6fb8d38cae07c912",
+   "required_outcome": "Species-occurrence points enriched with neighbourhood statistics of the environmental raster.",
+   "required_constraints": [
+    "Circular neighbourhood with user-specified radius",
+    "Statistics computed inside each neighbourhood",
+    "Statistics attached to the ORIGINAL point locations"
+   ],
+   "required_capabilities": [
+    "Neighbourhood definition around points",
+    "Zonal/raster statistics",
+    "Attribute attachment back to points"
+   ],
+   "acceptable_alternatives": [
+    "Buffer→zonal statistics→centroid re-attachment",
+    "Per-point raster window statistics",
+    "Sample raster via proximity field with radius mask"
+   ],
+   "failure_conditions": [
+    "Statistics computed without the radius neighbourhood",
+    "Results not re-attached to point locations",
+    "Points displaced (e.g., centroids kept instead of originals)",
+    "Statistic types plainly contrary to the original enumeration (see evidence)"
+   ],
+   "underdetermined_aspects": [
+    "Exact statistic set: frozen text says 'the requested statistics' without listing them; the ORIGINAL task enumerates 'all available zonal statistics (e.g., count, sum, mean, median, standard deviation, minimum, maximum, range, minority, majority, variety, variance)' — absence of the full enumeration is NOT a hard failure; statistic-set completeness is PARTIALLY judgeable against the enumeration"
+   ],
+   "revision_note": "R7: statistic-set judgeability clarified — original enumeration cited as evidence; full-enumeration absence is NOT a hard failure against the frozen text",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "frozen task: 'circular neighbourhood of a user-specified radius: compute the requested statistics … attach them to the original point locations'; original task_text (parameter reference): 'all available zonal statistics (e.g., count, sum, mean, median, …)'"
+  },
+  {
+   "task_id": "W068342",
+   "task_text": "Select valid canopy-photo locations from a set of candidate points, an optimized flight grid, and an area plot polygon. The selected locations must satisfy the specified spatial safety constraints and use the required projected coordinate reference system. Output: a 'Safe Points' layer of locations valid for canopy photo capture.",
+   "task_sha256": "63e6b022b9351afc",
+   "required_outcome": "A 'Safe Points' layer: candidate drone-photo locations that satisfy the stated spatial safety constraints relative to the flight grid and the area plot polygon.",
+   "required_constraints": [
+    "Use the required projected CRS",
+    "Inputs: candidate points, optimized grid, area plot polygon",
+    "Output = Safe Points layer",
+    "Screening must implement a spatial safety relation to BOTH grid and plot (structure-level)"
+   ],
+   "required_capabilities": [
+    "CRS handling",
+    "Spatial containment/proximity screening of points against two reference layers"
+   ],
+   "acceptable_alternatives": [
+    "Negative buffer on grid then point-in-polygon selection",
+    "Distance-threshold filtering to grid/plot",
+    "Spatial join then attribute filter — threshold values follow the task's unspecified specification"
+   ],
+   "failure_conditions": [
+    "Points with no demonstrated safety relation to grid/plot retained (structure-level judgment)",
+    "CRS not handled (mixed/mis-projected)",
+    "Grid or plot constraint ignored entirely",
+    "One reference layer never used"
+   ],
+   "underdetermined_aspects": [
+    "Exact clearance/threshold values: the frozen text says 'the specified spatial safety constraints' without stating them; threshold-level correctness is NOT judgeable and NOT a failure condition; per-owner rule the values are NOT imported from the original chain"
+   ],
+   "revision_note": "R7: safety-constraint thresholds declared UNDERDETERMINED (referenced but not stated in frozen text; not recoverable from task text alone, not imported from chain)",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'must satisfy the specified spatial safety constraints and use the required projected coordinate reference system'"
+  },
+  {
+   "task_id": "W068582",
+   "task_text": "Within a user-defined area of interest, assign a Manning roughness coefficient to CORINE 2018 land-cover polygons, using the provided CODE_18→n lookup table, and compute each polygon's area in square metres and hectares. All outputs must be in a common CRS. Output: the AOI land-cover polygons with Manning and area attributes, loaded for visualization.",
+   "task_sha256": "4c41ab7a8511c6a6",
+   "required_outcome": "AOI land-cover polygons carrying Manning's n and area in m² and hectares.",
+   "required_constraints": [
+    "Lookup strictly via provided CODE_18→n table",
+    "Area in both m² and ha",
+    "All outputs in a common CRS",
+    "Result loaded for visualization"
+   ],
+   "required_capabilities": [
+    "AOI subsetting semantics",
+    "Attribute lookup/join from mapping table",
+    "Area computation with units"
+   ],
+   "acceptable_alternatives": [
+    "Clip then attribute join",
+    "Join then clip",
+    "Field mapping via expression vs table join",
+    "Reproject-then-clip vs clip-in-source-CRS-then-reproject"
+   ],
+   "failure_conditions": [
+    "Features outside AOI remain",
+    "Manning missing or mis-mapped from CODE_18",
+    "Area absent or wrong units",
+    "Outputs in mixed CRS"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "approved as-is (owner)",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'using the provided CODE_18→n lookup table, and compute each polygon's area in square metres and hectares. All outputs must be in a common CRS.'"
+  },
+  {
+   "task_id": "W068833",
+   "task_text": "Align multiple input rasters to a common grid — identical CRS, extent, and pixel size — so they can be stacked for a multi-criteria suitability analysis. Alignment must honour a reference (snap) grid where provided. Output: a set of aligned rasters with identical grid structure, plus a manifest summarizing the alignment parameters used.",
+   "task_sha256": "a0713a6db8b6a85e",
+   "required_outcome": "A set of aligned rasters with identical grid structure + a manifest summarizing alignment parameters.",
+   "required_constraints": [
+    "Identical CRS, extent, pixel size across outputs",
+    "Honour reference (snap) grid where provided",
+    "Manifest of alignment parameters included"
+   ],
+   "required_capabilities": [
+    "Multi-raster reprojection/resampling orchestration",
+    "Grid consistency verification"
+   ],
+   "acceptable_alternatives": [
+    "Warp each raster to reference grid",
+    "Align to first raster then verify",
+    "Translate+resample combinations"
+   ],
+   "failure_conditions": [
+    "Grid parameters differ across outputs",
+    "Snap grid ignored when provided",
+    "Manifest absent",
+    "Holes inconsistent with input coverage and the chosen resampling rule ('spurious'); legitimate NoData regions resulting from valid resampling are NOT failures"
+   ],
+   "underdetermined_aspects": [],
+   "revision_note": "R7: 'spurious' holes defined precisely; legitimate NoData never a failure",
+   "gold_chain_audit": "PENDING-STAGE-2 (chain-consistency audit; gold authored independently of chains)",
+   "evidence": "task: 'identical CRS, extent, and pixel size'; 'honour a reference (snap) grid where provided'; 'a manifest summarizing the alignment parameters used' (original-text manifest)"
+  }
+ ]
+}
