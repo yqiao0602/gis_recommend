@@ -2,6 +2,34 @@
 
 Last updated: 2026-10-13
 
+## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)
+
+- **Owner ruling after E2E A+B double-branch trigger**: freeze the models and
+  run an independent planning-capability audit first — **no retraining, no
+  21-family changes, no Stage 2**. Purpose is to establish what the evidence
+  can support, not to prove Stage 1 right or wrong.
+- **Design**: 60 tasks (A GEE held-out / B QGIS operator-free / C complex,
+  x20) x 3 arms (base / stage1 / stage1+tool) + B′ standing diagnostic
+  (6 tasks; mechanical expansion if B-arm content_assessable_rate < 0.70).
+  Format health (format_valid/content_assessable/hit_cap/termination_status)
+  reported separately from plan quality; transfer readout = paired-task delta
+  + task_type stratification + in/out-domain decomposition (raw A-vs-B/C mean
+  gap is NOT a transfer effect); C-arm conclusions limited to "tool
+  information effect on plan quality"; human-review stats preregistered
+  (quadratic weighted κ, seed 20261013).
+- **Authority**: `plan_pipeline_v1/planning_capability_audit_v1/
+  PCA_PROTOCOL_V1_FROZEN.md` (owner 5 revisions + 7 OQ rulings; v0 retained
+  as history) + `PCA_PHASE1_WORKNOTES_v1.md`. Commit d3623e6c.
+- **State**: B-group screening DONE (20 primary + 10 reserve; frozen rules,
+  seed 20261013, zero reference to any prediction file). A-group isolation
+  can reach `source_record_verified` (b1_gee_stage source_row_id + the
+  actually-consumed planner_v2_train text pool on mdzhang; note
+  blueprint_v2_gold_v3 has NO local mirror and the F-drive migration package
+  is absent — fallback = text_dedup_only disclosure per §2.3). Next: B gold
+  back-projection -> A construction -> C drafting -> pairing -> dedup
+  ledger -> owner per-task review. **No formal 180-generation until the
+  owner approves the gold.**
+
 ## (0) Planner representation-pivot line: P1/P2 closed; P0 = current best (2026-10-13)
 
 - **Current best model on the frozen planner benchmark: P0 fmt checkpoint**
@@ -25,6 +53,8 @@ Last updated: 2026-10-13
   (literal k>=3 repetition in old gold treated as declaration) / (B) accept
   P0, close representation pivot, move to Phase-2 ablations or downstream
   grounding / (C) await parallel-line budget-arm (768 vs 2048) results.
+  **RESOLVED 2026-10-13: owner ruled PCA (section 0a above) — the audit
+  precedes any further training or grounding work.**
 - **Eval instrument note**: dev-1852 evals now use the batched three-arm
   script (bs=8 left-padding, symmetric across arms; aggregate drift vs bs=1
   <=0.3pp; EOS termination absent in ALL arms - p50=384 tokens burned, JSON-

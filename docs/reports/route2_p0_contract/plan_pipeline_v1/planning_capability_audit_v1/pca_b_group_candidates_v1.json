@@ -1,0 +1,589 @@
+{
+ "_meta": {
+  "protocol": "PCA_PROTOCOL_V1_FROZEN §2.1/§2.4",
+  "seed": 20261013,
+  "n_source": 120,
+  "n_pass_opid_scan": 112,
+  "n_rejected_opid": 8,
+  "n_primary": 20,
+  "n_reserve": 10,
+  "screening_precedes_prediction_review": true,
+  "lexicon_frozen": [
+   "buffer",
+   "clip",
+   "merge",
+   "dissolve",
+   "intersect",
+   "union",
+   "difference",
+   "reproject",
+   "reprojected",
+   "slope",
+   "aspect",
+   "hillshade",
+   "contour",
+   "classify",
+   "reclassify",
+   "resample",
+   "mosaic",
+   "zonal statistics",
+   "raster calculator",
+   "interpolate",
+   "simplify",
+   "smooth",
+   "spatial join",
+   "extract by",
+   "select by location",
+   "select by expression",
+   "polygonize",
+   "proximity",
+   "grid",
+   "warp",
+   "near(",
+   "vignette",
+   "pan-sharpen",
+   "triangulation",
+   "idw",
+   "kriging"
+  ],
+  "note": "lexicon_flags are advisory for owner review, not rejections"
+ },
+ "primary": [
+  {
+   "wid": "W055908",
+   "taskType": "Agricultural plant science",
+   "chain_len": 5,
+   "len_band": "medium_4_6",
+   "op_id_hits": [],
+   "lexicon_flags": [],
+   "pass_opid_scan": true,
+   "task_head": "Sample vector points by attribute. The script performs point sampling on a user-provided vector layer (points) using either random or stratified sampling. For s",
+   "source_sha256": "c3b5e0b3d9a60462"
+  },
+  {
+   "wid": "W005784",
+   "taskType": "Atmospheric winds",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [],
+   "pass_opid_scan": true,
+   "task_head": "Calculate urban wind field. The script calculates 3D spatial variations of wind speed and direction in an urban context using 2.5D building and vegetation vecto",
+   "source_sha256": "78ded6bea178f10f"
+  },
+  {
+   "wid": "W000473",
+   "taskType": "Boundaries",
+   "chain_len": 3,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "difference",
+    "mosaic"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Compute symmetrical difference of two polygon layers. The script computes the symmetrical difference (XOR) between two vector layers representing an exterior ex",
+   "source_sha256": "f0c8b6406ec86b72"
+  },
+  {
+   "wid": "W066995",
+   "taskType": "Environmental governance/management",
+   "chain_len": 4,
+   "len_band": "medium_4_6",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "buffer",
+    "clip",
+    "merge"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Collect Queensland Natural Resource Data. The script collects natural resource data from the Queensland government feature server by querying objects based on l",
+   "source_sha256": "17436e6efcc74b11"
+  },
+  {
+   "wid": "W067268",
+   "taskType": "Environmental impacts",
+   "chain_len": 28,
+   "len_band": "long_7p",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "grid",
+    "reproject",
+    "zonal statistics"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Noise level prediction from point source. This script estimates noise levels (dBA) from a point source at receptor locations using the BS 5228 standard. It repr",
+   "source_sha256": "1cae193ccd86f30f"
+  },
+  {
+   "wid": "W000863",
+   "taskType": "Environmental impacts",
+   "chain_len": 3,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "proximity"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Model boat movement probability. The script models probabilistic boat movement across a directed canal network in Groningen, Netherlands. It computes initial di",
+   "source_sha256": "f944ae95d61af610"
+  },
+  {
+   "wid": "W055625",
+   "taskType": "Erosion/sedimentation",
+   "chain_len": 19,
+   "len_band": "long_7p",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "intersect"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Calculate riverbank continuity index (Indice F3). The script computes the Indice F3 for river morphological quality by evaluating longitudinal continuity of the",
+   "source_sha256": "f127ce5f2a50a5b6"
+  },
+  {
+   "wid": "W055494",
+   "taskType": "Forest science",
+   "chain_len": 13,
+   "len_band": "long_7p",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "difference",
+    "dissolve",
+    "intersect",
+    "merge"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Merge similar forest stands. The script merges small forest stand polygons with geometrically adjacent and spectrally/structurally similar (based on relative he",
+   "source_sha256": "c369d627814f3403"
+  },
+  {
+   "wid": "W068342",
+   "taskType": "Forest science",
+   "chain_len": 6,
+   "len_band": "medium_4_6",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "buffer",
+    "grid",
+    "intersect",
+    "reproject"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Clear Safe Canopy Points. The script filters a set of points created for drone flight planning by reprojecting them to EPSG:31981, applying a -10 m buffer to an",
+   "source_sha256": "cf8bd0b47e17b6c1"
+  },
+  {
+   "wid": "W068833",
+   "taskType": "Geodetics",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "grid",
+    "warp"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Harmonize rasters for suitability analysis. This QGIS processing algorithm aligns multiple input rasters to a common grid geometry (CRS, extent, pixel size) usi",
+   "source_sha256": "62fff5d66217a07a"
+  },
+  {
+   "wid": "W067034",
+   "taskType": "Habitat conversion/fragmentation",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [],
+   "pass_opid_scan": true,
+   "task_head": "Define land cover raster encoding. The script implements a dialog for the Graphab QGIS plugin to select a raster file (or vector layer), extract unique pixel va",
+   "source_sha256": "bc8d2fab53408175"
+  },
+  {
+   "wid": "W067092",
+   "taskType": "Land Use/Land Cover",
+   "chain_len": 13,
+   "len_band": "long_7p",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "intersect"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Calculate Area Weighted Average. The script calculates area-weighted average of a given numeric attribute from an overlay polygon layer for each feature in an i",
+   "source_sha256": "494c4ea016e0ac5c"
+  },
+  {
+   "wid": "W000084",
+   "taskType": "Land surface/agriculture indicators",
+   "chain_len": 4,
+   "len_band": "medium_4_6",
+   "op_id_hits": [],
+   "lexicon_flags": [],
+   "pass_opid_scan": true,
+   "task_head": "Download Copernicus Land Cover Product. The script downloads Copernicus Global Land products by selecting a product collection (e.g., 'CLMS', 'GLOBCOVER') and a",
+   "source_sha256": "381974331136f5c6"
+  },
+  {
+   "wid": "W007046",
+   "taskType": "Land use/land cover",
+   "chain_len": 9,
+   "len_band": "long_7p",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "union"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Extract features by attribute regex and compute centroid. The script selects vector features from an input layer based on a case-insensitive or custom regex pat",
+   "source_sha256": "4efe5b90f864f420"
+  },
+  {
+   "wid": "W068582",
+   "taskType": "Land use/land cover",
+   "chain_len": 3,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "clip",
+    "reproject"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Assign Manning's n from CORINE 2018. The script assigns Manning's roughness coefficient to CORINE 2018 land cover polygons within a user-defined area of interes",
+   "source_sha256": "ab6f73eea04c50d0"
+  },
+  {
+   "wid": "W000890",
+   "taskType": "Natural hazards",
+   "chain_len": 5,
+   "len_band": "medium_4_6",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "difference",
+    "intersect"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Map dominant drought class by municipality. The script processes a pre-existing drought monitoring vector layer ('dezembro25') for Paraíba state, Brazil, to res",
+   "source_sha256": "78a32fcc83d0cf5c"
+  },
+  {
+   "wid": "W033927",
+   "taskType": "Oceans",
+   "chain_len": 7,
+   "len_band": "long_7p",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "buffer",
+    "dissolve"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Map ROV seafloor substrate units. The script processes ROV navigation and annotation data to generate spatially explicit, substrate-classified wedge buffers rep",
+   "source_sha256": "89e85d6b3ccd52ad"
+  },
+  {
+   "wid": "W001034",
+   "taskType": "Package Layers to KMZ",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "reproject",
+    "warp"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Package layers to KMZ. The script packages multiple QGIS vector and raster layers into a single KMZ file. It reprojects layers to a user-specified or project CR",
+   "source_sha256": "718fabf72cb7def3"
+  },
+  {
+   "wid": "W067404",
+   "taskType": "Plants",
+   "chain_len": 3,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "buffer",
+    "zonal statistics"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Calculate continuous raster statistics for distribution points. The script generates zonal statistics for continuous environmental raster data at species occurr",
+   "source_sha256": "6f9e075361321b1f"
+  },
+  {
+   "wid": "W055534",
+   "taskType": "Population",
+   "chain_len": 3,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "zonal statistics"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Compute country-level population statistics. The script computes zonal statistics (mean values) for raster datasets—land quality, and population density for yea",
+   "source_sha256": "c40d3b677de9d271"
+  }
+ ],
+ "reserve": [
+  {
+   "wid": "W002004",
+   "taskType": "Infrastructure",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [],
+   "pass_opid_scan": true,
+   "task_head": "Export infrastructure polygon layer. The script exports a user-provided vector polygon layer (intended for 3D polygons representing civil engineering structures",
+   "source_sha256": "cb066e2f7de222bc"
+  },
+  {
+   "wid": "W055689",
+   "taskType": "Infrastructure",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [],
+   "pass_opid_scan": true,
+   "task_head": "Export Oil and Gas Associated Elements. The script exports a point or polygon vector layer to a PostgreSQL/PostGIS table 'elem_assoc_pgq' in a RECART database. ",
+   "source_sha256": "00432ee13065971c"
+  },
+  {
+   "wid": "W000674",
+   "taskType": "Topography",
+   "chain_len": 4,
+   "len_band": "medium_4_6",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "aspect",
+    "hillshade",
+    "reproject",
+    "slope"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Compute slope aspect hillshade. The script computes three terrain derivatives—slope (in degrees), aspect (in degrees), and hillshade—from a high-resolution USGS",
+   "source_sha256": "f78e2b26ff575af9"
+  },
+  {
+   "wid": "W055913",
+   "taskType": "Land use/land cover",
+   "chain_len": 6,
+   "len_band": "medium_4_6",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "intersect",
+    "merge",
+    "union"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Merge two agricultural zonings. The script merges two polygon vector layers representing agricultural zonings (e.g., management zones, soil zones, or yield zone",
+   "source_sha256": "82dcd967eeff23a9"
+  },
+  {
+   "wid": "W005684",
+   "taskType": "Topography",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [],
+   "pass_opid_scan": true,
+   "task_head": "Rasterize vector layers to topographic masks. The script generates binary (0/1) raster masks from user-selected vector layers, aligned to the spatial extent and",
+   "source_sha256": "283bebea78c4befa"
+  },
+  {
+   "wid": "W000635",
+   "taskType": "Geomorphic landforms/processes",
+   "chain_len": 11,
+   "len_band": "long_7p",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "buffer",
+    "simplify"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Extract polygon boundary edges. The script processes an input vector layer of polygons and generates a new polygon layer representing the 'edges' — i.e., a buff",
+   "source_sha256": "5c0b9abda373e186"
+  },
+  {
+   "wid": "W000060",
+   "taskType": "Topography",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "merge",
+    "reproject",
+    "reprojected",
+    "warp"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Download and merge DTM tiles. The script downloads Digital Terrain Model (DTM) raster tiles from the City of Vienna's MA41 data portal, uncompresses them, repro",
+   "source_sha256": "5400cec0ec87268e"
+  },
+  {
+   "wid": "W056058",
+   "taskType": "Surface water",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "buffer",
+    "classify",
+    "clip"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Classify and buffer water network levels. The script performs a clip operation on a user-provided vector layer using a clip layer, then classifies the clipped l",
+   "source_sha256": "a865136cde8b413e"
+  },
+  {
+   "wid": "W023206",
+   "taskType": "Topography",
+   "chain_len": 3,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "clip",
+    "grid",
+    "merge"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Generate topographic raster tiles. The script automates the creation of a regular grid over a merged digital elevation model (DEM), clips the DEM to each grid c",
+   "source_sha256": "b7cdb5bfd34ea09b"
+  },
+  {
+   "wid": "W001974",
+   "taskType": "Infrastructure",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [],
+   "lexicon_flags": [
+    "clip",
+    "reproject"
+   ],
+   "pass_opid_scan": true,
+   "task_head": "Export navigable waterway transport infrastructure area. The script exports polygon features representing 'Área da infraestrutura de transporte por via navegáve",
+   "source_sha256": "65d84db51376d891"
+  }
+ ],
+ "rejected_by_opid": [
+  {
+   "wid": "W000082",
+   "taskType": "Land surface",
+   "chain_len": 4,
+   "len_band": "medium_4_6",
+   "op_id_hits": [
+    "gdal:translate"
+   ],
+   "lexicon_flags": [],
+   "pass_opid_scan": false,
+   "task_head": "Download Copernicus Global Land product. The script downloads Copernicus Global Land products from the VITO land portal (https://land.copernicus.vgt.vito.be/man",
+   "source_sha256": "19875b96ac804fb8"
+  },
+  {
+   "wid": "W000302",
+   "taskType": "Land use/land cover",
+   "chain_len": 3,
+   "len_band": "short_2_3",
+   "op_id_hits": [
+    "gdal:cliprasterbymasklayer"
+   ],
+   "lexicon_flags": [
+    "clip"
+   ],
+   "pass_opid_scan": false,
+   "task_head": "Clip raster plan by polygon boundary. The script clips a provided raster layer (e.g., a digital XPlan raster map) to the exact geometry of an input polygon vect",
+   "source_sha256": "133fe03ce1553f04"
+  },
+  {
+   "wid": "W000993",
+   "taskType": "Surface mass",
+   "chain_len": 3,
+   "len_band": "short_2_3",
+   "op_id_hits": [
+    "gdal:cliprasterbymasklayer",
+    "qgis:idwinterpolation"
+   ],
+   "lexicon_flags": [
+    "clip",
+    "idw",
+    "interpolate"
+   ],
+   "pass_opid_scan": false,
+   "task_head": "Interpolate surface property values. The script performs Inverse Distance Weighting (IDW) interpolation on point vector features to generate a continuous raster",
+   "source_sha256": "1d53286a115caba6"
+  },
+  {
+   "wid": "W002419",
+   "taskType": "Water quality",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [
+    "native:zonalstatisticsfb"
+   ],
+   "lexicon_flags": [
+    "zonal statistics"
+   ],
+   "pass_opid_scan": false,
+   "task_head": "Aggregate irrigation water demand variables. The script calculates zonal statistics (e.g., mean, sum, min, max) of IdrAgra-simulated hydrological variables (e.g",
+   "source_sha256": "94aef9701266597b"
+  },
+  {
+   "wid": "W042190",
+   "taskType": "Land use/land cover",
+   "chain_len": 4,
+   "len_band": "medium_4_6",
+   "op_id_hits": [
+    "native:creategrid"
+   ],
+   "lexicon_flags": [
+    "buffer",
+    "clip",
+    "grid",
+    "reproject",
+    "reprojected"
+   ],
+   "pass_opid_scan": false,
+   "task_head": "Create parcel-based grid. The script generates a vector grid (hexagonal, rectangular, or diamond-shaped) aligned to a user-provided polygon layer ('Area Plot'),",
+   "source_sha256": "61fb718f1c7e4d9f"
+  },
+  {
+   "wid": "W050378",
+   "taskType": "Natural hazards",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [
+    "native:zonalstatisticsfb"
+   ],
+   "lexicon_flags": [
+    "zonal statistics"
+   ],
+   "pass_opid_scan": false,
+   "task_head": "Calculate vulnerability zonal statistics. The script computes a single specified zonal statistic (e.g., Mean, Sum, StDev) for an input raster layer over polygon",
+   "source_sha256": "6d9b8317d1ea5f09"
+  },
+  {
+   "wid": "W055585",
+   "taskType": "Biological classification",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [
+    "native:pixelstopolygons",
+    "native:reclassifybylayer"
+   ],
+   "lexicon_flags": [
+    "classify",
+    "reclassify"
+   ],
+   "pass_opid_scan": false,
+   "task_head": "Delimit Maxent model zones. The script reclassifies a Maxent-generated ASCII raster model into discrete ecological or suitability zones using a CSV-based classi",
+   "source_sha256": "ffe0db141078ae1c"
+  },
+  {
+   "wid": "W055702",
+   "taskType": "Surface water",
+   "chain_len": 2,
+   "len_band": "short_2_3",
+   "op_id_hits": [
+    "gdal:importvectorintopostgisdatabaseavailableconnections"
+   ],
+   "lexicon_flags": [],
+   "pass_opid_scan": false,
+   "task_head": "Export spring points to database. The script exports a point layer of springs to a PostgreSQL/PostGIS database table. It first refactors the input fields to add",
+   "source_sha256": "63b4619239fdc2d6"
+  }
+ ]
+}

@@ -1,8 +1,27 @@
 # 当前项目状态
 
-最后更新：2026-10-04（晚）
+最后更新：2026-10-13（PCA 快照对齐；10-05 → 10-12 的 Planner P1/P2 与 E2E 详细过程以
+`docs/CURRENT_STATE.md` 英文版为准）
 
-## Route-2 v2 当前交接
+## ⭐ 当前主线：Planning Capability Audit（PCA）— 协议 v1 已冻结，Phase 1 进行中（2026-10-13）
+
+- **owner 裁决（E2E A+B 双分支触发后）**：先冻结模型做独立规划能力验证——**不重训、不改
+  21-family、不进 Stage 2**。目标 = 确定现有证据能支持什么结论，不是证明 Stage 1 成败。
+- **设计**：60 任务（A 组 GEE held-out / B 组 QGIS 无算子 / C 组复杂组合，各 20）× 三臂
+  （base / stage1 / stage1+tool）+ B′ 诊断臂（常设 6 任务，content_assessable_rate<0.70
+  机械扩全）。格式健康（format_valid / content_assessable / hit_cap / termination_status）
+  与规划质量分开报告；迁移读数 = 配对任务差 + task_type 分层 + 域内外分解（A vs B/C 原始
+  均值差**不称迁移效应**）；C 臂结论限定"工具信息对计划质量的影响"；人工复核统计口径预注册
+  （quadratic weighted κ，seed 20261013）。
+- **权威文件**：`plan_pipeline_v1/planning_capability_audit_v1/PCA_PROTOCOL_V1_FROZEN.md`
+  （owner 五处修订+七项 OQ 裁定已落；v0 留档）+ `PCA_PHASE1_WORKNOTES_v1.md`。commit d3623e6c。
+- **状态**：B 组筛选完成（20 正选 + 10 备选；规则先于查看预测冻结，seed 20261013）。A 组
+  隔离可到 `source_record_verified` 级（b1_gee_stage 的 source_row_id + 服务器实际训练文本
+  池 planner_v2_train；注意 blueprint_v2_gold_v3 **无本地镜像**、F 盘迁移包不在本机——退路
+  = 按协议 §2.3 标 text_dedup_only 披露）。下一步：B 组金标反推 → A 组构建 → C 组起草 →
+  配对 → 去重账本 → owner 逐条审核。**金标获批前不运行正式 180 次生成。**
+
+## Route-2 v2 当前交接（历史状态，2026-10-04 快照；最新见上节与英文版）
 
 **R3 诊断链完整闭环，架构方向确立，Planner-v2 Hint Contract 已 FREEZE（2026-10-04）**。链条：R3-A/B/TRUNC/CD-2 逐层排除并定位 **Task（散文摘要）与 Plan（阶段序列）的表示鸿沟** → R3-CD-3 信息阶梯（组件信号全强：family AUC 0.913/转移 0.904）→ R3-CD-4（确定性组装 0.60 > Direct 0.499；LLM 系统性欠发射）→ **R3-PLANNER-P0 可行性成功**（Task→Blueprint JSON，parse 100%，bag-F1 0.645 vs Direct 0.499）→ P1-B（预算提升仅改善小计数区，深尾冻结）→ 长度分桶画像（**深尾=表示问题：长 workflow = ~4.4 distinct family 重复至 95%**）→ **Blueprint v2（Ordered + Repetition-aware，语义粒度，pre-RLE 游程蓝本，无损 100%）** → v2 preflight（E1-E4 全过；可学习性判别 PASS：语义 stage AUC 0.922 ≈ v1 0.915，repetition-presence 0.940 全场最强）→ **6 批人工 hint 验证完成（396 条，各维度规则校准冻结）** → **PLANNER-V2 HINT CONTRACT FREEZE v1**（`planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`）。
 
