@@ -1,0 +1,447 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_101218",
+  "source_sha256": "fa3fdba874f3a69c8c3e7a558b7880e9f290a460c2af36d9372e07e309fbc40a",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "BA",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_2016",
+      "kind": "declaration",
+      "def_line": 7,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_2017",
+      "kind": "declaration",
+      "def_line": 13,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_2018",
+      "kind": "declaration",
+      "def_line": 19,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "func_FiltroNube",
+      "kind": "declaration",
+      "def_line": 25,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "imagen",
+      "kind": "param",
+      "def_line": 25,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "bqa",
+      "kind": "declaration",
+      "def_line": 27,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mask",
+      "kind": "declaration",
+      "def_line": 29,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_16_filt",
+      "kind": "declaration",
+      "def_line": 35,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_17_filt",
+      "kind": "declaration",
+      "def_line": 37,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_18_filt",
+      "kind": "declaration",
+      "def_line": 39,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_2016_mediana",
+      "kind": "declaration",
+      "def_line": 41,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_2017_mediana",
+      "kind": "declaration",
+      "def_line": 43,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8_2018_mediana",
+      "kind": "declaration",
+      "def_line": 45,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "L8IC",
+      "kind": "declaration",
+      "def_line": 47,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [],
+  "R1_dataflow_edges": [
+    {
+      "from": "imagen",
+      "to": "bqa",
+      "via": "imagen.select",
+      "use_line": 27,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bqa",
+      "to": "mask",
+      "via": "bqa.eq",
+      "use_line": 29,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_2016",
+      "to": "L8_16_filt",
+      "via": "L8_2016.map",
+      "use_line": 35,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "func_FiltroNube",
+      "to": "L8_16_filt",
+      "via": "L8_2016.map",
+      "use_line": 35,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_2017",
+      "to": "L8_17_filt",
+      "via": "L8_2017.map",
+      "use_line": 37,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "func_FiltroNube",
+      "to": "L8_17_filt",
+      "via": "L8_2017.map",
+      "use_line": 37,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_2018",
+      "to": "L8_18_filt",
+      "via": "L8_2018.map",
+      "use_line": 39,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "func_FiltroNube",
+      "to": "L8_18_filt",
+      "via": "L8_2018.map",
+      "use_line": 39,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_16_filt",
+      "to": "L8_2016_mediana",
+      "via": "L8_16_filt.reduce",
+      "use_line": 41,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_17_filt",
+      "to": "L8_2017_mediana",
+      "via": "L8_17_filt.reduce",
+      "use_line": 43,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_18_filt",
+      "to": "L8_2018_mediana",
+      "via": "L8_18_filt.reduce",
+      "use_line": 45,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_2016_mediana",
+      "to": "L8IC",
+      "via": "ee.ImageCollection",
+      "use_line": 47,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_2017_mediana",
+      "to": "L8IC",
+      "via": "ee.ImageCollection",
+      "use_line": 47,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "L8_2018_mediana",
+      "to": "L8IC",
+      "via": "ee.ImageCollection",
+      "use_line": 47,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [],
+  "R2_units": [
+    {
+      "unit": "script_101218:unit:BA",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_101218:unit:L8_2016",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8_2017",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8_2018",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:func_FiltroNube",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_101218:unit:imagen",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_101218:unit:bqa",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "imagen.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:mask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "bqa.eq"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8_16_filt",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "L8_2016.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8_17_filt",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "L8_2017.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8_18_filt",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "L8_2018.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8_2016_mediana",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "L8_16_filt.reduce"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8_2017_mediana",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "L8_17_filt.reduce"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8_2018_mediana",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "L8_18_filt.reduce"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101218:unit:L8IC",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.ImageCollection"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "presentation": 1,
+      "analysis": 17,
+      "unknown": 8
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 19
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 19
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 13
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 13
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 7
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 7
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 14,
+    "deduped_logical_edges": 14,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

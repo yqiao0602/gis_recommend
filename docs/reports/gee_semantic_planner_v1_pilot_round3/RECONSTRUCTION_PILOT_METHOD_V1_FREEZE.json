@@ -1,0 +1,57 @@
+{
+  "frozen_name": "RECONSTRUCTION_PILOT_METHOD_V1",
+  "freeze_date": "2026-10-09",
+  "baseline_evidence": {
+    "trial_script_36595": "docs/reports/gee_semantic_planner_v1_pilot_round3/reconstruction_pilot_v1/",
+    "batch1_275285_93009": "docs/reports/gee_semantic_planner_v1_pilot_round3/reconstruction_batch1_v1/",
+    "batch2_302840_405410": "docs/reports/gee_semantic_planner_v1_pilot_round3/reconstruction_batch2_v1/",
+    "design_document": "RECONSTRUCTION_PILOT_DESIGN_v0.md (v1, accepted with 5a clarifications)"
+  },
+  "frozen_by": "owner acceptance 2026-10-09 (batch-2 review with wording fix)",
+  "acceptance_rulings": {
+    "method_direction": "adopted - reconstruct from source, bypass the lossy mapping layer, restore evidence-backed task duties/dependencies without promoting implementation choices into task requirements",
+    "batch1": "formally accepted (after granularity mapping + dual_role clarifications)",
+    "batch2": "conditionally accepted, wording fix applied (task_duty no longer implies task-specified hyperparameters); formally accepted with this revision",
+    "batch3_269131": "authorized as conflict stress test - last batch, not used to calibrate rules"
+  },
+  "cumulative_trial_results": {
+    "scripts_completed": 5,
+    "audit_recovery": "32/32 (per-script denominators only)",
+    "edges_supported_full": 51,
+    "edges_supported_passing_only": 9,
+    "implementation_fixation": "0/42",
+    "scope_limitation": "figures describe the five trial scripts; they are not accuracy estimates for the 128,447-row GEE corpus"
+  },
+  "demonstrated_discrimination_capabilities": [
+    "task requirements vs source-specific implementation parameters",
+    "true dataflow vs semantic dependency vs task enumeration order vs control structure",
+    "task-named repetition structures vs source-level code duplication"
+  ],
+  "rules_canonicalized_from_batches": [
+    "audit granularity (task-semantic) counted separately from R2 reconstruction granularity; one-to-many allowed, numbers never forced equal",
+    "dual_role: a single computation unit may simultaneously carry a task-required output duty and a source-required intermediate computation role, with independent provenance per role",
+    "evidence_status two-state rule: supported (full three-condition) vs supported_passing_only (use+passing confirmed, source-side definition external); never merged",
+    "task_explicit vs task_implied workflow-sequence grading; task enumeration order never promoted to execution dependency",
+    "semantic_merge (task-named combination) recorded separately from source control flow",
+    "task-source conflicts recorded with both sides preserved; never silently reconciled",
+    "source_code_defects recorded inside the affected unit, never attributed to extraction",
+    "original trial outputs preserved; revisions saved separately with audit trail and hash ledgers"
+  ],
+  "batch3_focus": {
+    "script": "script_269131 (fire susceptibility, known task-source inconsistencies)",
+    "requirements": [
+      "task-source conflicts recorded item by item, both sides preserved",
+      "parallel formulas (pi_all vs Fire_Sus) not merged into one",
+      "charts/visualization not misclassified as analysis workflow",
+      "insufficient-evidence relations marked unresolved",
+      "originals preserved with revision records and hash ledger"
+    ],
+    "pass_gate": "after batch 3, the six-script trial is assessed for readiness to enter small-scale expansion design review"
+  },
+  "boundaries": {
+    "full_corpus_expansion": "requires separate ruling",
+    "batch_supervision_construction": "requires separate ruling",
+    "semantic_gold_designation": "not granted",
+    "training_inference_rl": "not authorized"
+  }
+}

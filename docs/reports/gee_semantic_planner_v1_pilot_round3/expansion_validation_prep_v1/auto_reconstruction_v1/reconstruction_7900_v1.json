@@ -1,0 +1,1704 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_7900",
+  "source_sha256": "8760100f63f1690dc75eda22f31583698b1599040abab8b2ab66e3a7ce5460b7",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "image",
+      "kind": "param",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cloudMask",
+      "kind": "function",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cloudShadowBitMask",
+      "kind": "declaration",
+      "def_line": 3,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cloudsBitMask",
+      "kind": "declaration",
+      "def_line": 5,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "qa",
+      "kind": "declaration",
+      "def_line": 7,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "NDVI",
+      "kind": "declaration",
+      "def_line": 17,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ndvi",
+      "kind": "declaration",
+      "def_line": 19,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "EVI",
+      "kind": "declaration",
+      "def_line": 25,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "evi",
+      "kind": "declaration",
+      "def_line": 27,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "NBR",
+      "kind": "declaration",
+      "def_line": 45,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "nbr",
+      "kind": "declaration",
+      "def_line": 47,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "scale",
+      "kind": "declaration",
+      "def_line": 53,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "dem",
+      "kind": "declaration",
+      "def_line": 55,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "degree2radian",
+      "kind": "declaration",
+      "def_line": 57,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "img",
+      "kind": "param",
+      "def_line": 59,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "illuminationCondition",
+      "kind": "function",
+      "def_line": 59,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "SZ_rad",
+      "kind": "declaration",
+      "def_line": 61,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "SA_rad",
+      "kind": "declaration",
+      "def_line": 63,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "slp",
+      "kind": "declaration",
+      "def_line": 65,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "slp_rad",
+      "kind": "declaration",
+      "def_line": 67,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "asp_rad",
+      "kind": "declaration",
+      "def_line": 69,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cosZ",
+      "kind": "declaration",
+      "def_line": 71,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cosS",
+      "kind": "declaration",
+      "def_line": 73,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "slope_illumination",
+      "kind": "declaration",
+      "def_line": 75,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sinZ",
+      "kind": "declaration",
+      "def_line": 81,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sinS",
+      "kind": "declaration",
+      "def_line": 83,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cosAziDiff",
+      "kind": "declaration",
+      "def_line": 85,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "aspect_illumination",
+      "kind": "declaration",
+      "def_line": 87,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ic",
+      "kind": "declaration",
+      "def_line": 95,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "illuminationCorrection",
+      "kind": "function",
+      "def_line": 103,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "props",
+      "kind": "declaration",
+      "def_line": 105,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "st",
+      "kind": "declaration",
+      "def_line": 107,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "img_plus_ic",
+      "kind": "declaration",
+      "def_line": 109,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mask1",
+      "kind": "declaration",
+      "def_line": 111,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mask2",
+      "kind": "declaration",
+      "def_line": 113,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "img_plus_ic_mask2",
+      "kind": "declaration",
+      "def_line": 119,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "bandList",
+      "kind": "declaration",
+      "def_line": 121,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "compositeBands",
+      "kind": "declaration",
+      "def_line": 123,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "nonCorrectBands",
+      "kind": "declaration",
+      "def_line": 125,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "geom",
+      "kind": "declaration",
+      "def_line": 127,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "apply_SCSccorr",
+      "kind": "function",
+      "def_line": 129,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "band",
+      "kind": "param",
+      "def_line": 129,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "method",
+      "kind": "declaration",
+      "def_line": 131,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "out",
+      "kind": "declaration",
+      "def_line": 133,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "out_a",
+      "kind": "declaration",
+      "def_line": 153,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "out_b",
+      "kind": "declaration",
+      "def_line": 155,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "out_c",
+      "kind": "declaration",
+      "def_line": 157,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "SCSc_output",
+      "kind": "declaration",
+      "def_line": 159,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "img_SCSccorr",
+      "kind": "declaration",
+      "def_line": 181,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "bandList_IC",
+      "kind": "declaration",
+      "def_line": 183,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "landsat8",
+      "kind": "assignment",
+      "def_line": 195,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "landsat8_composite",
+      "kind": "declaration",
+      "def_line": 215,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mask",
+      "kind": "declaration",
+      "def_line": 217,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [
+    {
+      "variable": "landsat8",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source_at_first_use",
+      "first_use_line": 195,
+      "evidence": [
+        "self_reference_in_initializing_assignment"
+      ],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "genhe",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 199,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    }
+  ],
+  "R1_dataflow_edges": [
+    {
+      "from": "image",
+      "to": "qa",
+      "via": "image.select",
+      "use_line": 7,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cloudShadowBitMask",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 9,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "qa",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 9,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "ndvi",
+      "via": "reference",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "evi",
+      "via": "reference",
+      "use_line": 27,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "nbr",
+      "via": "reference",
+      "use_line": 47,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "SZ_rad",
+      "via": "reference",
+      "use_line": 61,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "SA_rad",
+      "via": "reference",
+      "use_line": 63,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dem",
+      "to": "slp",
+      "via": "reference",
+      "use_line": 65,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "slp",
+      "via": "reference",
+      "use_line": 65,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dem",
+      "to": "slp_rad",
+      "via": "reference",
+      "use_line": 67,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "slp_rad",
+      "via": "reference",
+      "use_line": 67,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dem",
+      "to": "asp_rad",
+      "via": "reference",
+      "use_line": 69,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "asp_rad",
+      "via": "reference",
+      "use_line": 69,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "SZ_rad",
+      "to": "cosZ",
+      "via": "SZ_rad.cos",
+      "use_line": 71,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "slp_rad",
+      "to": "cosS",
+      "via": "slp_rad.cos",
+      "use_line": 73,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cosS",
+      "to": "slope_illumination",
+      "via": "cosS.expression",
+      "use_line": 75,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "SZ_rad",
+      "to": "sinZ",
+      "via": "SZ_rad.sin",
+      "use_line": 81,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "slp_rad",
+      "to": "sinS",
+      "via": "slp_rad.sin",
+      "use_line": 83,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "SA_rad",
+      "to": "cosAziDiff",
+      "via": "reference",
+      "use_line": 85,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "asp_rad",
+      "to": "cosAziDiff",
+      "via": "reference",
+      "use_line": 85,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "sinZ",
+      "to": "aspect_illumination",
+      "via": "sinZ.expression",
+      "use_line": 87,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "aspect_illumination",
+      "to": "ic",
+      "via": "slope_illumination.add",
+      "use_line": 95,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "slope_illumination",
+      "to": "ic",
+      "via": "slope_illumination.add",
+      "use_line": 95,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cosS",
+      "to": "img_plus_ic",
+      "via": "ee.Image",
+      "use_line": 97,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cosZ",
+      "to": "img_plus_ic",
+      "via": "ee.Image",
+      "use_line": 97,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "ic",
+      "to": "img_plus_ic",
+      "via": "ee.Image",
+      "use_line": 97,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "img_plus_ic",
+      "via": "ee.Image",
+      "use_line": 97,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "slp",
+      "to": "img_plus_ic",
+      "via": "ee.Image",
+      "use_line": 97,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "props",
+      "via": "img.toDictionary",
+      "use_line": 105,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "st",
+      "via": "img.get",
+      "use_line": 107,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "img_plus_ic",
+      "via": "declaration",
+      "use_line": 109,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img_plus_ic",
+      "to": "mask1",
+      "via": "reference",
+      "use_line": 111,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img_plus_ic",
+      "to": "mask2",
+      "via": "reference",
+      "use_line": 113,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img_plus_ic",
+      "to": "img_plus_ic_mask2",
+      "via": "ee.Image",
+      "use_line": 119,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "mask2",
+      "to": "img_plus_ic_mask2",
+      "via": "ee.Image",
+      "use_line": 119,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "compositeBands",
+      "via": "img.bandNames",
+      "use_line": 123,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bandList",
+      "to": "nonCorrectBands",
+      "via": "img.select",
+      "use_line": 125,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "compositeBands",
+      "to": "nonCorrectBands",
+      "via": "img.select",
+      "use_line": 125,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "nonCorrectBands",
+      "via": "img.select",
+      "use_line": 125,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "geom",
+      "via": "reference",
+      "use_line": 127,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "band",
+      "to": "out",
+      "via": "reference",
+      "use_line": 133,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img_plus_ic_mask2",
+      "to": "out",
+      "via": "reference",
+      "use_line": 133,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "out",
+      "to": "out_a",
+      "via": "ee.Number",
+      "use_line": 153,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "out",
+      "to": "out_b",
+      "via": "ee.Number",
+      "use_line": 155,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "out_a",
+      "to": "out_c",
+      "via": "out_b.divide",
+      "use_line": 157,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "out_b",
+      "to": "out_c",
+      "via": "out_b.divide",
+      "use_line": 157,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img_plus_ic_mask2",
+      "to": "SCSc_output",
+      "via": "img_plus_ic_mask2.expression",
+      "use_line": 159,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "apply_SCSccorr",
+      "to": "img_SCSccorr",
+      "via": "reference",
+      "use_line": 181,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bandList",
+      "to": "img_SCSccorr",
+      "via": "reference",
+      "use_line": 181,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img_plus_ic",
+      "to": "img_SCSccorr",
+      "via": "reference",
+      "use_line": 181,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bandList",
+      "to": "bandList_IC",
+      "via": "reference",
+      "use_line": 183,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bandList",
+      "to": "img_SCSccorr",
+      "via": "reference",
+      "use_line": 185,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bandList_IC",
+      "to": "img_SCSccorr",
+      "via": "reference",
+      "use_line": 185,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img_plus_ic",
+      "to": "img_SCSccorr",
+      "via": "reference",
+      "use_line": 185,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "landsat8",
+      "to": "landsat8_composite",
+      "via": "reference",
+      "use_line": 215,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "landsat8_composite",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 217,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "mask",
+      "to": "landsat8_composite",
+      "via": "landsat8_composite.updateMask",
+      "use_line": 219,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "landsat8_composite",
+      "to": "EVI",
+      "via": "landsat8_composite.select",
+      "use_line": 223,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [
+    {
+      "item": "landsat8",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "genhe",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    }
+  ],
+  "R2_units": [
+    {
+      "unit": "script_7900:unit:image",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 11
+    },
+    {
+      "unit": "script_7900:unit:cloudMask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:cloudShadowBitMask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:cloudsBitMask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:qa",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "image.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_7900:unit:NDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:ndvi",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:EVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "landsat8_composite.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_7900:unit:evi",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:NBR",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_7900:unit:nbr",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:scale",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_7900:unit:dem",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_7900:unit:degree2radian",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_7900:unit:img",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 15
+    },
+    {
+      "unit": "script_7900:unit:illuminationCondition",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:SZ_rad",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_7900:unit:SA_rad",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:slp",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:slp_rad",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_7900:unit:asp_rad",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:cosZ",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "SZ_rad.cos"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_7900:unit:cosS",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "slp_rad.cos"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_7900:unit:slope_illumination",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "cosS.expression"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:sinZ",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "SZ_rad.sin"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_7900:unit:sinS",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "slp_rad.sin"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:cosAziDiff",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:aspect_illumination",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "sinZ.expression"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:ic",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "slope_illumination.add"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:illuminationCorrection",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:props",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "img.toDictionary"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:st",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "img.get"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:img_plus_ic",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "declaration",
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 7
+    },
+    {
+      "unit": "script_7900:unit:mask1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_7900:unit:mask2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:img_plus_ic_mask2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 7
+    },
+    {
+      "unit": "script_7900:unit:bandList",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_7900:unit:compositeBands",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "img.bandNames"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:nonCorrectBands",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "img.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:geom",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_7900:unit:apply_SCSccorr",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:band",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_7900:unit:method",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_7900:unit:out",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_7900:unit:out_a",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Number"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:out_b",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Number"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:out_c",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "out_b.divide"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:SCSc_output",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "img_plus_ic_mask2.expression"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:img_SCSccorr",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_7900:unit:bandList_IC",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_7900:unit:landsat8",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_7900:unit:landsat8_composite",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "landsat8_composite.updateMask"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_7900:unit:mask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "export": 1,
+      "unknown": 55,
+      "analysis": 84,
+      "presentation": 2
+    },
+    "unknown_review_queue": [
+      {
+        "path": "genhe.geometry",
+        "root": "genhe",
+        "line": 225
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 217
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 215
+      },
+      {
+        "path": "genhe.geometry",
+        "root": "genhe",
+        "line": 215
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 195
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 195
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 195
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 195
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 195
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 195
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 195
+      },
+      {
+        "path": "genhe.geometry",
+        "root": "genhe",
+        "line": 199
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 187
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 187
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 185
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 183
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 181
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 133
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 137
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 127
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 127
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 113
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 117
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 113
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 115
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 113
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 111
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 97
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 97
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 97
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 85
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 69
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 69
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 69
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 69
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 67
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 67
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 67
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 67
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 65
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 65
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 63
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 63
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 63
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 63
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 61
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 61
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 61
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 61
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 47
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 27
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 19
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 9
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 11
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 9
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 59,
+    "deduped_logical_edges": 59,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

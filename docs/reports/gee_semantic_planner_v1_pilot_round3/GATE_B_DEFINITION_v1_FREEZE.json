@@ -1,0 +1,42 @@
+{
+  "frozen_name": "GATE_B_DEFINITION_v1",
+  "freeze_date": "2026-10-09",
+  "baseline_document": "GATE_B_OPERATIONAL_DEFINITION_v1.md",
+  "baseline_sha256": "c4fd2792f4e249a66495aebb3f6d7f5d3e33aa4677b1d13dba40fa6795460960",
+  "frozen_by": "owner confirmation 2026-10-09",
+  "freeze_rulings": {
+    "dual_gate_A_B": "adopted_judged_separately",
+    "independence_definitions_and_three_tier_sources": "adopted",
+    "B1_B4_framework": "adopted_with_v1_criteria",
+    "S2_candidate_review": "approved_read_only",
+    "S3_probe_design": "approved_design_only_no_model_run",
+    "S4_handwritten_tasks_and_30_50_expansion": "deferred",
+    "training_inference_RL": "not_authorized",
+    "frozen_artifact_modification": "forbidden"
+  },
+  "execution_clarifications": {
+    "B1_threshold_80pct": {
+      "status": "candidate_threshold_not_validated_statistical_gate",
+      "required_before_evaluation": [
+        "define denominator for necessary stages",
+        "define scoring for partial stages",
+        "define whether uncertainty outputs are excluded from denominator (must not inflate accuracy by mass uncertainty emission)"
+      ]
+    },
+    "B3_incremental_information": {
+      "status": "pass_means_identifiable_not_proven_useful",
+      "required_recording": [
+        "record 'incremental information is identifiable' and 'incremental information improves planning quality' as separate conclusions",
+        "latter requires later independent evaluation"
+      ]
+    },
+    "B4_implementation_leak": {
+      "status": "must_distinguish_source_specific_from_domain_common_knowledge",
+      "rule": "only information confirmed by pre-registered rules to be neither reasonably inferable from the task text nor from general domain knowledge counts as implementation_leak; otherwise reasonable domain reasoning must not be scored as parroting"
+    }
+  },
+  "history_preservation": {
+    "original_draft_retained": "GATE_B_OPERATIONAL_DEFINITION_v1.md remains unmodified as the frozen baseline",
+    "note": "any later criteria change requires a new versioned document; this frozen record and its hash must not be overwritten"
+  }
+}

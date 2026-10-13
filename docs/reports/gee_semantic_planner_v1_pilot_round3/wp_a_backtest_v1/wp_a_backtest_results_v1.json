@@ -1,0 +1,7011 @@
+{
+  "schema": "wp_a_detector_backtest_v1",
+  "date": "2026-10-09",
+  "scope": "six pilot scripts only; no new sampling or reconstruction",
+  "scripts": {
+    "script_36595": {
+      "source_sha256": "767c4254c0f07d0c9049abf35998fced03a8d235076497cce9a933267d718220",
+      "A1": {
+        "candidates": [
+          {
+            "variable": "CHIRPS",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              19
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 19
+          },
+          {
+            "variable": "soil",
+            "definition_location": "unavailable_in_source_at_first_use",
+            "use_lines": [
+              27
+            ],
+            "first_use_line": 27,
+            "evidence": [
+              "self_reference_in_initializing_assignment"
+            ],
+            "classification": "candidate_pending_human",
+            "note": "RHS self-reference precedes completed definition; assignment defines only from its own line onward"
+          },
+          {
+            "variable": "DEM",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              63
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 63
+          },
+          {
+            "variable": "s2",
+            "definition_location": "unavailable_in_source_at_first_use",
+            "use_lines": [
+              83
+            ],
+            "first_use_line": 83,
+            "evidence": [
+              "self_reference_in_initializing_assignment"
+            ],
+            "classification": "candidate_pending_human",
+            "note": "RHS self-reference precedes completed definition; assignment defines only from its own line onward"
+          },
+          {
+            "variable": "modis",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              139
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 139
+          }
+        ],
+        "expected_in_candidates": [
+          "CHIRPS",
+          "DEM",
+          "modis",
+          "s2",
+          "soil"
+        ],
+        "missing_expected": [],
+        "declared_false_positives": [],
+        "pass": true
+      },
+      "A2": {
+        "unconsumed": [
+          {
+            "variable": "beta",
+            "kind": "declaration",
+            "def_line": 91,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "className",
+            "kind": "declaration",
+            "def_line": 249,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          }
+        ],
+        "presentation_only": [
+          {
+            "variable": "style",
+            "kind": "declaration",
+            "def_line": 179,
+            "post_definition_uses": 3,
+            "use_lines": [
+              181,
+              197,
+              421
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "maineMeansFeatures",
+            "kind": "declaration",
+            "def_line": 213,
+            "post_definition_uses": 1,
+            "use_lines": [
+              223
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "Area",
+            "kind": "declaration",
+            "def_line": 259,
+            "post_definition_uses": 1,
+            "use_lines": [
+              273
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "className2",
+            "kind": "declaration",
+            "def_line": 271,
+            "post_definition_uses": 1,
+            "use_lines": [
+              273
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "color",
+            "kind": "param",
+            "def_line": 387,
+            "post_definition_uses": 1,
+            "use_lines": [
+              393
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "name",
+            "kind": "param",
+            "def_line": 387,
+            "post_definition_uses": 1,
+            "use_lines": [
+              405
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "colorBox",
+            "kind": "declaration",
+            "def_line": 389,
+            "post_definition_uses": 1,
+            "use_lines": [
+              413
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          }
+        ],
+        "analysis_chain_count": 61,
+        "all_variables": [
+          {
+            "variable": "dataset",
+            "kind": "declaration",
+            "def_line": 1,
+            "post_definition_uses": 1,
+            "use_lines": [
+              5
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mainID",
+            "kind": "declaration",
+            "def_line": 3,
+            "post_definition_uses": 1,
+            "use_lines": [
+              5
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "main",
+            "kind": "declaration",
+            "def_line": 5,
+            "post_definition_uses": 2,
+            "use_lines": [
+              7,
+              9
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "aoi",
+            "kind": "declaration",
+            "def_line": 9,
+            "post_definition_uses": 19,
+            "use_lines": [
+              15,
+              17,
+              19,
+              27,
+              59,
+              65,
+              83,
+              95,
+              105,
+              115,
+              119,
+              129,
+              141,
+              173,
+              195,
+              201,
+              215,
+              239,
+              331
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "date1",
+            "kind": "declaration",
+            "def_line": 11,
+            "post_definition_uses": 3,
+            "use_lines": [
+              19,
+              83,
+              139
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "date2",
+            "kind": "declaration",
+            "def_line": 13,
+            "post_definition_uses": 3,
+            "use_lines": [
+              19,
+              83,
+              139
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "current",
+            "kind": "declaration",
+            "def_line": 19,
+            "post_definition_uses": 2,
+            "use_lines": [
+              21,
+              23
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "R",
+            "kind": "declaration",
+            "def_line": 23,
+            "post_definition_uses": 2,
+            "use_lines": [
+              25,
+              177
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "soil",
+            "kind": "assignment",
+            "def_line": 27,
+            "post_definition_uses": 3,
+            "use_lines": [
+              27,
+              29,
+              31
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "K",
+            "kind": "declaration",
+            "def_line": 31,
+            "post_definition_uses": 2,
+            "use_lines": [
+              61,
+              177
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "elevation",
+            "kind": "declaration",
+            "def_line": 63,
+            "post_definition_uses": 1,
+            "use_lines": [
+              65
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "slope1",
+            "kind": "declaration",
+            "def_line": 65,
+            "post_definition_uses": 1,
+            "use_lines": [
+              67
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "slope",
+            "kind": "declaration",
+            "def_line": 67,
+            "post_definition_uses": 5,
+            "use_lines": [
+              69,
+              73,
+              75,
+              145
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "LS4",
+            "kind": "declaration",
+            "def_line": 71,
+            "post_definition_uses": 1,
+            "use_lines": [
+              79
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "LS3",
+            "kind": "declaration",
+            "def_line": 73,
+            "post_definition_uses": 1,
+            "use_lines": [
+              77
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "LS2",
+            "kind": "declaration",
+            "def_line": 75,
+            "post_definition_uses": 1,
+            "use_lines": [
+              77
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "LS1",
+            "kind": "declaration",
+            "def_line": 77,
+            "post_definition_uses": 1,
+            "use_lines": [
+              79
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "LS",
+            "kind": "declaration",
+            "def_line": 79,
+            "post_definition_uses": 2,
+            "use_lines": [
+              81,
+              177
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "s2",
+            "kind": "assignment",
+            "def_line": 83,
+            "post_definition_uses": 2,
+            "use_lines": [
+              83,
+              85
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "image_ndvi",
+            "kind": "declaration",
+            "def_line": 85,
+            "post_definition_uses": 3,
+            "use_lines": [
+              87,
+              93,
+              97
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "alpha",
+            "kind": "declaration",
+            "def_line": 89,
+            "post_definition_uses": 1,
+            "use_lines": [
+              93
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "beta",
+            "kind": "declaration",
+            "def_line": 91,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "C1",
+            "kind": "declaration",
+            "def_line": 93,
+            "post_definition_uses": 1,
+            "use_lines": [
+              99
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "oneImage",
+            "kind": "declaration",
+            "def_line": 95,
+            "post_definition_uses": 1,
+            "use_lines": [
+              97
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "C2",
+            "kind": "declaration",
+            "def_line": 97,
+            "post_definition_uses": 1,
+            "use_lines": [
+              99
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "C3",
+            "kind": "declaration",
+            "def_line": 99,
+            "post_definition_uses": 1,
+            "use_lines": [
+              101
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "C4",
+            "kind": "declaration",
+            "def_line": 101,
+            "post_definition_uses": 3,
+            "use_lines": [
+              103,
+              117,
+              131
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "maxC4",
+            "kind": "declaration",
+            "def_line": 103,
+            "post_definition_uses": 1,
+            "use_lines": [
+              115
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "C5",
+            "kind": "declaration",
+            "def_line": 115,
+            "post_definition_uses": 1,
+            "use_lines": [
+              133
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "minC4",
+            "kind": "declaration",
+            "def_line": 117,
+            "post_definition_uses": 1,
+            "use_lines": [
+              129
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "C6",
+            "kind": "declaration",
+            "def_line": 129,
+            "post_definition_uses": 2,
+            "use_lines": [
+              131,
+              133
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "C7",
+            "kind": "declaration",
+            "def_line": 131,
+            "post_definition_uses": 1,
+            "use_lines": [
+              135
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "C8",
+            "kind": "declaration",
+            "def_line": 133,
+            "post_definition_uses": 1,
+            "use_lines": [
+              135
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "C",
+            "kind": "declaration",
+            "def_line": 135,
+            "post_definition_uses": 2,
+            "use_lines": [
+              137,
+              177
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "lulc",
+            "kind": "declaration",
+            "def_line": 139,
+            "post_definition_uses": 2,
+            "use_lines": [
+              143,
+              145
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "lulc_slope",
+            "kind": "declaration",
+            "def_line": 145,
+            "post_definition_uses": 1,
+            "use_lines": [
+              147
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "P",
+            "kind": "declaration",
+            "def_line": 147,
+            "post_definition_uses": 2,
+            "use_lines": [
+              175,
+              177
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "soil_loss",
+            "kind": "declaration",
+            "def_line": 177,
+            "post_definition_uses": 4,
+            "use_lines": [
+              181,
+              183,
+              199,
+              213
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "style",
+            "kind": "declaration",
+            "def_line": 179,
+            "post_definition_uses": 3,
+            "use_lines": [
+              181,
+              197,
+              421
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "SL_class",
+            "kind": "declaration",
+            "def_line": 183,
+            "post_definition_uses": 3,
+            "use_lines": [
+              197,
+              227,
+              281
+            ],
+            "consuming_call_classes": [
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "SL_mean",
+            "kind": "declaration",
+            "def_line": 199,
+            "post_definition_uses": 1,
+            "use_lines": [
+              211
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "maineMeansFeatures",
+            "kind": "declaration",
+            "def_line": 213,
+            "post_definition_uses": 1,
+            "use_lines": [
+              223
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "areaImage",
+            "kind": "declaration",
+            "def_line": 225,
+            "post_definition_uses": 1,
+            "use_lines": [
+              229
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "item",
+            "kind": "param",
+            "def_line": 249,
+            "post_definition_uses": 3,
+            "use_lines": [
+              251,
+              261,
+              305
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "className",
+            "kind": "declaration",
+            "def_line": 249,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "Area",
+            "kind": "declaration",
+            "def_line": 259,
+            "post_definition_uses": 1,
+            "use_lines": [
+              273
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "className2",
+            "kind": "declaration",
+            "def_line": 271,
+            "post_definition_uses": 1,
+            "use_lines": [
+              273
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "calculateClassArea",
+            "kind": "declaration",
+            "def_line": 279,
+            "post_definition_uses": 1,
+            "use_lines": [
+              331
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "feature",
+            "kind": "param",
+            "def_line": 279,
+            "post_definition_uses": 3,
+            "use_lines": [
+              293,
+              321,
+              325
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "areas",
+            "kind": "declaration",
+            "def_line": 281,
+            "post_definition_uses": 1,
+            "use_lines": [
+              301
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "classAreas",
+            "kind": "declaration",
+            "def_line": 301,
+            "post_definition_uses": 1,
+            "use_lines": [
+              303
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "classAreaLists",
+            "kind": "declaration",
+            "def_line": 303,
+            "post_definition_uses": 1,
+            "use_lines": [
+              319
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "areaDict",
+            "kind": "declaration",
+            "def_line": 305,
+            "post_definition_uses": 2,
+            "use_lines": [
+              309,
+              313
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "classNumber",
+            "kind": "declaration",
+            "def_line": 307,
+            "post_definition_uses": 1,
+            "use_lines": [
+              315
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "area",
+            "kind": "declaration",
+            "def_line": 311,
+            "post_definition_uses": 1,
+            "use_lines": [
+              315
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "result",
+            "kind": "declaration",
+            "def_line": 319,
+            "post_definition_uses": 1,
+            "use_lines": [
+              327
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "district",
+            "kind": "declaration",
+            "def_line": 321,
+            "post_definition_uses": 1,
+            "use_lines": [
+              327
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "districtAreas",
+            "kind": "declaration",
+            "def_line": 331,
+            "post_definition_uses": 1,
+            "use_lines": [
+              341
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "classes",
+            "kind": "declaration",
+            "def_line": 333,
+            "post_definition_uses": 1,
+            "use_lines": [
+              337
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "outputFields",
+            "kind": "declaration",
+            "def_line": 335,
+            "post_definition_uses": 1,
+            "use_lines": [
+              351
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "legend",
+            "kind": "declaration",
+            "def_line": 355,
+            "post_definition_uses": 3,
+            "use_lines": [
+              385,
+              427,
+              431
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "legendTitle",
+            "kind": "declaration",
+            "def_line": 367,
+            "post_definition_uses": 1,
+            "use_lines": [
+              385
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "makeRow",
+            "kind": "declaration",
+            "def_line": 387,
+            "post_definition_uses": 1,
+            "use_lines": [
+              427
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "color",
+            "kind": "param",
+            "def_line": 387,
+            "post_definition_uses": 1,
+            "use_lines": [
+              393
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "name",
+            "kind": "param",
+            "def_line": 387,
+            "post_definition_uses": 1,
+            "use_lines": [
+              405
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "colorBox",
+            "kind": "declaration",
+            "def_line": 389,
+            "post_definition_uses": 1,
+            "use_lines": [
+              413
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "description",
+            "kind": "declaration",
+            "def_line": 403,
+            "post_definition_uses": 1,
+            "use_lines": [
+              413
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "palette",
+            "kind": "declaration",
+            "def_line": 421,
+            "post_definition_uses": 1,
+            "use_lines": [
+              427
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "names",
+            "kind": "declaration",
+            "def_line": 423,
+            "post_definition_uses": 1,
+            "use_lines": [
+              427
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "i",
+            "kind": "declaration",
+            "def_line": 425,
+            "post_definition_uses": 4,
+            "use_lines": [
+              425,
+              427
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          }
+        ],
+        "anchor_checks": {},
+        "pass": true
+      },
+      "A3": {
+        "class_counts": {
+          "presentation": 26,
+          "analysis": 86,
+          "export": 1,
+          "unknown": 56
+        },
+        "unknown_review_queue": [
+          {
+            "path": null,
+            "root": null,
+            "line": 335
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 335
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 311
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 307
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 281
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 285
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 281
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 273
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 273
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 263
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 263
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 253
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 231
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 225
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 183
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 183
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 177
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 177
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 177
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 177
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 147
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 147
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 139
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 139
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 139
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 139
+          },
+          {
+            "path": "modis.filterDate",
+            "root": "modis",
+            "line": 139
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 135
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 129
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 115
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 99
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 95
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 85
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 83
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 83
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 79
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 79
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 77
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 77
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 75
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 75
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 67
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 67
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 67
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 65
+          },
+          {
+            "path": "DEM.select",
+            "root": "DEM",
+            "line": 63
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 31
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 31
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 27
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 27
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 23
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 23
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 19
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 19
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 19
+          },
+          {
+            "path": "CHIRPS.filterDate",
+            "root": "CHIRPS",
+            "line": 19
+          }
+        ],
+        "presentation_analysis_coexist_lines": [
+          7,
+          211
+        ],
+        "pass": true
+      }
+    },
+    "script_275285": {
+      "source_sha256": "4e9e124bc581dfe7a5afc37a7398680938b04abf71ba0dbc969ba250f900f945",
+      "A1": {
+        "candidates": [
+          {
+            "variable": "geometry",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              49,
+              57,
+              69,
+              81,
+              95,
+              109,
+              123
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 49
+          }
+        ],
+        "expected_in_candidates": [
+          "geometry"
+        ],
+        "missing_expected": [],
+        "declared_false_positives": [],
+        "pass": true
+      },
+      "A2": {
+        "unconsumed": [
+          {
+            "variable": "vizParams",
+            "kind": "declaration",
+            "def_line": 17,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          }
+        ],
+        "presentation_only": [
+          {
+            "variable": "vizParams2",
+            "kind": "declaration",
+            "def_line": 29,
+            "post_definition_uses": 1,
+            "use_lines": [
+              61
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "ndviParams",
+            "kind": "declaration",
+            "def_line": 71,
+            "post_definition_uses": 1,
+            "use_lines": [
+              77
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "b10Params",
+            "kind": "declaration",
+            "def_line": 83,
+            "post_definition_uses": 1,
+            "use_lines": [
+              87
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "imageVisParam3",
+            "kind": "declaration",
+            "def_line": 137,
+            "post_definition_uses": 1,
+            "use_lines": [
+              139
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "LST",
+            "kind": "declaration",
+            "def_line": 141,
+            "post_definition_uses": 1,
+            "use_lines": [
+              151
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          }
+        ],
+        "analysis_chain_count": 15,
+        "all_variables": [
+          {
+            "variable": "maskL8sr",
+            "kind": "function",
+            "def_line": 1,
+            "post_definition_uses": 1,
+            "use_lines": [
+              45
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cloudShadowBitMask",
+            "kind": "declaration",
+            "def_line": 3,
+            "post_definition_uses": 1,
+            "use_lines": [
+              9
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cloudsBitMask",
+            "kind": "declaration",
+            "def_line": 5,
+            "post_definition_uses": 1,
+            "use_lines": [
+              11
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "qa",
+            "kind": "declaration",
+            "def_line": 7,
+            "post_definition_uses": 2,
+            "use_lines": [
+              9,
+              11
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mask",
+            "kind": "declaration",
+            "def_line": 9,
+            "post_definition_uses": 1,
+            "use_lines": [
+              13
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "vizParams",
+            "kind": "declaration",
+            "def_line": 17,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "vizParams2",
+            "kind": "declaration",
+            "def_line": 29,
+            "post_definition_uses": 1,
+            "use_lines": [
+              61
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "col",
+            "kind": "declaration",
+            "def_line": 43,
+            "post_definition_uses": 2,
+            "use_lines": [
+              53,
+              57
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "image",
+            "kind": "declaration",
+            "def_line": 57,
+            "post_definition_uses": 4,
+            "use_lines": [
+              59,
+              61,
+              67,
+              81
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "ndvi",
+            "kind": "declaration",
+            "def_line": 67,
+            "post_definition_uses": 5,
+            "use_lines": [
+              75,
+              77,
+              91,
+              105,
+              123
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "ndviParams",
+            "kind": "declaration",
+            "def_line": 71,
+            "post_definition_uses": 1,
+            "use_lines": [
+              77
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "thermal",
+            "kind": "declaration",
+            "def_line": 81,
+            "post_definition_uses": 3,
+            "use_lines": [
+              87,
+              141,
+              145
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "b10Params",
+            "kind": "declaration",
+            "def_line": 83,
+            "post_definition_uses": 1,
+            "use_lines": [
+              87
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "min",
+            "kind": "declaration",
+            "def_line": 91,
+            "post_definition_uses": 3,
+            "use_lines": [
+              103,
+              123
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "max",
+            "kind": "declaration",
+            "def_line": 105,
+            "post_definition_uses": 2,
+            "use_lines": [
+              117,
+              123
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "fv",
+            "kind": "declaration",
+            "def_line": 123,
+            "post_definition_uses": 3,
+            "use_lines": [
+              125,
+              127,
+              135
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "a",
+            "kind": "declaration",
+            "def_line": 131,
+            "post_definition_uses": 1,
+            "use_lines": [
+              135
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "b",
+            "kind": "declaration",
+            "def_line": 133,
+            "post_definition_uses": 1,
+            "use_lines": [
+              135
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "EM",
+            "kind": "declaration",
+            "def_line": 135,
+            "post_definition_uses": 2,
+            "use_lines": [
+              139,
+              147
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "imageVisParam3",
+            "kind": "declaration",
+            "def_line": 137,
+            "post_definition_uses": 1,
+            "use_lines": [
+              139
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "LST",
+            "kind": "declaration",
+            "def_line": 141,
+            "post_definition_uses": 1,
+            "use_lines": [
+              151
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          }
+        ],
+        "anchor_checks": {},
+        "pass": true
+      },
+      "A3": {
+        "class_counts": {
+          "presentation": 12,
+          "unknown": 22,
+          "analysis": 23
+        },
+        "unknown_review_queue": [
+          {
+            "path": null,
+            "root": null,
+            "line": 141
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 135
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 135
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 123
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 123
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 123
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 123
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 105
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 105
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 91
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 91
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 81
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 81
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 67
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 67
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 57
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 43
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 43
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 43
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 9
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 11
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 9
+          }
+        ],
+        "presentation_analysis_coexist_lines": [],
+        "pass": true
+      }
+    },
+    "script_93009": {
+      "source_sha256": "0427a5b5de3302dad609c90e8d6806b4088fcb955302b3aa4b37ff6a90fdaab0",
+      "A1": {
+        "candidates": [],
+        "expected_in_candidates": [],
+        "missing_expected": [],
+        "declared_false_positives": [],
+        "pass": true
+      },
+      "A2": {
+        "unconsumed": [
+          {
+            "variable": "image_2000_tf",
+            "kind": "declaration",
+            "def_line": 83,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "image_1999_tf",
+            "kind": "declaration",
+            "def_line": 85,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "image_1998_tf",
+            "kind": "declaration",
+            "def_line": 87,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          }
+        ],
+        "presentation_only": [
+          {
+            "variable": "image_2018_tf",
+            "kind": "declaration",
+            "def_line": 81,
+            "post_definition_uses": 1,
+            "use_lines": [
+              99
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "image_1985_tf",
+            "kind": "declaration",
+            "def_line": 89,
+            "post_definition_uses": 1,
+            "use_lines": [
+              97
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "landsat_1985",
+            "kind": "declaration",
+            "def_line": 91,
+            "post_definition_uses": 1,
+            "use_lines": [
+              93
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "palette_incidence",
+            "kind": "declaration",
+            "def_line": 105,
+            "post_definition_uses": 1,
+            "use_lines": [
+              107
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          }
+        ],
+        "analysis_chain_count": 25,
+        "all_variables": [
+          {
+            "variable": "landsat_lib",
+            "kind": "declaration",
+            "def_line": 1,
+            "post_definition_uses": 1,
+            "use_lines": [
+              91
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "tf_lib",
+            "kind": "declaration",
+            "def_line": 3,
+            "post_definition_uses": 5,
+            "use_lines": [
+              21,
+              25,
+              27,
+              33,
+              79
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cartas_col",
+            "kind": "declaration",
+            "def_line": 5,
+            "post_definition_uses": 1,
+            "use_lines": [
+              17
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "col_old_1985",
+            "kind": "declaration",
+            "def_line": 7,
+            "post_definition_uses": 2,
+            "use_lines": [
+              11,
+              101
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "col_old_2017",
+            "kind": "declaration",
+            "def_line": 9,
+            "post_definition_uses": 2,
+            "use_lines": [
+              13,
+              103
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "grid_name",
+            "kind": "declaration",
+            "def_line": 15,
+            "post_definition_uses": 2,
+            "use_lines": [
+              17,
+              19
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "carta",
+            "kind": "declaration",
+            "def_line": 17,
+            "post_definition_uses": 1,
+            "use_lines": [
+              91
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "image",
+            "kind": "declaration",
+            "def_line": 19,
+            "post_definition_uses": 6,
+            "use_lines": [
+              21,
+              33,
+              69,
+              71,
+              73
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "freq_antes",
+            "kind": "declaration",
+            "def_line": 23,
+            "post_definition_uses": 1,
+            "use_lines": [
+              109
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "image_tf",
+            "kind": "declaration",
+            "def_line": 25,
+            "post_definition_uses": 10,
+            "use_lines": [
+              25,
+              27,
+              29,
+              77,
+              79,
+              81,
+              83,
+              85,
+              87,
+              89
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "freq_depois",
+            "kind": "declaration",
+            "def_line": 29,
+            "post_definition_uses": 1,
+            "use_lines": [
+              111
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "incidence",
+            "kind": "declaration",
+            "def_line": 31,
+            "post_definition_uses": 1,
+            "use_lines": [
+              77
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "imc",
+            "kind": "declaration",
+            "def_line": 33,
+            "post_definition_uses": 3,
+            "use_lines": [
+              35,
+              39,
+              95
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "imagefirst",
+            "kind": "declaration",
+            "def_line": 35,
+            "post_definition_uses": 2,
+            "use_lines": [
+              37,
+              59
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "result",
+            "kind": "declaration",
+            "def_line": 39,
+            "post_definition_uses": 1,
+            "use_lines": [
+              63
+            ],
+            "consuming_call_classes": [],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "img",
+            "kind": "param",
+            "def_line": 39,
+            "post_definition_uses": 3,
+            "use_lines": [
+              41,
+              49,
+              57
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "prev",
+            "kind": "param",
+            "def_line": 39,
+            "post_definition_uses": 3,
+            "use_lines": [
+              43,
+              45,
+              47
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "imgincidence",
+            "kind": "declaration",
+            "def_line": 45,
+            "post_definition_uses": 3,
+            "use_lines": [
+              55,
+              57
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "classification0",
+            "kind": "declaration",
+            "def_line": 47,
+            "post_definition_uses": 1,
+            "use_lines": [
+              53
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "classification1",
+            "kind": "declaration",
+            "def_line": 49,
+            "post_definition_uses": 1,
+            "use_lines": [
+              53
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "change",
+            "kind": "declaration",
+            "def_line": 51,
+            "post_definition_uses": 2,
+            "use_lines": [
+              53,
+              55
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "get_image_year",
+            "kind": "declaration",
+            "def_line": 67,
+            "post_definition_uses": 5,
+            "use_lines": [
+              81,
+              83,
+              85,
+              87,
+              89
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "year",
+            "kind": "param",
+            "def_line": 67,
+            "post_definition_uses": 1,
+            "use_lines": [
+              69
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "image_incidence",
+            "kind": "declaration",
+            "def_line": 77,
+            "post_definition_uses": 1,
+            "use_lines": [
+              107
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "image_recent",
+            "kind": "declaration",
+            "def_line": 79,
+            "post_definition_uses": 1,
+            "use_lines": [
+              113
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "image_2018_tf",
+            "kind": "declaration",
+            "def_line": 81,
+            "post_definition_uses": 1,
+            "use_lines": [
+              99
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "image_2000_tf",
+            "kind": "declaration",
+            "def_line": 83,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "image_1999_tf",
+            "kind": "declaration",
+            "def_line": 85,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "image_1998_tf",
+            "kind": "declaration",
+            "def_line": 87,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "image_1985_tf",
+            "kind": "declaration",
+            "def_line": 89,
+            "post_definition_uses": 1,
+            "use_lines": [
+              97
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "landsat_1985",
+            "kind": "declaration",
+            "def_line": 91,
+            "post_definition_uses": 1,
+            "use_lines": [
+              93
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          },
+          {
+            "variable": "palette_incidence",
+            "kind": "declaration",
+            "def_line": 105,
+            "post_definition_uses": 1,
+            "use_lines": [
+              107
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          }
+        ],
+        "anchor_checks": {},
+        "pass": true
+      },
+      "A3": {
+        "class_counts": {
+          "presentation": 10,
+          "analysis": 50,
+          "unknown": 8,
+          "import": 2
+        },
+        "unknown_review_queue": [
+          {
+            "path": null,
+            "root": null,
+            "line": 69
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 39
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 37
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 29
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 23
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 17
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 13
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 11
+          }
+        ],
+        "presentation_analysis_coexist_lines": [
+          107,
+          109,
+          111,
+          113
+        ],
+        "pass": true
+      }
+    },
+    "script_302840": {
+      "source_sha256": "3515e90d6049ebf8e17ee1895604bd7151ab42faf9828bae2eadb93c6d9c2db2",
+      "A1": {
+        "candidates": [
+          {
+            "variable": "ftTrain",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              31,
+              131,
+              229,
+              327,
+              427,
+              525,
+              625,
+              723
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 31
+          },
+          {
+            "variable": "coi1",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              33,
+              63
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 33
+          },
+          {
+            "variable": "bands",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              35,
+              135,
+              233,
+              331,
+              431,
+              529,
+              629,
+              727
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 35
+          },
+          {
+            "variable": "tfoiSmpLst1",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              45
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 45
+          },
+          {
+            "variable": "stK",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              57,
+              113,
+              155,
+              211,
+              253,
+              309,
+              351,
+              407,
+              451,
+              507,
+              549,
+              605,
+              649,
+              705,
+              747
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 57
+          },
+          {
+            "variable": "tfoiLst",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              89,
+              95,
+              187,
+              193,
+              285,
+              291,
+              383,
+              389,
+              483,
+              489,
+              581,
+              587,
+              681,
+              687
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 89
+          },
+          {
+            "variable": "predLst",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              91,
+              189,
+              287,
+              385,
+              485,
+              583,
+              683
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 91
+          },
+          {
+            "variable": "scale",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              97,
+              195,
+              293,
+              391,
+              491,
+              589,
+              689
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 97
+          },
+          {
+            "variable": "tileScale",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              99,
+              197,
+              295,
+              393,
+              493,
+              591,
+              691
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 99
+          }
+        ],
+        "expected_in_candidates": [
+          "bands",
+          "ftTrain",
+          "predLst",
+          "stK",
+          "tfoiLst"
+        ],
+        "missing_expected": [],
+        "declared_false_positives": [],
+        "pass": true
+      },
+      "A2": {
+        "unconsumed": [
+          {
+            "variable": "table",
+            "kind": "assignment",
+            "def_line": 11,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "AIM",
+            "kind": "assignment",
+            "def_line": 13,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          }
+        ],
+        "presentation_only": [],
+        "analysis_chain_count": 52,
+        "all_variables": [
+          {
+            "variable": "table",
+            "kind": "assignment",
+            "def_line": 11,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "AIM",
+            "kind": "assignment",
+            "def_line": 13,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "rf1",
+            "kind": "declaration",
+            "def_line": 15,
+            "post_definition_uses": 2,
+            "use_lines": [
+              39,
+              47
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "list",
+            "kind": "param",
+            "def_line": 41,
+            "post_definition_uses": 15,
+            "use_lines": [
+              43,
+              87,
+              141,
+              185,
+              239,
+              283,
+              337,
+              381,
+              437,
+              481,
+              535,
+              579,
+              635,
+              679,
+              733
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "i",
+            "kind": "param",
+            "def_line": 43,
+            "post_definition_uses": 8,
+            "use_lines": [
+              45,
+              143,
+              241,
+              339,
+              439,
+              537,
+              637,
+              735
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mapLst1",
+            "kind": "declaration",
+            "def_line": 57,
+            "post_definition_uses": 1,
+            "use_lines": [
+              65
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pn1",
+            "kind": "declaration",
+            "def_line": 59,
+            "post_definition_uses": 2,
+            "use_lines": [
+              61,
+              79
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "expName1",
+            "kind": "declaration",
+            "def_line": 63,
+            "post_definition_uses": 1,
+            "use_lines": [
+              75
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "coi2",
+            "kind": "declaration",
+            "def_line": 83,
+            "post_definition_uses": 3,
+            "use_lines": [
+              133,
+              157,
+              161
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "k",
+            "kind": "param",
+            "def_line": 87,
+            "post_definition_uses": 21,
+            "use_lines": [
+              89,
+              91,
+              95,
+              187,
+              189,
+              193,
+              285,
+              287,
+              291,
+              383,
+              385,
+              389,
+              483,
+              485,
+              489,
+              581,
+              583,
+              587,
+              681,
+              683,
+              687
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "tfoiSmpLst2",
+            "kind": "declaration",
+            "def_line": 113,
+            "post_definition_uses": 1,
+            "use_lines": [
+              143
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "rf2",
+            "kind": "declaration",
+            "def_line": 115,
+            "post_definition_uses": 1,
+            "use_lines": [
+              145
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mapLst2",
+            "kind": "declaration",
+            "def_line": 155,
+            "post_definition_uses": 1,
+            "use_lines": [
+              163
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pn2",
+            "kind": "declaration",
+            "def_line": 157,
+            "post_definition_uses": 2,
+            "use_lines": [
+              159,
+              177
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "expName2",
+            "kind": "declaration",
+            "def_line": 161,
+            "post_definition_uses": 1,
+            "use_lines": [
+              173
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "coi4",
+            "kind": "declaration",
+            "def_line": 181,
+            "post_definition_uses": 2,
+            "use_lines": [
+              231,
+              259
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "tfoiSmpLst4",
+            "kind": "declaration",
+            "def_line": 211,
+            "post_definition_uses": 1,
+            "use_lines": [
+              241
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "rf4",
+            "kind": "declaration",
+            "def_line": 213,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mapLst4",
+            "kind": "declaration",
+            "def_line": 253,
+            "post_definition_uses": 1,
+            "use_lines": [
+              261
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pn4",
+            "kind": "declaration",
+            "def_line": 255,
+            "post_definition_uses": 2,
+            "use_lines": [
+              257,
+              275
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "expName4",
+            "kind": "declaration",
+            "def_line": 259,
+            "post_definition_uses": 1,
+            "use_lines": [
+              271
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "coi5",
+            "kind": "declaration",
+            "def_line": 279,
+            "post_definition_uses": 2,
+            "use_lines": [
+              329,
+              357
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "tfoiSmpLst5",
+            "kind": "declaration",
+            "def_line": 309,
+            "post_definition_uses": 1,
+            "use_lines": [
+              339
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "rf5",
+            "kind": "declaration",
+            "def_line": 311,
+            "post_definition_uses": 1,
+            "use_lines": [
+              341
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mapLst5",
+            "kind": "declaration",
+            "def_line": 351,
+            "post_definition_uses": 1,
+            "use_lines": [
+              359
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pn5",
+            "kind": "declaration",
+            "def_line": 353,
+            "post_definition_uses": 2,
+            "use_lines": [
+              355,
+              373
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "expName5",
+            "kind": "declaration",
+            "def_line": 357,
+            "post_definition_uses": 1,
+            "use_lines": [
+              369
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "coi6",
+            "kind": "declaration",
+            "def_line": 377,
+            "post_definition_uses": 2,
+            "use_lines": [
+              429,
+              457
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "tfoiSmpLst6",
+            "kind": "declaration",
+            "def_line": 407,
+            "post_definition_uses": 1,
+            "use_lines": [
+              439
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "rf6",
+            "kind": "declaration",
+            "def_line": 409,
+            "post_definition_uses": 1,
+            "use_lines": [
+              441
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mapLst6",
+            "kind": "declaration",
+            "def_line": 451,
+            "post_definition_uses": 1,
+            "use_lines": [
+              459
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pn6",
+            "kind": "declaration",
+            "def_line": 453,
+            "post_definition_uses": 2,
+            "use_lines": [
+              455,
+              473
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "expName6",
+            "kind": "declaration",
+            "def_line": 457,
+            "post_definition_uses": 1,
+            "use_lines": [
+              469
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "coi7",
+            "kind": "declaration",
+            "def_line": 477,
+            "post_definition_uses": 2,
+            "use_lines": [
+              527,
+              555
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "tfoiSmpLst7",
+            "kind": "declaration",
+            "def_line": 507,
+            "post_definition_uses": 1,
+            "use_lines": [
+              537
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "rf7",
+            "kind": "declaration",
+            "def_line": 509,
+            "post_definition_uses": 1,
+            "use_lines": [
+              539
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mapLst7",
+            "kind": "declaration",
+            "def_line": 549,
+            "post_definition_uses": 1,
+            "use_lines": [
+              557
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pn7",
+            "kind": "declaration",
+            "def_line": 551,
+            "post_definition_uses": 2,
+            "use_lines": [
+              553,
+              571
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "expName7",
+            "kind": "declaration",
+            "def_line": 555,
+            "post_definition_uses": 1,
+            "use_lines": [
+              567
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "coi8",
+            "kind": "declaration",
+            "def_line": 575,
+            "post_definition_uses": 2,
+            "use_lines": [
+              627,
+              655
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "tfoiSmpLst8",
+            "kind": "declaration",
+            "def_line": 605,
+            "post_definition_uses": 1,
+            "use_lines": [
+              637
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "rf8",
+            "kind": "declaration",
+            "def_line": 607,
+            "post_definition_uses": 1,
+            "use_lines": [
+              639
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mapLst8",
+            "kind": "declaration",
+            "def_line": 649,
+            "post_definition_uses": 1,
+            "use_lines": [
+              657
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pn8",
+            "kind": "declaration",
+            "def_line": 651,
+            "post_definition_uses": 2,
+            "use_lines": [
+              653,
+              671
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "expName8",
+            "kind": "declaration",
+            "def_line": 655,
+            "post_definition_uses": 1,
+            "use_lines": [
+              667
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "coi9",
+            "kind": "declaration",
+            "def_line": 675,
+            "post_definition_uses": 2,
+            "use_lines": [
+              725,
+              753
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "getTfoiSmpLst",
+            "kind": "declaration",
+            "def_line": 677,
+            "post_definition_uses": 1,
+            "use_lines": [
+              705
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "geom",
+            "kind": "declaration",
+            "def_line": 681,
+            "post_definition_uses": 1,
+            "use_lines": [
+              699
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "tfoiSmpLst9",
+            "kind": "declaration",
+            "def_line": 705,
+            "post_definition_uses": 1,
+            "use_lines": [
+              735
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "rf9",
+            "kind": "declaration",
+            "def_line": 707,
+            "post_definition_uses": 1,
+            "use_lines": [
+              737
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "getMapLst",
+            "kind": "declaration",
+            "def_line": 731,
+            "post_definition_uses": 1,
+            "use_lines": [
+              747
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mapLst9",
+            "kind": "declaration",
+            "def_line": 747,
+            "post_definition_uses": 1,
+            "use_lines": [
+              755
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pn9",
+            "kind": "declaration",
+            "def_line": 749,
+            "post_definition_uses": 2,
+            "use_lines": [
+              751,
+              769
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "expName9",
+            "kind": "declaration",
+            "def_line": 753,
+            "post_definition_uses": 1,
+            "use_lines": [
+              765
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          }
+        ],
+        "anchor_checks": {},
+        "pass": true
+      },
+      "A3": {
+        "class_counts": {
+          "export": 8,
+          "unknown": 128,
+          "analysis": 139,
+          "presentation": 9
+        },
+        "unknown_review_queue": [
+          {
+            "path": null,
+            "root": null,
+            "line": 755
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 755
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 749
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 733
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 735
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 735
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 707
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 707
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 679
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 683
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 683
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 683
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 683
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 687
+          },
+          {
+            "path": "predLst.get",
+            "root": "predLst",
+            "line": 683
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 681
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 681
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 657
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 657
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 651
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 635
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 637
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 637
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 607
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 607
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 579
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 583
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 583
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 583
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 583
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 587
+          },
+          {
+            "path": "predLst.get",
+            "root": "predLst",
+            "line": 583
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 581
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 581
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 557
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 557
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 551
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 535
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 537
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 537
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 509
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 509
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 481
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 485
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 485
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 485
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 485
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 489
+          },
+          {
+            "path": "predLst.get",
+            "root": "predLst",
+            "line": 485
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 483
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 483
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 459
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 459
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 453
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 437
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 439
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 439
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 409
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 409
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 381
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 385
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 385
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 385
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 385
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 389
+          },
+          {
+            "path": "predLst.get",
+            "root": "predLst",
+            "line": 385
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 383
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 383
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 359
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 359
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 353
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 337
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 339
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 339
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 311
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 311
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 283
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 287
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 287
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 287
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 287
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 291
+          },
+          {
+            "path": "predLst.get",
+            "root": "predLst",
+            "line": 287
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 285
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 285
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 261
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 261
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 255
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 239
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 241
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 241
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 213
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 213
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 185
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 189
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 189
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 189
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 189
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 193
+          },
+          {
+            "path": "predLst.get",
+            "root": "predLst",
+            "line": 189
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 187
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 187
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 163
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 163
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 157
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 141
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 143
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 143
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 115
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 115
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 87
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 91
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 91
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 91
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 91
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 95
+          },
+          {
+            "path": "predLst.get",
+            "root": "predLst",
+            "line": 91
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 89
+          },
+          {
+            "path": "tfoiLst.get",
+            "root": "tfoiLst",
+            "line": 89
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 65
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 65
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 59
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 43
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 45
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 45
+          },
+          {
+            "path": "tfoiSmpLst1.get",
+            "root": "tfoiSmpLst1",
+            "line": 45
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 15
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 15
+          }
+        ],
+        "presentation_analysis_coexist_lines": [],
+        "pass": true
+      }
+    },
+    "script_405410": {
+      "source_sha256": "9759e94d20fac697ec14b685efed7f246ce66a5c39926a4796330bf911dd13ba",
+      "A1": {
+        "candidates": [
+          {
+            "variable": "prompt",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              90,
+              273,
+              298
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 90
+          }
+        ],
+        "expected_in_candidates": [],
+        "missing_expected": [],
+        "declared_false_positives": [],
+        "pass": true
+      },
+      "A2": {
+        "unconsumed": [
+          {
+            "variable": "outrr",
+            "kind": "declaration",
+            "def_line": 301,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          }
+        ],
+        "presentation_only": [],
+        "analysis_chain_count": 49,
+        "all_variables": [
+          {
+            "variable": "geometry",
+            "kind": "declaration",
+            "def_line": 70,
+            "post_definition_uses": 11,
+            "use_lines": [
+              105,
+              108,
+              112,
+              157,
+              160,
+              173,
+              187,
+              211,
+              226,
+              229,
+              326
+            ],
+            "consuming_call_classes": [
+              "export",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "spring",
+            "kind": "declaration",
+            "def_line": 83,
+            "post_definition_uses": 1,
+            "use_lines": [
+              92
+            ],
+            "consuming_call_classes": [],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "summer",
+            "kind": "declaration",
+            "def_line": 84,
+            "post_definition_uses": 1,
+            "use_lines": [
+              93
+            ],
+            "consuming_call_classes": [],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "autumn",
+            "kind": "declaration",
+            "def_line": 85,
+            "post_definition_uses": 1,
+            "use_lines": [
+              94
+            ],
+            "consuming_call_classes": [],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "winter",
+            "kind": "declaration",
+            "def_line": 86,
+            "post_definition_uses": 1,
+            "use_lines": [
+              95
+            ],
+            "consuming_call_classes": [],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "select_period",
+            "kind": "declaration",
+            "def_line": 90,
+            "post_definition_uses": 4,
+            "use_lines": [
+              92,
+              93,
+              94,
+              95
+            ],
+            "consuming_call_classes": [],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "monthName",
+            "kind": "declaration",
+            "def_line": 95,
+            "post_definition_uses": 1,
+            "use_lines": [
+              322
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "monthNum",
+            "kind": "declaration",
+            "def_line": 95,
+            "post_definition_uses": 2,
+            "use_lines": [
+              185,
+              322
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "period",
+            "kind": "declaration",
+            "def_line": 95,
+            "post_definition_uses": 2,
+            "use_lines": [
+              156,
+              225
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "ref",
+            "kind": "declaration",
+            "def_line": 105,
+            "post_definition_uses": 1,
+            "use_lines": [
+              111
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "dsm",
+            "kind": "declaration",
+            "def_line": 107,
+            "post_definition_uses": 6,
+            "use_lines": [
+              120,
+              147,
+              148,
+              161,
+              204,
+              297
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "slope",
+            "kind": "declaration",
+            "def_line": 120,
+            "post_definition_uses": 1,
+            "use_lines": [
+              123
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "slp_rad",
+            "kind": "declaration",
+            "def_line": 123,
+            "post_definition_uses": 1,
+            "use_lines": [
+              126
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "slp_pct",
+            "kind": "declaration",
+            "def_line": 126,
+            "post_definition_uses": 1,
+            "use_lines": [
+              140
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "critical",
+            "kind": "declaration",
+            "def_line": 137,
+            "post_definition_uses": 1,
+            "use_lines": [
+              140
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cost_slope",
+            "kind": "declaration",
+            "def_line": 140,
+            "post_definition_uses": 1,
+            "use_lines": [
+              252
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cost_altitude",
+            "kind": "declaration",
+            "def_line": 145,
+            "post_definition_uses": 1,
+            "use_lines": [
+              255
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "snowBase",
+            "kind": "declaration",
+            "def_line": 155,
+            "post_definition_uses": 1,
+            "use_lines": [
+              164
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cost_snow",
+            "kind": "declaration",
+            "def_line": 164,
+            "post_definition_uses": 1,
+            "use_lines": [
+              254
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "sea",
+            "kind": "declaration",
+            "def_line": 173,
+            "post_definition_uses": 1,
+            "use_lines": [
+              177
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mask_sea",
+            "kind": "declaration",
+            "def_line": 177,
+            "post_definition_uses": 1,
+            "use_lines": [
+              260
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "watRecur",
+            "kind": "declaration",
+            "def_line": 185,
+            "post_definition_uses": 1,
+            "use_lines": [
+              190
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cost_surface_water",
+            "kind": "declaration",
+            "def_line": 190,
+            "post_definition_uses": 1,
+            "use_lines": [
+              256
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "reservoir_polygons",
+            "kind": "declaration",
+            "def_line": 198,
+            "post_definition_uses": 1,
+            "use_lines": [
+              208
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "emptyImage",
+            "kind": "declaration",
+            "def_line": 204,
+            "post_definition_uses": 1,
+            "use_lines": [
+              207
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "mask_reservoirs",
+            "kind": "declaration",
+            "def_line": 207,
+            "post_definition_uses": 2,
+            "use_lines": [
+              216,
+              258
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "reservoirs_new_value",
+            "kind": "declaration",
+            "def_line": 216,
+            "post_definition_uses": 1,
+            "use_lines": [
+              259
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "evi",
+            "kind": "declaration",
+            "def_line": 223,
+            "post_definition_uses": 5,
+            "use_lines": [
+              239,
+              240,
+              241,
+              242,
+              243
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "dsrtThrs",
+            "kind": "declaration",
+            "def_line": 232,
+            "post_definition_uses": 5,
+            "use_lines": [
+              239,
+              241,
+              244
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "waterThrs",
+            "kind": "declaration",
+            "def_line": 236,
+            "post_definition_uses": 5,
+            "use_lines": [
+              240,
+              242,
+              244,
+              311
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "water1",
+            "kind": "declaration",
+            "def_line": 239,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "water2",
+            "kind": "declaration",
+            "def_line": 240,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "water3",
+            "kind": "declaration",
+            "def_line": 241,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "water4",
+            "kind": "declaration",
+            "def_line": 242,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "water5",
+            "kind": "declaration",
+            "def_line": 243,
+            "post_definition_uses": 1,
+            "use_lines": [
+              244
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cost_reducer_water_accessibility",
+            "kind": "declaration",
+            "def_line": 244,
+            "post_definition_uses": 1,
+            "use_lines": [
+              257
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "costs_raw",
+            "kind": "declaration",
+            "def_line": 252,
+            "post_definition_uses": 3,
+            "use_lines": [
+              278,
+              279
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "specify_maximum_cost",
+            "kind": "declaration",
+            "def_line": 273,
+            "post_definition_uses": 1,
+            "use_lines": [
+              274
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "maximum_cost",
+            "kind": "declaration",
+            "def_line": 274,
+            "post_definition_uses": 6,
+            "use_lines": [
+              275,
+              278,
+              279,
+              282,
+              322
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "costs_max_assigned",
+            "kind": "declaration",
+            "def_line": 278,
+            "post_definition_uses": 1,
+            "use_lines": [
+              282
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "cost_surface",
+            "kind": "declaration",
+            "def_line": 282,
+            "post_definition_uses": 2,
+            "use_lines": [
+              288,
+              321
+            ],
+            "consuming_call_classes": [
+              "export",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "dsm_resolution",
+            "kind": "declaration",
+            "def_line": 297,
+            "post_definition_uses": 3,
+            "use_lines": [
+              298,
+              301
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "specify_output_resolution",
+            "kind": "declaration",
+            "def_line": 298,
+            "post_definition_uses": 2,
+            "use_lines": [
+              301
+            ],
+            "consuming_call_classes": [],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "outrr",
+            "kind": "declaration",
+            "def_line": 301,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "output_resolution",
+            "kind": "declaration",
+            "def_line": 301,
+            "post_definition_uses": 2,
+            "use_lines": [
+              313,
+              324
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "eeToday",
+            "kind": "declaration",
+            "def_line": 306,
+            "post_definition_uses": 1,
+            "use_lines": [
+              307
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "today",
+            "kind": "declaration",
+            "def_line": 307,
+            "post_definition_uses": 1,
+            "use_lines": [
+              308
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "date",
+            "kind": "declaration",
+            "def_line": 308,
+            "post_definition_uses": 1,
+            "use_lines": [
+              322
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "waterThrs_string",
+            "kind": "declaration",
+            "def_line": 311,
+            "post_definition_uses": 1,
+            "use_lines": [
+              322
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "output_resolution_string",
+            "kind": "declaration",
+            "def_line": 313,
+            "post_definition_uses": 1,
+            "use_lines": [
+              322
+            ],
+            "consuming_call_classes": [
+              "export"
+            ],
+            "status": "analysis_chain"
+          }
+        ],
+        "anchor_checks": {},
+        "pass": true
+      },
+      "A3": {
+        "class_counts": {
+          "export": 1,
+          "unknown": 67,
+          "analysis": 53,
+          "presentation": 3
+        },
+        "unknown_review_queue": [
+          {
+            "path": null,
+            "root": null,
+            "line": 313
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 311
+          },
+          {
+            "path": "prompt",
+            "root": "prompt",
+            "line": 298
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 297
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 297
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 282
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 282
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 278
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 279
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 278
+          },
+          {
+            "path": "prompt",
+            "root": "prompt",
+            "line": 273
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 252
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 252
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 252
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 252
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 252
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 252
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 252
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 252
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 244
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 244
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 242
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 241
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 223
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 223
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 223
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 223
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 223
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 223
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 207
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 207
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 207
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 204
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 190
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 185
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 185
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 185
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 173
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 173
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 164
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 155
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 155
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 155
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 155
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 155
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 155
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 155
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 145
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 145
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 145
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 146
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 140
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 140
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 126
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 123
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 107
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 107
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 107
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 107
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 107
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 105
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 105
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 105
+          },
+          {
+            "path": "prompt",
+            "root": "prompt",
+            "line": 90
+          }
+        ],
+        "presentation_analysis_coexist_lines": [],
+        "pass": true
+      }
+    },
+    "script_269131": {
+      "source_sha256": "40c22718b420f3865445d1e2ceb82f43e759173606dd08b170b7613d9c544c8a",
+      "A1": {
+        "candidates": [
+          {
+            "variable": "AOI",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              13,
+              23,
+              33,
+              41,
+              81,
+              91,
+              97,
+              119,
+              133,
+              135,
+              153,
+              285,
+              299,
+              325,
+              361,
+              365
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 13
+          },
+          {
+            "variable": "image",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              135
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 135
+          },
+          {
+            "variable": "HP_11_09_2019",
+            "definition_location": "unavailable_in_source",
+            "use_lines": [
+              367
+            ],
+            "evidence": [],
+            "classification": "candidate_pending_human",
+            "first_use_line": 367
+          }
+        ],
+        "expected_in_candidates": [
+          "AOI",
+          "HP_11_09_2019",
+          "image"
+        ],
+        "missing_expected": [],
+        "declared_false_positives": [],
+        "pass": true
+      },
+      "A2": {
+        "unconsumed": [
+          {
+            "variable": "vectors_d1",
+            "kind": "declaration",
+            "def_line": 53,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "elevationVis",
+            "kind": "declaration",
+            "def_line": 99,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "aspect",
+            "kind": "declaration",
+            "def_line": 115,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "slopeVis",
+            "kind": "declaration",
+            "def_line": 121,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "terrain",
+            "kind": "declaration",
+            "def_line": 133,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "DtR",
+            "kind": "declaration",
+            "def_line": 135,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "DtRVis",
+            "kind": "declaration",
+            "def_line": 137,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "raster_vis",
+            "kind": "declaration",
+            "def_line": 155,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "pi_all",
+            "kind": "declaration",
+            "def_line": 243,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "visParams",
+            "kind": "declaration",
+            "def_line": 311,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          }
+        ],
+        "presentation_only": [
+          {
+            "variable": "chart",
+            "kind": "declaration",
+            "def_line": 321,
+            "post_definition_uses": 1,
+            "use_lines": [
+              351
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          }
+        ],
+        "analysis_chain_count": 74,
+        "all_variables": [
+          {
+            "variable": "temperatureAboveGround",
+            "kind": "declaration",
+            "def_line": 5,
+            "post_definition_uses": 1,
+            "use_lines": [
+              13
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "Temp_AOI",
+            "kind": "declaration",
+            "def_line": 13,
+            "post_definition_uses": 1,
+            "use_lines": [
+              227
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "RH",
+            "kind": "declaration",
+            "def_line": 15,
+            "post_definition_uses": 1,
+            "use_lines": [
+              23
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "RH_AOI",
+            "kind": "declaration",
+            "def_line": 23,
+            "post_definition_uses": 1,
+            "use_lines": [
+              195
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "uv_d1_draft",
+            "kind": "declaration",
+            "def_line": 25,
+            "post_definition_uses": 1,
+            "use_lines": [
+              33
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "uv_d1_0",
+            "kind": "declaration",
+            "def_line": 33,
+            "post_definition_uses": 2,
+            "use_lines": [
+              39,
+              71
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "scale",
+            "kind": "declaration",
+            "def_line": 35,
+            "post_definition_uses": 1,
+            "use_lines": [
+              43
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "numPixels",
+            "kind": "declaration",
+            "def_line": 37,
+            "post_definition_uses": 1,
+            "use_lines": [
+              45
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "samples",
+            "kind": "declaration",
+            "def_line": 39,
+            "post_definition_uses": 1,
+            "use_lines": [
+              53
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "scaleVector",
+            "kind": "declaration",
+            "def_line": 51,
+            "post_definition_uses": 2,
+            "use_lines": [
+              55,
+              57
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "vectors_d1",
+            "kind": "declaration",
+            "def_line": 53,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "f",
+            "kind": "param",
+            "def_line": 53,
+            "post_definition_uses": 4,
+            "use_lines": [
+              55,
+              57,
+              59,
+              67
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "u",
+            "kind": "declaration",
+            "def_line": 55,
+            "post_definition_uses": 1,
+            "use_lines": [
+              61
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "v",
+            "kind": "declaration",
+            "def_line": 57,
+            "post_definition_uses": 1,
+            "use_lines": [
+              61
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "origin",
+            "kind": "declaration",
+            "def_line": 59,
+            "post_definition_uses": 3,
+            "use_lines": [
+              61,
+              63,
+              65
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "proj",
+            "kind": "declaration",
+            "def_line": 61,
+            "post_definition_uses": 1,
+            "use_lines": [
+              63
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "end",
+            "kind": "declaration",
+            "def_line": 63,
+            "post_definition_uses": 1,
+            "use_lines": [
+              65
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "geom",
+            "kind": "declaration",
+            "def_line": 65,
+            "post_definition_uses": 1,
+            "use_lines": [
+              67
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "Wind_AOI",
+            "kind": "declaration",
+            "def_line": 71,
+            "post_definition_uses": 1,
+            "use_lines": [
+              235
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "PR",
+            "kind": "declaration",
+            "def_line": 73,
+            "post_definition_uses": 1,
+            "use_lines": [
+              81
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "PR_AOI",
+            "kind": "declaration",
+            "def_line": 81,
+            "post_definition_uses": 1,
+            "use_lines": [
+              211
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "RF",
+            "kind": "declaration",
+            "def_line": 83,
+            "post_definition_uses": 1,
+            "use_lines": [
+              91
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "RF_AOI",
+            "kind": "declaration",
+            "def_line": 91,
+            "post_definition_uses": 1,
+            "use_lines": [
+              203
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "elevation",
+            "kind": "declaration",
+            "def_line": 95,
+            "post_definition_uses": 1,
+            "use_lines": [
+              97
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "dem",
+            "kind": "declaration",
+            "def_line": 97,
+            "post_definition_uses": 1,
+            "use_lines": [
+              179
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "elevationVis",
+            "kind": "declaration",
+            "def_line": 99,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "elv",
+            "kind": "declaration",
+            "def_line": 111,
+            "post_definition_uses": 4,
+            "use_lines": [
+              113,
+              115,
+              117,
+              133
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "aspect",
+            "kind": "declaration",
+            "def_line": 115,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "slope",
+            "kind": "declaration",
+            "def_line": 117,
+            "post_definition_uses": 1,
+            "use_lines": [
+              119
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "slope_1",
+            "kind": "declaration",
+            "def_line": 119,
+            "post_definition_uses": 1,
+            "use_lines": [
+              219
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "slopeVis",
+            "kind": "declaration",
+            "def_line": 121,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "terrain",
+            "kind": "declaration",
+            "def_line": 133,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "DtR",
+            "kind": "declaration",
+            "def_line": 135,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "DtRVis",
+            "kind": "declaration",
+            "def_line": 137,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "dataset",
+            "kind": "declaration",
+            "def_line": 151,
+            "post_definition_uses": 1,
+            "use_lines": [
+              153
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pop",
+            "kind": "declaration",
+            "def_line": 153,
+            "post_definition_uses": 2,
+            "use_lines": [
+              187,
+              355
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "export"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "raster_vis",
+            "kind": "declaration",
+            "def_line": 155,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "count_Dem",
+            "kind": "declaration",
+            "def_line": 179,
+            "post_definition_uses": 3,
+            "use_lines": [
+              181,
+              183,
+              245
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "log_dem",
+            "kind": "declaration",
+            "def_line": 181,
+            "post_definition_uses": 1,
+            "use_lines": [
+              185
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_dem_min",
+            "kind": "declaration",
+            "def_line": 183,
+            "post_definition_uses": 1,
+            "use_lines": [
+              185
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_dem",
+            "kind": "declaration",
+            "def_line": 185,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_pop",
+            "kind": "declaration",
+            "def_line": 187,
+            "post_definition_uses": 3,
+            "use_lines": [
+              189,
+              191,
+              245
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "log_pop",
+            "kind": "declaration",
+            "def_line": 189,
+            "post_definition_uses": 1,
+            "use_lines": [
+              193
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_pop_min",
+            "kind": "declaration",
+            "def_line": 191,
+            "post_definition_uses": 1,
+            "use_lines": [
+              193
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_pop",
+            "kind": "declaration",
+            "def_line": 193,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_RH",
+            "kind": "declaration",
+            "def_line": 195,
+            "post_definition_uses": 3,
+            "use_lines": [
+              197,
+              199,
+              245
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "log_RH",
+            "kind": "declaration",
+            "def_line": 197,
+            "post_definition_uses": 1,
+            "use_lines": [
+              201
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_RH_min",
+            "kind": "declaration",
+            "def_line": 199,
+            "post_definition_uses": 1,
+            "use_lines": [
+              201
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_RH",
+            "kind": "declaration",
+            "def_line": 201,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_RF",
+            "kind": "declaration",
+            "def_line": 203,
+            "post_definition_uses": 3,
+            "use_lines": [
+              205,
+              207,
+              245
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "log_RF",
+            "kind": "declaration",
+            "def_line": 205,
+            "post_definition_uses": 1,
+            "use_lines": [
+              209
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_RF_min",
+            "kind": "declaration",
+            "def_line": 207,
+            "post_definition_uses": 1,
+            "use_lines": [
+              209
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_RF",
+            "kind": "declaration",
+            "def_line": 209,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_PR",
+            "kind": "declaration",
+            "def_line": 211,
+            "post_definition_uses": 3,
+            "use_lines": [
+              213,
+              215,
+              245
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "log_PR",
+            "kind": "declaration",
+            "def_line": 213,
+            "post_definition_uses": 1,
+            "use_lines": [
+              217
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_PR_min",
+            "kind": "declaration",
+            "def_line": 215,
+            "post_definition_uses": 1,
+            "use_lines": [
+              217
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_PR",
+            "kind": "declaration",
+            "def_line": 217,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_Slope",
+            "kind": "declaration",
+            "def_line": 219,
+            "post_definition_uses": 3,
+            "use_lines": [
+              221,
+              223,
+              245
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "log_slope",
+            "kind": "declaration",
+            "def_line": 221,
+            "post_definition_uses": 1,
+            "use_lines": [
+              225
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_Slope_min",
+            "kind": "declaration",
+            "def_line": 223,
+            "post_definition_uses": 1,
+            "use_lines": [
+              225
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_Slope",
+            "kind": "declaration",
+            "def_line": 225,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_tem",
+            "kind": "declaration",
+            "def_line": 227,
+            "post_definition_uses": 3,
+            "use_lines": [
+              229,
+              231,
+              245
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "log_tem",
+            "kind": "declaration",
+            "def_line": 229,
+            "post_definition_uses": 1,
+            "use_lines": [
+              233
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_tem_min",
+            "kind": "declaration",
+            "def_line": 231,
+            "post_definition_uses": 1,
+            "use_lines": [
+              233
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_tem",
+            "kind": "declaration",
+            "def_line": 233,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_wind",
+            "kind": "declaration",
+            "def_line": 235,
+            "post_definition_uses": 2,
+            "use_lines": [
+              237,
+              239
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "log_wind",
+            "kind": "declaration",
+            "def_line": 237,
+            "post_definition_uses": 1,
+            "use_lines": [
+              241
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "count_wind_min",
+            "kind": "declaration",
+            "def_line": 239,
+            "post_definition_uses": 1,
+            "use_lines": [
+              241
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_wind",
+            "kind": "declaration",
+            "def_line": 241,
+            "post_definition_uses": 1,
+            "use_lines": [
+              243
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "pi_all",
+            "kind": "declaration",
+            "def_line": 243,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "Fire_Sus",
+            "kind": "declaration",
+            "def_line": 245,
+            "post_definition_uses": 11,
+            "use_lines": [
+              249,
+              251,
+              253,
+              255,
+              257,
+              281,
+              295,
+              323
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation",
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "class1",
+            "kind": "declaration",
+            "def_line": 249,
+            "post_definition_uses": 1,
+            "use_lines": [
+              259
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "class2",
+            "kind": "declaration",
+            "def_line": 251,
+            "post_definition_uses": 1,
+            "use_lines": [
+              261
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "class3",
+            "kind": "declaration",
+            "def_line": 253,
+            "post_definition_uses": 1,
+            "use_lines": [
+              263
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "class4",
+            "kind": "declaration",
+            "def_line": 255,
+            "post_definition_uses": 1,
+            "use_lines": [
+              265
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "class5",
+            "kind": "declaration",
+            "def_line": 257,
+            "post_definition_uses": 1,
+            "use_lines": [
+              267
+            ],
+            "consuming_call_classes": [
+              "analysis"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "layer1",
+            "kind": "declaration",
+            "def_line": 259,
+            "post_definition_uses": 1,
+            "use_lines": [
+              269
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "layer2",
+            "kind": "declaration",
+            "def_line": 261,
+            "post_definition_uses": 1,
+            "use_lines": [
+              271
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "layer3",
+            "kind": "declaration",
+            "def_line": 263,
+            "post_definition_uses": 1,
+            "use_lines": [
+              273
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "layer4",
+            "kind": "declaration",
+            "def_line": 265,
+            "post_definition_uses": 1,
+            "use_lines": [
+              275
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "layer5",
+            "kind": "declaration",
+            "def_line": 267,
+            "post_definition_uses": 1,
+            "use_lines": [
+              277
+            ],
+            "consuming_call_classes": [
+              "unknown"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "min",
+            "kind": "declaration",
+            "def_line": 281,
+            "post_definition_uses": 1,
+            "use_lines": [
+              293
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "max",
+            "kind": "declaration",
+            "def_line": 295,
+            "post_definition_uses": 1,
+            "use_lines": [
+              307
+            ],
+            "consuming_call_classes": [
+              "analysis",
+              "presentation"
+            ],
+            "status": "analysis_chain"
+          },
+          {
+            "variable": "visParams",
+            "kind": "declaration",
+            "def_line": 311,
+            "post_definition_uses": 0,
+            "use_lines": [],
+            "consuming_call_classes": [],
+            "status": "unconsumed"
+          },
+          {
+            "variable": "chart",
+            "kind": "declaration",
+            "def_line": 321,
+            "post_definition_uses": 1,
+            "use_lines": [
+              351
+            ],
+            "consuming_call_classes": [
+              "presentation"
+            ],
+            "status": "presentation_only"
+          }
+        ],
+        "anchor_checks": {
+          "pi_all": {
+            "expected": {
+              "status": "unconsumed",
+              "post_definition_uses": 0
+            },
+            "got": {
+              "status": "unconsumed",
+              "post_definition_uses": 0
+            },
+            "pass": true
+          },
+          "Fire_Sus": {
+            "expected": {
+              "status": "analysis_chain",
+              "post_definition_uses": 11
+            },
+            "got": {
+              "status": "analysis_chain",
+              "post_definition_uses": 11
+            },
+            "pass": true
+          }
+        },
+        "pass": true
+      },
+      "A3": {
+        "class_counts": {
+          "presentation": 6,
+          "export": 1,
+          "unknown": 60,
+          "analysis": 121
+        },
+        "unknown_review_queue": [
+          {
+            "path": null,
+            "root": null,
+            "line": 321
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 295
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 295
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 281
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 281
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 277
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 275
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 273
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 271
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 269
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 257
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 257
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 255
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 255
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 255
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 253
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 253
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 253
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 251
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 251
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 251
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 249
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 249
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 245
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 245
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 245
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 245
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 245
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 245
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 245
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 243
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 151
+          },
+          {
+            "path": "image.clip",
+            "root": "image",
+            "line": 135
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 133
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 111
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 95
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 83
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 83
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 73
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 73
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 71
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 71
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 63
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 61
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 57
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 55
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 39
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 25
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 25
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 15
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 15
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 5
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 5
+          },
+          {
+            "path": null,
+            "root": null,
+            "line": 1
+          }
+        ],
+        "presentation_analysis_coexist_lines": [],
+        "pass": true,
+        "anchor_check_c2": {
+          "requirement": "ui.Chart calls classified presentation; never defaulted to analysis",
+          "chart_calls_in_unknown_queue": 0,
+          "presentation_calls_present": true
+        }
+      }
+    }
+  },
+  "A4": {
+    "script_36595": {
+      "raw_records": 21,
+      "deduped_logical_edges": 21,
+      "duplicates_merged_logical": 0,
+      "duplicates_merged_strict": 0,
+      "via_conflicts_preserved": 0,
+      "pass": true
+    },
+    "script_275285": {
+      "raw_records": 12,
+      "deduped_logical_edges": 12,
+      "duplicates_merged_logical": 0,
+      "duplicates_merged_strict": 0,
+      "via_conflicts_preserved": 0,
+      "pass": true
+    },
+    "script_93009": {
+      "raw_records": 10,
+      "deduped_logical_edges": 10,
+      "duplicates_merged_logical": 0,
+      "duplicates_merged_strict": 0,
+      "via_conflicts_preserved": 0,
+      "pass": true
+    },
+    "script_302840": {
+      "raw_records": 5,
+      "deduped_logical_edges": 5,
+      "duplicates_merged_logical": 0,
+      "duplicates_merged_strict": 0,
+      "via_conflicts_preserved": 0,
+      "pass": true
+    },
+    "script_405410": {
+      "raw_records": 12,
+      "deduped_logical_edges": 12,
+      "duplicates_merged_logical": 0,
+      "duplicates_merged_strict": 0,
+      "via_conflicts_preserved": 0,
+      "pass": true
+    },
+    "script_269131": {
+      "raw_records": 40,
+      "deduped_logical_edges": 38,
+      "duplicates_merged_logical": 2,
+      "duplicates_merged_strict": 0,
+      "via_conflicts_preserved": 2,
+      "expected": {
+        "raw": 40,
+        "deduped": 38,
+        "dups": 2
+      },
+      "pass": true
+    }
+  },
+  "overall": {
+    "A1_pass": true,
+    "A2_pass": true,
+    "A3_pass": true,
+    "A4_pass": true,
+    "all_pass": true
+  }
+}

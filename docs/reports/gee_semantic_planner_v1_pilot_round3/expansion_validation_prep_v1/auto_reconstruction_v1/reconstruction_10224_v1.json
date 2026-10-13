@@ -1,0 +1,358 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_10224",
+  "source_sha256": "99fdd7c16e1695c9e5d3268e68f1618caba8fc9e159ae636d06cf7d2aa1abcd6",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "COL_FILTER",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "dwCol",
+      "kind": "declaration",
+      "def_line": 7,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "s2Col",
+      "kind": "declaration",
+      "def_line": 9,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "DwS2Col",
+      "kind": "declaration",
+      "def_line": 11,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "dwImage",
+      "kind": "declaration",
+      "def_line": 15,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "s2Image",
+      "kind": "declaration",
+      "def_line": 17,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "CLASS_NAMES",
+      "kind": "declaration",
+      "def_line": 19,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "VIS_PALETTE",
+      "kind": "declaration",
+      "def_line": 25,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "dwRgb",
+      "kind": "declaration",
+      "def_line": 33,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "top1Prob",
+      "kind": "declaration",
+      "def_line": 41,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "top1ProbHillshade",
+      "kind": "declaration",
+      "def_line": 43,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "dwRgbHillshade",
+      "kind": "declaration",
+      "def_line": 49,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [],
+  "R1_dataflow_edges": [
+    {
+      "from": "COL_FILTER",
+      "to": "dwCol",
+      "via": "reference",
+      "use_line": 7,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "COL_FILTER",
+      "to": "s2Col",
+      "via": "reference",
+      "use_line": 9,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dwCol",
+      "to": "DwS2Col",
+      "via": "reference",
+      "use_line": 11,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "s2Col",
+      "to": "DwS2Col",
+      "via": "reference",
+      "use_line": 11,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "DwS2Col",
+      "to": "dwImage",
+      "via": "ee.Image",
+      "use_line": 15,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dwImage",
+      "to": "s2Image",
+      "via": "ee.Image",
+      "use_line": 17,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dwImage",
+      "to": "dwRgb",
+      "via": "reference",
+      "use_line": 33,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "CLASS_NAMES",
+      "to": "top1Prob",
+      "via": "reference",
+      "use_line": 41,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dwImage",
+      "to": "top1Prob",
+      "via": "reference",
+      "use_line": 41,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dwRgb",
+      "to": "dwRgbHillshade",
+      "via": "dwRgb.multiply",
+      "use_line": 49,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "top1ProbHillshade",
+      "to": "dwRgbHillshade",
+      "via": "dwRgb.multiply",
+      "use_line": 49,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [],
+  "R2_units": [
+    {
+      "unit": "script_10224:unit:COL_FILTER",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_10224:unit:dwCol",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:s2Col",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:DwS2Col",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:dwImage",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_10224:unit:s2Image",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:CLASS_NAMES",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:VIS_PALETTE",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:dwRgb",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:top1Prob",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:top1ProbHillshade",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_10224:unit:dwRgbHillshade",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "dwRgb.multiply"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "presentation": 3,
+      "analysis": 18,
+      "unknown": 7
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 45
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 41
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 33
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 33
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 11
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 9
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 7
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 11,
+    "deduped_logical_edges": 11,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

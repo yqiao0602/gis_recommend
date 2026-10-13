@@ -1,0 +1,353 @@
+{
+ "schema": "gee_reconstruction_trial_v1",
+ "source_script": "script_302840",
+ "source_sha256": "3515e90d6049ebf8e17ee1895604bd7151ab42faf9828bae2eadb93c6d9c2db2",
+ "policy": {
+  "training_admission": "not_granted",
+  "semantic_gold": false,
+  "authorized_scope": "batch2_method_validation"
+ },
+ "R1_variables": [
+  {
+   "variable": "ftTrain",
+   "kind": "feature_collection",
+   "first_use_line": 31,
+   "definition": "field training data (prebound external)",
+   "definition_location": "unavailable_in_source",
+   "external_input": true
+  },
+  {
+   "variable": "bands",
+   "kind": "list",
+   "first_use_line": 35,
+   "definition": "spectral predictor bands (prebound external)",
+   "definition_location": "unavailable_in_source",
+   "external_input": true
+  },
+  {
+   "variable": "predLst",
+   "kind": "image_collection",
+   "first_use_line": 91,
+   "definition": "predicted image collection (prebound external)",
+   "definition_location": "unavailable_in_source",
+   "external_input": true
+  },
+  {
+   "variable": "tfoiLst",
+   "kind": "list",
+   "first_use_line": 89,
+   "definition": "target features-of-interest list (prebound external)",
+   "definition_location": "unavailable_in_source",
+   "external_input": true
+  },
+  {
+   "variable": "stK",
+   "kind": "list",
+   "first_use_line": 57,
+   "definition": "index list over target features (prebound external)",
+   "definition_location": "unavailable_in_source",
+   "external_input": true
+  },
+  {
+   "variable": "rf1",
+   "kind": "classifier",
+   "def_line": null,
+   "definition": "smileRandomForest(240 trees, minLeaf 3) REGRESSION, trained on classProperty=coi1 (BareGround)",
+   "definition_location": "in_source",
+   "binding": {
+    "target_variable": "BareGround",
+    "coi": "coi1"
+   }
+  },
+  {
+   "variable": "rf2",
+   "kind": "classifier",
+   "def_line": null,
+   "definition": "smileRandomForest(300 trees, minLeaf 3) REGRESSION, trained on classProperty=coi2 (TotalFolia)",
+   "definition_location": "in_source",
+   "binding": {
+    "target_variable": "TotalFolia",
+    "coi": "coi2"
+   }
+  },
+  {
+   "variable": "rf4",
+   "kind": "classifier",
+   "def_line": null,
+   "definition": "smileRandomForest(180 trees, minLeaf 5) REGRESSION, trained on classProperty=coi4 (GapPct_251)",
+   "definition_location": "in_source",
+   "binding": {
+    "target_variable": "GapPct_251",
+    "coi": "coi4"
+   }
+  },
+  {
+   "variable": "rf5",
+   "kind": "classifier",
+   "def_line": null,
+   "definition": "smileRandomForest(100 trees, minLeaf 3) REGRESSION, trained on classProperty=coi5 (InvAnnGras)",
+   "definition_location": "in_source",
+   "binding": {
+    "target_variable": "InvAnnGras",
+    "coi": "coi5"
+   }
+  },
+  {
+   "variable": "rf6",
+   "kind": "classifier",
+   "def_line": null,
+   "definition": "smileRandomForest(100 trees, minLeaf 3) REGRESSION, trained on classProperty=coi6 (NonInvPe_1)",
+   "definition_location": "in_source",
+   "binding": {
+    "target_variable": "NonInvPe_1",
+    "coi": "coi6"
+   }
+  },
+  {
+   "variable": "rf7",
+   "kind": "classifier",
+   "def_line": null,
+   "definition": "smileRandomForest(100 trees, minLeaf 3) REGRESSION, trained on classProperty=coi7 (NonInvShru)",
+   "definition_location": "in_source",
+   "binding": {
+    "target_variable": "NonInvShru",
+    "coi": "coi7"
+   }
+  },
+  {
+   "variable": "rf8",
+   "kind": "classifier",
+   "def_line": null,
+   "definition": "smileRandomForest(100 trees, minLeaf 3) REGRESSION, trained on classProperty=coi8 (NonInvTree)",
+   "definition_location": "in_source",
+   "binding": {
+    "target_variable": "NonInvTree",
+    "coi": "coi8"
+   }
+  },
+  {
+   "variable": "rf9",
+   "kind": "classifier",
+   "def_line": null,
+   "definition": "smileRandomForest(100 trees, minLeaf 3) REGRESSION, trained on classProperty=coi9 (SageBrushC)",
+   "definition_location": "in_source",
+   "binding": {
+    "target_variable": "SageBrushC",
+    "coi": "coi9"
+   }
+  },
+  {
+   "variable": "tfoiSmpLst1",
+   "kind": "list",
+   "def_line": null,
+   "definition": "per-feature sampled predictions for target slot 1 (sampleRegions over tfoiLst, geometry restored)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "tfoiSmpLst2",
+   "kind": "list",
+   "def_line": null,
+   "definition": "per-feature sampled predictions for target slot 2 (sampleRegions over tfoiLst, geometry restored)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "tfoiSmpLst4",
+   "kind": "list",
+   "def_line": null,
+   "definition": "per-feature sampled predictions for target slot 4 (sampleRegions over tfoiLst, geometry restored)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "tfoiSmpLst5",
+   "kind": "list",
+   "def_line": null,
+   "definition": "per-feature sampled predictions for target slot 5 (sampleRegions over tfoiLst, geometry restored)",
+   "definition_location": "in_source"
+  }
+ ],
+ "R1_dataflow_edges": [
+  {
+   "from": "ftTrain",
+   "to": "rf1..rf9",
+   "via": "train({features: ftTrain, classProperty: coiN})",
+   "use_line": null,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "bands",
+   "to": "rf1..rf9",
+   "via": "train({inputProperties: bands})",
+   "use_line": null,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "predLst",
+   "to": "tfoiSmpLst*",
+   "via": "sampleRegions over tfoiLst features",
+   "use_line": null,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "tfoiSmpLst*",
+   "to": "mapLstN",
+   "via": "classify(rfN, 'rfNPred') per feature",
+   "use_line": null,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "mapLstN",
+   "to": "exportN",
+   "via": "Export.table.toCloudStorage filtered lsNDVI/mdNDVI != -1",
+   "use_line": null,
+   "evidence_status": "supported"
+  }
+ ],
+ "R1_unresolved": [
+  {
+   "item": "external prebindings (ftTrain/bands/predLst/tfoiLst/stK)",
+   "reason": "definition unavailable in source; recorded honestly"
+  }
+ ],
+ "R2_units": [
+  {
+   "unit": "data_acquisition",
+   "task_duty": "predicts multiple vegetation and land cover attributes using random forest regression models trained on field training data (ftTrain) with spectral bands as predictors",
+   "source_operation": "prebound externals ftTrain/bands/predLst/tfoiLst/stK (lines 11-13, 31-35 context)",
+   "provenance": "task_determined",
+   "implementation_detail": "which specific field dataset/imagery collection is prebound outside the script",
+   "detail_would_change": true
+  },
+  {
+   "unit": "per_target_model_training",
+   "task_duty": "For each target variable (coi), a separate Random Forest regression model is trained using the field training data and spectral predictor bands",
+   "source_operation": "8x ee.Classifier.smileRandomForest().setOutputMode('REGRESSION').train({classProperty: coiN, inputProperties: bands})",
+   "provenance": "task_determined",
+   "implementation_detail": "the choice of Random Forest (vs any other regression model) and the per-target hyperparameters (rf1 240/3, rf2 300/3, rf4 180/5, rf5-9 100/3 trees/minLeaf) are implementation choices; the task requires per-target independent training, not this specific algorithm or its parameter settings",
+   "detail_would_change": true,
+   "repeat_binding": {
+    "structure": "per_target_variable",
+    "binding_verified": "variable-level: each rfN trains with classProperty=coiN; coi1..coi9 map to the 8 task-named targets (BareGround, TotalFolia, GapPct_251, InvAnnGras, NonInvPe_1, NonInvShru, NonInvTree, SageBrushC)",
+    "verification": "not_count_only: binding is verified by classProperty assignments and export selectors pnN=[PrimaryKey, coiN, rfNPred], not merely by matching counts",
+    "homogeneity_caveat": "unit STRUCTURE is homogeneous (train->predict->sample->filter->export) but hyperparameters differ per target; homogeneity holds at the duty level, not the parameter level"
+   }
+  },
+  {
+   "unit": "per_target_prediction_sampling",
+   "task_duty": "The trained models are applied to predicted image collections (predLst) sampled over specific features (tfoiLst), generating per-feature predictions",
+   "source_operation": "tfoiSmpLstN = sampleRegions(predLst feature k) with geometry restored; mapLstN = classify(rfN,'rfNPred')",
+   "provenance": "task_determined",
+   "implementation_detail": "toList(1).get(0) single-feature extraction and tileScale are implementation choices",
+   "detail_would_change": true
+  },
+  {
+   "unit": "invalid_pixel_filtering",
+   "task_duty": "filtered to exclude pixels where lsNDVI or mdNDVI equals -1",
+   "source_operation": "ee.Filter.neq('lsNDVI', -1) / ('mdNDVI', -1) on each export collection",
+   "provenance": "task_determined",
+   "implementation_detail": "the sentinel value -1 is a dataset convention",
+   "detail_would_change": true
+  },
+  {
+   "unit": "per_target_export",
+   "task_duty": "Results are extracted via sampleRegions, classified, and exported as CSV files ... Each export includes the primary key, observed value, and model prediction",
+   "source_operation": "8x Export.table.toCloudStorage(description=coiN, selectors=pnN=[PrimaryKey, coiN, rfNPred])",
+   "provenance": "task_determined",
+   "implementation_detail": "GCS bucket name 'landcarttest' and CSV format are implementation choices",
+   "detail_would_change": true,
+   "repeat_binding": {
+    "structure": "per_target_variable",
+    "binding_verified": "expNameN = coiN; selectors pnN include coiN and rfNPred — export identity bound to target",
+    "verification": "variable-level (export description = target name)"
+   }
+  }
+ ],
+ "R3_relationships": [
+  {
+   "kind": "dataflow_edge",
+   "from": "ftTrain",
+   "to": "rf1..rf9",
+   "via": "train({features: ftTrain, classProperty: coiN})",
+   "use_line": null,
+   "definition_evidence": "unavailable_in_source",
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "bands",
+   "to": "rf1..rf9",
+   "via": "train({inputProperties: bands})",
+   "use_line": null,
+   "definition_evidence": "unavailable_in_source",
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "predLst",
+   "to": "tfoiSmpLst*",
+   "via": "sampleRegions over tfoiLst features",
+   "use_line": null,
+   "definition_evidence": "unavailable_in_source",
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "tfoiSmpLst*",
+   "to": "mapLstN",
+   "via": "classify(rfN, 'rfNPred') per feature",
+   "use_line": null,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "mapLstN",
+   "to": "exportN",
+   "via": "Export.table.toCloudStorage filtered lsNDVI/mdNDVI != -1",
+   "use_line": null,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "data_acquisition",
+   "to": "per_target_model_training",
+   "evidence": "task verbatim: models 'trained on field training data' using 'spectral bands as predictors'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "per_target_model_training",
+   "to": "per_target_prediction_sampling",
+   "evidence": "task verbatim: 'The trained models are applied to...'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "per_target_prediction_sampling",
+   "to": "invalid_pixel_filtering",
+   "evidence": "filtering applies to sampled results (dataflow); task lists filter clause at export",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "invalid_pixel_filtering",
+   "to": "per_target_export",
+   "evidence": "task verbatim: 'Results are extracted via sampleRegions, classified, and exported'",
+   "evidence_status": "task_explicit"
+  }
+ ],
+ "R3_control_structures": [
+  {
+   "candidate": "8 homogeneous train/predict/filter/export blocks",
+   "classification": "semantic_repeat_per_target",
+   "control_structure": "not_a_branch_not_a_generic_loop",
+   "reason": "repetition is a task-named per-target structure (8 named targets); each block binds to a specific variable via classProperty/export selectors; source implements blocks by copy-expansion, not by a loop"
+  },
+  {
+   "candidate": "getMapLst/getTfoiSmpLst helper functions redefined per block",
+   "classification": "implementation_code_reuse",
+   "control_structure": "not_workflow_repetition",
+   "reason": "redefining identical helper functions per block is a code-organization choice"
+  }
+ ]
+}

@@ -1,0 +1,997 @@
+{
+ "schema": "gee_reconstruction_trial_v1",
+ "source_script": "script_269131",
+ "source_sha256": "40c22718b420f3865445d1e2ceb82f43e759173606dd08b170b7613d9c544c8a",
+ "policy": {
+  "training_admission": "not_granted",
+  "semantic_gold": false,
+  "authorized_scope": "batch3_conflict_stress_test"
+ },
+ "conflict_list": [
+  {
+   "conflict_id": "C1_dual_formula",
+   "type": "parallel_formulas_same_purpose",
+   "task_claim": "Each variable is transformed ... to compute individual contribution indices (pi_*) which are then summed and inverted to generate a final Fire Susceptibility Index (Fire_Sus)",
+   "source_evidence": {
+    "pi_all": {
+     "def_line": 243,
+     "formula": "pi_dem.add(pi_pop).add(pi_RH).add(pi_RF).add(pi_PR).add(pi_Slope).add(pi_tem).add(pi_wind).multiply(-1)",
+     "post_definition_usage_count": 0,
+     "note": "defined once, never consumed afterwards"
+    },
+    "Fire_Sus": {
+     "def_line": 245,
+     "formula": "count_Dem.add(count_pop).add(count_RH).add(count_RF).add(count_PR).add(count_Slope).add(count_tem).pow(-1).multiply(1826.07)",
+     "post_definition_usage_count": 12,
+     "note": "drives classification, charts, and all downstream layers"
+    }
+   },
+   "facts": [
+    "two parallel formulas both match the task's 'summed and inverted' description",
+    "pi_all includes wind and uses pi_* (transformed) inputs; Fire_Sus uses count_* (pre-log) inputs, omits wind, and applies scale 1826.07",
+    "only Fire_Sus feeds downstream analysis (classification class1-5, reduceRegion, chart)",
+    "pi_all is dead code in this script snapshot"
+   ],
+   "resolution": "NOT reconciled. Both formulas preserved with variable bindings. The reconstruction records the classification stage as consuming Fire_Sus (the only evidence-backed dependency); pi_all is recorded as an unconsumed parallel formula. Which formula matches the author's intended model cannot be determined from this script alone.",
+   "forbidden_action": "choosing one formula as 'the correct' model, or merging them"
+  },
+  {
+   "conflict_id": "C2_chart_xproperty_mismatch",
+   "type": "presentation_vs_analysis_inconsistency",
+   "task_claim": "a chart showing regional mean values over time (though xProperty suggests estate-based analysis)",
+   "source_evidence": {
+    "chart_def_line": 321,
+    "call": "ui.Chart.image.byRegion({image: Fire_Sus, regions: AOI, reducer: mean, xProperty: 'Estate'})",
+    "facts": [
+     "regions parameter is AOI (the basin feature collection)",
+     "xProperty 'Estate' does not correspond to any visible AOI property in this script",
+     "the task itself flags this mismatch ('though xProperty suggests estate-based analysis')",
+     "chart title 'Hot Spot VS Suhu Permukaan' (Indonesian: surface temperature) does not match fire susceptibility either"
+    ]
+   },
+   "facts_extra": [
+    "the mismatch is confined to the chart presentation layer; the susceptibility computation and classification are unaffected"
+   ],
+   "resolution": "NOT reconciled. Chart configuration, actual data fields, and task requirements recorded separately. Classified as a presentation-layer defect: it does not invalidate the analysis workflow and must not be treated as an analysis-stage error.",
+   "forbidden_action": "mixing the presentation defect into the analysis-stage reconstruction, or 'fixing' xProperty to match AOI"
+  },
+  {
+   "conflict_id": "C3_undefined_variables",
+   "type": "undefined_in_snapshot",
+   "task_claim": null,
+   "source_evidence": {
+    "items": [
+     {
+      "variable": "AOI",
+      "note": "used from line 13 onward (Temp_AOI...clip(AOI)) but no var AOI = declaration exists in this script snapshot"
+     },
+     {
+      "variable": "image",
+      "note": "used at line 135 (var DtR = image.clip(AOI)) without visible declaration"
+     },
+     {
+      "variable": "HP_11_09_2019",
+      "note": "displayed at line 367 without visible declaration"
+     }
+    ]
+   },
+   "facts": [
+    "these variables are prebound outside the script snapshot (earlier editor state or external includes)",
+    "DtR (line 135) and HP_11_09_2019 (line 367) appear to be presentation/diagnostic leftovers; neither feeds the susceptibility computation chain"
+   ],
+   "resolution": "Recorded as external prebindings with first-use locations; no dependency edges fabricated into the analysis chain.",
+   "forbidden_action": "inventing definitions or linking them into the Fire_Sus chain"
+  }
+ ],
+ "R1_variables": [
+  {
+   "variable": "dataset",
+   "kind": "image_collection",
+   "def_line": 1,
+   "definition": "NOAA/GFS0P25 filtered to 2023-08-23/24",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "Temp_AOI",
+   "kind": "image",
+   "def_line": 13,
+   "definition": "temperature_2m_above_ground mean over forecast hours [6,12,18,24], clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "RH_AOI",
+   "kind": "image",
+   "def_line": 23,
+   "definition": "relative humidity mean, clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "Wind_AOI",
+   "kind": "image",
+   "def_line": 71,
+   "definition": "wind speed sqrt(u^2+v^2) from u/v components",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "PR_AOI",
+   "kind": "image",
+   "def_line": 81,
+   "definition": "precipitable water mean, clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "RF_AOI",
+   "kind": "image",
+   "def_line": 91,
+   "definition": "downward shortwave radiation flux mean, clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "dem",
+   "kind": "image",
+   "def_line": 97,
+   "definition": "COPERNICUS/GLO30 DEM mean, clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "elv",
+   "kind": "image",
+   "def_line": 111,
+   "definition": "NASADEM elevation (second elevation source; both loaded)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "slope_1",
+   "kind": "image",
+   "def_line": 119,
+   "definition": "ee.Terrain.slope(elv) clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pop",
+   "kind": "image",
+   "def_line": 153,
+   "definition": "WorldPop max, clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "count_Dem",
+   "kind": "image",
+   "def_line": 179,
+   "definition": "dem * 47.9819",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "log_dem",
+   "kind": "image",
+   "def_line": 181,
+   "definition": "log(count_Dem)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "count_dem_min",
+   "kind": "image",
+   "def_line": 183,
+   "definition": "count_Dem * -1",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_dem",
+   "kind": "image",
+   "def_line": 185,
+   "definition": "count_dem_min * log_dem",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "count_pop",
+   "kind": "image",
+   "def_line": 187,
+   "definition": "pop * 0.7511",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_pop",
+   "kind": "image",
+   "def_line": 193,
+   "definition": "count_pop_min * log_pop",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_RH",
+   "kind": "image",
+   "def_line": 201,
+   "definition": "count_RH_min * log_RH",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_RF",
+   "kind": "image",
+   "def_line": 209,
+   "definition": "count_RF_min * log_RF",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_PR",
+   "kind": "image",
+   "def_line": 217,
+   "definition": "count_PR_min * log_PR",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_Slope",
+   "kind": "image",
+   "def_line": 225,
+   "definition": "count_Slope_min * log_slope",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_tem",
+   "kind": "image",
+   "def_line": 233,
+   "definition": "count_tem_min * log_tem",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_wind",
+   "kind": "image",
+   "def_line": 241,
+   "definition": "count_wind_min * log_wind",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "pi_all",
+   "kind": "image",
+   "def_line": 243,
+   "definition": "sum of 8 pi_* then *(-1); UNCONSUMED (dead in this snapshot)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "Fire_Sus",
+   "kind": "image",
+   "def_line": 245,
+   "definition": "(count_Dem+count_pop+count_RH+count_RF+count_PR+count_Slope+count_tem).pow(-1)*1826.07; the consumed susceptibility index",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "class1..class5",
+   "kind": "image",
+   "def_line": 249,
+   "definition": "five risk classes via Fire_Sus.lt/gte(.and.lte).selfMask().set(val,n)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "AOI",
+   "kind": "geometry",
+   "first_use_line": 13,
+   "definition": "analysis geometry (prebound external; no declaration in snapshot)",
+   "definition_location": "unavailable_in_source",
+   "external_input": true
+  }
+ ],
+ "R1_dataflow_edges": [
+  {
+   "from": "dem",
+   "to": "count_Dem",
+   "via": "multiply 47.9819",
+   "use_line": 179,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_Dem",
+   "to": "pi_dem",
+   "via": "log -> negate -> multiply",
+   "use_line": 185,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pop",
+   "to": "count_pop",
+   "via": "multiply 0.7511",
+   "use_line": 187,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_pop",
+   "to": "pi_pop",
+   "via": "log -> negate -> multiply",
+   "use_line": 193,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "RH_AOI",
+   "to": "pi_RH",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 201,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "RF_AOI",
+   "to": "pi_RF",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 209,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "PR_AOI",
+   "to": "pi_PR",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 217,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "slope_1",
+   "to": "pi_Slope",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 225,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "Temp_AOI",
+   "to": "pi_tem",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 233,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "Wind_AOI",
+   "to": "pi_wind",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 241,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pi_dem",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pi_pop",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pi_RH",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pi_RF",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pi_PR",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pi_Slope",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pi_tem",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pi_wind",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_Dem",
+   "to": "Fire_Sus",
+   "via": "add chain then pow(-1)*1826.07",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_pop",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_RH",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_RF",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_PR",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_Slope",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "count_tem",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "Fire_Sus",
+   "to": "class1..class5",
+   "via": "lt/gte(.and.lte) thresholds",
+   "use_line": 249,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "dem",
+   "to": "count_Dem",
+   "via": "also source of count chain",
+   "use_line": 179,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "RH_AOI",
+   "to": "count_RH",
+   "via": "scale step",
+   "use_line": 195,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "RF_AOI",
+   "to": "count_RF",
+   "via": "scale step",
+   "use_line": 203,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "PR_AOI",
+   "to": "count_PR",
+   "via": "scale step",
+   "use_line": 211,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "slope_1",
+   "to": "count_Slope",
+   "via": "scale step",
+   "use_line": 219,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "Temp_AOI",
+   "to": "count_tem",
+   "via": "scale step",
+   "use_line": 227,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "pop",
+   "to": "count_pop",
+   "via": "scale step",
+   "use_line": 187,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "AOI",
+   "to": "Temp_AOI",
+   "via": "clip",
+   "use_line": 13,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "AOI",
+   "to": "RH_AOI",
+   "via": "clip",
+   "use_line": 23,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "AOI",
+   "to": "PR_AOI",
+   "via": "clip",
+   "use_line": 81,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "AOI",
+   "to": "RF_AOI",
+   "via": "clip",
+   "use_line": 91,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "AOI",
+   "to": "dem",
+   "via": "clip",
+   "use_line": 97,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "AOI",
+   "to": "slope_1",
+   "via": "clip",
+   "use_line": 119,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "AOI",
+   "to": "pop",
+   "via": "clip",
+   "use_line": 153,
+   "evidence_status": "supported_passing_only"
+  }
+ ],
+ "R1_unresolved": [
+  {
+   "item": "AOI geometry",
+   "reason": "prebound external; no declaration in snapshot; first use line 13"
+  },
+  {
+   "item": "image (line 135)",
+   "reason": "used without declaration; appears to be a diagnostic leftover (DtR); not linked into the susceptibility chain"
+  },
+  {
+   "item": "HP_11_09_2019 (line 367)",
+   "reason": "displayed without declaration; not linked into the susceptibility chain"
+  }
+ ],
+ "R2_units": [
+  {
+   "unit": "environmental_acquisition",
+   "task_duty": "combining multiple environmental and human factors including elevation, population density, temperature, relative humidity, wind speed, solar radiation, precipitation, and slope",
+   "source_operation": "GFS0P25 select/mean blocks (lines 1-91); COPERNICUS GLO30 + NASADEM (93-119); WorldPop (151-153)",
+   "provenance": "task_determined",
+   "implementation_detail": "dual elevation sources (GLO30 + NASADEM both loaded, NASADEM drives slope) and the GFS forecast-hours subset [6,12,18,24] are implementation choices",
+   "detail_would_change": true
+  },
+  {
+   "unit": "factor_transform",
+   "task_duty": "Each variable is transformed using logarithmic scaling and weighted coefficients to compute individual contribution indices (pi_*)",
+   "source_operation": "8x count_X.multiply(w).log(); pi_X = count_X_min.multiply(log_X) (lines 179-241)",
+   "provenance": "task_determined",
+   "implementation_detail": "per-factor weights (47.9819, 0.7511, 3.9351, 1.9702, 28.1044, 2.8167, 3.0788, 11.3618) are implementation calibration",
+   "detail_would_change": true
+  },
+  {
+   "unit": "weighted_factor_fusion",
+   "task_duty": "which are then summed and inverted to generate a final Fire Susceptibility Index (Fire_Sus)",
+   "source_operation": "TWO parallel realizations: pi_all (line 243, unconsumed) and Fire_Sus (line 245, consumed downstream)",
+   "provenance": "task_determined",
+   "implementation_detail": "the scale constant 1826.07 and Fire_Sus's omission of wind are implementation choices",
+   "detail_would_change": true,
+   "dual_role": {
+    "consumed_formula": {
+     "value": "Fire_Sus",
+     "evidence": "12 post-definition usages: classes 1-5, reduceRegion min/max, chart"
+    },
+    "unconsumed_formula": {
+     "value": "pi_all",
+     "evidence": "0 post-definition usages; dead in this snapshot"
+    },
+    "note": "both preserved with bindings; conflict C1 not reconciled"
+   }
+  },
+  {
+   "unit": "susceptibility_classification",
+   "task_duty": "The index is classified into five categories (Very Low to Very High)",
+   "source_operation": "class1..class5 via Fire_Sus.lt/gte(.and.lte).selfMask().set(val,n); thresholds 0.1277/0.3288/0.5222/0.7155 (lines 249-257)",
+   "provenance": "task_determined",
+   "implementation_detail": "the four threshold values are implementation calibration",
+   "detail_would_change": true
+  },
+  {
+   "unit": "regional_output",
+   "task_duty": "Outputs include classified fire risk zones, a chart showing regional mean values over time, and exported population data",
+   "source_operation": "reduceRegion min/max over AOI (281-307); ui.Chart.image.byRegion xProperty 'Estate' (321-351); Export pop toDrive (353-363)",
+   "provenance": "task_determined",
+   "implementation_detail": "chart styling, the population export, and the leftover HP_11_09_2019 display are presentation/diagnostic choices",
+   "detail_would_change": true,
+   "presentation_defect": {
+    "item": "chart xProperty 'Estate' vs regions AOI; title mismatch (surface temperature vs fire susceptibility)",
+    "classification": "presentation_layer_only",
+    "analysis_workflow_impact": "none - Fire_Sus computation and classification are unaffected",
+    "conflict_ref": "C2"
+   }
+  }
+ ],
+ "R3_relationships": [
+  {
+   "kind": "dataflow_edge",
+   "from": "dem",
+   "to": "count_Dem",
+   "via": "multiply 47.9819",
+   "use_line": 179,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_Dem",
+   "to": "pi_dem",
+   "via": "log -> negate -> multiply",
+   "use_line": 185,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pop",
+   "to": "count_pop",
+   "via": "multiply 0.7511",
+   "use_line": 187,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_pop",
+   "to": "pi_pop",
+   "via": "log -> negate -> multiply",
+   "use_line": 193,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "RH_AOI",
+   "to": "pi_RH",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 201,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "RF_AOI",
+   "to": "pi_RF",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 209,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "PR_AOI",
+   "to": "pi_PR",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 217,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "slope_1",
+   "to": "pi_Slope",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 225,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "Temp_AOI",
+   "to": "pi_tem",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 233,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "Wind_AOI",
+   "to": "pi_wind",
+   "via": "scale -> log -> negate -> multiply",
+   "use_line": 241,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pi_dem",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pi_pop",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pi_RH",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pi_RF",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pi_PR",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pi_Slope",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pi_tem",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pi_wind",
+   "to": "pi_all",
+   "via": "add chain",
+   "use_line": 243,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_Dem",
+   "to": "Fire_Sus",
+   "via": "add chain then pow(-1)*1826.07",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_pop",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_RH",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_RF",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_PR",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_Slope",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "count_tem",
+   "to": "Fire_Sus",
+   "via": "add chain",
+   "use_line": 245,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "Fire_Sus",
+   "to": "class1..class5",
+   "via": "lt/gte(.and.lte) thresholds",
+   "use_line": 249,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "dem",
+   "to": "count_Dem",
+   "via": "also source of count chain",
+   "use_line": 179,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "RH_AOI",
+   "to": "count_RH",
+   "via": "scale step",
+   "use_line": 195,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "RF_AOI",
+   "to": "count_RF",
+   "via": "scale step",
+   "use_line": 203,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "PR_AOI",
+   "to": "count_PR",
+   "via": "scale step",
+   "use_line": 211,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "slope_1",
+   "to": "count_Slope",
+   "via": "scale step",
+   "use_line": 219,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "Temp_AOI",
+   "to": "count_tem",
+   "via": "scale step",
+   "use_line": 227,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "pop",
+   "to": "count_pop",
+   "via": "scale step",
+   "use_line": 187,
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "AOI",
+   "to": "Temp_AOI",
+   "via": "clip",
+   "use_line": 13,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "AOI",
+   "to": "RH_AOI",
+   "via": "clip",
+   "use_line": 23,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "AOI",
+   "to": "PR_AOI",
+   "via": "clip",
+   "use_line": 81,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "AOI",
+   "to": "RF_AOI",
+   "via": "clip",
+   "use_line": 91,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "AOI",
+   "to": "dem",
+   "via": "clip",
+   "use_line": 97,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "AOI",
+   "to": "slope_1",
+   "via": "clip",
+   "use_line": 119,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "AOI",
+   "to": "pop",
+   "via": "clip",
+   "use_line": 153,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "environmental_acquisition",
+   "to": "factor_transform",
+   "evidence": "task verbatim: 'Each variable is transformed using logarithmic scaling...' - transforms act on the acquired variables",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "factor_transform",
+   "to": "weighted_factor_fusion",
+   "evidence": "task verbatim: 'which are then summed and inverted to generate...'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "weighted_factor_fusion",
+   "to": "susceptibility_classification",
+   "evidence": "task verbatim: 'The index is classified into five categories'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "susceptibility_classification",
+   "to": "regional_output",
+   "evidence": "task verbatim: 'Outputs include classified fire risk zones, a chart...'",
+   "evidence_status": "task_explicit"
+  }
+ ],
+ "R3_control_structures": [
+  {
+   "candidate": "pi_all vs Fire_Sus parallel construction",
+   "classification": "parallel_formulas_unconsumed_vs_consumed",
+   "relation_type": "recorded_as_conflict_C1",
+   "control_structure": "not_a_branch",
+   "reason": "two formula realizations, one dead; NOT a conditional branch - no control flow selects between them"
+  },
+  {
+   "candidate": "class1..class5 threshold chain",
+   "classification": "multi_threshold_classification",
+   "control_structure": "not_a_branch",
+   "reason": "five gte/lte class masks are parallel categorical outputs, not if/else control flow"
+  },
+  {
+   "candidate": "chart xProperty mismatch",
+   "classification": "presentation_layer_defect",
+   "control_structure": "not_workflow",
+   "reason": "confined to ui.Chart configuration; conflict C2"
+  }
+ ]
+}

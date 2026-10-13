@@ -1,0 +1,2807 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_191158",
+  "source_sha256": "07774bd3fab5b27037e87f920a98ec30918d6f605c33b4b04ac12940ca2405d6",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "l8toa",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "roi",
+      "kind": "declaration",
+      "def_line": 3,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "timeField",
+      "kind": "declaration",
+      "def_line": 7,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "image",
+      "kind": "param",
+      "def_line": 9,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "maskClouds",
+      "kind": "declaration",
+      "def_line": 9,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "quality",
+      "kind": "declaration",
+      "def_line": 11,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cloud01",
+      "kind": "declaration",
+      "def_line": 13,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cloud02",
+      "kind": "declaration",
+      "def_line": 15,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cloud03",
+      "kind": "declaration",
+      "def_line": 17,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mask",
+      "kind": "declaration",
+      "def_line": 19,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "addVariables",
+      "kind": "declaration",
+      "def_line": 25,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "date",
+      "kind": "declaration",
+      "def_line": 27,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "years",
+      "kind": "declaration",
+      "def_line": 29,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "filteredLandsat",
+      "kind": "declaration",
+      "def_line": 41,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "l8Chart",
+      "kind": "declaration",
+      "def_line": 51,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "independents",
+      "kind": "declaration",
+      "def_line": 73,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "dependent",
+      "kind": "declaration",
+      "def_line": 75,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "trend",
+      "kind": "declaration",
+      "def_line": 77,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "coefficients",
+      "kind": "declaration",
+      "def_line": 81,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "detrended",
+      "kind": "declaration",
+      "def_line": 87,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "detrendedChart",
+      "kind": "declaration",
+      "def_line": 99,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "harmonicIndependents",
+      "kind": "declaration",
+      "def_line": 113,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "harmonicLandsat",
+      "kind": "declaration",
+      "def_line": 115,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "timeRadians",
+      "kind": "declaration",
+      "def_line": 117,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "harmonicTrend",
+      "kind": "declaration",
+      "def_line": 127,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "harmonicTrendCoefficients",
+      "kind": "declaration",
+      "def_line": 133,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "fittedHarmonic",
+      "kind": "declaration",
+      "def_line": 139,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "phase",
+      "kind": "declaration",
+      "def_line": 169,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "amplitude",
+      "kind": "declaration",
+      "def_line": 173,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "rgb",
+      "kind": "declaration",
+      "def_line": 177,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lag",
+      "kind": "declaration",
+      "def_line": 185,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "leftCollection",
+      "kind": "param",
+      "def_line": 185,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "rightCollection",
+      "kind": "param",
+      "def_line": 185,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lagDays",
+      "kind": "param",
+      "def_line": 185,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "filter",
+      "kind": "declaration",
+      "def_line": 187,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lagged17",
+      "kind": "declaration",
+      "def_line": 229,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "merge",
+      "kind": "declaration",
+      "def_line": 233,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "current",
+      "kind": "param",
+      "def_line": 235,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "merger",
+      "kind": "declaration",
+      "def_line": 235,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "previous",
+      "kind": "param",
+      "def_line": 235,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "merged17",
+      "kind": "declaration",
+      "def_line": 245,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mergedCollection",
+      "kind": "param",
+      "def_line": 247,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "band",
+      "kind": "param",
+      "def_line": 247,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lagBand",
+      "kind": "declaration",
+      "def_line": 257,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "covariance17",
+      "kind": "declaration",
+      "def_line": 259,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "correlation",
+      "kind": "declaration",
+      "def_line": 263,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "vcArrayImage",
+      "kind": "param",
+      "def_line": 263,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "covariance",
+      "kind": "declaration",
+      "def_line": 265,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sd0",
+      "kind": "declaration",
+      "def_line": 267,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sd1",
+      "kind": "declaration",
+      "def_line": 269,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "correlation17",
+      "kind": "declaration",
+      "def_line": 275,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "covariance34",
+      "kind": "declaration",
+      "def_line": 291,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "chirps",
+      "kind": "declaration",
+      "def_line": 295,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lag1PrecipNDVI",
+      "kind": "declaration",
+      "def_line": 297,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "merged1PrecipNDVI",
+      "kind": "declaration",
+      "def_line": 301,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cov1PrecipNDVI",
+      "kind": "declaration",
+      "def_line": 305,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "corr1PrecipNDVI",
+      "kind": "declaration",
+      "def_line": 309,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lag30PrecipNDVI",
+      "kind": "declaration",
+      "def_line": 313,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sum30PrecipNDVI",
+      "kind": "declaration",
+      "def_line": 317,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "laggedImages",
+      "kind": "declaration",
+      "def_line": 319,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cov30PrecipNDVI",
+      "kind": "declaration",
+      "def_line": 325,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "corr30PrecipNDVI",
+      "kind": "declaration",
+      "def_line": 329,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lagged34",
+      "kind": "declaration",
+      "def_line": 333,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "merged34",
+      "kind": "declaration",
+      "def_line": 335,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "arIndependents",
+      "kind": "declaration",
+      "def_line": 341,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ar2",
+      "kind": "declaration",
+      "def_line": 343,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "arCoefficients",
+      "kind": "declaration",
+      "def_line": 349,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "fittedAR",
+      "kind": "declaration",
+      "def_line": 355,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "list",
+      "kind": "param",
+      "def_line": 391,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "fill",
+      "kind": "declaration",
+      "def_line": 391,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "latestDate",
+      "kind": "declaration",
+      "def_line": 393,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "currentDate",
+      "kind": "declaration",
+      "def_line": 395,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "start",
+      "kind": "declaration",
+      "def_line": 397,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "end",
+      "kind": "declaration",
+      "def_line": 399,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "blankImages",
+      "kind": "declaration",
+      "def_line": 401,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "first",
+      "kind": "declaration",
+      "def_line": 433,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "filled",
+      "kind": "declaration",
+      "def_line": 435,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "indices",
+      "kind": "declaration",
+      "def_line": 437,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "forecast",
+      "kind": "declaration",
+      "def_line": 439,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ndvi",
+      "kind": "declaration",
+      "def_line": 441,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "size",
+      "kind": "declaration",
+      "def_line": 443,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "image1",
+      "kind": "declaration",
+      "def_line": 445,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "image2",
+      "kind": "declaration",
+      "def_line": 447,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "predicted",
+      "kind": "declaration",
+      "def_line": 449,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "replaced",
+      "kind": "declaration",
+      "def_line": 465,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "startList",
+      "kind": "declaration",
+      "def_line": 485,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "modeled",
+      "kind": "declaration",
+      "def_line": 487,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "join",
+      "kind": "declaration",
+      "def_line": 507,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "diffFilter",
+      "kind": "declaration",
+      "def_line": 513,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "threeNeighborJoin",
+      "kind": "declaration",
+      "def_line": 523,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "smoothed",
+      "kind": "declaration",
+      "def_line": 533,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "collection",
+      "kind": "declaration",
+      "def_line": 535,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [],
+  "R1_dataflow_edges": [
+    {
+      "from": "image",
+      "to": "quality",
+      "via": "image.select",
+      "use_line": 11,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "quality",
+      "to": "cloud01",
+      "via": "quality.eq",
+      "use_line": 13,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "quality",
+      "to": "cloud02",
+      "via": "quality.eq",
+      "use_line": 15,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "quality",
+      "to": "cloud03",
+      "via": "quality.eq",
+      "use_line": 17,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cloud01",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cloud02",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cloud03",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "date",
+      "via": "ee.Date",
+      "use_line": 27,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "timeField",
+      "to": "date",
+      "via": "ee.Date",
+      "use_line": 27,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "date",
+      "to": "years",
+      "via": "date.difference",
+      "use_line": 29,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "l8toa",
+      "to": "filteredLandsat",
+      "via": "reference",
+      "use_line": 41,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "l8Chart",
+      "via": "reference",
+      "use_line": 51,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "roi",
+      "to": "l8Chart",
+      "via": "reference",
+      "use_line": 51,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dependent",
+      "to": "trend",
+      "via": "reference",
+      "use_line": 77,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "trend",
+      "via": "reference",
+      "use_line": 77,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "independents",
+      "to": "trend",
+      "via": "reference",
+      "use_line": 77,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "trend",
+      "to": "coefficients",
+      "via": "reference",
+      "use_line": 81,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "detrended",
+      "via": "filteredLandsat.map",
+      "use_line": 87,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "detrended",
+      "to": "detrendedChart",
+      "via": "reference",
+      "use_line": 99,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "roi",
+      "to": "detrendedChart",
+      "via": "reference",
+      "use_line": 99,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "harmonicLandsat",
+      "via": "filteredLandsat.map",
+      "use_line": 115,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "timeRadians",
+      "via": "reference",
+      "use_line": 117,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "harmonicLandsat",
+      "to": "harmonicTrend",
+      "via": "reference",
+      "use_line": 127,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "harmonicTrend",
+      "to": "harmonicTrendCoefficients",
+      "via": "reference",
+      "use_line": 133,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "harmonicLandsat",
+      "to": "fittedHarmonic",
+      "via": "harmonicLandsat.map",
+      "use_line": 139,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "harmonicTrendCoefficients",
+      "to": "phase",
+      "via": "reference",
+      "use_line": 169,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "harmonicTrendCoefficients",
+      "to": "amplitude",
+      "via": "reference",
+      "use_line": 173,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "phase",
+      "to": "rgb",
+      "via": "reference",
+      "use_line": 177,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "detrended",
+      "to": "lagged17",
+      "via": "lag",
+      "use_line": 229,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lag",
+      "to": "lagged17",
+      "via": "lag",
+      "use_line": 229,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lagged17",
+      "to": "merged17",
+      "via": "ee.ImageCollection",
+      "use_line": 245,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merge",
+      "to": "merged17",
+      "via": "ee.ImageCollection",
+      "use_line": 245,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dependent",
+      "to": "lagBand",
+      "via": "dependent.cat",
+      "use_line": 257,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "covariance",
+      "to": "covariance17",
+      "via": "ee.Image",
+      "use_line": 259,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dependent",
+      "to": "covariance17",
+      "via": "ee.Image",
+      "use_line": 259,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lagBand",
+      "to": "covariance17",
+      "via": "ee.Image",
+      "use_line": 259,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merged17",
+      "to": "covariance17",
+      "via": "ee.Image",
+      "use_line": 259,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "vcArrayImage",
+      "to": "covariance",
+      "via": "reference",
+      "use_line": 265,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "vcArrayImage",
+      "to": "sd0",
+      "via": "reference",
+      "use_line": 267,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "vcArrayImage",
+      "to": "sd1",
+      "via": "reference",
+      "use_line": 269,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "correlation",
+      "to": "correlation17",
+      "via": "correlation",
+      "use_line": 275,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "covariance17",
+      "to": "correlation17",
+      "via": "correlation",
+      "use_line": 275,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "detrended",
+      "to": "lagged34",
+      "via": "lag",
+      "use_line": 279,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lag",
+      "to": "lagged34",
+      "via": "lag",
+      "use_line": 279,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lagged34",
+      "to": "merged34",
+      "via": "reference",
+      "use_line": 281,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merge",
+      "to": "merged34",
+      "via": "reference",
+      "use_line": 281,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "covariance",
+      "to": "covariance34",
+      "via": "ee.Image",
+      "use_line": 291,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "dependent",
+      "to": "covariance34",
+      "via": "ee.Image",
+      "use_line": 291,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merged34",
+      "to": "covariance34",
+      "via": "ee.Image",
+      "use_line": 291,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "chirps",
+      "to": "lag1PrecipNDVI",
+      "via": "lag",
+      "use_line": 297,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "lag1PrecipNDVI",
+      "via": "lag",
+      "use_line": 297,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lag",
+      "to": "lag1PrecipNDVI",
+      "via": "lag",
+      "use_line": 297,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lag1PrecipNDVI",
+      "to": "merged1PrecipNDVI",
+      "via": "ee.ImageCollection",
+      "use_line": 301,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merge",
+      "to": "merged1PrecipNDVI",
+      "via": "ee.ImageCollection",
+      "use_line": 301,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "covariance",
+      "to": "cov1PrecipNDVI",
+      "via": "covariance",
+      "use_line": 305,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merged1PrecipNDVI",
+      "to": "cov1PrecipNDVI",
+      "via": "covariance",
+      "use_line": 305,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "correlation",
+      "to": "corr1PrecipNDVI",
+      "via": "correlation",
+      "use_line": 309,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cov1PrecipNDVI",
+      "to": "corr1PrecipNDVI",
+      "via": "correlation",
+      "use_line": 309,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "chirps",
+      "to": "lag30PrecipNDVI",
+      "via": "lag",
+      "use_line": 313,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "lag30PrecipNDVI",
+      "via": "lag",
+      "use_line": 313,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lag",
+      "to": "lag30PrecipNDVI",
+      "via": "lag",
+      "use_line": 313,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lag30PrecipNDVI",
+      "to": "sum30PrecipNDVI",
+      "via": "ee.ImageCollection",
+      "use_line": 317,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "laggedImages",
+      "via": "ee.ImageCollection.fromImages",
+      "use_line": 319,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "covariance",
+      "to": "cov30PrecipNDVI",
+      "via": "covariance",
+      "use_line": 325,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "sum30PrecipNDVI",
+      "to": "cov30PrecipNDVI",
+      "via": "covariance",
+      "use_line": 325,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "correlation",
+      "to": "corr30PrecipNDVI",
+      "via": "correlation",
+      "use_line": 329,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cov30PrecipNDVI",
+      "to": "corr30PrecipNDVI",
+      "via": "correlation",
+      "use_line": 329,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "lagged34",
+      "via": "ee.ImageCollection",
+      "use_line": 333,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lag",
+      "to": "lagged34",
+      "via": "ee.ImageCollection",
+      "use_line": 333,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "lagged34",
+      "to": "merged34",
+      "via": "reference",
+      "use_line": 335,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merge",
+      "to": "merged34",
+      "via": "reference",
+      "use_line": 335,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merged34",
+      "to": "ar2",
+      "via": "reference",
+      "use_line": 343,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "ar2",
+      "to": "arCoefficients",
+      "via": "reference",
+      "use_line": 349,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "merged34",
+      "to": "fittedAR",
+      "via": "merged34.map",
+      "use_line": 355,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "list",
+      "to": "latestDate",
+      "via": "reference",
+      "use_line": 393,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "current",
+      "to": "currentDate",
+      "via": "reference",
+      "use_line": 395,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "latestDate",
+      "to": "start",
+      "via": "reference",
+      "use_line": 397,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "currentDate",
+      "to": "end",
+      "via": "reference",
+      "use_line": 399,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "first",
+      "via": "filteredLandsat.first",
+      "use_line": 433,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "fill",
+      "to": "filled",
+      "via": "reference",
+      "use_line": 435,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filteredLandsat",
+      "to": "filled",
+      "via": "reference",
+      "use_line": 435,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "first",
+      "to": "filled",
+      "via": "reference",
+      "use_line": 435,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filled",
+      "to": "indices",
+      "via": "ee.List.sequence",
+      "use_line": 437,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "current",
+      "to": "ndvi",
+      "via": "reference",
+      "use_line": 441,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "list",
+      "to": "size",
+      "via": "reference",
+      "use_line": 443,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "list",
+      "to": "image1",
+      "via": "ee.Image",
+      "use_line": 445,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "size",
+      "to": "image1",
+      "via": "ee.Image",
+      "use_line": 445,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "list",
+      "to": "image2",
+      "via": "ee.Image",
+      "use_line": 447,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "size",
+      "to": "image2",
+      "via": "ee.Image",
+      "use_line": 447,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filled",
+      "to": "startList",
+      "via": "filled.slice",
+      "use_line": 485,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "join",
+      "to": "threeNeighborJoin",
+      "via": "join.apply",
+      "use_line": 523,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "threeNeighborJoin",
+      "to": "smoothed",
+      "via": "ee.ImageCollection",
+      "use_line": 533,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "collection",
+      "via": "ee.ImageCollection.fromImages",
+      "use_line": 535,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [],
+  "R2_units": [
+    {
+      "unit": "script_191158:unit:l8toa",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:roi",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 8
+    },
+    {
+      "unit": "script_191158:unit:timeField",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 9
+    },
+    {
+      "unit": "script_191158:unit:image",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 27
+    },
+    {
+      "unit": "script_191158:unit:maskClouds",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:quality",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "image.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_191158:unit:cloud01",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "quality.eq"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:cloud02",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "quality.eq"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:cloud03",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "quality.eq"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:mask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:addVariables",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:date",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Date"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:years",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "date.difference"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:filteredLandsat",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 11
+    },
+    {
+      "unit": "script_191158:unit:l8Chart",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:independents",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_191158:unit:dependent",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 9
+    },
+    {
+      "unit": "script_191158:unit:trend",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:coefficients",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:detrended",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "filteredLandsat.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 5
+    },
+    {
+      "unit": "script_191158:unit:detrendedChart",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:harmonicIndependents",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_191158:unit:harmonicLandsat",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "filteredLandsat.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:timeRadians",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:harmonicTrend",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:harmonicTrendCoefficients",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 5
+    },
+    {
+      "unit": "script_191158:unit:fittedHarmonic",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "harmonicLandsat.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:phase",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:amplitude",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:rgb",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:lag",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 5
+    },
+    {
+      "unit": "script_191158:unit:leftCollection",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:rightCollection",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:lagDays",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:filter",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:lagged17",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "lag"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:merge",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_191158:unit:current",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 7
+    },
+    {
+      "unit": "script_191158:unit:merger",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:previous",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:merged17",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.ImageCollection"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:mergedCollection",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:band",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:lagBand",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "dependent.cat"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:covariance17",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:correlation",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_191158:unit:vcArrayImage",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_191158:unit:covariance",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_191158:unit:sd0",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:sd1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:correlation17",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "correlation"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:covariance34",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:chirps",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:lag1PrecipNDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "lag"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:merged1PrecipNDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.ImageCollection"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:cov1PrecipNDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "covariance"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_191158:unit:corr1PrecipNDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "correlation"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:lag30PrecipNDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "lag"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:sum30PrecipNDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.ImageCollection"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:laggedImages",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.ImageCollection.fromImages"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:cov30PrecipNDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "covariance"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:corr30PrecipNDVI",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "correlation"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:lagged34",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.ImageCollection",
+        "lag"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:merged34",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:arIndependents",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_191158:unit:ar2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:arCoefficients",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 6
+    },
+    {
+      "unit": "script_191158:unit:fittedAR",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "merged34.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:list",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 6
+    },
+    {
+      "unit": "script_191158:unit:fill",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:latestDate",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:currentDate",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:start",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:end",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:blankImages",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:first",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "filteredLandsat.first"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:filled",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_191158:unit:indices",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.List.sequence"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_191158:unit:forecast",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:ndvi",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:size",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:image1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:image2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:predicted",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_191158:unit:replaced",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:startList",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "filled.slice"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:modeled",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_191158:unit:join",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:diffFilter",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:threeNeighborJoin",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "join.apply"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:smoothed",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.ImageCollection"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_191158:unit:collection",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.ImageCollection.fromImages"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "presentation": 26,
+      "unknown": 97,
+      "analysis": 176
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 541
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 541
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 537
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 537
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 491
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 491
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 487
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 489
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 481
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 473
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 473
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 473
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 449
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 449
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 449
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 447
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 445
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 443
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 441
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 437
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 435
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 429
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 429
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 405
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 415
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 419
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 415
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 415
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 399
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 397
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 395
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 393
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 393
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 375
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 375
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 359
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 349
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 349
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 343
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 335
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 335
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 337
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 321
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 321
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 281
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 281
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 285
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 271
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 271
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 269
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 269
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 267
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 267
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 265
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 249
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 249
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 241
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 237
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 207
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 177
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 177
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 177
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 173
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 169
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 153
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 153
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 143
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 143
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 143
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 133
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 133
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 127
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 119
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 123
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 121
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 117
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 99
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 89
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 89
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 89
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 91
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 91
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 81
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 81
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 77
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 51
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 51
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 41
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 41
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 31
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 31
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 35
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 35
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 31
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 33
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 19
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 19
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 93,
+    "deduped_logical_edges": 93,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

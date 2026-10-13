@@ -1,0 +1,155 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_102167",
+  "source_sha256": "c7ae56fb43af61b57c5d6814b75113d7ef4834ea674c542e90ae0c2dc52804eb",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "countries",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "Brazil",
+      "kind": "declaration",
+      "def_line": 3,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "collection",
+      "kind": "declaration",
+      "def_line": 5,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "composite",
+      "kind": "declaration",
+      "def_line": 11,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "customComposite",
+      "kind": "declaration",
+      "def_line": 13,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [],
+  "R1_dataflow_edges": [
+    {
+      "from": "countries",
+      "to": "Brazil",
+      "via": "reference",
+      "use_line": 3,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collection",
+      "to": "composite",
+      "via": "ee.Algorithms.Landsat.simpleComposite",
+      "use_line": 11,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [],
+  "R2_units": [
+    {
+      "unit": "script_102167:unit:countries",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_102167:unit:Brazil",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_102167:unit:collection",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_102167:unit:composite",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Algorithms.Landsat.simpleComposite"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_102167:unit:customComposite",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "presentation": 3,
+      "analysis": 6,
+      "unknown": 4
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 5
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 5
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 3
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 3
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 2,
+    "deduped_logical_edges": 2,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

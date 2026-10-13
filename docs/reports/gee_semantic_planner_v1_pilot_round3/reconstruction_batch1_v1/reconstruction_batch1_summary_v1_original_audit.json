@@ -1,0 +1,90 @@
+{
+  "schema": "gee_reconstruction_batch1_summary_v1",
+  "scripts": {
+    "script_275285": {
+      "source_sha256": "4e9e124bc581dfe7a5afc37a7398680938b04abf71ba0dbc969ba250f900f945",
+      "variables": 12,
+      "edges": {
+        "supported": 11,
+        "supported_passing_only": 1,
+        "unresolved": 0
+      },
+      "units": 8,
+      "task_determined": 6,
+      "source_required": 2,
+      "judged_as_detail": 8,
+      "conflicts": []
+    },
+    "script_93009": {
+      "source_sha256": "0427a5b5de3302dad609c90e8d6806b4088fcb955302b3aa4b37ff6a90fdaab0",
+      "variables": 13,
+      "edges": {
+        "supported": 9,
+        "supported_passing_only": 1,
+        "unresolved": 0
+      },
+      "units": 7,
+      "task_determined": 7,
+      "source_required": 0,
+      "judged_as_detail": 7,
+      "conflicts": [
+        {
+          "task_years": [
+            1985,
+            2018
+          ],
+          "source_years": [
+            1985,
+            1998,
+            1999,
+            2000,
+            2018
+          ],
+          "resolution": "recorded, not silently reconciled; the task requires the 1985-vs-2018 comparison, the additional source years are implementation-side explorations and must not be promoted into task requirements"
+        }
+      ]
+    }
+  },
+  "R4_batch": {
+    "semantic_recovery": {
+      "denominator": 14,
+      "recovered": 14,
+      "per_script": {
+        "script_275285": {
+          "cloud_shadow_mask": true,
+          "composite": true,
+          "ndvi": true,
+          "fractional_vegetation": true,
+          "emissivity": true,
+          "thermal_band": true,
+          "lst_expression": true
+        },
+        "script_93009": {
+          "cloud_filter": true,
+          "frequency_filter": true,
+          "image_collection_conversion": true,
+          "incidence_iteration": true,
+          "year_extraction": true,
+          "recent_filter": true,
+          "change_outputs": true
+        }
+      }
+    },
+    "evidence_traceability": {
+      "supported": 20,
+      "supported_passing_only": 2,
+      "unresolved": 0,
+      "disguised": 0,
+      "note": "two states never merged per unified spec"
+    },
+    "task_reasonableness": {
+      "checked": 15,
+      "judged_as_detail": 15,
+      "misassigned_to_duty": 0,
+      "undeterminable": 0,
+      "fixation_rate": 0.0
+    },
+    "conflicts_recorded": 1
+  },
+  "stop": "batch 1 complete; batch 2 (302840+405410) requires separate acceptance"
+}

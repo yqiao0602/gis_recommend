@@ -1,0 +1,38 @@
+{
+  "frozen_name": "S3_PROBES_v1",
+  "freeze_date": "2026-10-09",
+  "baseline_document": "S3_PROBES_DESIGN_v0.md (v1 revision, header-marked)",
+  "baseline_sha256": "e446a91336e8da0301159bea1fad12b46dc86bd66c1e65206ee896c5a2c7c258",
+  "frozen_by": "owner acceptance 2026-10-09",
+  "acceptance_rulings": {
+    "design_acceptance": "passed_all_six_revisions",
+    "probe_count": 8,
+    "classes": {
+      "A_delete": 2,
+      "B_add": 2,
+      "C_count": 2,
+      "D_conflict_insufficient": 2
+    },
+    "scope_limitation": "S3 validates the evaluation protocol only, NOT model capability; probes derive from development samples and support no capability claims",
+    "freeze_does_not_authorize_training": true,
+    "model_run": "not_authorized",
+    "next_phase": "independent evaluation design (independent task source, reference answer construction, executable B1-B4 scoring protocol)"
+  },
+  "v1_revisions_locked": [
+    "A1: no preset four-factor formula as sole correct answer; conditional phrasing and uncertainty equally acceptable",
+    "B1: unspecified scaling algorithm not forced; abstraction or pending-marking correct",
+    "C2: branch_b semantics corrected - task specifies two years (not an information-missing scenario); following the task-specified two years is correct without requiring uncertainty",
+    "D1: conflict rewritten to be semantically unsatisfiable simultaneously; NoData/infinite-cost explicitly excluded as reconciliation",
+    "A2: 'six factors' removed as independent hard criterion; factor count follows remaining task requirements",
+    "4b: uncertainty_appropriateness independent diagnostic field added (appropriate / unnecessary_refusal / unspecified_fill / none_needed)"
+  ],
+  "scoring_rules_locked": {
+    "four_criteria_reported_separately": true,
+    "na_rule": "n/a neither passes nor fails; conflict/insufficiency identification scored only on D1/D2",
+    "C2_branches_scored_separately": true,
+    "B2_thresholds": "candidate thresholds only (80%/90%); 8-probe readings are protocol-debugging feedback, never capability claims"
+  },
+  "history_preservation": {
+    "note": "any later probe change requires a new versioned document; this frozen record and its hash must not be overwritten"
+  }
+}

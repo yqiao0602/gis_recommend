@@ -1,0 +1,88 @@
+{
+  "schema": "gee_reconstruction_batch2_summary_v1",
+  "scripts": {
+    "script_302840": {
+      "source_sha256": "3515e90d6049ebf8e17ee1895604bd7151ab42faf9828bae2eadb93c6d9c2db2",
+      "variables": 17,
+      "edges": {
+        "supported": 2,
+        "supported_passing_only": 3,
+        "unresolved": 0
+      },
+      "units": 5,
+      "task_determined": 5,
+      "source_required": 0,
+      "judged_as_detail": 5,
+      "conflicts": []
+    },
+    "script_405410": {
+      "source_sha256": "9759e94d20fac697ec14b685efed7f246ce66a5c39926a4796330bf911dd13ba",
+      "variables": 13,
+      "edges": {
+        "supported": 12,
+        "supported_passing_only": 0,
+        "unresolved": 0
+      },
+      "units": 11,
+      "task_determined": 10,
+      "source_required": 1,
+      "judged_as_detail": 11,
+      "conflicts": []
+    }
+  },
+  "granularity_note": {
+    "script_302840": {
+      "audit_units": 4,
+      "r2_units": 5,
+      "mapping": "target_export_filter -> [invalid_pixel_filtering, per_target_export]; other 3 audit units 1:1"
+    },
+    "script_405410": {
+      "audit_units": 7,
+      "r2_units": 11,
+      "mapping": "slope_altitude_cost -> [slope_cost, altitude_cost]; water_barriers -> [sea_barrier, surface_water_cost]; normalization_export -> [cost_capping, normalization_scaling, export_drive]; snow/reservoir/accessibility/fusion 1:1"
+    }
+  },
+  "R4_batch": {
+    "semantic_recovery": {
+      "denominator": 11,
+      "recovered": 11,
+      "per_script": {
+        "script_302840": {
+          "target_variable_loop": true,
+          "model_training": true,
+          "prediction_sampling": true,
+          "target_export_filter": true
+        },
+        "script_405410": {
+          "slope_altitude_cost": true,
+          "snow_cost": true,
+          "water_barriers": true,
+          "reservoir_mask": true,
+          "potable_water_accessibility": true,
+          "cost_fusion": true,
+          "normalization_export": true
+        }
+      }
+    },
+    "evidence_traceability": {
+      "supported": 14,
+      "supported_passing_only": 3,
+      "unresolved": 0,
+      "disguised": 0
+    },
+    "task_reasonableness": {
+      "checked": 16,
+      "judged_as_detail": 16,
+      "misassigned_to_duty": 0,
+      "undeterminable": 0,
+      "fixation_rate": 0.0
+    },
+    "conflicts_recorded": 0,
+    "source_code_defects_recorded": 1
+  },
+  "batch2_focus_results": {
+    "target_binding_verification": "302840: 8 coi->rfN->export bindings verified at variable level (classProperty + selectors), not count-only; per-target hyperparameters differ and are recorded as implementation_detail",
+    "factor_fusion_separation": "405410: seven-factor integration recorded as semantic_merge (task-named) distinct from control flow; each factor's dataflow edge into costs_raw individually supported"
+  },
+  "stop": "batch 2 complete; batch 3 (269131, conflict stress test) requires separate acceptance"
+}

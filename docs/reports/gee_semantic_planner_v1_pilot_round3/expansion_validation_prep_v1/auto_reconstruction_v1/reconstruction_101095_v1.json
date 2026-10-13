@@ -1,0 +1,314 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_101095",
+  "source_sha256": "1064fcc12d5cfc403b0b4f19510aa3efe2e3cc9e59002dd9ad205d1410040318",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "imgVV",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "image",
+      "kind": "param",
+      "def_line": 9,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "edge",
+      "kind": "declaration",
+      "def_line": 11,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "maskedImage",
+      "kind": "declaration",
+      "def_line": 13,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "desc",
+      "kind": "declaration",
+      "def_line": 19,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "asc",
+      "kind": "declaration",
+      "def_line": 21,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "spring",
+      "kind": "declaration",
+      "def_line": 23,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lateSpring",
+      "kind": "declaration",
+      "def_line": 25,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "summer",
+      "kind": "declaration",
+      "def_line": 27,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "descChange",
+      "kind": "declaration",
+      "def_line": 29,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ascChange",
+      "kind": "declaration",
+      "def_line": 37,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [],
+  "R1_dataflow_edges": [
+    {
+      "from": "image",
+      "to": "edge",
+      "via": "image.lt",
+      "use_line": 11,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "edge",
+      "to": "maskedImage",
+      "via": "reference",
+      "use_line": 13,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "maskedImage",
+      "via": "reference",
+      "use_line": 13,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "imgVV",
+      "to": "desc",
+      "via": "imgVV.filter",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "imgVV",
+      "to": "asc",
+      "via": "imgVV.filter",
+      "use_line": 21,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [],
+  "R2_units": [
+    {
+      "unit": "script_101095:unit:imgVV",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_101095:unit:image",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_101095:unit:edge",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "image.lt"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101095:unit:maskedImage",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101095:unit:desc",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "imgVV.filter"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_101095:unit:asc",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "imgVV.filter"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_101095:unit:spring",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_101095:unit:lateSpring",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_101095:unit:summer",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_101095:unit:descChange",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_101095:unit:ascChange",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "presentation": 3,
+      "analysis": 22,
+      "unknown": 11
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 43
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 41
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 39
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 35
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 33
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 31
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 13
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 5,
+    "deduped_logical_edges": 5,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

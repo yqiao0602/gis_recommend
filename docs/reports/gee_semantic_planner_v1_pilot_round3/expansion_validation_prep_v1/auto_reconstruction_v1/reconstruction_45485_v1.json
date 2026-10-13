@@ -1,0 +1,534 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_45485",
+  "source_sha256": "3097c1d551b838136d7a29ecff539d2259f7d6667aaca2c2a745230d96a4ccb9",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "MCD12Q2_North",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "MCD12Q2",
+      "kind": "declaration",
+      "def_line": 3,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "DOY1",
+      "kind": "declaration",
+      "def_line": 5,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "image",
+      "kind": "param",
+      "def_line": 5,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "QA",
+      "kind": "declaration",
+      "def_line": 9,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "bitMask_Dormancy_1",
+      "kind": "declaration",
+      "def_line": 11,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mask",
+      "kind": "declaration",
+      "def_line": 13,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "time",
+      "kind": "declaration",
+      "def_line": 15,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "year",
+      "kind": "declaration",
+      "def_line": 17,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "Pheno",
+      "kind": "declaration",
+      "def_line": 25,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "Greenup_1",
+      "kind": "declaration",
+      "def_line": 29,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "Dormancy_1",
+      "kind": "declaration",
+      "def_line": 31,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "lai_2003_raw",
+      "kind": "declaration",
+      "def_line": 33,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "img",
+      "kind": "param",
+      "def_line": 37,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "Image_col_2003",
+      "kind": "declaration",
+      "def_line": 39,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "Image_2003",
+      "kind": "declaration",
+      "def_line": 41,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [
+    {
+      "variable": "MCD12Q2_2003_Full",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 1,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "Lai_Global_2003_1500_unseason_G_D_erci_unmask_greenup_lt_Dormancy",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 1,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "Alashanzuoqi_T_Greenup_Dormancy",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 53,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    }
+  ],
+  "R1_dataflow_edges": [
+    {
+      "from": "image",
+      "to": "Pheno",
+      "via": "image.select",
+      "use_line": 7,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "QA",
+      "via": "image.select",
+      "use_line": 9,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 13,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "time",
+      "via": "reference",
+      "use_line": 15,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "year",
+      "via": "reference",
+      "use_line": 17,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "mask",
+      "to": "Pheno",
+      "via": "reference",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "time",
+      "to": "Pheno",
+      "via": "reference",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "DOY1",
+      "to": "Pheno",
+      "via": "MCD12Q2.map",
+      "use_line": 25,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "MCD12Q2",
+      "to": "Pheno",
+      "via": "MCD12Q2.map",
+      "use_line": 25,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "Pheno",
+      "to": "Greenup_1",
+      "via": "Pheno.select",
+      "use_line": 29,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "Pheno",
+      "to": "Dormancy_1",
+      "via": "Pheno.select",
+      "use_line": 31,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "Image_col_2003",
+      "via": "ee.Image",
+      "use_line": 39,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "Image_col_2003",
+      "to": "Image_2003",
+      "via": "reference",
+      "use_line": 41,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [
+    {
+      "item": "MCD12Q2_2003_Full",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "Lai_Global_2003_1500_unseason_G_D_erci_unmask_greenup_lt_Dormancy",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "Alashanzuoqi_T_Greenup_Dormancy",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    }
+  ],
+  "R2_units": [
+    {
+      "unit": "script_45485:unit:MCD12Q2_North",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_45485:unit:MCD12Q2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_45485:unit:DOY1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_45485:unit:image",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 6
+    },
+    {
+      "unit": "script_45485:unit:QA",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "image.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_45485:unit:bitMask_Dormancy_1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_45485:unit:mask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_45485:unit:time",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_45485:unit:year",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_45485:unit:Pheno",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "MCD12Q2.map",
+        "image.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_45485:unit:Greenup_1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "Pheno.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_45485:unit:Dormancy_1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "Pheno.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_45485:unit:lai_2003_raw",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_45485:unit:img",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_45485:unit:Image_col_2003",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_45485:unit:Image_2003",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "presentation": 5,
+      "unknown": 17,
+      "analysis": 21
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 33
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 41
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 33
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 33
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 21
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 19
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 19
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 17
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 17
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 17
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 15
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 15
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 15
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 13
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 3
+      },
+      {
+        "path": "MCD12Q2_2003_Full.updateMask",
+        "root": "MCD12Q2_2003_Full",
+        "line": 1
+      },
+      {
+        "path": "Lai_Global_2003_1500_unseason_G_D_erci_unmask_greenup_lt_Dormancy.gte",
+        "root": "Lai_Global_2003_1500_unseason_G_D_erci_unmask_greenup_lt_Dormancy",
+        "line": 1
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 13,
+    "deduped_logical_edges": 13,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

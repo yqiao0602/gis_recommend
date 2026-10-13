@@ -1,0 +1,230 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_25214",
+  "source_sha256": "e0cafc2f8fec37ecd0039a790e55bee7a2f838e5dc637bcec70429827b65b0e1",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "tiempo1",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "tiempo1b",
+      "kind": "declaration",
+      "def_line": 7,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "tiempo2",
+      "kind": "declaration",
+      "def_line": 9,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "tiempo2b",
+      "kind": "declaration",
+      "def_line": 15,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "NDVI1",
+      "kind": "declaration",
+      "def_line": 17,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "NDVI2",
+      "kind": "declaration",
+      "def_line": 19,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "NDVImultitemporal",
+      "kind": "declaration",
+      "def_line": 21,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [],
+  "R1_dataflow_edges": [
+    {
+      "from": "tiempo1",
+      "to": "tiempo1b",
+      "via": "tiempo1.reduce",
+      "use_line": 7,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "tiempo2",
+      "to": "tiempo2b",
+      "via": "tiempo2.reduce",
+      "use_line": 15,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "tiempo1b",
+      "to": "NDVI1",
+      "via": "tiempo1b.normalizedDifference",
+      "use_line": 17,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "tiempo2b",
+      "to": "NDVI2",
+      "via": "tiempo2b.normalizedDifference",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "NDVI1",
+      "to": "NDVImultitemporal",
+      "via": "reference",
+      "use_line": 21,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "NDVI2",
+      "to": "NDVImultitemporal",
+      "via": "reference",
+      "use_line": 21,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [],
+  "R2_units": [
+    {
+      "unit": "script_25214:unit:tiempo1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_25214:unit:tiempo1b",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "tiempo1.reduce"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_25214:unit:tiempo2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_25214:unit:tiempo2b",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "tiempo2.reduce"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_25214:unit:NDVI1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "tiempo1b.normalizedDifference"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_25214:unit:NDVI2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "tiempo2b.normalizedDifference"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_25214:unit:NDVImultitemporal",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "presentation": 4,
+      "unknown": 5,
+      "analysis": 9
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 21
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 9
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 9
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 6,
+    "deduped_logical_edges": 6,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

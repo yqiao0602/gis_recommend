@@ -1,0 +1,197 @@
+{
+  "script_100145:year_binding_audit": {
+    "total_sites": 29,
+    "grouped_by_enclosing_scope": {
+      "(anonymous)": [
+        [
+          79,
+          "IC = IC.filter(ee.Filter.equals('builtup_year',year))"
+        ],
+        [
+          185,
+          "IC = IC.filter(ee.Filter.equals('builtup_year',year))"
+        ]
+      ],
+      "(top-level)": [
+        [
+          117,
+          "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+        ],
+        [
+          119,
+          "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 2% built-up)\",false)"
+        ],
+        [
+          121,
+          "var GHSLbud = yearfilter(GHSL2pctBD,year)"
+        ],
+        [
+          125,
+          "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (2%)\",false)"
+        ],
+        [
+          133,
+          "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+        ],
+        [
+          135,
+          "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 5% built-up)\",false)"
+        ],
+        [
+          137,
+          "var GHSLbud = yearfilter(GHSL5pctBD,year)"
+        ],
+        [
+          141,
+          "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (5%)\",false)"
+        ],
+        [
+          143,
+          "var GHSLueyear = yearfilter(GHSL5pctUE2015,year)"
+        ],
+        [
+          149,
+          "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+        ],
+        [
+          151,
+          "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 10% built-up)\",false)"
+        ],
+        [
+          153,
+          "var GHSLbud = yearfilter(GHSL10pctBD,year)"
+        ],
+        [
+          157,
+          "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (10%)\",false)"
+        ],
+        [
+          159,
+          "var GHSLueyear = yearfilter(GHSL10pctUE2015,year)"
+        ],
+        [
+          161,
+          "Map.addLayer(GHSLueyear,{color:'orange'},\"Urban Extent GHSL \"+year+\" (10%)\",true)"
+        ],
+        [
+          167,
+          "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+        ],
+        [
+          169,
+          "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 20% built-up)\",false)"
+        ],
+        [
+          171,
+          "var GHSLbud = yearfilter(GHSLbuiltup_density,year)"
+        ],
+        [
+          175,
+          "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (20%)\",false)"
+        ],
+        [
+          177,
+          "var GHSLueyear = yearfilter(GHSLue,year)"
+        ],
+        [
+          195,
+          "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+        ],
+        [
+          197,
+          "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 10% built-up)\",false)"
+        ],
+        [
+          199,
+          "var GHSLbud = yearfilter(KigaliBD,year)"
+        ],
+        [
+          203,
+          "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (2%)\",false)"
+        ],
+        [
+          205,
+          "var GHSLueyear = yearfilter(KigaliUE,year)"
+        ],
+        [
+          207,
+          "Map.addLayer(GHSLueyear,{color:'yellow'},\"Urban Extent GHSL (10%) \"+year+\"\",true)"
+        ],
+        [
+          211,
+          "Map.addLayer(GHSLueyear,{color:'blue'},\"Urban Extent GHSL (10%) \"+year+\" buffered\",false)"
+        ]
+      ]
+    },
+    "question": "owner: 确认哪些组属同一绑定后才能定最终计数（29 不可直接采用，human 11 亦暂缓）"
+  },
+  "script_217669:rescaled_completeness": {
+    "regex_lines": [
+      [
+        191,
+        "var rescaled = ee.Number(feature.get('random'))"
+      ],
+      [
+        197,
+        "return feature.set('new_id', rescaled);"
+      ]
+    ],
+    "ast_lines": [
+      197
+    ],
+    "regex_minus_ast": [
+      191
+    ],
+    "conclusion": "collector complete iff regex_minus_ast empty"
+  },
+  "script_217669:outline_downstream": {
+    "sites": [
+      [
+        175,
+        "var outline = blank.paint(myGrid, 'AA0000', 2);"
+      ],
+      [
+        179,
+        "Map.addLayer(outline, visPar, grid_name, false);"
+      ]
+    ],
+    "question": "outline 仅被 Map.addLayer 消费则 blank 的展示定性可锁定"
+  },
+  "script_100110:maxValue_maxMedian_contexts": {
+    "lines_279_281_351": [
+      [
+        279,
+        "maxValue = (stats.p100 > maxValue) ? stats.p100 : maxValue;"
+      ],
+      [
+        281,
+        "maxMedian = (stats.p75 > maxMedian) ? stats.p75 : maxMedian;"
+      ],
+      [
+        351,
+        "max: ((maxMedian * 1.5) > maxValue) ? maxValue : (maxMedian * 1.5),"
+      ]
+    ],
+    "question": "确认 maxValue/maxMedian 是否仅用于图表纵轴范围设置"
+  },
+  "script_100145:year_binding_audit_COMPLETE": {
+    "declaration_sites": [
+      113,
+      129,
+      145,
+      163,
+      191
+    ],
+    "binding_conclusion": "5 处 var 声明全部位于顶层作用域 → 按 var 语义为同一全局绑定（repeat-var 合并规则的适用情形）",
+    "read_sites": 29,
+    "lhs_assignments": "无裸赋值（无 `year = ...` 行）；声明位置本身不计引用",
+    "closure_refs": "L79/L185 位于匿名函数内，闭包引用同一顶层绑定；未发现名为 year 的形参遮蔽",
+    "static_count_per_frozen_rules": 29,
+    "note": "证据支持 29 而非 human 11；但与既有判例（collTOres=7 等按绑定累计）一致。最终数由 owner 确认"
+  },
+  "script_100110:landsatTOAcloudmask_protocol_clause_draft": {
+    "proposed_definition": "unconsumed := 零个有效后继标识符引用（纯静态判据）",
+    "companion": "『是否进入有效下游结果链』不属于 unconsumed；由 globally_reachable / downstream_effective 层记录（landsatTOAcloudmask: 静态引用 1 → 非 unconsumed；别名链断头由下游层标记）",
+    "status": "待 owner 批准后写入协议 v0.2"
+  }
+}

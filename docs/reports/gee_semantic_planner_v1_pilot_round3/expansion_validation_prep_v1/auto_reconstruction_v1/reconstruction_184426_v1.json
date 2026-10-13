@@ -1,0 +1,611 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_184426",
+  "source_sha256": "28720a180cbb688ae8c9011e18d1f2945730d23a95133741ffe6ea1df1fa38cb",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "imageCollection",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "myanmar",
+      "kind": "declaration",
+      "def_line": 3,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "filter",
+      "kind": "declaration",
+      "def_line": 7,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "filtered_area",
+      "kind": "declaration",
+      "def_line": 9,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "roi",
+      "kind": "declaration",
+      "def_line": 11,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "collection",
+      "kind": "declaration",
+      "def_line": 13,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "reference",
+      "kind": "declaration",
+      "def_line": 15,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mean",
+      "kind": "declaration",
+      "def_line": 19,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "vis",
+      "kind": "declaration",
+      "def_line": 21,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "recent",
+      "kind": "declaration",
+      "def_line": 23,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "meanRecent",
+      "kind": "declaration",
+      "def_line": 25,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "image",
+      "kind": "param",
+      "def_line": 27,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "subtractmean",
+      "kind": "declaration",
+      "def_line": 27,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "anomalies",
+      "kind": "declaration",
+      "def_line": 33,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "time0",
+      "kind": "declaration",
+      "def_line": 47,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "first",
+      "kind": "declaration",
+      "def_line": 49,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "accumulate",
+      "kind": "declaration",
+      "def_line": 55,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "list",
+      "kind": "param",
+      "def_line": 55,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "previous",
+      "kind": "declaration",
+      "def_line": 57,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "added",
+      "kind": "declaration",
+      "def_line": 59,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cumulative",
+      "kind": "declaration",
+      "def_line": 67,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "chartParam",
+      "kind": "declaration",
+      "def_line": 75,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "chart",
+      "kind": "declaration",
+      "def_line": 85,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "shown",
+      "kind": "declaration",
+      "def_line": 105,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "opacity",
+      "kind": "declaration",
+      "def_line": 107,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [],
+  "R1_dataflow_edges": [
+    {
+      "from": "filter",
+      "to": "filtered_area",
+      "via": "myanmar.filter",
+      "use_line": 9,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "myanmar",
+      "to": "filtered_area",
+      "via": "myanmar.filter",
+      "use_line": 9,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filtered_area",
+      "to": "roi",
+      "via": "declaration",
+      "use_line": 11,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collection",
+      "to": "reference",
+      "via": "reference",
+      "use_line": 15,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "reference",
+      "to": "mean",
+      "via": "reference.mean",
+      "use_line": 19,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collection",
+      "to": "recent",
+      "via": "collection.filterDate",
+      "use_line": 23,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "recent",
+      "to": "meanRecent",
+      "via": "recent.mean",
+      "use_line": 25,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "recent",
+      "to": "anomalies",
+      "via": "recent.map",
+      "use_line": 33,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "subtractmean",
+      "to": "anomalies",
+      "via": "recent.map",
+      "use_line": 33,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "reference",
+      "to": "time0",
+      "via": "reference",
+      "use_line": 47,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "list",
+      "to": "previous",
+      "via": "ee.Image",
+      "use_line": 57,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "added",
+      "via": "reference",
+      "use_line": 59,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "previous",
+      "to": "added",
+      "via": "reference",
+      "use_line": 59,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [],
+  "R2_units": [
+    {
+      "unit": "script_184426:unit:imageCollection",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_184426:unit:myanmar",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_184426:unit:filter",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:filtered_area",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "myanmar.filter"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_184426:unit:roi",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "declaration"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 5
+    },
+    {
+      "unit": "script_184426:unit:collection",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_184426:unit:reference",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_184426:unit:mean",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "reference.mean"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:vis",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_184426:unit:recent",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "collection.filterDate"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_184426:unit:meanRecent",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "recent.mean"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_184426:unit:image",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_184426:unit:subtractmean",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:anomalies",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "recent.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_184426:unit:time0",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:first",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:accumulate",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:list",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_184426:unit:previous",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:added",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:cumulative",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:chartParam",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:chart",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:shown",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_184426:unit:opacity",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "export": 1,
+      "unknown": 11,
+      "analysis": 26,
+      "presentation": 6
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 123
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 63
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 59
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 57
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 51
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 51
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 47
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 35
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 29
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 15
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 13
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 13,
+    "deduped_logical_edges": 13,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

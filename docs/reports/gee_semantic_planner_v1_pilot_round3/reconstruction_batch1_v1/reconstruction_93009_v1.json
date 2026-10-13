@@ -1,0 +1,400 @@
+{
+ "schema": "gee_reconstruction_trial_v1",
+ "source_script": "script_93009",
+ "source_sha256": "0427a5b5de3302dad609c90e8d6806b4088fcb955302b3aa4b37ff6a90fdaab0",
+ "policy": {
+  "training_admission": "not_granted",
+  "semantic_gold": false,
+  "authorized_scope": "batch1_method_validation"
+ },
+ "R1_variables": [
+  {
+   "variable": "landsat_lib / tf_lib",
+   "kind": "required_module",
+   "first_use_line": 1,
+   "definition": "external mapbiomas libraries; internal filter logic not visible in this script",
+   "definition_location": "unavailable_in_source",
+   "external_input": true
+  },
+  {
+   "variable": "col_old_1985",
+   "kind": "image",
+   "def_line": 7,
+   "definition": "historical urban layer 1985, .eq(24).selfMask()",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "col_old_2017",
+   "kind": "image",
+   "def_line": 9,
+   "definition": "historical urban layer 2017, .eq(24).selfMask()",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "carta",
+   "kind": "feature",
+   "def_line": 17,
+   "definition": "grid cell feature by grid_name metadata",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "image",
+   "kind": "image",
+   "def_line": 19,
+   "definition": "classified time-series image INFRAURBANA4/<grid>-1 (external asset; asset path in source but content prebuilt)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "image_tf",
+   "kind": "image",
+   "def_line": 21,
+   "definition": "image after applyFilterCloud (line 21) and later applyFilterFreq (line 25)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "freq_antes",
+   "kind": "image",
+   "def_line": 23,
+   "definition": "urban detection frequency before frequency filter = image_tf.eq(24).reduce(sum)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "freq_depois",
+   "kind": "image",
+   "def_line": 29,
+   "definition": "urban detection frequency after frequency filter",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "imc",
+   "kind": "image_collection",
+   "def_line": 27,
+   "definition": "tf_lib.toImageCollection(image_tf)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "image_incidence",
+   "kind": "image",
+   "def_line": 77,
+   "definition": "change-incidence accumulation via imc.iterate (function defined lines 31-65)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "image_recent",
+   "kind": "image",
+   "def_line": 79,
+   "definition": "tf_lib.applyFilterRecent(image_tf)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "image_2018_tf",
+   "kind": "image",
+   "def_line": 81,
+   "definition": "get_image_year(image_tf, 2018): select classification_2018, remap [0,24,27]->[0,1,0], mask",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "image_1985_tf",
+   "kind": "image",
+   "def_line": 89,
+   "definition": "get_image_year(image_tf, 1985)",
+   "definition_location": "in_source"
+  }
+ ],
+ "R1_dataflow_edges": [
+  {
+   "from": "landsat_lib/tf_lib",
+   "to": "image_tf",
+   "via": "applyFilterCloud / applyFilterFreq calls",
+   "use_line": 21,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "image",
+   "to": "image_tf",
+   "via": "applyFilterCloud(image)",
+   "use_line": 21,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image_tf",
+   "to": "freq_antes",
+   "via": "eq(24).reduce(sum) before freq filter",
+   "use_line": 23,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image_tf",
+   "to": "freq_depois",
+   "via": "eq(24).reduce(sum) after freq filter",
+   "use_line": 29,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image_tf",
+   "to": "imc",
+   "via": "toImageCollection",
+   "use_line": 27,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "imc",
+   "to": "image_incidence",
+   "via": "iterate incidence accumulation",
+   "use_line": 77,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image_tf",
+   "to": "image_2018_tf",
+   "via": "get_image_year 2018",
+   "use_line": 81,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image_tf",
+   "to": "image_1985_tf",
+   "via": "get_image_year 1985",
+   "use_line": 89,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image_tf",
+   "to": "image_recent",
+   "via": "applyFilterRecent",
+   "use_line": 79,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "carta",
+   "to": "image",
+   "via": "grid asset path selection",
+   "use_line": 19,
+   "evidence_status": "supported"
+  }
+ ],
+ "R1_unresolved": [
+  {
+   "item": "external prebindings/libraries",
+   "reason": "definition unavailable in source; recorded honestly"
+  }
+ ],
+ "R2_units": [
+  {
+   "unit": "historical_reference_layers",
+   "task_duty": "validating against older urban layers from 1985 and 2017",
+   "source_operation": "col_old_1985/col_old_2017 .eq(24).selfMask() (lines 7-13)",
+   "provenance": "task_determined",
+   "implementation_detail": "the INFRAURBANA3-FT-FINAL asset collection and class code 24 (urban) are implementation choices",
+   "detail_would_change": true
+  },
+  {
+   "unit": "time_series_filtering",
+   "task_duty": "applying temporal filters to a time series of classified Landsat images",
+   "source_operation": "tf_lib.applyFilterCloud (line 21) / applyFilterFreq (line 25); internal logic in external library",
+   "provenance": "task_determined",
+   "implementation_detail": "the specific filter algorithms live in tf_lib and are not auditable from this script",
+   "detail_would_change": true
+  },
+  {
+   "unit": "frequency_computation",
+   "task_duty": "frequency of urban detection before and after filtering",
+   "source_operation": "freq_antes (line 23) / freq_depois (line 29) = eq(24).reduce(sum)",
+   "provenance": "task_determined",
+   "implementation_detail": "sum-over-years frequency definition is the natural reading; the eq(24) class code is implementation",
+   "detail_would_change": true
+  },
+  {
+   "unit": "change_incidence",
+   "task_duty": "detecting incidence of classification changes",
+   "source_operation": "incidence(): imc.iterate where classification0.neq(classification1) accumulates count (lines 31-77)",
+   "provenance": "task_determined",
+   "implementation_detail": "pairwise-neq accumulation is one change-detection formulation; iterate mechanics are implementation",
+   "detail_would_change": true
+  },
+  {
+   "unit": "year_extraction",
+   "task_duty": "comparing urban extent in 1985 and 2018",
+   "source_operation": "get_image_year for 2018/2000/1999/1998/1985 (lines 81-89)",
+   "provenance": "task_determined",
+   "implementation_detail": "source extracts 5 years (1985,1998,1999,2000,2018) while the task names 2 comparison years; the extra years (1998-2000) are source-only explorations",
+   "detail_would_change": true,
+   "task_source_conflict": {
+    "task_years": [
+     1985,
+     2018
+    ],
+    "source_years": [
+     1985,
+     1998,
+     1999,
+     2000,
+     2018
+    ],
+    "resolution": "recorded, not silently reconciled; the task requires the 1985-vs-2018 comparison, the additional source years are implementation-side explorations and must not be promoted into task requirements"
+   }
+  },
+  {
+   "unit": "recent_urban_filter",
+   "task_duty": "recent urban development",
+   "source_operation": "tf_lib.applyFilterRecent (line 79)",
+   "provenance": "task_determined",
+   "implementation_detail": "'recent' window definition lives in tf_lib",
+   "detail_would_change": true
+  },
+  {
+   "unit": "change_outputs",
+   "task_duty": "Outputs include filtered urban maps, frequency of urban detection before and after filtering, recent urban development, and change incidence layers",
+   "source_operation": "Map.addLayer of incidents/freq_antes/freq_depois/image_recent/historical overlays (lines 93-113)",
+   "provenance": "task_determined",
+   "implementation_detail": "color palettes, layer order, and visualization flags are UI choices",
+   "detail_would_change": true
+  }
+ ],
+ "R3_relationships": [
+  {
+   "kind": "dataflow_edge",
+   "from": "landsat_lib/tf_lib",
+   "to": "image_tf",
+   "via": "applyFilterCloud / applyFilterFreq calls",
+   "use_line": 21,
+   "definition_evidence": "unavailable_in_source",
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image",
+   "to": "image_tf",
+   "via": "applyFilterCloud(image)",
+   "use_line": 21,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image_tf",
+   "to": "freq_antes",
+   "via": "eq(24).reduce(sum) before freq filter",
+   "use_line": 23,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image_tf",
+   "to": "freq_depois",
+   "via": "eq(24).reduce(sum) after freq filter",
+   "use_line": 29,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image_tf",
+   "to": "imc",
+   "via": "toImageCollection",
+   "use_line": 27,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "imc",
+   "to": "image_incidence",
+   "via": "iterate incidence accumulation",
+   "use_line": 77,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image_tf",
+   "to": "image_2018_tf",
+   "via": "get_image_year 2018",
+   "use_line": 81,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image_tf",
+   "to": "image_1985_tf",
+   "via": "get_image_year 1985",
+   "use_line": 89,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image_tf",
+   "to": "image_recent",
+   "via": "applyFilterRecent",
+   "use_line": 79,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "carta",
+   "to": "image",
+   "via": "grid asset path selection",
+   "use_line": 19,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "historical_reference_layers",
+   "to": "change_outputs",
+   "evidence": "validation layers are loaded before being used in output comparison; task lists validation as a purpose",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "time_series_filtering",
+   "to": "frequency_computation",
+   "evidence": "task verbatim: 'frequency of urban detection before and after filtering'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "time_series_filtering",
+   "to": "change_incidence",
+   "evidence": "incidence iterates over the filtered series (dataflow); task does not verbatim-order",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "year_extraction",
+   "to": "change_outputs",
+   "evidence": "comparison years feed the outputs; dataflow-supported",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "task_enumeration_order",
+   "from": "year_extraction",
+   "to": "change_outputs",
+   "note": "task lists 1985/2018 comparison; enumeration preserved as text evidence only; source-year count (5) never promoted to task requirement"
+  }
+ ],
+ "R3_control_structures": [
+  {
+   "candidate": "imc.iterate(...) year-wise accumulation",
+   "classification": "iteration_over_time_series",
+   "control_structure": "semantic_repeat_per_year",
+   "reason": "iterate applies per-year comparison - recorded as per-year semantic repetition with variable-level binding (classification_<year> bands), NOT as a branch or generic loop"
+  },
+  {
+   "candidate": "get_image_year applied to 5 years",
+   "classification": "multi_year_extraction",
+   "control_structure": "not_a_branch",
+   "reason": "year extraction is repeated homogeneous application; count follows source (5) but task only names 2 - conflict recorded per 5a.4, count never promoted to task requirement"
+  },
+  {
+   "candidate": "landsat_1985 basemap render",
+   "classification": "presentation_action",
+   "control_structure": "not_workflow",
+   "reason": "Map.addLayer of 1985 Landsat imagery is visualization context"
+  }
+ ]
+}

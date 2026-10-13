@@ -1,0 +1,787 @@
+{
+ "schema": "gee_reconstruction_trial_v1",
+ "source_script": "script_36595",
+ "source_sha256": "767c4254c0f07d0c9049abf35998fced03a8d235076497cce9a933267d718220",
+ "policy": {
+  "training_admission": "not_granted",
+  "semantic_gold": false,
+  "authorized_scope": "single_script_trial"
+ },
+ "R1_variables": [
+  {
+   "variable": "dataset",
+   "kind": "input_collection",
+   "def_line": 1,
+   "definition": "ee.FeatureCollection(WWF/HydroSHEDS basins)",
+   "role": "external_input"
+  },
+  {
+   "variable": "main",
+   "kind": "feature_collection",
+   "def_line": 5,
+   "definition": "dataset.filter(MAIN_BAS=4120031730) = Mahi Basin subbasins",
+   "role": "study_area"
+  },
+  {
+   "variable": "aoi",
+   "kind": "feature_collection",
+   "def_line": 9,
+   "definition": "= main",
+   "role": "study_area"
+  },
+  {
+   "variable": "current",
+   "kind": "image",
+   "def_line": 19,
+   "definition": "CHIRPS precipitation summed over 2017, clipped",
+   "role": "intermediate"
+  },
+  {
+   "variable": "R",
+   "kind": "image",
+   "def_line": 23,
+   "definition": "rainfall erosivity factor = current*0.363+79",
+   "role": "factor"
+  },
+  {
+   "variable": "soil",
+   "kind": "image",
+   "def_line": 27,
+   "definition": "soil class image (external, prebound)",
+   "role": "input_image"
+  },
+  {
+   "variable": "K",
+   "kind": "image",
+   "def_line": 31,
+   "definition": "soil erodibility via lookup expression on soil",
+   "role": "factor"
+  },
+  {
+   "variable": "elevation",
+   "kind": "image",
+   "def_line": 63,
+   "definition": "DEM elevation band (external, prebound)",
+   "role": "input_image"
+  },
+  {
+   "variable": "slope1",
+   "kind": "image",
+   "def_line": 65,
+   "definition": "ee.Terrain.slope(elevation)",
+   "role": "intermediate"
+  },
+  {
+   "variable": "slope",
+   "kind": "image",
+   "def_line": 67,
+   "definition": "slope in percent (deg->rad->tan->x100)",
+   "role": "intermediate"
+  },
+  {
+   "variable": "LS",
+   "kind": "image",
+   "def_line": 79,
+   "definition": "slope-length/steepness factor via LS1..LS4 polynomial",
+   "role": "factor"
+  },
+  {
+   "variable": "s2",
+   "kind": "image",
+   "def_line": 83,
+   "definition": "Sentinel-2 2017 median composite (external, prebound)",
+   "role": "input_image"
+  },
+  {
+   "variable": "image_ndvi",
+   "kind": "image",
+   "def_line": 85,
+   "definition": "normalizedDifference(B8,B4)",
+   "role": "intermediate"
+  },
+  {
+   "variable": "C",
+   "kind": "image",
+   "def_line": 135,
+   "definition": "cover factor via C1..C8 min-max normalized exp transform of NDVI",
+   "role": "factor"
+  },
+  {
+   "variable": "lulc",
+   "kind": "image",
+   "def_line": 139,
+   "definition": "MODIS LC_Type1 first image of 2017",
+   "role": "input_image"
+  },
+  {
+   "variable": "P",
+   "kind": "image",
+   "def_line": 147,
+   "definition": "support-practice factor via lulc+slope lookup expression",
+   "role": "factor"
+  },
+  {
+   "variable": "soil_loss",
+   "kind": "image",
+   "def_line": 177,
+   "definition": "R.multiply(K).multiply(LS).multiply(C).multiply(P)",
+   "role": "primary_result"
+  },
+  {
+   "variable": "SL_class",
+   "kind": "image",
+   "def_line": 183,
+   "definition": "soil loss classified into 5 severity classes",
+   "role": "derived_result"
+  },
+  {
+   "variable": "SL_mean",
+   "kind": "number",
+   "def_line": 199,
+   "definition": "basin mean soil loss (reduceRegion)",
+   "role": "statistic"
+  },
+  {
+   "variable": "maineMeansFeatures",
+   "kind": "feature_collection",
+   "def_line": 213,
+   "definition": "per-subbasin mean soil loss (reduceRegions)",
+   "role": "statistic"
+  },
+  {
+   "variable": "districtAreas",
+   "kind": "feature_collection",
+   "def_line": 331,
+   "definition": "per-subbasin class areas via calculateClassArea map",
+   "role": "statistic"
+  }
+ ],
+ "R1_dataflow_edges": [
+  {
+   "from": "dataset",
+   "to": "main",
+   "via": "filter(eq MAIN_BAS)",
+   "definition_line": 1,
+   "use_line": 5,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "main",
+   "to": "aoi",
+   "via": "assignment alias",
+   "definition_line": 5,
+   "use_line": 9,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "aoi",
+   "to": "current",
+   "via": "clip(aoi)",
+   "definition_line": 9,
+   "use_line": 19,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "current",
+   "to": "R",
+   "via": "multiply/add/rename",
+   "definition_line": 19,
+   "use_line": 23,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "soil",
+   "to": "K",
+   "via": "expression lookup on soil band",
+   "definition_line": 27,
+   "use_line": 31,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "elevation",
+   "to": "slope1",
+   "via": "ee.Terrain.slope",
+   "definition_line": 63,
+   "use_line": 65,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "slope1",
+   "to": "slope",
+   "via": "deg->percent conversion",
+   "definition_line": 65,
+   "use_line": 67,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "slope",
+   "to": "LS",
+   "via": "LS1..LS4 polynomial",
+   "definition_line": 67,
+   "use_line": 79,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "s2",
+   "to": "image_ndvi",
+   "via": "normalizedDifference",
+   "definition_line": 83,
+   "use_line": 85,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image_ndvi",
+   "to": "C",
+   "via": "C1..C8 transform chain (def 93-135)",
+   "definition_line": 85,
+   "use_line": 135,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "lulc",
+   "to": "P",
+   "via": "expression lookup on lulc+slope",
+   "definition_line": 139,
+   "use_line": 147,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "slope",
+   "to": "P",
+   "via": "used inside P expression (b('slope'))",
+   "definition_line": 67,
+   "use_line": 147,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "R",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 23,
+   "use_line": 177,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "K",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 31,
+   "use_line": 177,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "LS",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 79,
+   "use_line": 177,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "C",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 135,
+   "use_line": 177,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "P",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 147,
+   "use_line": 177,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "soil_loss",
+   "to": "SL_class",
+   "via": "expression thresholds",
+   "definition_line": 177,
+   "use_line": 183,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "soil_loss",
+   "to": "SL_mean",
+   "via": "reduceRegion mean",
+   "definition_line": 177,
+   "use_line": 199,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "soil_loss",
+   "to": "maineMeansFeatures",
+   "via": "reduceRegions mean per subbasin",
+   "definition_line": 177,
+   "use_line": 213,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "SL_class",
+   "to": "districtAreas",
+   "via": "pixelArea group-sum per subbasin (def 279-331)",
+   "definition_line": 183,
+   "use_line": 331,
+   "evidence_status": "supported"
+  }
+ ],
+ "R1_unresolved": [
+  {
+   "item": "CHIRPS / DEM / modis / s2 external bindings",
+   "reason": "variables are prebound outside the script (not defined within these lines); their upstream provenance is not traceable from this file alone"
+  },
+  {
+   "item": "soil variable declaration (line 27 uses soil without visible var)",
+   "reason": "assignment to prebound external; same provenance limitation"
+  }
+ ],
+ "R2_units": [
+  {
+   "unit": "study_area_definition",
+   "task_duty": "estimate annual soil loss in the Mahi Basin",
+   "source_operation": "HydroSHEDS filter(eq MAIN_BAS=4120031730); aoi=main (lines 1-9)",
+   "provenance": "task_determined",
+   "implementation_detail": "using HydroSHEDS hybas_12 level-12 basin boundaries is an implementation choice; the task requires the Mahi Basin, not this specific dataset",
+   "detail_would_change": true
+  },
+  {
+   "unit": "r_factor_computation",
+   "task_duty": "compute the rainfall erosivity (R) factor",
+   "source_operation": "CHIRPS 2017 sum *0.363+79 (lines 19-23)",
+   "provenance": "task_determined",
+   "implementation_detail": "the linear formula 0.363*x+79 is one published R-estimator; CHIRPS as rainfall source is a choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "k_factor_computation",
+   "task_duty": "compute the soil erodibility (K) factor",
+   "source_operation": "soil class lookup expression (lines 27-59)",
+   "provenance": "task_determined",
+   "implementation_detail": "the 13-class lookup table values are an implementation choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "ls_factor_computation",
+   "task_duty": "compute the slope length and steepness (LS) factor",
+   "source_operation": "Terrain.slope -> percent -> LS polynomial (lines 63-79)",
+   "provenance": "task_determined",
+   "implementation_detail": "the specific LS polynomial (0.53/0.076/0.76 coefficients, 500/100 length) is an implementation choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "c_factor_computation",
+   "task_duty": "compute the vegetation cover (C) factor",
+   "source_operation": "Sentinel-2 NDVI -> exp min-max normalization chain (lines 83-135)",
+   "provenance": "task_determined",
+   "implementation_detail": "NDVI-based C estimation and the alpha=-2 exp transform are an implementation choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "p_factor_computation",
+   "task_duty": "compute the land management (P) factor",
+   "source_operation": "MODIS lulc + slope lookup expression (lines 139-173)",
+   "provenance": "task_determined",
+   "implementation_detail": "the lulc-class/slope-conditioned lookup values are an implementation choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "soil_loss_product",
+   "task_duty": "combine the five factors into the soil-loss equation",
+   "source_operation": "R*K*LS*C*P (line 177)",
+   "provenance": "task_determined",
+   "implementation_detail": "the multiplicative RUSLE combination is the standard form the task names (RUSLE); structure is task-implied, coefficient-free",
+   "detail_would_change": false
+  },
+  {
+   "unit": "loss_classification",
+   "task_duty": "outputs include soil loss classes",
+   "source_operation": "SL_class thresholds 5/10/20/40 (lines 183-195)",
+   "provenance": "task_determined",
+   "implementation_detail": "the five-class thresholds (5/10/20/40 t/ha/yr) are an implementation choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "basin_mean_statistic",
+   "task_duty": null,
+   "source_operation": "soil_loss.reduceRegion(mean) over basin (lines 199-211)",
+   "provenance": "source_required",
+   "implementation_detail": "printing a single basin mean is a reporting choice; task does not require it",
+   "detail_would_change": true
+  },
+  {
+   "unit": "subbasin_mean_statistic",
+   "task_duty": "mean soil loss per subbasin",
+   "source_operation": "soil_loss.reduceRegions(mean) per subbasin (lines 213-223)",
+   "provenance": "task_determined",
+   "implementation_detail": "mean reducer choice is conventional; task requires per-subbasin values",
+   "detail_would_change": false
+  },
+  {
+   "unit": "class_area_statistics",
+   "task_duty": "area statistics by class",
+   "source_operation": "pixelArea group-sum by SL_class, per-basin and per-subbasin; pie chart (lines 225-277, 279-353)",
+   "provenance": "task_determined",
+   "implementation_detail": "km2 rounding, CSV export fields, and the legend UI are implementation choices",
+   "detail_would_change": true
+  }
+ ],
+ "R3_relationships": [
+  {
+   "kind": "dataflow_edge",
+   "from": "dataset",
+   "to": "main",
+   "via": "filter(eq MAIN_BAS)",
+   "definition_line": 1,
+   "use_line": 5,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "main",
+   "to": "aoi",
+   "via": "assignment alias",
+   "definition_line": 5,
+   "use_line": 9,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "aoi",
+   "to": "current",
+   "via": "clip(aoi)",
+   "definition_line": 9,
+   "use_line": 19,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "current",
+   "to": "R",
+   "via": "multiply/add/rename",
+   "definition_line": 19,
+   "use_line": 23,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "soil",
+   "to": "K",
+   "via": "expression lookup on soil band",
+   "definition_line": 27,
+   "use_line": 31,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "elevation",
+   "to": "slope1",
+   "via": "ee.Terrain.slope",
+   "definition_line": 63,
+   "use_line": 65,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "slope1",
+   "to": "slope",
+   "via": "deg->percent conversion",
+   "definition_line": 65,
+   "use_line": 67,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "slope",
+   "to": "LS",
+   "via": "LS1..LS4 polynomial",
+   "definition_line": 67,
+   "use_line": 79,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "s2",
+   "to": "image_ndvi",
+   "via": "normalizedDifference",
+   "definition_line": 83,
+   "use_line": 85,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image_ndvi",
+   "to": "C",
+   "via": "C1..C8 transform chain (def 93-135)",
+   "definition_line": 85,
+   "use_line": 135,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "lulc",
+   "to": "P",
+   "via": "expression lookup on lulc+slope",
+   "definition_line": 139,
+   "use_line": 147,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "slope",
+   "to": "P",
+   "via": "used inside P expression (b('slope'))",
+   "definition_line": 67,
+   "use_line": 147,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "R",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 23,
+   "use_line": 177,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "K",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 31,
+   "use_line": 177,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "LS",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 79,
+   "use_line": 177,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "C",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 135,
+   "use_line": 177,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "P",
+   "to": "soil_loss",
+   "via": "multiply",
+   "definition_line": 147,
+   "use_line": 177,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "soil_loss",
+   "to": "SL_class",
+   "via": "expression thresholds",
+   "definition_line": 177,
+   "use_line": 183,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "soil_loss",
+   "to": "SL_mean",
+   "via": "reduceRegion mean",
+   "definition_line": 177,
+   "use_line": 199,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "soil_loss",
+   "to": "maineMeansFeatures",
+   "via": "reduceRegions mean per subbasin",
+   "definition_line": 177,
+   "use_line": 213,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "SL_class",
+   "to": "districtAreas",
+   "via": "pixelArea group-sum per subbasin (def 279-331)",
+   "definition_line": 183,
+   "use_line": 331,
+   "evidence": "definition+use+traceable passing",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "study_area_definition",
+   "to": "r_factor_computation",
+   "evidence": "task lists R first among factors",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "r_factor_computation",
+   "to": "k_factor_computation",
+   "evidence": "task enumerates R,K,LS,C,P in order",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "k_factor_computation",
+   "to": "ls_factor_computation",
+   "evidence": "task enumeration",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "ls_factor_computation",
+   "to": "c_factor_computation",
+   "evidence": "task enumeration",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "c_factor_computation",
+   "to": "p_factor_computation",
+   "evidence": "task enumeration",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "p_factor_computation",
+   "to": "soil_loss_product",
+   "evidence": "task says 'combining ... factors'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "soil_loss_product",
+   "to": "loss_classification",
+   "evidence": "task lists classes after map",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "soil_loss_product",
+   "to": "subbasin_mean_statistic",
+   "evidence": "task lists means after map",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "loss_classification",
+   "to": "class_area_statistics",
+   "evidence": "task lists area stats by class",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "r_factor_computation",
+   "to": "soil_loss_product",
+   "evidence": "RUSLE multiplicative structure named in task",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "k_factor_computation",
+   "to": "soil_loss_product",
+   "evidence": "RUSLE multiplicative structure named in task",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "ls_factor_computation",
+   "to": "soil_loss_product",
+   "evidence": "RUSLE multiplicative structure named in task",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "c_factor_computation",
+   "to": "soil_loss_product",
+   "evidence": "RUSLE multiplicative structure named in task",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "p_factor_computation",
+   "to": "soil_loss_product",
+   "evidence": "RUSLE multiplicative structure named in task",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "soil_loss_product",
+   "to": "loss_classification",
+   "evidence": "dataflow edge present + task output enumeration",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "soil_loss_product",
+   "to": "basin_mean_statistic",
+   "evidence": "dataflow edge present + task output enumeration",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "soil_loss_product",
+   "to": "subbasin_mean_statistic",
+   "evidence": "dataflow edge present + task output enumeration",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "semantic_dependency",
+   "from": "loss_classification",
+   "to": "class_area_statistics",
+   "evidence": "dataflow edge present + task output enumeration",
+   "evidence_status": "task_explicit"
+  }
+ ],
+ "R3_control_structures": [
+  {
+   "candidate": "slope -> {LS, P} one-to-many fork",
+   "classification": "dataflow_fork_only",
+   "control_structure": "not_a_branch",
+   "reason": "fork is a dataflow fan-out; task never states conditional branching"
+  },
+  {
+   "candidate": "{R,K,LS,C,P} -> soil_loss multi-input join",
+   "classification": "semantic_merge_task_named",
+   "control_structure": "merge_supported",
+   "reason": "the task explicitly names combining the factors into one equation; merge semantics come from the task, not from fan-in alone"
+  },
+  {
+   "candidate": "for-loop over 5 classes (legend UI)",
+   "classification": "presentation_loop",
+   "control_structure": "not_workflow_repetition",
+   "reason": "legend rendering loop is UI, not analysis workflow"
+  }
+ ]
+}

@@ -1,0 +1,2105 @@
+[
+  {
+    "unit_id": "script_100110:A2:landsatTOAcloudmask",
+    "auto_status": "analysis_chain",
+    "auto_uses": 1,
+    "human_status": "unconsumed",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "静态引用 1（别名未续用）；须先厘清 unconsumed 判定口径：无后继引用 vs 未进入最终结果，不得混用",
+    "definition_sites": [
+      {
+        "line": 95,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 119,
+        "col": 4,
+        "context_parent": "VariableDeclarator",
+        "line_text": "landsatTOAcloudmask"
+      }
+    ],
+    "site_count": 1,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100110:A2:xValLabels",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "presentation_only",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂定展示（横轴标签）；计数待核绑定与作用域",
+    "definition_sites": [
+      {
+        "line": 245,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 289,
+        "col": 20,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: xValLabels[i]},  // the X axis category"
+      },
+      {
+        "line": 421,
+        "col": 40,
+        "context_parent": "CallExpression",
+        "line_text": "chartPanel.add(getTheChart(data, xVals, xValLabels, xField, xLabel, yField, yLabel));"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100110:A2:maxValue",
+    "auto_status": "analysis_chain",
+    "auto_uses": 4,
+    "human_status": "analysis_chain",
+    "human_uses": 2,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂保留；需核对更新最大值的读取次数及是否仅用于轴范围",
+    "definition_sites": [
+      {
+        "line": 257,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 279,
+        "col": 37,
+        "context_parent": "BinaryExpression",
+        "line_text": "maxValue = (stats.p100 > maxValue) ? stats.p100 : maxValue;"
+      },
+      {
+        "line": 279,
+        "col": 62,
+        "context_parent": "ConditionalExpression",
+        "line_text": "maxValue = (stats.p100 > maxValue) ? stats.p100 : maxValue;"
+      },
+      {
+        "line": 351,
+        "col": 38,
+        "context_parent": "BinaryExpression",
+        "line_text": "max: ((maxMedian * 1.5) > maxValue) ? maxValue : (maxMedian * 1.5),"
+      },
+      {
+        "line": 351,
+        "col": 50,
+        "context_parent": "ConditionalExpression",
+        "line_text": "max: ((maxMedian * 1.5) > maxValue) ? maxValue : (maxMedian * 1.5),"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100110:A2:maxMedian",
+    "auto_status": "analysis_chain",
+    "auto_uses": 4,
+    "human_status": "analysis_chain",
+    "human_uses": 2,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂保留；需核对实际引用位置后定状态与计数",
+    "definition_sites": [
+      {
+        "line": 259,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 281,
+        "col": 37,
+        "context_parent": "BinaryExpression",
+        "line_text": "maxMedian = (stats.p75 > maxMedian) ? stats.p75 : maxMedian;"
+      },
+      {
+        "line": 281,
+        "col": 62,
+        "context_parent": "ConditionalExpression",
+        "line_text": "maxMedian = (stats.p75 > maxMedian) ? stats.p75 : maxMedian;"
+      },
+      {
+        "line": 351,
+        "col": 19,
+        "context_parent": "BinaryExpression",
+        "line_text": "max: ((maxMedian * 1.5) > maxValue) ? maxValue : (maxMedian * 1.5),"
+      },
+      {
+        "line": 351,
+        "col": 62,
+        "context_parent": "BinaryExpression",
+        "line_text": "max: ((maxMedian * 1.5) > maxValue) ? maxValue : (maxMedian * 1.5),"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100110:A2:myRows",
+    "auto_status": "analysis_chain",
+    "auto_uses": 1,
+    "human_status": "presentation_only",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂保留；需确认行数据是纯呈现还是承担后续分析构造",
+    "definition_sites": [
+      {
+        "line": 265,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 329,
+        "col": 12,
+        "context_parent": "Property",
+        "line_text": "rows: myRows"
+      }
+    ],
+    "site_count": 1,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100110:A2:stats",
+    "auto_status": "analysis_chain",
+    "auto_uses": 18,
+    "human_status": "analysis_chain",
+    "human_uses": 9,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂保留；引用数 18 vs 9 差异必须逐处核对",
+    "definition_sites": [
+      {
+        "line": 267,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 279,
+        "col": 24,
+        "context_parent": "MemberExpression",
+        "line_text": "maxValue = (stats.p100 > maxValue) ? stats.p100 : maxValue;"
+      },
+      {
+        "line": 279,
+        "col": 49,
+        "context_parent": "MemberExpression",
+        "line_text": "maxValue = (stats.p100 > maxValue) ? stats.p100 : maxValue;"
+      },
+      {
+        "line": 281,
+        "col": 25,
+        "context_parent": "MemberExpression",
+        "line_text": "maxMedian = (stats.p75 > maxMedian) ? stats.p75 : maxMedian;"
+      },
+      {
+        "line": 281,
+        "col": 50,
+        "context_parent": "MemberExpression",
+        "line_text": "maxMedian = (stats.p75 > maxMedian) ? stats.p75 : maxMedian;"
+      },
+      {
+        "line": 283,
+        "col": 24,
+        "context_parent": "MemberExpression",
+        "line_text": "minValue = (stats.p0 > minValue) ? stats.p0 : minValue;"
+      },
+      {
+        "line": 283,
+        "col": 47,
+        "context_parent": "MemberExpression",
+        "line_text": "minValue = (stats.p0 > minValue) ? stats.p0 : minValue;"
+      },
+      {
+        "line": 285,
+        "col": 25,
+        "context_parent": "MemberExpression",
+        "line_text": "minMedian = (stats.p25 > minMedian) ? stats.p25 : minMedian;"
+      },
+      {
+        "line": 285,
+        "col": 50,
+        "context_parent": "MemberExpression",
+        "line_text": "minMedian = (stats.p25 > minMedian) ? stats.p25 : minMedian;"
+      },
+      {
+        "line": 293,
+        "col": 20,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: stats.p0},  // min"
+      },
+      {
+        "line": 295,
+        "col": 20,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: stats.p25},  // q1"
+      },
+      {
+        "line": 297,
+        "col": 20,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: stats.p50},  // median"
+      },
+      {
+        "line": 299,
+        "col": 20,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: stats.p75},  // q3"
+      },
+      {
+        "line": 301,
+        "col": 20,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: stats.p100},  // max"
+      },
+      {
+        "line": 303,
+        "col": 31,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: '{max: ' + stats.p100 + '\\n q3: ' + stats.p75 + '\\n median: ' + stats.p50 + '\\n q1: ' + stats.p25 + '\\n min: ' + stats.p0 + ' }'}"
+      },
+      {
+        "line": 303,
+        "col": 56,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: '{max: ' + stats.p100 + '\\n q3: ' + stats.p75 + '\\n median: ' + stats.p50 + '\\n q1: ' + stats.p25 + '\\n min: ' + stats.p0 + ' }'}"
+      },
+      {
+        "line": 303,
+        "col": 84,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: '{max: ' + stats.p100 + '\\n q3: ' + stats.p75 + '\\n median: ' + stats.p50 + '\\n q1: ' + stats.p25 + '\\n min: ' + stats.p0 + ' }'}"
+      },
+      {
+        "line": 303,
+        "col": 108,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: '{max: ' + stats.p100 + '\\n q3: ' + stats.p75 + '\\n median: ' + stats.p50 + '\\n q1: ' + stats.p25 + '\\n min: ' + stats.p0 + ' }'}"
+      },
+      {
+        "line": 303,
+        "col": 133,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: '{max: ' + stats.p100 + '\\n q3: ' + stats.p75 + '\\n median: ' + stats.p50 + '\\n q1: ' + stats.p25 + '\\n min: ' + stats.p0 + ' }'}"
+      }
+    ],
+    "site_count": 18,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100133:A2:data",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "图表数据输入；状态建议待计数审计，不批量接受",
+    "definition_sites": [
+      {
+        "line": 285,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 307,
+        "col": 24,
+        "context_parent": "MemberExpression",
+        "line_text": "var stats = data"
+      },
+      {
+        "line": 457,
+        "col": 27,
+        "context_parent": "CallExpression",
+        "line_text": "chartPanel.add(getTheChart(data, xVals, xValLabels, xField, xLabel, yField, yLabel));"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100133:A2:xVals",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "图表取值输入；逐绑定核对引用",
+    "definition_sites": [
+      {
+        "line": 287,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 305,
+        "col": 15,
+        "context_parent": "MemberExpression",
+        "line_text": "var myRows = xVals.map(function (label, i) {"
+      },
+      {
+        "line": 457,
+        "col": 33,
+        "context_parent": "CallExpression",
+        "line_text": "chartPanel.add(getTheChart(data, xVals, xValLabels, xField, xLabel, yField, yLabel));"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100133:A2:xValLabels",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂定展示；计数待核",
+    "definition_sites": [
+      {
+        "line": 289,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 325,
+        "col": 20,
+        "context_parent": "MemberExpression",
+        "line_text": "{v: xValLabels[i]},  // the X axis category"
+      },
+      {
+        "line": 457,
+        "col": 40,
+        "context_parent": "CallExpression",
+        "line_text": "chartPanel.add(getTheChart(data, xVals, xValLabels, xField, xLabel, yField, yLabel));"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100133:A2:xField",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "字段选择用途；计数待核",
+    "definition_sites": [
+      {
+        "line": 291,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 309,
+        "col": 39,
+        "context_parent": "CallExpression",
+        "line_text": ".filter(ee.Filter.equals(xField, label))"
+      },
+      {
+        "line": 457,
+        "col": 52,
+        "context_parent": "CallExpression",
+        "line_text": "chartPanel.add(getTheChart(data, xVals, xValLabels, xField, xLabel, yField, yLabel));"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100133:A2:xLabel",
+    "auto_status": "analysis_chain",
+    "auto_uses": 3,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "横轴标题；计数待核",
+    "definition_sites": [
+      {
+        "line": 293,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 373,
+        "col": 33,
+        "context_parent": "BinaryExpression",
+        "line_text": "title: yLabel + ' by ' + xLabel,"
+      },
+      {
+        "line": 379,
+        "col": 23,
+        "context_parent": "Property",
+        "line_text": "hAxis: {title: xLabel},"
+      },
+      {
+        "line": 457,
+        "col": 60,
+        "context_parent": "CallExpression",
+        "line_text": "chartPanel.add(getTheChart(data, xVals, xValLabels, xField, xLabel, yField, yLabel));"
+      }
+    ],
+    "site_count": 3,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100133:A2:yField",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "统计字段选择；计数待核",
+    "definition_sites": [
+      {
+        "line": 295,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 315,
+        "col": 28,
+        "context_parent": "ArrayExpression",
+        "line_text": "selectors: [yField]"
+      },
+      {
+        "line": 457,
+        "col": 68,
+        "context_parent": "CallExpression",
+        "line_text": "chartPanel.add(getTheChart(data, xVals, xValLabels, xField, xLabel, yField, yLabel));"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100133:A2:yLabel",
+    "auto_status": "analysis_chain",
+    "auto_uses": 3,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "纵轴标题；计数待核",
+    "definition_sites": [
+      {
+        "line": 297,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 373,
+        "col": 15,
+        "context_parent": "BinaryExpression",
+        "line_text": "title: yLabel + ' by ' + xLabel,"
+      },
+      {
+        "line": 383,
+        "col": 17,
+        "context_parent": "Property",
+        "line_text": "title: yLabel,"
+      },
+      {
+        "line": 457,
+        "col": 76,
+        "context_parent": "CallExpression",
+        "line_text": "chartPanel.add(getTheChart(data, xVals, xValLabels, xField, xLabel, yField, yLabel));"
+      }
+    ],
+    "site_count": 3,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100145:A2:IC",
+    "auto_status": "analysis_chain",
+    "auto_uses": 9,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "visfilter 形参；需逐处区分左值与有效引用",
+    "definition_sites": [
+      {
+        "line": 67,
+        "kind": "param"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 69,
+        "col": 7,
+        "context_parent": "MemberExpression",
+        "line_text": "IC = IC.select(\"builtup_class\").reduce(ee.Reducer.firstNonNull())//.gte(0)"
+      },
+      {
+        "line": 71,
+        "col": 14,
+        "context_parent": "MemberExpression",
+        "line_text": ".updateMask(IC.select(\"builtup\").reduce(ee.Reducer.firstNonNull()).gte(1))"
+      },
+      {
+        "line": 73,
+        "col": 9,
+        "context_parent": "ReturnStatement",
+        "line_text": "return IC"
+      },
+      {
+        "line": 79,
+        "col": 7,
+        "context_parent": "MemberExpression",
+        "line_text": "IC = IC.filter(ee.Filter.equals('builtup_year',year))"
+      },
+      {
+        "line": 81,
+        "col": 9,
+        "context_parent": "ReturnStatement",
+        "line_text": "return IC"
+      },
+      {
+        "line": 87,
+        "col": 7,
+        "context_parent": "MemberExpression",
+        "line_text": "IC = IC.filter(ee.Filter.inList('City__Name',test_cities))"
+      },
+      {
+        "line": 89,
+        "col": 9,
+        "context_parent": "ReturnStatement",
+        "line_text": "return IC"
+      },
+      {
+        "line": 185,
+        "col": 7,
+        "context_parent": "MemberExpression",
+        "line_text": "IC = IC.filter(ee.Filter.equals('builtup_year',year))"
+      },
+      {
+        "line": 187,
+        "col": 9,
+        "context_parent": "ReturnStatement",
+        "line_text": "return IC"
+      }
+    ],
+    "site_count": 9,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100145:A2:year",
+    "auto_status": "analysis_chain",
+    "auto_uses": 7,
+    "human_status": "analysis_chain",
+    "human_uses": 11,
+    "decision": "needs_source_audit",
+    "decision_basis": "多次重赋值；同一绑定累计有效引用，左值不计",
+    "definition_sites": [
+      {
+        "line": 191,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 79,
+        "col": 49,
+        "context_parent": "CallExpression",
+        "line_text": "IC = IC.filter(ee.Filter.equals('builtup_year',year))"
+      },
+      {
+        "line": 117,
+        "col": 70,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 119,
+        "col": 57,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 2% built-up)\",false)"
+      },
+      {
+        "line": 121,
+        "col": 36,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = yearfilter(GHSL2pctBD,year)"
+      },
+      {
+        "line": 125,
+        "col": 81,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (2%)\",false)"
+      },
+      {
+        "line": 133,
+        "col": 70,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 135,
+        "col": 57,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 5% built-up)\",false)"
+      },
+      {
+        "line": 137,
+        "col": 36,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = yearfilter(GHSL5pctBD,year)"
+      },
+      {
+        "line": 141,
+        "col": 81,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (5%)\",false)"
+      },
+      {
+        "line": 143,
+        "col": 43,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLueyear = yearfilter(GHSL5pctUE2015,year)"
+      },
+      {
+        "line": 149,
+        "col": 70,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 151,
+        "col": 57,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 10% built-up)\",false)"
+      },
+      {
+        "line": 153,
+        "col": 37,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = yearfilter(GHSL10pctBD,year)"
+      },
+      {
+        "line": 157,
+        "col": 81,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (10%)\",false)"
+      },
+      {
+        "line": 159,
+        "col": 44,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLueyear = yearfilter(GHSL10pctUE2015,year)"
+      },
+      {
+        "line": 161,
+        "col": 62,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLueyear,{color:'orange'},\"Urban Extent GHSL \"+year+\" (10%)\",true)"
+      },
+      {
+        "line": 167,
+        "col": 70,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 169,
+        "col": 57,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 20% built-up)\",false)"
+      },
+      {
+        "line": 171,
+        "col": 45,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = yearfilter(GHSLbuiltup_density,year)"
+      },
+      {
+        "line": 175,
+        "col": 81,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (20%)\",false)"
+      },
+      {
+        "line": 177,
+        "col": 35,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLueyear = yearfilter(GHSLue,year)"
+      },
+      {
+        "line": 185,
+        "col": 49,
+        "context_parent": "CallExpression",
+        "line_text": "IC = IC.filter(ee.Filter.equals('builtup_year',year))"
+      },
+      {
+        "line": 195,
+        "col": 70,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 197,
+        "col": 57,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLyear,{palette:'black'},\"built-up GHSL \"+year+\" (cell gte 10% built-up)\",false)"
+      },
+      {
+        "line": 199,
+        "col": 34,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = yearfilter(KigaliBD,year)"
+      },
+      {
+        "line": 203,
+        "col": 81,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (2%)\",false)"
+      },
+      {
+        "line": 205,
+        "col": 37,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLueyear = yearfilter(KigaliUE,year)"
+      },
+      {
+        "line": 207,
+        "col": 68,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLueyear,{color:'yellow'},\"Urban Extent GHSL (10%) \"+year+\"\",true)"
+      },
+      {
+        "line": 211,
+        "col": 66,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(GHSLueyear,{color:'blue'},\"Urban Extent GHSL (10%) \"+year+\" buffered\",false)"
+      }
+    ],
+    "site_count": 29,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100145:A2:GHSL2023releaseYear",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 4,
+    "decision": "needs_source_audit",
+    "decision_basis": "同作用域多次声明/赋值，逐处核对读取",
+    "definition_sites": [
+      {
+        "line": 193,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 117,
+        "col": 15,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 117,
+        "col": 46,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 133,
+        "col": 15,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 133,
+        "col": 46,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 149,
+        "col": 15,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 149,
+        "col": 46,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 167,
+        "col": 15,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 167,
+        "col": 46,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 195,
+        "col": 15,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      },
+      {
+        "line": 195,
+        "col": 46,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLyear = GHSL2023releaseYear.updateMask(GHSL2023releaseYear.lte(year)).gt(0)"
+      }
+    ],
+    "site_count": 10,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100145:A2:GHSLbud",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "presentation_only",
+    "human_uses": 9,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂定分析（进入 yearfilter/visfilter）；2 vs 9 需复核；源码确认前不锁旧标签 presentation_only",
+    "definition_sites": [
+      {
+        "line": 201,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 123,
+        "col": 24,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = visfilter(GHSLbud)"
+      },
+      {
+        "line": 125,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (2%)\",false)"
+      },
+      {
+        "line": 139,
+        "col": 24,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = visfilter(GHSLbud)"
+      },
+      {
+        "line": 141,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (5%)\",false)"
+      },
+      {
+        "line": 155,
+        "col": 24,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = visfilter(GHSLbud)"
+      },
+      {
+        "line": 157,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (10%)\",false)"
+      },
+      {
+        "line": 173,
+        "col": 24,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = visfilter(GHSLbud)"
+      },
+      {
+        "line": 175,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (20%)\",false)"
+      },
+      {
+        "line": 201,
+        "col": 24,
+        "context_parent": "CallExpression",
+        "line_text": "var GHSLbud = visfilter(GHSLbud)"
+      },
+      {
+        "line": 203,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(GHSLbud,{palette:[\"green\",\"pink\",\"blue\"],min:0,max:2},\"class GHSL \"+year+\" (2%)\",false)"
+      }
+    ],
+    "site_count": 10,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_100145:A2:GHSLueyear",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "presentation_only",
+    "human_uses": 8,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂定分析（末尾缓冲处理后展示，或双重用途）；需检查缓冲作用与全部引用位置",
+    "definition_sites": [
+      {
+        "line": 209,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 161,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(GHSLueyear,{color:'orange'},\"Urban Extent GHSL \"+year+\" (10%)\",true)"
+      },
+      {
+        "line": 207,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(GHSLueyear,{color:'yellow'},\"Urban Extent GHSL (10%) \"+year+\"\",true)"
+      },
+      {
+        "line": 209,
+        "col": 17,
+        "context_parent": "MemberExpression",
+        "line_text": "var GHSLueyear = GHSLueyear.map(function(feat){return feat.buffer(50)})"
+      },
+      {
+        "line": 211,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(GHSLueyear,{color:'blue'},\"Urban Extent GHSL (10%) \"+year+\" buffered\",false)"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_101095:A2:image",
+    "auto_status": "analysis_chain",
+    "auto_uses": 3,
+    "human_status": "analysis_chain",
+    "human_uses": 4,
+    "decision": "needs_source_audit",
+    "decision_basis": "备注计 4；需按'同一调用表达式接收对象不重复计数'复核",
+    "definition_sites": [
+      {
+        "line": 9,
+        "kind": "param"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 11,
+        "col": 21,
+        "context_parent": "MemberExpression",
+        "line_text": "var edge = image.lt(-30.0);"
+      },
+      {
+        "line": 13,
+        "col": 28,
+        "context_parent": "MemberExpression",
+        "line_text": "var maskedImage = image.mask().and(edge.not());"
+      },
+      {
+        "line": 15,
+        "col": 17,
+        "context_parent": "MemberExpression",
+        "line_text": "return image.updateMask(maskedImage);"
+      }
+    ],
+    "site_count": 3,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:timeField",
+    "auto_status": "analysis_chain",
+    "auto_uses": 9,
+    "human_status": "analysis_chain",
+    "human_uses": 5,
+    "decision": "needs_source_audit",
+    "decision_basis": "状态无争议，计数待源码核验",
+    "definition_sites": [
+      {
+        "line": 7,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 27,
+        "col": 31,
+        "context_parent": "CallExpression",
+        "line_text": "var date = ee.Date(image.get(timeField));"
+      },
+      {
+        "line": 95,
+        "col": 34,
+        "context_parent": "ArrayExpression",
+        "line_text": ".copyProperties(image, [timeField]);"
+      },
+      {
+        "line": 193,
+        "col": 17,
+        "context_parent": "Property",
+        "line_text": "leftField: timeField,"
+      },
+      {
+        "line": 195,
+        "col": 18,
+        "context_parent": "Property",
+        "line_text": "rightField: timeField"
+      },
+      {
+        "line": 201,
+        "col": 17,
+        "context_parent": "Property",
+        "line_text": "leftField: timeField,"
+      },
+      {
+        "line": 203,
+        "col": 18,
+        "context_parent": "Property",
+        "line_text": "rightField: timeField"
+      },
+      {
+        "line": 213,
+        "col": 14,
+        "context_parent": "Property",
+        "line_text": "ordering: timeField,"
+      },
+      {
+        "line": 517,
+        "col": 13,
+        "context_parent": "Property",
+        "line_text": "leftField: timeField,"
+      },
+      {
+        "line": 519,
+        "col": 14,
+        "context_parent": "Property",
+        "line_text": "rightField: timeField"
+      }
+    ],
+    "site_count": 9,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:date",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 27,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 29,
+        "col": 14,
+        "context_parent": "MemberExpression",
+        "line_text": "var years = date.difference(ee.Date('1970-01-01'), 'year');"
+      },
+      {
+        "line": 419,
+        "col": 39,
+        "context_parent": "CallExpression",
+        "line_text": "'system:time_start': ee.Date(date).millis()"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:filteredLandsat",
+    "auto_status": "analysis_chain",
+    "auto_uses": 11,
+    "human_status": "analysis_chain",
+    "human_uses": 10,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 41,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 49,
+        "col": 24,
+        "context_parent": "CallExpression",
+        "line_text": "print('filteredLandsat',filteredLandsat)"
+      },
+      {
+        "line": 51,
+        "col": 36,
+        "context_parent": "MemberExpression",
+        "line_text": "var l8Chart = ui.Chart.image.series(filteredLandsat.select('NDVI'), roi)"
+      },
+      {
+        "line": 77,
+        "col": 12,
+        "context_parent": "MemberExpression",
+        "line_text": "var trend = filteredLandsat.select(independents.add(dependent))"
+      },
+      {
+        "line": 87,
+        "col": 16,
+        "context_parent": "MemberExpression",
+        "line_text": "var detrended = filteredLandsat.map(function(image) {"
+      },
+      {
+        "line": 115,
+        "col": 22,
+        "context_parent": "MemberExpression",
+        "line_text": "var harmonicLandsat = filteredLandsat.map(function(image) {"
+      },
+      {
+        "line": 297,
+        "col": 25,
+        "context_parent": "CallExpression",
+        "line_text": "var lag1PrecipNDVI = lag(filteredLandsat, chirps, 5);"
+      },
+      {
+        "line": 313,
+        "col": 26,
+        "context_parent": "CallExpression",
+        "line_text": "var lag30PrecipNDVI = lag(filteredLandsat, chirps, 30);"
+      },
+      {
+        "line": 333,
+        "col": 38,
+        "context_parent": "CallExpression",
+        "line_text": "var lagged34 = ee.ImageCollection(lag(filteredLandsat, filteredLandsat, 34));"
+      },
+      {
+        "line": 333,
+        "col": 55,
+        "context_parent": "CallExpression",
+        "line_text": "var lagged34 = ee.ImageCollection(lag(filteredLandsat, filteredLandsat, 34));"
+      },
+      {
+        "line": 433,
+        "col": 12,
+        "context_parent": "MemberExpression",
+        "line_text": "var first = filteredLandsat.first();"
+      },
+      {
+        "line": 435,
+        "col": 21,
+        "context_parent": "MemberExpression",
+        "line_text": "var filled = ee.List(filteredLandsat.iterate(fill, [first])).slice(1);"
+      }
+    ],
+    "site_count": 11,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:independents",
+    "auto_status": "analysis_chain",
+    "auto_uses": 4,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 73,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 77,
+        "col": 35,
+        "context_parent": "MemberExpression",
+        "line_text": "var trend = filteredLandsat.select(independents.add(dependent))"
+      },
+      {
+        "line": 79,
+        "col": 40,
+        "context_parent": "MemberExpression",
+        "line_text": ".reduce(ee.Reducer.linearRegression(independents.length(), 1));"
+      },
+      {
+        "line": 85,
+        "col": 17,
+        "context_parent": "ArrayExpression",
+        "line_text": ".arrayFlatten([independents]);"
+      },
+      {
+        "line": 91,
+        "col": 23,
+        "context_parent": "CallExpression",
+        "line_text": "image.select(independents).multiply(coefficients).reduce('sum'))"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:dependent",
+    "auto_status": "analysis_chain",
+    "auto_uses": 9,
+    "human_status": "analysis_chain",
+    "human_uses": 7,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 75,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 77,
+        "col": 52,
+        "context_parent": "CallExpression",
+        "line_text": "var trend = filteredLandsat.select(independents.add(dependent))"
+      },
+      {
+        "line": 89,
+        "col": 22,
+        "context_parent": "CallExpression",
+        "line_text": "return image.select(dependent).subtract("
+      },
+      {
+        "line": 93,
+        "col": 18,
+        "context_parent": "CallExpression",
+        "line_text": ".rename(dependent)"
+      },
+      {
+        "line": 129,
+        "col": 35,
+        "context_parent": "CallExpression",
+        "line_text": ".select(harmonicIndependents.add(dependent))"
+      },
+      {
+        "line": 257,
+        "col": 14,
+        "context_parent": "MemberExpression",
+        "line_text": "var lagBand = dependent.cat('_1');"
+      },
+      {
+        "line": 259,
+        "col": 49,
+        "context_parent": "CallExpression",
+        "line_text": "var covariance17 = ee.Image(covariance(merged17, dependent, lagBand));"
+      },
+      {
+        "line": 291,
+        "col": 49,
+        "context_parent": "CallExpression",
+        "line_text": "var covariance34 = ee.Image(covariance(merged34, dependent, dependent.cat('_2')));"
+      },
+      {
+        "line": 291,
+        "col": 60,
+        "context_parent": "MemberExpression",
+        "line_text": "var covariance34 = ee.Image(covariance(merged34, dependent, dependent.cat('_2')));"
+      },
+      {
+        "line": 345,
+        "col": 29,
+        "context_parent": "CallExpression",
+        "line_text": ".select(arIndependents.add(dependent))"
+      }
+    ],
+    "site_count": 9,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:harmonicIndependents",
+    "auto_status": "analysis_chain",
+    "auto_uses": 4,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 113,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 129,
+        "col": 10,
+        "context_parent": "MemberExpression",
+        "line_text": ".select(harmonicIndependents.add(dependent))"
+      },
+      {
+        "line": 131,
+        "col": 38,
+        "context_parent": "MemberExpression",
+        "line_text": ".reduce(ee.Reducer.linearRegression(harmonicIndependents.length(), 1));"
+      },
+      {
+        "line": 137,
+        "col": 17,
+        "context_parent": "ArrayExpression",
+        "line_text": ".arrayFlatten([harmonicIndependents]);"
+      },
+      {
+        "line": 143,
+        "col": 17,
+        "context_parent": "CallExpression",
+        "line_text": "image.select(harmonicIndependents)"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:start",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 397,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 403,
+        "col": 15,
+        "context_parent": "MemberExpression",
+        "line_text": "condition: start.lt(end),"
+      },
+      {
+        "line": 407,
+        "col": 13,
+        "context_parent": "Property",
+        "line_text": "start: start,"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:end",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 399,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 403,
+        "col": 24,
+        "context_parent": "CallExpression",
+        "line_text": "condition: start.lt(end),"
+      },
+      {
+        "line": 409,
+        "col": 11,
+        "context_parent": "Property",
+        "line_text": "end: end,"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_191158:A2:ndvi",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 441,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 473,
+        "col": 14,
+        "context_parent": "MemberExpression",
+        "line_text": "srcImg: ndvi.unmask().where(ndvi.mask().not(), predicted).rename('NDVI'),"
+      },
+      {
+        "line": 473,
+        "col": 34,
+        "context_parent": "MemberExpression",
+        "line_text": "srcImg: ndvi.unmask().where(ndvi.mask().not(), predicted).rename('NDVI'),"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_216850:A2:bands",
+    "auto_status": "analysis_chain",
+    "auto_uses": 4,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 37,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 47,
+        "col": 31,
+        "context_parent": "CallExpression",
+        "line_text": "var training = imagenew.select(bands).sampleRegions({"
+      },
+      {
+        "line": 57,
+        "col": 33,
+        "context_parent": "CallExpression",
+        "line_text": "var validation = imagenew.select(bands).sampleRegions({"
+      },
+      {
+        "line": 73,
+        "col": 19,
+        "context_parent": "Property",
+        "line_text": "inputProperties: bands"
+      },
+      {
+        "line": 77,
+        "col": 33,
+        "context_parent": "CallExpression",
+        "line_text": "var classified = imagenew.select(bands).classify(classifier);"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_216850:A2:classified",
+    "auto_status": "analysis_chain",
+    "auto_uses": 5,
+    "human_status": "analysis_chain",
+    "human_uses": 4,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 77,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 85,
+        "col": 12,
+        "context_parent": "SequenceExpression",
+        "line_text": "var LULC = (classified, {min:0,max:5,palette:['#1BFF00'/*green*/,'#ffff00'/*orange*/,'#FF2D00'/*red*/,'#0023FF'/*blue*/,'#FF00F7'/*pink*/,'#9B00FF']});"
+      },
+      {
+        "line": 87,
+        "col": 13,
+        "context_parent": "CallExpression",
+        "line_text": "Map.addLayer(classified,{min:0,max:5,palette:['#1BFF00'/*green*/,'#ffff00'/*orange*/,'#FF2D00'/*red*/,'#0023FF'/*blue*/,'#FF00F7'/*pink*/,'#9B00FF']},\"land cove"
+      },
+      {
+        "line": 91,
+        "col": 11,
+        "context_parent": "Property",
+        "line_text": "srcImg : classified,"
+      },
+      {
+        "line": 115,
+        "col": 16,
+        "context_parent": "MemberExpression",
+        "line_text": "var sunflower = classified.eq(0).selfMask();"
+      },
+      {
+        "line": 139,
+        "col": 74,
+        "context_parent": "CallExpression",
+        "line_text": "var areaImage = ee.Image.pixelArea().divide(1e4).multiply(2.471).addBands(classified);"
+      }
+    ],
+    "site_count": 5,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_217669:A2:blank",
+    "auto_status": "analysis_chain",
+    "auto_uses": 1,
+    "human_status": "presentation_only",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "暂定；需确认是否还有其他分析操作",
+    "definition_sites": [
+      {
+        "line": 173,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 175,
+        "col": 14,
+        "context_parent": "MemberExpression",
+        "line_text": "var outline = blank.paint(myGrid, 'AA0000', 2);"
+      }
+    ],
+    "site_count": 1,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_217669:A2:collection",
+    "auto_status": "analysis_chain",
+    "auto_uses": 4,
+    "human_status": "analysis_chain",
+    "human_uses": 6,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 181,
+        "kind": "param"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 183,
+        "col": 17,
+        "context_parent": "MemberExpression",
+        "line_text": "collection = collection.randomColumn('random', seed || 1)"
+      },
+      {
+        "line": 205,
+        "col": 8,
+        "context_parent": "MemberExpression",
+        "line_text": "collection.reduceColumns(ee.Reducer.toList(), ['new_id'])"
+      },
+      {
+        "line": 209,
+        "col": 47,
+        "context_parent": "MemberExpression",
+        "line_text": "var sequentialIdList = ee.List.sequence(1, collection.size());"
+      },
+      {
+        "line": 211,
+        "col": 19,
+        "context_parent": "MemberExpression",
+        "line_text": "var shuffled = collection.remap(randomIdList, sequentialIdList, 'new_id');"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_217669:A2:rescaled",
+    "auto_status": "analysis_chain",
+    "auto_uses": 1,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 191,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 197,
+        "col": 45,
+        "context_parent": "CallExpression",
+        "line_text": "return feature.set('new_id', rescaled);"
+      }
+    ],
+    "site_count": 1,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_217669:A2:year",
+    "auto_status": "analysis_chain",
+    "auto_uses": 4,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 245,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 247,
+        "col": 58,
+        "context_parent": "BinaryExpression",
+        "line_text": "var class_map_year = class_map.select('classification_'+year)"
+      },
+      {
+        "line": 249,
+        "col": 43,
+        "context_parent": "BinaryExpression",
+        "line_text": "Map.addLayer(class_map_year, vis, 'RF'+year+\"_\"+grid_name, false);"
+      },
+      {
+        "line": 253,
+        "col": 77,
+        "context_parent": "BinaryExpression",
+        "line_text": "var errorMatrix_abs = valida_reg.errorMatrix('reference','classification_'+year)"
+      },
+      {
+        "line": 255,
+        "col": 9,
+        "context_parent": "CallExpression",
+        "line_text": "print(year, errorMatrix_abs.accuracy())"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_35821:A2:SZ_rad",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 19,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 29,
+        "col": 13,
+        "context_parent": "MemberExpression",
+        "line_text": "var cosZ = SZ_rad.cos();"
+      },
+      {
+        "line": 39,
+        "col": 13,
+        "context_parent": "MemberExpression",
+        "line_text": "var sinZ = SZ_rad.sin();"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_35821:A2:cosZ",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 29,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 35,
+        "col": 51,
+        "context_parent": "Property",
+        "line_text": "{'cosZ': cosZ,"
+      },
+      {
+        "line": 55,
+        "col": 68,
+        "context_parent": "MemberExpression",
+        "line_text": "var img_plus_ic = ee.Image(img.addBands(ic.rename('IC')).addBands(cosZ.rename('cosZ')).addBands(cosS.rename('cosS')).addBands(slp.rename('slope')));"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_35821:A2:sinZ",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 1,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 39,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 45,
+        "col": 28,
+        "context_parent": "MemberExpression",
+        "line_text": "var aspect_illumination = sinZ.expression(\"sinZ * sinS * cosAziDiff\","
+      },
+      {
+        "line": 47,
+        "col": 52,
+        "context_parent": "Property",
+        "line_text": "{'sinZ': sinZ,"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_35821:A2:img_plus_ic_mask2",
+    "auto_status": "analysis_chain",
+    "auto_uses": 7,
+    "human_status": "analysis_chain",
+    "human_uses": 11,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 77,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 91,
+        "col": 16,
+        "context_parent": "MemberExpression",
+        "line_text": "var out = img_plus_ic_mask2.select('IC', band).reduceRegion({"
+      },
+      {
+        "line": 105,
+        "col": 14,
+        "context_parent": "MemberExpression",
+        "line_text": "return img_plus_ic_mask2.select(band);"
+      },
+      {
+        "line": 117,
+        "col": 24,
+        "context_parent": "MemberExpression",
+        "line_text": "var SCSc_output = img_plus_ic_mask2.expression("
+      },
+      {
+        "line": 121,
+        "col": 17,
+        "context_parent": "MemberExpression",
+        "line_text": "'image': img_plus_ic_mask2.select(band),"
+      },
+      {
+        "line": 123,
+        "col": 14,
+        "context_parent": "MemberExpression",
+        "line_text": "'ic': img_plus_ic_mask2.select('IC'),"
+      },
+      {
+        "line": 125,
+        "col": 16,
+        "context_parent": "MemberExpression",
+        "line_text": "'cosB': img_plus_ic_mask2.select('cosS'),"
+      },
+      {
+        "line": 127,
+        "col": 16,
+        "context_parent": "MemberExpression",
+        "line_text": "'cosZ': img_plus_ic_mask2.select('cosZ'),"
+      }
+    ],
+    "site_count": 7,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_35821:A2:band",
+    "auto_status": "analysis_chain",
+    "auto_uses": 3,
+    "human_status": "analysis_chain",
+    "human_uses": 4,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 87,
+        "kind": "param"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 91,
+        "col": 47,
+        "context_parent": "CallExpression",
+        "line_text": "var out = img_plus_ic_mask2.select('IC', band).reduceRegion({"
+      },
+      {
+        "line": 105,
+        "col": 39,
+        "context_parent": "CallExpression",
+        "line_text": "return img_plus_ic_mask2.select(band);"
+      },
+      {
+        "line": 121,
+        "col": 42,
+        "context_parent": "CallExpression",
+        "line_text": "'image': img_plus_ic_mask2.select(band),"
+      }
+    ],
+    "site_count": 3,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_35821:A2:out",
+    "auto_status": "analysis_chain",
+    "auto_uses": 4,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 91,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 103,
+        "col": 7,
+        "context_parent": "BinaryExpression",
+        "line_text": "if (out === null || out === undefined ){"
+      },
+      {
+        "line": 103,
+        "col": 23,
+        "context_parent": "BinaryExpression",
+        "line_text": "if (out === null || out === undefined ){"
+      },
+      {
+        "line": 111,
+        "col": 28,
+        "context_parent": "MemberExpression",
+        "line_text": "var out_a = ee.Number(out.get('scale'));"
+      },
+      {
+        "line": 113,
+        "col": 28,
+        "context_parent": "MemberExpression",
+        "line_text": "var out_b = ee.Number(out.get('offset'));"
+      }
+    ],
+    "site_count": 4,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_35821:A2:img_SCSccorr",
+    "auto_status": "analysis_chain",
+    "auto_uses": 2,
+    "human_status": "analysis_chain",
+    "human_uses": 3,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 139,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 143,
+        "col": 19,
+        "context_parent": "MemberExpression",
+        "line_text": "img_SCSccorr = img_SCSccorr.unmask(img_plus_ic.select(bandList_IC)).select(bandList);"
+      },
+      {
+        "line": 145,
+        "col": 11,
+        "context_parent": "MemberExpression",
+        "line_text": "return img_SCSccorr.addBands(nonCorrectBands)"
+      }
+    ],
+    "site_count": 2,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_35821:A2:aero",
+    "auto_status": "analysis_chain",
+    "auto_uses": 1,
+    "human_status": "analysis_chain",
+    "human_uses": 2,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 157,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 161,
+        "col": 52,
+        "context_parent": "MemberExpression",
+        "line_text": ".and(qa.bitwiseAnd(1<<8-9).eq(0)).and(aero.bitwiseAnd(1<<6-7).eq(0));"
+      }
+    ],
+    "site_count": 1,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_45485:A2:image",
+    "auto_status": "analysis_chain",
+    "auto_uses": 6,
+    "human_status": "analysis_chain",
+    "human_uses": 8,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 5,
+        "kind": "param"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 7,
+        "col": 14,
+        "context_parent": "MemberExpression",
+        "line_text": "var Pheno = image.select(['Greenup_1','MidGreenup_1','Peak_1','Maturity_1','Senescence_1','MidGreendown_1','Dormancy_1']);"
+      },
+      {
+        "line": 9,
+        "col": 11,
+        "context_parent": "MemberExpression",
+        "line_text": "var QA = image.select('QA_Detailed_1');"
+      },
+      {
+        "line": 13,
+        "col": 13,
+        "context_parent": "MemberExpression",
+        "line_text": "var mask = image.select('NumCycles').gte(1);"
+      },
+      {
+        "line": 15,
+        "col": 31,
+        "context_parent": "MemberExpression",
+        "line_text": "var time = ee.Image.constant(image.date().difference(ee.Date('1970-01-01'), 'day')).subtract(ee.Image(1)).int();"
+      },
+      {
+        "line": 17,
+        "col": 22,
+        "context_parent": "MemberExpression",
+        "line_text": "var year = ee.Image(image.date().difference(ee.Date('2000-01-01'), 'year')).int().rename(\"year\");"
+      },
+      {
+        "line": 21,
+        "col": 45,
+        "context_parent": "CallExpression",
+        "line_text": "return time.addBands(Pheno).copyProperties(image, [\"system:time_start\"]);"
+      }
+    ],
+    "site_count": 6,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_7900:A2:dem",
+    "auto_status": "analysis_chain",
+    "auto_uses": 3,
+    "human_status": "analysis_chain",
+    "human_uses": 2,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 55,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 65,
+        "col": 29,
+        "context_parent": "CallExpression",
+        "line_text": "var slp = ee.Terrain.slope(dem).clip(img.geometry().buffer(10000));"
+      },
+      {
+        "line": 67,
+        "col": 33,
+        "context_parent": "CallExpression",
+        "line_text": "var slp_rad = ee.Terrain.slope(dem).multiply(3.14159265359).divide(180).clip(img.geometry().buffer(10000));"
+      },
+      {
+        "line": 69,
+        "col": 34,
+        "context_parent": "CallExpression",
+        "line_text": "var asp_rad = ee.Terrain.aspect(dem).multiply(3.14159265359).divide(180).clip(img.geometry().buffer(10000));"
+      }
+    ],
+    "site_count": 3,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  },
+  {
+    "unit_id": "script_7900:A2:ic",
+    "auto_status": "analysis_chain",
+    "auto_uses": 1,
+    "human_status": "analysis_chain",
+    "human_uses": 2,
+    "decision": "needs_source_audit",
+    "decision_basis": "",
+    "definition_sites": [
+      {
+        "line": 95,
+        "kind": "declaration"
+      }
+    ],
+    "all_identifier_sites": [
+      {
+        "line": 97,
+        "col": 42,
+        "context_parent": "MemberExpression",
+        "line_text": "var img_plus_ic = ee.Image(img.addBands(ic.rename('IC')).addBands(cosZ.rename('cosZ')).addBands(cosS.rename('cosS')).addBands(slp.rename('slope')));"
+      }
+    ],
+    "site_count": 1,
+    "note": "Assignment LHS already excluded by the AST collector. Verify per-site: def-expression-internal references do NOT count as post-definition uses; same-call receiver not double-counted; return counts as one use."
+  }
+]

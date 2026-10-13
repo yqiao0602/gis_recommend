@@ -1,0 +1,802 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_271544",
+  "source_sha256": "025ee59048258efcf255a7de67dd713daf956046d8b6898043e02569ea9326c2",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "karnataka",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "bounds",
+      "kind": "declaration",
+      "def_line": 7,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "coords",
+      "kind": "declaration",
+      "def_line": 9,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "xmin",
+      "kind": "declaration",
+      "def_line": 11,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ymin",
+      "kind": "declaration",
+      "def_line": 13,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "xmax",
+      "kind": "declaration",
+      "def_line": 15,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ymax",
+      "kind": "declaration",
+      "def_line": 17,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "gridModule",
+      "kind": "declaration",
+      "def_line": 19,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "spacing",
+      "kind": "declaration",
+      "def_line": 21,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "gridVector",
+      "kind": "declaration",
+      "def_line": 23,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "height_40",
+      "kind": "declaration",
+      "def_line": 27,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "height_divide_40",
+      "kind": "declaration",
+      "def_line": 29,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "grid_value",
+      "kind": "declaration",
+      "def_line": 35,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "i",
+      "kind": "param",
+      "def_line": 35,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "roi1",
+      "kind": "declaration",
+      "def_line": 37,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "img",
+      "kind": "declaration",
+      "def_line": 39,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "n1",
+      "kind": "declaration",
+      "def_line": 41,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "n2",
+      "kind": "declaration",
+      "def_line": 53,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "n_p",
+      "kind": "declaration",
+      "def_line": 65,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "dict",
+      "kind": "declaration",
+      "def_line": 67,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "FAO_feature",
+      "kind": "declaration",
+      "def_line": 75,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "feature",
+      "kind": "param",
+      "def_line": 75,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "geom",
+      "kind": "declaration",
+      "def_line": 77,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "proj",
+      "kind": "declaration",
+      "def_line": 79,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "geom_reproject",
+      "kind": "declaration",
+      "def_line": 81,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "covGrid",
+      "kind": "declaration",
+      "def_line": 91,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [
+    {
+      "variable": "canopy_height",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 27,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "roi",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 29,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "FAO",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 75,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    }
+  ],
+  "R1_dataflow_edges": [
+    {
+      "from": "karnataka",
+      "to": "bounds",
+      "via": "reference",
+      "use_line": 7,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bounds",
+      "to": "coords",
+      "via": "ee.List",
+      "use_line": 9,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "coords",
+      "to": "xmin",
+      "via": "reference",
+      "use_line": 11,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "coords",
+      "to": "ymin",
+      "via": "reference",
+      "use_line": 13,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "coords",
+      "to": "xmax",
+      "via": "reference",
+      "use_line": 15,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "coords",
+      "to": "ymax",
+      "via": "reference",
+      "use_line": 17,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "gridModule",
+      "to": "gridVector",
+      "via": "gridModule.generateGrid",
+      "use_line": 23,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "spacing",
+      "to": "gridVector",
+      "via": "gridModule.generateGrid",
+      "use_line": 23,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "xmax",
+      "to": "gridVector",
+      "via": "gridModule.generateGrid",
+      "use_line": 23,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "xmin",
+      "to": "gridVector",
+      "via": "gridModule.generateGrid",
+      "use_line": 23,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "ymax",
+      "to": "gridVector",
+      "via": "gridModule.generateGrid",
+      "use_line": 23,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "ymin",
+      "to": "gridVector",
+      "via": "gridModule.generateGrid",
+      "use_line": 23,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "height_40",
+      "to": "height_divide_40",
+      "via": "reference",
+      "use_line": 29,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "height_divide_40",
+      "to": "img",
+      "via": "height_divide_40.clip",
+      "use_line": 33,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "karnataka",
+      "to": "img",
+      "via": "height_divide_40.clip",
+      "use_line": 33,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "gridVector",
+      "to": "grid_value",
+      "via": "gridVector.map",
+      "use_line": 35,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "gridVector",
+      "to": "roi1",
+      "via": "gridVector.get",
+      "use_line": 37,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "i",
+      "to": "roi1",
+      "via": "gridVector.get",
+      "use_line": 37,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "n1",
+      "via": "reference",
+      "use_line": 41,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "img",
+      "to": "n2",
+      "via": "reference",
+      "use_line": 53,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "n1",
+      "to": "n_p",
+      "via": "reference",
+      "use_line": 65,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "n2",
+      "to": "n_p",
+      "via": "reference",
+      "use_line": 65,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "n_p",
+      "to": "dict",
+      "via": "declaration",
+      "use_line": 67,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "feature",
+      "to": "geom",
+      "via": "feature.geometry",
+      "use_line": 77,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "geom",
+      "to": "proj",
+      "via": "geom.projection",
+      "use_line": 79,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "geom_reproject",
+      "to": "covGrid",
+      "via": "reference",
+      "use_line": 91,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "proj",
+      "to": "covGrid",
+      "via": "reference",
+      "use_line": 91,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [
+    {
+      "item": "canopy_height",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "roi",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "FAO",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    }
+  ],
+  "R2_units": [
+    {
+      "unit": "script_271544:unit:karnataka",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_271544:unit:bounds",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:coords",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.List"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_271544:unit:xmin",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:ymin",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:xmax",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:ymax",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:gridModule",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:spacing",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_271544:unit:gridVector",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "gridModule.generateGrid"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_271544:unit:height_40",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:height_divide_40",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_271544:unit:grid_value",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "gridVector.map"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:i",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:roi1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "gridVector.get"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_271544:unit:img",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "height_divide_40.clip"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_271544:unit:n1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:n2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:n_p",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_271544:unit:dict",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "declaration"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_271544:unit:FAO_feature",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_271544:unit:feature",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_271544:unit:geom",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "feature.geometry"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:proj",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "geom.projection"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_271544:unit:geom_reproject",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_271544:unit:covGrid",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "unknown": 15,
+      "analysis": 32,
+      "presentation": 4,
+      "import": 1
+    },
+    "unknown_review_queue": [
+      {
+        "path": "FAO.map",
+        "root": "FAO",
+        "line": 75
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 91
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 65
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 53
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 41
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 41
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 29
+      },
+      {
+        "path": "canopy_height.gte",
+        "root": "canopy_height",
+        "line": 27
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 17
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 15
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 13
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 11
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 9
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 7
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 1
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 27,
+    "deduped_logical_edges": 27,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

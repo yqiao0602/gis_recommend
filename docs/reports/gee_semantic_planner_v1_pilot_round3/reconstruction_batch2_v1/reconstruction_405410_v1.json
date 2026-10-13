@@ -1,0 +1,483 @@
+{
+ "schema": "gee_reconstruction_trial_v1",
+ "source_script": "script_405410",
+ "source_sha256": "9759e94d20fac697ec14b685efed7f246ce66a5c39926a4796330bf911dd13ba",
+ "policy": {
+  "training_admission": "not_granted",
+  "semantic_gold": false,
+  "authorized_scope": "batch2_method_validation"
+ },
+ "R1_variables": [
+  {
+   "variable": "geometry",
+   "kind": "geometry",
+   "def_line": 70,
+   "definition": "AOI polygon (WGS84, in-source coordinates)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "dsm",
+   "kind": "image",
+   "def_line": 107,
+   "definition": "ALOS AW3D30 DSM mosaic, reprojected, clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "cost_slope",
+   "kind": "image",
+   "def_line": 129,
+   "definition": "FACTOR A: critical-slope quadratic cost from Terrain.slope (Cost(s)=1+(s/8)^2)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "cost_altitude",
+   "kind": "image",
+   "def_line": 145,
+   "definition": "FACTOR B: altitude physiological cost >2000m (0.00345*e^(0.000845h)+1, masked)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "cost_snow",
+   "kind": "image",
+   "def_line": 164,
+   "definition": "FACTOR B: seasonal snow cost from MOD10A1 NDSI mean/33.33+1, altitude-masked",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "mask_sea",
+   "kind": "image",
+   "def_line": 177,
+   "definition": "FACTOR C: sea-water barrier MOD44W remapped 0->0, 1->255",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "cost_surface_water",
+   "kind": "image",
+   "def_line": 190,
+   "definition": "FACTOR C: JRC GSW MonthlyRecurrence/33.33+1",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "mask_reservoirs",
+   "kind": "image",
+   "def_line": 207,
+   "definition": "FACTOR C: GRanD reservoir binary mask (painted, remapped)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "reservoirs_new_value",
+   "kind": "image",
+   "def_line": 216,
+   "definition": "reservoir cells assigned fixed cost 3.28",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "cost_reducer_water_accessibility",
+   "kind": "image",
+   "def_line": 244,
+   "definition": "FACTOR D: Landsat EVI-based potable-water attraction (threshold band math, 1-2 range)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "costs_raw",
+   "kind": "image",
+   "def_line": 252,
+   "definition": "fusion: cost_slope * cost_snow * cost_altitude * cost_surface_water / water_accessibility * mask_reservoirs + reservoir_value + mask_sea",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "costs_max_assigned",
+   "kind": "image",
+   "def_line": 278,
+   "definition": "outlier cap: gt(max)*max + lte(max)*costs_raw (user-prompted max)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "cost_surface",
+   "kind": "image",
+   "def_line": 282,
+   "definition": "normalized 0-255 uint8: divide(max).multiply(255).byte()",
+   "definition_location": "in_source"
+  }
+ ],
+ "R1_dataflow_edges": [
+  {
+   "from": "dsm",
+   "to": "cost_slope",
+   "via": "Terrain.slope -> critical-slope quadratic",
+   "use_line": 129,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "dsm",
+   "to": "cost_altitude",
+   "via": "altitude function over DSM values",
+   "use_line": 145,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "cost_snow",
+   "to": "costs_raw",
+   "via": "multiply",
+   "use_line": 252,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "cost_altitude",
+   "to": "costs_raw",
+   "via": "multiply",
+   "use_line": 252,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "cost_surface_water",
+   "to": "costs_raw",
+   "via": "multiply",
+   "use_line": 252,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "cost_reducer_water_accessibility",
+   "to": "costs_raw",
+   "via": "divide",
+   "use_line": 252,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "mask_reservoirs",
+   "to": "costs_raw",
+   "via": "multiply",
+   "use_line": 252,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "reservoirs_new_value",
+   "to": "costs_raw",
+   "via": "add",
+   "use_line": 252,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "mask_sea",
+   "to": "costs_raw",
+   "via": "add",
+   "use_line": 252,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "cost_slope",
+   "to": "costs_raw",
+   "via": "base of the cost chain (select/rename)",
+   "use_line": 252,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "costs_raw",
+   "to": "costs_max_assigned",
+   "via": "gt/lte cap substitution",
+   "use_line": 278,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "costs_max_assigned",
+   "to": "cost_surface",
+   "via": "divide(max).multiply(255).byte()",
+   "use_line": 282,
+   "evidence_status": "supported"
+  }
+ ],
+ "R1_unresolved": [],
+ "R2_units": [
+  {
+   "unit": "slope_cost",
+   "task_duty": "topographic slope (using critical-slope quadratic cost)",
+   "source_operation": "Terrain.slope -> percent -> (s/8)^2+1 (lines 115-140)",
+   "provenance": "task_determined",
+   "implementation_detail": "critical slope 8 and the quadratic form (replacing the commented Herzog polynomial) are implementation choices",
+   "detail_would_change": true
+  },
+  {
+   "unit": "altitude_cost",
+   "task_duty": "altitude-dependent physiological cost (>2000 m)",
+   "source_operation": "0.00345*e^(0.000845h) masked by dsm.gt(2000) (lines 142-149)",
+   "provenance": "task_determined",
+   "implementation_detail": "the exponential cost function and 2000m threshold are implementation choices",
+   "detail_would_change": true
+  },
+  {
+   "unit": "snow_cost",
+   "task_duty": "seasonal snow cover (MOD10A1 NDSI-derived)",
+   "source_operation": "MOD10A1 filter(period).reduce(mean,4).unmask(0)*dsm.gte(2000) /33.33+1 (lines 152-164)",
+   "provenance": "task_determined",
+   "implementation_detail": "the 33.33 divisor and altitude masking of snow are implementation choices",
+   "detail_would_change": true
+  },
+  {
+   "unit": "sea_barrier",
+   "task_duty": "sea water barriers (MOD44W)",
+   "source_operation": "MOD44W water_mask remap [0,1]->[0,255] (lines 167-177)",
+   "provenance": "task_determined",
+   "implementation_detail": "the 255 penalty value is an implementation choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "surface_water_cost",
+   "task_duty": "surface water recurrence (JRC GSW MonthlyRecurrence)",
+   "source_operation": "monthly_recurrence_<season>/33.33+1 (lines 180-190)",
+   "provenance": "task_determined",
+   "implementation_detail": "season selection via monthNum prompt is an interactive-input choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "reservoir_mask",
+   "task_duty": "reservoir presence (GRanD-based vector mask)",
+   "source_operation": "GRanD FeatureCollection paint -> remap -> fixed cost 3.28 (lines 193-216)",
+   "provenance": "task_determined",
+   "implementation_detail": "the 3.28 fixed cost value is an implementation choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "water_accessibility",
+   "task_duty": "potable water accessibility (Landsat EVI-derived attraction)",
+   "source_operation": "EVI 1984-1991 mean -> dsrtThrs/waterThrs band math -> (x-min)/(max-min)+1 (lines 219-244)",
+   "provenance": "task_determined",
+   "implementation_detail": "the EVI thresholds 0.05/0.1 and the attraction formula are implementation choices",
+   "detail_would_change": true
+  },
+  {
+   "unit": "cost_fusion",
+   "task_duty": "into a unified raster cost surface",
+   "source_operation": "costs_raw = slope*snow*altitude*surface_water/water_accessibility*mask_reservoirs+reservoir_value+mask_sea (lines 247-260)",
+   "provenance": "task_determined",
+   "implementation_detail": "the specific multiply/divide/add ordering follows the source comments' design; alternative fusion orderings could satisfy the task",
+   "detail_would_change": true,
+   "semantic_merge": {
+    "task_named": true,
+    "evidence": "task verbatim: 'integrates seven biogeophysical and anthropogenic factors ... into a unified raster cost surface'",
+    "relation": "semantic_merge per R3; source control flow is a linear expression chain, not a conditional merge"
+   }
+  },
+  {
+   "unit": "cost_capping",
+   "task_duty": null,
+   "source_operation": "costs_max_assigned = gt(max)*max + lte(max)*costs_raw (user-prompted maximum, lines 262-279)",
+   "provenance": "source_required",
+   "implementation_detail": "capping exists to control computation cost of the float raster (source comment); task does not require it",
+   "detail_would_change": true
+  },
+  {
+   "unit": "normalization_scaling",
+   "task_duty": "a scaled, normalized 8-bit unsigned integer cost raster (0-255)",
+   "source_operation": "cost_surface = costs_max_assigned/max*255.byte() (lines 281-283)",
+   "provenance": "task_determined",
+   "implementation_detail": "byte() conversion and max-prompt default 40 are implementation choices",
+   "detail_would_change": true
+  },
+  {
+   "unit": "export_drive",
+   "task_duty": "exported to Google Drive with metadata-encoded filename including season, max cost, resolution, and date",
+   "source_operation": "Export.image.toDrive with metadata-encoded description (lines 315-327)",
+   "provenance": "task_determined",
+   "implementation_detail": "folder name and the 40-char filename limit handling are implementation choices",
+   "detail_would_change": true,
+   "source_code_defect": {
+    "item": "output_resolution vs outrr",
+    "detail": "when user-specified resolution > DSM resolution, the script assigns outrr but export still uses output_resolution (line 301 vs 324); recorded as source_code_defect per six-sample audit, not an extraction issue"
+   }
+  }
+ ],
+ "R3_relationships": [
+  {
+   "kind": "dataflow_edge",
+   "from": "dsm",
+   "to": "cost_slope",
+   "via": "Terrain.slope -> critical-slope quadratic",
+   "use_line": 129,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "dsm",
+   "to": "cost_altitude",
+   "via": "altitude function over DSM values",
+   "use_line": 145,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "cost_snow",
+   "to": "costs_raw",
+   "via": "multiply",
+   "use_line": 252,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "cost_altitude",
+   "to": "costs_raw",
+   "via": "multiply",
+   "use_line": 252,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "cost_surface_water",
+   "to": "costs_raw",
+   "via": "multiply",
+   "use_line": 252,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "cost_reducer_water_accessibility",
+   "to": "costs_raw",
+   "via": "divide",
+   "use_line": 252,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "mask_reservoirs",
+   "to": "costs_raw",
+   "via": "multiply",
+   "use_line": 252,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "reservoirs_new_value",
+   "to": "costs_raw",
+   "via": "add",
+   "use_line": 252,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "mask_sea",
+   "to": "costs_raw",
+   "via": "add",
+   "use_line": 252,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "cost_slope",
+   "to": "costs_raw",
+   "via": "base of the cost chain (select/rename)",
+   "use_line": 252,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "costs_raw",
+   "to": "costs_max_assigned",
+   "via": "gt/lte cap substitution",
+   "use_line": 278,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "costs_max_assigned",
+   "to": "cost_surface",
+   "via": "divide(max).multiply(255).byte()",
+   "use_line": 282,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "slope_cost",
+   "to": "cost_fusion",
+   "evidence": "slope cost is the base of the cost chain (dataflow); task describes integration",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "altitude_cost",
+   "to": "cost_fusion",
+   "evidence": "dataflow edge into fusion",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "snow_cost",
+   "to": "cost_fusion",
+   "evidence": "dataflow edge into fusion",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "sea_barrier",
+   "to": "cost_fusion",
+   "evidence": "dataflow edge into fusion",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "surface_water_cost",
+   "to": "cost_fusion",
+   "evidence": "dataflow edge into fusion",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "reservoir_mask",
+   "to": "cost_fusion",
+   "evidence": "dataflow edge into fusion",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "water_accessibility",
+   "to": "cost_fusion",
+   "evidence": "dataflow edge into fusion",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "cost_fusion",
+   "to": "normalization_scaling",
+   "evidence": "task verbatim: 'scaled, normalized 8-bit ... cost raster'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "normalization_scaling",
+   "to": "export_drive",
+   "evidence": "task verbatim: 'exported to Google Drive'",
+   "evidence_status": "task_explicit"
+  }
+ ],
+ "R3_control_structures": [
+  {
+   "candidate": "seven factor variables -> costs_raw",
+   "classification": "semantic_merge_task_named",
+   "relation_type": "semantic_merge",
+   "control_structure": "not_a_control_merge",
+   "reason": "task explicitly names the seven-factor integration; source control flow is a linear expression, not conditional logic"
+  },
+  {
+   "candidate": "select_period prompt (spring/summer/autumn/winter)",
+   "classification": "user_interactive_parameterization",
+   "control_structure": "not_a_branch_in_workflow",
+   "reason": "season branches select input parameters, they do not create alternative workflow structures"
+  },
+  {
+   "candidate": "specify_maximum_cost / specify_output_resolution prompts",
+   "classification": "user_interactive_parameterization",
+   "control_structure": "not_a_branch_in_workflow",
+   "reason": "interactive inputs parameterize export; one carries a known defect (outrr vs output_resolution), recorded in the export unit"
+  }
+ ]
+}

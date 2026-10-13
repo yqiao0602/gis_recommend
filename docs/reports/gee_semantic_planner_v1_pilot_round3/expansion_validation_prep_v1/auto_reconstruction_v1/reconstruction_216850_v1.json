@@ -1,0 +1,1611 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_216850",
+  "source_sha256": "2709ae2f4c60ddc8e53869a0742c8f61bb1f82fb3c53a01985a339fa394e6e81",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "maskCloud_S2TOA",
+      "kind": "function",
+      "def_line": 5,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "img",
+      "kind": "param",
+      "def_line": 5,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "image",
+      "kind": "declaration",
+      "def_line": 21,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "imagenew",
+      "kind": "declaration",
+      "def_line": 33,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sampleData",
+      "kind": "declaration",
+      "def_line": 35,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "bands",
+      "kind": "declaration",
+      "def_line": 37,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "split",
+      "kind": "declaration",
+      "def_line": 41,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sample_training",
+      "kind": "declaration",
+      "def_line": 43,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sample_validate",
+      "kind": "declaration",
+      "def_line": 45,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "training",
+      "kind": "declaration",
+      "def_line": 47,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "validation",
+      "kind": "declaration",
+      "def_line": 57,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "classifier",
+      "kind": "declaration",
+      "def_line": 67,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "classified",
+      "kind": "declaration",
+      "def_line": 77,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "trainAccuracy",
+      "kind": "declaration",
+      "def_line": 79,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "validated",
+      "kind": "declaration",
+      "def_line": 81,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "testAccuracy",
+      "kind": "declaration",
+      "def_line": 83,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "LULC",
+      "kind": "declaration",
+      "def_line": 85,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "area",
+      "kind": "declaration",
+      "def_line": 89,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "Area_Sqm",
+      "kind": "declaration",
+      "def_line": 97,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "sunflower",
+      "kind": "declaration",
+      "def_line": 115,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "proj7762",
+      "kind": "declaration",
+      "def_line": 119,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "final_table",
+      "kind": "declaration",
+      "def_line": 121,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "areaImage",
+      "kind": "declaration",
+      "def_line": 139,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "areas",
+      "kind": "declaration",
+      "def_line": 141,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "classAreas",
+      "kind": "declaration",
+      "def_line": 163,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "areaChart",
+      "kind": "declaration",
+      "def_line": 165,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "s2",
+      "kind": "declaration",
+      "def_line": 209,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "maskS2clouds",
+      "kind": "function",
+      "def_line": 211,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "qa",
+      "kind": "declaration",
+      "def_line": 213,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cloudBitMask",
+      "kind": "declaration",
+      "def_line": 215,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "cirrusBitMask",
+      "kind": "declaration",
+      "def_line": 217,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mask",
+      "kind": "declaration",
+      "def_line": 219,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ndvi",
+      "kind": "declaration",
+      "def_line": 223,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "wi",
+      "kind": "declaration",
+      "def_line": 225,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "wi1",
+      "kind": "declaration",
+      "def_line": 227,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ccci",
+      "kind": "declaration",
+      "def_line": 229,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "evi2",
+      "kind": "declaration",
+      "def_line": 239,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "filtered",
+      "kind": "declaration",
+      "def_line": 251,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "ClassChart",
+      "kind": "declaration",
+      "def_line": 263,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "label",
+      "kind": "declaration",
+      "def_line": 299,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "xValue",
+      "kind": "param",
+      "def_line": 303,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "yValue",
+      "kind": "param",
+      "def_line": 303,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "seriesName",
+      "kind": "param",
+      "def_line": 303,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "equalDate",
+      "kind": "declaration",
+      "def_line": 307,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "classification",
+      "kind": "declaration",
+      "def_line": 309,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "SARimage",
+      "kind": "declaration",
+      "def_line": 311,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "S1Layer",
+      "kind": "declaration",
+      "def_line": 313,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "visParams",
+      "kind": "declaration",
+      "def_line": 325,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [
+    {
+      "variable": "table",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 1,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "table2",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 3,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "roi",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 23,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "snflwr",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 35,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "water",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 35,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "built",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 35,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "bare",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 35,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "vege",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 35,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    },
+    {
+      "variable": "wetland",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 35,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    }
+  ],
+  "R1_dataflow_edges": [
+    {
+      "from": "img",
+      "to": "qa",
+      "via": "img.select",
+      "use_line": 7,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cloudBitMask",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 13,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "qa",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 13,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "imagenew",
+      "via": "image.clip",
+      "use_line": 33,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "sampleData",
+      "to": "sample_training",
+      "via": "sampleData.filter",
+      "use_line": 43,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "split",
+      "to": "sample_training",
+      "via": "sampleData.filter",
+      "use_line": 43,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "sampleData",
+      "to": "sample_validate",
+      "via": "sampleData.filter",
+      "use_line": 45,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "split",
+      "to": "sample_validate",
+      "via": "sampleData.filter",
+      "use_line": 45,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bands",
+      "to": "training",
+      "via": "reference",
+      "use_line": 47,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "imagenew",
+      "to": "training",
+      "via": "reference",
+      "use_line": 47,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bands",
+      "to": "validation",
+      "via": "reference",
+      "use_line": 57,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "imagenew",
+      "to": "validation",
+      "via": "reference",
+      "use_line": 57,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "bands",
+      "to": "classified",
+      "via": "reference",
+      "use_line": 77,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "classifier",
+      "to": "classified",
+      "via": "reference",
+      "use_line": 77,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "imagenew",
+      "to": "classified",
+      "via": "reference",
+      "use_line": 77,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "classifier",
+      "to": "trainAccuracy",
+      "via": "classifier.confusionMatrix",
+      "use_line": 79,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "classifier",
+      "to": "validated",
+      "via": "validation.classify",
+      "use_line": 81,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "validation",
+      "to": "validated",
+      "via": "validation.classify",
+      "use_line": 81,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "validated",
+      "to": "testAccuracy",
+      "via": "validated.errorMatrix",
+      "use_line": 83,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "classified",
+      "to": "LULC",
+      "via": "declaration",
+      "use_line": 85,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "area",
+      "to": "Area_Sqm",
+      "via": "area.reduceRegion",
+      "use_line": 97,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "classified",
+      "to": "sunflower",
+      "via": "reference",
+      "use_line": 115,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "sunflower",
+      "to": "final_table",
+      "via": "sunflower.reduceToVectors",
+      "use_line": 121,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "classified",
+      "to": "areaImage",
+      "via": "reference",
+      "use_line": 139,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "areaImage",
+      "to": "areas",
+      "via": "areaImage.reduceRegion",
+      "use_line": 141,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "areas",
+      "to": "classAreas",
+      "via": "ee.List",
+      "use_line": 163,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "qa",
+      "via": "image.select",
+      "use_line": 213,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "cloudBitMask",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 219,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "qa",
+      "to": "mask",
+      "via": "reference",
+      "use_line": 219,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "ndvi",
+      "via": "reference",
+      "use_line": 223,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "wi",
+      "via": "reference",
+      "use_line": 225,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "wi1",
+      "via": "reference",
+      "use_line": 227,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "ccci",
+      "via": "reference",
+      "use_line": 229,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "evi2",
+      "via": "reference",
+      "use_line": 239,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "maskS2clouds",
+      "to": "filtered",
+      "via": "reference",
+      "use_line": 251,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "s2",
+      "to": "filtered",
+      "via": "reference",
+      "use_line": 251,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "xValue",
+      "to": "equalDate",
+      "via": "ee.Filter.equals",
+      "use_line": 307,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "equalDate",
+      "to": "classification",
+      "via": "reference",
+      "use_line": 309,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filtered",
+      "to": "classification",
+      "via": "reference",
+      "use_line": 309,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "equalDate",
+      "to": "SARimage",
+      "via": "ee.Image",
+      "use_line": 311,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "filtered",
+      "to": "SARimage",
+      "via": "ee.Image",
+      "use_line": 311,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "SARimage",
+      "to": "S1Layer",
+      "via": "ui.Map.Layer",
+      "use_line": 313,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [
+    {
+      "item": "table",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "table2",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "roi",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "snflwr",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "water",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "built",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "bare",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "vege",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    },
+    {
+      "item": "wetland",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    }
+  ],
+  "R2_units": [
+    {
+      "unit": "script_216850:unit:maskCloud_S2TOA",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:img",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_216850:unit:image",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 13
+    },
+    {
+      "unit": "script_216850:unit:imagenew",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "image.clip"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_216850:unit:sampleData",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_216850:unit:bands",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_216850:unit:split",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_216850:unit:sample_training",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "sampleData.filter"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:sample_validate",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "sampleData.filter"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:training",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:validation",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:classifier",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_216850:unit:classified",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 5
+    },
+    {
+      "unit": "script_216850:unit:trainAccuracy",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "classifier.confusionMatrix"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:validated",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "validation.classify"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:testAccuracy",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "validated.errorMatrix"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:LULC",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "declaration"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:area",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:Area_Sqm",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "area.reduceRegion"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:sunflower",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_216850:unit:proj7762",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:final_table",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "sunflower.reduceToVectors"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:areaImage",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_216850:unit:areas",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "areaImage.reduceRegion"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:classAreas",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.List"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:areaChart",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_216850:unit:s2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:maskS2clouds",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:qa",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "image.select",
+        "img.select"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_216850:unit:cloudBitMask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:cirrusBitMask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:mask",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:ndvi",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:wi",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:wi1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:ccci",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:evi2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:filtered",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 9
+    },
+    {
+      "unit": "script_216850:unit:ClassChart",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_216850:unit:label",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_216850:unit:xValue",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_216850:unit:yValue",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:seriesName",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:equalDate",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Filter.equals"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_216850:unit:classification",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:SARimage",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_216850:unit:S1Layer",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ui.Map.Layer"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_216850:unit:visParams",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "presentation": 18,
+      "unknown": 64,
+      "analysis": 71
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 345
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 339
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 323
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 311
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 309
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 309
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 309
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 287
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 263
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 261
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 261
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 259
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 259
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 257
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 257
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 255
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 255
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 253
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 253
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 251
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 251
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 247
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 247
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 247
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 247
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 247
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 239
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 229
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 227
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 225
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 223
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 219
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 221
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 219
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 197
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 165
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 143
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 139
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 139
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 139
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 115
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 99
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 89
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 77
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 67
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 57
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 57
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 47
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 47
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 35
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 35
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 35
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 35
+      },
+      {
+        "path": "snflwr.merge",
+        "root": "snflwr",
+        "line": 35
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 21
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 21
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 21
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 21
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 17
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 17
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 13
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 15
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 13
+      },
+      {
+        "path": "table2.style",
+        "root": "table2",
+        "line": 3
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 42,
+    "deduped_logical_edges": 42,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

@@ -1,0 +1,512 @@
+{
+  "schema": "auto_reconstruction_v1",
+  "source_script": "script_100870",
+  "source_sha256": "f602c079c8734e1c06249eef4a28c0c45affcfd477ee38a110b9975d8b3339e9",
+  "policy": {
+    "task_duty": "never auto-filled (pending human task binding)",
+    "evidence_states": [
+      "supported",
+      "supported_passing_only"
+    ],
+    "a1_rule": "candidate_pending_human only (owner revision 1)",
+    "scope": "method-validation artifact; not gold"
+  },
+  "R1_variables": [
+    {
+      "variable": "date_1",
+      "kind": "declaration",
+      "def_line": 1,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "date_2",
+      "kind": "declaration",
+      "def_line": 3,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "year_cur",
+      "kind": "declaration",
+      "def_line": 5,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "collTOres",
+      "kind": "declaration",
+      "def_line": 79,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "collTOres_im",
+      "kind": "declaration",
+      "def_line": 87,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "collTOres_im_mean",
+      "kind": "declaration",
+      "def_line": 89,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "mean_cur",
+      "kind": "declaration",
+      "def_line": 99,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "chart",
+      "kind": "declaration",
+      "def_line": 109,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "label",
+      "kind": "declaration",
+      "def_line": 133,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "xValue",
+      "kind": "param",
+      "def_line": 137,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "yValue",
+      "kind": "param",
+      "def_line": 137,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "seriesName",
+      "kind": "param",
+      "def_line": 137,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "equalDate",
+      "kind": "declaration",
+      "def_line": 141,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "image",
+      "kind": "declaration",
+      "def_line": 143,
+      "definition_location": "in_source"
+    },
+    {
+      "variable": "l8Layer",
+      "kind": "declaration",
+      "def_line": 145,
+      "definition_location": "in_source"
+    }
+  ],
+  "R1_external_candidates": [
+    {
+      "variable": "geometry5",
+      "kind": "external_candidate",
+      "def_line": null,
+      "definition_location": "unavailable_in_source",
+      "first_use_line": 9,
+      "evidence": [],
+      "classification": "candidate_pending_human"
+    }
+  ],
+  "R1_dataflow_edges": [
+    {
+      "from": "collTOres",
+      "to": "collTOres_im",
+      "via": "collTOres.reduce",
+      "use_line": 15,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres_im",
+      "to": "collTOres_im_mean",
+      "via": "collTOres_im.reduceRegion",
+      "use_line": 17,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres_im_mean",
+      "to": "mean_cur",
+      "via": "collTOres_im_mean.get",
+      "use_line": 27,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres",
+      "to": "collTOres_im",
+      "via": "collTOres.reduce",
+      "use_line": 39,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres_im",
+      "to": "collTOres_im_mean",
+      "via": "collTOres_im.reduceRegion",
+      "use_line": 41,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres_im_mean",
+      "to": "mean_cur",
+      "via": "collTOres_im_mean.get",
+      "use_line": 51,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres",
+      "to": "collTOres_im",
+      "via": "collTOres.reduce",
+      "use_line": 63,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres_im",
+      "to": "collTOres_im_mean",
+      "via": "collTOres_im.reduceRegion",
+      "use_line": 65,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres_im_mean",
+      "to": "mean_cur",
+      "via": "collTOres_im_mean.get",
+      "use_line": 75,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres",
+      "to": "collTOres_im",
+      "via": "collTOres.reduce",
+      "use_line": 87,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres_im",
+      "to": "collTOres_im_mean",
+      "via": "collTOres_im.reduceRegion",
+      "use_line": 89,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres_im_mean",
+      "to": "mean_cur",
+      "via": "collTOres_im_mean.get",
+      "use_line": 99,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "xValue",
+      "to": "equalDate",
+      "via": "ee.Filter.equals",
+      "use_line": 141,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "collTOres",
+      "to": "image",
+      "via": "ee.Image",
+      "use_line": 143,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "equalDate",
+      "to": "image",
+      "via": "ee.Image",
+      "use_line": 143,
+      "evidence_status": "supported",
+      "merged_originals": []
+    },
+    {
+      "from": "image",
+      "to": "l8Layer",
+      "via": "ui.Map.Layer",
+      "use_line": 145,
+      "evidence_status": "supported",
+      "merged_originals": []
+    }
+  ],
+  "R1_unresolved": [
+    {
+      "item": "geometry5",
+      "reason": "undeclared use — three-way classification pending human ruling (owner revision 1)"
+    }
+  ],
+  "R2_units": [
+    {
+      "unit": "script_100870:unit:date_1",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_100870:unit:date_2",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_100870:unit:year_cur",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 8
+    },
+    {
+      "unit": "script_100870:unit:collTOres",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 4
+    },
+    {
+      "unit": "script_100870:unit:collTOres_im",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "collTOres.reduce"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_100870:unit:collTOres_im_mean",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "collTOres_im.reduceRegion"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_100870:unit:mean_cur",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "collTOres_im_mean.get"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_100870:unit:chart",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 3
+    },
+    {
+      "unit": "script_100870:unit:label",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "presentation_only",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_100870:unit:xValue",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 2
+    },
+    {
+      "unit": "script_100870:unit:yValue",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_100870:unit:seriesName",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "unconsumed",
+      "post_definition_uses": 0
+    },
+    {
+      "unit": "script_100870:unit:equalDate",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Filter.equals"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_100870:unit:image",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ee.Image"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    },
+    {
+      "unit": "script_100870:unit:l8Layer",
+      "task_duty": "pending_human_task_binding",
+      "source_operation": [
+        "ui.Map.Layer"
+      ],
+      "provenance": "in_source",
+      "implementation_detail": null,
+      "detail_would_change": null,
+      "a2_status": "analysis_chain",
+      "post_definition_uses": 1
+    }
+  ],
+  "A3_summary": {
+    "class_counts": {
+      "analysis": 36,
+      "unknown": 16,
+      "presentation": 8
+    },
+    "unknown_review_queue": [
+      {
+        "path": null,
+        "root": null,
+        "line": 155
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 143
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 121
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 105
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 79
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 79
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 79
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 55
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 55
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 55
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 31
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 31
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 31
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 7
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 7
+      },
+      {
+        "path": null,
+        "root": null,
+        "line": 7
+      }
+    ]
+  },
+  "stats": {
+    "raw_edge_records": 16,
+    "deduped_logical_edges": 16,
+    "duplicates_merged_logical": 0,
+    "duplicates_merged_strict": 0
+  }
+}

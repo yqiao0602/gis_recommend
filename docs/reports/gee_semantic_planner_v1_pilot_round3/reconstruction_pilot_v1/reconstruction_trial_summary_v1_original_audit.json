@@ -1,0 +1,72 @@
+{
+  "schema": "gee_reconstruction_trial_summary_v1",
+  "source_script": "script_36595",
+  "R4_semantic_recovery": {
+    "denominator_pre_registered": 7,
+    "recovered": 7,
+    "not_recovered": 0,
+    "per_unit": {
+      "r_factor": {
+        "recovered": true,
+        "evidence": "R variable + dataflow edge current->R + task_duty r_factor_computation"
+      },
+      "k_factor": {
+        "recovered": true,
+        "evidence": "K variable + soil->K edge + lookup expression located lines 31-59"
+      },
+      "ls_factor": {
+        "recovered": true,
+        "evidence": "LS variable + slope->LS edge + polynomial located lines 63-79"
+      },
+      "c_factor": {
+        "recovered": true,
+        "evidence": "C variable + image_ndvi->C edge + chain located lines 89-135"
+      },
+      "p_factor": {
+        "recovered": true,
+        "evidence": "P variable + lulc/slope->P edges + expression located lines 147-173"
+      },
+      "rusle_product": {
+        "recovered": true,
+        "evidence": "soil_loss variable + 5 incoming dataflow edges at line 177"
+      },
+      "classification_statistics": {
+        "recovered": true,
+        "evidence": "SL_class + areaImage group-sum + per-subbasin export chain"
+      }
+    },
+    "scope_note": "denominator = script_36595's own 7 audit units only; not the 37-unit corpus figure"
+  },
+  "R4_evidence_traceability": {
+    "dataflow_edges": 21,
+    "edges_with_def_use_trace": 21,
+    "unresolved_items": 2,
+    "honest_unresolved": 2,
+    "disguised_unresolved": 0,
+    "note": "unresolved items are external prebindings outside script scope; recorded, not disguised"
+  },
+  "R4_task_reasonableness": {
+    "checked_units": 11,
+    "judged_as_detail": 9,
+    "misassigned_to_duty": 0,
+    "undeterminable": 0,
+    "fixation_rate": 0.0,
+    "note": "separation-by-construction: implementation details live in the detail field"
+  },
+  "R4_gold_comparison_diagnostic": {
+    "gold_stages": 9,
+    "reconstruction_units": 11,
+    "mapping": "9 gold stages all have corresponding units; reconstruction adds basin_mean_statistic (source_required) and splits area statistics",
+    "diagnostic_only": true,
+    "circularity_caveat": "gold may inherit G0-Task circularity; agreement is not proof of correctness"
+  },
+  "R4_failure_analysis": {
+    "extraction_misses": 0,
+    "variable_trace_failures": 2,
+    "duty_merge_errors": 0,
+    "insufficient_task_evidence": 1,
+    "relation_type_misjudgments": 0,
+    "notes": "insufficient_task_evidence = basin_mean_statistic (task does not require it)"
+  },
+  "stop": "single-script trial complete; expansion to other 5 scripts requires separate ruling"
+}

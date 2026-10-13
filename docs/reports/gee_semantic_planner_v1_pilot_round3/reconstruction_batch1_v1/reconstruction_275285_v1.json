@@ -1,0 +1,440 @@
+{
+ "schema": "gee_reconstruction_trial_v1",
+ "source_script": "script_275285",
+ "source_sha256": "4e9e124bc581dfe7a5afc37a7398680938b04abf71ba0dbc969ba250f900f945",
+ "policy": {
+  "training_admission": "not_granted",
+  "semantic_gold": false,
+  "authorized_scope": "batch1_method_validation"
+ },
+ "R1_variables": [
+  {
+   "variable": "maskL8sr",
+   "kind": "function",
+   "def_line": 1,
+   "definition": "cloud/shadow masking function (pixel_qa bits 3,5)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "col",
+   "kind": "image_collection",
+   "def_line": 43,
+   "definition": "LANDSAT/LC08/C01/T1_SR 2018, maskL8sr-mapped, bounded to geometry",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "geometry",
+   "kind": "geometry",
+   "first_use_line": 49,
+   "definition": "study-area geometry (prebound external; no visible declaration)",
+   "definition_location": "unavailable_in_source",
+   "external_input": true
+  },
+  {
+   "variable": "image",
+   "kind": "image",
+   "def_line": 57,
+   "definition": "col.median() clipped to geometry (median composite)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "ndvi",
+   "kind": "image",
+   "def_line": 67,
+   "definition": "normalizedDifference(B5,B4) renamed NDVI, clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "thermal",
+   "kind": "image",
+   "def_line": 81,
+   "definition": "B10 brightness temperature *0.1, clipped",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "min",
+   "kind": "number",
+   "def_line": 91,
+   "definition": "region minimum of ndvi (reduceRegion min)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "max",
+   "kind": "number",
+   "def_line": 105,
+   "definition": "region maximum of ndvi (reduceRegion max)",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "fv",
+   "kind": "image",
+   "def_line": 123,
+   "definition": "fractional vegetation cover = ((ndvi-min)/(max-min))^2",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "a_b",
+   "kind": "number_pair",
+   "def_line": 131,
+   "definition": "emissivity constants a=0.004, b=0.986",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "EM",
+   "kind": "image",
+   "def_line": 135,
+   "definition": "surface emissivity EMM = fv*0.004+0.986",
+   "definition_location": "in_source"
+  },
+  {
+   "variable": "LST",
+   "kind": "image",
+   "def_line": 141,
+   "definition": "land surface temperature via radiative-transfer expression over Tb(B10) and Ep(EMM), minus 273.15",
+   "definition_location": "in_source"
+  }
+ ],
+ "R1_dataflow_edges": [
+  {
+   "from": "geometry",
+   "to": "col",
+   "via": "filterBounds(geometry)",
+   "use_line": 49,
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "from": "col",
+   "to": "image",
+   "via": "median().clip(geometry)",
+   "use_line": 57,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image",
+   "to": "ndvi",
+   "via": "normalizedDifference(['B5','B4'])",
+   "use_line": 67,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "image",
+   "to": "thermal",
+   "via": "select('B10').multiply(0.1)",
+   "use_line": 81,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "ndvi",
+   "to": "min",
+   "via": "reduceRegion(min)",
+   "use_line": 91,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "ndvi",
+   "to": "max",
+   "via": "reduceRegion(max)",
+   "use_line": 105,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "ndvi",
+   "to": "fv",
+   "via": "subtract(min).divide(max.subtract(min)).pow(2)",
+   "use_line": 123,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "min",
+   "to": "fv",
+   "via": "used in fv normalization",
+   "use_line": 123,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "max",
+   "to": "fv",
+   "via": "used in fv normalization",
+   "use_line": 123,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "fv",
+   "to": "EM",
+   "via": "multiply(a).add(b)",
+   "use_line": 135,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "thermal",
+   "to": "LST",
+   "via": "expression Tb term",
+   "use_line": 141,
+   "evidence_status": "supported"
+  },
+  {
+   "from": "EM",
+   "to": "LST",
+   "via": "expression Ep term",
+   "use_line": 141,
+   "evidence_status": "supported"
+  }
+ ],
+ "R1_unresolved": [
+  {
+   "item": "external prebindings/libraries",
+   "reason": "definition unavailable in source; recorded honestly"
+  }
+ ],
+ "R2_units": [
+  {
+   "unit": "cloud_shadow_mask",
+   "task_duty": "It applies cloud and shadow masking via the pixel_qa band",
+   "source_operation": "maskL8sr: qa.bitwiseAnd(bits 3,5).eq(0).and(...) -> updateMask (lines 1-15, applied via .map at 45)",
+   "provenance": "task_determined",
+   "implementation_detail": "the specific bit positions (3,5) and bitwise implementation are Landsat-C1 QA convention",
+   "detail_would_change": true
+  },
+  {
+   "unit": "composite",
+   "task_duty": null,
+   "source_operation": "col.median().clip(geometry) (line 57)",
+   "provenance": "source_required",
+   "implementation_detail": "median compositing over 2018 is an implementation choice; the task never states a composite step",
+   "detail_would_change": true
+  },
+  {
+   "unit": "ndvi",
+   "task_duty": "computes NDVI",
+   "source_operation": "image.normalizedDifference(['B5','B4']).rename('NDVI') (lines 67-69)",
+   "provenance": "task_determined",
+   "implementation_detail": "band choice B5/B4 follows Landsat-8 NIR/Red convention",
+   "detail_would_change": true
+  },
+  {
+   "unit": "ndvi_min_max_statistics",
+   "task_duty": "statistical min/max values of NDVI (for emissivity modeling) as stated outputs",
+   "source_operation": "ndvi.reduceRegion(min/max) over geometry (lines 91-117)",
+   "provenance": "task_determined",
+   "implementation_detail": "reduceRegion mechanics and scale 30 are implementation choices",
+   "detail_would_change": true,
+   "dual_role": {
+    "task_output_role": {
+     "present": true,
+     "provenance": "task_determined",
+     "evidence": "task verbatim: 'statistical min/max values of NDVI for emissivity modeling' listed among outputs"
+    },
+    "intermediate_computation_role": {
+     "present": true,
+     "provenance": "source_required",
+     "evidence": "min/max are consumed by the FV normalization (dataflow edges ndvi->fv via min/max); the task does not require this specific normalization route"
+    },
+    "note": "one computation unit may simultaneously carry a task-required output duty and a source-required intermediate role; provenance is recorded per role, not forced to a single value (rule clarification, batch-1 review 2026-10-09)"
+   }
+  },
+  {
+   "unit": "fractional_vegetation",
+   "task_duty": "computes NDVI to derive fractional vegetation cover (FV)",
+   "source_operation": "fv = ((ndvi-min)/(max-min)).pow(2) (line 123)",
+   "provenance": "task_determined",
+   "implementation_detail": "the squared normalized-difference formulation is one standard FV estimator",
+   "detail_would_change": true
+  },
+  {
+   "unit": "emissivity",
+   "task_duty": "estimates surface emissivity (EMM)",
+   "source_operation": "EM = fv*0.004+0.986 (line 135)",
+   "provenance": "task_determined",
+   "implementation_detail": "the linear a/b emissivity model constants are an implementation choice",
+   "detail_would_change": true
+  },
+  {
+   "unit": "thermal_band",
+   "task_duty": "brightness temperature (B10)",
+   "source_operation": "image.select('B10').multiply(0.1) (line 81)",
+   "provenance": "task_determined",
+   "implementation_detail": "the 0.1 scale factor is the Landsat C1 thermal calibration convention",
+   "detail_would_change": true
+  },
+  {
+   "unit": "lst_expression",
+   "task_duty": "calculates LST using a radiative transfer-based expression involving brightness temperature (B10) and emissivity",
+   "source_operation": "thermal.expression('(Tb/(1+(0.00115*(Tb/1.438))*log(Ep)))-273.15') (lines 141-149)",
+   "provenance": "task_determined",
+   "implementation_detail": "the specific radiative-transfer coefficients (0.00115, 1.438) are one published single-channel approximation",
+   "detail_would_change": true
+  }
+ ],
+ "R3_relationships": [
+  {
+   "kind": "dataflow_edge",
+   "from": "geometry",
+   "to": "col",
+   "via": "filterBounds(geometry)",
+   "use_line": 49,
+   "definition_evidence": "unavailable_in_source",
+   "evidence_status": "supported_passing_only"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "col",
+   "to": "image",
+   "via": "median().clip(geometry)",
+   "use_line": 57,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image",
+   "to": "ndvi",
+   "via": "normalizedDifference(['B5','B4'])",
+   "use_line": 67,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "image",
+   "to": "thermal",
+   "via": "select('B10').multiply(0.1)",
+   "use_line": 81,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "ndvi",
+   "to": "min",
+   "via": "reduceRegion(min)",
+   "use_line": 91,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "ndvi",
+   "to": "max",
+   "via": "reduceRegion(max)",
+   "use_line": 105,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "ndvi",
+   "to": "fv",
+   "via": "subtract(min).divide(max.subtract(min)).pow(2)",
+   "use_line": 123,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "min",
+   "to": "fv",
+   "via": "used in fv normalization",
+   "use_line": 123,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "max",
+   "to": "fv",
+   "via": "used in fv normalization",
+   "use_line": 123,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "fv",
+   "to": "EM",
+   "via": "multiply(a).add(b)",
+   "use_line": 135,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "thermal",
+   "to": "LST",
+   "via": "expression Tb term",
+   "use_line": 141,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "dataflow_edge",
+   "from": "EM",
+   "to": "LST",
+   "via": "expression Ep term",
+   "use_line": 141,
+   "definition_evidence": "in_source",
+   "evidence_status": "supported"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "cloud_shadow_mask",
+   "to": "composite",
+   "evidence": "masking precedes compositing in any sound implementation; the task describes masking as an applied preprocessing step",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "composite",
+   "to": "ndvi",
+   "evidence": "NDVI is computed from the composite image (dataflow edge); task does not verbatim-order them",
+   "evidence_status": "task_implied"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "ndvi",
+   "to": "fractional_vegetation",
+   "evidence": "task verbatim: 'computes NDVI to derive fractional vegetation cover (FV)'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "fractional_vegetation",
+   "to": "emissivity",
+   "evidence": "task verbatim: 'estimates surface emissivity (EMM)' following FV derivation",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "emissivity",
+   "to": "lst_expression",
+   "evidence": "task verbatim: 'finally calculates LST using ... brightness temperature (B10) and emissivity'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "workflow_sequence",
+   "from": "thermal_band",
+   "to": "lst_expression",
+   "evidence": "task verbatim: expression 'involving brightness temperature (B10)'",
+   "evidence_status": "task_explicit"
+  },
+  {
+   "kind": "task_enumeration_order",
+   "from": "year_extraction",
+   "to": "change_outputs",
+   "note": "task lists 1985/2018 comparison; enumeration preserved as text evidence only; source-year count (5) never promoted to task requirement"
+  }
+ ],
+ "R3_control_structures": [
+  {
+   "candidate": "ndvi -> {min, max, fv} multi-use",
+   "classification": "dataflow_fork_only",
+   "control_structure": "not_a_branch",
+   "reason": "NDVI feeds statistics and FV; no conditional branching stated or implied"
+  },
+  {
+   "candidate": "composite step position",
+   "classification": "source_required_stage",
+   "control_structure": "not_a_control_structure",
+   "reason": "composite is a missing-from-task stage; recorded as source_required, position supported by dataflow only"
+  }
+ ]
+}
