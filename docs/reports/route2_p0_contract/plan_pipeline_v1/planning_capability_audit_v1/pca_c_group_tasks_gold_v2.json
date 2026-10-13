@@ -1,0 +1,911 @@
+{
+ "_meta": {
+  "stage": "PCA Stage-3 C-group tasks + independent gold v1",
+  "independence": "tasks freshly drafted (no reference chains exist); gold derived from task text only",
+  "design": "goal-oriented moderate-info texts — scores reflect planning, not constraint-following",
+  "coverage_cells": {
+   "multi_source_fusion": 3,
+   "projection_crs": 3,
+   "raster_vector_combo": 3,
+   "zonal_stats": 3,
+   "quality_branching": 4,
+   "multi_step_chain": 4
+  },
+  "schema": "A-group compatible ([EXPLICIT]/[IMPLICIT], presentation, underdetermined, three calibers)",
+  "n_rows": 20,
+  "revision": "v2 per owner round-14: F1 gold-consistency (8 rows), F2 stated-parameter caliber (text wording + parameter_availability on all rows), F3 single-item fixes",
+  "supersedes_sha_prefix": "18aace83f9af72fc"
+ },
+ "rows": [
+  {
+   "task_id": "PCA-C-01",
+   "group": "C",
+   "coverage_cell": "multi_source_fusion",
+   "task_type": "multi_source_fusion",
+   "task_text": "Estimate the residential population of individual buildings by combining building-footprint vectors with a gridded population-density raster for an urban district. Both sources must be brought into a common spatial reference. Output: building polygons carrying an estimated-population attribute, plus a district-level summary table.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "5-7",
+    "has_branching": false
+   },
+   "required_outcome": "Building polygons with per-building population estimates + one district summary table.",
+   "required_constraints": [
+    "[EXPLICIT] two inputs: building-footprint vectors, gridded population raster",
+    "[EXPLICIT] common spatial reference before combination",
+    "[EXPLICIT] outputs: populated building layer + district summary",
+    "[IMPLICIT] raster values must be related to building footprints through an areal allocation rule"
+   ],
+   "required_capabilities": [
+    "Areal allocation of raster population to footprints",
+    "Cross-source spatial harmonization"
+   ],
+   "acceptable_alternatives": [
+    "Area-proportional allocation of raster totals to building footprints (a total-allocation method that directly estimates building population)",
+    "Centroid/point sampling of density values ONLY as a proxy estimate with an explicitly declared footprint-area assumption — conditional route, NOT unconditionally equivalent to allocation"
+   ],
+   "failure_conditions": [
+    "Buildings left without population estimates",
+    "No summary table",
+    "Sources combined without a common CRS",
+    "Population double-counted across overlapping footprints"
+   ],
+   "underdetermined_aspects": [
+    "Allocation rule choice (area-weight vs centroid) — multiple valid routes",
+    "Handling of buildings outside raster coverage"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "ccc0fe3a1bbe5526fc866eef7df94fbad01351270e00c76ef8b72428bfbab772",
+   "parameter_availability": {
+    "allocation_rule": "selectable",
+    "common_crs": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-02",
+   "group": "C",
+   "coverage_cell": "multi_source_fusion",
+   "task_type": "multi_source_fusion",
+   "task_text": "Compare land-cover maps from two different years of the same classification scheme and produce a change layer distinguishing stable areas, gains, and losses for each class. Report the area of each change type. All outputs must share one spatial grid.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "5-7",
+    "has_branching": true
+   },
+   "required_outcome": "One change layer (stable/gain/loss per class) + per-change-type area table on a common grid.",
+   "required_constraints": [
+    "[EXPLICIT] two same-scheme land-cover maps (different years)",
+    "[EXPLICIT] change layer distinguishing stable/gain/loss per class",
+    "[EXPLICIT] per-change-type area reporting",
+    "[EXPLICIT] common spatial grid",
+    "[IMPLICIT] class-wise comparison logic (per-class pairing, not just differing pixels)"
+   ],
+   "required_capabilities": [
+    "Raster algebra for class-pair encoding",
+    "Change-type area accounting"
+   ],
+   "acceptable_alternatives": [
+    "Per-class one-hot differencing vs encoded reclass-pair routes",
+    "Any grid chosen as reference (stated)"
+   ],
+   "failure_conditions": [
+    "Gain/loss direction confused",
+    "Areas not reported per change type",
+    "Outputs on mixed grids",
+    "Class identity lost in the change encoding"
+   ],
+   "underdetermined_aspects": [
+    "Change-encoding scheme (pair codes vs separate layers) — multiple valid routes",
+    "Resolution harmonization detail if the two maps differ in pixel size"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "fcd767e3cf273c8b2128f85a19ac3a8ee7079a4bf379f57cc940c86ed9e55424",
+   "parameter_availability": {
+    "change_encoding": "selectable",
+    "reference_grid": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-03",
+   "group": "C",
+   "coverage_cell": "multi_source_fusion",
+   "task_type": "terrain_analysis",
+   "task_text": "Derive an elevation profile and mean channel slope for each reach of a river-network vector using a DEM. Reaches must be ordered so upstream/downstream direction is known. Output: reaches carrying profile-derived slope values and a downstream-order identifier.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "5-7",
+    "has_branching": false
+   },
+   "required_outcome": "River reaches with mean slope + downstream-order identifier.",
+   "required_constraints": [
+    "[EXPLICIT] inputs: river-network vector + DEM",
+    "[EXPLICIT] per-reach elevation profile and mean slope",
+    "[EXPLICIT] reaches ordered with known upstream/downstream direction",
+    "[IMPLICIT] sampling DEM along the channel, not at arbitrary points"
+   ],
+   "required_capabilities": [
+    "DEM sampling along lines",
+    "Network topology ordering",
+    "Per-feature slope computation"
+   ],
+   "acceptable_alternatives": [
+    "Densified-vertex sampling vs calibrated transects; any ordering convention stated"
+   ],
+   "failure_conditions": [
+    "Reaches without slope values",
+    "No downstream-order identifier present",
+    "Slope computed off-channel"
+   ],
+   "underdetermined_aspects": [
+    "Ordering convention (strahler vs simple flow direction) — multiple valid, must be stated"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "0850d0da90ccfb6934a623bc839d04b10872663c94d1b4f0309eb93548f79085",
+   "parameter_availability": {
+    "ordering_convention": "selectable"
+   },
+   "cell_note": "coverage_cell describes INPUT structure (two fused sources); task_type describes the analytic domain (terrain) — the two dimensions are independent by design"
+  },
+  {
+   "task_id": "PCA-C-04",
+   "group": "C",
+   "coverage_cell": "projection_crs",
+   "task_type": "projection_crs",
+   "task_text": "Bring three vector layers supplied in different coordinate reference systems into one projected CRS suitable for area measurement, repair any geometry that becomes invalid after transformation, and produce a short CRS report recording source and target systems per layer.",
+   "complexity": {
+    "n_data_sources": 3,
+    "expected_steps_band": "4-6",
+    "has_branching": false
+   },
+   "required_outcome": "Three layers in one projected (area-suitable) CRS, geometrically valid, with a per-layer CRS report.",
+   "required_constraints": [
+    "[EXPLICIT] three layers with different source CRS",
+    "[EXPLICIT] one target projected CRS suitable for area measurement",
+    "[EXPLICIT] invalid geometries repaired after transformation",
+    "[EXPLICIT] CRS report (source->target per layer)",
+    "[IMPLICIT] validity check must follow transformation, not precede it"
+   ],
+   "required_capabilities": [
+    "CRS transformation",
+    "Post-transform validity handling",
+    "Metadata reporting"
+   ],
+   "acceptable_alternatives": [
+    "Any area-suitable target CRS (stated)",
+    "Any repair strategy (fix vs rebuild)"
+   ],
+   "failure_conditions": [
+    "Target CRS chosen without area suitability",
+    "Layers left in mixed CRS",
+    "Validity not checked after transform",
+    "Report missing"
+   ],
+   "underdetermined_aspects": [
+    "Repair strategy detail — multiple valid",
+    "Choice among suitable projections"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "6f8fbd1c83f2a9fa8d277987177a80f8f2d080092dcf38a2cd6abb4fa798a710",
+   "parameter_availability": {
+    "target_crs": "selectable",
+    "repair_strategy": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-05",
+   "group": "C",
+   "coverage_cell": "projection_crs",
+   "task_type": "zonal_stats",
+   "task_text": "Reproject a global raster to an equal-area CRS and compute area-weighted global mean and per-continent totals of the raster values — naming the continent-boundary source you use (or explicitly declaring it as a required external input) — so that pixel counts are converted to true areas rather than naive counts.",
+   "complexity": {
+    "n_data_sources": 1,
+    "expected_steps_band": "4-6",
+    "has_branching": false
+   },
+   "required_outcome": "Equal-area reprojected raster + area-weighted global mean + per-continent totals.",
+   "required_constraints": [
+    "[EXPLICIT] equal-area target CRS",
+    "[EXPLICIT] area-weighted global mean (not naive pixel mean)",
+    "[EXPLICIT] per-continent totals (continent-boundary source named by the model, or its absence declared as a required external input)",
+    "[IMPLICIT] pixel-area accounting after reprojection"
+   ],
+   "required_capabilities": [
+    "Equal-area reprojection",
+    "Zonal/aggregation with pixel-area weights",
+    "Continent-based partitioning"
+   ],
+   "acceptable_alternatives": [
+    "Compute weights post-reproject vs analytical per-lat weights — both valid if stated"
+   ],
+   "failure_conditions": [
+    "Naive pixel mean reported as area-weighted",
+    "Per-continent totals missing without declaring the continent layer as a required external input",
+    "Reprojection to non-equal-area CRS"
+   ],
+   "underdetermined_aspects": [
+    "Continent boundary source (user-supplied layer presumed) — underdetermined input detail",
+    "Specific equal-area projection choice"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "f02204bb12fbb3bc5c57681702dc94720ce5ecf8bb3a9f2cdf255696c8797983",
+   "parameter_availability": {
+    "equal_area_projection": "selectable",
+    "continent_boundary_source": "selectable_with_declaration"
+   }
+  },
+  {
+   "task_id": "PCA-C-06",
+   "group": "C",
+   "coverage_cell": "projection_crs",
+   "task_type": "multi_source_fusion",
+   "task_text": "Merge road vectors that cross two adjacent UTM zones into a single seamless layer, ensuring geometries remain valid across the zone boundary, and report the total network length in a stated linear unit.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "5-7",
+    "has_branching": false
+   },
+   "required_outcome": "One seamless road layer valid across the former zone boundary + total network length in a stated unit.",
+   "required_constraints": [
+    "[EXPLICIT] inputs in two adjacent UTM zones",
+    "[EXPLICIT] single merged layer; geometries valid across the boundary",
+    "[EXPLICIT] total length in a stated linear unit",
+    "[IMPLICIT] reproject to a common CRS before merging"
+   ],
+   "required_capabilities": [
+    "Cross-zone CRS harmonization",
+    "Boundary geometry handling",
+    "Length measurement in stated units"
+   ],
+   "acceptable_alternatives": [
+    "Common CRS chosen WITH a stated length-distortion suitability note (equal-area CRSs distort length; conformal/equidistant choices preferred for length work)",
+    "Any seam-dedup strategy for duplicated boundary features (stated)"
+   ],
+   "failure_conditions": [
+    "Layers merged without CRS harmonization",
+    "Invalid geometry at the seam",
+    "Length computed in mixed units",
+    "Network length missing"
+   ],
+   "underdetermined_aspects": [
+    "Seam-dedup rule (road segments duplicated at zone edges) — case-by-case"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "de7cbdc576fb1c1a4c083a7ca0d91567f3f7a010bd699289f84f447727f3add0",
+   "parameter_availability": {
+    "common_crs": "selectable_with_suitability_statement",
+    "seam_dedup": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-07",
+   "group": "C",
+   "coverage_cell": "raster_vector_combo",
+   "task_type": "raster_vector_combo",
+   "task_text": "Compute forest-cover percentage inside each protected-area polygon from a forest-cover raster, and produce a masked forest raster limited to protected areas. Both outputs must use a consistent CRS.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "4-6",
+    "has_branching": false
+   },
+   "required_outcome": "Per-polygon forest-cover percentage + protected-area-limited forest mask, consistent CRS.",
+   "required_constraints": [
+    "[EXPLICIT] inputs: protected-area polygons + forest-cover raster",
+    "[EXPLICIT] per-polygon forest percentage",
+    "[EXPLICIT] masked forest raster (protected areas only)",
+    "[EXPLICIT] consistent CRS across outputs",
+    "[IMPLICIT] polygon-zonal statistics over the raster"
+   ],
+   "required_capabilities": [
+    "Raster masking by polygons",
+    "Zonal percentage statistics"
+   ],
+   "acceptable_alternatives": [
+    "Mask-then-stats vs stats-with-boundary routes; any percentage denominator convention (stated)"
+   ],
+   "failure_conditions": [
+    "Percentages computed on naive pixel counts after CRS mismatch",
+    "Mask not limited to protected areas",
+    "Outputs in inconsistent CRS"
+   ],
+   "underdetermined_aspects": [
+    "Percentage denominator (all pixels vs valid-data pixels) — multiple valid, stated"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "9276cf447719d62f3775c3545ef6d4cc8df1bc2afe7ebcddf15327b07c97a733",
+   "parameter_availability": {
+    "percentage_denominator": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-08",
+   "group": "C",
+   "coverage_cell": "raster_vector_combo",
+   "task_type": "multi_source_fusion",
+   "task_text": "Identify potentially unstable slope cells: derive slope from a DEM, flag cells above a slope threshold you state explicitly that also fall inside a road-corridor buffer, and output the flagged cells as a feature layer with their slope values.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "5-7",
+    "has_branching": true
+   },
+   "required_outcome": "Feature layer of flagged cells (slope above threshold AND inside road corridor) carrying slope values.",
+   "required_constraints": [
+    "[EXPLICIT] slope derived from DEM",
+    "[EXPLICIT] stated slope threshold",
+    "[EXPLICIT] road-corridor buffer zone",
+    "[EXPLICIT] flag condition = above threshold AND inside corridor (both)",
+    "[EXPLICIT] output carries slope values",
+    "[IMPLICIT] raster-vector condition combination"
+   ],
+   "required_capabilities": [
+    "DEM slope derivation",
+    "Buffer zone construction",
+    "Two-condition raster/vector screening"
+   ],
+   "acceptable_alternatives": [
+    "Raster-first vs vector-first screening order; any buffer distance implementation (stated)"
+   ],
+   "failure_conditions": [
+    "OR logic used instead of AND",
+    "Slope threshold ignored",
+    "Output cells lack slope values"
+   ],
+   "underdetermined_aspects": [
+    "Buffer distance/direction (task says corridor, not width) — stated-parameter route",
+    "Slope unit (degrees vs percent) if unspecified"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "1f12a56bd095a68deb5b74ad66541c744ab81656a9e1e6f0945e83d51a974936",
+   "parameter_availability": {
+    "slope_threshold": "selectable",
+    "buffer_width": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-09",
+   "group": "C",
+   "coverage_cell": "raster_vector_combo",
+   "task_type": "sampling_stats",
+   "task_text": "Assemble a modelling sample table by extracting, for each observation point, the values of several continuous environmental rasters plus the categorical class of a land-cover raster. Output: one table with one row per point, predictor columns per raster, and the land-cover class.",
+   "complexity": {
+    "n_data_sources": 3,
+    "expected_steps_band": "5-7",
+    "has_branching": false
+   },
+   "required_outcome": "One sample table: row per point, one predictor column per raster, land-cover class column.",
+   "required_constraints": [
+    "[EXPLICIT] inputs: observation points + several continuous rasters + one categorical land-cover raster",
+    "[EXPLICIT] one row per point",
+    "[EXPLICIT] predictor column per continuous raster",
+    "[EXPLICIT] land-cover class column",
+    "[IMPLICIT] per-point multi-raster extraction"
+   ],
+   "required_capabilities": [
+    "Multi-raster point sampling",
+    "Tabular assembly of extracted values"
+   ],
+   "acceptable_alternatives": [
+    "Sequential per-raster sampling vs stacked-image single sampling; any table format"
+   ],
+   "failure_conditions": [
+    "Points without valid raster values dropped silently",
+    "Class column absent",
+    "Row count != point count"
+   ],
+   "underdetermined_aspects": [
+    "No-data handling rule at sample locations — multiple valid, stated"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "c90c8039e7b79dcc2a5cfe56e9e46bffd83fe127cacdea53b8b217ae47bebc58",
+   "parameter_availability": {
+    "nodata_handling": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-10",
+   "group": "C",
+   "coverage_cell": "zonal_stats",
+   "task_type": "zonal_stats",
+   "task_text": "Using administrative boundaries as zones, compute total population and population density per zone from a population raster, then flag zones whose density exceeds a density threshold you state explicitly. Output: zone table with totals, densities, and a flag column.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "4-6",
+    "has_branching": true
+   },
+   "required_outcome": "Zone table: total population, density, exceedance flag per administrative zone.",
+   "required_constraints": [
+    "[EXPLICIT] zones = administrative boundaries",
+    "[EXPLICIT] total population per zone from raster",
+    "[EXPLICIT] density per zone (requires zone area)",
+    "[EXPLICIT] flag zones above stated density threshold",
+    "[IMPLICIT] density needs area computation in the zone CRS"
+   ],
+   "required_capabilities": [
+    "Polygon zonal sums",
+    "Area-based density derivation",
+    "Threshold flagging"
+   ],
+   "acceptable_alternatives": [
+    "Any density unit (per km2 typical — stated); any flag encoding"
+   ],
+   "failure_conditions": [
+    "Density computed without true areas (naive pixel count)",
+    "Flagging without applying the provided threshold or declaring a self-stated one",
+    "Zone totals double-counted across boundary pixels"
+   ],
+   "underdetermined_aspects": [
+    "Pixel-to-zone allocation for boundary pixels — multiple valid, stated"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "b81024be2cdc70890495c56e15efeae8045c7d7c85e7abf19097f6ff8c1ac90b",
+   "parameter_availability": {
+    "density_threshold": "selectable",
+    "pixel_allocation": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-11",
+   "group": "C",
+   "coverage_cell": "zonal_stats",
+   "task_type": "zonal_stats",
+   "task_text": "From a multi-temporal NDVI image stack, compute per-region seasonal mean NDVI (defined by stated month ranges) and output one table where each row is a region-season pair with its mean value.",
+   "complexity": {
+    "n_data_sources": 1,
+    "expected_steps_band": "5-7",
+    "has_branching": false
+   },
+   "required_outcome": "Long-format table: region x season rows with mean NDVI values.",
+   "required_constraints": [
+    "[EXPLICIT] multi-temporal NDVI stack input",
+    "[EXPLICIT] seasonal means per region (seasons = stated month ranges)",
+    "[EXPLICIT] long-format output (region-season rows)",
+    "[IMPLICIT] temporal grouping before regional aggregation"
+   ],
+   "required_capabilities": [
+    "Temporal seasonal grouping",
+    "Regional zonal means",
+    "Long-format table assembly"
+   ],
+   "acceptable_alternatives": [
+    "Group-then-zonal vs zonal-then-group arrangements; any season-label encoding"
+   ],
+   "failure_conditions": [
+    "Regions missing seasons silently dropped without note",
+    "Seasons computed on wrong month grouping",
+    "Wide-format output not convertible to required long format"
+   ],
+   "underdetermined_aspects": [
+    "Season boundary inclusivity — stated-parameter route"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "7fa8fe029f5cf49c5ef3264dfc7ef06b09cb1c3c19838a249bc77bedd2486ee7",
+   "parameter_availability": {
+    "season_boundaries": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-12",
+   "group": "C",
+   "coverage_cell": "zonal_stats",
+   "task_type": "multi_source_fusion",
+   "task_text": "For each sub-watershed, report the share of each land-cover class and identify the dominant class; include a simple diversity measure (e.g., effective class count) per watershed.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "5-7",
+    "has_branching": false
+   },
+   "required_outcome": "Watershed table: per-class shares, dominant class, diversity measure.",
+   "required_constraints": [
+    "[EXPLICIT] zones = sub-watersheds",
+    "[EXPLICIT] per-class share per watershed",
+    "[EXPLICIT] dominant class per watershed",
+    "[EXPLICIT] one diversity measure per watershed (task names effective class count as an example)",
+    "[IMPLICIT] class-area accounting within zones"
+   ],
+   "required_capabilities": [
+    "Zonal class-area accounting",
+    "Dominant-class selection",
+    "Diversity computation"
+   ],
+   "acceptable_alternatives": [
+    "Any diversity measure from the stated family (task gives an example, not a mandate)"
+   ],
+   "failure_conditions": [
+    "Dominant class ties unresolved without note",
+    "Shares not summing to ~100% over VALID land-cover pixels without declaring exclusions (NoData / boundary / unclassified pixels legitimately reduce the sum; a naive all-pixel 100% is not required)",
+    "Diversity missing"
+   ],
+   "underdetermined_aspects": [
+    "Diversity measure choice; tie-breaking rule for dominant class"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "dddff238fc757bde4dc11c310b57ddb1cd267d4dd1fe2fcfe3fe9d70a438f10f",
+   "parameter_availability": {
+    "diversity_measure": "selectable",
+    "dominant_tie_break": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-13",
+   "group": "C",
+   "coverage_cell": "quality_branching",
+   "task_type": "quality_branching",
+   "task_text": "Run a geometry quality check on an input vector layer: repair invalid geometries where possible, detect remaining overlaps between features, and flag features violating an attribute rule you state explicitly (for example, an area-below-minimum rule). Output: a cleaned layer plus a QA layer marking each issue type per feature.",
+   "complexity": {
+    "n_data_sources": 1,
+    "expected_steps_band": "5-7",
+    "has_branching": true
+   },
+   "required_outcome": "Cleaned layer + QA layer with per-feature issue types (invalid-repaired / residual-overlap / attribute-rule violation).",
+   "required_constraints": [
+    "[EXPLICIT] repair invalid geometries where possible",
+    "[EXPLICIT] detect residual overlaps",
+    "[EXPLICIT] flag features violating the stated attribute rule",
+    "[EXPLICIT] outputs: cleaned layer + QA layer with issue types",
+    "[IMPLICIT] repair-then-check order (check on repaired geometry)"
+   ],
+   "required_capabilities": [
+    "Validity repair",
+    "Overlap detection",
+    "Rule-based flagging",
+    "Issue-type bookkeeping"
+   ],
+   "acceptable_alternatives": [
+    "Any repair strategy; any overlap definition granularity (stated)"
+   ],
+   "failure_conditions": [
+    "Checks run before repair",
+    "Issue types collapsed into one column without distinction",
+    "Attribute rule neither applied (when its threshold is provided) nor its missing threshold declared as a clarification requirement"
+   ],
+   "underdetermined_aspects": [
+    "Overlap tolerance; minimum-area value if stated only by reference — stated-parameter route"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "1b26447625984cdc0d17678f65692a27a10b31a07300e6cacf43b8286dcf1b36",
+   "parameter_availability": {
+    "attribute_rule_threshold": "selectable",
+    "overlap_tolerance": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-14",
+   "group": "C",
+   "coverage_cell": "quality_branching",
+   "task_type": "quality_branching",
+   "task_text": "Grade water samples (point locations with turbidity and chlorophyll attributes) into quality tiers defined by thresholds you state explicitly, and mark low-confidence samples — those missing either measurement — as requiring re-survey. Output: graded point layer with tier and confidence-status columns.",
+   "complexity": {
+    "n_data_sources": 1,
+    "expected_steps_band": "4-6",
+    "has_branching": true
+   },
+   "required_outcome": "Point layer with quality tier + confidence-status (re-survey flag for missing measurements).",
+   "required_constraints": [
+    "[EXPLICIT] tier definitions from stated thresholds on turbidity and chlorophyll",
+    "[EXPLICIT] low-confidence = missing either measurement -> re-survey flag",
+    "[EXPLICIT] output columns: tier + confidence status",
+    "[IMPLICIT] missing-data branch evaluated before tier assignment"
+   ],
+   "required_capabilities": [
+    "Threshold-based tiering",
+    "Missing-data conditional handling"
+   ],
+   "acceptable_alternatives": [
+    "Any tier encoding; any re-survey flag vocabulary"
+   ],
+   "failure_conditions": [
+    "Samples with missing data silently assigned a tier",
+    "Tier boundaries applied to a variable other than the one stated",
+    "Confidence column absent",
+    "Tiers assigned without applying provided thresholds or declaring their absence as a clarification requirement"
+   ],
+   "underdetermined_aspects": [
+    "Tier boundary inclusivity (closed/open intervals) — stated-parameter route"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "d5a40b264433ddfffd7b3cd7b5b0199f2c8d6651a4bde5d528aaa2ecbe9a7c3b",
+   "parameter_availability": {
+    "tier_thresholds": "selectable",
+    "tier_intervals": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-15",
+   "group": "C",
+   "coverage_cell": "quality_branching",
+   "task_type": "multi_source_fusion",
+   "task_text": "Compare two elevation rasters covering the same area from different sources: compute the difference surface, flag areas where the absolute difference exceeds a tolerance you state explicitly, and output a confidence raster combining difference magnitude with a slope-stability hint you state explicitly.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "5-7",
+    "has_branching": true
+   },
+   "required_outcome": "Difference surface + exceedance flags + a confidence raster combining difference with the slope hint.",
+   "required_constraints": [
+    "[EXPLICIT] two elevation rasters of the same area (different sources)",
+    "[EXPLICIT] absolute-difference surface",
+    "[EXPLICIT] exceedance flags vs stated tolerance",
+    "[EXPLICIT] confidence raster combining difference magnitude + stated slope hint",
+    "[IMPLICIT] grid alignment before differencing"
+   ],
+   "required_capabilities": [
+    "Raster differencing on aligned grids",
+    "Threshold flagging",
+    "Multi-factor raster combination"
+   ],
+   "acceptable_alternatives": [
+    "Any confidence-combination formula consistent with the stated factors"
+   ],
+   "failure_conditions": [
+    "Differencing on misaligned grids",
+    "Tolerance ignored",
+    "Confidence raster absent or single-factor"
+   ],
+   "underdetermined_aspects": [
+    "Grid alignment method; confidence formula weights — multiple valid, stated"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "abe58033c439b103fe1fc92efe6a8eaf30ffddff3aed9f2499f9d06eee3bacd1",
+   "parameter_availability": {
+    "difference_tolerance": "selectable",
+    "confidence_formula": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-16",
+   "group": "C",
+   "coverage_cell": "quality_branching",
+   "task_type": "vector_topology",
+   "task_text": "Apply class-dependent buffer zones around road segments — assign and declare your own radius per road class — then detect sensitive sites (a point layer) falling inside any buffer, and output matched sites annotated with the road class and buffer radius responsible.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": "5-7",
+    "has_branching": true
+   },
+   "required_outcome": "Matched sensitive-site layer annotated with responsible road class + radius.",
+   "required_constraints": [
+    "[EXPLICIT] per-class buffer radii (stated per class)",
+    "[EXPLICIT] sensitive sites = point layer",
+    "[EXPLICIT] detection = site inside ANY class buffer",
+    "[EXPLICIT] output annotation: road class + radius",
+    "[IMPLICIT] per-class buffering before union/detection"
+   ],
+   "required_capabilities": [
+    "Differentiated buffering by class",
+    "Multi-buffer union or per-class detection",
+    "Attribute annotation of matches"
+   ],
+   "acceptable_alternatives": [
+    "Union-then-detect vs per-class-detect-then-merge (both valid; annotation must survive)"
+   ],
+   "failure_conditions": [
+    "A site matched by multiple classes annotated with only one without note",
+    "Per-class radii ignored",
+    "Unmatched sites included without marker"
+   ],
+   "underdetermined_aspects": [
+    "Multiple-match annotation rule (keep all vs first) — case-by-case, stated"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "6d710af0e72f03e5e087ee218071a8fe9a97796a6399dc9e3996902e179c7ebf",
+   "parameter_availability": {
+    "per_class_radii": "selectable",
+    "multiple_match_rule": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-17",
+   "group": "C",
+   "coverage_cell": "multi_step_chain",
+   "task_type": "raster_vector_combo",
+   "task_text": "Quantify the urban heat island: derive summer-night land-surface temperature statistics, classify urban vs rural zones from land-cover data, compute UHI intensity as the urban-rural differential, and rank administrative units by intensity. Output: ranked unit table + intensity raster.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": ">=8",
+    "has_branching": false
+   },
+   "required_outcome": "Ranked administrative-unit table + UHI intensity raster.",
+   "required_constraints": [
+    "[EXPLICIT] summer-night LST statistics",
+    "[EXPLICIT] urban/rural zones from land-cover data",
+    "[EXPLICIT] UHI intensity = urban-rural differential",
+    "[EXPLICIT] administrative units ranked by intensity",
+    "[EXPLICIT] outputs: ranked table + intensity raster",
+    "[IMPLICIT] zone definitions must precede the differential"
+   ],
+   "required_capabilities": [
+    "LST statistics extraction",
+    "Land-cover zone classification",
+    "Differential computation",
+    "Ranking and tabulation"
+   ],
+   "acceptable_alternatives": [
+    "Any rural-reference definition (stated); any ranking metric (mean/median — stated)"
+   ],
+   "failure_conditions": [
+    "Urban/rural zones undefined or swapped",
+    "Intensity not a differential",
+    "Ranking absent",
+    "Raster and table disagree"
+   ],
+   "underdetermined_aspects": [
+    "Rural baseline selection; LST summer definition (task says summer night — months unstated)"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "c0b511b1fc0c2a9f2a916e8ac33201568b9cd2be57b988b9559072119a534f67",
+   "parameter_availability": {
+    "rural_baseline": "selectable",
+    "summer_months": "selectable",
+    "ranking_statistic": "selectable"
+   },
+   "audit_note": "Scoring note (round-14): the model MAY explicitly state its rural baseline, summer months, and ranking statistic; stated choices are scored as declared assumptions. Hard requirements are limited to: urban/rural differential structure, ranking output, intensity raster."
+  },
+  {
+   "task_id": "PCA-C-18",
+   "group": "C",
+   "coverage_cell": "multi_step_chain",
+   "task_type": "raster_vector_combo",
+   "task_text": "Build a simplified flood-exposure screening: derive flow accumulation from a DEM, identify flat/sink areas, combine with a depth-proxy rule you state explicitly to screen potential inundation cells, and summarize exposed land-cover classes by area.",
+   "complexity": {
+    "n_data_sources": 2,
+    "expected_steps_band": ">=8",
+    "has_branching": true
+   },
+   "required_outcome": "Screened potential-inundation cells + exposed land-cover class areas table.",
+   "required_constraints": [
+    "[EXPLICIT] flow accumulation from DEM",
+    "[EXPLICIT] flat/sink area identification",
+    "[EXPLICIT] stated depth-proxy rule combines with terrain screening",
+    "[EXPLICIT] exposure summarized by land-cover class areas",
+    "[IMPLICIT] DEM hydrological state assessed; conditioning applied AS NEEDED (no specific conditioning operator mandated)"
+   ],
+   "required_capabilities": [
+    "Hydrological conditioning and accumulation",
+    "Sink/flat detection",
+    "Rule-based inundation screening",
+    "Class-area summarization"
+   ],
+   "acceptable_alternatives": [
+    "Any sink-handling convention (stated); any accumulation threshold (stated)"
+   ],
+   "failure_conditions": [
+    "Screening without hydrological ordering",
+    "Land-cover summary missing",
+    "Sink areas ignored"
+   ],
+   "underdetermined_aspects": [
+    "Depth-proxy rule parameters; accumulation cut value — stated-parameter routes"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "936c0e1e28bd8e3dc3574105f85d544b94b26d3a61b5465a462326cf72668c10",
+   "parameter_availability": {
+    "depth_proxy_rule": "selectable",
+    "accumulation_cut": "selectable",
+    "sink_handling": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-19",
+   "group": "C",
+   "coverage_cell": "multi_step_chain",
+   "task_type": "zonal_stats",
+   "task_text": "Assess conservation coverage: extract environmental conditions at species occurrence points, build a suitability model, identify high-suitability cells, and report how much of that high-suitability area falls inside existing protected areas versus outside.",
+   "complexity": {
+    "n_data_sources": 3,
+    "expected_steps_band": ">=8",
+    "has_branching": false
+   },
+   "required_outcome": "High-suitability cell set + coverage report: protected vs unprotected high-suitability areas.",
+   "required_constraints": [
+    "[EXPLICIT] occurrence points + environmental condition extraction",
+    "[EXPLICIT] a suitability model built from those conditions",
+    "[EXPLICIT] high-suitability cell identification",
+    "[EXPLICIT] coverage report: inside vs outside protected areas",
+    "[IMPLICIT] point-sampling -> model -> threshold -> overlap chain"
+   ],
+   "required_capabilities": [
+    "Point-environment sampling",
+    "Suitability modelling",
+    "Threshold selection and overlap accounting"
+   ],
+   "acceptable_alternatives": [
+    "Any model family consistent with sampled conditions (stated); any high-suitability definition (stated)"
+   ],
+   "failure_conditions": [
+    "Model built but suitability never mapped",
+    "Coverage split not reported",
+    "High-suitability threshold applied without any stated basis or declared assumption"
+   ],
+   "underdetermined_aspects": [
+    "Model family; threshold value; suitability scaling — stated-parameter routes"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "3e474ab371ca7d368f0823d18f385564f37f5aed80e5f4973bdeae435e1fdee3",
+   "parameter_availability": {
+    "model_family": "selectable",
+    "high_suitability_threshold": "selectable"
+   }
+  },
+  {
+   "task_id": "PCA-C-20",
+   "group": "C",
+   "coverage_cell": "multi_step_chain",
+   "task_type": "quality_branching",
+   "task_text": "Rank districts by solar potential: screen areas by slope and aspect suitability rules you state explicitly, exclude exclusion zones you name explicitly, overlay solar irradiance, and compute per-district potential scores for ranking.",
+   "complexity": {
+    "n_data_sources": 3,
+    "expected_steps_band": ">=8",
+    "has_branching": true
+   },
+   "required_outcome": "Districts ranked by solar potential score + the screened suitability raster.",
+   "required_constraints": [
+    "[EXPLICIT] suitability screens on stated slope and aspect rules",
+    "[EXPLICIT] exclusion zones removed",
+    "[EXPLICIT] solar irradiance overlaid",
+    "[EXPLICIT] per-district potential scores + ranking",
+    "[IMPLICIT] screen->exclude->overlay->aggregate chain"
+   ],
+   "required_capabilities": [
+    "Terrain-rule screening",
+    "Exclusion masking",
+    "Irradiance overlay",
+    "District aggregation and ranking"
+   ],
+   "acceptable_alternatives": [
+    "Any scoring formula consistent with stated screens (stated); any aggregation statistic"
+   ],
+   "failure_conditions": [
+    "Exclusion zones not removed",
+    "Slope/aspect rules ignored",
+    "Ranking missing or not per-district"
+   ],
+   "underdetermined_aspects": [
+    "Score normalization; aspect suitability encoding — stated-parameter routes"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "N/A — C-group tasks are freshly drafted; no reference chain exists",
+   "authoring": "task semantics first; gold derived from task text only",
+   "task_sha256": "2825427de910d26c0d6c4dc391696fe231859a3bc5930271d6dc0192783f26b0",
+   "parameter_availability": {
+    "slope_aspect_rules": "selectable",
+    "score_normalization": "selectable"
+   }
+  }
+ ]
+}

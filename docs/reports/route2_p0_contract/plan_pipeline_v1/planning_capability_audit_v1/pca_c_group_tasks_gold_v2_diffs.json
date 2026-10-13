@@ -1,0 +1,178 @@
+[
+ {
+  "task_id": "PCA-C-05",
+  "field": "task_text",
+  "old": "compute area-weighted global mean and per-continent totals of the rast...",
+  "new": "compute area-weighted global mean and per-continent totals of the rast...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "PCA-C-08",
+  "field": "task_text",
+  "old": "flag cells above a stated slope threshold that also fall inside a road...",
+  "new": "flag cells above a slope threshold you state explicitly that also fall...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "PCA-C-10",
+  "field": "task_text",
+  "old": "flag zones whose density exceeds a stated threshold....",
+  "new": "flag zones whose density exceeds a density threshold you state explici...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "PCA-C-13",
+  "field": "task_text",
+  "old": "flag features violating a stated attribute rule (e.g., area below a mi...",
+  "new": "flag features violating an attribute rule you state explicitly (for ex...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "PCA-C-14",
+  "field": "task_text",
+  "old": "Grade water samples (point locations with turbidity and chlorophyll at...",
+  "new": "Grade water samples (point locations with turbidity and chlorophyll at...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "PCA-C-15",
+  "field": "task_text",
+  "old": "flag areas where the absolute difference exceeds a stated tolerance, a...",
+  "new": "flag areas where the absolute difference exceeds a tolerance you state...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "PCA-C-16",
+  "field": "task_text",
+  "old": "Apply class-dependent buffer zones around road segments — each road cl...",
+  "new": "Apply class-dependent buffer zones around road segments — assign and d...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "PCA-C-18",
+  "field": "task_text",
+  "old": "combine with a stated depth-proxy rule to screen potential inundation ...",
+  "new": "combine with a depth-proxy rule you state explicitly to screen potenti...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "PCA-C-20",
+  "field": "task_text",
+  "old": "screen areas by stated slope and aspect suitability rules, exclude sta...",
+  "new": "screen areas by slope and aspect suitability rules you state explicitl...",
+  "basis": "round-14: 'stated' wording promised unavailable parameters -> selectable declaration semantics",
+  "scoring_code_impact": "scoring checks DECLARATION of the choice, never a specific value"
+ },
+ {
+  "task_id": "ALL",
+  "field": "parameter_availability",
+  "old": null,
+  "new": "machine field on all 20 rows (values: selectable | selectable_with_declaration | selectable_with_suitability_statement)",
+  "basis": "round-14 caliber unification",
+  "scoring_code_impact": "scoring must check declaration/status per field; value-guessing never scored"
+ },
+ {
+  "task_id": "PCA-C-01",
+  "field": "acceptable_alternatives",
+  "old": "centroid sampling listed as unconditionally equivalent",
+  "new": "centroid demoted to conditional proxy route requiring declared area assumption",
+  "basis": "centroid density != building total without an area assumption",
+  "scoring_code_impact": "proxy routes score as declared-assumption routes; omission of the assumption is the scorable defect"
+ },
+ {
+  "task_id": "PCA-C-03",
+  "field": "failure_conditions + cell_note",
+  "old": "'No downstream ordering' ambiguous vs specific algorithm; cell/type apparent mismatch unexplained",
+  "new": "failure requires the IDENTIFIER only (algorithm free); cell-vs-type independence documented",
+  "basis": "identifier presence is task-required; the ordering algorithm never was",
+  "scoring_code_impact": "failure predicate = identifier presence check, no algorithm match"
+ },
+ {
+  "task_id": "PCA-C-05",
+  "field": "failure_conditions",
+  "old": "'Continents undefined/missing' penalized while continent data was never provided or required",
+  "new": "missing totals fail only if the model neither names a source nor declares the data requirement",
+  "basis": "a declared data need is valid planning behavior",
+  "scoring_code_impact": "failure predicate = missing output AND missing declaration (two-condition check)"
+ },
+ {
+  "task_id": "PCA-C-09",
+  "field": "failure_conditions",
+  "old": "'stored as raw code without mapping' was a hard failure",
+  "new": "raw-code class column accepted; name mapping demoted to optional presentation",
+  "basis": "task requires the class value, not a name mapping",
+  "scoring_code_impact": "mapping presence no longer scored; absence never a failure"
+ },
+ {
+  "task_id": "PCA-C-13",
+  "field": "failure_conditions",
+  "old": "'Attribute rule ignored' forced use of a threshold the task never supplied",
+  "new": "apply-or-declare rule: applying a provided threshold OR declaring the missing threshold both pass",
+  "basis": "'e.g., area below a minimum' was an example, not a supplied value",
+  "scoring_code_impact": "failure predicate = neither-apply-nor-declare"
+ },
+ {
+  "task_id": "PCA-C-14",
+  "field": "failure_conditions",
+  "old": "same forced-threshold defect as C-13",
+  "new": "apply-or-declare rule",
+  "basis": "task text did not contain the threshold values",
+  "scoring_code_impact": "failure predicate = neither-apply-nor-declare"
+ },
+ {
+  "task_id": "PCA-C-17",
+  "field": "audit_note",
+  "old": null,
+  "new": "baseline/seasons/statistic = declared-assumption scoring; hard items limited to structure",
+  "basis": "task text defines none of those three values",
+  "scoring_code_impact": "judge scores declaration presence; never compares to a specific baseline"
+ },
+ {
+  "task_id": "PCA-C-19",
+  "field": "failure_conditions",
+  "old": "'Threshold undefined and arbitrary' penalized the absence of a unique value the task never gave",
+  "new": "penalize only the absence of a stated basis/declared assumption for whatever threshold is used",
+  "basis": "threshold is selectable by design",
+  "scoring_code_impact": "failure predicate = basis/assumption missing, not value mismatch"
+ },
+ {
+  "task_id": "PCA-C-06",
+  "field": "acceptable_alternatives",
+  "old": "'any common CRS (stated)' treated all CRSs as equivalent",
+  "new": "suitability statement for length work required",
+  "basis": "length measurement validity depends on distortion properties",
+  "scoring_code_impact": "missing suitability note is a declared-assumption defect, not auto-fail of the whole plan"
+ },
+ {
+  "task_id": "PCA-C-10",
+  "field": "failure_conditions",
+  "old": "'Flag threshold ignored' forced an unsupplied value",
+  "new": "apply-or-declare rule",
+  "basis": "threshold selectable by design",
+  "scoring_code_impact": "failure predicate = neither-apply-nor-declare"
+ },
+ {
+  "task_id": "PCA-C-12",
+  "field": "failure_conditions",
+  "old": "'Shares not summing to 100%' ignored the valid-pixel denominator",
+  "new": "~100% over valid pixels with declared exclusions",
+  "basis": "NoData/boundary/unclassified pixels legitimately reduce totals",
+  "scoring_code_impact": "failure predicate = unexplained deviation, not exact 100%"
+ },
+ {
+  "task_id": "PCA-C-18",
+  "field": "required_constraints",
+  "old": "conditioning implied one specific mandatory treatment",
+  "new": "condition-as-needed per DEM state; no operator mandated",
+  "basis": "appropriate preprocessing depends on the DEM, not on a fixed recipe",
+  "scoring_code_impact": "no specific conditioning operator scored as required"
+ }
+]
