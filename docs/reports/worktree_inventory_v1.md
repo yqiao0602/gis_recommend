@@ -51,3 +51,32 @@ PCA Phase 1（A 组金标撰写 / C 组起草，worknotes §3 第 2-3 步）与�
    v1.1 仅可被显式引用本账本的未来实验采用，不回溯适用）。
 4. **scripts/ 129-op 副本**：待批次②a 提交时随附（生成器输出副本，与 tracked 版
    内容一致；生成来源 `scripts/qgis_op_family_reverse_v1.py`）。
+
+## 6. Phase 0 关闭记录（2026-10-13，owner 最终裁定）
+
+**结论：Phase 0 工程收口关闭。** 收口会话 commit 链（文件清单与提交 SHA 以 git 为准，
+`git show <sha>` 可查全量清单）：
+
+| Commit | 内容 | 文件数 |
+|---|---|---|
+| `8db38100` | 组①：GEE 10-11/12 收口记录 + STAGE1_GATE 配套文档 + CURRENT_STATE 对齐 | 6 |
+| `d771318b` | 本盘点文档 v1 | 1 |
+| `f593d8f7` | 治理：cache gitignore / 错位 JSON 删除 / op_family v1.1 版本化 | 4 |
+| `bbcd562c` | 批次②a scripts+tests（测试 55/55） | 70 |
+| `cb516fe1` | 批次②b planner_design+g0 | 83 |
+| `26dc84d1` | 批次③ GEE 报告+冻结材料 | 199 |
+
+**owner 验收限定（必须随记录保留）**：
+
+1. `cb516fe1` 中 `planner_v2_dev.jsonl`（原版）与 trusted-gold fix1 版两文件仅在
+   服务器（声明 SHA `807717b5…` / `cc209036…` 已登记）——**服务器侧 SHA 对账仍未
+   完成，跨环境一致性不得表述为已完全验收**；对账完成前，涉及这两文件的任何本地
+   消费须先做 SHA 比对。
+2. `8db38100` / `d771318b` 未做 SHA 抽验——归档以此记录为准，不补造校验结论。
+
+**剩余工作区归属（收口会话不再处理）**：`rl_line/RL_LINE_PREREGISTRATION_V0_DRAFT.md`
+归 RL 线作者；CURRENT_STATE ×2 / GEE_CURRENT_STATE ×2 / task_plan 的活跃修改归 PCA
+主线会话（其提交前应做定向差异检查，不重置、不批量暂存）。
+
+**边界**：Phase 0 关闭 = 工程治理闭环，不构成 PCA 能力门槛通过的任何证据；PCA
+金标获批前不运行正式 180 生成；训练继续冻结。
