@@ -1,0 +1,970 @@
+{
+ "rows": 120,
+ "adapter": "/home/qy/stage1_run_planner_v2_fmt/stage1_adapter",
+ "max_new_tokens": 384,
+ "batch_size": 8,
+ "instrument": "batched-left-pad",
+ "source": "/home/qy/gee_llm_smoke/v2a_A_dev.jsonl",
+ "items": [
+  {
+   "k": 0,
+   "wid": "W000026",
+   "task_head": "Calculate slope from DGM. The script calculates terrain slope (gradient) from a ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 1,
+   "wid": "W000043",
+   "task_head": "Compute road segment slope. The script computes slope for network edge segments ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":2}],\"repetition_groups\":[{\"stage_seq\":3,\"family\":\"AGGREGATION\",\"repeat\":2,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 2,
+   "wid": "W000060",
+   "task_head": "Download and merge DTM tiles. The script downloads Digital Terrain Model (DTM) r",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 3,
+   "wid": "W000081",
+   "task_head": "Download Copernicus Global Land Cover. The script downloads Copernicus Global La",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 4,
+   "wid": "W000082",
+   "task_head": "Download Copernicus Global Land product. The script downloads Copernicus Global ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 5,
+   "wid": "W000084",
+   "task_head": "Download Copernicus Land Cover Product. The script downloads Copernicus Global L",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 6,
+   "wid": "W000166",
+   "task_head": "Reproject land suitability raster. The script reprojects a local land suitabilit",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 7,
+   "wid": "W000168",
+   "task_head": "Count languages per virtual country. The script computes the number of distinct ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 8,
+   "wid": "W000302",
+   "task_head": "Clip raster plan by polygon boundary. The script clips a provided raster layer (",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 9,
+   "wid": "W000394",
+   "task_head": "Calculate satellite visibility C-index. The script computes the radar-based C-in",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 10,
+   "wid": "W000447",
+   "task_head": "Compute rotated minimum bounding box. The script computes a rotated minimum boun",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 11,
+   "wid": "W000473",
+   "task_head": "Compute symmetrical difference of two polygon layers. The script computes the sy",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 12,
+   "wid": "W000524",
+   "task_head": "Analyze seismic zone topography. The script processes a seismic zones shapefile ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":4,\"family\":\"AGGREGATION\",\"repeat\":3}],\"repetition_groups\":[{\"stage_seq\":4,\"family\":\"AGGREGATION\",\"repeat\":3,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 13,
+   "wid": "W000635",
+   "task_head": "Extract polygon boundary edges. The script processes an input vector layer of po",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 14,
+   "wid": "W000674",
+   "task_head": "Compute slope aspect hillshade. The script computes three terrain derivatives—sl",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 15,
+   "wid": "W000863",
+   "task_head": "Model boat movement probability. The script models probabilistic boat movement a",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 16,
+   "wid": "W000890",
+   "task_head": "Map dominant drought class by municipality. The script processes a pre-existing ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":10,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":13,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":14,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":15,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":17,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":18,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":19,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":21,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":22,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":25,\"family\":\"AGGREGATION\",\"",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 17,
+   "wid": "W000951",
+   "task_head": "Fetch SRTM elevation data. The script downloads SRTMGL1 (Shuttle Radar Topograph",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 18,
+   "wid": "W000965",
+   "task_head": "Snap line vertices to points. The script snaps specified vertices (start, end, o",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 19,
+   "wid": "W000992",
+   "task_head": "Generate perpendicular lines along line. The script generates perpendicular line",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 20,
+   "wid": "W000993",
+   "task_head": "Interpolate surface property values. The script performs Inverse Distance Weight",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_SELECT\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_OUTPUT\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 21,
+   "wid": "W001027",
+   "task_head": "Convert indicator raster to points. The script processes a raster input layer by",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":2}],\"repetition_groups\":[{\"stage_seq\":2,\"family\":\"AGGREGATION\",\"repeat\":2,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 22,
+   "wid": "W001034",
+   "task_head": "Package layers to KMZ. The script packages multiple QGIS vector and raster layer",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 23,
+   "wid": "W001533",
+   "task_head": "Generate geodesic buffer geometry. The script computes a geodesically accurate c",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"RASTER_LOAD\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 24,
+   "wid": "W001640",
+   "task_head": "Calculate annual shadow patterns. The script calculates solar shadow rasters for",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 25,
+   "wid": "W001729",
+   "task_head": "Identify disconnected network segments. The script analyzes topological connecti",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 26,
+   "wid": "W001898",
+   "task_head": "Download digital elevation model. The script downloads and clips Digital Elevati",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 27,
+   "wid": "W001970",
+   "task_head": "Export air transport infrastructure area. The script exports polygon features re",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 28,
+   "wid": "W001974",
+   "task_head": "Export navigable waterway transport infrastructure area. The script exports poly",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 29,
+   "wid": "W001994",
+   "task_head": "Export railway transport infrastructure. The script exports point features repre",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"VECTOR_GEOMETRY\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 30,
+   "wid": "W002001",
+   "task_head": "Export hydrographic node. The script exports point features representing hydrogr",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 31,
+   "wid": "W002002",
+   "task_head": "Export railway transport node. The script exports point features representing ra",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 32,
+   "wid": "W002004",
+   "task_head": "Export infrastructure polygon layer. The script exports a user-provided vector p",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 33,
+   "wid": "W002013",
+   "task_head": "Export road boundary geometry. The script exports a user-provided vector line la",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 34,
+   "wid": "W002419",
+   "task_head": "Aggregate irrigation water demand variables. The script calculates zonal statist",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 35,
+   "wid": "W002456",
+   "task_head": "Extract longest flow path. The script computes the longest hydrological flow pat",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"VECTOR_LOAD\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 36,
+   "wid": "W002458",
+   "task_head": "Derive upslope basin and terrain attributes. The script computes the upslope con",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":4,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":8,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":12,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":16,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":20,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":24,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":25,\"",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 37,
+   "wid": "W003027",
+   "task_head": "Extract upstream catchment polygons. The script processes a river network vector",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":6,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 38,
+   "wid": "W003623",
+   "task_head": "Generate drainage relationships for catchments. The script constructs hydrologic",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":4,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":6,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":8,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":9,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":10,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":12,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":13,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":14,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":15,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":16,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":17,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":18,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":19,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":20,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":21,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":22,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":24,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":25,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":26,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 39,
+   "wid": "W003637",
+   "task_head": "Model coastal storm surge inundation. The script models coastal flood extents fo",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":6,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":10,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":12,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":16,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":17,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":18,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":22,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":24,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 40,
+   "wid": "W004581",
+   "task_head": "Convert DXF line features to polygon boundaries. The script processes a director",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 41,
+   "wid": "W004648",
+   "task_head": "Compute median DSM within grid zones. The script computes the median value of a ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 42,
+   "wid": "W004837",
+   "task_head": "Compute shortest path along road network. The script computes the shortest geome",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":2}],\"repetition_groups\":[{\"stage_seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":2,\"iteration_hint\":[\"unspecified\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 43,
+   "wid": "W004963",
+   "task_head": "Compute aspect and slope from elevation raster. The script processes raster inpu",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 44,
+   "wid": "W004992",
+   "task_head": "Hexagon binning of point features. The script performs hexagonal spatial binning",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 45,
+   "wid": "W005067",
+   "task_head": "Aggregate land parcels by building overlap. The script performs spatial aggregat",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 46,
+   "wid": "W005684",
+   "task_head": "Rasterize vector layers to topographic masks. The script generates binary (0/1) ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[{\"stage_seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 47,
+   "wid": "W005784",
+   "task_head": "Calculate urban wind field. The script calculates 3D spatial variations of wind ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 48,
+   "wid": "W005982",
+   "task_head": "Compare riverbank distances across time. The script computes and compares the or",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 49,
+   "wid": "W006830",
+   "task_head": "Estimate floodwater depth. The script estimates water depth across a flooded are",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 50,
+   "wid": "W007046",
+   "task_head": "Extract features by attribute regex and compute centroid. The script selects vec",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":2}],\"repetition_groups\":[{\"stage_seq\":5,\"family\":\"AGGREGATION\",\"repeat\":2,\"iteration_hint\":[\"unspecified\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 51,
+   "wid": "W007094",
+   "task_head": "Analyze road segment geometry. The script analyzes the geometric characteristics",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 52,
+   "wid": "W007170",
+   "task_head": "Analyze population impact from flood inundation. The script analyzes population ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":4,\"family\":\"AGGREGATION\",\"repeat\":2},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1}],\"repetition_groups\":[{\"stage_seq\":4,\"family\":\"AGGREGATION\",\"repeat\":2,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 53,
+   "wid": "W007486",
+   "task_head": "Map canopy vegetation extent and height. The script maps the spatial extent of c",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"MASKING\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"AGGREGATION\",\"repeat\":2}],\"repetition_groups\":[{\"stage_seq\":6,\"family\":\"AGGREGATION\",\"repeat\":2,\"iteration_hint\":[\"unspecified\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 54,
+   "wid": "W017921",
+   "task_head": "Compute median elevation per grid cell. The script computes the median elevation",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 55,
+   "wid": "W023206",
+   "task_head": "Generate topographic raster tiles. The script automates the creation of a regula",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":6,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":10,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":12,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":16,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":17,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":18,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":22,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":24,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 56,
+   "wid": "W033170",
+   "task_head": "Allocate mesh population to administrative boundaries. The script performs a spa",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":4,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 57,
+   "wid": "W033927",
+   "task_head": "Map ROV seafloor substrate units. The script processes ROV navigation and annota",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 58,
+   "wid": "W034465",
+   "task_head": "Map population density by administrative region. The script generates a series o",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 59,
+   "wid": "W035584",
+   "task_head": "Calculate MPRI vegetation index. The script processes a user-provided raster (e.",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":6,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 60,
+   "wid": "W035677",
+   "task_head": "Order vertices of multipart line. The script processes a user-provided QGIS vect",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":8,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":10,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":12,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":13,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":14,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":15,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":16,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":17,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":18,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":19,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":20,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":21,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":22,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":24,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":25,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":26,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 61,
+   "wid": "W036260",
+   "task_head": "Calculate green space percentage per neighbourhood. The script calculates the pe",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 62,
+   "wid": "W040682",
+   "task_head": "Compute height deviation from stand dominant height. The script computes a raste",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 63,
+   "wid": "W040923",
+   "task_head": "Reproject layer to MeridianShift. The script reprojects a user-selected QGIS vec",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 64,
+   "wid": "W041845",
+   "task_head": "Extract raster centroid locations. The script processes a batch of local GeoTIFF",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[{\"stage_seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 65,
+   "wid": "W042189",
+   "task_head": "Generate drone flight plan for parcel mapping. The script generates a drone flig",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 66,
+   "wid": "W042190",
+   "task_head": "Create parcel-based grid. The script generates a vector grid (hexagonal, rectang",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 67,
+   "wid": "W047461",
+   "task_head": "Generate binary water mask. The script computes a binary water mask raster using",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 68,
+   "wid": "W048679",
+   "task_head": "Simulate urban wastewater and runoff flow. The script performs hydraulic simulat",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 69,
+   "wid": "W049929",
+   "task_head": "Compute area-weighted average attribute. The script calculates a spatial area-we",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":2}],\"repetition_groups\":[{\"stage_seq\":3,\"family\":\"AGGREGATION\",\"repeat\":2,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 70,
+   "wid": "W050376",
+   "task_head": "Calculate risk from hazard vulnerability exposure adaptive capacity. The script ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 71,
+   "wid": "W050378",
+   "task_head": "Calculate vulnerability zonal statistics. The script computes a single specified",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 72,
+   "wid": "W050457",
+   "task_head": "Download GeoDanmark infrastructure layers. The script downloads, unzips, spatial",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 73,
+   "wid": "W050953",
+   "task_head": "Update polygon layer geometry. The script emulates ArcGIS's Update geoprocessing",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 74,
+   "wid": "W051488",
+   "task_head": "Estimate school-age population. The script estimates single-year-of-age populati",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 75,
+   "wid": "W055494",
+   "task_head": "Merge similar forest stands. The script merges small forest stand polygons with ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 76,
+   "wid": "W055534",
+   "task_head": "Compute country-level population statistics. The script computes zonal statistic",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":6,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":8,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 77,
+   "wid": "W055585",
+   "task_head": "Delimit Maxent model zones. The script reclassifies a Maxent-generated ASCII ras",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":4,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 78,
+   "wid": "W055590",
+   "task_head": "Fill linear or isolated environmental variables. The script converts a vector la",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 79,
+   "wid": "W055620",
+   "task_head": "Filter structures near rivers. The script filters and relocates point structures",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 80,
+   "wid": "W055625",
+   "task_head": "Calculate riverbank continuity index (Indice F3). The script computes the Indice",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":8,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 123,
+   "hit_cap": 0
+  },
+  {
+   "k": 81,
+   "wid": "W055670",
+   "task_head": "Export lentic water to PostgreSQL. The script exports lentic water polygons to a",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 123,
+   "hit_cap": 0
+  },
+  {
+   "k": 82,
+   "wid": "W055689",
+   "task_head": "Export Oil and Gas Associated Elements. The script exports a point or polygon ve",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 123,
+   "hit_cap": 0
+  },
+  {
+   "k": 83,
+   "wid": "W055702",
+   "task_head": "Export spring points to database. The script exports a point layer of springs to",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 123,
+   "hit_cap": 0
+  },
+  {
+   "k": 84,
+   "wid": "W055743",
+   "task_head": "Multibeam seabed segmentation. The script segments seafloor from multibeam bathy",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":3}],\"repetition_groups\":[{\"stage_seq\":5,\"family\":\"AGGREGATION\",\"repeat\":3,\"iteration_hint\":[\"unspecified\"]}]}",
+   "gen_tokens": 123,
+   "hit_cap": 0
+  },
+  {
+   "k": 85,
+   "wid": "W055796",
+   "task_head": "Download Copernicus Global Land products. The script downloads Copernicus Global",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 123,
+   "hit_cap": 0
+  },
+  {
+   "k": 86,
+   "wid": "W055908",
+   "task_head": "Sample vector points by attribute. The script performs point sampling on a user-",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 123,
+   "hit_cap": 0
+  },
+  {
+   "k": 87,
+   "wid": "W055913",
+   "task_head": "Merge two agricultural zonings. The script merges two polygon vector layers repr",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 123,
+   "hit_cap": 0
+  },
+  {
+   "k": 88,
+   "wid": "W056058",
+   "task_head": "Classify and buffer water network levels. The script performs a clip operation o",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 89,
+   "wid": "W056074",
+   "task_head": "Identify underserved villages for hospital access. The script analyzes hospital ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":8,\"family\":\"VECTOR_LOAD\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 90,
+   "wid": "W056162",
+   "task_head": "Merge river and stream vectors. The script merges river and stream vector layers",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 91,
+   "wid": "W056166",
+   "task_head": "Extract River Max Height Points. The script processes river line vectors and a D",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"MASKING\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 92,
+   "wid": "W056198",
+   "task_head": "Generate microsheds. The script generates microsheds (watershed basins) from a D",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 93,
+   "wid": "W056244",
+   "task_head": "Calculate zonal elevation statistics for seismic zones. The script computes zona",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 94,
+   "wid": "W056274",
+   "task_head": "Calculate maximum distance to water. The script calculates, for each paddock pol",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":28,\"family\":\"ATTRIBUTE_FILTER\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 95,
+   "wid": "W062025",
+   "task_head": "Compute hydraulic envelope rasters. The script computes maximum velocity and dep",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 96,
+   "wid": "W064855",
+   "task_head": "Map airport exclusion zones in Poland. The script generates a map of Poland with",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 97,
+   "wid": "W066829",
+   "task_head": "Generate pine wilt disease map composition. The script automates the output of m",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":7,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 98,
+   "wid": "W066873",
+   "task_head": "Compute line buffer overlay statistics. The script evaluates line accuracy using",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":10,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":11,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":14,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":15,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":22,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":23,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":26,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 99,
+   "wid": "W066995",
+   "task_head": "Collect Queensland Natural Resource Data. The script collects natural resource d",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 100,
+   "wid": "W067034",
+   "task_head": "Define land cover raster encoding. The script implements a dialog for the Grapha",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 101,
+   "wid": "W067092",
+   "task_head": "Calculate Area Weighted Average. The script calculates area-weighted average of ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":4,\"family\":\"AGGREGATION\",\"repeat\":2}],\"repetition_groups\":[{\"stage_seq\":4,\"family\":\"AGGREGATION\",\"repeat\":2,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 102,
+   "wid": "W067268",
+   "task_head": "Noise level prediction from point source. This script estimates noise levels (dB",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":8,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":12,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":13,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":14,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":18,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":19,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":20,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":24,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":25,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":26,\"family\":\"",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 103,
+   "wid": "W067295",
+   "task_head": "Watershed delineation from point. The script delineates the upstream watershed (",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 104,
+   "wid": "W067313",
+   "task_head": "Simulate earthworks cut and fill. The script modifies a DEM by performing cut an",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":6,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":10,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":12,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":16,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":17,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":18,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":22,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":24,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 105,
+   "wid": "W067404",
+   "task_head": "Calculate continuous raster statistics for distribution points. The script gener",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":11}],\"repetition_groups\":[{\"stage_seq\":3,\"family\":\"AGGREGATION\",\"repeat\":11,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 106,
+   "wid": "W067405",
+   "task_head": "Reduce raster extent by negative buffer. The script trims a raster layer by crea",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 107,
+   "wid": "W067519",
+   "task_head": "Compute slope class per drainage area. The script computes mean slope and slope ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 108,
+   "wid": "W067593",
+   "task_head": "Create shaded relief with aerial perspective. The script generates two hillshade",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":8,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":9,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":10,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":12,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 109,
+   "wid": "W067664",
+   "task_head": "Generate flood hazard maps from FLO-2D. The script converts FLO-2D ASCII output ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 110,
+   "wid": "W067982",
+   "task_head": "Classify dangles by overlapping selected layers. The script identifies dangles (",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":4,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":5,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":6,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":7,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":9,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":10,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":11,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":16,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":17,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":18,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":19,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":21,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":22,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":23,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":27,\"family\":\"VECTOR_LOAD\",\"repeat",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 111,
+   "wid": "W068137",
+   "task_head": "Build GSM coverage plans. The script identifies pivot localities and their satel",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":6,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":7,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":8,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":9,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":10,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":12,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":13,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":14,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":15,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":16,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":17,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":18,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":19,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":20,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":21,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":22,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":24,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":25,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":26,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 112,
+   "wid": "W068184",
+   "task_head": "Calculate flight route metrics. The script calculates flight route metrics (dist",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":2}],\"repetition_groups\":[{\"stage_seq\":3,\"family\":\"AGGREGATION\",\"repeat\":2,\"iteration_hint\":[\"generic_each\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 113,
+   "wid": "W068194",
+   "task_head": "Generate atlas grid cells. The script creates a polygon grid layer for atlas map",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 114,
+   "wid": "W068342",
+   "task_head": "Clear Safe Canopy Points. The script filters a set of points created for drone f",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":3,\"family\":\"MASKING\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 115,
+   "wid": "W068346",
+   "task_head": "Clip DSM to Buffered Plot. The script clips a Digital Surface Model (DSM) raster",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"BAND_SELECT\",\"repeat\":1}],\"repetition_groups\":[]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 116,
+   "wid": "W068359",
+   "task_head": "Generate polygons in empty regions. This QGIS processing algorithm generates pol",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":6,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":9,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":10,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":12,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":15,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":16,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":17,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":18,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":21,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":22,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":24,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 117,
+   "wid": "W068582",
+   "task_head": "Assign Manning's n from CORINE 2018. The script assigns Manning's roughness coef",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"family\":\"COLLECTION_MGMT\",\"repeat\":1},{\"seq\":4,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_groups\":[{\"stage_seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2,\"iteration_hint\":[\"unspecified\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 118,
+   "wid": "W068608",
+   "task_head": "Landsat Collection 2 surface reflectance and temperature conversion. The script ",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":4}],\"repetition_groups\":[{\"stage_seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":4,\"iteration_hint\":[\"unspecified\"]}]}",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  },
+  {
+   "k": 119,
+   "wid": "W068833",
+   "task_head": "Harmonize rasters for suitability analysis. This QGIS processing algorithm align",
+   "pred_text": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":4,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":5,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":6,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":7,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":8,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":9,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":10,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":11,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":12,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":13,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":14,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":15,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":16,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":17,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":18,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":19,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":20,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":21,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":22,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":23,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":24,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":25,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":26,\"family\":\"AGGREGATION\",\"repeat\":",
+   "gen_tokens": 384,
+   "hit_cap": 1
+  }
+ ]
+}
