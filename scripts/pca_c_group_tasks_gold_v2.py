@@ -85,6 +85,8 @@ def main():
     # ---- F2: parameter_availability everywhere ----
     for tid, r in rows.items():
         r["parameter_availability"] = PAV[tid]
+        # C-group rows carry no external reference; evidence = the task's own text
+        r["evidence"] = "task_text (freshly drafted C-group task; gold derived from this text only; no reference chain exists)"
     rec("ALL", "parameter_availability", None,
         "machine field on all 20 rows (values: selectable | selectable_with_declaration | selectable_with_suitability_statement)",
         "round-14 caliber unification",

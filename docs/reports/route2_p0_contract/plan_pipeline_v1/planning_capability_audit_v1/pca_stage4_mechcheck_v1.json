@@ -1,0 +1,79 @@
+{
+ "_meta": {
+  "gate": "Stage-3 closeout + Stage-4 mechanical verification (owner round-15)",
+  "a_gold_version_note": "2bfa440a = 8dfe780e + task_id schema unification (check1 defect fix); content unchanged otherwise",
+  "frozen_shas_verified": {
+   "A": "2bfa440a0bf24b6f",
+   "C": "7e06501c84db0f9e",
+   "PAIR": "48572738236c8a62",
+   "B": "ce224ec3bdb6f6d3"
+  },
+  "semantics_spec": "pca_scoring_semantics_v1.md",
+  "overall": "PASS"
+ },
+ "check1_schema_consistency": {
+  "command": "field-presence + tag-legality + cross-group subset over A/C rows",
+  "pass_condition": "no missing/empty required fields; all constraints tagged; A keys subset of C",
+  "result": "PASS",
+  "failure_samples": [],
+  "n_failures": 0
+ },
+ "check2_constraint_evidence": {
+  "command": "underdetermined-keyword scan of hard failures + literal traceability probe of [EXPLICIT] rows",
+  "pass_condition": "zero underdetermined-keyword hard failures; literal-miss rows routed to judge (not silently passed)",
+  "result": "PASS",
+  "failure_samples": [],
+  "n_failures": 0,
+  "semantic_confirmation_deferred": 2,
+  "deferred_samples": [
+   "A:PCA-A-15071: no literal hit for '[EXPLICIT] RF and SVM classifiers' (semantic confirmation required by judge)",
+   "C:PCA-C-12: no literal hit for '[EXPLICIT] zones = sub-watersheds' (semantic confirmation required by judge)"
+  ],
+  "note": "literal probe is a weak pre-filter; semantic adequacy judged under pca_scoring_semantics_v1.md"
+ },
+ "check3_presentation_separation": {
+  "command": "presentation entries must carry task-stated markers and live in their own field",
+  "pass_condition": "every presentation entry marked task-stated; none inside required_constraints hard set",
+  "result": "PASS",
+  "failure_samples": [],
+  "n_failures": 0
+ },
+ "check4_evidence_and_und": {
+  "command": "frozen semantics doc contains legal evidence_source enum + apply-or-declare; selectable rows carry declaration-aware failure predicates",
+  "pass_condition": "all enum/rules present; every selectable-bearing C row has declaration-aware predicates",
+  "result": "PASS",
+  "failure_samples": [],
+  "n_failures": 0
+ },
+ "check5_pairing_strata": {
+  "command": "status-field consumption + ordinal-profile presence + roster assembly from frozen fields",
+  "pass_condition": "main pairs = P01-P04; every pair has mechanical profile; A strata sum 20; exclusions consumable",
+  "result": "PASS",
+  "failure_samples": [],
+  "n_failures": 0,
+  "main_analysis_roster": {
+   "B_group_main": 18,
+   "B_group_excluded": [
+    "W056058"
+   ],
+   "A_group_main": 20,
+   "A_group_strata": {
+    "KEEP": 8,
+    "KEEP_STRATIFIED": 12
+   },
+   "C_group_main": 20,
+   "main_pairs": [
+    "P01",
+    "P02",
+    "P03",
+    "P04"
+   ],
+   "exploratory_pairs": [
+    "P05",
+    "P06"
+   ]
+  },
+  "note": "eligibility_status/parameter_availability/pool_status are consumed by this roster assembly — the same assembly the evaluation summarizer will run"
+ },
+ "c_group_v2_consistency": "merged into check1/check2 (C rows scanned with same predicates)"
+}

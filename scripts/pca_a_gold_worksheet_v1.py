@@ -226,7 +226,7 @@ def main():
         lid = pr["line_id"]
         g = G[lid]
         rows.append({
-            "line_id": lid, "group": "A", "split": pr["split"],
+            "task_id": f"PCA-A-{lid}", "line_id": lid, "group": "A", "split": pr["split"],
             "task_type": pr["task_type"], "eligibility_status": pr["status"],
             "task_type_note": ("coarse GEE-pool label; may not match the task's actual analytic family"
                                if lid == 41652 else None),
