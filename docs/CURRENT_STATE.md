@@ -218,7 +218,37 @@ Last updated: 2026-10-13
   `R5_V04_REVERSE_CONTROL_REPORT_V1.md`. **Phase 2/3 frozen; awaiting owner: spot-
   check this report (the deviation FP evidence chain) -> three-state adjudication of
   the 32-record packet -> reverse checks + undebugged-task revalidation -> reward
-  admission review.** **Owner round-11: INDEX definition FROZEN = computing a NEW
+  admission review.** **Owner round-12: R5 v0.5.1 NOT admitted as formal
+  training reward; SHADOW EVALUATION approved (Gates A-D, no parameter
+  updates); three-source evidence judged separately (39/317 and 74/80 must
+  NOT be converted into accuracy/omission rates — different statistical
+  units); GRPO-entry risks registered (independent-set false-punish
+  unverified / within-group discrimination value unclear / over-generation
+  inducement). EXECUTED: Gate A DONE — all artifacts committed to Git
+  (commit 7ba729a3, 61 files: reward module v1.2 + r5 v0.5.1 + adjudication
+  chain + shadow contracts, incl. per-candidate independent-set outputs
+  `independent_set_r5_outputs_v051.json`); Gate B blind packet ready
+  (`GATE_B_INDEPENDENT_BLIND_PACKET_V1.md`, 10 tasks x 8 candidates, five-
+  label slot matrices + candidate-level unnecessary_stages field); Gate C/D
+  pre-registration frozen (`GATE_CD_PREREGISTRATION_V1.md`: CF1-CF4
+  counterfactuals with CF3 no-reward-increase >=95% as the anti-over-
+  generation hard gate; Gate D four metrics pre-registered — within-task
+  discrimination >=70%, Kendall tau >=0.6, false-reward <=10%, saturation
+  reported; n<10 subsets marked uncertain). **Awaiting owner: Gate B blind
+  labeling of 80 candidates -> Gate C construction -> Gate D analysis ->
+  shadow verdict (pass -> reward synthesis design; fail -> r5 stays the X4
+  offline instrument). Phase 2/3 frozen; RAFT/DPO/GRPO unrun.** **Gate B EXECUTED + UNBLINDED (234 slot instances over 80
+  candidates)**: TP 128 / **FP 4 (2.74% << 10% pre-registered line)** / FN **0** /
+  TN 88 / unresolved_wrapper 14 (9.6%, separate) / false-requirements 0 — round-12
+  risk #1 (unquantified false-punish) now quantified and LOW. All 4 FPs concentrate
+  in k=25159 COMPOSITE wrapper-caliber divergence (owner credits wrapper+context as
+  visible composite evidence; r5 conservatively requires AGGREGATION) — a single
+  fixable cause, NOT random; task-level deltas <=2 everywhere except 25159 (+10,
+  fully explained by the same divergence); FN=0. Invalid stages (4) and redundancy
+  (empty) recorded separately per owner directive. Shadow gates: A done, B done,
+  C/D next; the wrapper-caliber fix enters the v0.6 ledger PENDING owner approval
+  (no rule changes during shadow evaluation). Report:
+  `R5_GATE_B_UNBLIND_REPORT_V1.md`. **Owner round-11: INDEX definition FROZEN = computing a NEW
   index from bands (product-band reading/scaling != INDEX; 9854 = not_required);
   v0.5 ledger L1/L2/L3 approved; re-run + independent revalidation approved;
   reward admission separately reviewed. EXECUTED v0.5 -> v0.5.1 full chain**:

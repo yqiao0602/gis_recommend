@@ -132,6 +132,23 @@
   报告 `R5_ADJUDICATION_FREEZE_REPORT_V1.md`。**等 owner：①固定 INDEX 定义；②批准
   v0.5 账本；③批准后 v0.5 重跑+反向对照+复验+遗漏率汇总 → 奖励准入评审。Phase 2/3
   冻结，RAFT/DPO/GRPO 不运行。**
+  **Owner 十二轮：R5 v0.5.1 暂不准入正式训练奖励，批准"候选奖励影子评估"
+  （Gate A-D，无参数更新）**；三源证据分别裁定不可互替（39/317 与 74/80 均
+  不可折算为准确率/遗漏率）；GRPO 前三大风险登记（独立集误伤未量化/组内区
+  分价值未明/过度生成诱导）。**执行状态**：**Gate A 完成——全部工件入 Git
+  （commit 7ba729a3，61 文件，含独立集逐候选输出
+  `independent_set_r5_outputs_v051.json`）**；Gate B 盲评包就绪
+  （`GATE_B_INDEPENDENT_BLIND_PACKET_V1.md`，五标签槽位矩阵 + 候选级
+  unnecessary_stages 字段）；**Gate C/D 预注册冻结**
+  （`GATE_CD_PREREGISTRATION_V1.md`：CF3 冗余非上升≥95% 硬门槛；Gate D 四
+  指标预注册，n<10 标 uncertain）。**等 owner：Gate B 盲评 80 候选 → Gate C
+  构造 → Gate D 分析 → 影子结论（过→奖励合成设计；不过→R5 保持 X4 离线测量
+  工具）。Phase 2/3 冻结；RAFT/DPO/GRPO 不运行。** **Gate B 已执行并解盲（234 槽位实例）**：TP 128 /
+  **FP 4（2.74%≪10% 预注册红线）**/ FN **0** / TN 88 / unresolved_wrapper 14（单列）/
+  假需求 0——十二轮风险#1 已量化且低位。4 个误伤全部集中于 k=25159 COMPOSITE 的
+  wrapper 口径分歧（单一可修原因，非随机）；任务级偏差除 25159 外≤2 且全由 B* 解释；
+  FN=0。无效阶段与冗余分记。**影子门位：A✅ B✅ C/D 待执行**；wrapper 口径修正入
+  v0.6 账本待批（影子期间不改规则）。报告 `R5_GATE_B_UNBLIND_REPORT_V1.md`。
   **Owner 十一轮：INDEX 定义冻结（计算新指数；产品波段≠INDEX；9854=not_required）；
   v0.5 账本获批；重跑+独立复验批准。已执行 v0.5→v0.5.1 全链**：L1/L2/L3 落地并双次
   反向对照修复回归（9854 STATS 误删恢复 + 6878 derived-from 补检，均与 owner 裁定对
