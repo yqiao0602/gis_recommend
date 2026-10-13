@@ -29,6 +29,21 @@ Last updated: 2026-10-13
   back-projection -> A construction -> C drafting -> pairing -> dedup
   ledger -> owner per-task review. **No formal 180-generation until the
   owner approves the gold.**
+- **Owner rulings 2026-10-13 (post-handoff, RL/Kalman question)**: RL and
+  Kalman filtering NOT started (none of the five owner-supplied papers
+  covers Kalman; Zenodo 23146393 = SIGMAI QGIS MCP plugin, not a training
+  paper; reward untrusted until the multisolution set + trusted dev subset
+  land). Approved: (a) workflow-affinity strategy probes as a POST-PCA
+  additional experiment on the same 60 tasks — PCA v1 untouched, affinity
+  clusters never enter runtime; (b) multisolution diagnostic set proceeds
+  per design v0 with all three open questions ruled (D1 natural-corpus
+  mining + manual supplement, D2/D3 auto-retrieval + manual confirm,
+  floors D1>=10 / D2,D3>=5 pairs); (c) GEE-line five-step 2 (B2-P1 repair)
+  and 4 (trusted dev subset freeze) run in parallel, audits/repairs only.
+  Authority: `planning_capability_audit_v1/OWNER_RULINGS_20261013_V1.md`;
+  B-group de-grounding rules drafted at v0
+  (`B_GROUP_DEGROUNDING_RULES_V0.md`) — owner approval of the rules gates
+  B-group gold writing.
 
 ## (0) Planner representation-pivot line: P1/P2 closed; P0 = current best (2026-10-13)
 
@@ -49,10 +64,22 @@ Last updated: 2026-10-13
   supervision too thin (only the 208 rebuilt rows teach window folds).
   Authority: `plan_pipeline_v1/planner_design/p2_uniform_gate_v1/`
   (gate report + three-way eval), commits 9195219b / 1f30d625.
-- **Next step pending owner ruling**: (A) P3 window-folding completion
-  (literal k>=3 repetition in old gold treated as declaration) / (B) accept
-  P0, close representation pivot, move to Phase-2 ablations or downstream
-  grounding / (C) await parallel-line budget-arm (768 vs 2048) results.
+- **Rulings landed (owner, 2026-10-12/13)**: P3 FROZEN pending error-analysis
+  gate; budget NOT the bottleneck (768->2048 zero change, 0/36 improved);
+  error taxonomy on 1,564 parsed dev rows: 15.9% exact -> bottleneck =
+  Layer-1 planning. E2E mainline Steps 1-3 complete on dev-120 (QGIS
+  domain, commits 608d40f3/da2a2333/0c399113): P0 cross-domain blueprints
+  frozen (parse .65, zero perfect, family P .163/R .140), Oracle grounding
+  best opF1 .2897, true-E2E opF1 .0332 -> BOTH decision-tree branches fire
+  (L1 content errors AND L2 grounding independently deficient).
+- **Active mainline (owner, 2026-10-13): Stage-1 capability audit BEFORE
+  QGIS-operator learning; training not on the table — authority and live
+  state in section (0a) above.** Ruling record + acceptance matrix
+  (dependency eval = option (a) three layers; external set = supplementary
+  axis, not in PCA v1; three control points: threshold isolation,
+  trusted-dev vs acceptance-set division, three-outcome decision tree):
+  `planning_capability_audit_v1/STAGE1_GATE_OWNER_RULING_V1.md` /
+  `STAGE1_GATE_ACCEPTANCE_MATRIX_V1.md`.
   **RESOLVED 2026-10-13: owner ruled PCA (section 0a above) — the audit
   precedes any further training or grounding work.**
 - **Eval instrument note**: dev-1852 evals now use the batched three-arm

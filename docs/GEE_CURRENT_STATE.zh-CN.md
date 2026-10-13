@@ -1,6 +1,6 @@
 # GEE 当前状态
 
-最后更新：2026-09-02
+最后更新：2026-10-09
 
 ## 职责与目标
 
@@ -10,7 +10,40 @@
 训练行必须覆盖完整的 output-relevant workflow DAG。历史 `mean -> clip`、11,397 行和局部链包
 只保留为规则校准证据，不代表当前生产产量。
 
-## 最新已验证状态
+## 最新已验证状态（2026-10-12，WS1/WS2 裁定收口 + B2-P1 重复组审计）
+
+- **WS1 93/93 + WS2 181/181 语义裁定全部收口**（末项 k=370 受托裁定、owner 确认：结构解码 38 年×3 传感器精确对齐任务文本，"结构异常"撤销；维持 suspicious——invariant fold 缺陷、年×传感器循环未入 repetition_groups、源级不可验证）。k=370/994 同任务孪生，至多取一入可信子集。裁定冻结：`planner_design/WS1_WS2_ADJUDICATION_FREEZE_V1.json`（六文件 SHA）。
+- **B2-P1 重复组审计 v2（dev 1,852 行，只读）**：rg.repeat 与 stage.repeat 2,645/2,645 完全一致——内部一致性零缺陷；缺陷轴=折叠语义正确性：condition_count_suspect 1,411（过滤条件数≠执行次数，owner A 裁定类）/ unverifiable 986 / task_loop_supported 243 / invariant_fold_suspect 5 / 长周期字面展开无 rg 覆盖 99 行。受影响 885 行（47.8%）。报告 `REP_GROUP_CONSISTENCY_AUDIT_DEV_V2.json`。
+- **重复语义生成链已追平（2026-10-12）**：`blueprint_v2_preflight_v1.py` = 语义链相邻同族 RLE 机械计数 → stage.repeat；rg = count>1 的游程；iteration_hint = 任务文本关键词（整行共享，无逐阶段证据）。**无执行语义、无交错模式检测、无循环不变量处理**。三机制定位：M1 计数无误（k=370 上游链 sid=60463 链尾字面 38×VECTOR_LOAD，RLE 忠实）但不变量归属在上游链生成；M2 条件计数混淆源于链 token 粒度（1,411 分层抽样材料 `COND_COUNT_ADJUDICATION_SAMPLE_V1.json` 已出，28 样本×15 层，含链上下文）；M3 交错循环无 rg 因生成器无该检测（99 行）。repeat 结构：19,379×repeat=1 + 2,645×repeat>1（和 8,625）= 28,004 展开操作。修复 = 上游策略问题在蓝图层的表示政策裁定，非字段修复。
+- **owner 五步指令**：①裁定冻结✓ → ②B2-P1 修复（区分源级真实性与表示完整性）→ ③前后差异报告 → ④可信 dev 子集冻结+重算 BAND_SELECT P/R/F1 → ⑤之后才议训练。未授权：全量重训、P1 格式改造、RL、自动压缩不可核验循环。
+  **裁定更新（2026-10-13，OWNER_RULINGS_20261013_V1.md 裁定 C）**：②与④批准**并行启动**。仅授权相应审计与修复工作——不授权新训练、修改冻结数据、或对未核实金标做正式生成。
+- 边界：收口 ≠ 90 组绑定错误已全证 ≠ 可信 dev 子集已冻结；suspicious 不因结构解释成功自动升级。
+
+## 先前状态（2026-10-10，Route-2 GEE 语义规划器试点）
+
+- **A1–A4 检测器评估与校准已关闭（2026-10-10）**：六脚本试点 → 25 脚本小规模验证（账本冻结 SHA 05af094d）→ 单人探索性标注 2517 单位 → 开封对照 → A3 修复轮（59.77%→92.02%，零回归，v1.1 冻结）→ A2 复审关闭（146 项分歧全量裁定，协议 v1.0 冻结，annotation_results_v2 SHA d3fca732）。复核后指标：A1 候选集 100%；A2 状态 89.64%/计数 92.16%（70 项状态分歧归三错误族 F-A/F-B/F-C，按裁定不再修复，结论报告即未来修复规格）；A3 严格 92.02%；A4 insufficient_sample。全部为单人探索性口径，不称双盲。
+  权威文档：`expansion_validation_prep_v1/`（EXECUTION_LOG_V1、EVALUATION_PROTOCOL_V1_0_FROZEN、A2_REVIEW_CONCLUSION_V1、a3_v1_1_freeze/、a2_review/）。
+- **冻结数据集抽取缺陷影响分析完成（2026-10-10）**：F-A/F-B 零污染（生产抽取器显式 presentation 前缀分类；20k 行扫描词表恰 30 类、canonical 链 Map./ui./print=0）；F-C=设计属性非缺陷（未消费变量 10.2%，0-37.5%）。重构决策框架三选项已列，推荐不重构先跑主线实验；备选 v1.1 检测器 dead-branch 过滤试点。报告：`docs/reports/gee_frozen_data_impact_v1/`。**待 owner 裁定 (a)/(b)/(c)**。
+- **回到毕设主线**：GEE 工作流监督 → 工作流推理能力验证；QGIS 算子 grounding → processes+links 工作流图生成。未授权：重抽、全库推广、gold 认定、训练。
+- 六脚本重构试点完成（RECONSTRUCTION_PILOT_METHOD_V1 冻结）：37/37 审计单元恢复、
+  0 实现细节固化、冲突两侧保存；269131 重复边已验证（40 原始记录 → 38 逻辑边）。
+- EXPANSION_DESIGN_V1 已按 owner 裁定冻结（A1 仅候选不自动定性、A3 未知 API 不默认
+  analysis 且角色可共存、B 增加独立随机层、C1/C2 可审计分母；5% 固化率与 90% 一致率
+  仅为候选阈值）。
+- 工作包 A 已实现并**仅在六试点脚本回测**：A1–A4 全部通过
+  （`wp_a_backtest_v1/WP_A_BACKTEST_REPORT_v1.md`；检测器
+  `scripts/run_wp_a_detector_backtest_v1.py`，测试 13/13）。回测发现冻结试点记录三处
+  ground-truth 偏差并登记（36595 elevation/lulc 实为源码内声明、soil/s2 为赋值式隐式
+  全局、CHIRPS/DEM/modis 为遗漏的真实外部预绑定；269131 Fire_Sus 后继使用 AST 核实
+  11 非叙述的 12；302840 首语句截断、未声明候选 11 个）——只登记，不改冻结产物。
+  owner 裁定：以源码证据为准，检测器不迁就旧记录。
+- 工作包 B 抽样设计已冻结（`EXPANSION_WP_B_SAMPLING_V1.md`；脚本
+  `scripts/build_expansion_validation_sample_v1.py`，seed 20261009，设计清单 SHA
+  7b0769c7...，测试 10/10）；工作包 C 指标分母已冻结（`EXPANSION_WP_C_METRICS_V1.md`）。
+  执行前审查包已交付：`PRE_EXECUTION_REVIEW_PACKAGE_V1.md`。
+- **小规模验证已完成开封对照（2026-10-10）**：owner 裁定单人标注终轮（无第二名标注者，保留非双盲限制）→ 封存开封（17:21:40，结论 SHA 一致性验证通过）→ 全量对照（`expansion_metrics_v1.json`，795 条分歧台账；报告 `EXPANSION_METRICS_REPORT_V1.md`）。结果：A1 候选集 100%（45=45）；A2 状态 89.6%（分歧主因=标注者跨样本口径漂移 53 项）；A3 59.8%（721 分歧全部机械化归因：82% 为单一可修缺陷——嵌套调用链 path=None，其余 ui/console 兜底、A1 根级联、人工行级粒度；零真实边界错误）；A4 insufficient_sample；C1 不可计算（无 duty 裁定）；C3=0。**S3 判读**：A3<80% 但分歧全可归因，按冻结口径本报告即复审材料，**检测器修复轮待 owner 裁定**。标注者提交：2517/2517 单位（SHA 5dbb4308…）。
+- **A3 v1.1 已冻结（2026-10-10）**：工程验收通过；主指标 92.02% 严格口径（96.89%/100% 仅为敏感性分析）；不启动第三轮修复；冻结位 `a3_v1_1_freeze/`（检测器 v1.1、1796 项逐项预测、测试记录、三档指标、143 残余清单）。四步计划：①冻结完成；②**A2 复审进行中**——逐项裁定表已生成（`a2_review/A2_ADJUDICATION_TABLE_V1.jsonl`，146 项分歧：54 纯状态/76 纯计数/16 双重；四类归因；decision 列待裁定，旧标签未动）；③统一评估协议草案已出（`EVALUATION_PROTOCOL_DRAFT_V0.md`，4 个待审定点）；④独立验证留待后续（仅当检测器性能作为论文核心结论时）。阶段性判断：A1 暂时通过（missing_definition 无正例，零漏检不可外推）、A2 复审中、A3 探索性对照通过（行级/调用级分列）、A4 insufficient_sample。单人探索性，不称双盲。
+## 已归档：batch8/batch9 重放线（2026-10-09 归档；以下为历史证据）
 
 - Batch8 v8.8 band-alias 修复已在受控快照
   `code_snapshot_v8_8_band_alias_rulefix_authority` 上完成重放；新增规则只解析

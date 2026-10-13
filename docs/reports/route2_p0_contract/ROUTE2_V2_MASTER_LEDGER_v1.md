@@ -275,3 +275,34 @@ QGIS 线数字不可互比，且两任务是同一系统的两段。
 - P0 在 mdzhang A10 完成：resume step 1041 → step 3123（增训约 1 epoch），66,678 exposures，10,912,040 target tokens，TaskTooLong=0，context truncation=0，target truncation=1,132；adapter `/home/qy/stage1_run_planner_v2_fmt/stage1_adapter`（16MB），ledger 已落盘。
 - **P0 dev 评测尚未运行**：没有 gate/Planner eval output；下一步是按统一 Planner-v2 6-metric 协议评估 P0（parse / bag-F1 inclusive+exclusive / ordered LCS / family precision / over-under emission / disaster rates），再做 QGIS dev-120 grounding 比较。
 - P0 训练日志末尾 loss 约 1.0–1.2；loss 不作为 Planner 主结论，必须等统一评估。
+
+## 2026-10-11 P0-B2 三臂解码对照收口（判定树落点：P1 终止专项）
+
+- 配置：同 P0 adapter / 1,852 dev / greedy / max_new_tokens=768，单变量=解码干预。P0-A 诊断（84.23% parse，292 失败全部=384 触顶）→ P0-B（768 归档，cap 仍 15.3%）→ P0-B2 三臂。
+- 结果：A greedy（parse 84.7%/LCS-excl 0.6864）｜B rep-pen 1.15（parse **99.95%**、cap=1，但 under-emit 6.64→**10.36** 恶化、结构全面下滑——不判成功）｜C loop-detect（**结构三指标全场最佳** excl bag 0.7379/LCS 0.6960 超 v1 参考线、under-emit **5.37** 优于 v1，但 loop-stop 不产合法 JSON、parse 78.3%）。
+- 判定树落点：无单臂同时 parse≥95%+内容稳定 → **指向 P1 终止专项 SFT**。
+- **⚠️ P1 前置警示（V2a 负结果判例）**：V2a-P1 EOS-SFT（λ=20）预注册失败、质量净负——与 B 臂同失败模式（终止强化⇒发射受压）；V2a-P2 约束解码+修复为唯一生成端正例。P1-SFT 先验高风险；P1-DEC（C 臂结构停止+独立修复）有正例形态。两设计的共同验收：parse≥95% + excl 结构 ≥C 臂 + under-emit ≤6.64。**P1 立项待 owner 裁定，本 ledger 不预批。**
+- 详细：`plan_pipeline_v1/planner_design/P0_B2_RESULTS_AND_CONCLUSION_v1.md`；A 臂评测脚本 `scripts/eval_p0b2_arm_v1.py`（LCS 断言内置）。
+
+## 2026-10-11 能力定位实验启动——阶段 1 完成（owner 研究方向重构）
+
+- owner 裁定：停止局部指标循环，先做能力定位（四能力×六失败模式拆解→首要瓶颈→只对瓶颈立项）。P1 降级为候选，服从定位结果。
+- **阶段 1（CPU）完成**：P0 dev 1,852 行六类失败拆解（`CAPLOC_PHASE1_RESULTS_V1.md`，设计 `CAPABILITY_LOCALIZATION_DESIGN_V0.md`，数据 `CAPLOC_PHASE1_P0_FAILURE_DECOMPOSITION_V1.json`）。
+- **核心发现**：顺序错误仅 1.0%（组合/排序已解决）；**瓶颈=任务条件化阶段选择**（X4 缺失 47.6% + X5 捏造 42.0%，漏的全是 BAND_SELECT/TEMPORAL_FILTER 等胶水家族）+ **重复定量失控**（X6 37.9% + X3 16.9%）；格式截断仅 15.3%——**P1 格式专项只覆盖第三优先级，即使全成功主指标不会质变，P1 应降级**。
+- 阶段 2 待定：①多解判别诊断集（区分 gold 方差 vs 真失败，CPU 可做，待 owner 认可抽样方案）；②QGIS 侧同构拆解（C0 预测在笔记本 RENTED_SERVER_PULL，需同步）；③GEE 胶水阶段 gold 一致性审计（X4 归因分叉点）。
+
+## 2026-10-11 实验 A 完成：阶段选择诊断（能力定位阶段 2 前置）
+
+- 七家族 presence 混淆（P0 dev 1,852，Arm A 768，parse 成功行）：**presence recall 随 gold 流行度单调上升，FP 率同样单调上升**。RASTER_LOAD recall 0.995/缺席误选 0.55；TEMPORAL 0.896/0.41；ATTRIBUTE 0.905/0.43；SPATIAL 0.797/0.37；AGGREGATION 0.870/0.27；**BAND_SELECT 0.472/0.094；ITERATIVE_APPLY 0.362/0.086**。
+- 结论：**非"条件性选错"，而是"按边际频率选，不按任务选"**——高频家族过选、低频家族漏选，两个方向并存且 recall/FP 均随流行度单调。owner 假设 3（数据分布→频率先验）获直接机制证据，假设 1 兼容。
+- BAND_SELECT 漏选随 repeat 数（0.489→0.689）与 gold 长度（0.44→0.72）上升；任务桶调制非主导。
+- 修复方向证据：presence 辅助监督 / 频率去偏 / 低频家族 gold 收录核查（衔接实验 C）。
+- 报告：`EXP_A_STAGE_SELECTION_RESULTS_V1.md`；数据 `EXP_A_STAGE_SELECTION_DIAGNOSIS_V1.json`；脚本 `scripts/exp_a_stage_selection_diagnosis_v1.py`。实验 B（计数级）与 C（多解校准）待 owner 排期。
+
+## 2026-10-11 能力定位阶段 1 完成 + 评价协议修订草案 + P0-B2 评测交叉验证收口
+
+- **能力定位阶段 1（CPU）**：P0 dev 1,852 行六类失败拆解——顺序错误仅 1.0%（组合已解决）；瓶颈=任务条件化阶段选择（X4 47.6%/X5 42.0%，漏胶水家族）+重复定量（X6 37.9%）；格式仅 15.3%（P1 降级）。实验 A 七家族诊断：**按边际频率选、不按任务选**（高频过选/低频漏选，recall/FP 均随流行度变化）；实验 B 频率基线对照：**全部家族 recall>prevalence 且 FP<prevalence——强频率先验否定，模型确实条件化于任务但精度不足（假设 1+3 混合）**；实验 C 首遍：BAND_SELECT FN 77% isolated（gold 一致性存疑）。
+- **WS1 93/93 + WS2 94/181 人工裁定完成**；新风险类型登记：**表示粒度不一致**（k=956×k=958 配对）；k=956 模型预测语义核对：7 阶段未表达年度划分/逐年求和/最终平均——压缩≠语义等价。
+- **评价体系三层拆分登记**：操作语义/结构正确性/表示一致性；count-exact 与阶段数降级为结构相似度指标；表示归一化评价须保留年度过滤条件。草案：`EVALUATION_PROTOCOL_V1_1_DRAFT.md`；多解判别集设计：`MULTISOLUTION_DIAGNOSTIC_SET_DESIGN_V0.md`（D1 算子链多解/D2 粒度等价/D3 粒度不等价，种子=k956×k958）。
+- **P0-B2 评测收口（双实现交叉验证）**：GPU 侧 three_arm_report 与本地 eval_p0b2_arm_v1.py 数值完全一致（B parse 99.95%/bag-excl 0.6298/LCS 0.5942；C parse 78.29%/bag-excl 0.7379/LCS 0.6960；**C loop_stops=402**——结构停止触发机制解释 parse 下降）。判定树落点维持：无单臂同时 parse≥95%+内容稳定 → 指向 P1，但 P1 服从能力定位排序（暂停，候选保留）。
+- 待 owner：①协议 v1.1 审定；②多解判别集三问（D1 构造方式/D2D3 检索自动化/规模下限）；③阶段 2 排期（多解集构建+37 项蓝图核验+QGIS 侧拆解）。

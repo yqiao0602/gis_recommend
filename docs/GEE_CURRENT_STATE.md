@@ -1,6 +1,6 @@
 # GEE Current State
 
-Last updated: 2026-09-02
+Last updated: 2026-10-09
 
 ## Ownership And Goal
 
@@ -12,7 +12,131 @@ Training rows represent complete output-relevant workflow DAGs. Historical
 `mean -> clip`, 11,397-row, and local-fragment packages are calibration evidence, not
 current production yield.
 
-## Latest Verified State
+## Latest Verified State (2026-10-12, WS1/WS2 adjudication closure + B2-P1 repetition audit)
+
+- **WS1 93/93 + WS2 181/181 semantic adjudications CLOSED** (final item k=370
+  ruled by model delegation, owner-confirmed: structure decodes to 38 years x
+  3 sensors x 19 stages + 1 = 723, exactly matching the task text — the
+  "structural anomaly" hypothesis is withdrawn; stays suspicious due to
+  invariant-fold defect, year x sensor loops absent from repetition_groups,
+  and unverifiable source authenticity). k=370/994 are same-task twins; at
+  most one may enter the trusted subset. Freeze:
+  `planner_design/WS1_WS2_ADJUDICATION_FREEZE_V1.json` (six-file SHAs).
+- **B2-P1 repetition-group audit v2 (dev 1,852 rows, read-only)**:
+  rg.repeat vs stage.repeat agree 2,645/2,645 — zero internal inconsistency;
+  the defect axis is fold semantics: condition_count_suspect 1,411 (filter
+  condition counts, not execution counts — owner A-ruling class) /
+  unverifiable 986 / task_loop_supported 243 / invariant_fold_suspect 5 /
+  long periodic unrolls without rg coverage 99 rows. 885 rows (47.8%)
+  affected. Report: `REP_GROUP_CONSISTENCY_AUDIT_DEV_V2.json`.
+- **Repetition-semantics generation chain fully traced (2026-10-12)**:
+  `blueprint_v2_preflight_v1.py` = mechanical RLE over adjacent identical
+  semantic-chain tokens -> stage.repeat; rg = runs with count>1;
+  iteration_hint = task-text keywords (shared per row, no per-stage
+  evidence). No execution semantics, no interleaved-pattern detection, no
+  loop-invariant handling anywhere. Mechanism verdicts: M1 counts are
+  faithful (k=370 upstream chain sid=60463 literally ends with 38x
+  VECTOR_LOAD) but invariant attribution belongs to upstream chain
+  generation; M2 condition-count confusion originates at chain token
+  granularity (1,411 stratified sample material ready:
+  `COND_COUNT_ADJUDICATION_SAMPLE_V1.json`, 28 samples x 15 strata with
+  chain context); M3 interleaved loops uncovered because the generator has
+  no such detection (99 rows). Repeat structure: 19,379 x repeat=1 + 2,645 x
+  repeat>1 (sum 8,625) = 28,004 expanded ops. Repair = representation-policy
+  adjudication at the blueprint layer over an upstream strategy question,
+  not field fixing.
+- **Owner five-step directive**: (1) adjudication freeze done -> (2) B2-P1
+  repair (keep source-authenticity and representation-completeness checks
+  separate) -> (3) before/after diff report -> (4) trusted dev subset freeze
+  + recompute BAND_SELECT P/R/F1 -> (5) only then discuss training. Not
+  authorized: full retrain, P1 format overhaul, RL, auto-compressing
+  unverified loops.
+  **Ruling update (2026-10-13, OWNER_RULINGS_20261013_V1.md ruling C)**:
+  steps (2) and (4) approved to run IN PARALLEL. This authorizes the
+  audits/repairs only — no new training, no frozen-data modification, no
+  formal generation against unverified gold.
+- Boundary: closure does NOT mean the 90 suspected binding-error groups are
+  all proven, nor that the trusted dev subset is frozen; suspicious items do
+  not auto-upgrade.
+
+## Prior State (2026-10-10, Route-2 GEE semantic planner pilot)
+
+- **A1-A4 detector evaluation & calibration CLOSED (2026-10-10)**: six-script
+  pilot -> 25-script validation (ledger SHA 05af094d) -> single-annotator
+  exploratory labeling (2517 units) -> unsealed comparison -> A3 fix round
+  (59.77%->92.02%, zero regression, v1.1 frozen) -> A2 review closed (146
+  adjudications, protocol v1.0 frozen, annotation_results_v2 SHA d3fca732).
+  Post-review metrics: A1 candidate-set 100%; A2 status 89.64% / count
+  92.16% (70 status divergences in three named families F-A/F-B/F-C, no-fix
+  per owner; conclusion report is the future fix spec); A3 strict 92.02%;
+  A4 insufficient_sample. Single-annotator exploratory, not dual-blind.
+  Authority: `expansion_validation_prep_v1/` (EXECUTION_LOG_V1,
+  EVALUATION_PROTOCOL_V1_0_FROZEN, A2_REVIEW_CONCLUSION_V1, a3_v1_1_freeze/,
+  a2_review/).
+- **Frozen-dataset extraction-defect impact analysis DONE (2026-10-10)**:
+  F-A/F-B zero pollution (production extractor has explicit presentation
+  prefix classification; 20k-row scan: semantic vocab = exactly 30 classes,
+  canonical chain Map./ui./print counts all 0); F-C is a design property, not
+  a detector defect (unconsumed-variable share 10.2%, 0-37.5%). Rebuild
+  decision framework: (a) no rebuild, run mainline experiments first
+  [recommended]; (b) 25-script pilot re-extraction with v1.1-detector
+  dead-branch filter; (c) full re-extraction. Report:
+  `docs/reports/gee_frozen_data_impact_v1/`. **Awaiting owner ruling.**
+- **Back to mainline**: GEE workflow supervision -> workflow-reasoning
+  capability validation; QGIS operator grounding -> processes+links graph
+  generation. Not authorized: resampling, full-corpus promotion, gold
+  designation, training.
+
+- Six-script reconstruction pilot COMPLETE (RECONSTRUCTION_PILOT_METHOD_V1 frozen):
+  37/37 audit-unit recovery, 0 implementation-detail fixation, conflicts preserved
+  both-sides, 269131 duplicate edges verified (40 raw records -> 38 logical).
+- EXPANSION_DESIGN_V1 frozen per owner ruling 2026-10-09 (A1 candidate-only rule,
+  A3 unknown-never-analysis + role coexistence, WP-B adds detector-independent
+  random stratum, C1/C2 auditable denominators; 5% fixation and 90% agreement are
+  candidate thresholds only).
+- Work Package A implemented and back-tested on the six pilot scripts ONLY —
+  A1-A4 all PASS (`wp_a_backtest_v1/WP_A_BACKTEST_REPORT_v1.md`; detectors
+  `scripts/run_wp_a_detector_backtest_v1.py`, tests 13/13). Back-test surfaced
+  three ground-truth corrections in the frozen pilot records (36595
+  elevation/lulc actually declared in-source, soil/s2 assignment-globals,
+  CHIRPS/DEM/modis missed prebindings; 269131 Fire_Sus uses AST-verified 11 not
+  12; 302840 first statement truncated, 11 undeclared candidates) — recorded,
+  frozen artifacts untouched. Owner ruling: source evidence wins over old
+  records; detectors are never forced to match them.
+- WP-B sampling design FROZEN (`EXPANSION_WP_B_SAMPLING_V1.md`; script
+  `scripts/build_expansion_validation_sample_v1.py`, seed 20261009, design
+  manifest SHA 7b0769c7..., tests 10/10) and WP-C metric denominators FROZEN
+  (`EXPANSION_WP_C_METRICS_V1.md`). Pre-execution review package delivered:
+  `PRE_EXECUTION_REVIEW_PACKAGE_V1.md`.
+- **Small-scale validation UNSEALED AND COMPARED (2026-10-10)**: owner ruled
+  single-annotator final round (no second annotator; dual-blind NOT claimed) ->
+  seal opened 17:21:40 (conclusion SHA verified unchanged) -> full comparison
+  (`expansion_metrics_v1.json`, 795-entry divergence ledger; report
+  `EXPANSION_METRICS_REPORT_V1.md`). Results: A1 candidate-set 100% (45=45);
+  A2 status 89.6% (divergences mainly 33 annotator cross-sample drift items);
+  A3 59.8% (ALL 721 divergences mechanically attributed: 82% one fixable
+  defect — nested call chain path=None — plus ui/console namespace fallback,
+  A1-root cascade, and line-ruling granularity; zero genuine boundary errors);
+  A4 insufficient_sample; C1 not computable (no duty adjudication); C3=0.
+  **S3 reading**: A3 <80% but every divergence attributed — this report IS the
+  review material; detector fix round awaits owner ruling. Annotator-1
+  submission: 2517/2517 units (SHA 5dbb4308...).
+- **A3 v1.1 FROZEN (2026-10-10)**: engineering acceptance passed; primary
+  metric 92.02% strict (96.89%/100% are sensitivity analyses only); no third
+  fix round; freeze at `a3_v1_1_freeze/` (detector v1.1, 1796 per-item
+  predictions, test records, three-tier metrics, 143-residual list).
+  Four-step plan: (1) freeze done; (2) A2 review IN PROGRESS — adjudication
+  table generated (`a2_review/A2_ADJUDICATION_TABLE_V1.jsonl`, 146 divergent
+  units: 54 status / 76 count / 16 both; 4 cause categories; decision column
+  open, old labels untouched); (3) unified evaluation protocol drafted
+  (`EVALUATION_PROTOCOL_DRAFT_V0.md`, 4 points pending owner); (4) independent
+  verification deferred (needed only if detector performance becomes a paper
+  claim). Stage verdicts: A1 provisional pass (no missing_definition positive
+  examples; zero-miss not generalizable), A2 in review, A3 exploratory pass
+  (line-level vs call-level reported separately), A4 insufficient_sample.
+  Single-annotator exploratory, not dual-blind.
+
+## Superseded: batch8/batch9 replay line (archived 2026-10-09; historical evidence below)
 
 - Batch8 v8.8 band-alias rulefix was replayed from a controlled snapshot
   `code_snapshot_v8_8_band_alias_rulefix_authority`; the new rule resolves proven
