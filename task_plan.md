@@ -1,8 +1,19 @@
 # 任务计划：QGIS 工作流推荐系统 — 评测体系 + 矢量修复
 
-## 当前活跃状态（2026-09-27，Route-2 v2 主线）
+## 当前活跃状态（2026-10-10，双主线）
 
-- **阻塞：无可用 GPU**。计算服务器 mdzhang (10.191.2.38) 已于 2026-09-27 关机（owner 方案 B：先保全、保全完立即关机）。延续性资产已双端 SHA 校验备份至仓库旁 `../server_backup_mdzhang_20260927/`（248 文件全一致，以 `BACKUP_README.md` 为准）。
+**GEE 语义规划器主线（Route-2）**：**A2 复审已关闭（2026-10-10）**——146 项分歧全量裁定入表（V1_4），协议 v1.0 冻结，annotation_results_v2（50 单位修订，v2 SHA d3fca732/v1 归档）。复核后指标（单人探索性）：状态 89.64%（复审带，70 项分歧全归因三错误族 F-A/F-B/F-C）、计数 92.16%（达标）。A1 暂时通过 / A3 v1.1 冻结 92.02% / A4 insufficient_sample。三错误族按 owner 裁定不再修复，结论报告即未来修复规格。检测器评估与校准作为数据质量基础设施归档，**回到毕设主线**（GEE 工作流监督→工作流推理；QGIS grounding→processes+links）。未授权：重抽、全库推广、gold、训练。
+
+**主线真实前沿（2026-10-11 十四次更新；B1 四组全部审计完成——全部不通过）**：
+- **B1 四组共享蓝图均不通过**：233b0472（ATTRIBUTE×2 缺依据）/ abeef159（AGGREGATION 在 RASTER_LOAD 前）/ f748c3df（ITERATIVE_APPLY 兜底）/ c74fe277（AGGREGATION 语义过载）。96 行受影响；
+- **跨组系统性结论**：折叠规则保留粗粒度骨架但丢失语义区分操作——非个别错误而是设计缺陷。修复方向已明确（5 项）；
+- WS1 93/93 + WS2 **181/181 语义裁定全部收口**（2026-10-12：末项 k=370 受托裁定——结构解码 38 年×3 传感器×6 阶段=723 精确对齐任务文本，维持 suspicious：rg 标注缺陷（VECTOR_LOAD repeat=38 与字面矛盾）+ 年×传感器循环未入 repetition_groups（表示粒度不一致）+ 源级不可验证；k=370/994 同任务孪生对至多取一入可信子集）。多解判别集设计 v0 + 协议 v1.1 草案已出；
+- **当前主线（owner 五步指令，2026-10-12；机制已定位）**：①WS1/WS2 裁定冻结（**已完成**）→ ②B2-P1 修复（P0 证据冻结✓ C6_EVIDENCE_FREEZE_V1；P1 对齐修复✓ 零回归 788→3 partial；P2 政策草案待确认；P3 材料就绪待 owner 逐条裁定）——**生成链已追平**：`blueprint_v2_preflight_v1.py` = 语义链 RLE 机械计数 + 任务关键词 hint 装饰；无执行语义/无交错模式检测/无循环不变量处理——三机制定位：M1 计数无误但不变量归属在上游链（k=370 sid=60463 链尾字面 38×VECTOR_LOAD），M2 条件计数混淆在链 token 粒度（1,411 抽样材料已出），M3 交错循环无 rg 覆盖因生成器无该检测）→ ③修复前后差异报告（repeat=1/repeat>1 计数与和、语义核验后修正总量、99 行补 rg 前后覆盖率）→ ④可信 dev 子集冻结+重算 BAND_SELECT P/R/F1 → ⑤评测基线已冻结（EVAL_BASELINE_FREEZE_V1：全集 0.6165 / trusted-subset 条件基线 0.5589）；错误分解完成（瓶颈=阶段选择 52.9% + 长链终止控制 100%截断型 parse fail + 重复量化低发 2:1；非顺序/非格式）→ owner A/B/C 裁定（2026-10-12）：A 优先（协议+A1 样本已冻结 `A_EXPERIMENT_PROTOCOL_V1_FROZEN.md`/`A1_SAMPLE_131.json`，臂=2048 tokens 单变量；**执行前核验全部通过（样本 v1.1 稳定 ID+终止四分法+统计口径预注册）——等待 GPU 与工件 SHA 对账，恢复后按协议 v1+v1.1 直接执行**）；B 仅设计准入（A 后）；C 暂停。后续全弧已执行：A1 FAIL（预算否定，失控=结构性不终止）→ A′ 围堵诊断（有效非修复）→ A″ FAIL（EOS 加权双负点，结构闭合损坏机制，adapter 已标 FAILED/DO NOT USE）→ **R1 受控部署生效**（`R1_DEPLOY_CONFIG_V1`：开关式默认 P0_RAW、终止四分、比率锚定监控；127/131 预算内终止 vs pre 60.3%）。**下一阶段核心任务=提升模型工作流规划能力本身**（阶段选择/覆盖、顺序依赖、适当终点停止、QGIS grounding 四能力分开测）；B/RL 暂不启动直到训练方案有明确防回归设计（轻量训练前门禁已立：梯度范数+EOS loss+结构闭合指标逐记录、checkpoint 级解析率+覆盖评估、结构解析率=早期停止指标）。**未授权：全量重训、P1 格式改造、RL、自动压缩不可核验循环**。修复序：5 行不变量（schema 标记待核）→ 99 行补 rg（确认循环真实+边界可恢复后）→ 1,411 分层抽样裁定（不整族改 1）→ 986 保留标记。
+
+**Planning Capability Audit（PCA，2026-10-13 立项；协议 v1 已 FROZEN）**：E2E A+B 双分支均触发（L1 内容错误 AND L2 grounding 独立不足）后，owner 裁定**先冻结模型做独立规划能力验证，不重训、不进 Stage 2**：60 任务试点（A 组 GEE held-out / B 组 QGIS 无算子 / C 组复杂组合 各 20）× 三臂（base / stage1 / stage1+tool 算子卡）+ B′ 诊断臂（常设 6 任务），解耦"会不会规划 / 能不能迁移 / 能不能落地"三问题；格式健康（format_valid/content_assessable/hit_cap/termination_status）与规划质量分开报告；迁移读数=配对任务内差+task_type 分层+域内外分解三合一致；C 臂结论限定"工具信息对计划质量的影响"。协议 v1：`plan_pipeline_v1/planning_capability_audit_v1/PCA_PROTOCOL_V1_FROZEN.md`（owner 五处修订+七项 OQ 裁定已落；v0 保留为历史）。**当前阶段 = Phase 1 任务+金标构建**（60 条起草 → owner 逐条审核）；审核通过前不运行正式 180 次生成。执行权限：不重训、不改 21-family、不启动 Stage-2/RL。
+
+**GPU 侧主线（自 2026-09-27）**：
+- **mdzhang (10.191.2.38, A10 24GB) 已恢复在线**（2026-10-12 owner 确认；SSH 免密可用）。旧备份 `../server_backup_mdzhang_20260927/` 保留。GPU 共享注意：yyt 作业常占 ~6-9GB，大批量任务前查 `nvidia-smi`。A 线全部 GPU 实验已于 2026-10-12 在此机执行完毕（训练+推断+回归）。
 - Base zero-shot **dev** 完成（W1-W4 全 0、invalid 86.4%，锚点=地板）；**test** 半边改在租用 GPU 重跑（三冻结 SHA：evaluator v1.3.1 / 探针 / 推理配置）。
 - 待 owner 租用 GPU 后依次：test 复跑 → 预注册 W1-W4 绝对下限+Δ_i → Stage-1 开训（须 owner 显式放行）。Phase R evaluator-repair rerun 可复用已保全的 ep1/2/3 checkpoint（免重训）。
 - 详细交接看 `docs/CURRENT_STATE.md`。本文其余章节为历史工作流记录。
