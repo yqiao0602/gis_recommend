@@ -248,7 +248,19 @@ Last updated: 2026-10-13
   (empty) recorded separately per owner directive. Shadow gates: A done, B done,
   C/D next; the wrapper-caliber fix enters the v0.6 ledger PENDING owner approval
   (no rule changes during shadow evaluation). Report:
-  `R5_GATE_B_UNBLIND_REPORT_V1.md`. **Owner round-11: INDEX definition FROZEN = computing a NEW
+  `R5_GATE_B_UNBLIND_REPORT_V1.md`. **Gates C+D EXECUTED (commit 2018cf08)**: Gate C counterfactual
+  6/6 x 4 gates (CF3 redundant-no-increase >=95% hard gate holds); Gate D
+  three-scorer ranking on the 10 independent tasks: **structure formal FAILS
+  all pre-registered thresholds** (discrimination 0/10, mean tau -0.737
+  anti-aligned, 2 false-reward groups, 4 saturated — ranking-level
+  corroboration of the S2 dry-run finding); **r5 coverage PASSES all**
+  (7/10 discrimination at the 70% line, tau +0.796, 0 false-reward, 1
+  saturated); combined lambda=0.3/0.5 PASSES (0 saturated). Shadow verdict
+  per the pre-registered rule: r5 and low-lambda combinations carry the
+  task-quality signal and advance to reward-synthesis DESIGN; structure
+  formal alone does not. Honest bounds: n=10; owner labels are
+  stage-family granularity; the negative-tau mechanism awaits owner review.
+  Report: `R5_SHADOW_EVALUATION_VERDICT_V1.md`. **Owner round-11: INDEX definition FROZEN = computing a NEW
   index from bands (product-band reading/scaling != INDEX; 9854 = not_required);
   v0.5 ledger L1/L2/L3 approved; re-run + independent revalidation approved;
   reward admission separately reviewed. EXECUTED v0.5 -> v0.5.1 full chain**:
