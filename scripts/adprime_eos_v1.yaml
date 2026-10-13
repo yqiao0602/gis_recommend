@@ -1,0 +1,18 @@
+# A″ endpoint-EOS SFT v1 — 训练配置（预注册 v0.3；owner 门禁通过前不得 --release）
+# 冻结：起点=冻结 P0 adapter（非 fmt）；1 epoch；LR 1e-5；有效 batch 32；
+#       λ=2 仅作用目标序列终点 EOS；种子=20260924（P 线家族种子）
+name: "adprime_eos_v1"
+base_model: "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base"
+train_data: "/home/qy/a1/adprime_train_v1.jsonl"
+output_dir: "/home/qy/a1/adprime_run_v1"
+init_adapter: "/home/qy/planner_v2_adapter_staging"
+endpoint_eos_lambda: 2.0
+max_lr: 0.00001
+batch_size: 2
+grad_accum: 16
+max_len: 1024
+seed: 20260924
+epochs: 1
+smoke_rows: 0
+ckpt_every: 20
+log_every: 5
