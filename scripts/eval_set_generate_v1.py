@@ -38,26 +38,19 @@ def sha256(p):
     return h.hexdigest()
 
 
-# ---- task selection: stratified by gold n_stages bands, seed 20261013 ----
+# ---- task selection: the FROZEN eval set (already stratified at procurement;
+# do NOT re-stratify or re-sample here) ----
 rows = []
 with open(TRAIN) as f:
     for i, line in enumerate(f):
         r = json.loads(line)
-        t = r.get("target", "")
-        try:
-            bp = json.loads(t) if isinstance(t, str) else t
-        except Exception:
-            continue
-        st = bp.get("stages") or []
-        rows.append({"idx": i, "task": r["task"], "n_stages": len(st)})
-bands = {"short_2_4": [r for r in rows if 2 <= r["n_stages"] <= 4],
-         "mid_5_8": [r for r in rows if 5 <= r["n_stages"] <= 8],
-         "long_9plus": [r for r in rows if r["n_stages"] >= 9]}
-selected = []
-for band in ["short_2_4", "mid_5_8", "long_9plus"]:
-    for p in random.sample(bands[band], 8):
-        p["band"] = band
-        selected.append(p)
+        rows.append({"idx": i, "script": r["script"], "task": r["task"],
+                     "band": r.get("band", ""),
+                     "n_stages": r.get("final_semantic_length", 0)})
+bands = {"short_2_4": [r for r in rows if r["band"] == "short_2_4"],
+         "mid_5_8": [r for r in rows if r["band"] == "mid_5_8"],
+         "long_9plus": [r for r in rows if r["band"] == "long_9plus"]}
+selected = list(rows)
 print(f"selected {len(selected)} tasks: "
       f"{ {b: len(bands[b]) for b in bands} } pools", flush=True)
 
@@ -111,7 +104,7 @@ for bi, r in enumerate(selected):
     dt = time.time() - t0
     gen_tokens_total += new_tokens
     for ci, txt in enumerate(texts):
-        results.append({"k": p_script, "cand": ci, "band": r["band"],
+        results.append({"k": r["script"], "cand": ci, "band": r["band"],
                         "n_stages_gold": r["n_stages"],
                         "task_head": r["task"][:80], "pred_text": txt})
     print(f"batch {bi+1}/24 band={r['band']} gold_ns={r['n_stages']} "
