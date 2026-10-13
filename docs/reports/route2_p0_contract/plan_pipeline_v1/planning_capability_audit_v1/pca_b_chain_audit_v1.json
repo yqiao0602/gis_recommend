@@ -17,7 +17,12 @@
    "PARTIALLY_CONSISTENT": 5,
    "INCONSISTENT": 1
   },
-  "n_rows": 19
+  "n_rows": 19,
+  "backfill": {
+   "date": "2026-10-13",
+   "round": 9,
+   "note": "adjudication_resolved + owner_disposition backfilled for W056058 per owner round-9 ruling; original pre-ruling state preserved in commit f7c8c256 (ledger SHA 2433e51e7ae5a930); all other rows unchanged"
+  }
  },
  "rows": [
   {
@@ -468,8 +473,15 @@
    "suspect_but_not_failures": [],
    "adjudication": "ESCALATE-OWNER",
    "escalation_reason": "INCONSISTENT verdict: chain output structure (one clip + one buffer) does not match required_outcome structure (three-level organization); per discipline #4 the task's audit-pool usability requires an owner ruling.",
-   "adjudication_resolved": null,
-   "audit_notes": ""
+   "adjudication_resolved": "OWNER RULING (round-9, 2026-10-13): branch-1 ADOPTED. Task RETAINED (task text/gold consistent; task itself valid); original chain marked BASELINE-INVALID (clip+single-buffer does not satisfy the core three-level structure; not a correct reference chain); scoring basis = frozen gold 0dc643980e8d4b8e exclusively. EXCLUDED from main scoring denominator (kept in the evaluation ledger; reported separately). Evidence boundary retained: the cause of the chain gap (script non-implementation vs extraction miss) is undetermined and not needed for this ruling.",
+   "audit_notes": "",
+   "owner_disposition": {
+    "pool_status": "EXCLUDED_FROM_MAIN_SCORING",
+    "baseline_status": "BASELINE-INVALID",
+    "ruled_date": "2026-10-13",
+    "gold_version_bound": "0dc643980e8d4b8e",
+    "ruling_round": 9
+   }
   },
   {
    "wid": "W056274",
