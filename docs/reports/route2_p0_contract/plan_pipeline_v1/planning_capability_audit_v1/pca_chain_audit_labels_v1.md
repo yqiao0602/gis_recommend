@@ -27,6 +27,11 @@
    `INCONSISTENT` 的条目进入 owner 裁定清单（该任务的评测可用性由 owner 定）。
 5. **逐条记录字段**：`wid` / `label` / `dimension_notes[]` / `evidence`（题面与金标依据）
    / `adjudication`（是否需 owner 裁）。账本 = `pca_b_chain_audit_v1.json`（阶段 2 执行时生成）。
+6. **审计对象是语义一致性**（owner round-5）：验证任务语义与链的一致性，**不是**验证
+   新金标与旧链的表面相似度；"原链采用了某算子"不能证明该算子是唯一正确路线——链中
+   的遗漏、冗余或潜在错误照实记录，但不得因链存在某步骤就修改金标迁就它。
+7. **无法裁定的情形保留待裁**（`adjudication: ESCALATE-OWNER`）：题面本身无法裁定的
+   情形不强行归入四标签，列为待 owner 裁定项。
 
 ## 流程位置
 
