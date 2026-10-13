@@ -96,7 +96,7 @@
     "Same family as 78050 (sister task, current-state variant)"
    ],
    "acceptable_alternatives": [
-    "Any smoothing/packaging implementation"
+    "Different SOFTWARE implementations of the SAME Gaussian smoothing at 2000 m radius are acceptable; other kernel types or radii are NOT equivalent substitutes"
    ],
    "failure_conditions": [
     "Missing threat-layer combination or any stage",
@@ -138,7 +138,7 @@
     "No per-station export"
    ],
    "underdetermined_aspects": [
-    "Station list provisioning; export file format details"
+    "Station list provisioning; export file format details; AMBIGUITY: date range 2000-2020 inclusive spans 21 calendar years vs the task's '20 years' phrasing - keep the stated range and monthly multi-year-average goal, do not force an exact year count"
    ],
    "presentation_requirements": [],
    "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
@@ -152,33 +152,36 @@
    "eligibility_status": "KEEP",
    "task_text": "Task: Model bear habitat suitability\nthe workflow models habitat suitability for bears using presence points and environmental predictors, generating a probability map of suitable habitat and a binary potential distribution map. It employs spatial block cross-validation with random forests to train and validate the model, then averages predictions across iterations to produce a final habitat suitability map. Outputs include variable importance, training/testing partitions, and an estimated area of potential distribution in square kilometers.",
    "task_sha256": "da47e0d70f5cb70a4757f91b9552e9ca187b99e4bbff9f5c5194263981caf35d",
-   "required_outcome": "A habitat-probability map plus a binary potential-distribution map for bears, produced by a model trained and validated with spatial block cross-validation.",
+   "required_outcome": "A final habitat-suitability map (predictions averaged across block-CV iterations) with probability and binary potential-distribution outputs, plus variable importance, train/test partitions, and potential-distribution area in km2.",
    "required_constraints": [
     "[EXPLICIT] presence points + environmental predictors as model inputs",
+    "[EXPLICIT] Random Forest as the model",
     "[EXPLICIT] spatial block cross-validation for train/validate",
-    "[EXPLICIT] outputs: probability map + binary potential distribution",
-    "[IMPLICIT] train->predict->binarize workflow order"
+    "[EXPLICIT] predictions averaged across CV iterations into the final map",
+    "[EXPLICIT] outputs: probability map, binary potential distribution, variable importance, train/test partitions, potential-distribution area in km2",
+    "[IMPLICIT] train->predict-per-fold->average->binarize workflow order"
    ],
    "required_capabilities": [
-    "Point-presence ML training setup",
-    "Block-based CV partitioning",
-    "Probability surface prediction and binarization"
+    "RF training with block CV",
+    "Cross-fold prediction averaging",
+    "Binarization and area estimation"
    ],
    "acceptable_alternatives": [
-    "Any block-partition scheme and any reasonable binarization rule consistent with outputs",
-    "RF or other suitable classifier (task does not fix one)"
+    "Any block-partition scheme; any defensible binarization rule consistent with the binary map"
    ],
    "failure_conditions": [
+    "Model other than Random Forest substituted",
     "Training without spatial block CV",
+    "Fold predictions not averaged into a final map",
     "Missing probability or binary output",
-    "Validation not separated from training data"
+    "Missing variable importance / partitions / area estimate"
    ],
    "underdetermined_aspects": [
-    "Block size/number; predictor list details; binarization threshold; classifier/hyperparameters"
+    "Block size/number; predictor list details; binarization threshold"
    ],
    "presentation_requirements": [],
    "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
-   "evidence": "task: presence points, environmental predictors, block CV, two-map output"
+   "evidence": "task: RF + block CV + averaged predictions; two maps + importance + partitions + area km2"
   },
   {
    "line_id": 44487,
@@ -188,31 +191,36 @@
    "eligibility_status": "KEEP",
    "task_text": "Task: Estimate forest cover from fractional vegetation\nEstimate forest area and percentage cover in Nicaragua for March 2020 using MODIS MCD43A4 surface reflectance data. It applies a spectral mixture analysis (SMA) to derive bare soil, photosynthetic vegetation (PV), and non-photosynthetic vegetation (NPV) fractions, then classifies canopy cover where PV > 0.6 and bare < 0.4. Results include printed statistics for estimated forest area in square kilometers and percent forest cover, along with time-series charting of fractional cover from 2017–2020. The output visualizations include SMA results, forest cover maps, and protected areas overlay.",
    "task_sha256": "643209f44b4a5664853088c5c692c584cd3409c29ec6452080b8a30a2073dba8",
-   "required_outcome": "Forest area and percentage cover for Nicaragua, March 2020, derived from spectral mixture analysis of MODIS MCD43A4 reflectance.",
+   "required_outcome": "Forest area (km2) and percentage cover for Nicaragua, March 2020, from SMA fractions with stated canopy-cover thresholds, plus fractional-cover time-series charting for 2017-2020 and the stated visualizations.",
    "required_constraints": [
     "[EXPLICIT] MCD43A4 surface reflectance input; Nicaragua; March 2020",
     "[EXPLICIT] SMA yielding bare-soil / PV / NPV fractions",
-    "[EXPLICIT] outputs: forest area and percentage cover",
-    "[IMPLICIT] fraction-to-forest conversion step"
+    "[EXPLICIT] canopy-cover classification rule: PV > 0.6 AND bare < 0.4",
+    "[EXPLICIT] outputs: printed forest-area (km2) and percent-cover statistics",
+    "[IMPLICIT] fraction-to-forest classification applying the stated thresholds"
    ],
    "required_capabilities": [
     "Spectral mixture analysis",
-    "Fraction-to-forest quantification and area statistics"
+    "Threshold-based canopy-cover classification",
+    "Area/percentage statistics"
    ],
    "acceptable_alternatives": [
-    "Any SMA formulation; any defensible PV/NPV combination rule for 'forest'"
+    "Any SMA formulation consistent with the three fractions"
    ],
    "failure_conditions": [
     "No SMA performed",
-    "No area/percentage quantification",
-    "Fractions computed but never converted to forest metrics"
+    "Thresholds not applied as stated (PV>0.6, bare<0.4)",
+    "Area/percentage statistics missing"
    ],
    "underdetermined_aspects": [
-    "Endmember spectra; PV threshold defining forest"
+    "Endmember spectra (values data-determined)"
    ],
-   "presentation_requirements": [],
+   "presentation_requirements": [
+    "fractional-cover time-series chart 2017-2020 (task-stated)",
+    "SMA results visualization, forest cover map, protected-areas overlay (all task-stated)"
+   ],
    "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
-   "evidence": "task: SMA three fractions; forest area and percentage cover for Nicaragua 2020-03"
+   "evidence": "task: SMA thresholds PV>0.6/bare<0.4, printed stats, 2017-2020 chart, SMA/forest/protected visualizations; 2020 estimation is the analytical core, 2017-2020 charting is a stated presentation time series"
   },
   {
    "line_id": 53359,
@@ -262,18 +270,18 @@
    "eligibility_status": "KEEP",
    "task_text": "Task: Model permafrost thermal state\nthe workflow models the spatial distribution of permafrost thermal state (ALT - Active Layer Thickness) using kriging interpolation and Random Forest regression. It first performs geostatistical interpolation (kriging) on ALT point data to generate a continuous surface, then combines it with environmental covariates (e.g., soil properties, climate indices, NDVI, NDSI) to train a machine learning model. The final output is a classified raster map of estimated ALT (E), validated through training accuracy metrics and variable importance charts, with results exported as assets and visualized on the map.",
    "task_sha256": "5c1998a93e2b787f048e5e64f351fc58f91bb403ff5eca14a58f133c161c2d99",
-   "required_outcome": "A classified raster map of estimated Active Layer Thickness with validation metrics and variable-importance outputs.",
+   "required_outcome": "A classified raster map of estimated Active Layer Thickness with training accuracy metrics and variable-importance outputs, as stated by the task.",
    "required_constraints": [
     "[EXPLICIT] kriging interpolation of ALT point data",
     "[EXPLICIT] environmental covariates (soil/climate/NDVI/NDSI)",
     "[EXPLICIT] RF regression stage",
-    "[EXPLICIT] accuracy metrics + variable importance; asset export",
+    "[EXPLICIT] training accuracy metrics + variable importance; asset export",
     "[IMPLICIT] interpolate->covariate-stack->regress->classify order"
    ],
    "required_capabilities": [
     "Geostatistical interpolation",
     "Covariate stacking and sampling",
-    "RF regression with validation"
+    "RF regression with training-accuracy evaluation"
    ],
    "acceptable_alternatives": [
     "Any kriging implementation; any classified-bin scheme for ALT"
@@ -281,7 +289,7 @@
    "failure_conditions": [
     "Missing kriging stage",
     "Missing ML/regression stage",
-    "No validation metrics or variable importance"
+    "Training accuracy metrics or variable-importance outputs absent"
    ],
    "underdetermined_aspects": [
     "Kriging parameters; covariate combination specifics; classification bin edges"
@@ -290,7 +298,7 @@
     "map visualization (task-stated)"
    ],
    "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
-   "evidence": "task: kriging + RF, validation + variable importance, asset export"
+   "evidence": "task: kriging + RF, training accuracy + variable importance, asset export"
   },
   {
    "line_id": 55222,
@@ -338,7 +346,7 @@
    "eligibility_status": "KEEP-STRATIFIED",
    "task_text": "Task: Monitor maritime activity intensity\nMonitor maritime activity intensity in the Port of Singapore using Sentinel-1 SAR imagery by generating a median VV/VH polarisation composite over 2023, visualising backscatter characteristics for vessel detection and sea surface analysis, and quantifying temporal acquisition density via monthly image counts — outputs include clipped composite rasters (VV/VH), a study area boundary layer, summary statistics (total/ascending/descending image counts), and a monthly column chart of image availability.",
    "task_sha256": "147f196424ec84e3b0ede2c161302f36ec4f237f78db79b9414696f85796be22",
-   "required_outcome": "Clipped VV/VH median composite (2023), study-area boundary layer, acquisition-count summary (total/ascending/descending), and monthly availability chart.",
+   "required_outcome": "Clipped VV/VH median composite (2023) visualised for backscatter characteristics (vessel detection / sea-surface analysis), study-area boundary layer, acquisition-count summary (total/ascending/descending), and monthly availability chart.",
    "required_constraints": [
     "[EXPLICIT] Sentinel-1; 2023; VV/VH median composite",
     "[EXPLICIT] monthly image counts by total/ascending/descending",
@@ -361,10 +369,11 @@
     "Visualization parameters"
    ],
    "presentation_requirements": [
+    "VV/VH backscatter visualisation for vessel/sea-surface analysis (task-stated)",
     "monthly column chart (task-stated)"
    ],
    "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
-   "evidence": "task: 2023 median VV/VH, monthly counts total/asc/desc, four outputs"
+   "evidence": "task: 2023 median VV/VH backscatter visualisation, monthly counts total/asc/desc, four outputs"
   },
   {
    "line_id": 57816,
@@ -508,7 +517,7 @@
     "Classification chains"
    ],
    "acceptable_alternatives": [
-    "Any smoothing implementation; any asset packaging arrangement"
+    "Different SOFTWARE implementations of the SAME Gaussian smoothing at 2000 m radius are acceptable; other kernel types or radii are NOT equivalent substitutes"
    ],
    "failure_conditions": [
     "Missing any method stage (delta-S, curve application, Q integration, smoothing, classifications)",
@@ -529,7 +538,7 @@
    "eligibility_status": "KEEP-STRATIFIED",
    "task_text": "Task: Analyze groundwater storage time series\nExtract and analyzes monthly groundwater storage (GWS) time series from the NASA GLDAS CLSM model over a defined polygonal region in Iran (approximately spanning longitudes 43.67–63.09°E and latitudes 24.94–39.79°N) for the period 2003–2024. It computes monthly mean GWS_tavg values, generates two charts — one showing spatially averaged (over the polygon) monthly GWS evolution, and another showing point-based time series at two user-defined locations (loc1 and loc2) — and exports the full monthly stack as a clipped, multi-band GeoTIFF to Google Drive. The workflow includes date sequence generation, image collection filtering and reduction, metadata annotation (system:time_start/end/index), null-band filtering, and visualization/export setup.",
    "task_sha256": "e5d1ab904f47da856a318d3902f6b545b364596568109cad95a1ab50f5b07a68",
-   "required_outcome": "Monthly GWS time-series outputs: spatially averaged chart, two point-location charts, and a clipped multi-band GeoTIFF export.",
+   "required_outcome": "Monthly GWS time-series outputs per the task's TWO charts - (a) polygon-averaged monthly GWS evolution, (b) point-based time series at the two user-defined locations - plus a clipped multi-band GeoTIFF export.",
    "required_constraints": [
     "[EXPLICIT] GLDAS CLSM GWS_tavg; Iran polygon (~43.67-63.09E, 24.94-39.79N); 2003-2024",
     "[EXPLICIT] monthly means; two charts (polygon-average + two point series)",
@@ -571,7 +580,7 @@
    "required_outcome": "A four-class benthic habitat classification over Misool from DOS-corrected imagery, exported to Drive.",
    "required_constraints": [
     "[EXPLICIT] DOS atmospheric correction",
-    "[EXPLICIT] RF classifier; four classes (water/vegetation/sand/coral)",
+    "[EXPLICIT] RF classifier; FOUR classes (task names water/vegetation/sand/coral as examples - count is hard, exact label set not exhaustively fixed)",
     "[EXPLICIT] deglinted bands + DII23 index as features; ROI_Sunglint training samples",
     "[EXPLICIT] Drive export",
     "[IMPLICIT] correct->sample->train->classify order"
@@ -590,7 +599,7 @@
     "No Drive export"
    ],
    "underdetermined_aspects": [
-    "DII23 formula details (named, not specified); exact class list confirmation"
+    "DII23 formula details (named, not specified); confirmation of the exact four-label set (task gives example names)"
    ],
    "presentation_requirements": [],
    "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
@@ -641,7 +650,7 @@
    "eligibility_status": "KEEP",
    "task_text": "Task: Classify ice and water types\nClassify pixel-level surface types in lakes into four categories: water, clear ice, opaque ice, and snow using Landsat TOA reflectance data. It trains a Random Forest model on labeled training samples with spectral predictors and validates it temporally by splitting data by year (before/after 2019), ultimately producing a trained classification model for cryospheric surface mapping.",
    "task_sha256": "8bcbd0a5567f2fc41120eabc621f810e1da503fe3448fbc04928ad90f93d9a63",
-   "required_outcome": "A trained four-class (water / clear ice / opaque ice / snow) classification model validated temporally by pre/post-2019 splits.",
+   "required_outcome": "Pixel-level four-class (water / clear ice / opaque ice / snow) classified surface results produced by a trained RF model validated temporally by pre/post-2019 splits (a trained model alone without classified results is incomplete).",
    "required_constraints": [
     "[EXPLICIT] Landsat TOA inputs",
     "[EXPLICIT] RF on labeled samples with spectral predictors",
@@ -722,8 +731,7 @@
     "[IMPLICIT] per-day filter->reduce->rename chain"
    ],
    "required_capabilities": [
-    "Daily temporal partitioning",
-    "Spatial mean reduction",
+    "Daily temporal aggregation (each output image = one day's HGT spatial field)",
     "Collection metadata management"
    ],
    "acceptable_alternatives": [
