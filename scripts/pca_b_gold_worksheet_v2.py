@@ -323,9 +323,10 @@ def main():
     missing = set(GOLD) ^ {r["task_id"] for r in rows}
     assert not missing, f"gold/frozen mismatch: {missing}"
     payload = {"_meta": {
-        "stage": "PCA Stage-1 gold authoring v2 (owner round-1 revisions applied)",
+        "stage": "PCA Stage-1 gold v2 — FROZEN-CANDIDATE (content rounds 1+5 + preflight fix; metadata naming corrected per owner round-7)",
+        "content_provenance": "the 19 task rows are byte-identical to SHA bad86ac7bc2a333d (round-6 preflight version); only this _meta naming changed",
         "supersedes": "pca_b_gold_worksheet_v1.json (SHA 06b30b9c810a2e6d) — kept immutable",
-        "revision_source": "owner round-1 (8-item list) + round-5 (scoring-boundary revisions, 8 rows + SHA rule)",
+        "revision_source": "owner round-1 (8-item list) + round-5 (scoring-boundary revisions, 8 rows + SHA rule) + round-6 preflight fix (W067268 qualifier placement) + round-7 metadata naming",
         "sha_convention": "task_sha256 = FULL 64-hex digest recomputed from task_text; "
                           "the frozen input file's text_sha256 field stores only "
                           "16-char prefixes (documented truncation convention)",
