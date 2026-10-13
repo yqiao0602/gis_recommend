@@ -1,0 +1,3943 @@
+[
+ {
+  "wid": "W000026",
+  "task": "Calculate slope from DGM. The script calculates terrain slope (gradient) from a digital ground model (DGM) raster, then computes zonal mean slope valu",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "TERRAIN_DERIVED",
+   "AGGREGATION",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "gdal:merge",
+   "native:slope",
+   "native:zonalstatisticsfb",
+   "native:reprojectlayer"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W000026",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.3333,
+   "bag": 0.3333,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000043",
+  "task": "Compute road segment slope. The script computes slope for network edge segments using a local Digital Elevation Model (DEM) raster. It first splits in",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "native:splitlinesbylength",
+   "native:extractspecificvertices",
+   "native:rastersampling"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W000043",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.3333,
+   "bag": 0.3333,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000060",
+  "task": "Download and merge DTM tiles. The script downloads Digital Terrain Model (DTM) raster tiles from the City of Vienna's MA41 data portal, uncompresses t",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT"
+  ],
+  "gold_ops": [
+   "gdal:warpreproject",
+   "gdal:merge"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W000060",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000081",
+  "task": "Download Copernicus Global Land Cover. The script downloads Copernicus Global Land products (e.g., land cover, vegetation, soil moisture) by selecting",
+  "gold_fams": [
+   "RASTER_LOAD",
+   "RASTER_LOAD",
+   "RASTER_LOAD",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:filedownloader",
+   "native:filedownloader",
+   "native:filedownloader",
+   "gdal:translate"
+  ],
+  "pred_core_fams": [
+   "TEMPORAL_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W000081",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": [
+    "TEMPORAL_FILTER"
+   ]
+  }
+ },
+ {
+  "wid": "W000082",
+  "task": "Download Copernicus Global Land product. The script downloads Copernicus Global Land products from the VITO land portal (https://land.copernicus.vgt.v",
+  "gold_fams": [
+   "RASTER_LOAD",
+   "RASTER_LOAD",
+   "RASTER_LOAD",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:filedownloader",
+   "native:filedownloader",
+   "native:filedownloader",
+   "gdal:translate"
+  ],
+  "pred_core_fams": [
+   "TEMPORAL_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W000082",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": [
+    "TEMPORAL_FILTER"
+   ]
+  }
+ },
+ {
+  "wid": "W000084",
+  "task": "Download Copernicus Land Cover Product. The script downloads Copernicus Global Land products by selecting a product collection (e.g., 'CLMS', 'GLOBCOV",
+  "gold_fams": [
+   "RASTER_LOAD",
+   "RASTER_LOAD",
+   "RASTER_LOAD",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:filedownloader",
+   "native:filedownloader",
+   "native:filedownloader",
+   "gdal:translate"
+  ],
+  "pred_core_fams": [
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W000084",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": [
+    "TEMPORAL_FILTER"
+   ]
+  }
+ },
+ {
+  "wid": "W000166",
+  "task": "Reproject land suitability raster. The script reprojects a local land suitability raster dataset (originally in an unknown projection, likely a local ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "GEOMETRY_DEFINE"
+  ],
+  "gold_ops": [
+   "gdal:warpreproject",
+   "gdal:extractprojection"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"B",
+  "ev": {
+   "wid": "W000166",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000168",
+  "task": "Count languages per virtual country. The script computes the number of distinct languages (from the 'wlds_cleaned.shp' language-country polygon datase",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "AGGREGATION",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "grass7:v.clean",
+   "grass7:v.overlay",
+   "qgis:statisticsbycategories",
+   "native:fixgeometries",
+   "native:dissolve"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W000168",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W000302",
+  "task": "Clip raster plan by polygon boundary. The script clips a provided raster layer (e.g., a digital XPlan raster map) to the exact geometry of an input po",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "native:retainfields",
+   "native:segmentizebymaxdistance",
+   "gdal:cliprasterbymasklayer"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W000302",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000394",
+  "task": "Calculate satellite visibility C-index. The script computes the radar-based C-index raster (ranging from -1 to +1) that quantifies the geometric sensi",
+  "gold_fams": [
+   "RASTER_LOAD",
+   "BAND_ARITHMETIC",
+   "RASTER_LOAD",
+   "BAND_ARITHMETIC",
+   "BAND_ARITHMETIC",
+   "TERRAIN_DERIVED",
+   "BAND_ARITHMETIC",
+   "TERRAIN_DERIVED",
+   "BAND_ARITHMETIC",
+   "BAND_ARITHMETIC",
+   "THRESHOLD_LOGIC"
+  ],
+  "gold_ops": [
+   "native:createconstantrasterlayer",
+   "gdal:rastercalculator",
+   "native:createconstantrasterlayer",
+   "gdal:rastercalculator",
+   "gdal:rastercalculator",
+   "gdal:slope",
+   "gdal:rastercalculator",
+   "gdal:aspect",
+   "gdal:rastercalculator",
+   "gdal:rastercalculator",
+   "native:reclassifybytable"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W000394",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W000447",
+  "task": "Compute rotated minimum bounding box. The script computes a rotated minimum bounding box (RMBB) for the active QGIS vector layer by calculating convex",
+  "gold_fams": [
+   "GEOMETRY_DEFINE",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "qgis:minimumboundinggeometry",
+   "native:extractvertices"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W000447",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000473",
+  "task": "Compute symmetrical difference of two polygon layers. The script computes the symmetrical difference (XOR) between two vector layers representing an e",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:dissolve",
+   "native:dissolve",
+   "native:symmetricaldifference"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W000473",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W000524",
+  "task": "Analyze seismic zone topography. The script processes a seismic zones shapefile by fixing geometry errors and then computes zonal statistics (count, s",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "native:fixgeometries",
+   "native:zonalstatisticsfb"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"B",
+  "ev": {
+   "wid": "W000524",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.3333,
+   "bag": 0.3333,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000635",
+  "task": "Extract polygon boundary edges. The script processes an input vector layer of polygons and generates a new polygon layer representing the 'edges' — i.",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:multiparttosingleparts",
+   "native:fixgeometries",
+   "native:simplifygeometries",
+   "native:fixgeometries",
+   "native:buffer",
+   "native:fixgeometries",
+   "native:buffer",
+   "native:fixgeometries",
+   "native:difference",
+   "native:dissolve",
+   "native:fixgeometries"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W000635",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W000674",
+  "task": "Compute slope aspect hillshade. The script computes three terrain derivatives—slope (in degrees), aspect (in degrees), and hillshade—from a high-resol",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "TERRAIN_DERIVED",
+   "TERRAIN_DERIVED",
+   "TERRAIN_DERIVED"
+  ],
+  "gold_ops": [
+   "gdal:warpreproject",
+   "gdal:slope",
+   "gdal:aspect",
+   "gdal:hillshade"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "BAND_SELECT",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W000674",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 3,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000863",
+  "task": "Model boat movement probability. The script models probabilistic boat movement across a directed canal network in Groningen, Netherlands. It computes ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "native:deleteduplicategeometries",
+   "native:extractvertices",
+   "native:clip"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W000863",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W000890",
+  "task": "Map dominant drought class by municipality. The script processes a pre-existing drought monitoring vector layer ('dezembro25') for Paraíba state, Braz",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:extractbyexpression",
+   "native:mergevectorlayers",
+   "native:difference",
+   "native:mergevectorlayers",
+   "native:intersection"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W000890",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W000951",
+  "task": "Fetch SRTM elevation data. The script downloads SRTMGL1 (Shuttle Radar Topography Mission Global 1 arc-second) digital elevation model (DEM) files fro",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "SPATIAL_CLIP",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "gdal:merge",
+   "gdal:cliprasterbyextent",
+   "native:pixelstopoints"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W000951",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000965",
+  "task": "Snap line vertices to points. The script snaps specified vertices (start, end, or mid-vertices) of line geometries in a source vector layer to the nea",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:reprojectlayer",
+   "native:multiparttosingleparts"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W000965",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W000992",
+  "task": "Generate perpendicular lines along line. The script generates perpendicular line segments at regular intervals along input line or polygon boundary ge",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:reprojectlayer",
+   "native:pointsalonglines",
+   "native:geometrybyexpression",
+   "native:reprojectlayer"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W000992",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W000993",
+  "task": "Interpolate surface property values. The script performs Inverse Distance Weighting (IDW) interpolation on point vector features to generate a continu",
+  "gold_fams": [
+   "NEIGHBORHOOD",
+   "SPATIAL_CLIP",
+   "NEIGHBORHOOD"
+  ],
+  "gold_ops": [
+   "qgis:idwinterpolation",
+   "gdal:cliprasterbymasklayer",
+   "qgis:idwinterpolation"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_SELECT",
+   "AGGREGATION",
+   "RASTER_OUTPUT",
+   "BAND_ARITHMETIC"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_SELECT\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W000993",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 0,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W001027",
+  "task": "Convert indicator raster to points. The script processes a raster input layer by reprojecting it to EPSG:4326, clipping it to a user-provided polygon ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "gdal:warpreproject",
+   "gdal:cliprasterbymasklayer",
+   "native:pixelstopoints",
+   "native:fieldcalculator",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": [
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":2}],\"repetition_groups\"",
+  "ev": {
+   "wid": "W001027",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 5,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W001034",
+  "task": "Package layers to KMZ. The script packages multiple QGIS vector and raster layers into a single KMZ file. It reprojects layers to a user-specified or ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "gdal:warpreproject",
+   "gdal:translate"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W001034",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W001533",
+  "task": "Generate geodesic buffer geometry. The script computes a geodesically accurate circular buffer (5,000,000 m radius) centered at (168°E, 48°S) in WGS84",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:buffer",
+   "native:buffer"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W001533",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W001640",
+  "task": "Calculate annual shadow patterns. The script calculates solar shadow rasters for four key solstice/equinox dates (2020-03-20, 2020-06-21, 2020-09-23, ",
+  "gold_fams": [
+   "SPATIAL_CLIP",
+   "VECTOR_GEOMETRY",
+   "RASTER_LOAD",
+   "COLLECTION_MGMT",
+   "THRESHOLD_LOGIC",
+   "THRESHOLD_LOGIC",
+   "THRESHOLD_LOGIC",
+   "THRESHOLD_LOGIC",
+   "BAND_ARITHMETIC",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "gdal:cliprasterbyextent",
+   "gdal:warpreproject",
+   "native:createconstantrasterlayer",
+   "gdal:merge",
+   "native:reclassifybytable",
+   "native:reclassifybytable",
+   "native:reclassifybytable",
+   "native:reclassifybytable",
+   "gdal:rastercalculator",
+   "native:zonalstatistics"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W001640",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W001729",
+  "task": "Identify disconnected network segments. The script analyzes topological connectivity of a line-based river or transport network layer relative to an i",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "EXPORT_OUTPUT",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER"
+  ],
+  "gold_ops": [
+   "native:fieldcalculator",
+   "native:extractvertices",
+   "native:dissolve",
+   "native:saveselectedfeatures",
+   "native:extractbylocation",
+   "native:extractbylocation",
+   "native:extractbylocation",
+   "native:extractbylocation",
+   "native:selectbylocation",
+   "native:selectbylocation"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W001729",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W001898",
+  "task": "Download digital elevation model. The script downloads and clips Digital Elevation Models (DEMs) for a user-defined extent in QGIS, supporting five gl",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "gdal:buildvirtualraster",
+   "gdal:cliprasterbyextent"
+  ],
+  "pred_core_fams": [
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family\"",
+  "ev": {
+   "wid": "W001898",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 6,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 5,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W001970",
+  "task": "Export air transport infrastructure area. The script exports polygon features representing air transport infrastructure areas (e.g., airports, runways",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W001970",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W001974",
+  "task": "Export navigable waterway transport infrastructure area. The script exports polygon features representing 'Área da infraestrutura de transporte por vi",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W001974",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.4,
+   "bag": 0.4,
+   "elided_loads": 3,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W001994",
+  "task": "Export railway transport infrastructure. The script exports point features representing railway transport infrastructure to a PostgreSQL/PostGIS datab",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W001994",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.5,
+   "bag": 0.5,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W002001",
+  "task": "Export hydrographic node. The script exports point features representing hydrographic nodes (e.g., confluences, junctions, or endpoints in a hydrograp",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W002001",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W002002",
+  "task": "Export railway transport node. The script exports point features representing railway transport nodes (no_trans_ferrov) from a QGIS vector layer into ",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": [
+   "SPATIAL_FILTER",
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"SPATIAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family\"",
+  "ev": {
+   "wid": "W002002",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.3333,
+   "bag": 0.3333,
+   "elided_loads": 1,
+   "unmatchable_fams": [
+    "TEMPORAL_FILTER"
+   ]
+  }
+ },
+ {
+  "wid": "W002004",
+  "task": "Export infrastructure polygon layer. The script exports a user-provided vector polygon layer (intended for 3D polygons representing civil engineering ",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W002004",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W002013",
+  "task": "Export road boundary geometry. The script exports a user-provided vector line layer (expected to be 3D line geometry) to a PostgreSQL/PostGIS database",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W002013",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.5,
+   "bag": 0.5,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W002419",
+  "task": "Aggregate irrigation water demand variables. The script calculates zonal statistics (e.g., mean, sum, min, max) of IdrAgra-simulated hydrological vari",
+  "gold_fams": [
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "native:zonalstatisticsfb",
+   "native:zonalstatisticsfb"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W002419",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.5,
+   "bag": 0.5,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W002456",
+  "task": "Extract longest flow path. The script computes the longest hydrological flow path within a watershed by identifying the channel network segment with t",
+  "gold_fams": [
+   "SPATIAL_FILTER",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "NEIGHBORHOOD",
+   "ATTRIBUTE_FILTER",
+   "NEIGHBORHOOD",
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:selectbylocation",
+   "native:extractspecificvertices",
+   "native:createspatialindex",
+   "qgis:distancematrix",
+   "qgis:selectbyexpression",
+   "native:shortestpathpointtolayer",
+   "qgis:selectbyexpression",
+   "native:saveselectedfeatures"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W002456",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 8,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W002458",
+  "task": "Derive upslope basin and terrain attributes. The script computes the upslope contributing area (watershed) for a user-specified discharge point using ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "gdal:polygonize",
+   "native:fixgeometries",
+   "native:dissolve",
+   "gdal:cliprasterbymasklayer",
+   "native:clip"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"B",
+  "ev": {
+   "wid": "W002458",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W003027",
+  "task": "Extract upstream catchment polygons. The script processes a river network vector layer and a point sites layer to extract, fix, and dissolve upstream ",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:extractbyexpression",
+   "native:fixgeometries",
+   "native:dissolve"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION",
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W003027",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W003623",
+  "task": "Generate drainage relationships for catchments. The script constructs hydrological drainage networks (afvoerrelaties) between catchment areas (bemalin",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "ATTRIBUTE_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:pointonsurface",
+   "qgis:exportaddgeometrycolumns",
+   "native:aggregate",
+   "native:fieldcalculator",
+   "native:extractspecificvertices",
+   "native:extractspecificvertices",
+   "native:joinattributesbylocation",
+   "native:joinattributesbylocation",
+   "native:joinattributestable",
+   "native:fieldcalculator",
+   "native:extractbyexpression",
+   "native:orderbyexpression",
+   "native:removeduplicatesbyattribute",
+   "native:extractbylocation",
+   "native:joinattributesbylocation",
+   "native:joinattributesbylocation",
+   "native:joinattributestable",
+   "native:fieldcalculator",
+   "native:joinattributestable",
+   "native:hublines",
+   "native:extractbylocation",
+   "native:extractbylocation",
+   "native:joinattributestable",
+   "native:renametablefield",
+   "native:joinattributestable",
+   "native:deletecolumn"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W003623",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W003637",
+  "task": "Model coastal storm surge inundation. The script models coastal flood extents for multiple sea-level rise scenarios using a digital terrain model (DTM",
+  "gold_fams": [
+   "NEIGHBORHOOD",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "grass7:r.cost",
+   "gdal:polygonize"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W003637",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W004581",
+  "task": "Convert DXF line features to polygon boundaries. The script processes a directory of DXF files (imported as OGR vector layers with LineStringZ geometr",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT"
+  ],
+  "gold_ops": [
+   "qgis:selectbyexpression",
+   "native:saveselectedfeatures",
+   "qgis:linestopolygons",
+   "native:mergevectorlayers"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W004581",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W004648",
+  "task": "Compute median DSM within grid zones. The script computes the median value of a Digital Surface Model (DSM) raster, masked by a binary mask layer, wit",
+  "gold_fams": [
+   "BAND_ARITHMETIC",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "gdal:rastercalculator",
+   "native:zonalstatistics"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1}],\"repetition_gr",
+  "ev": {
+   "wid": "W004648",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.5,
+   "bag": 0.5,
+   "elided_loads": 0,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W004837",
+  "task": "Compute shortest path along road network. The script computes the shortest geometric path between the start and end vertices of a selected road segmen",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:extractspecificvertices",
+   "qgis:exportaddgeometrycolumns"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"V",
+  "ev": {
+   "wid": "W004837",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 1,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 3,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W004963",
+  "task": "Compute aspect and slope from elevation raster. The script processes raster inputs to compute terrain derivatives: Aspect (using QGIS aspect algorithm",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "NEIGHBORHOOD"
+  ],
+  "gold_ops": [
+   "gdal:rasterize",
+   "gdal:proximity"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W004963",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W004992",
+  "task": "Hexagon binning of point features. The script performs hexagonal spatial binning (hexabinning) of vector point features using the H3 geospatial indexi",
+  "gold_fams": [
+   "GEOMETRY_DEFINE",
+   "AGGREGATION",
+   "EXPORT_OUTPUT",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "qgis:definecurrentprojection",
+   "native:countpointsinpolygon",
+   "native:saveselectedfeatures",
+   "native:reprojectlayer"
+  ],
+  "pred_core_fams": [
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"V",
+  "ev": {
+   "wid": "W004992",
+   "parsed": true,
+   "type": "missing_only",
+   "n_core_stages": 1,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.4,
+   "bag": 0.4,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W005067",
+  "task": "Aggregate land parcels by building overlap. The script performs spatial aggregation of land parcels ('dzialki') based on shared buildings ('budynki') ",
+  "gold_fams": [
+   "GEOMETRY_DEFINE",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER"
+  ],
+  "gold_ops": [
+   "native:polygonfromlayerextent",
+   "native:buffer",
+   "native:extractbylocation",
+   "native:extractbylocation"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W005067",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W005684",
+  "task": "Rasterize vector layers to topographic masks. The script generates binary (0/1) raster masks from user-selected vector layers, aligned to the spatial ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "gdal:rasterize",
+   "gdal:translate"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W005684",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W005784",
+  "task": "Calculate urban wind field. The script calculates 3D spatial variations of wind speed and direction in an urban context using 2.5D building and vegeta",
+  "gold_fams": [
+   "EXPORT_OUTPUT",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:savefeatures",
+   "native:savefeatures"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W005784",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W005982",
+  "task": "Compare riverbank distances across time. The script computes and compares the orthogonal distances from a simplified river centerline to left and righ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:pointsalonglines",
+   "native:fieldcalculator",
+   "native:pointstopath",
+   "native:transect",
+   "native:joinbynearest",
+   "native:lineintersections",
+   "native:lineintersections",
+   "native:refactorfields",
+   "native:lineintersections",
+   "native:refactorfields",
+   "native:lineintersections",
+   "native:multiunion",
+   "native:refactorfields",
+   "native:refactorfields",
+   "native:refactorfields",
+   "native:joinattributestable",
+   "native:joinattributestable",
+   "native:joinattributestable",
+   "native:refactorfields",
+   "native:joinattributestable",
+   "native:refactorfields",
+   "native:joinattributestable",
+   "native:refactorfields"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W005982",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 5,
+   "n_gold_proc": 23,
+   "lcs_f1": 0.2857,
+   "bag": 0.2857,
+   "elided_loads": 4,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W006830",
+  "task": "Estimate floodwater depth. The script estimates water depth across a flooded area by generating a triangulated irregular network (TIN) surface from el",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "BAND_SELECT",
+   "NEIGHBORHOOD",
+   "NEIGHBORHOOD",
+   "SPATIAL_CLIP",
+   "BAND_ARITHMETIC",
+   "SPATIAL_CLIP",
+   "BAND_ARITHMETIC"
+  ],
+  "gold_ops": [
+   "native:extractbyattribute",
+   "saga:convertpolygonstolines",
+   "native:pointsalonglines",
+   "saga:addrastervaluestopoints",
+   "saga:triangulation",
+   "saga:simplefilter",
+   "saga:cliprasterwithpolygon",
+   "saga:rastercalculator",
+   "saga:cliprasterwithpolygon",
+   "saga:rastercalculator"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"B",
+  "ev": {
+   "wid": "W006830",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 10,
+   "lcs_f1": 0.3077,
+   "bag": 0.3077,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W007046",
+  "task": "Extract features by attribute regex and compute centroid. The script selects vector features from an input layer based on a case-insensitive or custom",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "COLLECTION_MGMT",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:setprojectvariable",
+   "native:setprojectvariable",
+   "native:fieldcalculator",
+   "native:extractbyexpression",
+   "native:fieldcalculator",
+   "native:collect",
+   "native:fixgeometries",
+   "native:centroids",
+   "native:retainfields"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"V",
+  "ev": {
+   "wid": "W007046",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 9,
+   "lcs_f1": 0.1538,
+   "bag": 0.1538,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W007094",
+  "task": "Analyze road segment geometry. The script analyzes the geometric characteristics of road segments by computing curvature radius, turning angle, and or",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "AGGREGATION",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:simplifygeometries",
+   "native:aggregate",
+   "native:extractvertices"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W007094",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.4,
+   "bag": 0.4,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W007170",
+  "task": "Analyze population impact from flood inundation. The script analyzes population exposure to flood inundation by overlaying a binary flood raster (0=dr",
+  "gold_fams": [
+   "AGGREGATION",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:zonalstatisticsfb",
+   "native:reprojectlayer"
+  ],
+  "pred_core_fams": [
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W007170",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 5,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.2857,
+   "bag": 0.2857,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W007486",
+  "task": "Map canopy vegetation extent and height. The script maps the spatial extent of canopy vegetation (LiDAR classification class 5) over Grigny, France, b",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "native:fixgeometries",
+   "native:zonalstatisticsfb"
+  ],
+  "pred_core_fams": [
+   "AGGREGATION",
+   "MASKING",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W007486",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.3333,
+   "bag": 0.3333,
+   "elided_loads": 3,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W017921",
+  "task": "Compute median elevation per grid cell. The script computes the median elevation value within each polygon of a vector grid layer, using a DSM (Digita",
+  "gold_fams": [
+   "BAND_ARITHMETIC",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "gdal:rastercalculator",
+   "native:zonalstatistics"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W017921",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.5,
+   "bag": 0.5,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W023206",
+  "task": "Generate topographic raster tiles. The script automates the creation of a regular grid over a merged digital elevation model (DEM), clips the DEM to e",
+  "gold_fams": [
+   "GEOMETRY_DEFINE",
+   "SPATIAL_CLIP",
+   "GEOMETRY_DEFINE"
+  ],
+  "gold_ops": [
+   "native:creategrid",
+   "gdal:cliprasterbyextent",
+   "native:creategrid"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W023206",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W033170",
+  "task": "Allocate mesh population to administrative boundaries. The script performs a spatial disaggregation of population from statistical mesh polygons to ad",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:fieldcalculator",
+   "native:union",
+   "native:deletecolumn",
+   "native:package",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:deletecolumn",
+   "native:package",
+   "native:aggregate",
+   "native:joinattributestable"
+  ],
+  "pred_core_fams": [
+   "BAND_ARITHMETIC",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W033170",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 10,
+   "lcs_f1": 0.1429,
+   "bag": 0.1429,
+   "elided_loads": 0,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W033927",
+  "task": "Map ROV seafloor substrate units. The script processes ROV navigation and annotation data to generate spatially explicit, substrate-classified wedge b",
+  "gold_fams": [
+   "GEOMETRY_DEFINE",
+   "VECTOR_GEOMETRY",
+   "GEOMETRY_DEFINE",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "COLLECTION_MGMT"
+  ],
+  "gold_ops": [
+   "native:createpointslayerfromtable",
+   "native:pointstopath",
+   "native:createpointslayerfromtable",
+   "native:wedgebuffers",
+   "native:dissolve",
+   "native:setlayerstyle",
+   "native:setlayerstyle"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W033927",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W034465",
+  "task": "Map population density by administrative region. The script generates a series of A4-sized, portrait-oriented PDF map layouts — one per administrative",
+  "gold_fams": [
+   "SPATIAL_CLIP",
+   "SPATIAL_CLIP",
+   "SPATIAL_CLIP",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "native:clip",
+   "native:clip",
+   "native:clip",
+   "native:clip"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W034465",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W035584",
+  "task": "Calculate MPRI vegetation index. The script processes a user-provided raster (e.g., multispectral satellite image) and vector mask layers from the QGI",
+  "gold_fams": [
+   "SPATIAL_CLIP",
+   "GEOMETRY_DEFINE",
+   "SPATIAL_CLIP",
+   "AGGREGATION",
+   "SPATIAL_CLIP",
+   "GEOMETRY_DEFINE",
+   "SPATIAL_CLIP",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "gdal:cliprasterbymasklayer",
+   "native:creategrid",
+   "native:clip",
+   "native:zonalstatistics",
+   "gdal:cliprasterbymasklayer",
+   "native:creategrid",
+   "native:clip",
+   "native:zonalstatistics"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W035584",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 5,
+   "n_gold_proc": 8,
+   "lcs_f1": 0.3077,
+   "bag": 0.3077,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W035677",
+  "task": "Order vertices of multipart line. The script processes a user-provided QGIS vector layer named 'line' to resolve unordered vertex sequences in multipa",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:multiparttosingleparts",
+   "native:snapgeometries",
+   "native:dissolve",
+   "native:mergelines",
+   "native:extractvertices"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W035677",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W036260",
+  "task": "Calculate green space percentage per neighbourhood. The script calculates the percentage of green space area within each neighbourhood polygon in Toro",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "saga:intersect",
+   "native:fixgeometries",
+   "native:dissolve",
+   "native:joinattributestable",
+   "native:reprojectlayer"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W036260",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W040682",
+  "task": "Compute height deviation from stand dominant height. The script computes a raster difference layer (diff_hdom_vhm) by subtracting a rasterized 'hdom' ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "BAND_ARITHMETIC",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "gdal:rasterize",
+   "gdal:rastercalculator",
+   "native:pixelstopoints"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W040682",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W040923",
+  "task": "Reproject layer to MeridianShift. The script reprojects a user-selected QGIS vector layer from its native CRS (or first to WGS84 if needed) into a cus",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:reprojectlayer",
+   "native:reprojectlayer"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W040923",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W041845",
+  "task": "Extract raster centroid locations. The script processes a batch of local GeoTIFF raster files (e.g., land cover, elevation, or thematic maps) stored i",
+  "gold_fams": [
+   "GEOMETRY_DEFINE",
+   "GEOMETRY_DEFINE",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT"
+  ],
+  "gold_ops": [
+   "native:polygonfromlayerextent",
+   "native:assignprojection",
+   "native:centroids",
+   "native:mergevectorlayers"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W041845",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W042189",
+  "task": "Generate drone flight plan for parcel mapping. The script generates a drone flight plan (as a KML-compatible vector layer) for autonomous UAV mapping ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "NEIGHBORHOOD",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:reprojectlayer",
+   "native:reprojectlayer",
+   "native:buffer",
+   "native:dissolve",
+   "native:shortestline",
+   "native:buffer",
+   "native:mergevectorlayers",
+   "native:dissolve"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W042189",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 8,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W042190",
+  "task": "Create parcel-based grid. The script generates a vector grid (hexagonal, rectangular, or diamond-shaped) aligned to a user-provided polygon layer ('Ar",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "GEOMETRY_DEFINE",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:reprojectlayer",
+   "native:buffer",
+   "native:creategrid",
+   "native:refactorfields"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W042190",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W047461",
+  "task": "Generate binary water mask. The script computes a binary water mask raster using the Normalized Difference Water Index (NDWI) from user-provided Green",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "NEIGHBORHOOD"
+  ],
+  "gold_ops": [
+   "gdal:merge",
+   "gdal:sieve"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W047461",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W048679",
+  "task": "Simulate urban wastewater and runoff flow. The script performs hydraulic simulation of urban wastewater and stormwater runoff using the MLA (Modèle de",
+  "gold_fams": [
+   "SPATIAL_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:extractbylocation",
+   "native:reprojectlayer",
+   "native:pointsalonglines",
+   "gdal:cliprasterbymasklayer",
+   "native:pixelstopolygons",
+   "native:extractbyattribute",
+   "native:buffer",
+   "native:buffer",
+   "native:buffer",
+   "native:buffer",
+   "native:buffer"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W048679",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W049929",
+  "task": "Compute area-weighted average attribute. The script calculates a spatial area-weighted average of a numeric field from an overlay polygon layer (e.g.,",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:addautoincrementalfield",
+   "native:fieldcalculator",
+   "native:dissolve",
+   "native:intersection",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:dissolve",
+   "native:deletecolumn",
+   "native:deletecolumn",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:orderbyexpression",
+   "native:dropgeometries",
+   "native:addautoincrementalfield",
+   "native:fieldcalculator",
+   "native:dissolve",
+   "native:intersection",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:dissolve",
+   "native:deletecolumn",
+   "native:deletecolumn",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:orderbyexpression",
+   "native:dropgeometries"
+  ],
+  "pred_core_fams": [
+   "BAND_ARITHMETIC",
+   "BAND_SELECT",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W049929",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 26,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 0,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W050376",
+  "task": "Calculate risk from hazard vulnerability exposure adaptive capacity. The script performs a spatial risk assessment by joining user-provided hazard, vu",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:joinattributestable",
+   "native:fieldcalculator"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W050376",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W050378",
+  "task": "Calculate vulnerability zonal statistics. The script computes a single specified zonal statistic (e.g., Mean, Sum, StDev) for an input raster layer ov",
+  "gold_fams": [
+   "AGGREGATION",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:zonalstatisticsfb",
+   "native:savefeatures"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W050378",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.5,
+   "bag": 0.5,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W050457",
+  "task": "Download GeoDanmark infrastructure layers. The script downloads, unzips, spatially indexes, and optionally clips vector layers from the Danish Datafor",
+  "gold_fams": [
+   "SPATIAL_CLIP",
+   "RASTER_LOAD",
+   "COLLECTION_MGMT",
+   "RASTER_LOAD"
+  ],
+  "gold_ops": [
+   "native:extractbyextent",
+   "native:filedownloader",
+   "native:createspatialindex",
+   "native:loadlayer"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "BAND_SELECT",
+   "ATTRIBUTE_FILTER"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W050457",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W050953",
+  "task": "Update polygon layer geometry. The script emulates ArcGIS's Update geoprocessing tool for polygon layers by performing intersection (to clip the updat",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:intersection",
+   "native:refactorfields",
+   "native:difference",
+   "native:mergevectorlayers",
+   "native:dissolve"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W050953",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 5,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W051488",
+  "task": "Estimate school-age population. The script estimates single-year-of-age population counts (0–29 years) by sex (male, female, total) for user-defined a",
+  "gold_fams": [
+   "AGGREGATION",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "COLLECTION_MGMT",
+   "SPATIAL_FILTER",
+   "COLLECTION_MGMT",
+   "SPATIAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "GEOMETRY_DEFINE",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "SPATIAL_FILTER",
+   "EXPORT_OUTPUT",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:zonalstatisticsfb",
+   "native:zonalstatisticsfb",
+   "native:refactorfields",
+   "native:createspatialindex",
+   "native:refactorfields",
+   "native:createspatialindex",
+   "native:refactorfields",
+   "native:refactorfields",
+   "native:createspatialindex",
+   "native:createspatialindex",
+   "native:joinattributesbylocation",
+   "native:createspatialindex",
+   "native:joinattributesbylocation",
+   "native:refactorfields",
+   "native:createspatialindex",
+   "native:randompointsinextent",
+   "native:refactorfields",
+   "native:refactorfields",
+   "native:refactorfields",
+   "native:refactorfields",
+   "native:createspatialindex",
+   "native:joinattributesbylocation",
+   "native:savefeatures",
+   "native:exporttospreadsheet"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W051488",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W055494",
+  "task": "Merge similar forest stands. The script merges small forest stand polygons with geometrically adjacent and spectrally/structurally similar (based on r",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:fieldcalculator",
+   "native:extractbyexpression",
+   "native:aggregate",
+   "native:orderbyexpression",
+   "native:dissolve",
+   "native:fieldcalculator",
+   "native:extractbyexpression",
+   "native:fieldcalculator",
+   "native:mergevectorlayers",
+   "native:fieldcalculator",
+   "native:deletecolumn",
+   "native:deletecolumn",
+   "native:fieldcalculator"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W055494",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 13,
+   "lcs_f1": 0.2353,
+   "bag": 0.2353,
+   "elided_loads": 0,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055534",
+  "task": "Compute country-level population statistics. The script computes zonal statistics (mean values) for raster datasets—land quality, and population densi",
+  "gold_fams": [
+   "AGGREGATION",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:zonalstatistics",
+   "native:fixgeometries",
+   "native:deletecolumn"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "BAND_SELECT",
+   "BAND_SELECT",
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W055534",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 5,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.25,
+   "bag": 0.5,
+   "elided_loads": 3,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055585",
+  "task": "Delimit Maxent model zones. The script reclassifies a Maxent-generated ASCII raster model into discrete ecological or suitability zones using a CSV-ba",
+  "gold_fams": [
+   "THRESHOLD_LOGIC",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:reclassifybylayer",
+   "native:pixelstopolygons"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"B",
+  "ev": {
+   "wid": "W055585",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055590",
+  "task": "Fill linear or isolated environmental variables. The script converts a vector layer representing linear or isolated environmental features (e.g., rive",
+  "gold_fams": [
+   "BAND_ARITHMETIC",
+   "SPATIAL_CLIP",
+   "VECTOR_GEOMETRY",
+   "MASKING",
+   "MASKING"
+  ],
+  "gold_ops": [
+   "qgis:rastercalculator",
+   "native:clip",
+   "gdal:rasterize",
+   "grass7:r.null",
+   "saga:rastermasking"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W055590",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 5,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055620",
+  "task": "Filter structures near rivers. The script filters and relocates point structures (e.g., bridges, culverts) from MTMD and road–river intersections to p",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:lineintersections",
+   "native:mergevectorlayers",
+   "native:buffer",
+   "native:dissolve",
+   "native:centroids",
+   "native:extractwithindistance",
+   "native:fieldcalculator",
+   "native:lineintersections",
+   "native:mergevectorlayers",
+   "native:buffer",
+   "native:dissolve",
+   "native:centroids",
+   "native:extractwithindistance",
+   "native:fieldcalculator"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W055620",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 14,
+   "lcs_f1": 0.1111,
+   "bag": 0.1111,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055625",
+  "task": "Calculate riverbank continuity index (Indice F3). The script computes the Indice F3 for river morphological quality by evaluating longitudinal continu",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP",
+   "THRESHOLD_LOGIC",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP",
+   "THRESHOLD_LOGIC",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "gdal:polygonize",
+   "native:buffer",
+   "native:dissolve",
+   "native:mergevectorlayers",
+   "native:dissolve",
+   "native:buffer",
+   "gdal:cliprasterbymasklayer",
+   "native:reclassifybytable",
+   "native:dissolve",
+   "native:simplifygeometries",
+   "native:buffer",
+   "gdal:cliprasterbymasklayer",
+   "native:reclassifybytable",
+   "native:dissolve",
+   "native:simplifygeometries",
+   "native:buffer",
+   "native:dissolve",
+   "native:mergevectorlayers",
+   "native:dissolve"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "BAND_SELECT",
+   "AGGREGATION",
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W055625",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 5,
+   "n_gold_proc": 19,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 3,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055670",
+  "task": "Export lentic water to PostgreSQL. The script exports lentic water polygons to a PostgreSQL/PostGIS table. It first refactors the fields of the input ",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W055670",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055689",
+  "task": "Export Oil and Gas Associated Elements. The script exports a point or polygon vector layer to a PostgreSQL/PostGIS table 'elem_assoc_pgq' in a RECART ",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W055689",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055702",
+  "task": "Export spring points to database. The script exports a point layer of springs to a PostgreSQL/PostGIS database table. It first refactors the input fie",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "gdal:importvectorintopostgisdatabaseavailableconnections"
+  ],
+  "pred_core_fams": [
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"V",
+  "ev": {
+   "wid": "W055702",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 1,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055743",
+  "task": "Multibeam seabed segmentation. The script segments seafloor from multibeam bathymetry and backscatter rasters. It computes slope and roughness, rescal",
+  "gold_fams": [
+   "TERRAIN_DERIVED",
+   "TERRAIN_DERIVED",
+   "THRESHOLD_LOGIC",
+   "THRESHOLD_LOGIC",
+   "THRESHOLD_LOGIC",
+   "COLLECTION_MGMT",
+   "NEIGHBORHOOD",
+   "NEIGHBORHOOD",
+   "VECTOR_GEOMETRY",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:slope",
+   "gdal:roughness",
+   "grass7:r.rescale.eq",
+   "grass7:r.rescale.eq",
+   "grass7:r.rescale.eq",
+   "gdal:buildvirtualraster",
+   "gdal:sieve",
+   "gdal:sieve",
+   "native:pixelstopolygons",
+   "native:aggregate",
+   "native:zonalstatisticsfb",
+   "native:zonalstatisticsfb",
+   "native:zonalstatisticsfb",
+   "native:multiparttosingleparts"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"B",
+  "ev": {
+   "wid": "W055743",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 6,
+   "n_gold_proc": 14,
+   "lcs_f1": 0.3,
+   "bag": 0.3,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055796",
+  "task": "Download Copernicus Global Land products. The script downloads Copernicus Global Land products from the Copernicus land service by selecting a product",
+  "gold_fams": [
+   "RASTER_LOAD",
+   "RASTER_LOAD",
+   "RASTER_LOAD",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "native:filedownloader",
+   "native:filedownloader",
+   "native:filedownloader",
+   "gdal:translate"
+  ],
+  "pred_core_fams": [
+   "TEMPORAL_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"TEMPORAL_FILTER\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W055796",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": [
+    "TEMPORAL_FILTER"
+   ]
+  }
+ },
+ {
+  "wid": "W055908",
+  "task": "Sample vector points by attribute. The script performs point sampling on a user-provided vector layer (points) using either random or stratified sampl",
+  "gold_fams": [
+   "SPATIAL_FILTER",
+   "EXPORT_OUTPUT",
+   "SPATIAL_FILTER",
+   "EXPORT_OUTPUT",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "qgis:randomselection",
+   "native:saveselectedfeatures",
+   "qgis:randomselectionwithinsubsets",
+   "native:saveselectedfeatures",
+   "native:addxyfields"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W055908",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 5,
+   "lcs_f1": 0.2222,
+   "bag": 0.2222,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W055913",
+  "task": "Merge two agricultural zonings. The script merges two polygon vector layers representing agricultural zonings (e.g., management zones, soil zones, or ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:fixgeometries",
+   "native:fixgeometries",
+   "native:union",
+   "native:multiparttosingleparts",
+   "qgis:exportaddgeometrycolumns",
+   "native:addautoincrementalfield"
+  ],
+  "pred_core_fams": [
+   "BAND_ARITHMETIC",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W055913",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 6,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 0,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W056058",
+  "task": "Classify and buffer water network levels. The script performs a clip operation on a user-provided vector layer using a clip layer, then classifies the",
+  "gold_fams": [
+   "SPATIAL_CLIP",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:clip",
+   "native:buffer"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W056058",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W056074",
+  "task": "Identify underserved villages for hospital access. The script analyzes hospital accessibility in Maharashtra by clipping hospital and village point la",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP",
+   "SPATIAL_CLIP",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "native:fixgeometries",
+   "native:clip",
+   "native:clip",
+   "native:buffer",
+   "native:extractbylocation",
+   "native:countpointsinpolygon"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "SPATIAL_FILTER",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W056074",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 6,
+   "n_gold_proc": 6,
+   "lcs_f1": 0.3333,
+   "bag": 0.3333,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W056162",
+  "task": "Merge river and stream vectors. The script merges river and stream vector layers from OpenStreetMap data for a given spatial extent using QuickOSM. It",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:mergevectorlayers",
+   "native:dissolve",
+   "native:multiparttosingleparts"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W056162",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W056166",
+  "task": "Extract River Max Height Points. The script processes river line vectors and a DEM to compute elevation at start and end points, calculate maximum hei",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:fieldcalculator",
+   "native:mergevectorlayers",
+   "native:dissolve",
+   "native:multiparttosingleparts"
+  ],
+  "pred_core_fams": [
+   "MASKING",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"MASKING\",\"repeat\":1},{\"seq\":3,\"family\":\"AGGRE",
+  "ev": {
+   "wid": "W056166",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W056198",
+  "task": "Generate microsheds. The script generates microsheds (watershed basins) from a DEM using GRASS r.watershed with a user-provided flow accumulation thre",
+  "gold_fams": [
+   "TERRAIN_DERIVED",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "grass7:r.watershed",
+   "gdal:polygonize"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W056198",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W056244",
+  "task": "Calculate zonal elevation statistics for seismic zones. The script computes zonal statistics (mean) of SRTM elevation for each seismic zone polygon. I",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "native:fixgeometries",
+   "native:zonalstatisticsfb"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W056244",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.5,
+   "bag": 0.5,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W056274",
+  "task": "Calculate maximum distance to water. The script calculates, for each paddock polygon, the maximum Euclidean distance from any location within that pad",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "NEIGHBORHOOD",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "gdal:rasterize",
+   "gdal:proximity",
+   "gdal:cliprasterbymasklayer"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W056274",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W062025",
+  "task": "Compute hydraulic envelope rasters. The script computes maximum velocity and depth envelope rasters from a set of hydraulic simulation scenarios using",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "COLLECTION_MGMT",
+   "COLLECTION_MGMT",
+   "SPATIAL_CLIP",
+   "BAND_ARITHMETIC",
+   "COLLECTION_MGMT"
+  ],
+  "gold_ops": [
+   "gdal:merge",
+   "gdal:buildvirtualraster",
+   "gdal:merge",
+   "gdal:cliprasterbyextent",
+   "gdal:rastercalculator",
+   "gdal:buildvirtualraster"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W062025",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W064855",
+  "task": "Map airport exclusion zones in Poland. The script generates a map of Poland with airport buffer zones excluded. It loads country boundaries and airpor",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:intersection",
+   "native:reprojectlayer",
+   "native:reprojectlayer",
+   "native:buffer",
+   "native:difference"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W064855",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 5,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W066829",
+  "task": "Generate pine wilt disease map composition. The script automates the output of map compositions for pine wilt disease management. It enables users to ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:buffer",
+   "native:dissolve"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "BAND_SELECT",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W066829",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 5,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 2,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W066873",
+  "task": "Compute line buffer overlay statistics. The script evaluates line accuracy using buffer overlays. It takes input and reference line layers, buffers th",
+  "gold_fams": [
+   "GEOMETRY_DEFINE",
+   "GEOMETRY_DEFINE",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "native:extenttolayer",
+   "native:extenttolayer",
+   "native:intersection",
+   "native:buffer",
+   "native:buffer",
+   "native:buffer",
+   "native:clip",
+   "native:difference",
+   "native:union",
+   "native:union",
+   "native:multiparttosingleparts",
+   "qgis:statisticsbycategories"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W066873",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W066995",
+  "task": "Collect Queensland Natural Resource Data. The script collects natural resource data from the Queensland government feature server by querying objects ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "GEOMETRY_DEFINE",
+   "SPATIAL_CLIP",
+   "COLLECTION_MGMT"
+  ],
+  "gold_ops": [
+   "native:buffer",
+   "native:extenttolayer",
+   "native:clip",
+   "native:mergevectorlayers"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "ATTRIBUTE_FILTER"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W066995",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 4,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W067034",
+  "task": "Define land cover raster encoding. The script implements a dialog for the Graphab QGIS plugin to select a raster file (or vector layer), extract uniqu",
+  "gold_fams": [
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "gold_ops": [
+   "native:rasterlayeruniquevaluesreport",
+   "qgis:listuniquevalues"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W067034",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.5,
+   "bag": 0.5,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W067092",
+  "task": "Calculate Area Weighted Average. The script calculates area-weighted average of a given numeric attribute from an overlay polygon layer for each featu",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:addautoincrementalfield",
+   "native:fieldcalculator",
+   "native:dissolve",
+   "native:intersection",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:dissolve",
+   "native:deletecolumn",
+   "native:deletecolumn",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:orderbyexpression",
+   "native:dropgeometries"
+  ],
+  "pred_core_fams": [
+   "BAND_ARITHMETIC",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W067092",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 5,
+   "n_gold_proc": 13,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 0,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W067268",
+  "task": "Noise level prediction from point source. This script estimates noise levels (dBA) from a point source at receptor locations using the BS 5228 standar",
+  "gold_fams": [
+   "GEOMETRY_DEFINE",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "TERRAIN_DERIVED",
+   "GEOMETRY_DEFINE",
+   "SPATIAL_FILTER",
+   "VECTOR_GEOMETRY",
+   "AGGREGATION",
+   "VECTOR_GEOMETRY",
+   "AGGREGATION",
+   "NEIGHBORHOOD",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT"
+  ],
+  "gold_ops": [
+   "native:pointtolayer",
+   "native:setlayerstyle",
+   "native:reprojectlayer",
+   "gdal:warpreproject",
+   "native:reprojectlayer",
+   "gdal:viewshed",
+   "native:creategrid",
+   "native:extractbylocation",
+   "native:centroids",
+   "native:zonalstatisticsfb",
+   "native:intersection",
+   "native:rastersampling",
+   "qgis:distancetonearesthubpoints",
+   "native:joinattributestable",
+   "native:joinattributestable",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:setlayerstyle"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W067268",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W067295",
+  "task": "Watershed delineation from point. The script delineates the upstream watershed (drainage basin) for a given point location using a Digital Elevation M",
+  "gold_fams": [
+   "TERRAIN_DERIVED",
+   "TERRAIN_DERIVED"
+  ],
+  "gold_ops": [
+   "grass7:r.watershed",
+   "grass7:r.water.outlet"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W067295",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 2,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W067313",
+  "task": "Simulate earthworks cut and fill. The script modifies a DEM by performing cut and fill earthworks based on a platform vector layer, platform base leve",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "BAND_ARITHMETIC",
+   "BAND_ARITHMETIC",
+   "BAND_ARITHMETIC",
+   "BAND_ARITHMETIC",
+   "BAND_ARITHMETIC",
+   "BAND_ARITHMETIC"
+  ],
+  "gold_ops": [
+   "native:multiringconstantbuffer",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "qgis:advancedpythonfieldcalculator",
+   "qgis:advancedpythonfieldcalculator",
+   "qgis:advancedpythonfieldcalculator",
+   "gdal:rastercalculator",
+   "gdal:rastercalculator",
+   "gdal:rasterize_over",
+   "gdal:rasterize_over",
+   "gdal:rastercalculator",
+   "gdal:rasterize_over"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W067313",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W067404",
+  "task": "Calculate continuous raster statistics for distribution points. The script generates zonal statistics for continuous environmental raster data at spec",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "AGGREGATION",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:buffer",
+   "native:zonalstatisticsfb",
+   "native:centroids"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W067404",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 12,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.1333,
+   "bag": 0.1333,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W067405",
+  "task": "Reduce raster extent by negative buffer. The script trims a raster layer by creating a zero-value raster from the input, polygonizing it, applying a n",
+  "gold_fams": [
+   "BAND_ARITHMETIC",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "qgis:rastercalculator",
+   "gdal:polygonize",
+   "native:buffer",
+   "gdal:cliprasterbymasklayer"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W067405",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W067519",
+  "task": "Compute slope class per drainage area. The script computes mean slope and slope class categories for each drainage area polygon (Einzelflächen) using ",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "TERRAIN_DERIVED",
+   "AGGREGATION",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "gdal:merge",
+   "native:slope",
+   "native:zonalstatisticsfb",
+   "native:reprojectlayer"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W067519",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W067593",
+  "task": "Create shaded relief with aerial perspective. The script generates two hillshade layers (top and bottom) from a user-provided DEM using two light sour",
+  "gold_fams": [
+   "AGGREGATION",
+   "TERRAIN_DERIVED",
+   "EXPORT_OUTPUT",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "AGGREGATION",
+   "BAND_ARITHMETIC"
+  ],
+  "gold_ops": [
+   "native:rasterlayerstatistics",
+   "gdal:hillshade",
+   "gdal:translate",
+   "native:rasterlayerstatistics",
+   "gdal:rastercalculator",
+   "native:rasterlayerstatistics",
+   "gdal:rastercalculator"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "AGGREGATION",
+   "AGGREGATION",
+   "BAND_SELECT",
+   "BAND_SELECT",
+   "BAND_SELECT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W067593",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 7,
+   "n_gold_proc": 7,
+   "lcs_f1": 0.4286,
+   "bag": 0.4286,
+   "elided_loads": 5,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W067664",
+  "task": "Generate flood hazard maps from FLO-2D. The script converts FLO-2D ASCII output files (e.g., flood depth, velocity, maximum deposition, ground elevati",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:dissolve",
+   "gdal:polygonize"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"R",
+  "ev": {
+   "wid": "W067664",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W067982",
+  "task": "Classify dangles by overlapping selected layers. The script identifies dangles (line sections that do not connect to other lines) in a vector network ",
+  "gold_fams": [
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "COLLECTION_MGMT",
+   "COLLECTION_MGMT"
+  ],
+  "gold_ops": [
+   "native:mergevectorlayers",
+   "native:buffer",
+   "native:mergevectorlayers",
+   "native:buffer",
+   "native:mergevectorlayers",
+   "native:mergevectorlayers",
+   "native:intersection",
+   "native:extractbylocation",
+   "native:createspatialindex",
+   "native:createspatialindex"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"V",
+  "ev": {
+   "wid": "W067982",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W068137",
+  "task": "Build GSM coverage plans. The script identifies pivot localities and their satellite localities based on a distance threshold, creates coverage buffer",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "native:buffer",
+   "native:reprojectlayer",
+   "qgis:voronoipolygons",
+   "native:clip"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W068137",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W068184",
+  "task": "Calculate flight route metrics. The script calculates flight route metrics (distance, time, and fuel burn) for a line vector dataset in QGIS. It refac",
+  "gold_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:refactorfields",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator",
+   "native:fieldcalculator"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W068184",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 7,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W068194",
+  "task": "Generate atlas grid cells. The script creates a polygon grid layer for atlas mapsheets, calculating grid metrics from map scale and overlap percentage",
+  "gold_fams": [
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER",
+   "VECTOR_GEOMETRY",
+   "ATTRIBUTE_FILTER"
+  ],
+  "gold_ops": [
+   "native:selectbylocation",
+   "native:selectbylocation",
+   "native:dissolve",
+   "native:addautoincrementalfield",
+   "native:polygonstolines",
+   "native:splitwithlines",
+   "native:fieldcalculator",
+   "native:reprojectlayer",
+   "native:fieldcalculator"
+  ],
+  "pred_core_fams": [
+   "BAND_SELECT",
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W068194",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 9,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W068342",
+  "task": "Clear Safe Canopy Points. The script filters a set of points created for drone flight planning by reprojecting them to EPSG:31981, applying a -10 m bu",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_FILTER",
+   "SPATIAL_FILTER"
+  ],
+  "gold_ops": [
+   "native:reprojectlayer",
+   "native:reprojectlayer",
+   "native:reprojectlayer",
+   "native:buffer",
+   "native:extractbylocation",
+   "native:extractbylocation"
+  ],
+  "pred_core_fams": [
+   "AGGREGATION",
+   "BAND_ARITHMETIC",
+   "MASKING"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_ARITHMETIC\",\"repeat\":1},{\"seq\":3,\"family",
+  "ev": {
+   "wid": "W068342",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 3,
+   "n_gold_proc": 6,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 0,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W068346",
+  "task": "Clip DSM to Buffered Plot. The script clips a Digital Surface Model (DSM) raster to a vector polygon representing an area plot. It reprojects the plot",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "native:reprojectlayer",
+   "native:buffer",
+   "native:reprojectlayer",
+   "gdal:cliprasterbymasklayer"
+  ],
+  "pred_core_fams": [
+   "AGGREGATION",
+   "BAND_SELECT"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":2,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":3,\"family\":\"B",
+  "ev": {
+   "wid": "W068346",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 2,
+   "n_gold_proc": 4,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W068359",
+  "task": "Generate polygons in empty regions. This QGIS processing algorithm generates polygon features representing empty gaps (holes) inside a provided bounda",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "COLLECTION_MGMT",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY"
+  ],
+  "gold_ops": [
+   "native:dissolve",
+   "native:polygonstolines",
+   "native:polygonstolines",
+   "native:mergevectorlayers",
+   "native:fixgeometries",
+   "native:multiparttosingleparts",
+   "native:polygonize",
+   "native:fixgeometries",
+   "native:multiparttosingleparts",
+   "native:reprojectlayer",
+   "native:fixgeometries",
+   "native:multiparttosingleparts",
+   "native:reprojectlayer",
+   "native:fixgeometries",
+   "native:multiparttosingleparts"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"BAND_SELECT\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W068359",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ },
+ {
+  "wid": "W068582",
+  "task": "Assign Manning's n from CORINE 2018. The script assigns Manning's roughness coefficient to CORINE 2018 land cover polygons within a user-defined area ",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "VECTOR_GEOMETRY",
+   "SPATIAL_CLIP"
+  ],
+  "gold_ops": [
+   "native:reprojectlayer",
+   "native:fixgeometries",
+   "native:clip"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "COLLECTION_MGMT",
+   "AGGREGATION"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"VECTOR_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":2},{\"seq\":3,\"famil",
+  "ev": {
+   "wid": "W068582",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W068608",
+  "task": "Landsat Collection 2 surface reflectance and temperature conversion. The script applies scale factors to Landsat Collection 2 Level 2 surface reflecta",
+  "gold_fams": [
+   "BAND_ARITHMETIC",
+   "COLLECTION_MGMT",
+   "BAND_ARITHMETIC"
+  ],
+  "gold_ops": [
+   "gdal:rastercalculator",
+   "gdal:merge",
+   "gdal:rastercalculator"
+  ],
+  "pred_core_fams": [
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER",
+   "ATTRIBUTE_FILTER"
+  ],
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"ATTRIBUTE_FILTER\",\"repeat\":4}],\"repetition_gr",
+  "ev": {
+   "wid": "W068608",
+   "parsed": true,
+   "type": "missing_and_extra_mixed",
+   "n_core_stages": 4,
+   "n_gold_proc": 3,
+   "lcs_f1": 0.0,
+   "bag": 0.0,
+   "elided_loads": 1,
+   "unmatchable_fams": []
+  }
+ },
+ {
+  "wid": "W068833",
+  "task": "Harmonize rasters for suitability analysis. This QGIS processing algorithm aligns multiple input rasters to a common grid geometry (CRS, extent, pixel",
+  "gold_fams": [
+   "VECTOR_GEOMETRY",
+   "EXPORT_OUTPUT"
+  ],
+  "gold_ops": [
+   "gdal:warpreproject",
+   "gdal:translate"
+  ],
+  "pred_core_fams": null,
+  "pred_text_head": " {\"stages\":[{\"seq\":1,\"family\":\"RASTER_LOAD\",\"repeat\":1},{\"seq\":2,\"family\":\"AGGREGATION\",\"repeat\":1},{\"seq\":3,\"family\":\"A",
+  "ev": {
+   "wid": "W068833",
+   "parsed": false,
+   "hit_cap": 1
+  }
+ }
+]
