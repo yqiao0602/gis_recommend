@@ -120,7 +120,7 @@
    "required_outcome": "Per-station, per-month 20-year average surface pressure values exported for each ASOS station.",
    "required_constraints": [
     "[EXPLICIT] ERA5; 2000-2020; ASOS station locations",
-    "[EXPLICIT] monthly means then 20-year average per calendar month",
+    "[EXPLICIT] monthly means aggregated across years per calendar month (multi-year calendar-month averaging)",
     "[EXPLICIT] results exported per station",
     "[IMPLICIT] station-to-grid extraction then month grouping"
    ],
@@ -133,7 +133,7 @@
     "Any join/extraction mechanism; any grouped-reduce arrangement"
    ],
    "failure_conditions": [
-    "Missing month dimension or 20-year averaging",
+    "Missing month dimension or multi-year calendar-month aggregation",
     "Stations not matched to grid values",
     "No per-station export"
    ],
@@ -230,7 +230,7 @@
    "eligibility_status": "KEEP-STRATIFIED",
    "task_text": "Task: Model heating and cooling degree days\nthe workflow models fuzzy heating and cooling degree days using daily minimum and maximum temperature projections from the CESM1-BGC climate model under historical and RCP scenarios (rcp45, rcp85). It calculates daily mean temperatures, applies fuzzy logic thresholds (with and without 3-day averaging) to estimate building energy demand proxies, and exports annual raster maps of heating and cooling days for 2000 (historical) and 2050 (future projection), including their differences. The outputs are masked to land areas using MODIS land cover data and visualized with custom color palettes.",
    "task_sha256": "5ae30fa49bc9285b3bafb9448e3459171ac070be91fabee533abb03f84dc624b",
-   "required_outcome": "Annual heating/cooling degree-day rasters for 2000 (historical) and 2050 (RCP projection) plus their difference, land-masked and visualized.",
+   "required_outcome": "Annual heating/cooling degree-day rasters for EACH scenario - historical 2000, RCP45 2050, AND RCP85 2050 - together with their required difference maps, land-masked and visualized.",
    "required_constraints": [
     "[EXPLICIT] CESM1-BGC daily min/max under historical + rcp45/rcp85",
     "[EXPLICIT] daily mean temperatures; fuzzy thresholds with and without 3-day averaging",
@@ -254,7 +254,7 @@
     "Land mask not applied"
    ],
    "underdetermined_aspects": [
-    "Fuzzy threshold values; GCM ensemble details"
+    "Fuzzy threshold values; GCM ensemble details; difference-map baseline pairing (the natural reading 2050-minus-2000 is a reasonable route but the task does not fix the baseline)"
    ],
    "presentation_requirements": [
     "custom color palettes (task-stated presentation)"
@@ -270,7 +270,7 @@
    "eligibility_status": "KEEP",
    "task_text": "Task: Model permafrost thermal state\nthe workflow models the spatial distribution of permafrost thermal state (ALT - Active Layer Thickness) using kriging interpolation and Random Forest regression. It first performs geostatistical interpolation (kriging) on ALT point data to generate a continuous surface, then combines it with environmental covariates (e.g., soil properties, climate indices, NDVI, NDSI) to train a machine learning model. The final output is a classified raster map of estimated ALT (E), validated through training accuracy metrics and variable importance charts, with results exported as assets and visualized on the map.",
    "task_sha256": "5c1998a93e2b787f048e5e64f351fc58f91bb403ff5eca14a58f133c161c2d99",
-   "required_outcome": "A classified raster map of estimated Active Layer Thickness with training accuracy metrics and variable-importance outputs, as stated by the task.",
+   "required_outcome": "Estimated ALT in two related products - the continuous RF-regression ALT surface and the classified raster DERIVED from it - with training accuracy metrics and variable-importance outputs, as stated by the task.",
    "required_constraints": [
     "[EXPLICIT] kriging interpolation of ALT point data",
     "[EXPLICIT] environmental covariates (soil/climate/NDVI/NDSI)",
@@ -289,6 +289,7 @@
    "failure_conditions": [
     "Missing kriging stage",
     "Missing ML/regression stage",
+    "Continuous ALT surface or its derived classified raster missing",
     "Training accuracy metrics or variable-importance outputs absent"
    ],
    "underdetermined_aspects": [
@@ -670,7 +671,7 @@
     "Validation leakage (random split ignoring year)"
    ],
    "underdetermined_aspects": [
-    "Exact predictor list; hyperparameters; sample sizes"
+    "Exact predictor list; hyperparameters; sample sizes; delivery/export form of the classified results (task requires generation for cryospheric surface mapping but specifies no Drive/GeoTIFF/asset format)"
    ],
    "presentation_requirements": [],
    "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
