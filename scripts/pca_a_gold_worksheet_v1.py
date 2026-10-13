@@ -228,6 +228,8 @@ def main():
         rows.append({
             "line_id": lid, "group": "A", "split": pr["split"],
             "task_type": pr["task_type"], "eligibility_status": pr["status"],
+            "task_type_note": ("coarse GEE-pool label; may not match the task's actual analytic family"
+                               if lid == 41652 else None),
             "task_text": pr["instruction"],   # verbatim from frozen pool
             "task_sha256": hashlib.sha256(pr["instruction"].encode("utf-8")).hexdigest(),
             "required_outcome": g["o"],
