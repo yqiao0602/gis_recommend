@@ -73,3 +73,20 @@ planner_v2_train 文本池双重判定）；若最终 gold 候选池无法定位
 6. **去重账本**：60 条对训练文本池 8-gram + 近似重复扫描；
 7. 复杂度/task_type 配平复核 + **三组表述抽象层级可比性核对**（owner 正式生成前要求）→
    冻结任务/金标/改写稿 SHA → Phase 2 smoke。
+
+## 4. 阶段 1：B 组独立金标编写完成（2026-10-13，owner 阶段序执行）
+
+- **控制点闭环**（owner 要求的运行环境验证）：冻结文件完整 SHA256 =
+  `1a13ad8d95c33771275a5ee8aca1f8940000dafc8ed5053c07ac6920b53bc7c9`，
+  工作区 = 提交 a44e665f = HEAD 三方逐字节一致；文件自此只读，修订走版本化。
+- **`pca_b_gold_worksheet_v1.json`（SHA `06b30b9c810a2e6d`，19 行）**：以冻结题面为
+  唯一任务语义依据（task_text 从冻结文件零转录读取并逐行绑定 text_sha256），
+  按 owner 八字段结构逐条编写：required_outcome / required_constraints /
+  required_capabilities / acceptable_alternatives / failure_conditions /
+  gold_chain_audit（=PENDING-STAGE-2，**编写过程未读任何原始链**）/ evidence（题面原句）。
+- 每条金标体现 owner 关键区分：任务要求 vs 可接受实现 vs 原链实现（例：W056274 距离
+  对象锁定"同一 paddock 内水源点"不可被替代路线绕过；W000473 明确接受全部等价路线；
+  W000890 等级优先以原文核实为据）。
+- 待 owner 审核 B 组金标独立性与可判定性 → 通过后进阶段 2（原链一致性审计，四标签
+  CONSISTENT / PARTIALLY_CONSISTENT / INCONSISTENT / UNDERDETERMINED 待正式定义入账本）
+  → 阶段 3（A/C 组 + 配对）→ 阶段 4（评测账本冻结 → 才申请正式生成）。
