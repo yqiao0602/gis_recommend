@@ -1,0 +1,67 @@
+{
+  "frozen": true,
+  "date": "2026-10-13",
+  "adjudicator": "owner (round-10; based on full stages in r5_adjudication_packet_5516_6878_9210_9854_v1.jsonl)",
+  "protocol": {
+    "coverage_states": ["missing_confirmed", "covered_confirmed", "unresolved_wrapper"],
+    "requirement_states": ["required", "not_required", "requirement_uncertain"],
+    "separation_rule": "slot REQUIREMENT determination is recorded separately from stage-COVERAGE adjudication; only `required` slots receive coverage states; `not_required` is NEVER recorded as covered_confirmed (owner round-10)"
+  },
+  "groups": {
+    "5516": {
+      "requirement_notes": "MASK = mask-constraint execution (not merely water-mask data existence); INDEX = UVVR ratio computation (not band selection); COMPOSITE = composite output",
+      "slots": {
+        "MASK": {"0": "missing_confirmed", "1": "missing_confirmed", "2": "missing_confirmed", "3": "unresolved_wrapper", "4": "covered_confirmed", "5": "missing_confirmed", "6": "missing_confirmed", "7": "missing_confirmed"},
+        "INDEX": {"0": "missing_confirmed", "1": "missing_confirmed", "2": "missing_confirmed", "3": "missing_confirmed", "4": "missing_confirmed", "5": "covered_confirmed", "6": "missing_confirmed", "7": "missing_confirmed"},
+        "COMPOSITE": {"1": "missing_confirmed", "2": "missing_confirmed", "4": "missing_confirmed", "5": "missing_confirmed"}
+      },
+      "caveats": ["cand5 SPECTRAL_INDEX covers the generic INDEX slot but does NOT confirm the UVVR formula is correct - slot coverage != formula correctness"]
+    },
+    "6878": {
+      "requirement_notes": "NDVI + explicit time range required; 'composites' in task text not auto-equated to an AGGREGATION implementation",
+      "slots": {
+        "TEMPORAL": {"0": "missing_confirmed", "5": "unresolved_wrapper", "7": "missing_confirmed"},
+        "INDEX": {"0": "missing_confirmed", "1": "missing_confirmed", "2": "missing_confirmed", "3": "missing_confirmed", "4": "unresolved_wrapper", "5": "unresolved_wrapper", "6": "missing_confirmed", "7": "missing_confirmed"}
+      },
+      "caveats": ["cand4 ITERATIVE_APPLY: no separate evidence of NDVI inside the wrapper; owner directs a UNIFORM wrapper rule across all ITERATIVE_APPLY cases (no slot-specific treatment)"]
+    },
+    "9210": {
+      "requirement_notes": "task does NOT require area statistics or accuracy assessment - STATS is `not_required` for this task (recorded separately, NEVER as covered_confirmed)",
+      "slots": {
+        "TEMPORAL": {"2": "missing_confirmed", "3": "missing_confirmed"},
+        "SPATIAL": {"2": "missing_confirmed", "3": "missing_confirmed", "7": "unresolved_wrapper"},
+        "CLASSIFY": {"1": "missing_confirmed", "2": "missing_confirmed", "3": "missing_confirmed", "4": "missing_confirmed", "6": "missing_confirmed"},
+        "STATS": {"0": "not_required", "1": "not_required", "2": "not_required", "3": "not_required", "4": "not_required", "5": "not_required", "6": "not_required", "7": "not_required"}
+      },
+      "caveats": ["cand7 SPATIAL: ITERATIVE_APPLY prevents full exclusion of internal implementation"],
+      "rule_findings": ["R5 marked STATS missing for all 8 candidates - FALSE REQUIREMENT: the `areas` hit comes from the class name 'deforested areas', not an area-computation requirement (new v0.5 ledger item: `areas` pattern needs statistical-verb context)"]
+    },
+    "9854": {
+      "requirement_notes": "STATS (AOI mean + sort) clearly required; INDEX is `requirement_uncertain` - MODIS MOD13A1 provides NDVI as a product band, and the task asks for SCALING existing NDVI values; whether slot INDEX covers product-band reading+scaling must be fixed by definition BEFORE any omission statistic (owner round-10)",
+      "slots": {
+        "INDEX": {"0": "requirement_uncertain", "1": "requirement_uncertain", "2": "requirement_uncertain", "3": "requirement_uncertain", "4": "requirement_uncertain", "5": "requirement_uncertain", "6": "requirement_uncertain", "7": "requirement_uncertain"},
+        "STATS": {"0": "missing_confirmed", "1": "missing_confirmed", "2": "missing_confirmed", "5": "missing_confirmed", "7": "missing_confirmed"}
+      },
+      "cand_notes": {
+        "3": "AGGREGATION present but AOI-mean implementation unverified - stage-granularity audit note, NOT forced into covered_confirmed",
+        "4": "same as cand3",
+        "6": "same as cand3"
+      }
+    }
+  },
+  "summary": {
+    "r5_missing_marks_total": 61,
+    "owner_missing_confirmed": 39,
+    "owner_unresolved_wrapper": 5,
+    "owner_requirement_uncertain": 8,
+    "owner_not_required": 8,
+    "owner_covered_confirmed_among_r5_marks": 1,
+    "recalibrations": {
+      "9210_STATS_not_required": 8,
+      "9854_INDEX_requirement_uncertain": 8,
+      "wrapper_reclassified_unresolved": 5,
+      "5516_cand5_INDEX_covered_by_SPECTRAL_INDEX": 0
+    },
+    "reporting_discipline": "these 32 records must NOT be collapsed into a single model confirmed-omission rate: 9210 non-required slots, 9854 INDEX definition boundary, and 9854 AGGREGATION granularity uncertainty are reported separately (owner round-10)"
+  }
+}

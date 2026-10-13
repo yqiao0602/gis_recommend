@@ -1,0 +1,100 @@
+{
+  "protocol": {
+    "version": "v1 (owner round-6 freeze)",
+    "main_labels": [
+      "omission",
+      "unsupported",
+      "both_reasonable",
+      "unclear"
+    ],
+    "evidence_fields": [
+      "omission_detail",
+      "unsupported_detail"
+    ],
+    "non_mutually_exclusive": "a candidate may carry both omission and unsupported evidence; main label = dominant judgment",
+    "semantics": "judgment targets the BLUEPRINT REPRESENTATION sufficiency, not underlying code truth"
+  },
+  "packet": "r5_validation_packet_v1.json",
+  "labeler": "owner (blind; task text + stage lists only)",
+  "items": [
+    {
+      "k": 5227,
+      "band": "short_2_4",
+      "labels": {
+        "A": "omission",
+        "B": "omission",
+        "C": "omission",
+        "D": "omission"
+      },
+      "omission_detail": "all four: no explicit cloud/shadow mask capability; AGGREGATION may represent median composite but is not cloud masking; RGB band-select/visualization unexpressed",
+      "group_note": "identical stage sets across candidates - no within-group quality variance"
+    },
+    {
+      "k": 17970,
+      "band": "short_2_4",
+      "labels": {
+        "A": "omission",
+        "B": "omission",
+        "C": "omission",
+        "D": "omission"
+      },
+      "omission_detail": "all four: profile extraction/sampling and chart generation not expressible in current family vocab (no PROFILE/LINE_SAMPLING/CHART family)",
+      "group_note": "VOCAB-EXPRESSIVENESS BOUNDARY case: missing capabilities are unrepresentable in the stage vocabulary"
+    },
+    {
+      "k": 823,
+      "band": "mid_5_8",
+      "labels": {
+        "A": "omission",
+        "B": "omission",
+        "C": "omission",
+        "D": "omission"
+      },
+      "omission_detail": "all four: cloud/shadow mask not explicit; watershed clip and clustering iteration unclear; D lacks annual composite/mask/clip/classification; A ATTRIBUTE_FILTER x40 anomalous repetition (not scored as evidence)",
+      "group_note": "repetition counts not treated as completeness or unsupported evidence (conservative)"
+    },
+    {
+      "k": 29519,
+      "band": "mid_5_8",
+      "labels": {
+        "A": "omission",
+        "B": "omission",
+        "C": "omission",
+        "D": "omission"
+      },
+      "omission_detail": "all four: explicit NDWI/normalized-difference computation and cloud masking missing; A/C also lack temporal filter and median composite; ITERATIVE_APPLY could wrap index calc - unreproducible from stage names alone (limitation logged)",
+      "group_note": "best INDEX-slot test case: NDWI explicitly required, no BAND_ARITHMETIC/SPECTRAL_INDEX in any candidate"
+    },
+    {
+      "k": 13612,
+      "band": "long_9plus",
+      "labels": {
+        "A": "omission",
+        "B": "omission",
+        "C": "omission",
+        "D": "omission"
+      },
+      "omission_detail": "all four: explicit NDVI computation missing; aggregation counts (x3 vs x2) do not prove regional-area and mean-NDVI-timeseries coverage (granularity caveat)",
+      "group_note": "same-family multiple slots cannot be assumed covered by one stage - granularity uncertainty flagged"
+    },
+    {
+      "k": 30160,
+      "band": "long_9plus",
+      "labels": {
+        "A": "omission",
+        "B": "omission",
+        "C": "omission",
+        "D": "omission"
+      },
+      "omission_detail": "all four: accuracy assessment (kappa/overall accuracy) and per-class area not explicit; A/D also lack classification; B/C have CLASSIFICATION but assessment goals unproven",
+      "group_note": "B/C the only candidates with explicit CLASSIFICATION"
+    }
+  ],
+  "summary": {
+    "omission": 24,
+    "unsupported": 0,
+    "both_reasonable": 0,
+    "unclear": 0
+  },
+  "owner_interpretation": "representation-sufficiency conservative judgment, NOT a truth audit of underlying code; packet lacks positive multisolution samples and reliable unsupported cases - CANNOT declare r5 passed or compute credible omission detection rates from this packet alone"
+}

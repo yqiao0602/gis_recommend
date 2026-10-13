@@ -1,0 +1,3045 @@
+{
+  "label": "r5_v0.3_offline_audit_provisional_vocab23_no_training",
+  "rules_version": "v0.3 (frozen)",
+  "scorable_classification": {
+    "scorable": 10,
+    "partially_scorable": 13,
+    "abstained": 1
+  },
+  "coverage_numerators_by_class": {
+    "scorable": {
+      "groups": 10,
+      "r5_splits": 3,
+      "formal_splits": 1,
+      "r5_split_rate": 0.3
+    },
+    "partially_scorable": {
+      "groups": 13,
+      "r5_splits": 3,
+      "formal_splits": 0,
+      "r5_split_rate": 0.2308
+    },
+    "abstained": {
+      "groups": 1,
+      "note": "excluded from all coverage numerators"
+    }
+  },
+  "baseline_comparison": {
+    "s2_formal_reward_nonconstant_groups": 6,
+    "r5_split_groups_total": 6,
+    "caveat": "more non-constant groups != better quality signal; interpretation requires the owner's case review"
+  },
+  "bias_audits": {
+    "length": {
+      "buckets": {
+        "1-4": {
+          "n": 137,
+          "mean_missing": 1.92,
+          "mean_coverage_ratio": 0.3105
+        },
+        "5-8": {
+          "n": 54,
+          "mean_missing": 0.963,
+          "mean_coverage_ratio": 0.6975
+        },
+        "9+": {
+          "n": 1,
+          "mean_missing": 2.0,
+          "mean_coverage_ratio": 0.5
+        }
+      },
+      "note": "mean_missing should not simply grow with length unless longer plans genuinely omit more"
+    },
+    "template": {
+      "violations": [],
+      "note": "identical family multisets must give identical verdicts (r5 is a set-semantic scorer)"
+    },
+    "family": {
+      "required_and_covered": {
+        "TEMPORAL_FILTER": {
+          "required_slots": 20,
+          "covered_when_required": 109
+        },
+        "MASKING": {
+          "required_slots": 11,
+          "covered_when_required": 1
+        },
+        "SPECTRAL_INDEX": {
+          "required_slots": 11,
+          "covered_when_required": 1
+        },
+        "SPATIAL_CLIP": {
+          "required_slots": 9,
+          "covered_when_required": 0
+        },
+        "AGGREGATION": {
+          "required_slots": 9,
+          "covered_when_required": 62
+        },
+        "CLASSIFICATION": {
+          "required_slots": 6,
+          "covered_when_required": 21
+        },
+        "REGIONAL_STATS": {
+          "required_slots": 6,
+          "covered_when_required": 1
+        }
+      },
+      "note": "broad families (AGGREGATION/ATTRIBUTE_FILTER) scrutiny required"
+    }
+  },
+  "groups": {
+    "823": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "SPATIAL",
+        "COMPOSITE",
+        "CLASSIFY"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "SPATIAL",
+            "COMPOSITE",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "SPATIAL"
+          ],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE",
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "SPATIAL"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "SPATIAL",
+            "COMPOSITE",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "2235": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "MASK"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": true,
+      "formal_values": [
+        0.8333333333333334,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 0.8333333333333334
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "3084": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "INDEX",
+        "SPATIAL"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": true,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "SPATIAL"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "SPATIAL"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 9,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "SPATIAL"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 0.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "5227": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "COMPOSITE"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "5516": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "MASK",
+        "INDEX",
+        "COMPOSITE"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "6878": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "TEMPORAL",
+        "INDEX"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "9210": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "TEMPORAL",
+        "SPATIAL",
+        "CLASSIFY"
+      ],
+      "verdicts": [
+        "complete_coarse_uncertain",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "complete_coarse_uncertain",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": true,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "9854": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "TEMPORAL",
+        "INDEX",
+        "STATS"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "complete_coarse_uncertain",
+        "complete_coarse_uncertain",
+        "incomplete",
+        "complete_coarse_uncertain",
+        "incomplete"
+      ],
+      "r5_splits": true,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "10540": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "TEMPORAL",
+        "SPATIAL",
+        "STATS"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": true,
+      "formal_values": [
+        0.8333333333333334,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.8333333333333334
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 3,
+          "formal_reward": 0.8333333333333334
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "SPATIAL"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL",
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "SPATIAL"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 3,
+          "formal_reward": 0.8333333333333334
+        }
+      ]
+    },
+    "10893": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "COMPOSITE"
+      ],
+      "verdicts": [
+        "complete",
+        "incomplete",
+        "complete",
+        "incomplete",
+        "complete",
+        "complete",
+        "complete",
+        "incomplete"
+      ],
+      "r5_splits": true,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "13612": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "INDEX",
+        "SPATIAL",
+        "COMPOSITE",
+        "STATS"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL",
+            "STATS"
+          ],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "COMPOSITE",
+            "STATS"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL",
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL",
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL",
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE",
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL",
+            "STATS"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [
+            "SPATIAL",
+            "STATS"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "17970": {
+      "class": "abstained",
+      "gap_signals": [
+        "PROFILE_TRANSECT",
+        "CHART_PLOT"
+      ],
+      "required_slots": [],
+      "verdicts": [
+        "abstain",
+        "abstain",
+        "abstain",
+        "abstain",
+        "abstain",
+        "abstain",
+        "abstain",
+        "abstain"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "abstain",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "abstain",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "abstain",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "abstain",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "abstain",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "abstain",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "abstain",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "abstain",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "22822": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "SPATIAL",
+        "CLASSIFY"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "SPATIAL",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "24025": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": true,
+      "formal_values": [
+        0.8333333333333334,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 0.8333333333333334
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "24515": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "TEMPORAL",
+        "INDEX",
+        "STATS",
+        "CLASSIFY"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "complete_coarse_uncertain",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": true,
+      "formal_splits": true,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "INDEX",
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "STATS"
+          ],
+          "coarse": [
+            "INDEX"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "INDEX",
+            "STATS"
+          ],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "INDEX",
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 0.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "INDEX",
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "25159": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "COMPOSITE"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "26102": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "TEMPORAL",
+        "INDEX"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "29444": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "INDEX",
+        "COMPOSITE"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "29519": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "INDEX",
+        "SPATIAL",
+        "COMPOSITE"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "30160": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "ACCURACY_ASSESSMENT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "STATS",
+        "CLASSIFY"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "complete_coarse_uncertain",
+        "complete_coarse_uncertain",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": true,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "STATS",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "STATS",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "CLASSIFY"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 6,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 8,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL"
+          ],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "31187": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "CHART_PLOT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "INDEX",
+        "SPATIAL",
+        "COMPOSITE"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": true,
+      "formal_values": [
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 0.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "SPATIAL",
+            "COMPOSITE"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "INDEX",
+            "COMPOSITE"
+          ],
+          "coarse": [
+            "SPATIAL"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "31609": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "PROFILE_TRANSECT"
+      ],
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "INDEX"
+      ],
+      "verdicts": [
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete",
+        "incomplete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 2,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK"
+          ],
+          "coarse": [
+            "INDEX"
+          ],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "incomplete",
+          "missing": [
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "incomplete",
+          "missing": [
+            "TEMPORAL",
+            "MASK",
+            "INDEX"
+          ],
+          "coarse": [],
+          "n_stages": 3,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "32593": {
+      "class": "partially_scorable",
+      "gap_signals": [
+        "ACCURACY_ASSESSMENT"
+      ],
+      "required_slots": [
+        "SPATIAL",
+        "STATS",
+        "CLASSIFY"
+      ],
+      "verdicts": [
+        "complete_coarse_uncertain",
+        "complete_coarse_uncertain",
+        "incomplete",
+        "incomplete",
+        "complete_coarse_uncertain",
+        "incomplete",
+        "complete_coarse_uncertain",
+        "complete_coarse_uncertain"
+      ],
+      "r5_splits": true,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 8,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "incomplete",
+          "missing": [
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 8,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "incomplete",
+          "missing": [
+            "STATS",
+            "CLASSIFY"
+          ],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "incomplete",
+          "missing": [
+            "STATS"
+          ],
+          "coarse": [],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "complete_coarse_uncertain",
+          "missing": [],
+          "coarse": [
+            "STATS"
+          ],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        }
+      ]
+    },
+    "32751": {
+      "class": "scorable",
+      "gap_signals": [],
+      "required_slots": [
+        "TEMPORAL"
+      ],
+      "verdicts": [
+        "complete",
+        "complete",
+        "complete",
+        "complete",
+        "complete",
+        "complete",
+        "complete",
+        "complete"
+      ],
+      "r5_splits": false,
+      "formal_splits": false,
+      "formal_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "candidates": [
+        {
+          "cand": 0,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 1,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 2,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 3,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 4,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 5,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 5,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 6,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 4,
+          "formal_reward": 1.0
+        },
+        {
+          "cand": 7,
+          "verdict": "complete",
+          "missing": [],
+          "coarse": [],
+          "n_stages": 7,
+          "formal_reward": 1.0
+        }
+      ]
+    }
+  }
+}

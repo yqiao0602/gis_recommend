@@ -1,0 +1,181 @@
+{
+  "summary": {
+    "rules": "v0.2 FROZEN (same as audit)",
+    "n_samples": 10,
+    "false_punish_count": 0,
+    "omission_detected": "4/4",
+    "omission_missing_lists": [
+      {
+        "sid": "S3",
+        "r5_missing": [
+          "MASK"
+        ]
+      },
+      {
+        "sid": "S4",
+        "r5_missing": [
+          "TEMPORAL",
+          "MASK"
+        ]
+      },
+      {
+        "sid": "S8",
+        "r5_missing": [
+          "INDEX"
+        ]
+      },
+      {
+        "sid": "S10",
+        "r5_missing": [
+          "INDEX",
+          "SPATIAL"
+        ]
+      }
+    ],
+    "note": "zero false-punish + systematic conservative-uncertainty expected from the v0.2 coarse rule (ANY multi-family slot match = coarse); v0.3 proposal: canonical-vs-alternative family distinction - NOT applied here (rules frozen)"
+  },
+  "rows": [
+    {
+      "sid": "S1",
+      "type": "reasonable_complete",
+      "human_label": "reasonable_complete",
+      "r5_verdict": "complete_coarse_uncertain",
+      "false_punish": false,
+      "r5_missing": [],
+      "r5_coarse": [
+        "INDEX",
+        "SPATIAL"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S2",
+      "type": "alternative_route",
+      "human_label": "reasonable_complete_alternative",
+      "r5_verdict": "complete_coarse_uncertain",
+      "false_punish": false,
+      "r5_missing": [],
+      "r5_coarse": [
+        "INDEX",
+        "SPATIAL"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S3",
+      "type": "single_slot_missing",
+      "human_label": "omission",
+      "r5_verdict": "incomplete",
+      "false_punish": false,
+      "r5_missing": [
+        "MASK"
+      ],
+      "r5_coarse": [
+        "INDEX",
+        "SPATIAL"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S4",
+      "type": "multi_slot_missing",
+      "human_label": "omission",
+      "r5_verdict": "incomplete",
+      "false_punish": false,
+      "r5_missing": [
+        "TEMPORAL",
+        "MASK"
+      ],
+      "r5_coarse": [
+        "INDEX",
+        "SPATIAL"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S5",
+      "type": "alternative_route",
+      "human_label": "reasonable_complete",
+      "r5_verdict": "complete_coarse_uncertain",
+      "false_punish": false,
+      "r5_missing": [],
+      "r5_coarse": [
+        "INDEX",
+        "SPATIAL"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S6",
+      "type": "reasonable_complete",
+      "human_label": "reasonable_complete",
+      "r5_verdict": "complete_coarse_uncertain",
+      "false_punish": false,
+      "r5_missing": [],
+      "r5_coarse": [
+        "INDEX",
+        "SPATIAL",
+        "STATS"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S7",
+      "type": "coarse_single_aggregation",
+      "human_label": "unclear_coarse",
+      "r5_verdict": "complete_coarse_uncertain",
+      "false_punish": false,
+      "r5_missing": [],
+      "r5_coarse": [
+        "INDEX",
+        "SPATIAL",
+        "STATS"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S8",
+      "type": "single_slot_missing",
+      "human_label": "omission",
+      "r5_verdict": "incomplete",
+      "false_punish": false,
+      "r5_missing": [
+        "INDEX"
+      ],
+      "r5_coarse": [
+        "SPATIAL",
+        "STATS"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S9",
+      "type": "alternative_route",
+      "human_label": "reasonable_complete_alternative",
+      "r5_verdict": "complete_coarse_uncertain",
+      "false_punish": false,
+      "r5_missing": [],
+      "r5_coarse": [
+        "INDEX",
+        "SPATIAL",
+        "STATS"
+      ],
+      "abstain": false
+    },
+    {
+      "sid": "S10",
+      "type": "multi_slot_missing",
+      "human_label": "omission",
+      "r5_verdict": "incomplete",
+      "false_punish": false,
+      "r5_missing": [
+        "INDEX",
+        "SPATIAL"
+      ],
+      "r5_coarse": [
+        "STATS"
+      ],
+      "abstain": false
+    }
+  ]
+}

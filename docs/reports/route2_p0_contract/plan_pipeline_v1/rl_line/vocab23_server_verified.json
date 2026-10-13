@@ -1,0 +1,44 @@
+{
+  "status": "SERVER_VERIFIED_23_CLASSES",
+  "note": "Full-scan of mdzhang planner_v2_train.jsonl targets (SHA 443d5d31..., 33,339 rows, 0 parse failures). Supersedes vocab20_local_partial.json for reward use. OPEN GAP: PLANNER_V2_CONTRACT_FREEZE_v1.md says 30-class semantic granularity; only 23 appear in train targets; the authoritative 30-name list is NOT locally available (blueprint_v2_gold_v3 has no mirror). Using train-observed vocab cannot create false-accepts; possible false-rejects on legal-but-unseen families will surface in the S2 r2 unknown-token report. Owner decision pending.",
+  "source": "mdzhang:/home/qy/planner_v2_train.jsonl full scan 2026-10-13 S1",
+  "rows_scanned": 33339,
+  "families": [
+    "AGGREGATION",
+    "ATTRIBUTE_FILTER",
+    "BAND_ARITHMETIC",
+    "BAND_SELECT",
+    "CLASSIFICATION",
+    "COLLECTION_MGMT",
+    "EXPORT_OUTPUT",
+    "GEOMETRY_DEFINE",
+    "ITERATIVE_APPLY",
+    "MASKING",
+    "NEIGHBORHOOD",
+    "OTHER_UNMAPPED",
+    "RASTER_LOAD",
+    "REGIONAL_STATS",
+    "SAMPLE_EXTRACTION",
+    "SPATIAL_CLIP",
+    "SPATIAL_FILTER",
+    "SPECTRAL_INDEX",
+    "TEMPORAL_FILTER",
+    "TERRAIN_DERIVED",
+    "THRESHOLD_LOGIC",
+    "VECTOR_GEOMETRY",
+    "VECTOR_LOAD"
+  ],
+  "relation_checks": {
+    "local_vocab20_subset": true,
+    "p0_pred_vocab19_oov": [
+      "CLASSIFICATION_LOAD"
+    ],
+    "train_families_unused_by_p0_preds": [
+      "NEIGHBORHOOD",
+      "OTHER_UNMAPPED",
+      "SAMPLE_EXTRACTION",
+      "SPECTRAL_INDEX",
+      "VECTOR_GEOMETRY"
+    ]
+  }
+}

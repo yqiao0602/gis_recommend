@@ -21,6 +21,138 @@
   = 按协议 §2.3 标 text_dedup_only 披露）。下一步：B 组金标反推 → A 组构建 → C 组起草 →
   配对 → 去重账本 → owner 逐条审核。**金标获批前不运行正式 180 次生成。**
 
+## (0b) RL 线立项（Route-2 Stage-3 位）：四阶段路线采纳，预注册 v0 DRAFT（2026-10-13）
+
+- **owner 裁定（本会话）**：采纳四阶段 RL 路线（Phase 1 GRPO 工程 smoke → Phase 2 RAFT/DPO
+  对照 → Phase 3 亲和采样+门控 GRPO → Phase 4 过程奖励/估计增强消融）；输出空间钉死
+  **Blueprint v2（P0 规划器）**——QGIS Graph RL 维持 Stage-2 冻结；Phase-1 场地 = mdzhang
+  共享（共租纪律）。本裁定将 10-12 的"RL 未授权"条款修订为"按下列预注册协议放行"。
+- **权威文件**：`plan_pipeline_v1/rl_line/RL_LINE_PREREGISTRATION_V1_CANDIDATE.md`（V1
+  CANDIDATE；v0 DRAFT 留档）。审查轮五项 OQ 全部落定：OQ-1 批准（24 任务×8 候选，seed
+  20261013）；OQ-2 有条件（等权须先过正反例 pytest 电池 + S2 失败共现检验——修定义不调
+  权重）；OQ-3 β=0.04 仅初值；OQ-4 S4 硬上限 ≤48 task-group updates + 六项预注册停止条件
+  （KL 中止阈值与 β 分开：per-token KL>1.0 nat 连续 5 次 或 单步>10 nat）；OQ-5 Phase 2
+  等 S2 吞吐外推报告后 owner 单独放行。r4 升级为 schema 级可执行定义（非空/seq 连续/
+  rg↔stages 双向一致/hint 标签合法，per_feature 出现即非法），电池 P1/N1-N7/B1-B3 全绿
+  才冻结奖励实现；绝对 repeat 量级只记录不评分（Contract E4 口径）。S2 验收拆双结论：
+  工程验收 + 信号诊断（有效组<8/24 登记"信号覆盖有限"，不得解读为可扩量）。schema 权威 =
+  `planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`。既有钉子：奖励 v0 gold-free 四分量、
+  不可核验维度 masked；rollout 解码 rep-pen 1.15（冻结评测仪器不变）；训练任务 ⊂
+  planner_v2_train；E0 复用既有 P0 dev-1852 预测；S1 只读核验、冲突先停。PCA/多解线=
+  外部输入，仅 Phase 3 依赖。
+- **本地实现已交付（2026-10-13）**：`scripts/rl_reward_v1.py` + `tests/test_rl_reward_v1.py`
+  ——电池 22/22 全绿（pytest 7/7）。真实数据核验发现**本地语料两种 rg 方言并存**：contract
+  方言（stage_seq/family/repeat/iteration_hint，755 行非空 rg）得分 **755/755=1.0**；anchor
+  方言（anchor_seq/pattern/repeat_count/order_preserved，1,078 行=P1/P2 实验谱系窗口折叠）
+  不在 P0 输出空间内，奖励按设计不支援。P0=contract 方言目前是推断（planner_v2_train 建
+  于合同冻结后、E3 消费 iteration_hint）→ **S1 新增方言指纹核验项**（planner_v2_train
+  targets + 1 条 p0_dev_full_preds 样本）。total_iterations/stage_count 在 2,985 行本地
+  目标中 0 出现→只记 field-presence 不判负。5+5 行 non_maximal_run 缺陷在 anchor 谱系
+  （RL 范围外已登记）。权威：`rl_line/REWARD_BATTERY_REPORT_V1.json`（D1-D4 偏差已标记
+  待 owner；空序列 C0=5/6 留 S2 判）。**owner 二轮裁定已落，实现升版 v1.1**（模块 SHA
+  `5d5b6789f938980a…`）：D1 修订回归 V1 局部 mask（entry 缺陷只 mask 受影响分量；级联仅
+  保留 r1a/r1b；统一规则=可判定违规(0)>不可判定(masked)>通过(1)）；D2 接受（不去
+  fence、原样评分）；D3 升级（rg 键缺失→r4 masked，绝不静默通过）；D4 不接受无条件放行
+  ——合同**无显式 minItems:1**，漏洞已量化（空=0.833/最小合法=1.0/解析失败=0.0），处置
+  选项 a/b/c 见 `REWARD_BATTERY_REPORT_V1_1.json`，**S2 放行前 owner 定夺**。**三轮裁定
+  D4=(b) 已落地，实现升版 v1.2**（模块 SHA `18c4e5a51d7f916b…`）：空序列=gateway 级退化，
+  **正式奖励 R=0**（`empty_stages_gateway`）；gateway 默认 ON=正式 RL 奖励路径，OFF 仅
+  诊断（保留旧行为）；composite 恒载 C0 诊断（空序列 5/6 照记）、r4 诊断保留；不扩大其他
+  惩罚。owner 限定：工程裁定不改冻结合同（无 minItems），非空 stages 入合同须另走变更
+  流程。电池 23/23（含 formal 期望）、pytest 12/12（含 on/off 回归矩阵）、contract
+  755/755 formal 复验、D1/D3 回归不变；报告 `REWARD_BATTERY_REPORT_V1_2.json`（v1.1/v1
+  留档）。**状态：v1.2 待 owner 差异与 SHA 审查 → S1（只读）→ S2 单独放行（当前不授权）。**
+  **S1 前核验完成 + S1 已执行（10-13，mdzhang 只读）**：①差异审查=机械回归（v1.2 关
+  gateway 重放 vs v1.1 记录输出）23 电池行+3 D4 场景逐位一致；②完整 SHA 入报告；③接口
+  契约=训练器只读 `training_reward`（gateway 默认 ON）。**S1=PASS 附 2 开放项**：训练
+  目标方言=contract 100% 实证（21,714/21,714；P0 输出 1,852 全扫 parse 84.23%、rg 全
+  stage_seq——方言链路端到端证实）；训练 SHA 精确匹配 `443d5d31…`；词表差距（合同 30 vs
+  实测 23，`vocab23_server_verified.json` SHA `8562982d…`，权威 30 名单不可得——不会误
+  收、可能误拒，S2 r2 报告量化）**待 owner 裁定**；P0 有 1 类 OOV 发射（CLASSIFICATION_
+  LOAD）+5 训练类从未发射（X4 型欠发射证据）。adapter 指纹已录。报告
+  `S1_VERIFICATION_REPORT_V1.json`。**S2 未授权，等 owner 审 S1。**
+  **Owner 四轮：S1 正式登记通过（开放项 1 选 (i)，vocab23 暂定）；S2 纯评分 dry run 已
+  执行（无参数更新）**：24 任务×8 候选（seed 20261013、temp 1.0+rep-pen 1.15、prompt
+  同 p0b2）；吞吐 **74.46 tok/s / 峰值 8.2GB**（Phase 2 成本门：GRPO 每步≈5min、100 步
+  ≈8h）；**信号=管线通过但覆盖有限**——有效组 6/24=25%（<8/24 条款）、formal 均值
+  0.9809 顶饱和、差异全为"一候选缺陷 vs 其余满分"、无分级质量信号→**仅结构奖励 v0 的
+  GRPO 只能学回避稀有缺陷（X5/格式），对 X4 主瓶颈零信号**；分级信号须来自 r5（Phase 3，
+  依赖多解判别线）。r2 屏蔽敏感性低（5/6 组保留）→vocab23 暂定充分；OOV 完整记录=
+  TEMORAL_FILTER（拼写）+VECTOR_CLIP 各 1 次、OOV 率 1%。dry run 抓到并修复 AUX13 bug
+  （seq-less stage KeyError；已加回归），修复后电池 24/24、pytest 13/13、模块 SHA
+  `2ade2e79…`。报告 `s2_dryrun/S2_DRYRUN_REPORT_V1.md`（全标 provisional_vocab23）。
+  **Phase 2 未放行，等 owner 审 S2 报告。**
+  **Owner 五轮：S2 工程验证正式通过、信号覆盖有限入档、Phase 2 继续暂停（不租卡、不排
+  训练）；下一优先级 = r5 可信度与离线判别验证。** 已交付：①`R5_DESIGN_V0.md`——需求
+  槽位匹配机制（10 规则族+等价类+ABSTAIN 门+反偏差审计清单；验证门槛：误伤率≤10%/
+  omission 检出≥80%/ABSTAIN 如实报；DRAFT 待 owner 审）；②`R5_VALIDATION_PACKET_V1.md`
+  + `r5_validation_packet_v1.json`——6 组×4 候选=24 盲评项（材料=S2 真实候选，分层乱序
+  剥离奖励信息，letter→cand 映射仅存 JSON）+ 构建脚本。**等 owner：审 r5 设计 + 盲评
+  标注 → 实现 r5 v0 → 盲跑 → 一致性指标 → 离线审计（有效组覆盖提升+三项偏差审计）。**
+  **Owner 六轮：R5 机制通过、触发规则有条件通过、直接接 RL 暂不通过；四项实现前修正
+  （required/plausible/abstain 三态、等价类带适用条件、确定性弃权门、任务级+候选级
+  统计）；标注协议冻结（4 主标签+两证据字段）；owner 完成 24 项盲评=全 omission（表示
+  充分性保守口径，不能据此宣告 r5 通过）。** **r5 v0 已实现+盲跑+解盲**：
+  `scripts/r5_requirement_parser_v0.py`（规则 v0.2：10 槽位族+条件等价+确定性弃权+
+  全审计轨迹+vocab-gap 信号）。对照 owner 标签：候选级 22/24 一致（2 分歧=k=30160
+  B/C，证据级一致）；任务级 5/6+1 证据级一致（k=17970 弃权+边界信号=F3 设计成功
+  案例）；**误伤率不可测量**（0 正样本）；ABSTAIN 1/6。验证中修复 2 规则缺陷（study-
+  area 伪 STATS、elevation 过宽）+1 语义修正（coarse≠complete）。报告
+  `R5_V0_VALIDATION_REPORT_V1.md`。**下一步等 owner：①补正样本合成包第二轮盲评；
+  ②离线审计；③裁定下一阶段（不自动授权 Phase 2/3）。**
+  **Owner 七轮：R5 v0.2 一轮验证通过（22/24 正面但范围有限）；合成盲评+全量离线审计
+  获准（不更新参数）；RL 接入不通过；scorable 三分类永不合并分子。两份报告已交付**：
+  ①`R5_SYNTHETIC_BLIND_VALIDATION_REPORT_V1.md`——合成包 9 项（规则冻结 v0.3），自检
+  9/9（零自伤/遗漏精确点名/A2 初版真缺 AGGREGATION 被自检驳回），**等 owner 盲评后解
+  盲误伤率**；②`R5_S2_OFFLINE_AUDIT_REPORT_V1.md`——**scorable 分类 10/13/1（词表表达
+  边界=主导问题）；r5 分裂 5 组 vs formal 6 组重叠仅 1（互补不叠加）；长度偏差无；模板
+  偏差 0；family 偏差=MASKING 覆盖率≈1%——X4 云掩膜欠发射首次槽位级量化**。数据
+  `s2_dryrun/R5_S2_OFFLINE_AUDIT_V1.json`。**Phase 2/3 继续冻结；等 owner 盲评合成包
+  9 项 → 解盲误伤率 → 独立裁定。**
+  **Owner 八轮盲评：误伤 0/3、omission 检出 3/3、弃权 2/9（S8 边界单列）——多解容忍
+  红线首次测量为零；owner 的 complete_reasonable（S2/S3）= r5 的 complete_coarse_
+  uncertain（同一保留不确定性被机械化）。八轮裁定：R5 v0.3 准入下一轮离线验证、不批
+  Phase 2/3；下一步=标签/规则输出/192 候选逐项对齐+独立复核每个缺失槽位。已交付
+  `R5_MISSING_SLOT_RECONCILIATION_REPORT_V1.md`**：358 缺失实例全对账（174/192 候选）；
+  **INDEX 90 + MASK 87 = 占 49.4%**（X4 精确到槽位）；V1 无歧义 305 / V2 包裹歧义 53
+  （S8 先例维持 missing 单列）；3 例深查全为真遗漏（含 1 例 V2 边界）；**三方独立方法
+  互证**（能力定位 X4 47.6% / S2 审计 MASKING 1% / 本对账 INDEX+MASK 49.4%）；登记 1
+  处构造标注错误（A4 预期 gap——错，T_CROP 无精度要求，r5 正确未触发）。**等 owner：
+  抽查对账（V1 各槽位 2-3 例）→ V2 包裹歧义最终口径 → 下一轮裁定（真实任务可复现判
+  别力+不系统性误伤=RL 奖励准入条件）。**
+  **Owner 十轮：32 条裁定包双轨裁定完成并冻结**（`r5_adjudication_5516_6878_9210_9854_frozen_v1.json`）：
+  r5 的 61 个 missing 标记去向=**missing_confirmed 39 / unresolved_wrapper 5 /
+  requirement_uncertain 8 / not_required 8 / 改判 covered 1**。**v0.5 修改账本两项
+  规则发现（待 owner 批准）**：L1=`\bareas?\b` 假需求（9210 "deforested **areas**"
+  类名触发 → 8 候选误标；修=统计动词语境）；L2=INDEX 槽位定义边界（9854 MODIS 产品
+  波段读取+缩放≠计算指数 → 8 候选 requirement_uncertain；**INDEX 定义须 owner 先固
+  定**）；L3=记录格式增补 requirement_determination 字段。**汇总纪律**：39 不作统一
+  遗漏率分子，三类边界全部单列。正向：wrapper 一致规则 5/5 落 unresolved；covered_
+  coarse 语义经检验一致；61 标记 39 确认（64%），推翻的 16 个集中于两个可定位问题。
+  报告 `R5_ADJUDICATION_FREEZE_REPORT_V1.md`。**等 owner：①固定 INDEX 定义；②批准
+  v0.5 账本；③批准后 v0.5 重跑+反向对照+复验+遗漏率汇总 → 奖励准入评审。Phase 2/3
+  冻结，RAFT/DPO/GRPO 不运行。**
+  **Owner 十一轮：INDEX 定义冻结（计算新指数；产品波段≠INDEX；9854=not_required）；
+  v0.5 账本获批；重跑+独立复验批准。已执行 v0.5→v0.5.1 全链**：L1/L2/L3 落地并双次
+  反向对照修复回归（9854 STATS 误删恢复 + 6878 derived-from 补检，均与 owner 裁定对
+  齐）。**数字：323→317（全口径修正）；INDEX+MASK=153/317=48.3% 稳定；独立集（10 任
+  务×8 候选，未参与规则调试）：任务级 10/10、候选级 74/80 需求覆盖缺失（规则口径未确
+  认）**。流程教训：规则演进先 commit 再重跑（v0.4.1 实例级基线被覆盖）；建议 rl_line
+  工件随下次 commit 入库。报告 `R5_V05_REVALIDATION_REPORT_V1.md`（奖励准入评审材料
+  清单：三源并列互不佐证）。**Phase 2/3 冻结；等 owner：奖励准入裁定。**
+  **Owner 九轮：①V1 抽查批准（未声称核验全部 358）；②V2 三态口径冻结
+  （missing_confirmed/covered_confirmed/unresolved_wrapper；53 个 V2 实例保留原始
+  missing 为历史、新统计标 unresolved_wrapper——防"表示能力不足误判为模型能力不足"）；
+  ③358=规则输出规模≠人工确认错误；Phase 2/3 冻结。owner 亲查 15 实例（按 k 合并）：
+  全部"确认要求；缺失待核实"；两风险=候选非独立（三口径同报）+槽位出现≠功能实现
+  （三依据判定）。已交付裁定包 `r5_adjudication_packet_5516_6878_9210_9854_v1.jsonl`
+  （32 条，5 个 V2 条目 r5_missing 与 owner 枚举一致）。**等 owner：逐条三态裁定 →
+  反向对照 → 未参与调试任务复验 → 奖励准入评审（此前 RAFT/DPO/GRPO 不运行）。**
+- **两条机制修正冻结为设计原则**（owner 方法评审）：(C1) GRPO 组内相对比较≠去偏——归一化只消
+  加性共模偏移，与候选内容相关的评分偏差会被强化，去偏归奖励验证+置信门控；(C2) RAFT 不能
+  创造验证器看不见的正确性——首轮限定可核验错误类。E7（Kalman/估计增强）启动条件 = 实测
+  GRPO 优势估计不稳定。
+
 ## Route-2 v2 当前交接（历史状态，2026-10-04 快照；最新见上节与英文版）
 
 **R3 诊断链完整闭环，架构方向确立，Planner-v2 Hint Contract 已 FREEZE（2026-10-04）**。链条：R3-A/B/TRUNC/CD-2 逐层排除并定位 **Task（散文摘要）与 Plan（阶段序列）的表示鸿沟** → R3-CD-3 信息阶梯（组件信号全强：family AUC 0.913/转移 0.904）→ R3-CD-4（确定性组装 0.60 > Direct 0.499；LLM 系统性欠发射）→ **R3-PLANNER-P0 可行性成功**（Task→Blueprint JSON，parse 100%，bag-F1 0.645 vs Direct 0.499）→ P1-B（预算提升仅改善小计数区，深尾冻结）→ 长度分桶画像（**深尾=表示问题：长 workflow = ~4.4 distinct family 重复至 95%**）→ **Blueprint v2（Ordered + Repetition-aware，语义粒度，pre-RLE 游程蓝本，无损 100%）** → v2 preflight（E1-E4 全过；可学习性判别 PASS：语义 stage AUC 0.922 ≈ v1 0.915，repetition-presence 0.940 全场最强）→ **6 批人工 hint 验证完成（396 条，各维度规则校准冻结）** → **PLANNER-V2 HINT CONTRACT FREEZE v1**（`planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`）。

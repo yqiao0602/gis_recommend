@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-13",
+  "venue": "mdzhang (10.191.2.38), read-only SSH, no writes, no process interference",
+  "protocol": "RL_LINE_PREREGISTRATION_V1_CANDIDATE.md section 4.4 S1 + owner round-3 additions",
+  "checks": {
+    "gpu_cotenancy": {
+      "used": "7919/23028 MiB",
+      "foreign_process": "PID 137481 qwen35 python, 7912 MiB",
+      "action": "read-only honored, no interference",
+      "conflict": false
+    },
+    "train_data": {
+      "path": "/home/qy/planner_v2_train.jsonl",
+      "bytes": 51313438,
+      "rows": 33339,
+      "sha256": "443d5d310c1875ad668c12b65c8255d54da8da3bc5c97500c3fc126f18e7fa4e",
+      "matches_frozen_sha": true,
+      "parse_failures": 0
+    },
+    "train_target_dialect": {
+      "nonempty_rg_rows": 21714,
+      "stage_seq": 21714,
+      "anchor_seq": 0,
+      "total_iterations_rows": 0,
+      "verdict": "CONTRACT DIALECT 100% - P0=train dialect CONFIRMED (was inference)"
+    },
+    "p0_predictions": {
+      "file": "/home/qy/planner_v2_fmt_dev_full_preds.json",
+      "sha256": "30617d95ffd657b2bbb142fd815137636d682bff739adb6f36cae24ca8c8cd5b",
+      "items": 1852,
+      "parse_ok": 1560,
+      "unparsed": "292 JSONDecodeError (known 384-cap truncations)",
+      "rg_dialect": "stage_seq 983/983",
+      "stages_per_pred": "min 2 / max 25 / mean 6.1"
+    },
+    "p0_pred_vocab": {
+      "size": 19,
+      "oov_vs_train": [
+        "CLASSIFICATION_LOAD"
+      ],
+      "reading": "real OOV emission - exactly the defect class r2 exists to penalize; expected RL signal, no action",
+      "train_families_never_emitted": [
+        "NEIGHBORHOOD",
+        "OTHER_UNMAPPED",
+        "SAMPLE_EXTRACTION",
+        "SPECTRAL_INDEX",
+        "VECTOR_GEOMETRY"
+      ],
+      "reading2": "under-emission signal (X4-type) at vocabulary level - to be measured in S2 signal diagnosis"
+    },
+    "adapter_fingerprint": {
+      "path": "/home/qy/stage1_run_planner_v2_fmt/stage1_adapter",
+      "dated": "2026-10-09 04:34",
+      "adapter_config_sha256": "9bb98f9c54c8aa2a3f4645bf1fe1070eb4d79b1db7338f0c346a24c0e13ec804",
+      "adapter_model_sha256": "82095811dc11d10613cd351513a40a568134f3d646e84942591310dd177a65bb",
+      "safetensors_bytes": 15737216
+    },
+    "vocab_materialization": {
+      "file": "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line/vocab23_server_verified.json",
+      "sha256": "8562982d159406b05e806b7bd4c3f3586730d0891eb02eb3fb7fe9e15bbe6889",
+      "families": 23,
+      "local20_is_subset": true,
+      "open_gap": "contract says 30-class granularity; only 23 in train targets; authoritative 30-name list NOT locally available (blueprint_v2_gold_v3 has no mirror). Using train-observed vocab cannot create false-accepts; possible false-rejects on legal-but-unseen families will surface in the S2 r2 unknown-token report. OWNER DECISION PENDING."
+    }
+  },
+  "stop_conditions": "NONE triggered (no SHA mismatch, no dialect mismatch, no resource conflict)",
+  "verdict": "S1 PASS with 2 open items: (1) vocab authority gap (contract 30 vs train 23) - owner decision; (2) CLASSIFICATION_LOAD OOV emission - expected signal, logged",
+  "pre_s1_local_items_completed": {
+    "scoped_diff_review": "v1.2(gateway off) == v1.1 recorded outputs EXACTLY (23 battery rows + 3 D4-hole scenarios, 0 mismatches)",
+    "full_sha256": {
+      "module": "ae72e638ef036c1209ca3f931790ab59c764389ec88dfffd0a238a2607856433",
+      "tests": "f5fbad5cd8a144007678669ba91e0b7a96e2406511ad320696ae76e26460b210"
+    },
+    "interface_contract": "trainer consumes ONLY RewardResult.training_reward (alias of composite_gateway); composite is diagnostic; gateway default ON (formal path)"
+  }
+}

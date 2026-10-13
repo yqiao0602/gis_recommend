@@ -1,0 +1,312 @@
+{
+  "rubric_version": "v1",
+  "blind": true,
+  "labeling_note": "owner labels each candidate; letter->true-cand mapping kept in this file but ABSENT from the MD sheet",
+  "items": [
+    {
+      "k": 5227,
+      "band": "short_2_4",
+      "task": "Task: Map land surface reflectance\nProcess Landsat 7 Surface Reflectance data from 2014 to 2017 by applying a cloud masking function to remove cloudy and shadowed pixels, then computes the median composite of the cleaned image collection and visualizes it using blue, green, and red bands (B1, B2, B3) with specified scaling, aiming to produce a clear, cloud-reduced representation of surface reflectance for visual interpretation.",
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 2,
+          "stages": [
+            "1. AGGREGATION x1",
+            "2. RASTER_LOAD x1",
+            "3. TEMPORAL_FILTER x1"
+          ],
+          "repeated_stage_count": 0
+        },
+        {
+          "letter": "B",
+          "true_cand": 1,
+          "stages": [
+            "1. AGGREGATION x1",
+            "2. RASTER_LOAD x1",
+            "3. TEMPORAL_FILTER x1"
+          ],
+          "repeated_stage_count": 0
+        },
+        {
+          "letter": "C",
+          "true_cand": 0,
+          "stages": [
+            "1. AGGREGATION x1",
+            "2. RASTER_LOAD x1",
+            "3. TEMPORAL_FILTER x1"
+          ],
+          "repeated_stage_count": 0
+        },
+        {
+          "letter": "D",
+          "true_cand": 3,
+          "stages": [
+            "1. AGGREGATION x1",
+            "2. RASTER_LOAD x1",
+            "3. TEMPORAL_FILTER x1"
+          ],
+          "repeated_stage_count": 0
+        }
+      ]
+    },
+    {
+      "k": 17970,
+      "band": "short_2_4",
+      "task": "Task: Extract elevation profile along transect\nExtract an elevation profile along a specified longitudinal transect using ALOS World 3D DSM data, sorting elevation values by longitude and visualizing them as a chart with elevation in meters versus longitude.",
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 2,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. BAND_SELECT x1"
+          ],
+          "repeated_stage_count": 0
+        },
+        {
+          "letter": "B",
+          "true_cand": 1,
+          "stages": [
+            "1. RASTER_LOAD x2",
+            "2. BAND_ARITHMETIC x1",
+            "3. ATTRIBUTE_FILTER x1"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "C",
+          "true_cand": 0,
+          "stages": [
+            "1. RASTER_LOAD x2",
+            "2. BAND_SELECT x1"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "D",
+          "true_cand": 3,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. BAND_SELECT x1",
+            "3. AGGREGATION x1"
+          ],
+          "repeated_stage_count": 0
+        }
+      ]
+    },
+    {
+      "k": 823,
+      "band": "mid_5_8",
+      "task": "Task: Cluster vegetation and land cover\nGenerate an annual median composite of Landsat 5 surface reflectance imagery for 2010, masks clouds and shadows, clips to a watershed boundary (C6C5), and applies K-means clustering (15 clusters) to classify land cover patterns, particularly focusing on vegetation and surface features. The outputs include a true-color image, multiple band composites for vegetation analysis, the final classified cluster map, and both the composite and classification results are exported to Google Drive as GeoTIFFs.",
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 1,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. SPATIAL_FILTER x1",
+            "3. TEMPORAL_FILTER x1",
+            "4. ATTRIBUTE_FILTER x40",
+            "5. CLASSIFICATION x1"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "B",
+          "true_cand": 3,
+          "stages": [
+            "1. AGGREGATION x1",
+            "2. RASTER_LOAD x1",
+            "3. TEMPORAL_FILTER x1",
+            "4. ITERATIVE_APPLY x1",
+            "5. CLASSIFICATION x1"
+          ],
+          "repeated_stage_count": 0
+        },
+        {
+          "letter": "C",
+          "true_cand": 2,
+          "stages": [
+            "1. RASTER_LOAD x4",
+            "2. TEMPORAL_FILTER x1",
+            "3. CLASSIFICATION x1"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "D",
+          "true_cand": 0,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. ATTRIBUTE_FILTER x4"
+          ],
+          "repeated_stage_count": 1
+        }
+      ]
+    },
+    {
+      "k": 29519,
+      "band": "mid_5_8",
+      "task": "Task: Extract surface water using NDWI\nCompute the Normalized Difference Water Index (NDWI) from Landsat 5 TM surface reflectance imagery to identify surface water features over a specific region between July and November 1997. It applies pixel quality masking to remove clouds and cloud shadows, calculates NDWI using green and near-infrared bands, scales the reflectance values, and generates a median composite NDWI image clipped to the study area. The output includes a true-color visualization of the input imagery, a mapped NDWI layer, and an exported GeoTIFF of the median NDWI result for offline use.",
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 1,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. BAND_SELECT x1",
+            "3. ITERATIVE_APPLY x1"
+          ],
+          "repeated_stage_count": 0
+        },
+        {
+          "letter": "B",
+          "true_cand": 2,
+          "stages": [
+            "1. RASTER_LOAD x2",
+            "2. SPATIAL_FILTER x1",
+            "3. TEMPORAL_FILTER x1",
+            "4. ATTRIBUTE_FILTER x1"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "C",
+          "true_cand": 3,
+          "stages": [
+            "1. RASTER_LOAD x2",
+            "2. ITERATIVE_APPLY x1"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "D",
+          "true_cand": 0,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. TEMPORAL_FILTER x1",
+            "3. ATTRIBUTE_FILTER x1",
+            "4. SPATIAL_FILTER x1"
+          ],
+          "repeated_stage_count": 0
+        }
+      ]
+    },
+    {
+      "k": 13612,
+      "band": "long_9plus",
+      "task": "Task: Analyze NDVI in agricultural regions\nCalculate and visualizes NDVI values over multiple geographic regions (EC6, EC5, EC12B, EC12C, EC10B) using Sentinel-2 surface reflectance data from January to February 2023. It generates a median NDVI composite, clips it to specified regions, computes regional areas, and creates time-series line and scatter charts of mean NDVI per region to analyze vegetation dynamics.",
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 1,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. SPATIAL_FILTER x1",
+            "3. TEMPORAL_FILTER x1",
+            "4. ATTRIBUTE_FILTER x2"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "B",
+          "true_cand": 2,
+          "stages": [
+            "1. VECTOR_LOAD x1",
+            "2. RASTER_LOAD x1",
+            "3. TEMPORAL_FILTER x1",
+            "4. ATTRIBUTE_FILTER x1",
+            "5. SPATIAL_FILTER x1",
+            "6. AGGREGATION x3"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "C",
+          "true_cand": 3,
+          "stages": [
+            "1. VECTOR_LOAD x1",
+            "2. RASTER_LOAD x1",
+            "3. TEMPORAL_FILTER x1",
+            "4. SPATIAL_FILTER x1",
+            "5. ATTRIBUTE_FILTER x2",
+            "6. AGGREGATION x2"
+          ],
+          "repeated_stage_count": 2
+        },
+        {
+          "letter": "D",
+          "true_cand": 0,
+          "stages": [
+            "1. VECTOR_LOAD x1",
+            "2. ATTRIBUTE_FILTER x2",
+            "3. RASTER_LOAD x1",
+            "4. SPATIAL_FILTER x1",
+            "5. TEMPORAL_FILTER x1",
+            "6. BAND_SELECT x1",
+            "7. AGGREGATION x2"
+          ],
+          "repeated_stage_count": 2
+        }
+      ]
+    },
+    {
+      "k": 30160,
+      "band": "long_9plus",
+      "task": "Task: Classify land cover types\nClassify land cover into six categories (urban, water, forest, agriculture, grassland, unuseland) using Sentinel-2 surface reflectance data from June to October 2020, applying a Random Forest classifier trained on labeled regions, and exports the resulting classification map with accuracy assessment including kappa, overall accuracy, and area calculation per class.",
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 0,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. ATTRIBUTE_FILTER x1",
+            "3. BAND_SELECT x1",
+            "4. TEMPORAL_FILTER x1",
+            "5. SPATIAL_FILTER x1",
+            "6. AGGREGATION x2"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "B",
+          "true_cand": 2,
+          "stages": [
+            "1. ATTRIBUTE_FILTER x2",
+            "2. RASTER_LOAD x2",
+            "3. TEMPORAL_FILTER x1",
+            "4. SPATIAL_FILTER x1",
+            "5. CLASSIFICATION x1",
+            "6. BAND_ARITHMETIC x1",
+            "7. AGGREGATION x1"
+          ],
+          "repeated_stage_count": 2
+        },
+        {
+          "letter": "C",
+          "true_cand": 3,
+          "stages": [
+            "1. RASTER_LOAD x1",
+            "2. TEMPORAL_FILTER x1",
+            "3. ATTRIBUTE_FILTER x3",
+            "4. ITERATIVE_APPLY x1",
+            "5. AGGREGATION x1",
+            "6. CLASSIFICATION x1"
+          ],
+          "repeated_stage_count": 1
+        },
+        {
+          "letter": "D",
+          "true_cand": 1,
+          "stages": [
+            "1. ATTRIBUTE_FILTER x3",
+            "2. BAND_SELECT x1",
+            "3. RASTER_LOAD x3"
+          ],
+          "repeated_stage_count": 2
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1011 @@
+{
+  "date": "2026-10-13",
+  "version": "v1.2 (post interface-clarification; formal_reward field contract added)",
+  "supersedes": "REWARD_BATTERY_REPORT_V1_1.json / REWARD_BATTERY_REPORT_V1.json (history)",
+  "scoped_diff_review": {
+    "method": "mechanical regression: v1.2 evaluate(gateway_mode=False) replayed against v1.1 recorded battery rows (all component verdicts + C0 composites) and v1.1 D4-hole C0 values",
+    "result": "23/23 cases + 3/3 D4-hole scenarios EXACT match, 0 mismatches",
+    "conclusion": "v1.1->v1.2 changes touch ONLY gateway/formal-reward/logging/tests; D1-D3 and non-empty paths bit-identical"
+  },
+  "interface_contract": {
+    "trainer_field": "RewardResult.training_reward (alias of composite_gateway) - the ONLY field the GRPO trainer may consume",
+    "diagnostic_field": "composite (C0) - never passed to the optimizer",
+    "gateway_default": {
+      "evaluate_prediction_signature_default": true,
+      "cli_default_gateway_on": true
+    }
+  },
+  "battery": {
+    "pass": 23,
+    "total": 23,
+    "pytest": "tests/test_rl_reward_v1.py 13/13 passed",
+    "d4_hole": {
+      "empty_stages": {
+        "formal_reward_gateway_on": 0.0,
+        "c0_diagnostic": 0.8333333333333334,
+        "gateway_off_former_behavior": 0.8333333333333334,
+        "components": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "reasons": {
+          "r4": "V1_empty_stages"
+        },
+        "gateway_triggered": "empty_stages_gateway"
+      },
+      "minimal_legal": {
+        "formal_reward_gateway_on": 1.0,
+        "c0_diagnostic": 1.0,
+        "gateway_off_former_behavior": 1.0,
+        "components": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 1
+        },
+        "reasons": {},
+        "gateway_triggered": null
+      },
+      "parse_fail": {
+        "formal_reward_gateway_on": 0.0,
+        "c0_diagnostic": 0.0,
+        "gateway_off_former_behavior": 0.0,
+        "components": {
+          "r1a": 0,
+          "r1b": null,
+          "r1c": null,
+          "r2": null,
+          "r3": null,
+          "r4": null
+        },
+        "reasons": {
+          "r1a": "json_syntax_error:JSONDecodeError",
+          "r1b": "cascade:r1a_failed",
+          "r1c": "cascade:r1a_failed",
+          "r2": "cascade:r1a_failed",
+          "r3": "cascade:r1a_failed",
+          "r4": "cascade:r1a_failed"
+        },
+        "gateway_triggered": "r1_failure"
+      },
+      "ruling": "D4=(b): empty stages are a gateway-level degenerate output; formal reward 0 (empty_stages_gateway). Engineering ruling only - the frozen schema contract is NOT amended (no minItems added); component diagnostics (r4 V1_empty_stages, C0) retained for analysis."
+    },
+    "rows": [
+      {
+        "id": "P1",
+        "description": "well-formed plan with one repeated stage + per_year hint",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 1
+        },
+        "composite": 1.0,
+        "composite_gateway": 1.0,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1,
+            3
+          ],
+          "total_iterations": 5,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": true,
+            "stage_count": false
+          },
+          "n_stages": 2,
+          "n_rg": 1,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "N1",
+        "description": "adjacent same family = non-maximal run (determinable fail)",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 0,
+          "r4": 1
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 2,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "N2",
+        "description": "rg references a non-repeated (repeat=1) stage",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 2,
+          "n_rg": 1,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "N3",
+        "description": "rg present but missing the entry for a repeated stage",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1,
+            3
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 2,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "N4",
+        "description": "forbidden hint label per_feature",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            2
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 1,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "N5",
+        "description": "unparseable text -> r1a=0, full cascade (D2: no repair)",
+        "pass": true,
+        "got": {
+          "r1a": 0,
+          "r1b": null,
+          "r1c": null,
+          "r2": null,
+          "r3": null,
+          "r4": null
+        },
+        "composite": 0.0,
+        "composite_gateway": 0.0,
+        "gateway_triggered": "r1_failure",
+        "masked": [
+          "r1b",
+          "r1c",
+          "r2",
+          "r3",
+          "r4"
+        ],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [],
+          "total_iterations": null,
+          "field_presence": {},
+          "n_stages": null,
+          "n_rg": null,
+          "mask_reasons": [
+            "r1b: cascade:r1a_failed",
+            "r1c: cascade:r1a_failed",
+            "r2: cascade:r1a_failed",
+            "r3: cascade:r1a_failed",
+            "r4: cascade:r1a_failed"
+          ],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": "r1_failure",
+          "gateway_triggered": "r1_failure"
+        }
+      },
+      {
+        "id": "N6",
+        "description": "JSON but stages missing -> r1b=0, cascade",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 0,
+          "r1c": null,
+          "r2": null,
+          "r3": null,
+          "r4": null
+        },
+        "composite": 0.5,
+        "composite_gateway": 0.0,
+        "gateway_triggered": "r1_failure",
+        "masked": [
+          "r1c",
+          "r2",
+          "r3",
+          "r4"
+        ],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [],
+          "total_iterations": null,
+          "field_presence": {},
+          "n_stages": null,
+          "n_rg": null,
+          "mask_reasons": [
+            "r1c: cascade:r1b_failed",
+            "r2: cascade:r1b_failed",
+            "r3: cascade:r1b_failed",
+            "r4: cascade:r1b_failed"
+          ],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": "r1_failure",
+          "gateway_triggered": "r1_failure"
+        }
+      },
+      {
+        "id": "N7",
+        "description": "empty stages -> r4 V1 determinable fail (D4 hole: C0=5/6)",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.0,
+        "gateway_triggered": "empty_stages_gateway",
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": false,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 0,
+          "n_rg": null,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": "empty_stages_gateway",
+          "gateway_triggered": "empty_stages_gateway"
+        }
+      },
+      {
+        "id": "B1",
+        "description": "repeat=1, rg=[] -> legal",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 1
+        },
+        "composite": 1.0,
+        "composite_gateway": 1.0,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "B2",
+        "description": "same family separated by another family -> legal (adjacent-only)",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 1
+        },
+        "composite": 1.0,
+        "composite_gateway": 1.0,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 3,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "B3",
+        "description": "empty hint list -> legal (unspecified)",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 1
+        },
+        "composite": 1.0,
+        "composite_gateway": 1.0,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            2
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 1,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX1",
+        "description": "boolean repeat: r1c=0; r2 still evaluates (D1 scoped masking)",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 0,
+          "r2": 1,
+          "r3": null,
+          "r4": null
+        },
+        "composite": 0.75,
+        "composite_gateway": 0.0,
+        "gateway_triggered": "r1_failure",
+        "masked": [
+          "r3",
+          "r4"
+        ],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": false,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": null,
+          "mask_reasons": [
+            "r3: undeterminable:entry_defect_breaks_sequence_semantics",
+            "r4: undeterminable:rg_key_absent"
+          ],
+          "entry_defects": [
+            "stage[0]_repeat"
+          ],
+          "r2_excluded_entries": 0,
+          "r4_note": "undeterminable:rg_key_absent",
+          "gateway_reason": null,
+          "gateway_triggered": "r1_failure"
+        }
+      },
+      {
+        "id": "AUX2",
+        "description": "case-sensitive vocab: lowercase family -> r2=0 only",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 0,
+          "r3": 1,
+          "r4": 1
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [
+            "raster_load"
+          ],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX3",
+        "description": "duplicate rg entries for one stage -> r4=0",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            2
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 2,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX4",
+        "description": "rg present but empty with all repeat=1 -> fully legal",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 1
+        },
+        "composite": 1.0,
+        "composite_gateway": 1.0,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX5",
+        "description": "seq starting at 0 -> r4 V2 determinable fail",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX6",
+        "description": "extra top-level fields (stage_count) tolerated",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 1
+        },
+        "composite": 1.0,
+        "composite_gateway": 1.0,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": true
+          },
+          "n_stages": 1,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX7",
+        "description": "root is a list -> r1b=0 cascade",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 0,
+          "r1c": null,
+          "r2": null,
+          "r3": null,
+          "r4": null
+        },
+        "composite": 0.5,
+        "composite_gateway": 0.0,
+        "gateway_triggered": "r1_failure",
+        "masked": [
+          "r1c",
+          "r2",
+          "r3",
+          "r4"
+        ],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [],
+          "total_iterations": null,
+          "field_presence": {},
+          "n_stages": null,
+          "n_rg": null,
+          "mask_reasons": [
+            "r1c: cascade:r1b_failed",
+            "r2: cascade:r1b_failed",
+            "r3: cascade:r1b_failed",
+            "r4: cascade:r1b_failed"
+          ],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": "r1_failure",
+          "gateway_triggered": "r1_failure"
+        }
+      },
+      {
+        "id": "AUX8",
+        "description": "total_iterations as string -> r4 V5 determinable fail",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": "38",
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": true,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 0,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX9",
+        "description": "rg key ABSENT -> r4 MASKED (D3: missing != correct), composite 1.0 over remaining five",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": null
+        },
+        "composite": 1.0,
+        "composite_gateway": 1.0,
+        "gateway_triggered": null,
+        "masked": [
+          "r4"
+        ],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": false,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": null,
+          "mask_reasons": [
+            "r4: undeterminable:rg_key_absent"
+          ],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": "undeterminable:rg_key_absent",
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX10",
+        "description": "gateway_mode: malformed entry -> gateway 0 vs C0 mean > 0",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 0,
+          "r2": 1,
+          "r3": null,
+          "r4": null
+        },
+        "composite": 0.75,
+        "composite_gateway": 0.0,
+        "gateway_triggered": "r1_failure",
+        "masked": [
+          "r3",
+          "r4"
+        ],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": false,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 2,
+          "n_rg": null,
+          "mask_reasons": [
+            "r3: undeterminable:entry_defect_breaks_sequence_semantics",
+            "r4: undeterminable:rg_key_absent"
+          ],
+          "entry_defects": [
+            "stage[1]_repeat"
+          ],
+          "r2_excluded_entries": 0,
+          "r4_note": "undeterminable:rg_key_absent",
+          "gateway_reason": null,
+          "gateway_triggered": "r1_failure"
+        }
+      },
+      {
+        "id": "AUX11",
+        "description": "unknown hint label -> r4 V4 determinable fail",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 1,
+          "r2": 1,
+          "r3": 1,
+          "r4": 0
+        },
+        "composite": 0.8333333333333334,
+        "composite_gateway": 0.8333333333333334,
+        "gateway_triggered": null,
+        "masked": [],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            2
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": 1,
+          "mask_reasons": [],
+          "entry_defects": [],
+          "r2_excluded_entries": 0,
+          "r4_note": null,
+          "gateway_reason": null,
+          "gateway_triggered": null
+        }
+      },
+      {
+        "id": "AUX12",
+        "description": "rg not a list -> r1c=0; r2/r3 evaluated, r4 masked (D1 scoping)",
+        "pass": true,
+        "got": {
+          "r1a": 1,
+          "r1b": 1,
+          "r1c": 0,
+          "r2": 1,
+          "r3": 1,
+          "r4": null
+        },
+        "composite": 0.8,
+        "composite_gateway": 0.0,
+        "gateway_triggered": "r1_failure",
+        "masked": [
+          "r4"
+        ],
+        "mismatch_detail": [],
+        "log": {
+          "unknown_tokens": [],
+          "repeat_values": [
+            1
+          ],
+          "total_iterations": null,
+          "field_presence": {
+            "repetition_groups": true,
+            "total_iterations": false,
+            "stage_count": false
+          },
+          "n_stages": 1,
+          "n_rg": null,
+          "mask_reasons": [
+            "r4: undeterminable:entry_or_rg_defect_breaks_structure"
+          ],
+          "entry_defects": [
+            "stage[-1]_rg_not_list"
+          ],
+          "r2_excluded_entries": 0,
+          "r4_note": "undeterminable:entry_or_rg_defect_breaks_structure",
+          "gateway_reason": null,
+          "gateway_triggered": "r1_failure"
+        }
+      }
+    ]
+  },
+  "contract_dialect_revalidation": "755/755 formal path",
+  "artifacts_full_sha256": {
+    "module": {
+      "path": "scripts/rl_reward_v1.py",
+      "sha256": "ae72e638ef036c1209ca3f931790ab59c764389ec88dfffd0a238a2607856433"
+    },
+    "tests": {
+      "path": "tests/test_rl_reward_v1.py",
+      "sha256": "f5fbad5cd8a144007678669ba91e0b7a96e2406511ad320696ae76e26460b210"
+    },
+    "vocab": {
+      "path": "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line/vocab20_local_partial.json",
+      "sha256": "ead5e90d2084f8182bd8b1eb32a1173e29f2c4840ca75aaad3bad22da360c45d"
+    },
+    "history": {
+      "v1_report": "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line/REWARD_BATTERY_REPORT_V1.json",
+      "v1_1_report": "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line/REWARD_BATTERY_REPORT_V1_1.json"
+    }
+  }
+}

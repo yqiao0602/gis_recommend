@@ -1,0 +1,1715 @@
+{
+  "label": "r5_v0_blind_run_vs_owner_labels",
+  "groups": [
+    {
+      "k": 5227,
+      "band": "short_2_4",
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "COMPOSITE"
+      ],
+      "slot_detail": [
+        {
+          "id": "TEMPORAL",
+          "state": "required",
+          "families": [
+            "TEMPORAL_FILTER"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit year",
+              "hit_text": "ce Reflectance data from 2014 to 2017 by applying a cl"
+            },
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit year",
+              "hit_text": "ctance data from 2014 to 2017 by applying a cloud mask"
+            },
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit from-to range",
+              "hit_text": "Surface Reflectance data from 2014 to 2017 by applying a cloud"
+            }
+          ]
+        },
+        {
+          "id": "MASK",
+          "state": "required",
+          "families": [
+            "MASKING"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "14 to 2017 by applying a cloud masking function to remo"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "sking function to remove cloudy and shadowed pixels, th"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "ion to remove cloudy and shadowed pixels, then computes"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "ming to produce a clear, cloud-reduced representation o"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit masking",
+              "hit_text": "2017 by applying a cloud masking function to remove cl"
+            }
+          ]
+        },
+        {
+          "id": "COMPOSITE",
+          "state": "required",
+          "families": [
+            "AGGREGATION"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics",
+          "hits": [
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit median composite",
+              "hit_text": "ixels, then computes the median composite of the cleaned image col"
+            },
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit composite",
+              "hit_text": "then computes the median composite of the cleaned image col"
+            }
+          ]
+        }
+      ],
+      "vocab_gap_signals": [
+        {
+          "signal": "CHART_PLOT",
+          "hit_text": "ned image collection and visualizes it using blue, green,"
+        }
+      ],
+      "abstain": false,
+      "abstain_reason": null,
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 2,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "covered",
+                "matched_family": "AGGREGATION",
+                "note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics"
+              }
+            ],
+            "covered": 2,
+            "missing": 1,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.6667,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": []
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "B",
+          "true_cand": 1,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "covered",
+                "matched_family": "AGGREGATION",
+                "note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics"
+              }
+            ],
+            "covered": 2,
+            "missing": 1,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.6667,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": []
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "C",
+          "true_cand": 0,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "covered",
+                "matched_family": "AGGREGATION",
+                "note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics"
+              }
+            ],
+            "covered": 2,
+            "missing": 1,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.6667,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": []
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "D",
+          "true_cand": 3,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "covered",
+                "matched_family": "AGGREGATION",
+                "note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics"
+              }
+            ],
+            "covered": 2,
+            "missing": 1,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.6667,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": []
+          },
+          "owner_label": "omission"
+        }
+      ],
+      "owner_omission_detail": "all four: no explicit cloud/shadow mask capability; AGGREGATION may represent median composite but is not cloud masking; RGB band-select/visualization unexpressed",
+      "owner_group_note": "identical stage sets across candidates - no within-group quality variance"
+    },
+    {
+      "k": 17970,
+      "band": "short_2_4",
+      "required_slots": [],
+      "slot_detail": [],
+      "vocab_gap_signals": [
+        {
+          "signal": "PROFILE_TRANSECT",
+          "hit_text": "Task: Extract elevation profile along transect\nExtract a"
+        },
+        {
+          "signal": "CHART_PLOT",
+          "hit_text": "values by longitude and visualizing them as a chart with"
+        }
+      ],
+      "abstain": true,
+      "abstain_reason": "no explicit requirement slot could be parsed (F3: abstain when zero required slots)",
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 2,
+          "r5": {
+            "per_slot": [],
+            "covered": 0,
+            "missing": 0,
+            "covered_coarse": 0,
+            "coverage_ratio": null,
+            "coverage_verdict": "abstain",
+            "unlinked_content_families_audit_only": [
+              "BAND_SELECT"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "B",
+          "true_cand": 1,
+          "r5": {
+            "per_slot": [],
+            "covered": 0,
+            "missing": 0,
+            "covered_coarse": 0,
+            "coverage_ratio": null,
+            "coverage_verdict": "abstain",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER",
+              "BAND_ARITHMETIC"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "C",
+          "true_cand": 0,
+          "r5": {
+            "per_slot": [],
+            "covered": 0,
+            "missing": 0,
+            "covered_coarse": 0,
+            "coverage_ratio": null,
+            "coverage_verdict": "abstain",
+            "unlinked_content_families_audit_only": [
+              "BAND_SELECT"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "D",
+          "true_cand": 3,
+          "r5": {
+            "per_slot": [],
+            "covered": 0,
+            "missing": 0,
+            "covered_coarse": 0,
+            "coverage_ratio": null,
+            "coverage_verdict": "abstain",
+            "unlinked_content_families_audit_only": [
+              "AGGREGATION",
+              "BAND_SELECT"
+            ]
+          },
+          "owner_label": "omission"
+        }
+      ],
+      "owner_omission_detail": "all four: profile extraction/sampling and chart generation not expressible in current family vocab (no PROFILE/LINE_SAMPLING/CHART family)",
+      "owner_group_note": "VOCAB-EXPRESSIVENESS BOUNDARY case: missing capabilities are unrepresentable in the stage vocabulary"
+    },
+    {
+      "k": 823,
+      "band": "mid_5_8",
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "SPATIAL",
+        "COMPOSITE",
+        "CLASSIFY"
+      ],
+      "slot_detail": [
+        {
+          "id": "TEMPORAL",
+          "state": "required",
+          "families": [
+            "TEMPORAL_FILTER"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit year",
+              "hit_text": "reflectance imagery for 2010, masks clouds and shadow"
+            },
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit period adjective",
+              "hit_text": "d land cover\nGenerate an annual median composite of Land"
+            }
+          ]
+        },
+        {
+          "id": "MASK",
+          "state": "required",
+          "families": [
+            "MASKING"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "imagery for 2010, masks clouds and shadows, clips to a"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "r 2010, masks clouds and shadows, clips to a watershed b"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit masking",
+              "hit_text": "ctance imagery for 2010, masks clouds and shadows, cli"
+            }
+          ]
+        },
+        {
+          "id": "SPATIAL",
+          "state": "required",
+          "families": [
+            "SPATIAL_CLIP",
+            "SPATIAL_FILTER"
+          ],
+          "conditional_equivalence": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording",
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "SPATIAL",
+              "pattern_label": "explicit clip",
+              "hit_text": "asks clouds and shadows, clips to a watershed boundary"
+            },
+            {
+              "rule": "SPATIAL",
+              "pattern_label": "explicit region boundary",
+              "hit_text": "and shadows, clips to a watershed boundary (C6C5), and app"
+            },
+            {
+              "rule": "SPATIAL",
+              "pattern_label": "explicit region boundary",
+              "hit_text": "ws, clips to a watershed boundary (C6C5), and applies K-me"
+            }
+          ]
+        },
+        {
+          "id": "COMPOSITE",
+          "state": "required",
+          "families": [
+            "AGGREGATION"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics",
+          "hits": [
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit median composite",
+              "hit_text": "cover\nGenerate an annual median composite of Landsat 5 surface ref"
+            },
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit composite",
+              "hit_text": "enerate an annual median composite of Landsat 5 surface ref"
+            },
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit composite",
+              "hit_text": "luster map, and both the composite and classification resul"
+            }
+          ]
+        },
+        {
+          "id": "CLASSIFY",
+          "state": "required",
+          "families": [
+            "CLASSIFICATION"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit classification",
+              "hit_text": "stering (15 clusters) to classify land cover patterns, pa"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit classification",
+              "hit_text": "tion analysis, the final classified cluster map, and both"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit classification",
+              "hit_text": "d both the composite and classification results are expor"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit clustering",
+              "hit_text": "Task: Cluster vegetation and land cove"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit clustering",
+              "hit_text": "dary (C6C5), and applies K-means clustering (15 clusters)"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit clustering",
+              "hit_text": "C5), and applies K-means clustering (15 clusters) to clas"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit clustering",
+              "hit_text": "s K-means clustering (15 clusters) to classify land cover"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit clustering",
+              "hit_text": "is, the final classified cluster map, and both the compos"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "land-cover mapping",
+              "hit_text": ": Cluster vegetation and land cover\nGenerate an annual media"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "land-cover mapping",
+              "hit_text": "15 clusters) to classify land cover patterns, particularly f"
+            }
+          ]
+        }
+      ],
+      "vocab_gap_signals": [],
+      "abstain": false,
+      "abstain_reason": null,
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 1,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "covered_coarse",
+                "matched_family": "SPATIAL_FILTER",
+                "note": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording"
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "missing",
+                "required_families": [
+                  "AGGREGATION"
+                ]
+              },
+              {
+                "slot": "CLASSIFY",
+                "coverage": "covered",
+                "matched_family": "CLASSIFICATION"
+              }
+            ],
+            "covered": 3,
+            "missing": 2,
+            "covered_coarse": 1,
+            "coverage_ratio": 0.6,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "B",
+          "true_cand": 3,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "missing",
+                "required_families": [
+                  "SPATIAL_CLIP",
+                  "SPATIAL_FILTER"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "covered",
+                "matched_family": "AGGREGATION",
+                "note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics"
+              },
+              {
+                "slot": "CLASSIFY",
+                "coverage": "covered",
+                "matched_family": "CLASSIFICATION"
+              }
+            ],
+            "covered": 3,
+            "missing": 2,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.6,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ITERATIVE_APPLY"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "C",
+          "true_cand": 2,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "missing",
+                "required_families": [
+                  "SPATIAL_CLIP",
+                  "SPATIAL_FILTER"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "missing",
+                "required_families": [
+                  "AGGREGATION"
+                ]
+              },
+              {
+                "slot": "CLASSIFY",
+                "coverage": "covered",
+                "matched_family": "CLASSIFICATION"
+              }
+            ],
+            "covered": 2,
+            "missing": 3,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.4,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": []
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "D",
+          "true_cand": 0,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "missing",
+                "required_families": [
+                  "TEMPORAL_FILTER"
+                ]
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "missing",
+                "required_families": [
+                  "SPATIAL_CLIP",
+                  "SPATIAL_FILTER"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "missing",
+                "required_families": [
+                  "AGGREGATION"
+                ]
+              },
+              {
+                "slot": "CLASSIFY",
+                "coverage": "missing",
+                "required_families": [
+                  "CLASSIFICATION"
+                ]
+              }
+            ],
+            "covered": 0,
+            "missing": 5,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.0,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        }
+      ],
+      "owner_omission_detail": "all four: cloud/shadow mask not explicit; watershed clip and clustering iteration unclear; D lacks annual composite/mask/clip/classification; A ATTRIBUTE_FILTER x40 anomalous repetition (not scored as evidence)",
+      "owner_group_note": "repetition counts not treated as completeness or unsupported evidence (conservative)"
+    },
+    {
+      "k": 29519,
+      "band": "mid_5_8",
+      "required_slots": [
+        "TEMPORAL",
+        "MASK",
+        "INDEX",
+        "SPATIAL",
+        "COMPOSITE"
+      ],
+      "slot_detail": [
+        {
+          "id": "TEMPORAL",
+          "state": "required",
+          "families": [
+            "TEMPORAL_FILTER"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit year",
+              "hit_text": "etween July and November 1997. It applies pixel qualit"
+            },
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit month range",
+              "hit_text": "specific region between July and November 1997. It applies pixel q"
+            }
+          ]
+        },
+        {
+          "id": "MASK",
+          "state": "required",
+          "families": [
+            "MASKING"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "uality masking to remove clouds and cloud shadows, calc"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "ing to remove clouds and cloud shadows, calculates NDWI"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit cloud/shadow masking",
+              "hit_text": "remove clouds and cloud shadows, calculates NDWI using"
+            },
+            {
+              "rule": "MASK",
+              "pattern_label": "explicit masking",
+              "hit_text": "It applies pixel quality masking to remove clouds and"
+            }
+          ]
+        },
+        {
+          "id": "INDEX",
+          "state": "required",
+          "families": [
+            "SPECTRAL_INDEX",
+            "BAND_ARITHMETIC"
+          ],
+          "conditional_equivalence": "either family may realize an index computation (candidate-only equivalence; not all band arithmetic is an index)",
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "ract surface water using NDWI\nCompute the Normalized D"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "Difference Water Index (NDWI) from Landsat 5 TM surfa"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "loud shadows, calculates NDWI using green and near-inf"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "rates a median composite NDWI image clipped to the stu"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "input imagery, a mapped NDWI layer, and an exported G"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "ed GeoTIFF of the median NDWI result for offline use."
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "normalized-difference formula",
+              "hit_text": "r using NDWI\nCompute the Normalized Difference Water Index (NDWI) from"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "generic index mention",
+              "hit_text": "malized Difference Water Index (NDWI) from Landsat 5 TM"
+            }
+          ]
+        },
+        {
+          "id": "SPATIAL",
+          "state": "required",
+          "families": [
+            "SPATIAL_CLIP",
+            "SPATIAL_FILTER"
+          ],
+          "conditional_equivalence": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording",
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "SPATIAL",
+              "pattern_label": "explicit clip",
+              "hit_text": "ian composite NDWI image clipped to the study area. Th"
+            },
+            {
+              "rule": "SPATIAL",
+              "pattern_label": "explicit region boundary",
+              "hit_text": "DWI image clipped to the study area. The output includes a t"
+            },
+            {
+              "rule": "SPATIAL",
+              "pattern_label": "explicit containment phrasing",
+              "hit_text": "ian composite NDWI image clipped to the study area. The outp"
+            }
+          ]
+        },
+        {
+          "id": "COMPOSITE",
+          "state": "required",
+          "families": [
+            "AGGREGATION"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics",
+          "hits": [
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit median composite",
+              "hit_text": "values, and generates a median composite NDWI image clipped to th"
+            },
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit composite",
+              "hit_text": ", and generates a median composite NDWI image clipped to th"
+            }
+          ]
+        }
+      ],
+      "vocab_gap_signals": [
+        {
+          "signal": "CHART_PLOT",
+          "hit_text": "ut includes a true-color visualization of the input imager"
+        }
+      ],
+      "abstain": false,
+      "abstain_reason": null,
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 1,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "missing",
+                "required_families": [
+                  "TEMPORAL_FILTER"
+                ]
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "INDEX",
+                "coverage": "missing",
+                "required_families": [
+                  "SPECTRAL_INDEX",
+                  "BAND_ARITHMETIC"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "missing",
+                "required_families": [
+                  "SPATIAL_CLIP",
+                  "SPATIAL_FILTER"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "missing",
+                "required_families": [
+                  "AGGREGATION"
+                ]
+              }
+            ],
+            "covered": 0,
+            "missing": 5,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.0,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "BAND_SELECT",
+              "ITERATIVE_APPLY"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "B",
+          "true_cand": 2,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "INDEX",
+                "coverage": "missing",
+                "required_families": [
+                  "SPECTRAL_INDEX",
+                  "BAND_ARITHMETIC"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "covered_coarse",
+                "matched_family": "SPATIAL_FILTER",
+                "note": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording"
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "missing",
+                "required_families": [
+                  "AGGREGATION"
+                ]
+              }
+            ],
+            "covered": 2,
+            "missing": 3,
+            "covered_coarse": 1,
+            "coverage_ratio": 0.4,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "C",
+          "true_cand": 3,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "missing",
+                "required_families": [
+                  "TEMPORAL_FILTER"
+                ]
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "INDEX",
+                "coverage": "missing",
+                "required_families": [
+                  "SPECTRAL_INDEX",
+                  "BAND_ARITHMETIC"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "missing",
+                "required_families": [
+                  "SPATIAL_CLIP",
+                  "SPATIAL_FILTER"
+                ]
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "missing",
+                "required_families": [
+                  "AGGREGATION"
+                ]
+              }
+            ],
+            "covered": 0,
+            "missing": 5,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.0,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ITERATIVE_APPLY"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "D",
+          "true_cand": 0,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "MASK",
+                "coverage": "missing",
+                "required_families": [
+                  "MASKING"
+                ]
+              },
+              {
+                "slot": "INDEX",
+                "coverage": "missing",
+                "required_families": [
+                  "SPECTRAL_INDEX",
+                  "BAND_ARITHMETIC"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "covered_coarse",
+                "matched_family": "SPATIAL_FILTER",
+                "note": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording"
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "missing",
+                "required_families": [
+                  "AGGREGATION"
+                ]
+              }
+            ],
+            "covered": 2,
+            "missing": 3,
+            "covered_coarse": 1,
+            "coverage_ratio": 0.4,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        }
+      ],
+      "owner_omission_detail": "all four: explicit NDWI/normalized-difference computation and cloud masking missing; A/C also lack temporal filter and median composite; ITERATIVE_APPLY could wrap index calc - unreproducible from stage names alone (limitation logged)",
+      "owner_group_note": "best INDEX-slot test case: NDWI explicitly required, no BAND_ARITHMETIC/SPECTRAL_INDEX in any candidate"
+    },
+    {
+      "k": 13612,
+      "band": "long_9plus",
+      "required_slots": [
+        "TEMPORAL",
+        "INDEX",
+        "SPATIAL",
+        "COMPOSITE",
+        "STATS"
+      ],
+      "slot_detail": [
+        {
+          "id": "TEMPORAL",
+          "state": "required",
+          "families": [
+            "TEMPORAL_FILTER"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit year",
+              "hit_text": "from January to February 2023. It generates a median N"
+            },
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit month range",
+              "hit_text": "ce reflectance data from January to February 2023. It generates a med"
+            },
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit from-to range",
+              "hit_text": "surface reflectance data from January to February 2023. It genera"
+            }
+          ]
+        },
+        {
+          "id": "INDEX",
+          "state": "required",
+          "families": [
+            "SPECTRAL_INDEX",
+            "BAND_ARITHMETIC"
+          ],
+          "conditional_equivalence": "either family may realize an index computation (candidate-only equivalence; not all band arithmetic is an index)",
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "Task: Analyze NDVI in agricultural regions"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "Calculate and visualizes NDVI values over multiple geo"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "3. It generates a median NDVI composite, clips it to s"
+            },
+            {
+              "rule": "INDEX",
+              "pattern_label": "named spectral index",
+              "hit_text": "d scatter charts of mean NDVI per region to analyze ve"
+            }
+          ]
+        },
+        {
+          "id": "SPATIAL",
+          "state": "required",
+          "families": [
+            "SPATIAL_CLIP",
+            "SPATIAL_FILTER"
+          ],
+          "conditional_equivalence": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording",
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "SPATIAL",
+              "pattern_label": "explicit clip",
+              "hit_text": "a median NDVI composite, clips it to specified regions"
+            }
+          ]
+        },
+        {
+          "id": "COMPOSITE",
+          "state": "required",
+          "families": [
+            "AGGREGATION"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics",
+          "hits": [
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit median composite",
+              "hit_text": "ary 2023. It generates a median NDVI composite, clips it to specified r"
+            },
+            {
+              "rule": "COMPOSITE",
+              "pattern_label": "explicit composite",
+              "hit_text": "generates a median NDVI composite, clips it to specified r"
+            }
+          ]
+        },
+        {
+          "id": "STATS",
+          "state": "required",
+          "families": [
+            "REGIONAL_STATS",
+            "AGGREGATION"
+          ],
+          "conditional_equivalence": "equivalence plausible in regional-statistics tasks; generic aggregation is not always regional statistics",
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "STATS",
+              "pattern_label": "area computation (excludes 'study area')",
+              "hit_text": "gions, computes regional areas, and creates time-series"
+            },
+            {
+              "rule": "STATS",
+              "pattern_label": "per-group statistics",
+              "hit_text": "ional areas, and creates time-series line and scatter charts"
+            },
+            {
+              "rule": "STATS",
+              "pattern_label": "per-group statistics",
+              "hit_text": "ne and scatter charts of mean NDVI per region to analyze vegeta"
+            }
+          ]
+        }
+      ],
+      "vocab_gap_signals": [
+        {
+          "signal": "CHART_PLOT",
+          "hit_text": "al regions\nCalculate and visualizes NDVI values over multi"
+        }
+      ],
+      "abstain": false,
+      "abstain_reason": null,
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 1,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "INDEX",
+                "coverage": "missing",
+                "required_families": [
+                  "SPECTRAL_INDEX",
+                  "BAND_ARITHMETIC"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "covered_coarse",
+                "matched_family": "SPATIAL_FILTER",
+                "note": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording"
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "missing",
+                "required_families": [
+                  "AGGREGATION"
+                ]
+              },
+              {
+                "slot": "STATS",
+                "coverage": "missing",
+                "required_families": [
+                  "REGIONAL_STATS",
+                  "AGGREGATION"
+                ]
+              }
+            ],
+            "covered": 2,
+            "missing": 3,
+            "covered_coarse": 1,
+            "coverage_ratio": 0.4,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "B",
+          "true_cand": 2,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "INDEX",
+                "coverage": "missing",
+                "required_families": [
+                  "SPECTRAL_INDEX",
+                  "BAND_ARITHMETIC"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "covered_coarse",
+                "matched_family": "SPATIAL_FILTER",
+                "note": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording"
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "covered",
+                "matched_family": "AGGREGATION",
+                "note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics"
+              },
+              {
+                "slot": "STATS",
+                "coverage": "covered_coarse",
+                "matched_family": "AGGREGATION",
+                "note": "equivalence plausible in regional-statistics tasks; generic aggregation is not always regional statistics"
+              }
+            ],
+            "covered": 4,
+            "missing": 1,
+            "covered_coarse": 2,
+            "coverage_ratio": 0.8,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "C",
+          "true_cand": 3,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "INDEX",
+                "coverage": "missing",
+                "required_families": [
+                  "SPECTRAL_INDEX",
+                  "BAND_ARITHMETIC"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "covered_coarse",
+                "matched_family": "SPATIAL_FILTER",
+                "note": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording"
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "covered",
+                "matched_family": "AGGREGATION",
+                "note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics"
+              },
+              {
+                "slot": "STATS",
+                "coverage": "covered_coarse",
+                "matched_family": "AGGREGATION",
+                "note": "equivalence plausible in regional-statistics tasks; generic aggregation is not always regional statistics"
+              }
+            ],
+            "covered": 4,
+            "missing": 1,
+            "covered_coarse": 2,
+            "coverage_ratio": 0.8,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "D",
+          "true_cand": 0,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "INDEX",
+                "coverage": "missing",
+                "required_families": [
+                  "SPECTRAL_INDEX",
+                  "BAND_ARITHMETIC"
+                ]
+              },
+              {
+                "slot": "SPATIAL",
+                "coverage": "covered_coarse",
+                "matched_family": "SPATIAL_FILTER",
+                "note": "clip vs relational filter may differ in semantics (geometric clip / spatial-relation filter / raster mask); applicability decided per task wording"
+              },
+              {
+                "slot": "COMPOSITE",
+                "coverage": "covered",
+                "matched_family": "AGGREGATION",
+                "note": "AGGREGATION may represent median compositing, but one aggregation stage cannot be assumed to also cover distinct statistics"
+              },
+              {
+                "slot": "STATS",
+                "coverage": "covered_coarse",
+                "matched_family": "AGGREGATION",
+                "note": "equivalence plausible in regional-statistics tasks; generic aggregation is not always regional statistics"
+              }
+            ],
+            "covered": 4,
+            "missing": 1,
+            "covered_coarse": 2,
+            "coverage_ratio": 0.8,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER",
+              "BAND_SELECT"
+            ]
+          },
+          "owner_label": "omission"
+        }
+      ],
+      "owner_omission_detail": "all four: explicit NDVI computation missing; aggregation counts (x3 vs x2) do not prove regional-area and mean-NDVI-timeseries coverage (granularity caveat)",
+      "owner_group_note": "same-family multiple slots cannot be assumed covered by one stage - granularity uncertainty flagged"
+    },
+    {
+      "k": 30160,
+      "band": "long_9plus",
+      "required_slots": [
+        "TEMPORAL",
+        "STATS",
+        "CLASSIFY"
+      ],
+      "slot_detail": [
+        {
+          "id": "TEMPORAL",
+          "state": "required",
+          "families": [
+            "TEMPORAL_FILTER"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit year",
+              "hit_text": "ata from June to October 2020, applying a Random Fores"
+            },
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit month range",
+              "hit_text": "ce reflectance data from June to October 2020, applying a Random"
+            },
+            {
+              "rule": "TEMPORAL",
+              "pattern_label": "explicit from-to range",
+              "hit_text": "surface reflectance data from June to October 2020, applying a"
+            }
+          ]
+        },
+        {
+          "id": "STATS",
+          "state": "required",
+          "families": [
+            "REGIONAL_STATS",
+            "AGGREGATION"
+          ],
+          "conditional_equivalence": "equivalence plausible in regional-statistics tasks; generic aggregation is not always regional statistics",
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "STATS",
+              "pattern_label": "area computation (excludes 'study area')",
+              "hit_text": "a, overall accuracy, and area calculation per class."
+            },
+            {
+              "rule": "STATS",
+              "pattern_label": "accuracy metrics",
+              "hit_text": "classification map with accuracy assessment including kappa, overall"
+            },
+            {
+              "rule": "STATS",
+              "pattern_label": "accuracy metrics",
+              "hit_text": "acy assessment including kappa, overall accuracy, and a"
+            },
+            {
+              "rule": "STATS",
+              "pattern_label": "accuracy metrics",
+              "hit_text": "essment including kappa, overall accuracy, and area calculation pe"
+            },
+            {
+              "rule": "STATS",
+              "pattern_label": "per-group statistics",
+              "hit_text": "cy, and area calculation per class."
+            }
+          ]
+        },
+        {
+          "id": "CLASSIFY",
+          "state": "required",
+          "families": [
+            "CLASSIFICATION"
+          ],
+          "conditional_equivalence": null,
+          "granularity_note": null,
+          "hits": [
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit classification",
+              "hit_text": "Task: Classify land cover types\nClassi"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit classification",
+              "hit_text": "lassify land cover types\nClassify land cover into six cat"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit classification",
+              "hit_text": "applying a Random Forest classifier trained on labeled re"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit classification",
+              "hit_text": "nd exports the resulting classification map with accuracy"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "explicit classifier",
+              "hit_text": "October 2020, applying a Random Forest classifier trained on la"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "land-cover mapping",
+              "hit_text": "Task: Classify land cover types\nClassify land cove"
+            },
+            {
+              "rule": "CLASSIFY",
+              "pattern_label": "land-cover mapping",
+              "hit_text": "and cover types\nClassify land cover into six categories (urb"
+            }
+          ]
+        }
+      ],
+      "vocab_gap_signals": [
+        {
+          "signal": "ACCURACY_ASSESSMENT",
+          "hit_text": "classification map with accuracy assessment including kappa, overall"
+        }
+      ],
+      "abstain": false,
+      "abstain_reason": null,
+      "candidates": [
+        {
+          "letter": "A",
+          "true_cand": 0,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "STATS",
+                "coverage": "covered_coarse",
+                "matched_family": "AGGREGATION",
+                "note": "equivalence plausible in regional-statistics tasks; generic aggregation is not always regional statistics"
+              },
+              {
+                "slot": "CLASSIFY",
+                "coverage": "missing",
+                "required_families": [
+                  "CLASSIFICATION"
+                ]
+              }
+            ],
+            "covered": 2,
+            "missing": 1,
+            "covered_coarse": 1,
+            "coverage_ratio": 0.6667,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER",
+              "BAND_SELECT",
+              "SPATIAL_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "B",
+          "true_cand": 2,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "STATS",
+                "coverage": "covered_coarse",
+                "matched_family": "AGGREGATION",
+                "note": "equivalence plausible in regional-statistics tasks; generic aggregation is not always regional statistics"
+              },
+              {
+                "slot": "CLASSIFY",
+                "coverage": "covered",
+                "matched_family": "CLASSIFICATION"
+              }
+            ],
+            "covered": 3,
+            "missing": 0,
+            "covered_coarse": 1,
+            "coverage_ratio": 1.0,
+            "coverage_verdict": "complete_coarse_uncertain",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER",
+              "BAND_ARITHMETIC",
+              "SPATIAL_FILTER"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "C",
+          "true_cand": 3,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "covered",
+                "matched_family": "TEMPORAL_FILTER"
+              },
+              {
+                "slot": "STATS",
+                "coverage": "covered_coarse",
+                "matched_family": "AGGREGATION",
+                "note": "equivalence plausible in regional-statistics tasks; generic aggregation is not always regional statistics"
+              },
+              {
+                "slot": "CLASSIFY",
+                "coverage": "covered",
+                "matched_family": "CLASSIFICATION"
+              }
+            ],
+            "covered": 3,
+            "missing": 0,
+            "covered_coarse": 1,
+            "coverage_ratio": 1.0,
+            "coverage_verdict": "complete_coarse_uncertain",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER",
+              "ITERATIVE_APPLY"
+            ]
+          },
+          "owner_label": "omission"
+        },
+        {
+          "letter": "D",
+          "true_cand": 1,
+          "r5": {
+            "per_slot": [
+              {
+                "slot": "TEMPORAL",
+                "coverage": "missing",
+                "required_families": [
+                  "TEMPORAL_FILTER"
+                ]
+              },
+              {
+                "slot": "STATS",
+                "coverage": "missing",
+                "required_families": [
+                  "REGIONAL_STATS",
+                  "AGGREGATION"
+                ]
+              },
+              {
+                "slot": "CLASSIFY",
+                "coverage": "missing",
+                "required_families": [
+                  "CLASSIFICATION"
+                ]
+              }
+            ],
+            "covered": 0,
+            "missing": 3,
+            "covered_coarse": 0,
+            "coverage_ratio": 0.0,
+            "coverage_verdict": "incomplete",
+            "unlinked_content_families_audit_only": [
+              "ATTRIBUTE_FILTER",
+              "BAND_SELECT"
+            ]
+          },
+          "owner_label": "omission"
+        }
+      ],
+      "owner_omission_detail": "all four: accuracy assessment (kappa/overall accuracy) and per-class area not explicit; A/D also lack classification; B/C have CLASSIFICATION but assessment goals unproven",
+      "owner_group_note": "B/C the only candidates with explicit CLASSIFICATION"
+    }
+  ]
+}

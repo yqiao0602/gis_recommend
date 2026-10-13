@@ -1,0 +1,27 @@
+{
+  "label": "provisional_vocab23_diagnostic_dryrun_no_training",
+  "base": "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base",
+  "adapter": "/home/qy/stage1_run_planner_v2_fmt/stage1_adapter",
+  "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+  "adapter_model_sha256": "82095811dc11d10613cd351513a40a568134f3d646e84942591310dd177a65bb",
+  "train_sha256": "443d5d310c1875ad668c12b65c8255d54da8da3bc5c97500c3fc126f18e7fa4e",
+  "seed": 20261013,
+  "k": 8,
+  "max_new_tokens": 768,
+  "repetition_penalty": 1.15,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "do_sample": true,
+  "truncation": "max_length 1024-MAX_NEW, right side",
+  "prompt_format": "task + SEP (identical to p0b2_arms.py)",
+  "n_tasks": 24,
+  "stratification": {
+    "short_2_4": 8,
+    "mid_5_8": 8,
+    "long_9plus": 8
+  },
+  "wall_seconds": 297.2,
+  "gen_tokens_total": 22128,
+  "tokens_per_sec_all_candidates": 74.46,
+  "peak_cuda_MiB": 8204.5
+}

@@ -29,21 +29,243 @@ Last updated: 2026-10-13
   back-projection -> A construction -> C drafting -> pairing -> dedup
   ledger -> owner per-task review. **No formal 180-generation until the
   owner approves the gold.**
-- **Owner rulings 2026-10-13 (post-handoff, RL/Kalman question)**: RL and
-  Kalman filtering NOT started (none of the five owner-supplied papers
-  covers Kalman; Zenodo 23146393 = SIGMAI QGIS MCP plugin, not a training
-  paper; reward untrusted until the multisolution set + trusted dev subset
-  land). Approved: (a) workflow-affinity strategy probes as a POST-PCA
-  additional experiment on the same 60 tasks — PCA v1 untouched, affinity
-  clusters never enter runtime; (b) multisolution diagnostic set proceeds
-  per design v0 with all three open questions ruled (D1 natural-corpus
-  mining + manual supplement, D2/D3 auto-retrieval + manual confirm,
-  floors D1>=10 / D2,D3>=5 pairs); (c) GEE-line five-step 2 (B2-P1 repair)
-  and 4 (trusted dev subset freeze) run in parallel, audits/repairs only.
-  Authority: `planning_capability_audit_v1/OWNER_RULINGS_20261013_V1.md`;
-  B-group de-grounding rules drafted at v0
-  (`B_GROUP_DEGROUNDING_RULES_V0.md`) — owner approval of the rules gates
-  B-group gold writing.
+
+## (0b) RL line opened (Route-2 Stage-3 slot): four-phase route adopted, prereg v0 DRAFT (2026-10-13)
+
+- **Owner rulings (this session)**: adopt the four-phase RL route (Phase 1 GRPO engineering
+  smoke -> Phase 2 RAFT/DPO baselines -> Phase 3 affinity sampling + gated GRPO -> Phase 4
+  process-reward / estimation-enhancement ablation); output space pinned to **Blueprint v2
+  (P0 planner)** — QGIS-graph RL stays in the frozen Stage-2 slot; Phase-1 venue = mdzhang
+  shared (co-tenancy protocol). This amends the 2026-10-12 "RL not authorized" standing
+  order to "authorized under the preregistration protocol below".
+- **Authority**: `plan_pipeline_v1/rl_line/RL_LINE_PREREGISTRATION_V1_CANDIDATE.md` (V1
+  CANDIDATE; v0 DRAFT retained as history). Review-round OQ rulings ALL landed: OQ-1
+  approved (24 tasks x 8 rollouts, seed 20261013); OQ-2 conditional (equal-weight synthesis
+  only after the positive/negative pytest battery + S2 failure-co-occurrence check — fix
+  definitions, not weights); OQ-3 beta=0.04 initial value only; OQ-4 S4 hard cap <=48
+  task-group updates + six pre-registered stop conditions (KL abort separate from beta:
+  per-token KL >1.0 nat x5 consecutive or >10 nat single-step); OQ-5 Phase 2 released only
+  after the S2 throughput-extrapolation report + separate owner approval. r4 is now a
+  schema-grounded executable definition (non-empty / seq continuity / rg<->stages
+  bidirectional consistency / hint-label legality, per_feature = illegal) with the
+  P1/N1-N7/B1-B3 battery as pytest — all green before the reward implementation freezes;
+  absolute repeat magnitude logged, never scored (Contract E4 caliber). S2 acceptance split:
+  engineering acceptance + signal diagnosis (effective groups <8/24 -> "limited signal
+  coverage", NOT interpretable as scale-up readiness). Schema authority =
+  `planner_design/PLANNER_V2_CONTRACT_FREEZE_v1.md`. Standing pins: reward v0 gold-free
+  four-component with unverifiable dimensions masked; rollout decode rep-pen 1.15 (frozen
+  eval instrument unchanged); RL training tasks ⊂ planner_v2_train only; E0 reuses existing
+  P0 dev-1852 predictions; S1 is read-only (SHA / co-tenancy / vocab materialization /
+  battery run), stop on any resource conflict. PCA/multisolution line = external input;
+  only Phase 3 depends on it.
+- **Local implementation delivered (2026-10-13)**: `scripts/rl_reward_v1.py` +
+  `tests/test_rl_reward_v1.py` — battery 22/22 green (pytest 7/7). Real-data verification
+  found TWO coexisting rg dialects in the local corpus: contract dialect
+  (stage_seq/family/repeat/iteration_hint; 755 rows with non-empty rg) scores **755/755 =
+  1.0**; anchor dialect (anchor_seq/pattern/repeat_count/order_preserved; 1,078 rows = P1/P2
+  experiment lineage, window folds) is OUT of the P0 output space and unsupported by design.
+  P0=contract-dialect is an inference (planner_v2_train built post-freeze; E3 consumes
+  iteration_hint) -> **S1 now includes a dialect-fingerprint check** (planner_v2_train
+  targets + one p0_dev_full_preds sample). total_iterations/stage_count appear in 0/2,985
+  local targets -> presence logged, never required. 5+5 non-maximal-run rows are anchor-
+  lineage only (out of RL scope, logged). Authority: `rl_line/REWARD_BATTERY_REPORT_V1.json`
+  (deviations D1-D4 flagged for owner; empty-stages scores 5/6 under C0 — deferred to S2).
+  **Owner round-2 rulings applied (2026-10-13), implementation revised to v1.1** (module SHA
+  `5d5b6789f938980a…`): D1 reverted to V1 scoped masking (entry defects mask only affected
+  components; cascade reserved for r1a/r1b; uniform rule determinable-fail > masked >
+  pass); D2 accepted (no repair); D3 upgraded (missing rg key -> r4 MASKED, never silently
+  passed); D4 not accepted unconditionally — contract has NO explicit minItems:1, hole
+  quantified by a dedicated test (empty=0.833 / minimal-legal=1.0 / parse-fail=0.0),
+  disposition options (a)(b)(c) recorded in `REWARD_BATTERY_REPORT_V1_1.json`, owner decides
+  before S2. **Owner round-3 ruling D4=(b) applied, implementation v1.2** (module SHA
+  `18c4e5a51d7f916b…`): empty stages = gateway-level degenerate output, FORMAL reward 0
+  (`empty_stages_gateway`); gateway default ON = the formal RL reward path, OFF is
+  diagnostic-only (pre-v1.2 behavior preserved); `composite` always carries C0 (5/6 for
+  empty retained for analysis) and r4 V1_empty_stages diagnostics kept; no other penalties
+  expanded. Owner qualification: engineering ruling only — the frozen schema contract is
+  NOT amended (no minItems); formalizing non-empty stages would go through contract-change
+  process. Battery 23/23 with formal-reward expectations, pytest 12/12 incl. the
+  owner-required gateway on/off regression matrix, contract-dialect 755/755 on the formal
+  path, D1/D3 regression tests unchanged; `REWARD_BATTERY_REPORT_V1_2.json` (v1.1/v1 kept
+  as history). **Status: v1.2 awaiting owner diff/SHA review -> S1 (read-only) -> S2 as a
+  separate release point (S2 NOT authorized).** **Pre-S1 verification DONE + S1 EXECUTED
+  (2026-10-13, mdzhang read-only)**: scoped diff review = mechanical regression (v1.2
+  gateway-off replay vs v1.1 recorded outputs) EXACT on 23 battery rows + 3 D4 scenarios;
+  full SHA-256s in report; interface contract = trainer consumes ONLY
+  `RewardResult.training_reward` (gateway default ON). **S1 = PASS with 2 open items**:
+  (1) train-target dialect = contract 100% CONFIRMED (21,714/21,714 stage_seq; P0 preds
+  1,852 full-scanned, parse 84.23%, rg all stage_seq — dialect chain end-to-end proven);
+  train SHA matches frozen `443d5d31…` exactly; (2) vocab gap — contract says 30 classes,
+  train targets use 23 (`vocab23_server_verified.json`, SHA `8562982d…`; authoritative
+  30-name list not locally available; false-accepts impossible, possible false-rejects
+  will surface in S2 r2 unknown-token report) — OWNER DECISION; plus evidence: P0 emits
+  1 OOV family (CLASSIFICATION_LOAD — the exact defect r2 penalizes) and never emits 5
+  train families (X4-type under-emission, S2 diagnostic material). Adapter fingerprinted
+  (`82095811…`, 15.7MB). Report: `S1_VERIFICATION_REPORT_V1.json`. **S2 NOT authorized;
+  awaits owner review of S1 results.** **Owner round-4: S1 PASSED (open item 1 = option
+  (i), vocab23 provisional); S2 diagnostic dry run EXECUTED (no parameter updates)**:
+  24 x 8 candidates (seed 20261013, temp 1.0 + rep-pen 1.15, p0b2-identical prompt);
+  throughput **74.46 tok/s / 8.2GB peak** (Phase-2 cost gate: ~5 min per GRPO step,
+  ~8h per 100 steps); **signal: pipeline PASS but coverage LIMITED** — effective groups
+  6/24 = 25% (< the 8/24 clause), formal mean 0.9809 top-saturated, variance all
+  "one defective candidate vs perfect rest", NO graded quality signal -> GRPO on
+  structural-reward-v0 alone learns only rare-defect avoidance (X5/format), zero signal
+  for the X4 main bottleneck; graded signal must come from r5 (Phase 3, gated on the
+  multisolution line). r2-masking sensitivity LOW (5/6 groups keep variance) -> vocab23
+  provisionally adequate; full OOV log: TEMORAL_FILTER (typo) + VECTOR_CLIP, 1 each,
+  OOV rate 1%. Dry run caught+fixed the AUX13 bug (seq-less stage KeyError; regression
+  added); post-fix battery 24/24, pytest 13/13, module SHA `2ade2e79…`. Report:
+  `s2_dryrun/S2_DRYRUN_REPORT_V1.md` (all labeled provisional_vocab23). **Phase 2 NOT
+  released; awaits owner review of the S2 report.** **Owner round-5: S2 engineering
+  validation formally PASSED, limited signal coverage REGISTERED, Phase 2 stays PAUSED
+  (no GPU rental, no training scheduling); next priority = r5 credibility + offline
+  discrimination validation.** Delivered: (1) `R5_DESIGN_V0.md` — requirement-slot
+  matching mechanism (10 rule families + equivalence classes + ABSTAIN gating +
+  anti-bias audit checklist; validation gates: false-punish rate <=10%, omission
+  detection >=80%, honest abstain rate; DRAFT awaiting owner review); (2)
+  `R5_VALIDATION_PACKET_V1.md` + `r5_validation_packet_v1.json` — 6 groups x 4
+  candidates = 24 BLIND labeling items built from real S2 candidates (band-stratified,
+  shuffled, reward-blind; letter->cand mapping only in JSON) + builder script.
+  **Awaiting owner: r5 design review + blind labeling -> implement r5 v0 -> blind run
+  -> agreement metrics -> offline audit (effective-group coverage delta + three bias
+  audits).** **Owner round-6: R5 mechanism PASSED, trigger rules conditionally passed,
+  direct-RL NOT passed; four pre-implementation fixes (three requirement states /
+  conditional equivalence / certainty-based abstain / task+candidate-level stats);
+  labeling protocol frozen (4 main labels + 2 evidence fields, non-exclusive); owner
+  completed the 24-item blind labeling = ALL omission (representation-sufficiency
+  conservative caliber; packet lacks positive multisolution + unsupported cases, cannot
+  declare r5 passed from it).** **r5 v0 IMPLEMENTED + BLIND-RUN + UNBLINDED**:
+  `scripts/r5_requirement_parser_v0.py` (rules v0.2: 10 slot families, conditional
+  equivalence, F3 certainty abstain, F4 full audit trail, vocab-gap signals for
+  unrepresentable requirements). Unblind vs owner labels: candidate-level 22/24 agree
+  (2/24 divergence = k=30160 B/C complete_coarse_uncertain vs omission, evidence-level
+  consistent via the ACCURACY_ASSESSMENT gap signal); task-level 5/6 + 1 evidence-level
+  (k=17970 abstain + PROFILE/CHART gap signals = the F3 design-success case); FALSE-
+  PUNISH RATE UNMEASURABLE (0 positives); ABSTAIN 1/6. Validation itself caught and
+  fixed 2 rule defects (study-area false STATS; elevation over-broad) + 1 semantic
+  correction (coarse != complete). Report: `R5_V0_VALIDATION_REPORT_V1.md`. **Next
+  (owner): (1) supplementary synthetic positive-multisolution packet, second blind
+  round; (2) offline audit (effective-group coverage delta + three bias audits);
+  (3) ruling on next stage — no auto Phase 2/3.** **Owner round-7: R5 v0.2 first-round
+  validation PASSED (22/24 positive but limited — omission detection validated,
+  multisolution tolerance almost untested); synthetic blind validation + full offline
+  audit APPROVED (no parameter updates); RL access NOT approved; scorable three-class
+  rule (never pool numerators). DELIVERED both round-7 reports**: (1)
+  `R5_SYNTHETIC_BLIND_VALIDATION_REPORT_V1.md` — synthetic packet 9 items (3
+  reasonable-complete / 3 clear omissions / 3 boundary; rules frozen v0.3:
+  primary_family semantics + CHANGE_DETECTION detector), self-check 9/9 (zero
+  self-harm; all three omissions named exactly; C1 gap + C2 abstain correct; A2's
+  first draft genuinely lacked AGGREGATION and was rejected by its own self-check —
+  the owner's warning materialized), awaiting owner blind labels for the authoritative
+  false-punish rate; (2) `R5_S2_OFFLINE_AUDIT_REPORT_V1.md` — scorable classification
+  **10/13/1 (vocab expressiveness = the dominant blocker; 13/23 partially_scorable)**;
+  r5 splits 5 groups vs formal 6 with overlap only 1 (complementary, NOT additive;
+  both low-density); length bias none (coverage rises with length); template bias 0
+  violations; family bias = **MASKING coverage ≈1% (1 instance across 11 requiring
+  tasks) — X4 cloud-mask under-emission quantified at slot level for the first time**.
+  Data: `s2_dryrun/R5_S2_OFFLINE_AUDIT_V1.json`. **Phase 2/3 stay frozen; awaiting
+  owner: blind-label the 9 synthetic items -> unblind false-punish rate -> independent
+  next-stage ruling.** **Owner round-8 blind labels: FALSE-PUNISH 0/3, omission
+  detection 3/3, abstain 2/9 (S8 boundary separate) — the multisolution-tolerance red
+  line measured at ZERO for the first time; owner's complete_reasonable on S2/S3 = r5's
+  complete_coarse_uncertain (same reserved uncertainty, mechanized). Round-8 ruling:
+  R5 v0.3 admitted to the next offline round, Phase 2/3 NOT approved; next = align
+  labels/rule-outputs/192 candidates, independently re-verify every counted-missing
+  slot. DELIVERED `R5_MISSING_SLOT_RECONCILIATION_REPORT_V1.md`**: 358 missing
+  instances fully listed (174/192 candidates); **INDEX 90 + MASK 87 = 49.4%** (X4
+  resolved to exact slots); V1 plain 305 / V2 wrapper-ambiguous 53 (kept missing per
+  the S8 precedent, reported separately); 3 deep-dives all genuine omissions (incl. 1
+  V2 boundary); **three independent methods converge** (capability localization X4
+  47.6% / S2 audit MASKING 1% / this reconciliation INDEX+MASK 49.4%); one
+  construction-annotation error of mine registered (A4 expected-gap claim wrong —
+  T_CROP has no accuracy requirement, r5 correctly fired nothing). **Awaiting owner:
+  spot-check the reconciliation (2-3 per slot from V1) -> final V2 wrapper-ambiguity
+  caliber -> next-round ruling (reproducible discrimination on real tasks + no
+  systematic false-punishment = the RL-reward admission condition).** **Owner
+  round-9: (1) V1 evidence-chain sampling approved (not all 358 claimed verified);
+  (2) V2 THREE-STATE CALIBER FROZEN — missing_confirmed / covered_confirmed /
+  unresolved_wrapper; the 53 V2 instances keep original missing records as audit
+  history but are marked unresolved_wrapper in new stats (preventing
+  "representational limitation misjudged as model incapacity"); (3) 358 = rule
+  output scale, NOT independently human-confirmed errors; Phase 2/3 frozen. Owner
+  personally spot-checked 15 slot instances (merged by k): all "requirement
+  confirmed; missing pending verification" — the JSON supports requirement
+  confirmation, missing-confirmation needs full candidate stages; two evaluation
+  risks flagged (candidates not independent — report task/candidate/instance counts
+  together; slot presence != function realization — require task-requirement +
+  stage-semantics + verified-equivalence). DELIVERED adjudication packet
+  `r5_adjudication_packet_5516_6878_9210_9854_v1.jsonl` (32 records: k + cand +
+  task + full stages + r5_missing; all 5 owner-named V2 items inside, r5_missing
+  lists match the owner's enumeration exactly). **Awaiting owner: three-state
+  adjudication per record -> reverse-direction checks (covered instances + negative
+  controls) -> real-task revalidation on tasks not used in rule debugging -> reward
+  admission review (RAFT/DPO/GRPO stay unrun until then).** **Owner rounds 8-9
+  supplementary spot-checks (three batches through k=32751) confirmed all requirements
+  while exposing rule-defect candidates — reverse controls EXECUTED (rules frozen
+  v0.4.1)**: 5 rule defects confirmed & fixed — (1) unbounded `EVI` matched
+  "de**vi**ation" (32751's two INDEX hits were both "standard deviation" — the
+  owner's suspected false positive CONFIRMED); (2) SPATIAL scope-words treated as
+  operations (32593); (3) COMPOSITE matched "composite indices" (26102); (4) STATS
+  merged accuracy with area (30160 — accuracy moved to gap-signal only); (5) `crop`
+  noun polysemy (introduced by fix #2, caught immediately by synthetic A4).
+  **False-positive quantification: 358 -> 323 (-35, -9.8% all rule FPs/demotions;
+  INDEX -15 / MASK -8 / COMPOSITE -6 / SPATIAL -4 / TEMPORAL -2); core finding
+  ROBUST: INDEX+MASK = 154/323 = 47.7% still dominant — X4 is not a rule artifact.**
+  New fourth state `requirement_uncertain` implemented (first instances: k=32593
+  SPATIAL, k=26102 TEMPORAL, k=22822 MASK); V2 = 51. Synthetic-validation validity
+  re-verified: 0/9 verdict changes under v0.4.1 (the owner's 0/3 false-punish
+  conclusion stands on the frozen version). Report:
+  `R5_V04_REVERSE_CONTROL_REPORT_V1.md`. **Phase 2/3 frozen; awaiting owner: spot-
+  check this report (the deviation FP evidence chain) -> three-state adjudication of
+  the 32-record packet -> reverse checks + undebugged-task revalidation -> reward
+  admission review.** **Owner round-11: INDEX definition FROZEN = computing a NEW
+  index from bands (product-band reading/scaling != INDEX; 9854 = not_required);
+  v0.5 ledger L1/L2/L3 approved; re-run + independent revalidation approved;
+  reward admission separately reviewed. EXECUTED v0.5 -> v0.5.1 full chain**:
+  L1 area statistical-action context (9210 false requirement eliminated, real
+  stats preserved); L2 INDEX compute-context determination (9854 -> not_required;
+  genuine compute tasks preserved); L3 requirement_determination field live.
+  **Reverse controls caught two v0.5 regressions mid-round, both fixed**: 9854
+  STATS deleted by the L1 context window (exactly the owner's step-3 warning) ->
+  mean-over-region pattern restored it; 6878 "NDVI derived from imagery" missed
+  -> derived-from pattern added (matches the owner's round-10 adjudication).
+  **Numbers: 323 -> 317 (-6, all caliber fixes); INDEX+MASK = 153/317 = 48.3%
+  stable; independent task-set revalidation (10 tasks x 8 candidates that drove
+  NO rule change): task-level 10/10, candidate-level 74/80 requirement-coverage
+  gaps (rule-level, unadjudicated)**. Process lesson registered: rule-version
+  evolution should git-commit BEFORE re-runs (the v0.4.1 instance-level baseline
+  was overwritten; slot-level aggregates survive via dual outputs); recommend
+  committing rl_line artifacts with the next commit. Report:
+  `R5_V05_REVALIDATION_REPORT_V1.md` (includes the reward-admission review
+  material list: rules-vs-labels / reward distribution / frozen external evals
+  reported side by side, none cross-corroborating). **Phase 2/3 frozen;
+  awaiting owner: reward-admission ruling.** **Owner round-10: the 32-record packet FULLY ADJUDICATED
+  (dual-track: requirement states separate from coverage states) and FROZEN**
+  (`r5_adjudication_5516_6878_9210_9854_frozen_v1.json`): r5's 61 missing marks
+  resolved as **missing_confirmed 39 / unresolved_wrapper 5 / requirement_uncertain
+  8 / not_required 8 / reclassified covered 1**. **Two rule findings enter the v0.5
+  ledger (awaiting owner approval)**: L1 = `\bareas?\b` false requirement (9210's
+  "deforested **areas**" class name triggered the area-statistics slot -> 8
+  candidates mislabeled; fix = statistical-verb context); L2 = INDEX slot DEFINITION
+  boundary (9854: MODIS product-band reading + scaling != computing an index -> 8 x
+  requirement_uncertain; **the owner must fix the INDEX definition first**). L3 =
+  record format gains a requirement_determination field (required/not_required/
+  uncertain), only `required` enters coverage adjudication. **Reporting discipline**:
+  39 is NOT a unified omission-rate numerator — 9210 non-required, 9854 definition
+  boundary, and AGGREGATION granularity uncertainty are all reported separately.
+  Positive: the uniform wrapper rule worked (5/5 unresolved_wrapper); covered_coarse
+  semantics held (9854 cand3/4/6 honest annotations match the owner's notes); 39/61
+  marks confirmed (64%) with all 16 overturned concentrated in two locatable issues.
+  Report: `R5_ADJUDICATION_FREEZE_REPORT_V1.md`. **Awaiting owner: (1) fix the INDEX
+  slot definition; (2) approve the v0.5 ledger (L1/L2/L3); (3) then r5 v0.5 re-run +
+  reverse checks + revalidation + INDEX/MASK confirmed-omission summary -> reward
+  admission review. Phase 2/3 frozen; RAFT/DPO/GRPO unrun.**
+- **Two mechanism corrections frozen as design principles** (owner method review): (C1)
+  group-relative comparison is NOT de-biasing — normalization cancels only additive
+  common-mode offsets; content-correlated scorer bias gets REINFORCED, so de-biasing belongs
+  to reward verification + confidence gating. (C2) RAFT cannot create verifier-invisible
+  correctness — first RAFT round restricted to verifiable error classes. E7 (Kalman /
+  estimation enhancement) launches only after measured GRPO advantage-estimation instability.
 
 ## (0) Planner representation-pivot line: P1/P2 closed; P0 = current best (2026-10-13)
 
