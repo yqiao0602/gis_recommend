@@ -171,22 +171,67 @@
 - 保留：研究区限制、三级定义与判据字段、逐级半径、三组输出。
 - 金标注意：先裁后分 vs 先分后裁是等价路线；"分类"是属性过滤语义。
 
-### W023206 — DEM 分块（owner：复核复杂度是否过低）
+### W023206 — DEM 分块（owner 裁定 2026-10-13：**降为 smoke 候选，暂不进入正式 B 组**）
 
-**改写稿**：
+> 状态变更：本条移出正式 B 组（正式池 19→18）。仅在原始任务被确认含多个可协调约束且
+> 改写保留它们时，方可考虑恢复；不得人为添加复杂度。
+
+**改写稿（smoke 用）**：
 > Split a digital elevation model into regularly sized, georeferenced raster tiles that tile the DEM extent without gaps, numbered by row and column, and produce the tile scheme as a vector grid layer. Output: the set of DEM tiles and the grid layer, ready for downstream 3D-printing preparation.
-
-- 删除：建网格→逐格裁剪的步骤叙述与插件名（DEMto3D）。
-- 保留：分块目标、无缝覆盖/编号要求、网格层输出。
-- 金标注意：复杂度风险标记——链长 3、语义步骤可能仅 2（网格+裁剪）；owner 复核时裁定保留或降级为 smoke 用例。
 
 ---
 
-## 汇总
+## 补审候选（owner 裁定 2026-10-13：优先补审 W056274）
+
+### W056274 — paddock 至水源距离（Terrestrial hydrosphere，链长 3）
+
+**原文（只读归档）**：对每个 paddock 面求内部任意位置到最近水源点的最大欧氏距离；
+实现步骤原文全给出（CRS 协调→逐地块提取内部水源点→栅格化→proximity→按地块裁剪）；
+输出 = 每 paddock 一个距离 GeoTIFF（像素=CRS 单位距离），无汇总统计；含水源的地块才输出。
+
+**改写稿（PENDING-OWNER）**：
+> For each paddock polygon, produce a distance raster giving, for every location inside the paddock, the distance to the nearest water point in map units of the working CRS. The paddock and water-point layers must be brought into a consistent CRS. Every paddock containing at least one water point yields its own georeferenced distance raster named after the paddock; the set of per-paddock rasters is the final output — no additional summary statistic is required.
+
+**owner 四项检查记录**：
+
+| 检查 | 结果 |
+|------|------|
+| 1 语义保留 | paddock / 水源点 / 距离场三语义完整；"maximum distance" 蕴含于距离场（与原输出形式一致：栅格即最终产物） |
+| 2 无泄露 | 已删 (1)-(5) 全部步骤（CRS 协调保留为约束而非步骤；栅格化/proximity/裁剪均未出现） |
+| 3 多方案容纳 | 金标注意：proximity 栅格法为主导路线；"每地块内部水源点 vs 全域最近水源点"存在原始实现歧义——原实现只用地块内点，金标须将"内部点"与"全域最近点"两语义记为 acceptable_variations 或由 owner 明确其一；矢量距离场等替代栅格 proximity 的路线亦应容纳 |
+| 4 原链相符性 | gold 链 rasterize→proximity→cliprasterbymask 与改写目标（每地块距离栅格）相符 ✓ |
+
+**特别提示（owner 裁定点）**：检查 3 的"内部点 vs 全域点"歧义需 owner 明确——它改变
+任务语义，不属于可静默取舍项。
+
+---
+
+### W067268 — 噪声预测（owner 裁定：有条件保留，须过目标清晰度复核）
+
+**owner 四要素对照（改写稿自检，待 owner 确认）**：
+
+| 要素 | 改写稿中的对应 |
+|------|----------------|
+| 预测对象与空间范围 | receptor locations around a point noise source（受体处的 dBA 值） |
+| 关键物理因素/输入 | BS 5228 标准；DEM（地形）；距离衰减、ground type、barriers；输入=点源+受体面+DEM |
+| 输出及空间表达 | a noise-level value per receptor + styled source-point layer |
+| 业务约束 | BS 5228 遵循；projected CRS 处理要求 |
+
+自检结论：改写稿未添加原文没有的数据/模型/假设（barriers←原文 screening，ground type←
+原文 ground type/soft ground percentage）。若 owner 仍判目标不清晰，按裁定替换。
+
+---
+
+## 汇总（2026-10-13 第二轮裁定后更新）
 
 | 状态 | 数量 | 明细 |
 |------|------|------|
-| 条件保留已改写（PENDING-OWNER） | 19 | 正选 14 + 备选 5 |
-| 替换退出 | 11 | 正选 6（W005784/W000863/W055625/W067034/W000084/W001034）+ 备选 5（W002004/W055689/W005684/W000060/W001974） |
-| 补足需求 | 1 | 见 `pca_b_group_refill_v1.json`（owner 补审） |
-| W023206 特别项 | 1 | 复杂度过低风险，owner 裁定保留或降级 |
+| 改写稿待 owner 正文审核 | 17 | 正选 13 + 备选 4（见上方逐条正文） |
+| 有条件保留（四要素自检已过，待 owner 确认） | 1 | W067268 |
+| 降为 smoke 候选（不进正式 B 组） | 1 | W023206 |
+| 补审候选（优先，PENDING-OWNER） | 1 | W056274（含"内部点 vs 全域点"语义裁定请求） |
+| 替换退出 | 11 | 正选 6 + 备选 5 |
+| **正式 B 组池（当前）** | **18** | 补审通过则 19；W067268 若替换则 −1 |
+
+owner 明确：不得为恢复 20 条而降低标准；B 组正式冻结暂缓，待正文审核 + 金标独立性
+检查完成。
