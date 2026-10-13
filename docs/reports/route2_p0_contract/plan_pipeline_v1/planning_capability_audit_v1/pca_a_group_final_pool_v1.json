@@ -1,0 +1,179 @@
+{
+ "_meta": {
+  "pool": "PCA A-group final 20 (round-10 approved, FROZEN)",
+  "eligibility_review": "pca_a_group_eligibility_v1.json (SHA 7007c0b18d0f5362)",
+  "replacements": {
+   "out": [
+    4432,
+    29502
+   ],
+   "in": [
+    41652,
+    44487
+   ]
+  },
+  "n": 20
+ },
+ "rows": [
+  {
+   "line_id": 7698,
+   "split": "test",
+   "task_type": "Frozen ground",
+   "status": "KEEP",
+   "instruction": "Task: Identify floating ice lid\nIdentify floating ice lid areas in a lake region by analyzing SAR backscatter intensity and optical-derived dark shadow features from Landsat 8, using thresholding on normalized HH band values and masking with optical data to classify frozen, undecided, and floating ice zones.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 15071,
+   "split": "val",
+   "task_type": "Benthic habitat classification",
+   "status": "KEEP",
+   "instruction": "Task: Classify coral and sand habitats\nClassify benthic habitats (coral, sand, and deep water) in the Belitung region using Lyzenga's water column correction applied to Landsat 8 surface reflectance data, followed by Random Forest and SVM classification on B2_median band, with accuracy assessment from training data.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 23443,
+   "split": "val",
+   "task_type": "Ecosystems",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Calculate sagebrush ecosystem integrity\nCalculate the Sagebrush Ecosystem Integrity (SEI) index using simulated aboveground biomass outputs from STEPWAT — specifically sagebrush, perennial forbs/grasses, and annual forbs/grasses — converted to ecological quality (Q) scores via ecoregion-specific cover-biomass relationships (q-curves). It combines these Q scores multiplicatively with existing threat layers (tree encroachment, human modification) to produce a continuous SEI560 metric, then applies Gaussian smoothing at 2000 m radius (SEI2000), classifies the result into deciles, and reclassifies into three management classes: 'core', 'grow', and 'treat'. Outputs are multi-band Earth Engine image assets containing raw Q layers, SEI560, SEI2000, decile-classified SEI, and 3-class management designations for current and future climate scenarios (RCP45, 2070–2100).",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 33652,
+   "split": "test",
+   "task_type": "Atmospheric pressure",
+   "status": "KEEP",
+   "instruction": "Task: Extract monthly surface pressure\nExtract monthly mean surface pressure from ERA5 reanalysis data for the period 2000–2020 at specific ASOS station locations, computes the average value across 20 years for each month, and exports the results per station.",
+   "gee_chain_head": "e -> e -> . -> D -> a -> t"
+  },
+  {
+   "line_id": 41652,
+   "split": "test",
+   "task_type": "Habitat conversion/fragmentation",
+   "status": "KEEP",
+   "instruction": "Task: Model bear habitat suitability\nthe workflow models habitat suitability for bears using presence points and environmental predictors, generating a probability map of suitable habitat and a binary potential distribution map. It employs spatial block cross-validation with random forests to train and validate the model, then averages predictions across iterations to produce a final habitat suitability map. Outputs include variable importance, training/testing partitions, and an estimated area of potential distribution in square kilometers.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 44487,
+   "split": "test",
+   "task_type": "Vegetation",
+   "status": "KEEP",
+   "instruction": "Task: Estimate forest cover from fractional vegetation\nEstimate forest area and percentage cover in Nicaragua for March 2020 using MODIS MCD43A4 surface reflectance data. It applies a spectral mixture analysis (SMA) to derive bare soil, photosynthetic vegetation (PV), and non-photosynthetic vegetation (NPV) fractions, then classifies canopy cover where PV > 0.6 and bare < 0.4. Results include printed statistics for estimated forest area in square kilometers and percent forest cover, along with time-series charting of fractional cover from 2017–2020. The output visualizations include SMA results, forest cover maps, and protected areas overlay.",
+   "gee_chain_head": "e -> e -> . -> F -> e -> a"
+  },
+  {
+   "line_id": 53359,
+   "split": "test",
+   "task_type": "Climate feedbacks",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Model heating and cooling degree days\nthe workflow models fuzzy heating and cooling degree days using daily minimum and maximum temperature projections from the CESM1-BGC climate model under historical and RCP scenarios (rcp45, rcp85). It calculates daily mean temperatures, applies fuzzy logic thresholds (with and without 3-day averaging) to estimate building energy demand proxies, and exports annual raster maps of heating and cooling days for 2000 (historical) and 2050 (future projection), including their differences. The outputs are masked to land areas using MODIS land cover data and visualized with custom color palettes.",
+   "gee_chain_head": "e -> e -> . -> F -> i -> l"
+  },
+  {
+   "line_id": 54712,
+   "split": "val",
+   "task_type": "Frozen ground",
+   "status": "KEEP",
+   "instruction": "Task: Model permafrost thermal state\nthe workflow models the spatial distribution of permafrost thermal state (ALT - Active Layer Thickness) using kriging interpolation and Random Forest regression. It first performs geostatistical interpolation (kriging) on ALT point data to generate a continuous surface, then combines it with environmental covariates (e.g., soil properties, climate indices, NDVI, NDSI) to train a machine learning model. The final output is a classified raster map of estimated ALT (E), validated through training accuracy metrics and variable importance charts, with results exported as assets and visualized on the map.",
+   "gee_chain_head": "e -> e -> . -> F -> i -> l"
+  },
+  {
+   "line_id": 55222,
+   "split": "test",
+   "task_type": "Fire detection",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Quantify VIIRS active fire FRP and area\nthe workflow quantifies monthly VIIRS (VNP14IMGML) active fire radiative power (FRP in MW) and burned area (in km²) at 375 m resolution, disaggregated by spatial overlap with MODIS Aqua FRP, MODIS Terra FRP, and MODIS MCD64A1 burned area within user-selected GFEDv4 basis regions (e.g., Basis 1). It computes four mutually exclusive VIIRS fire metrics: total VIIRS FRP/area (AF), VIIRS FRP/area outside MODIS Aqua FRP (AFnoAqua), outside MODIS burned area (AFnoBA), and outside all MODIS fire observations (AFnoMODIS). These are aggregated via reduceRegions to sum statistics per GFEDv4 polygon and exported as CSV tables containing summed FRP (MW) and area (km²) per 0.25° grid cell (implicitly via polygon-level aggregation over GFED basis region geometry).",
+   "gee_chain_head": "e -> e -> . -> N -> u -> m"
+  },
+  {
+   "line_id": 56465,
+   "split": "val",
+   "task_type": "Maritime activity",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Monitor maritime activity intensity\nMonitor maritime activity intensity in the Port of Singapore using Sentinel-1 SAR imagery by generating a median VV/VH polarisation composite over 2023, visualising backscatter characteristics for vessel detection and sea surface analysis, and quantifying temporal acquisition density via monthly image counts — outputs include clipped composite rasters (VV/VH), a study area boundary layer, summary statistics (total/ascending/descending image counts), and a monthly column chart of image availability.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 57816,
+   "split": "test",
+   "task_type": "Agricultural plant science",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Monitor crop health using NDVI time series\nMonitor agricultural crop health across Punjab’s agricultural areas using Sentinel-2 Harmonized Surface Reflectance imagery from 2024–2025. It applies cloud masking (via QA60 bit flags), calculates NDVI (B8/B4), EVI, NDRE, and SAVI, generates a monthly NDVI time series chart, produces classified crop health maps (5-tier: Stressed to Very Healthy) based on NDVI thresholds, computes NDVI anomaly for stress detection, exports latest NDVI, mean NDVI, peak NDVI, health classification, and regional NDVI statistics as GeoTIFFs and CSV — all tailored for operational crop stress assessment and seasonal health tracking.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 62586,
+   "split": "test",
+   "task_type": "Bathymetry",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Estimate water depth using SDB\nEstimate shallow water bathymetry using the Lyzenga's Simple Depth Band Ratio (SDB) method on Sentinel-2 surface reflectance imagery from 2020 to 2022. It applies cloud masking by joining S2_CLOUD_PROBABILITY with S2_SR, computes log-transformed band ratios for blue, green, and red bands, and performs linear regression using in-situ depth points. The model is trained on 80% of the points and validated on 20%, producing a scatter plot of estimated vs. actual depths with R² and RMSE. The final output is a calibrated bathymetric raster map exported to Earth Engine Assets.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 72291,
+   "split": "val",
+   "task_type": "Atmospheric aerosol",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Analyze aerosol reflectance over AOI\nAnalyze mean aerosol reflectance in the B1 band (ultra-blue) of Sentinel-2 imagery over a small AOI from 2016-09-01 to 2017-09-30. It filters the Sentinel-2 image collection by date and region, clips each image to the AOI, computes the mean value of band B1 using reduceRegion, and appends this statistic as a property ('Aerosol_Mean') to each image. The output includes the size of the filtered collection, metadata of individual images, and visualization of up to 12 images using a false-color composite (B8, B3, B4), enabling visual inspection of surface and atmospheric features.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 78050,
+   "split": "val",
+   "task_type": "Ecosystems",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Calculate sagebrush ecosystem integrity\nCalculate future Sagebrush Ecosystem Integrity (SEI) using Method 1 from Doherty et al. 2022: it computes scaled percent change in STEPWAT-simulated biomass (sage, perennial grass, annual forb/grass) under climate scenarios (RCP45, 2070–2100), multiplies these delta-S values by current smoothed percent cover layers (sage560m, perennialG560m, annualG560m) from RAP (Rangeland Analysis Platform), converts to Habitat Suitability Index (HSI) using ecoregion-specific curves (Great Basin, Intermountain, Plains), integrates resources and threats multiplicatively (Q1–Q5) to produce continuous SEI560, applies Gaussian smoothing at 2000 m radius to yield SEI2000, classifies into deciles, then reclassifies into three management classes (core/grow/treat), and exports a multi-band GEE Image Asset containing all intermediate and final layers (Q1raw–Q5sc3) per GCM.",
+   "gee_chain_head": "e -> e -> . -> R -> e -> d"
+  },
+  {
+   "line_id": 79576,
+   "split": "val",
+   "task_type": "Ground water",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Analyze groundwater storage time series\nExtract and analyzes monthly groundwater storage (GWS) time series from the NASA GLDAS CLSM model over a defined polygonal region in Iran (approximately spanning longitudes 43.67–63.09°E and latitudes 24.94–39.79°N) for the period 2003–2024. It computes monthly mean GWS_tavg values, generates two charts — one showing spatially averaged (over the polygon) monthly GWS evolution, and another showing point-based time series at two user-defined locations (loc1 and loc2) — and exports the full monthly stack as a clipped, multi-band GeoTIFF to Google Drive. The workflow includes date sequence generation, image collection filtering and reduction, metadata annotation (system:time_start/end/index), null-band filtering, and visualization/export setup.",
+   "gee_chain_head": "e -> e -> . -> G -> e -> o"
+  },
+  {
+   "line_id": 85688,
+   "split": "test",
+   "task_type": "Benthic classification",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Classify benthic habitats using Random Forest\nthe workflow performs atmospheric correction using Dark Object Subtraction (DOS) on a satellite image over Misool, then applies a Random Forest classifier to classify benthic habitats into four classes (e.g., water, vegetation, sand, coral) using deglinted bands and a derived index (DII23), based on training samples from ROI_Sunglint. The output is a classified benthic map exported to Google Drive.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 90727,
+   "split": "test",
+   "task_type": "Drought monitoring",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Assess drought severity using VHI\nCompute the Vegetation Health Index (VHI) over the Irrawaddy Basin using Landsat 7 surface temperature and NDVI data from 2013 to 2020. It derives VHI by combining the Temperature Condition Index (TCI) and Vegetation Condition Index (VCI) during the hot season (March–May) each year, masks areas with NDVI > 0.2 to focus on vegetated regions, and identifies drought-affected areas where VHI < 20. The outputs include annual VHI raster maps exported to Google Drive and CSV files summarizing the total drought-affected area in square kilometers for each year.",
+   "gee_chain_head": "e -> e -> . -> D -> a -> t"
+  },
+  {
+   "line_id": 98033,
+   "split": "val",
+   "task_type": "Land ice/ocean classification",
+   "status": "KEEP",
+   "instruction": "Task: Classify ice and water types\nClassify pixel-level surface types in lakes into four categories: water, clear ice, opaque ice, and snow using Landsat TOA reflectance data. It trains a Random Forest model on labeled training samples with spectral predictors and validates it temporally by splitting data by year (before/after 2019), ultimately producing a trained classification model for cryospheric surface mapping.",
+   "gee_chain_head": "e -> e -> . -> F -> e -> a"
+  },
+  {
+   "line_id": 112319,
+   "split": "val",
+   "task_type": "Fire detection",
+   "status": "KEEP-STRATIFIED",
+   "instruction": "Task: Detect active fires with GOES-17\nProcess GOES-17 ABI Level 2 Multichannel Cloud and Moisture Imagery (MCMIPF) data to generate true-color and false-color visualizations by applying scale/offset corrections, adding a synthetic green band via spectral blending, and scaling for visualization. It then integrates Fire Detection and Characterization (FDCF) data by mapping confidence values to fire mask codes, filtering for high-confidence fire pixels (≥0.3), and overlaying them on the MCMIPF imagery. The output is a time-lapse visualization collection where active fires are highlighted in red over corrected multispectral imagery, enabling spatiotemporal monitoring of wildfires.",
+   "gee_chain_head": "e -> e -> . -> I -> m -> a"
+  },
+  {
+   "line_id": 114710,
+   "split": "test",
+   "task_type": "Altitude",
+   "status": "KEEP",
+   "instruction": "Task: Extract daily height data\nProcess the RTMA (Real-Time Mesoscale Analysis) dataset to extract daily mean values of the 'HGT' (height) variable from January 1, 2020, to January 31, 2020. It creates an ImageCollection where each image represents the mean height for a single day, renamed by date, and includes time metadata. The output is a time-series collection of daily height fields over North America at high spatial resolution.",
+   "gee_chain_head": "e -> e -> . -> N -> u -> m"
+  }
+ ]
+}

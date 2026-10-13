@@ -1,0 +1,745 @@
+{
+ "_meta": {
+  "stage": "PCA Stage-3 A-group gold worksheet v1 (round-11 approved; round-10 five boundaries applied)",
+  "pool_frozen_sha256_prefix": "b5902bbdb93001ba",
+  "schema": "B-group compatible + presentation_requirements + [EXPLICIT]/[IMPLICIT] constraint tagging (round-11 boundary 2)",
+  "authoring_discipline": "constraints from task text only; no invented numeric params; presentation separated; info symmetry respected (reference chain not a gold source)",
+  "n_rows": 20
+ },
+ "rows": [
+  {
+   "line_id": 7698,
+   "group": "A",
+   "split": "test",
+   "task_type": "Frozen ground",
+   "eligibility_status": "KEEP",
+   "task_text": "Task: Identify floating ice lid\nIdentify floating ice lid areas in a lake region by analyzing SAR backscatter intensity and optical-derived dark shadow features from Landsat 8, using thresholding on normalized HH band values and masking with optical data to classify frozen, undecided, and floating ice zones.",
+   "task_sha256": "b620b0027aef2c4b6ddaf68ec7a5c8b403b3ad16ac989b0506fc6810571f9340",
+   "required_outcome": "A three-zone classification (frozen / undecided / floating ice) for the lake region from SAR and optical evidence.",
+   "required_constraints": [
+    "[EXPLICIT] SAR normalized HH thresholding",
+    "[EXPLICIT] optical-derived dark-shadow masking",
+    "[EXPLICIT] three-class output",
+    "[IMPLICIT] SAR-optical combination logic (threshold classes refined by optical mask)"
+   ],
+   "required_capabilities": [
+    "Threshold classification",
+    "Cross-sensor masking combination"
+   ],
+   "acceptable_alternatives": [
+    "Any combination order of SAR classes and optical mask yielding the three zones"
+   ],
+   "failure_conditions": [
+    "Optical mask never applied",
+    "Wrong class structure (missing a zone)",
+    "Thresholds applied without normalization"
+   ],
+   "underdetermined_aspects": [
+    "Threshold values; dark-shadow detection criterion"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: SAR HH thresholding + optical dark shadow, three zones"
+  },
+  {
+   "line_id": 15071,
+   "group": "A",
+   "split": "val",
+   "task_type": "Benthic habitat classification",
+   "eligibility_status": "KEEP",
+   "task_text": "Task: Classify coral and sand habitats\nClassify benthic habitats (coral, sand, and deep water) in the Belitung region using Lyzenga's water column correction applied to Landsat 8 surface reflectance data, followed by Random Forest and SVM classification on B2_median band, with accuracy assessment from training data.",
+   "task_sha256": "f161a3ebc08580542cf3be80d12a0c1d116ae8c3a1623f76652a8f4aca5ddb03",
+   "required_outcome": "Classified benthic habitat map (coral / sand / deep water) for Belitung with accuracy assessment from training data.",
+   "required_constraints": [
+    "[EXPLICIT] Landsat 8 SR; Lyzenga water-column correction; B2_median",
+    "[EXPLICIT] RF and SVM classifiers",
+    "[EXPLICIT] accuracy assessment",
+    "[IMPLICIT] correction->composite->classify->assess order"
+   ],
+   "required_capabilities": [
+    "Water-column correction",
+    "Two-classifier training/assignment",
+    "Accuracy computation"
+   ],
+   "acceptable_alternatives": [
+    "Any Lyzenga implementation; any train/assess split mechanism"
+   ],
+   "failure_conditions": [
+    "Skipping water-column correction",
+    "Missing one of the two classifiers",
+    "No accuracy assessment"
+   ],
+   "underdetermined_aspects": [
+    "Training sample provenance; classifier hyperparameters; median-composite period"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: coral/sand/deep-water classification, Lyzenga, RF+SVM, accuracy"
+  },
+  {
+   "line_id": 23443,
+   "group": "A",
+   "split": "val",
+   "task_type": "Ecosystems",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Calculate sagebrush ecosystem integrity\nCalculate the Sagebrush Ecosystem Integrity (SEI) index using simulated aboveground biomass outputs from STEPWAT — specifically sagebrush, perennial forbs/grasses, and annual forbs/grasses — converted to ecological quality (Q) scores via ecoregion-specific cover-biomass relationships (q-curves). It combines these Q scores multiplicatively with existing threat layers (tree encroachment, human modification) to produce a continuous SEI560 metric, then applies Gaussian smoothing at 2000 m radius (SEI2000), classifies the result into deciles, and reclassifies into three management classes: 'core', 'grow', and 'treat'. Outputs are multi-band Earth Engine image assets containing raw Q layers, SEI560, SEI2000, decile-classified SEI, and 3-class management designations for current and future climate scenarios (RCP45, 2070–2100).",
+   "task_sha256": "0c6536901f036a0b67eb923e75d407b8027f81acfdacaa8fd7d711634572411e",
+   "required_outcome": "Multi-band assets with raw Q layers, SEI560, SEI2000, decile and 3-class management designations for current and future (RCP45 2070-2100) conditions.",
+   "required_constraints": [
+    "[EXPLICIT] STEPWAT biomass (sage/perennial/annual) -> q-curves -> Q scores",
+    "[EXPLICIT] multiplicative combination with threat layers (tree encroachment, human modification)",
+    "[EXPLICIT] SEI560 -> Gaussian 2000 m SEI2000 -> deciles -> core/grow/treat",
+    "[EXPLICIT] current + future scenario assets",
+    "[IMPLICIT] stage ordering per method"
+   ],
+   "required_capabilities": [
+    "Same family as 78050 (sister task, current-state variant)"
+   ],
+   "acceptable_alternatives": [
+    "Any smoothing/packaging implementation"
+   ],
+   "failure_conditions": [
+    "Missing threat-layer combination or any stage",
+    "Scenario assets missing"
+   ],
+   "underdetermined_aspects": [
+    "q-curve parameters (data-given)"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: q-curves, threats multiply, SEI560/2000, deciles, 3 classes, both scenarios"
+  },
+  {
+   "line_id": 33652,
+   "group": "A",
+   "split": "test",
+   "task_type": "Atmospheric pressure",
+   "eligibility_status": "KEEP",
+   "task_text": "Task: Extract monthly surface pressure\nExtract monthly mean surface pressure from ERA5 reanalysis data for the period 2000–2020 at specific ASOS station locations, computes the average value across 20 years for each month, and exports the results per station.",
+   "task_sha256": "53e0142b9e6d6723f8c1efe5a0c89721976e57253a7d5f99bc79c57451c723f9",
+   "required_outcome": "Per-station, per-month 20-year average surface pressure values exported for each ASOS station.",
+   "required_constraints": [
+    "[EXPLICIT] ERA5; 2000-2020; ASOS station locations",
+    "[EXPLICIT] monthly means then 20-year average per calendar month",
+    "[EXPLICIT] results exported per station",
+    "[IMPLICIT] station-to-grid extraction then month grouping"
+   ],
+   "required_capabilities": [
+    "Point/time series extraction from gridded data",
+    "Month-keyed multi-year aggregation",
+    "Per-station export organization"
+   ],
+   "acceptable_alternatives": [
+    "Any join/extraction mechanism; any grouped-reduce arrangement"
+   ],
+   "failure_conditions": [
+    "Missing month dimension or 20-year averaging",
+    "Stations not matched to grid values",
+    "No per-station export"
+   ],
+   "underdetermined_aspects": [
+    "Station list provisioning; export file format details"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: monthly mean surface pressure, 20-year average per month, per station"
+  },
+  {
+   "line_id": 41652,
+   "group": "A",
+   "split": "test",
+   "task_type": "Habitat conversion/fragmentation",
+   "eligibility_status": "KEEP",
+   "task_text": "Task: Model bear habitat suitability\nthe workflow models habitat suitability for bears using presence points and environmental predictors, generating a probability map of suitable habitat and a binary potential distribution map. It employs spatial block cross-validation with random forests to train and validate the model, then averages predictions across iterations to produce a final habitat suitability map. Outputs include variable importance, training/testing partitions, and an estimated area of potential distribution in square kilometers.",
+   "task_sha256": "da47e0d70f5cb70a4757f91b9552e9ca187b99e4bbff9f5c5194263981caf35d",
+   "required_outcome": "A habitat-probability map plus a binary potential-distribution map for bears, produced by a model trained and validated with spatial block cross-validation.",
+   "required_constraints": [
+    "[EXPLICIT] presence points + environmental predictors as model inputs",
+    "[EXPLICIT] spatial block cross-validation for train/validate",
+    "[EXPLICIT] outputs: probability map + binary potential distribution",
+    "[IMPLICIT] train->predict->binarize workflow order"
+   ],
+   "required_capabilities": [
+    "Point-presence ML training setup",
+    "Block-based CV partitioning",
+    "Probability surface prediction and binarization"
+   ],
+   "acceptable_alternatives": [
+    "Any block-partition scheme and any reasonable binarization rule consistent with outputs",
+    "RF or other suitable classifier (task does not fix one)"
+   ],
+   "failure_conditions": [
+    "Training without spatial block CV",
+    "Missing probability or binary output",
+    "Validation not separated from training data"
+   ],
+   "underdetermined_aspects": [
+    "Block size/number; predictor list details; binarization threshold; classifier/hyperparameters"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: presence points, environmental predictors, block CV, two-map output"
+  },
+  {
+   "line_id": 44487,
+   "group": "A",
+   "split": "test",
+   "task_type": "Vegetation",
+   "eligibility_status": "KEEP",
+   "task_text": "Task: Estimate forest cover from fractional vegetation\nEstimate forest area and percentage cover in Nicaragua for March 2020 using MODIS MCD43A4 surface reflectance data. It applies a spectral mixture analysis (SMA) to derive bare soil, photosynthetic vegetation (PV), and non-photosynthetic vegetation (NPV) fractions, then classifies canopy cover where PV > 0.6 and bare < 0.4. Results include printed statistics for estimated forest area in square kilometers and percent forest cover, along with time-series charting of fractional cover from 2017–2020. The output visualizations include SMA results, forest cover maps, and protected areas overlay.",
+   "task_sha256": "643209f44b4a5664853088c5c692c584cd3409c29ec6452080b8a30a2073dba8",
+   "required_outcome": "Forest area and percentage cover for Nicaragua, March 2020, derived from spectral mixture analysis of MODIS MCD43A4 reflectance.",
+   "required_constraints": [
+    "[EXPLICIT] MCD43A4 surface reflectance input; Nicaragua; March 2020",
+    "[EXPLICIT] SMA yielding bare-soil / PV / NPV fractions",
+    "[EXPLICIT] outputs: forest area and percentage cover",
+    "[IMPLICIT] fraction-to-forest conversion step"
+   ],
+   "required_capabilities": [
+    "Spectral mixture analysis",
+    "Fraction-to-forest quantification and area statistics"
+   ],
+   "acceptable_alternatives": [
+    "Any SMA formulation; any defensible PV/NPV combination rule for 'forest'"
+   ],
+   "failure_conditions": [
+    "No SMA performed",
+    "No area/percentage quantification",
+    "Fractions computed but never converted to forest metrics"
+   ],
+   "underdetermined_aspects": [
+    "Endmember spectra; PV threshold defining forest"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: SMA three fractions; forest area and percentage cover for Nicaragua 2020-03"
+  },
+  {
+   "line_id": 53359,
+   "group": "A",
+   "split": "test",
+   "task_type": "Climate feedbacks",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Model heating and cooling degree days\nthe workflow models fuzzy heating and cooling degree days using daily minimum and maximum temperature projections from the CESM1-BGC climate model under historical and RCP scenarios (rcp45, rcp85). It calculates daily mean temperatures, applies fuzzy logic thresholds (with and without 3-day averaging) to estimate building energy demand proxies, and exports annual raster maps of heating and cooling days for 2000 (historical) and 2050 (future projection), including their differences. The outputs are masked to land areas using MODIS land cover data and visualized with custom color palettes.",
+   "task_sha256": "5ae30fa49bc9285b3bafb9448e3459171ac070be91fabee533abb03f84dc624b",
+   "required_outcome": "Annual heating/cooling degree-day rasters for 2000 (historical) and 2050 (RCP projection) plus their difference, land-masked and visualized.",
+   "required_constraints": [
+    "[EXPLICIT] CESM1-BGC daily min/max under historical + rcp45/rcp85",
+    "[EXPLICIT] daily mean temperatures; fuzzy thresholds with and without 3-day averaging",
+    "[EXPLICIT] annual rasters for 2000 and 2050 including differences",
+    "[EXPLICIT] MODIS land-cover mask; custom palettes",
+    "[IMPLICIT] scenario handling; fuzzy membership computation"
+   ],
+   "required_capabilities": [
+    "Climate collection handling",
+    "Fuzzy-logic degree-day computation",
+    "Scenario differencing",
+    "Land masking"
+   ],
+   "acceptable_alternatives": [
+    "Any fuzzy-membership implementation; any differencing arrangement"
+   ],
+   "failure_conditions": [
+    "Missing scenarios or years",
+    "Fuzzy logic absent (plain thresholds substituted without basis)",
+    "Difference maps missing",
+    "Land mask not applied"
+   ],
+   "underdetermined_aspects": [
+    "Fuzzy threshold values; GCM ensemble details"
+   ],
+   "presentation_requirements": [
+    "custom color palettes (task-stated presentation)"
+   ],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: fuzzy HDD/CDD, 2000 vs 2050, differences, MODIS mask, palettes"
+  },
+  {
+   "line_id": 54712,
+   "group": "A",
+   "split": "val",
+   "task_type": "Frozen ground",
+   "eligibility_status": "KEEP",
+   "task_text": "Task: Model permafrost thermal state\nthe workflow models the spatial distribution of permafrost thermal state (ALT - Active Layer Thickness) using kriging interpolation and Random Forest regression. It first performs geostatistical interpolation (kriging) on ALT point data to generate a continuous surface, then combines it with environmental covariates (e.g., soil properties, climate indices, NDVI, NDSI) to train a machine learning model. The final output is a classified raster map of estimated ALT (E), validated through training accuracy metrics and variable importance charts, with results exported as assets and visualized on the map.",
+   "task_sha256": "5c1998a93e2b787f048e5e64f351fc58f91bb403ff5eca14a58f133c161c2d99",
+   "required_outcome": "A classified raster map of estimated Active Layer Thickness with validation metrics and variable-importance outputs.",
+   "required_constraints": [
+    "[EXPLICIT] kriging interpolation of ALT point data",
+    "[EXPLICIT] environmental covariates (soil/climate/NDVI/NDSI)",
+    "[EXPLICIT] RF regression stage",
+    "[EXPLICIT] accuracy metrics + variable importance; asset export",
+    "[IMPLICIT] interpolate->covariate-stack->regress->classify order"
+   ],
+   "required_capabilities": [
+    "Geostatistical interpolation",
+    "Covariate stacking and sampling",
+    "RF regression with validation"
+   ],
+   "acceptable_alternatives": [
+    "Any kriging implementation; any classified-bin scheme for ALT"
+   ],
+   "failure_conditions": [
+    "Missing kriging stage",
+    "Missing ML/regression stage",
+    "No validation metrics or variable importance"
+   ],
+   "underdetermined_aspects": [
+    "Kriging parameters; covariate combination specifics; classification bin edges"
+   ],
+   "presentation_requirements": [
+    "map visualization (task-stated)"
+   ],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: kriging + RF, validation + variable importance, asset export"
+  },
+  {
+   "line_id": 55222,
+   "group": "A",
+   "split": "test",
+   "task_type": "Fire detection",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Quantify VIIRS active fire FRP and area\nthe workflow quantifies monthly VIIRS (VNP14IMGML) active fire radiative power (FRP in MW) and burned area (in km²) at 375 m resolution, disaggregated by spatial overlap with MODIS Aqua FRP, MODIS Terra FRP, and MODIS MCD64A1 burned area within user-selected GFEDv4 basis regions (e.g., Basis 1). It computes four mutually exclusive VIIRS fire metrics: total VIIRS FRP/area (AF), VIIRS FRP/area outside MODIS Aqua FRP (AFnoAqua), outside MODIS burned area (AFnoBA), and outside all MODIS fire observations (AFnoMODIS). These are aggregated via reduceRegions to sum statistics per GFEDv4 polygon and exported as CSV tables containing summed FRP (MW) and area (km²) per 0.25° grid cell (implicitly via polygon-level aggregation over GFED basis region geometry).",
+   "task_sha256": "fb94285a8a196bd46ecab138c6ba5bcfe4c6f25ff0df388d12f48e7e2d3b9e35",
+   "required_outcome": "CSV tables of summed VIIRS FRP (MW) and burned area (km2) per GFEDv4 basis region under four mutually exclusive fire metrics.",
+   "required_constraints": [
+    "[EXPLICIT] VNP14IMGML monthly FRP/area at 375 m",
+    "[EXPLICIT] four metrics: AF, AFnoAqua, AFnoBA, AFnoMODIS (mutually exclusive definitions)",
+    "[EXPLICIT] spatial overlap against MODIS Aqua FRP / Terra FRP / MCD64A1",
+    "[EXPLICIT] reduceRegions sums per GFEDv4 polygon; CSV export",
+    "[IMPLICIT] overlay-exclusion ordering realizing the four definitions"
+   ],
+   "required_capabilities": [
+    "Multi-dataset spatial intersection",
+    "Mutually exclusive metric construction",
+    "Polygon-aggregated statistics",
+    "CSV export"
+   ],
+   "acceptable_alternatives": [
+    "Any order of exclusion overlays producing identical metric semantics"
+   ],
+   "failure_conditions": [
+    "Metric definitions violated (overlaps not exclusive)",
+    "Missing any of the four metrics",
+    "Aggregation not per GFEDv4 region",
+    "CSV missing"
+   ],
+   "underdetermined_aspects": [
+    "0.25-degree gridding detail (task self-noted 'implicitly')"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: four exclusive metrics, GFED regions, reduceRegions sums, CSV"
+  },
+  {
+   "line_id": 56465,
+   "group": "A",
+   "split": "val",
+   "task_type": "Maritime activity",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Monitor maritime activity intensity\nMonitor maritime activity intensity in the Port of Singapore using Sentinel-1 SAR imagery by generating a median VV/VH polarisation composite over 2023, visualising backscatter characteristics for vessel detection and sea surface analysis, and quantifying temporal acquisition density via monthly image counts — outputs include clipped composite rasters (VV/VH), a study area boundary layer, summary statistics (total/ascending/descending image counts), and a monthly column chart of image availability.",
+   "task_sha256": "147f196424ec84e3b0ede2c161302f36ec4f237f78db79b9414696f85796be22",
+   "required_outcome": "Clipped VV/VH median composite (2023), study-area boundary layer, acquisition-count summary (total/ascending/descending), and monthly availability chart.",
+   "required_constraints": [
+    "[EXPLICIT] Sentinel-1; 2023; VV/VH median composite",
+    "[EXPLICIT] monthly image counts by total/ascending/descending",
+    "[EXPLICIT] outputs: clipped composite rasters, boundary layer, summary stats, monthly column chart",
+    "[IMPLICIT] orbit-direction grouping for counts"
+   ],
+   "required_capabilities": [
+    "SAR composite building",
+    "Orbit-grouped counting",
+    "Summary statistics and charting"
+   ],
+   "acceptable_alternatives": [
+    "Any composite/count implementation"
+   ],
+   "failure_conditions": [
+    "Missing median composite or count breakdown by orbit",
+    "Boundary layer or chart missing"
+   ],
+   "underdetermined_aspects": [
+    "Visualization parameters"
+   ],
+   "presentation_requirements": [
+    "monthly column chart (task-stated)"
+   ],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: 2023 median VV/VH, monthly counts total/asc/desc, four outputs"
+  },
+  {
+   "line_id": 57816,
+   "group": "A",
+   "split": "test",
+   "task_type": "Agricultural plant science",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Monitor crop health using NDVI time series\nMonitor agricultural crop health across Punjab’s agricultural areas using Sentinel-2 Harmonized Surface Reflectance imagery from 2024–2025. It applies cloud masking (via QA60 bit flags), calculates NDVI (B8/B4), EVI, NDRE, and SAVI, generates a monthly NDVI time series chart, produces classified crop health maps (5-tier: Stressed to Very Healthy) based on NDVI thresholds, computes NDVI anomaly for stress detection, exports latest NDVI, mean NDVI, peak NDVI, health classification, and regional NDVI statistics as GeoTIFFs and CSV — all tailored for operational crop stress assessment and seasonal health tracking.",
+   "task_sha256": "99e62ee5c5e192d6ae7bb66ad469b8b8aca19110c3e56d5e755c0358c5ac42bf",
+   "required_outcome": "A crop-health monitoring suite over Punjab: masked multi-index imagery, monthly NDVI time series, 5-tier health classification, NDVI anomaly layer, and the stated export set.",
+   "required_constraints": [
+    "[EXPLICIT] Sentinel-2 Harmonized SR 2024-2025; QA60 cloud mask",
+    "[EXPLICIT] NDVI(B8/B4), EVI, NDRE, SAVI",
+    "[EXPLICIT] monthly NDVI series chart; 5-tier classification from NDVI thresholds",
+    "[EXPLICIT] NDVI anomaly for stress detection",
+    "[EXPLICIT] exports: latest/mean/peak NDVI, health classification, regional stats as GeoTIFF+CSV",
+    "[IMPLICIT] monthly composite organization; index->classification dependency; anomaly baseline relation"
+   ],
+   "required_capabilities": [
+    "Collection filtering and masking",
+    "Multi-index computation",
+    "Temporal aggregation",
+    "Threshold classification",
+    "Statistical export"
+   ],
+   "acceptable_alternatives": [
+    "Any composite/reduce arrangement; any charting mechanism"
+   ],
+   "failure_conditions": [
+    "Missing cloud mask or any stated index",
+    "Missing monthly series / classification / anomaly / any stated export"
+   ],
+   "underdetermined_aspects": [
+    "5-tier NDVI threshold values; anomaly baseline period"
+   ],
+   "presentation_requirements": [
+    "monthly NDVI time-series chart (task-stated presentation requirement)"
+   ],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task lists QA60, four indices, monthly series, 5 tiers, anomaly, full export set"
+  },
+  {
+   "line_id": 62586,
+   "group": "A",
+   "split": "test",
+   "task_type": "Bathymetry",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Estimate water depth using SDB\nEstimate shallow water bathymetry using the Lyzenga's Simple Depth Band Ratio (SDB) method on Sentinel-2 surface reflectance imagery from 2020 to 2022. It applies cloud masking by joining S2_CLOUD_PROBABILITY with S2_SR, computes log-transformed band ratios for blue, green, and red bands, and performs linear regression using in-situ depth points. The model is trained on 80% of the points and validated on 20%, producing a scatter plot of estimated vs. actual depths with R² and RMSE. The final output is a calibrated bathymetric raster map exported to Earth Engine Assets.",
+   "task_sha256": "e56ceace0d0f790f96b039608c608ced83fe405d3dab0584a31258d4ac36e0f1",
+   "required_outcome": "A calibrated bathymetric raster (SDB) for the study area, with regression quality reported (R2, RMSE) on an 80/20 split.",
+   "required_constraints": [
+    "[EXPLICIT] Sentinel-2 SR 2020-2022; S2_CLOUD_PROBABILITY join mask",
+    "[EXPLICIT] log-transformed band ratios (blue/green/red)",
+    "[EXPLICIT] linear regression on in-situ depth points; 80/20 train/validation",
+    "[EXPLICIT] scatter with R2/RMSE; asset export of calibrated raster",
+    "[IMPLICIT] join->mask->ratios->regress->apply chain"
+   ],
+   "required_capabilities": [
+    "Collection join masking",
+    "Log-ratio computation",
+    "Regression training/validation",
+    "Model application to raster"
+   ],
+   "acceptable_alternatives": [
+    "Any regression execution route (in-EE reduce or export-train-apply)"
+   ],
+   "failure_conditions": [
+    "Missing cloud-probability join",
+    "Missing log-ratio or regression stage",
+    "No 80/20 validation or quality metrics",
+    "Calibrated raster not produced"
+   ],
+   "underdetermined_aspects": [
+    "Regression coefficients (data-determined); exact ratio pairing"
+   ],
+   "presentation_requirements": [
+    "R2/RMSE scatter plot (task-stated)"
+   ],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: join, log band ratios, regression 80/20, R2/RMSE, asset export"
+  },
+  {
+   "line_id": 72291,
+   "group": "A",
+   "split": "val",
+   "task_type": "Atmospheric aerosol",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Analyze aerosol reflectance over AOI\nAnalyze mean aerosol reflectance in the B1 band (ultra-blue) of Sentinel-2 imagery over a small AOI from 2016-09-01 to 2017-09-30. It filters the Sentinel-2 image collection by date and region, clips each image to the AOI, computes the mean value of band B1 using reduceRegion, and appends this statistic as a property ('Aerosol_Mean') to each image. The output includes the size of the filtered collection, metadata of individual images, and visualization of up to 12 images using a false-color composite (B8, B3, B4), enabling visual inspection of surface and atmospheric features.",
+   "task_sha256": "b8f472e6909b467b44b6052b0fed3829a668c8b9f5be8c2211428561c42ceec6",
+   "required_outcome": "Per-image B1 (ultra-blue) mean statistics appended as image properties over the AOI period, plus collection-size/metadata reporting and up-to-12 false-color previews.",
+   "required_constraints": [
+    "[EXPLICIT] Sentinel-2 B1; 2016-09-01..2017-09-30; small AOI",
+    "[EXPLICIT] filter->clip->reduceRegion mean->Aerosol_Mean property",
+    "[EXPLICIT] report collection size and per-image metadata",
+    "[EXPLICIT] up to 12 false-color (B8,B3,B4) visualizations",
+    "[IMPLICIT] per-image property append chain"
+   ],
+   "required_capabilities": [
+    "AOI filtering and clipping",
+    "reduceRegion statistics",
+    "Property management",
+    "Composite visualization setup"
+   ],
+   "acceptable_alternatives": [
+    "Any property-append mechanism; any preview batching"
+   ],
+   "failure_conditions": [
+    "Missing per-image mean statistics",
+    "Missing collection-size/metadata reporting",
+    "False-color composite wrong bands"
+   ],
+   "underdetermined_aspects": [
+    "AOI geometry source; visualization params beyond band combo"
+   ],
+   "presentation_requirements": [
+    "up-to-12 false-color previews (task-stated; presentation requirement, not planning evidence)"
+   ],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: reduceRegion B1 mean appended per image; size/metadata; 12 false-color"
+  },
+  {
+   "line_id": 78050,
+   "group": "A",
+   "split": "val",
+   "task_type": "Ecosystems",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Calculate sagebrush ecosystem integrity\nCalculate future Sagebrush Ecosystem Integrity (SEI) using Method 1 from Doherty et al. 2022: it computes scaled percent change in STEPWAT-simulated biomass (sage, perennial grass, annual forb/grass) under climate scenarios (RCP45, 2070–2100), multiplies these delta-S values by current smoothed percent cover layers (sage560m, perennialG560m, annualG560m) from RAP (Rangeland Analysis Platform), converts to Habitat Suitability Index (HSI) using ecoregion-specific curves (Great Basin, Intermountain, Plains), integrates resources and threats multiplicatively (Q1–Q5) to produce continuous SEI560, applies Gaussian smoothing at 2000 m radius to yield SEI2000, classifies into deciles, then reclassifies into three management classes (core/grow/treat), and exports a multi-band GEE Image Asset containing all intermediate and final layers (Q1raw–Q5sc3) per GCM.",
+   "task_sha256": "7649fb6a8397c7e2fc0ac866106c60dc9b82492b02ba93581e559bfdf62250d1",
+   "required_outcome": "A multi-band asset per GCM containing Q layers, SEI560, SEI2000, decile classes, and three management classes for future scenarios.",
+   "required_constraints": [
+    "[EXPLICIT] Method 1 (Doherty 2022): delta-S from STEPWAT biomass under RCP45 2070-2100",
+    "[EXPLICIT] multiply delta-S by RAP smoothed cover layers; ecoregion-specific curves (Great Basin/Intermountain/Plains)",
+    "[EXPLICIT] Q1-Q5 multiplicative integration -> SEI560 -> Gaussian 2000 m -> SEI2000 -> deciles -> core/grow/treat",
+    "[EXPLICIT] multi-band GEE asset with all intermediate + final layers",
+    "[IMPLICIT] delta-S computation; integration order as specified by method"
+   ],
+   "required_capabilities": [
+    "Multi-layer raster algebra",
+    "Ecoregion-keyed curve application",
+    "Gaussian smoothing",
+    "Classification chains"
+   ],
+   "acceptable_alternatives": [
+    "Any smoothing implementation; any asset packaging arrangement"
+   ],
+   "failure_conditions": [
+    "Missing any method stage (delta-S, curve application, Q integration, smoothing, classifications)",
+    "Intermediate layers absent from asset"
+   ],
+   "underdetermined_aspects": [
+    "Curve parameter values (data-given); GCM count handling"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task text IS the method specification; all stages explicit"
+  },
+  {
+   "line_id": 79576,
+   "group": "A",
+   "split": "val",
+   "task_type": "Ground water",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Analyze groundwater storage time series\nExtract and analyzes monthly groundwater storage (GWS) time series from the NASA GLDAS CLSM model over a defined polygonal region in Iran (approximately spanning longitudes 43.67–63.09°E and latitudes 24.94–39.79°N) for the period 2003–2024. It computes monthly mean GWS_tavg values, generates two charts — one showing spatially averaged (over the polygon) monthly GWS evolution, and another showing point-based time series at two user-defined locations (loc1 and loc2) — and exports the full monthly stack as a clipped, multi-band GeoTIFF to Google Drive. The workflow includes date sequence generation, image collection filtering and reduction, metadata annotation (system:time_start/end/index), null-band filtering, and visualization/export setup.",
+   "task_sha256": "e5d1ab904f47da856a318d3902f6b545b364596568109cad95a1ab50f5b07a68",
+   "required_outcome": "Monthly GWS time-series outputs: spatially averaged chart, two point-location charts, and a clipped multi-band GeoTIFF export.",
+   "required_constraints": [
+    "[EXPLICIT] GLDAS CLSM GWS_tavg; Iran polygon (~43.67-63.09E, 24.94-39.79N); 2003-2024",
+    "[EXPLICIT] monthly means; two charts (polygon-average + two point series)",
+    "[EXPLICIT] date-sequence/metadata handling; null-band filtering",
+    "[EXPLICIT] clipped multi-band GeoTIFF to Drive",
+    "[IMPLICIT] month iteration with metadata annotation"
+   ],
+   "required_capabilities": [
+    "Date-sequence iteration",
+    "Regional and point reduction",
+    "Metadata annotation",
+    "Stacked export"
+   ],
+   "acceptable_alternatives": [
+    "Any month-loop implementation; any charting mechanism"
+   ],
+   "failure_conditions": [
+    "Missing monthly series or either chart type",
+    "Null-band filtering absent",
+    "Clipped multi-band export missing"
+   ],
+   "underdetermined_aspects": [
+    "User-defined point coordinates (task says loc1/loc2 by user)"
+   ],
+   "presentation_requirements": [
+    "two time-series charts (task-stated)"
+   ],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: polygon + two points, monthly means, charts, clipped GeoTIFF"
+  },
+  {
+   "line_id": 85688,
+   "group": "A",
+   "split": "test",
+   "task_type": "Benthic classification",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Classify benthic habitats using Random Forest\nthe workflow performs atmospheric correction using Dark Object Subtraction (DOS) on a satellite image over Misool, then applies a Random Forest classifier to classify benthic habitats into four classes (e.g., water, vegetation, sand, coral) using deglinted bands and a derived index (DII23), based on training samples from ROI_Sunglint. The output is a classified benthic map exported to Google Drive.",
+   "task_sha256": "f8373e9b0e93ec0ddeadbf0a553c6ff31657d8257a8fb323a82fcb31c866b40d",
+   "required_outcome": "A four-class benthic habitat classification over Misool from DOS-corrected imagery, exported to Drive.",
+   "required_constraints": [
+    "[EXPLICIT] DOS atmospheric correction",
+    "[EXPLICIT] RF classifier; four classes (water/vegetation/sand/coral)",
+    "[EXPLICIT] deglinted bands + DII23 index as features; ROI_Sunglint training samples",
+    "[EXPLICIT] Drive export",
+    "[IMPLICIT] correct->sample->train->classify order"
+   ],
+   "required_capabilities": [
+    "DOS correction",
+    "Feature/index preparation",
+    "RF training and classification"
+   ],
+   "acceptable_alternatives": [
+    "Any DOS variant; any sampling mechanism from ROI"
+   ],
+   "failure_conditions": [
+    "Skipping DOS correction",
+    "Missing RF stage or DII23 feature",
+    "No Drive export"
+   ],
+   "underdetermined_aspects": [
+    "DII23 formula details (named, not specified); exact class list confirmation"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: DOS, RF four classes, deglinted bands + DII23, ROI training, Drive export"
+  },
+  {
+   "line_id": 90727,
+   "group": "A",
+   "split": "test",
+   "task_type": "Drought monitoring",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Assess drought severity using VHI\nCompute the Vegetation Health Index (VHI) over the Irrawaddy Basin using Landsat 7 surface temperature and NDVI data from 2013 to 2020. It derives VHI by combining the Temperature Condition Index (TCI) and Vegetation Condition Index (VCI) during the hot season (March–May) each year, masks areas with NDVI > 0.2 to focus on vegetated regions, and identifies drought-affected areas where VHI < 20. The outputs include annual VHI raster maps exported to Google Drive and CSV files summarizing the total drought-affected area in square kilometers for each year.",
+   "task_sha256": "1305eceabcb9ecaba3a29cf9c0cd2aa8cb4e67fe5179ceca1bf184b3c8db0fa4",
+   "required_outcome": "Annual VHI rasters and a CSV of yearly drought-affected area (km2) for the Irrawaddy Basin.",
+   "required_constraints": [
+    "[EXPLICIT] Landsat 7 LST + NDVI, 2013-2020",
+    "[EXPLICIT] VHI = TCI+VCI combination, hot season Mar-May",
+    "[EXPLICIT] NDVI>0.2 vegetation mask; VHI<20 drought flag",
+    "[EXPLICIT] Drive rasters + CSV of yearly affected km2",
+    "[IMPLICIT] TCI/VCI normalization; yearly iteration"
+   ],
+   "required_capabilities": [
+    "Index normalization (TCI/VCI)",
+    "Seasonal filtering",
+    "Threshold flagging",
+    "Area statistics"
+   ],
+   "acceptable_alternatives": [
+    "Any normalization baseline (underdetermined); any area-summation route"
+   ],
+   "failure_conditions": [
+    "Missing TCI/VCI combination",
+    "Vegetation or drought threshold not applied",
+    "CSV area summary missing"
+   ],
+   "underdetermined_aspects": [
+    "TCI/VCI normalization baseline period (min/max reference)"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: TCI+VCI, NDVI>0.2 mask, VHI<20, yearly km2 CSV"
+  },
+  {
+   "line_id": 98033,
+   "group": "A",
+   "split": "val",
+   "task_type": "Land ice/ocean classification",
+   "eligibility_status": "KEEP",
+   "task_text": "Task: Classify ice and water types\nClassify pixel-level surface types in lakes into four categories: water, clear ice, opaque ice, and snow using Landsat TOA reflectance data. It trains a Random Forest model on labeled training samples with spectral predictors and validates it temporally by splitting data by year (before/after 2019), ultimately producing a trained classification model for cryospheric surface mapping.",
+   "task_sha256": "8bcbd0a5567f2fc41120eabc621f810e1da503fe3448fbc04928ad90f93d9a63",
+   "required_outcome": "A trained four-class (water / clear ice / opaque ice / snow) classification model validated temporally by pre/post-2019 splits.",
+   "required_constraints": [
+    "[EXPLICIT] Landsat TOA inputs",
+    "[EXPLICIT] RF on labeled samples with spectral predictors",
+    "[EXPLICIT] temporal split validation (before/after 2019)",
+    "[IMPLICIT] feature assembly->train->temporal-validate order"
+   ],
+   "required_capabilities": [
+    "Sample-driven RF training",
+    "Temporal holdout validation design"
+   ],
+   "acceptable_alternatives": [
+    "Any feature set drawn from spectral predictors; any split implementation"
+   ],
+   "failure_conditions": [
+    "No temporal validation design",
+    "Missing classes",
+    "Validation leakage (random split ignoring year)"
+   ],
+   "underdetermined_aspects": [
+    "Exact predictor list; hyperparameters; sample sizes"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: four classes, RF on labels, before/after-2019 validation"
+  },
+  {
+   "line_id": 112319,
+   "group": "A",
+   "split": "val",
+   "task_type": "Fire detection",
+   "eligibility_status": "KEEP-STRATIFIED",
+   "task_text": "Task: Detect active fires with GOES-17\nProcess GOES-17 ABI Level 2 Multichannel Cloud and Moisture Imagery (MCMIPF) data to generate true-color and false-color visualizations by applying scale/offset corrections, adding a synthetic green band via spectral blending, and scaling for visualization. It then integrates Fire Detection and Characterization (FDCF) data by mapping confidence values to fire mask codes, filtering for high-confidence fire pixels (≥0.3), and overlaying them on the MCMIPF imagery. The output is a time-lapse visualization collection where active fires are highlighted in red over corrected multispectral imagery, enabling spatiotemporal monitoring of wildfires.",
+   "task_sha256": "f0b17ae4a3c40508076fa80de733fbb1a4674779d029b2e9fe831a9c34f59cfb",
+   "required_outcome": "A time-lapse visualization collection: corrected GOES-17 multispectral imagery with high-confidence fire pixels overlaid in red.",
+   "required_constraints": [
+    "[EXPLICIT] MCMIPF scale/offset correction",
+    "[EXPLICIT] synthetic green band via spectral blending",
+    "[EXPLICIT] FDCF confidence mapping; filter >= 0.3",
+    "[EXPLICIT] red fire overlay on corrected imagery; time-lapse collection output",
+    "[IMPLICIT] correct->blend->fire-map->overlay chain"
+   ],
+   "required_capabilities": [
+    "Scale/offset radiometric handling",
+    "Band blending",
+    "Confidence filtering",
+    "Overlay compositing"
+   ],
+   "acceptable_alternatives": [
+    "Any blending formula (task says 'spectral blending' without coefficients)"
+   ],
+   "failure_conditions": [
+    "Missing scale/offset correction",
+    "Confidence filter absent or wrong threshold",
+    "Fire overlay missing from output collection"
+   ],
+   "underdetermined_aspects": [
+    "Synthetic-green coefficients (standard blends exist; task unfixed)"
+   ],
+   "presentation_requirements": [
+    "time-lapse visualization collection (task-stated output form)"
+   ],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: scale/offset, synthetic green, FDCF >=0.3, red overlay, time-lapse"
+  },
+  {
+   "line_id": 114710,
+   "group": "A",
+   "split": "test",
+   "task_type": "Altitude",
+   "eligibility_status": "KEEP",
+   "task_text": "Task: Extract daily height data\nProcess the RTMA (Real-Time Mesoscale Analysis) dataset to extract daily mean values of the 'HGT' (height) variable from January 1, 2020, to January 31, 2020. It creates an ImageCollection where each image represents the mean height for a single day, renamed by date, and includes time metadata. The output is a time-series collection of daily height fields over North America at high spatial resolution.",
+   "task_sha256": "7cda8edd8dd1c54063d46d6a3e90421b1ac665a4d3de23af471600c41cc84f94",
+   "required_outcome": "A time-series ImageCollection of daily mean 'HGT' (height) fields over January 2020, each image dated and carrying time metadata.",
+   "required_constraints": [
+    "[EXPLICIT] RTMA dataset; 2020-01-01..2020-01-31",
+    "[EXPLICIT] daily mean of HGT per day",
+    "[EXPLICIT] images renamed by date with time metadata",
+    "[IMPLICIT] per-day filter->reduce->rename chain"
+   ],
+   "required_capabilities": [
+    "Daily temporal partitioning",
+    "Spatial mean reduction",
+    "Collection metadata management"
+   ],
+   "acceptable_alternatives": [
+    "Any per-day aggregation implementation (grouped reduce vs looped composites)"
+   ],
+   "failure_conditions": [
+    "Wrong temporal granularity (not daily)",
+    "Missing date renaming or time metadata",
+    "Variable other than HGT processed"
+   ],
+   "underdetermined_aspects": [
+    "Regional clipping details (dataset native extent may suffice)"
+   ],
+   "presentation_requirements": [],
+   "gold_chain_audit": "PENDING-STAGE-2-STYLE (chains-as-reference only; A-group chains are GEE reference, never gold source)",
+   "evidence": "task: daily mean HGT, Jan 2020, renamed by date, time metadata"
+  }
+ ]
+}
