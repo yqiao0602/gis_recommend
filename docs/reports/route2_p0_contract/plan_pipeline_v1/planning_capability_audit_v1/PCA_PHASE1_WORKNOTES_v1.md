@@ -90,3 +90,19 @@ planner_v2_train 文本池双重判定）；若最终 gold 候选池无法定位
 - 待 owner 审核 B 组金标独立性与可判定性 → 通过后进阶段 2（原链一致性审计，四标签
   CONSISTENT / PARTIALLY_CONSISTENT / INCONSISTENT / UNDERDETERMINED 待正式定义入账本）
   → 阶段 3（A/C 组 + 配对）→ 阶段 4（评测账本冻结 → 才申请正式生成）。
+
+## 5. Stage-2 完成与 Stage-3 启动（2026-10-13，owner round-8 后）
+
+- **Stage-2 正式审计完成**（owner 批准后执行）：`pca_b_chain_audit_v1.json`
+  （SHA `2433e51e7ae5a930`，绑定金标 `0dc643980e8d4b8e`）——CONSISTENT 13 /
+  PARTIALLY_CONSISTENT 5 / INCONSISTENT 1 / UNDERDETERMINED 0；ESCALATE-OWNER x1
+  （W056058）。报告：`pca_b_chain_audit_report_v1.md`。
+- **元发现升格为评测规则**（owner round-8）：Processing 链表示力边界 →
+  `pca_stage34_scoring_rules_v1.md`（五条规则 + PARTIALLY 解释边界 + W056058 特别规则 +
+  A 组文体构念声明 + Stage-3 执行清单）。
+- **W056058 处置**：`OWNER-REVIEW / BASELINE-INVALIDITY-REVIEW`；三分支核验记录
+  `pca_w056058_disposition_v1.md`（分支①成立：题面金标一致、原链确缺核心结构、任务
+  有效；起草推荐=保留任务 + 原链标 BASELINE-INVALID + 金标唯一基准）；owner 终裁待回填。
+- **Stage-3 启动**：A 组金标（原生 GEE instruction 文体=域内构念，金标按语义独立写）、
+  C 组起草+金标（覆盖矩阵）、≥6 对配对（依据=同分析目标）。产出 owner 审核后进 Stage-4
+  账本冻结。模型生成继续未启动。
