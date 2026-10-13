@@ -35,3 +35,19 @@
 PCA Phase 1（A 组金标撰写 / C 组起草，worknotes §3 第 2-3 步）与工作区收口可并行，
 但同一文件不得双写：本盘点期间 PCA 目录的全部变更归属持有会话（`9cb1b18e` /
 `debe66f3`），本会话仅新增 `planning_capability_audit_v1/STAGE1_GATE_*.md` 与本文件。
+
+## 5. 处置执行记录（2026-10-13，owner 裁定后执行）
+
+1. **扫描缓存 gitignore** ✅：精确路径规则入 `.gitignore`（check-ignore 验证仅匹配
+   该文件，untracked 355→354）；文件保留磁盘未删；未被跟踪过。
+2. **错位 JSON 删除** ✅：删除前复核——正确路径版本 tracked（SHA256
+   `57fa2f0a…`）、报告引用"同目录"版本、无引用指向错位路径；错位副本（SHA256
+   `2dabea08…`，1,545B）为 `scripts/` CWD 下的早期错位输出，非唯一拷贝；已删除
+   文件及 `scripts/docs/` 空目录链。
+3. **op_family 133 版 v1.1 化** ✅：root 副本移至
+   `e2e_mainline_v1/qgis_op_family_reverse_v1_1.json`（SHA256 `c9fb264e…`，133 op）；
+   v1.0（129 op，SHA256 `1a5a30ac…`）不动，继续绑定 E2E 实验 B 历史结果；版本账本
+   `e2e_mainline_v1/OP_FAMILY_REVERSE_VERSIONS_V1.json`（新增 4 算子清单 + 采用规则：
+   v1.1 仅可被显式引用本账本的未来实验采用，不回溯适用）。
+4. **scripts/ 129-op 副本**：待批次②a 提交时随附（生成器输出副本，与 tracked 版
+   内容一致；生成来源 `scripts/qgis_op_family_reverse_v1.py`）。

@@ -1,0 +1,35 @@
+{
+  "schema": "OP_FAMILY_REVERSE_VERSIONS_V1",
+  "created": "2026-10-13",
+  "authority": "owner ruling 2026-10-13 (worktree closure): keep v1.0 untouched; register v1.1 expansion; no recomputation or reinterpretation of historical v1.0-bound results",
+  "v1_0": {
+    "file": "qgis_op_family_reverse_v1.json",
+    "n_operators": 129,
+    "sha256": "1a5a30ac3be5101ed307e469c6c1872d3f4d939f5c5c2a84a4c743020bbe0478",
+    "bound_experiments": [
+      "E2E Experiment B / Oracle blueprint grounding (frozen input; opF1 .2897 fixed-table / .1013 b0 / .1402 b1; commit 0c399113)"
+    ],
+    "status": "FROZEN historical input; do not modify; historical results stay bound to this version"
+  },
+  "v1_1": {
+    "file": "qgis_op_family_reverse_v1_1.json",
+    "n_operators": 133,
+    "sha256": "c9fb264efc2c829c17ae6de51c51665f17d69f058e84b76bb2e4c62e8438cbb5",
+    "provenance": "root-dir working copy found during 2026-10-13 worktree closure; moved here and versioned per owner ruling (no overwrite, no deletion)",
+    "diff_vs_v1_0": {
+      "verified": "diff shows additions only; no modification, no deletion of existing 129 entries",
+      "added_operators": [
+        {"id": "native:multiringconstantbuffer", "family": "VECTOR_GEOMETRY", "note": null},
+        {"id": "native:pointstopath", "family": "VECTOR_GEOMETRY", "note": null},
+        {"id": "native:polygonize", "family": "VECTOR_GEOMETRY", "note": "raster->vector conversion"},
+        {"id": "saga:addrastervaluestopoints", "family": "BAND_SELECT", "note": "raster value extraction"}
+      ],
+      "echoes": "polygonize / addrastervaluestopoints correspond to the identity-gap list in task_plan.md (gdal:proximity, gdal:merge, qgis:rastersampling, qgis:eliminateselectedpolygons, extract/save, native:polygonize)"
+    },
+    "adoption_rule": "v1.1 may be adopted as input ONLY by future experiments that explicitly cite this ledger and the v1.1 SHA; it does NOT retroactively apply to any archived experiment"
+  },
+  "related": {
+    "generator": "scripts/qgis_op_family_reverse_v1.py (writes a 129-op output copy under scripts/; module imported by e2e_oracle_grounding_test.py, p0_dev120_blueprint_eval.py, p0_dev120_dump_audit_cases.py)",
+    "companion_diagnostic_label": "reverse->forward round trip is NOT grounding evidence (owner ruling, carried in both file headers)"
+  }
+}
