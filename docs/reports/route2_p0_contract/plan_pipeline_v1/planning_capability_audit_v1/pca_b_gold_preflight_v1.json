@@ -1,0 +1,100 @@
+{
+ "_meta": {
+  "gate": "PCA Stage-2 preflight (owner round-6)",
+  "candidate_freeze": "2717bcfa",
+  "trials_note": "TRIALS ARE NOT the formal chain audit",
+  "overall_pass": true
+ },
+ "check1": {
+  "rows_checked": 19,
+  "hard_fail_counts": {
+   "W000473": 4,
+   "W000635": 4,
+   "W000674": 4,
+   "W000890": 4,
+   "W007046": 4,
+   "W033927": 4,
+   "W055494": 4,
+   "W055534": 4,
+   "W055908": 4,
+   "W055913": 4,
+   "W056058": 4,
+   "W056274": 5,
+   "W066995": 6,
+   "W067092": 4,
+   "W067268": 5,
+   "W067404": 4,
+   "W068342": 3,
+   "W068582": 4,
+   "W068833": 4
+  },
+  "keyword_violations": [],
+  "structural_issues": [],
+  "rule": "hard failure = entries not starting with 'NOTE:'; underdetermined keywords must live only in NOTE/underdetermined_aspects",
+  "pass": true
+ },
+ "check2": {
+  "sha_full_match": "19/19",
+  "sha_mismatches": [],
+  "task_text_verbatim": "19/19",
+  "generator_opens": [
+   "FROZEN",
+   "OUT"
+  ],
+  "generator_reads_frozen_only": true,
+  "generator_contains_dev_path": false,
+  "frozen_file_sha256": "1a13ad8d95c33771275a5ee8aca1f8940000dafc8ed5053c07ac6920b53bc7c9",
+  "pass": true
+ },
+ "check3": {
+  "required_elements_present": 13,
+  "missing": [],
+  "pass": true
+ },
+ "check4": {
+  "trials": [
+   {
+    "wid": "W000473",
+    "aspect": "multi-route equivalence",
+    "walk": [
+     "Outcome=polygon XOR; alternatives explicitly allow dissolution-then-XOR",
+     "Chain dissolve->dissolve->symmetricaldifference delivers XOR polygons after single-part dissolution",
+     "Rule applied: route membership (alternatives list) + no failure trigger -> structural verdict reachable",
+     "TRIAL LABEL (informal, not formal audit): CONSISTENT-reachable without inventing criteria"
+    ]
+   },
+   {
+    "wid": "W056274",
+    "aspect": "task underdefinition",
+    "walk": [
+     "Distance object locked: inside-paddock water points (frozen text) -> chain's per-paddock interior-point rasterize matches",
+     "Grid parameters unspecified (underdetermined_aspects) -> NOT judged; rule applied: no improvised resolution standard",
+     "Output organization (per-paddock named rasters, no summary) checkable from task text alone",
+     "TRIAL LABEL: every judgment step has a rule source; no step required improvisation"
+    ]
+   },
+   {
+    "wid": "W000674",
+    "aspect": "non-mandatory implementation steps",
+    "walk": [
+     "Result constraint: derivatives computed under projected metric CRS (no reprojection step mandated)",
+     "Chain warpreproject->slope->aspect->hillshade satisfies the result constraint via its route",
+     "Rule applied: result-level judgment, not step presence; no auto-fail paths triggered",
+     "TRIAL LABEL: verdict reachable purely from result semantics"
+    ]
+   },
+   {
+    "wid": "W067268",
+    "aspect": "structure-level vs numerical judgment",
+    "walk": [
+     "Structure-checkable factors: terrain(DEM)/distance attenuation/ground type/barriers presence in plan",
+     "Chain contains viewshed(terrain/barrier), distance computation, attenuation field calculations -> structure factors present",
+     "Numerical BS 5228 compliance NOT judgeable (underdetermined_aspects) -> dimension noted DIM-UNDERDETERMINED, main label limited to structure level",
+     "TRIAL LABEL: chain-level + dimension-note mechanism exercised as designed"
+    ]
+   }
+  ],
+  "rule_executability": "all four walks completed without improvised criteria; dimension-note mechanism exercised",
+  "pass": true
+ }
+}

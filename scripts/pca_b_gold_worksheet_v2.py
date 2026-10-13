@@ -150,7 +150,7 @@ GOLD = {
                              "A generic viewshed analysis or arbitrary attenuation surface is NOT automatically compliant — route names never substitute for the standard's semantics"],
  "failure_conditions": ["Terrain/barrier/ground-type factor ignored", "No per-receptor noise value produced",
                         "CRS mishandled (geographic units)", "Source-point layer missing",
-                        "Standard invoked by name while the plan's structure VISIBLY omits a required factor (structure-identifiable contradiction ONLY); numerical contradictions with the standard are not judgeable from plan structure (see underdetermined_aspects)"],
+                        "Standard invoked by name while the plan's structure VISIBLY omits a required factor (structure-identifiable omissions only)"],
  "underdetermined_aspects": ["Scoring boundary: from WORKFLOW STRUCTURE alone one can judge presence of source–receptor relationship, terrain factor, attenuation factors, and barrier handling; NUMERICAL BS 5228 compliance of computed values is NOT judgeable from structure alone (this PCA evaluates workflow plans, not executed numerics) — declared partial-scoring boundary"],
  "evidence": "task text (all five elements traced to original task sentences; see final_status §6 check#2)"},
 "W055908": {

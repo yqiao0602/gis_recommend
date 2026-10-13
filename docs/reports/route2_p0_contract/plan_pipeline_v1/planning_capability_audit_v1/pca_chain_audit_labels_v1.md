@@ -33,6 +33,42 @@
 7. **无法裁定的情形保留待裁**（`adjudication: ESCALATE-OWNER`）：题面本身无法裁定的
    情形不强行归入四标签，列为待 owner 裁定项。
 
+## ESCALATE-OWNER 完整协议（owner round-6 preflight 固化）
+
+- **触发条件**：冻结题面 + 金标 v2 + 原链三者联合审读后仍无法给出可靠主标签的情形
+  ——典型：判定恰好落在某 `underdetermined_aspects` 上、链与题面各自可通但联合语义
+  存在两种以上不可仲裁的读法。
+- **记录格式**：`adjudication: "ESCALATE-OWNER"` + `escalation_reason`（一句话说明
+  哪个维度、为何题面+金标不足以裁定）。
+- **裁定后处理**：owner 裁定结果回填 `adjudication_resolved`（含理由）。**裁定不等于
+  自动修改金标或题面**——若裁定揭示冻结题面本身不足以支持某判断，保留该事实并按
+  v1.1 版本化流程处理（出题面/金标新版），不得为让旧链获得明确标签而反向补充题面。
+
+## Stage-2 三条执行规则（owner round-6）
+
+1. **不同路线 ≠ 错误**：链只要能满足题面要求，不得仅因算子或顺序与旧链不同而判错。
+2. **不确定 ≠ 不合格**：题面未规定的参数、阈值、处理顺序或唯一实现方式，不得在审计
+   过程中临时补成硬性要求（对应金标 `underdetermined_aspects` 全部声明）。
+3. **Owner 裁定 ≠ 自动修改金标**：见上节裁定后处理。
+
+## 每链记录字段（Stage-2 产出 schema，owner round-6 指定）
+
+```json
+{
+  "wid": "...",
+  "label": "CONSISTENT | PARTIALLY_CONSISTENT | INCONSISTENT | UNDERDETERMINED",
+  "dimension_evidence": [{"dimension": "...", "support": "...|null", "issue": "...|null"}],
+  "missing_required_operations": ["明确缺失的必要操作或关系"],
+  "suspect_but_not_failures": ["可疑但不能据此定错的实现选择"],
+  "adjudication": "NONE | ESCALATE-OWNER",
+  "escalation_reason": null | "...",
+  "adjudication_resolved": null | "owner ruling + reason"
+}
+```
+
+**纪律 6/7**（前文）继续有效：审计对象是任务语义与链的语义一致性；"原链用了某算子"
+不能证明该算子唯一正确。
+
 ## 流程位置
 
 阶段 1（金标 v2，本轮）→ **owner 复核 v2** → 阶段 2（按本标准逐条审计 19 条原链）→
