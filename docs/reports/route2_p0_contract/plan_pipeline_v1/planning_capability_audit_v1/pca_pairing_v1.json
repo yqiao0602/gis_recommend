@@ -1,0 +1,220 @@
+{
+ "_meta": {
+  "stage": "PCA Stage-3 A/C pairing v1 (6 pairs)",
+  "rule": "pairing basis = shared analysis goal; same goal does NOT imply equal difficulty — every pair carries the four-part difficulty cross-check; explicit-constraint coverage is a separate stratification variable, never merged into difficulty",
+  "note_P06": "structure-based pairing with disclosed domain difference (owner round-13: pairing must have sufficient shared goal + difficulty basis — P06 pairs modelling-chain structure; flagged for owner attention in joint review)",
+  "n_pairs": 6
+ },
+ "pairs": [
+  {
+   "pair_id": "P01",
+   "a_line_id": 44487,
+   "c_task_id": "PCA-C-07",
+   "shared_goal": "Forest-cover quantification over defined zones (pixel-fraction SMA vs polygon zonal statistics)",
+   "pairing_basis": "same analytical objective: quantify forest cover within spatial units; formulations differ (per-pixel fractions+thresholds vs raster-in-polygon percentages) — exactly the formulation effect the pair is designed to expose",
+   "difficulty_check": {
+    "required_steps": {
+     "A": "SMA -> threshold classification -> stats/chart",
+     "C": "mask/zonal -> percentage -> masked raster",
+     "comparable": "yes (3-4 core stages each)"
+    },
+    "branching_looping": {
+     "A": "none required",
+     "C": "none required",
+     "comparable": "yes"
+    },
+    "parameter_constraints": {
+     "A": "PV>0.6/bare<0.4 explicit",
+     "C": "percentage denominator convention open (stated)",
+     "note": "A slightly more constrained — recorded, not hidden"
+    },
+    "output_requirements": {
+     "A": "stats + 2017-2020 chart + 3 visualizations",
+     "C": "table + masked raster",
+     "note": "A heavier on presentation; presentation scored separately"
+    }
+   },
+   "explicit_constraint_coverage": {
+    "A": "high (native GEE instruction enumerates thresholds/outputs)",
+    "C": "moderate (goal-oriented; allocation conventions open)",
+    "stratification_use": "SEPARATE variable — never merged into difficulty score"
+   },
+   "difficulty_judgment": "broadly comparable analytical depth; A carries more presentation obligations and tighter numeric constraints — differences attributed to formulation, analyzed via the coverage variable"
+  },
+  {
+   "pair_id": "P02",
+   "a_line_id": 79576,
+   "c_task_id": "PCA-C-11",
+   "shared_goal": "Environmental time-series summarization into structured statistical outputs (monthly means grouped into reported units)",
+   "pairing_basis": "same objective family: extract temporal statistics over spatial units and deliver a tabular series; A is point/polygon chart form, C is region-season long table",
+   "difficulty_check": {
+    "required_steps": {
+     "A": "month loop -> polygon mean + 2 point series -> charts + export",
+     "C": "season grouping -> regional means -> long table",
+     "comparable": "yes (3-4 stages)"
+    },
+    "branching_looping": {
+     "A": "date-sequence loop",
+     "C": "temporal grouping loop",
+     "comparable": "yes"
+    },
+    "parameter_constraints": {
+     "A": "points user-defined (open)",
+     "C": "season month-ranges stated",
+     "comparable": "mixed"
+    },
+    "output_requirements": {
+     "A": "two charts + clipped GeoTIFF",
+     "C": "one long-format table",
+     "note": "A heavier on export formats"
+    }
+   },
+   "explicit_constraint_coverage": {
+    "A": "moderate-high (ranges, charts, export formats enumerated)",
+    "C": "moderate (grouping stated; formatting open)",
+    "stratification_use": "separate variable"
+   },
+   "difficulty_judgment": "comparable; A's export-weighting is the main asymmetry — presentation counted separately"
+  },
+  {
+   "pair_id": "P03",
+   "a_line_id": 33652,
+   "c_task_id": "PCA-C-09",
+   "shared_goal": "Point-to-raster extraction producing per-point/tabular values for downstream use",
+   "pairing_basis": "same objective: combine point observations with gridded layers into point-keyed value sets (A: per-station monthly climate means; C: per-point multi-raster sample table)",
+   "difficulty_check": {
+    "required_steps": {
+     "A": "station join -> monthly grouping -> 20-year aggregation -> export",
+     "C": "multi-raster sampling -> table assembly",
+     "comparable": "A one aggregation stage heavier"
+    },
+    "branching_looping": {
+     "A": "month grouping",
+     "C": "none strictly required",
+     "note": "A slightly heavier — recorded"
+    },
+    "parameter_constraints": {
+     "A": "date range + aggregation target stated (year-count ambiguity recorded)",
+     "C": "no-data rule open (stated)",
+     "comparable": "mixed"
+    },
+    "output_requirements": {
+     "A": "per-station export",
+     "C": "single table",
+     "comparable": "yes"
+    }
+   },
+   "explicit_constraint_coverage": {
+    "A": "moderate-high",
+    "C": "moderate",
+    "stratification_use": "separate variable"
+   },
+   "difficulty_judgment": "A marginally heavier by the aggregation stage; acceptable within-pair delta, disclosed"
+  },
+  {
+   "pair_id": "P04",
+   "a_line_id": 15071,
+   "c_task_id": "PCA-C-12",
+   "shared_goal": "Categorical surface mapping reduced to per-unit composition/quality reporting",
+   "pairing_basis": "same objective family: classified surfaces summarized per spatial unit (A: benthic classes with accuracy; C: land-cover shares with dominance/diversity)",
+   "difficulty_check": {
+    "required_steps": {
+     "A": "correction -> classify (2 classifiers) -> accuracy",
+     "C": "zonal class accounting -> dominance/diversity",
+     "comparable": "yes (3 stages each)"
+    },
+    "branching_looping": {
+     "A": "none required",
+     "C": "none required",
+     "comparable": "yes"
+    },
+    "parameter_constraints": {
+     "A": "correction method + classifiers named",
+     "C": "diversity measure example-given",
+     "comparable": "A tighter"
+    },
+    "output_requirements": {
+     "A": "classified map + accuracy",
+     "C": "composition table",
+     "comparable": "yes"
+    }
+   },
+   "explicit_constraint_coverage": {
+    "A": "high (methods enumerated)",
+    "C": "moderate",
+    "stratification_use": "separate variable"
+   },
+   "difficulty_judgment": "comparable; A's named-method constraints are formulation, not depth"
+  },
+  {
+   "pair_id": "P05",
+   "a_line_id": 98033,
+   "c_task_id": "PCA-C-02",
+   "shared_goal": "Multi-class surface-state analysis across time (classified states and their temporal structure)",
+   "pairing_basis": "same objective family: categorical surface analysis with a temporal dimension (A: 4-class classification with pre/post-2019 validation; C: two-epoch change layer with gain/loss per class)",
+   "difficulty_check": {
+    "required_steps": {
+     "A": "train -> classify -> temporal validation",
+     "C": "pairwise change encoding -> area accounting",
+     "comparable": "yes (3 stages)"
+    },
+    "branching_looping": {
+     "A": "split design",
+     "C": "per-class encoding cases",
+     "comparable": "yes"
+    },
+    "parameter_constraints": {
+     "A": "class set + split year explicit",
+     "C": "grid commonality explicit",
+     "comparable": "yes"
+    },
+    "output_requirements": {
+     "A": "classified results + model + validation design",
+     "C": "change layer + area table",
+     "comparable": "yes"
+    }
+   },
+   "explicit_constraint_coverage": {
+    "A": "moderate-high",
+    "C": "moderate",
+    "stratification_use": "separate variable"
+   },
+   "difficulty_judgment": "comparable; both demand a temporal structure (validation split vs change direction) as the analytical core"
+  },
+  {
+   "pair_id": "P06",
+   "a_line_id": 54712,
+   "c_task_id": "PCA-C-18",
+   "shared_goal": "Multi-stage environmental modelling chains from terrain/point inputs to classified screening outputs",
+   "pairing_basis": "structurally同构 multi-step chains (interpolate/model -> combine covariates/rules -> classified screen -> validation/summary); goal domains differ (permafrost ALT vs flood exposure) — pairing justified by modelling-chain structure and stage count, with the domain difference disclosed",
+   "difficulty_check": {
+    "required_steps": {
+     "A": "kriging -> covariate stack -> RF -> classify -> metrics",
+     "C": "conditioning -> accumulation -> sink/flat -> rule screen -> class summary",
+     "comparable": "yes (4-5 stages each)"
+    },
+    "branching_looping": {
+     "A": "none strictly required",
+     "C": "screening branches",
+     "note": "C slightly heavier on conditional logic — recorded"
+    },
+    "parameter_constraints": {
+     "A": "kriging params open (stated)",
+     "C": "proxy rule + accumulation cut open (stated)",
+     "comparable": "yes (both have stated-parameter routes)"
+    },
+    "output_requirements": {
+     "A": "classified raster + metrics + importance",
+     "C": "screened cells + class-area table",
+     "comparable": "yes"
+    }
+   },
+   "explicit_constraint_coverage": {
+    "A": "moderate (method family named)",
+    "C": "moderate",
+    "stratification_use": "separate variable"
+   },
+   "difficulty_judgment": "comparable depth with a disclosed domain difference; C marginally heavier on conditional logic"
+  }
+ ]
+}
