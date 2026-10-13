@@ -1,0 +1,569 @@
+{
+ "_meta": {
+  "protocol": "PCA_PROTOCOL_V1_FROZEN §2.1/§2.3",
+  "seed": 20261013,
+  "pool_definition": "authority(val,test) x not-in-consumed-pool x authority-internal-unique text",
+  "pool_size": 26728,
+  "n_primary": 20,
+  "n_reserve": 30,
+  "band_target": {
+   "short_<=4": 6,
+   "medium_5_7": 10,
+   "long_>=8": 4
+  },
+  "pairing_note": "some primary rows may be replaced by paired-task assignments later; pool is loss-free for swap",
+  "tier_of_all_listed": "source_record_text_aligned"
+ },
+ "stats": {
+  "primary_by_band": {
+   "medium_5_7": 10,
+   "long_>=8": 4,
+   "short_<=4": 6
+  },
+  "primary_by_type": {
+   "Agricultural plant science": 1,
+   "Altitude": 1,
+   "Atmospheric aerosol": 1,
+   "Atmospheric pressure": 1,
+   "Bathymetry": 1,
+   "Benthic classification": 1,
+   "Benthic habitat classification": 1,
+   "Climate feedbacks": 1,
+   "Cloud masking": 1,
+   "Conceptual understanding": 1,
+   "Drought monitoring": 1,
+   "Ecosystems": 2,
+   "Fire detection": 2,
+   "Frozen ground": 2,
+   "Ground water": 1,
+   "Land ice/ocean classification": 1,
+   "Maritime activity": 1
+  },
+  "primary_by_split": {
+   "test": 11,
+   "val": 9
+  },
+  "pool_by_type_top15": {
+   "Land use/land cover": 8562,
+   "Vegetation": 5804,
+   "Land surface/agriculture indicators": 4590,
+   "Terrestrial hydrosphere indicators": 1592,
+   "Natural hazards": 1166,
+   "Surface thermal properties": 616,
+   "Habitat conversion/fragmentation": 553,
+   "Precipitation": 480,
+   "Human settlements": 452,
+   "Biospheric indicators": 363,
+   "Air quality": 338,
+   "Surface radiative properties": 282,
+   "Atmospheric temperature": 204,
+   "Water quality": 202,
+   "Topography": 181
+  },
+  "pool_n_types": 75
+ },
+ "primary": [
+  {
+   "line_id": 57816,
+   "split": "test",
+   "task_type": "Agricultural plant science",
+   "len_band": "medium_5_7",
+   "final_len": 7,
+   "instruction": "Task: Monitor crop health using NDVI time series\nMonitor agricultural crop health across Punjab’s agricultural areas using Sentinel-2 Harmonized Surface Reflectance imagery from 2024–2025. It applies cloud masking (via QA60 bit flags), calculates NDVI (B8/B4), EVI, NDRE, and SAVI, generates a monthly NDVI time series chart, produces classified crop health maps (5-tier: Stressed to Very Healthy) based on NDVI thresholds, computes NDVI anomaly for stress detection, exports latest NDVI, mean NDVI, peak NDVI, health classification, and regional NDVI statistics as GeoTIFFs and CSV — all tailored for operational crop stress assessment and seasonal health tracking.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 114710,
+   "split": "test",
+   "task_type": "Altitude",
+   "len_band": "long_>=8",
+   "final_len": 9,
+   "instruction": "Task: Extract daily height data\nProcess the RTMA (Real-Time Mesoscale Analysis) dataset to extract daily mean values of the 'HGT' (height) variable from January 1, 2020, to January 31, 2020. It creates an ImageCollection where each image represents the mean height for a single day, renamed by date, and includes time metadata. The output is a time-series collection of daily height fields over North America at high spatial resolution.",
+   "chain_head": "e -> e -> . -> N -> u -> m",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 72291,
+   "split": "val",
+   "task_type": "Atmospheric aerosol",
+   "len_band": "short_<=4",
+   "final_len": 4,
+   "instruction": "Task: Analyze aerosol reflectance over AOI\nAnalyze mean aerosol reflectance in the B1 band (ultra-blue) of Sentinel-2 imagery over a small AOI from 2016-09-01 to 2017-09-30. It filters the Sentinel-2 image collection by date and region, clips each image to the AOI, computes the mean value of band B1 using reduceRegion, and appends this statistic as a property ('Aerosol_Mean') to each image. The output includes the size of the filtered collection, metadata of individual images, and visualization of up to 12 images using a false-color composite (B8, B3, B4), enabling visual inspection of surface and atmospheric features.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 33652,
+   "split": "test",
+   "task_type": "Atmospheric pressure",
+   "len_band": "medium_5_7",
+   "final_len": 7,
+   "instruction": "Task: Extract monthly surface pressure\nExtract monthly mean surface pressure from ERA5 reanalysis data for the period 2000–2020 at specific ASOS station locations, computes the average value across 20 years for each month, and exports the results per station.",
+   "chain_head": "e -> e -> . -> D -> a -> t",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 62586,
+   "split": "test",
+   "task_type": "Bathymetry",
+   "len_band": "long_>=8",
+   "final_len": 9,
+   "instruction": "Task: Estimate water depth using SDB\nEstimate shallow water bathymetry using the Lyzenga's Simple Depth Band Ratio (SDB) method on Sentinel-2 surface reflectance imagery from 2020 to 2022. It applies cloud masking by joining S2_CLOUD_PROBABILITY with S2_SR, computes log-transformed band ratios for blue, green, and red bands, and performs linear regression using in-situ depth points. The model is trained on 80% of the points and validated on 20%, producing a scatter plot of estimated vs. actual depths with R² and RMSE. The final output is a calibrated bathymetric raster map exported to Earth Engine Assets.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 85688,
+   "split": "test",
+   "task_type": "Benthic classification",
+   "len_band": "medium_5_7",
+   "final_len": 5,
+   "instruction": "Task: Classify benthic habitats using Random Forest\nthe workflow performs atmospheric correction using Dark Object Subtraction (DOS) on a satellite image over Misool, then applies a Random Forest classifier to classify benthic habitats into four classes (e.g., water, vegetation, sand, coral) using deglinted bands and a derived index (DII23), based on training samples from ROI_Sunglint. The output is a classified benthic map exported to Google Drive.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 15071,
+   "split": "val",
+   "task_type": "Benthic habitat classification",
+   "len_band": "short_<=4",
+   "final_len": 4,
+   "instruction": "Task: Classify coral and sand habitats\nClassify benthic habitats (coral, sand, and deep water) in the Belitung region using Lyzenga's water column correction applied to Landsat 8 surface reflectance data, followed by Random Forest and SVM classification on B2_median band, with accuracy assessment from training data.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 53359,
+   "split": "test",
+   "task_type": "Climate feedbacks",
+   "len_band": "medium_5_7",
+   "final_len": 6,
+   "instruction": "Task: Model heating and cooling degree days\nthe workflow models fuzzy heating and cooling degree days using daily minimum and maximum temperature projections from the CESM1-BGC climate model under historical and RCP scenarios (rcp45, rcp85). It calculates daily mean temperatures, applies fuzzy logic thresholds (with and without 3-day averaging) to estimate building energy demand proxies, and exports annual raster maps of heating and cooling days for 2000 (historical) and 2050 (future projection), including their differences. The outputs are masked to land areas using MODIS land cover data and visualized with custom color palettes.",
+   "chain_head": "e -> e -> . -> F -> i -> l",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 4432,
+   "split": "test",
+   "task_type": "Cloud masking",
+   "len_band": "long_>=8",
+   "final_len": 15,
+   "instruction": "Task: Apply cloud masking to Sentinel-2 imagery\nGenerate high-resolution GeoTIFF exports of Earth Engine imagery with automated cloud masking (for Sentinel-2 using QA60 band bits 10 and 11), median compositing over a user-defined date range, band selection, scaling to reflectance (dividing by 10000), and conversion to 16-bit integer for archival quality. It outputs: (1) a direct-download GeoTIFF URL with full native resolution (10m for S2, 30m for Landsat), (2) a preview PNG thumbnail, and (3) rich metadata including pixel dimensions, estimated file size, CRS, band list, and quality guidance. A separate batch export function creates server-side Drive export tasks with Cloud-Optimized GeoTIFF (COG) output and service-account delivery.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 29502,
+   "split": "test",
+   "task_type": "Conceptual understanding",
+   "len_band": "short_<=4",
+   "final_len": 3,
+   "instruction": "Task: Demonstrate client-server distinction\nDemonstrate fundamental Earth Engine concepts: the distinction between client-side (JavaScript) and server-side (EE API) objects, including strings, lists, booleans, conditionals, and projection handling; it shows how operations like `map`, `getInfo`, `reproject`, and `reduceRegion` behave differently in each environment, and illustrates pitfalls (e.g., using server-side booleans in JavaScript `if`) and correct alternatives (e.g., `ee.Algorithms.If`). Outputs include printed type checks, string representations, computed list values, boolean evaluations, conditional results, image operation strings, scale-dependent pixel values, map visualizations, and projection metadata.",
+   "chain_head": "e -> e -> . -> N -> u -> m",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 90727,
+   "split": "test",
+   "task_type": "Drought monitoring",
+   "len_band": "short_<=4",
+   "final_len": 4,
+   "instruction": "Task: Assess drought severity using VHI\nCompute the Vegetation Health Index (VHI) over the Irrawaddy Basin using Landsat 7 surface temperature and NDVI data from 2013 to 2020. It derives VHI by combining the Temperature Condition Index (TCI) and Vegetation Condition Index (VCI) during the hot season (March–May) each year, masks areas with NDVI > 0.2 to focus on vegetated regions, and identifies drought-affected areas where VHI < 20. The outputs include annual VHI raster maps exported to Google Drive and CSV files summarizing the total drought-affected area in square kilometers for each year.",
+   "chain_head": "e -> e -> . -> D -> a -> t",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 78050,
+   "split": "val",
+   "task_type": "Ecosystems",
+   "len_band": "medium_5_7",
+   "final_len": 5,
+   "instruction": "Task: Calculate sagebrush ecosystem integrity\nCalculate future Sagebrush Ecosystem Integrity (SEI) using Method 1 from Doherty et al. 2022: it computes scaled percent change in STEPWAT-simulated biomass (sage, perennial grass, annual forb/grass) under climate scenarios (RCP45, 2070–2100), multiplies these delta-S values by current smoothed percent cover layers (sage560m, perennialG560m, annualG560m) from RAP (Rangeland Analysis Platform), converts to Habitat Suitability Index (HSI) using ecoregion-specific curves (Great Basin, Intermountain, Plains), integrates resources and threats multiplicatively (Q1–Q5) to produce continuous SEI560, applies Gaussian smoothing at 2000 m radius to yield SEI2000, classifies into deciles, then reclassifies into three management classes (core/grow/treat), and exports a multi-band GEE Image Asset containing all intermediate and final layers (Q1raw–Q5sc3) per GCM.",
+   "chain_head": "e -> e -> . -> R -> e -> d",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 23443,
+   "split": "val",
+   "task_type": "Ecosystems",
+   "len_band": "short_<=4",
+   "final_len": 4,
+   "instruction": "Task: Calculate sagebrush ecosystem integrity\nCalculate the Sagebrush Ecosystem Integrity (SEI) index using simulated aboveground biomass outputs from STEPWAT — specifically sagebrush, perennial forbs/grasses, and annual forbs/grasses — converted to ecological quality (Q) scores via ecoregion-specific cover-biomass relationships (q-curves). It combines these Q scores multiplicatively with existing threat layers (tree encroachment, human modification) to produce a continuous SEI560 metric, then applies Gaussian smoothing at 2000 m radius (SEI2000), classifies the result into deciles, and reclassifies into three management classes: 'core', 'grow', and 'treat'. Outputs are multi-band Earth Engine image assets containing raw Q layers, SEI560, SEI2000, decile-classified SEI, and 3-class management designations for current and future climate scenarios (RCP45, 2070–2100).",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 112319,
+   "split": "val",
+   "task_type": "Fire detection",
+   "len_band": "long_>=8",
+   "final_len": 8,
+   "instruction": "Task: Detect active fires with GOES-17\nProcess GOES-17 ABI Level 2 Multichannel Cloud and Moisture Imagery (MCMIPF) data to generate true-color and false-color visualizations by applying scale/offset corrections, adding a synthetic green band via spectral blending, and scaling for visualization. It then integrates Fire Detection and Characterization (FDCF) data by mapping confidence values to fire mask codes, filtering for high-confidence fire pixels (≥0.3), and overlaying them on the MCMIPF imagery. The output is a time-lapse visualization collection where active fires are highlighted in red over corrected multispectral imagery, enabling spatiotemporal monitoring of wildfires.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 55222,
+   "split": "test",
+   "task_type": "Fire detection",
+   "len_band": "medium_5_7",
+   "final_len": 6,
+   "instruction": "Task: Quantify VIIRS active fire FRP and area\nthe workflow quantifies monthly VIIRS (VNP14IMGML) active fire radiative power (FRP in MW) and burned area (in km²) at 375 m resolution, disaggregated by spatial overlap with MODIS Aqua FRP, MODIS Terra FRP, and MODIS MCD64A1 burned area within user-selected GFEDv4 basis regions (e.g., Basis 1). It computes four mutually exclusive VIIRS fire metrics: total VIIRS FRP/area (AF), VIIRS FRP/area outside MODIS Aqua FRP (AFnoAqua), outside MODIS burned area (AFnoBA), and outside all MODIS fire observations (AFnoMODIS). These are aggregated via reduceRegions to sum statistics per GFEDv4 polygon and exported as CSV tables containing summed FRP (MW) and area (km²) per 0.25° grid cell (implicitly via polygon-level aggregation over GFED basis region geometry).",
+   "chain_head": "e -> e -> . -> N -> u -> m",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 54712,
+   "split": "val",
+   "task_type": "Frozen ground",
+   "len_band": "medium_5_7",
+   "final_len": 7,
+   "instruction": "Task: Model permafrost thermal state\nthe workflow models the spatial distribution of permafrost thermal state (ALT - Active Layer Thickness) using kriging interpolation and Random Forest regression. It first performs geostatistical interpolation (kriging) on ALT point data to generate a continuous surface, then combines it with environmental covariates (e.g., soil properties, climate indices, NDVI, NDSI) to train a machine learning model. The final output is a classified raster map of estimated ALT (E), validated through training accuracy metrics and variable importance charts, with results exported as assets and visualized on the map.",
+   "chain_head": "e -> e -> . -> F -> i -> l",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 7698,
+   "split": "test",
+   "task_type": "Frozen ground",
+   "len_band": "short_<=4",
+   "final_len": 3,
+   "instruction": "Task: Identify floating ice lid\nIdentify floating ice lid areas in a lake region by analyzing SAR backscatter intensity and optical-derived dark shadow features from Landsat 8, using thresholding on normalized HH band values and masking with optical data to classify frozen, undecided, and floating ice zones.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 79576,
+   "split": "val",
+   "task_type": "Ground water",
+   "len_band": "medium_5_7",
+   "final_len": 6,
+   "instruction": "Task: Analyze groundwater storage time series\nExtract and analyzes monthly groundwater storage (GWS) time series from the NASA GLDAS CLSM model over a defined polygonal region in Iran (approximately spanning longitudes 43.67–63.09°E and latitudes 24.94–39.79°N) for the period 2003–2024. It computes monthly mean GWS_tavg values, generates two charts — one showing spatially averaged (over the polygon) monthly GWS evolution, and another showing point-based time series at two user-defined locations (loc1 and loc2) — and exports the full monthly stack as a clipped, multi-band GeoTIFF to Google Drive. The workflow includes date sequence generation, image collection filtering and reduction, metadata annotation (system:time_start/end/index), null-band filtering, and visualization/export setup.",
+   "chain_head": "e -> e -> . -> G -> e -> o",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 98033,
+   "split": "val",
+   "task_type": "Land ice/ocean classification",
+   "len_band": "medium_5_7",
+   "final_len": 6,
+   "instruction": "Task: Classify ice and water types\nClassify pixel-level surface types in lakes into four categories: water, clear ice, opaque ice, and snow using Landsat TOA reflectance data. It trains a Random Forest model on labeled training samples with spectral predictors and validates it temporally by splitting data by year (before/after 2019), ultimately producing a trained classification model for cryospheric surface mapping.",
+   "chain_head": "e -> e -> . -> F -> e -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 56465,
+   "split": "val",
+   "task_type": "Maritime activity",
+   "len_band": "medium_5_7",
+   "final_len": 5,
+   "instruction": "Task: Monitor maritime activity intensity\nMonitor maritime activity intensity in the Port of Singapore using Sentinel-1 SAR imagery by generating a median VV/VH polarisation composite over 2023, visualising backscatter characteristics for vessel detection and sea surface analysis, and quantifying temporal acquisition density via monthly image counts — outputs include clipped composite rasters (VV/VH), a study area boundary layer, summary statistics (total/ascending/descending image counts), and a monthly column chart of image availability.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  }
+ ],
+ "reserve": [
+  {
+   "line_id": 41652,
+   "split": "test",
+   "task_type": "Habitat conversion/fragmentation",
+   "len_band": "long_>=8",
+   "final_len": 23,
+   "instruction": "Task: Model bear habitat suitability\nthe workflow models habitat suitability for bears using presence points and environmental predictors, generating a probability map of suitable habitat and a binary potential distribution map. It employs spatial block cross-validation with random forests to train and validate the model, then averages predictions across iterations to produce a final habitat suitability map. Outputs include variable importance, training/testing partitions, and an estimated area of potential distribution in square kilometers.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 17028,
+   "split": "test",
+   "task_type": "Surface thermal properties",
+   "len_band": "medium_5_7",
+   "final_len": 5,
+   "instruction": "Task: Analyze LST and NDVI time series\nAnalyze the relationship between land surface temperature (LST) and Normalized Difference Vegetation Index (NDVI) in Colombia's Caribbean region and adjacent areas from 2013. It processes MODIS MOD11A2 for LST and MOD13A2 for NDVI, computes mean annual composites, generates time series charts using regional reduction over a merged administrative boundary, clips outputs to the study area, visualizes temperature and vegetation patterns, and exports the LST raster. It also creates a thumbnail and video URL for NDVI composite animation.",
+   "chain_head": "e -> e -> . -> F -> i -> l",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 55405,
+   "split": "val",
+   "task_type": "Land use/land cover",
+   "len_band": "long_>=8",
+   "final_len": 12,
+   "instruction": "Task: Identify salt-affected cropland\nIdentify salt-affected cropland in Fujian (FJ) and Jiangxi (JC) provinces using multi-source remote sensing indicators from 2018. It processes SAR backscatter (VV), crop index difference (CIre_diff_sum), and ARI-EVI2 coupling data, applying threshold-based masking to derive binary indicators for salinity stress. These masks are combined with a cropland map derived from land cover classification, and the final yandao (salt-affected farmland) map is generated by merging results from both regions. Outputs include a classified raster of salt-affected cropland and a CSV table summarizing the area per administrative unit at county level.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 44487,
+   "split": "test",
+   "task_type": "Vegetation",
+   "len_band": "long_>=8",
+   "final_len": 14,
+   "instruction": "Task: Estimate forest cover from fractional vegetation\nEstimate forest area and percentage cover in Nicaragua for March 2020 using MODIS MCD43A4 surface reflectance data. It applies a spectral mixture analysis (SMA) to derive bare soil, photosynthetic vegetation (PV), and non-photosynthetic vegetation (NPV) fractions, then classifies canopy cover where PV > 0.6 and bare < 0.4. Results include printed statistics for estimated forest area in square kilometers and percent forest cover, along with time-series charting of fractional cover from 2017–2020. The output visualizations include SMA results, forest cover maps, and protected areas overlay.",
+   "chain_head": "e -> e -> . -> F -> e -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 100324,
+   "split": "test",
+   "task_type": "Natural hazards",
+   "len_band": "long_>=8",
+   "final_len": 23,
+   "instruction": "Task: Identify landslide-prone areas using backscatter change\nIdentify potential landslide locations by analyzing changes in Sentinel-1 VH backscatter before and after a triggering event. It computes the difference in median pre-event and post-event SAR backscatter, masks flat and concave terrain using slope and curvature derived from NASADEM, and applies a threshold based on the 99th percentile of backscatter change. Outputs include a binary raster of possible landslide zones, vector polygons and points of detected changes, a heatmap for spatial density, and multiple visualizations and exports of pre/post-event Sentinel-2 imagery, backscatter change rasters, and percentile-based detection layers.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 73076,
+   "split": "test",
+   "task_type": "Habitat conversion/fragmentation",
+   "len_band": "medium_5_7",
+   "final_len": 5,
+   "instruction": "Task: Compare deforestation detection\nCompare deforestation detections from Imazon and a ground truth dataset (GT) in the Amazon biome for the year 2013, generating a concordance map that identifies agreement and disagreement between the two datasets using remapped values: no deforestation (0), GT only (1), Imazon only (2), and both (3).",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 25530,
+   "split": "test",
+   "task_type": "Habitat conversion/fragmentation",
+   "len_band": "short_<=4",
+   "final_len": 2,
+   "instruction": "Task: Predict deforestation risk 2011-2020\nthe workflow predicts deforestation risk from 2011 to 2020 using historical loss data and categorical risk classification. It generates a mosaic of predicted continuous and categorical risk maps (No Risk, Low, Medium, High) based on percentile thresholds derived from training data. The output includes interactive visualizations of historical loss, predicted risk, and high-risk areas with a detailed legend, displayed across two synchronized map panels with split-screen comparison, and exports no data but focuses on visualization and interpretation of spatial risk patterns.",
+   "chain_head": "e -> e -> . -> N -> u -> m",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 46341,
+   "split": "val",
+   "task_type": "Land use/land cover",
+   "len_band": "long_>=8",
+   "final_len": 10,
+   "instruction": "Task: Identify barren land progression\nIdentify the temporal progression of barren land areas using Sentinel-2 imagery from 2018 to 2021. It computes a monthly composite by applying a Random Forest classifier trained on spectral bands and NDVI, then detects barren surfaces using reflectance thresholds in B2 and B10 along with classification results. The output is a single raster map (Exported as 'Sample_GS_13') where pixel values represent the earliest month (in reverse time order) when an area became barren, visualized as a growth stage layer over the Philippines region.",
+   "chain_head": "e -> e -> . -> C -> l -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 22576,
+   "split": "val",
+   "task_type": "Terrestrial hydrosphere indicators",
+   "len_band": "medium_5_7",
+   "final_len": 6,
+   "instruction": "Task: Estimate annual potential evapotranspiration\nCalculate the mean annual potential evapotranspiration (PET) from the TerraClimate dataset for each year between 1980 and 2020 within a specified AOI, and exports each yearly composite as a GeoTIFF to Google Drive.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 28384,
+   "split": "test",
+   "task_type": "Land surface/agriculture indicators",
+   "len_band": "long_>=8",
+   "final_len": 12,
+   "instruction": "Task: Extract ET and NDVI for double soybean areas\nExtract monthly evapotranspiration (ET) from MOD16A2 and monthly NDVI from MOD13Q1 for centroid points of double-cropped soybean fields over a two-year period (2018–2019). It aggregates MODIS 8-day composites into monthly sums (for ET) and monthly means (for NDVI), adds year and month bands to each image, and performs point-based extraction using reduceRegions. The output consists of two CSV files exported to Google Drive, containing time-series ET and NDVI values at each centroid, along with derived temporal metadata (year, month), for agricultural monitoring and analysis.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 98405,
+   "split": "val",
+   "task_type": "Land use/land cover",
+   "len_band": "medium_5_7",
+   "final_len": 6,
+   "instruction": "Task: Classify vegetation types using multi-season indices\nClassify land cover into three vegetation-related classes (KuoYe, ZhenYe, ZhenKuoHun) using Sentinel-2 surface reflectance data across four seasons. It computes multiple spectral indices (NDVI, NDWI, EVI, SAVI, GCVI, BSI), combines them with DEM, GLCM texture, and Sentinel-1 SAR data, and applies a Gradient Tree Boosting classifier in a pixel-based approach. The output includes a classified LULC map, accuracy assessment (confusion matrix, overall accuracy, kappa), and variable importance chart.",
+   "chain_head": "e -> e -> . -> F -> i -> l",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 83230,
+   "split": "test",
+   "task_type": "Land surface/agriculture indicators",
+   "len_band": "long_>=8",
+   "final_len": 34,
+   "instruction": "Task: Identify high-yield cropland villages\nIdentify villages in Andhra Pradesh, India with high agricultural productivity based on MODIS NDVI during September–October 2020, filters for cropland using land cover data, computes median NDVI per village, classifies villages into low, medium, and high crop yield categories, and exports centroids of top-performing villages as CSV and KML for each district.",
+   "chain_head": "e -> e -> . -> F -> i -> l",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 65957,
+   "split": "val",
+   "task_type": "Land use/land cover",
+   "len_band": "medium_5_7",
+   "final_len": 6,
+   "instruction": "Task: Classify potato cultivation area\nClassify land cover types with a focus on identifying potato cultivation areas using Sentinel-2 surface reflectance imagery from February 16–18, 2020. It applies cloud masking based on QA60 and CLOUDY_PIXEL_PERCENTAGE filters, computes spectral indices (NDVI, NDWI, SAVI), and trains a Random Forest classifier using labeled training samples (potato, bare land, water, other vegetation, built-up). The output is a classified raster map showing land cover classes, which is exported to Google Drive, along with visualization on the map.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 122571,
+   "split": "test",
+   "task_type": "Land surface/agriculture indicators",
+   "len_band": "long_>=8",
+   "final_len": 16,
+   "instruction": "Task: Analyze vegetation dynamics using NDVI and SAVI\nAnalyze vegetation dynamics over a defined agricultural field using Sentinel-2 imagery from 2016 to 2020. It computes NDVI and SAVI indices after applying cloud masking based on the S2_CLOUD_PROBABILITY dataset and CDI/Cirrus band thresholds. The workflow includes joining Sentinel-2 surface reflectance with cloud probability, masking clouds, filtering images by maximum cloud cover and number of cloudy pixels, removing specific dates, and computing temporal composites (max, median, sum) of NDVI for 2020 and multi-year periods, as well as SAVI sum over selected winter seasons. Outputs include composite raster maps of NDVI max/median/sum, three-year NDVI sum, and SAVI sum, all clipped to the field boundary, along with true-color images for each date in the 2020 collection added to the map for visual inspection.",
+   "chain_head": "e -> e -> . -> R -> e -> d",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 124378,
+   "split": "test",
+   "task_type": "Vegetation",
+   "len_band": "long_>=8",
+   "final_len": 21,
+   "instruction": "Task: Analyze NDVI trends over time\nAnalyze vegetation dynamics using Landsat 7 surface reflectance data from 2000 to 2013 by computing NDVI, EVI, and SAVI indices. It generates a median composite image masked by the 5th percentile of SR_B5 values, computes annual median composites for each year in the period, and creates a time series chart of mean NDVI values over the region, visualizing temporal vegetation changes.",
+   "chain_head": "e -> e -> . -> R -> e -> d",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 110147,
+   "split": "val",
+   "task_type": "Natural hazards",
+   "len_band": "long_>=8",
+   "final_len": 15,
+   "instruction": "Task: Identify burned areas using NBR\nIdentify burned areas by computing the Normalized Burn Ratio (NBR) from a post-fire Landsat 8 TOA image, applying cloud and shadow masking, and classifying pixels below a threshold (0.3). It performs connected pixel analysis to filter out small patches, retaining only significant burned regions (>10 pixels), and exports the final binary burned area map. The output is a classified raster of burned areas suitable for fire impact assessment.",
+   "chain_head": "e -> e -> . -> A -> l -> g",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 13168,
+   "split": "test",
+   "task_type": "Land surface/agriculture indicators",
+   "len_band": "long_>=8",
+   "final_len": 9,
+   "instruction": "Task: Extract vegetation indices for regional analysis\nProcess a collection of MODIS-derived vegetation index images (NDVI, TNDVI, EVI2, kNDVI) from 2014 to 2021, applies a CMG temporal filter, masks pixels with exactly 8 valid observations per year, selects data from May to October, and generates a composite image stack grouped by pixel-based administrative region codes (MEGYE_KOD). The output is a multi-band image where each band represents a vegetation index value for a specific time period, labeled by date and index type, spatially constrained to Hungarian county boundaries with custom subdivisions in Bács-Kiskun.",
+   "chain_head": "e -> e -> . -> N -> u -> m",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 50712,
+   "split": "val",
+   "task_type": "Vegetation",
+   "len_band": "short_<=4",
+   "final_len": 4,
+   "instruction": "Task: Analyze NDVI time series\nExtract annual NDVI values from Landsat 5 imagery for a specific point in Tharparkar between 2000 and 2011, computes the minimum NDVI per year, and generates a time series chart showing yearly NDVI trends.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 110937,
+   "split": "test",
+   "task_type": "Surface radiative properties",
+   "len_band": "long_>=8",
+   "final_len": 18,
+   "instruction": "Task: Generate Sentinel-1 VV backscatter time series\nGenerate a multi-temporal stack of Sentinel-1 VV polarization backscatter values over a specified month in 2022, using GRD imagery. It processes daily images by computing the product of band 0 and band 1 (interpreted as intensity Igb = VV²) when available, otherwise filling with zero, and compiles them into a single multi-band image. The output is exported to Google Drive as a raster time series stack for the region of interest.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 102251,
+   "split": "test",
+   "task_type": "Land use/land cover",
+   "len_band": "short_<=4",
+   "final_len": 4,
+   "instruction": "Task: Extract land cover training polygons\nDefine a set of polygon features labeled with class 5, intended as training data for land cover classification, and processes Sentinel-2 surface reflectance imagery to generate a median composite clipped to a specific region for visual analysis and export.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 99753,
+   "split": "test",
+   "task_type": "Land use/land cover",
+   "len_band": "long_>=8",
+   "final_len": 8,
+   "instruction": "Task: Extract multi-temporal SAR backscatter\nProcess Sentinel-1 GRD imagery to generate time-series stacks of VV and VH polarizations over a region of interest for the year 2018. It filters images by orbit, polarization, and acquisition mode (IW), selects specific 3-day temporal windows, mosaics them, applies a 3x3 boxcar spatial filter to reduce speckle noise, and then combines the filtered images into three sequential VV and VH band stacks (each containing 10–11 temporal layers). These stacked rasters are clipped to a user-defined ROI and exported as Earth Engine assets for use in land cover monitoring or classification tasks.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 122759,
+   "split": "test",
+   "task_type": "Topography",
+   "len_band": "long_>=8",
+   "final_len": 9,
+   "instruction": "Task: Estimate bathymetry depth\nEstimate underwater bathymetric depth in Belize using Sentinel-2 surface reflectance imagery. It applies cloud masking via the S2_CLOUD_PROBABILITY collection, computes log-transformed blue, green, and red bands, and performs linear regression between these bands and in-situ bathymetry points. The resulting regression model is used to generate a continuous bathymetry depth map (SDB - Satellite-Derived Bathymetry), which is validated using a hold-out feature set and visualized as a scatter plot of estimated vs. actual depths with trendline and R². The final output is exported as a raster asset.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 75118,
+   "split": "val",
+   "task_type": "Vegetation",
+   "len_band": "short_<=4",
+   "final_len": 4,
+   "instruction": "Task: Analyze vegetation health and LAI\nAnalyze vegetation health and leaf area index (LAI) over a specified region using Sentinel-2 imagery from October 2020 to March 2022. It applies cloud masking using QA60 bits for clouds and cirrus, then computes spectral indices including NDVI, NDMI, NDRE, EVI, and derives LAI from EVI. The output includes an ImageCollection with added bands for each index and LAI, which can be used for time-series analysis of vegetation conditions.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 44964,
+   "split": "val",
+   "task_type": "Natural hazards",
+   "len_band": "medium_5_7",
+   "final_len": 5,
+   "instruction": "Task: Detect burned areas using Sentinel-2\nDetect burned areas by analyzing pre- and post-event Sentinel-2 imagery using spectral indices, computes active fire likelihood (AQ), and exports perimeter results. It applies cloud masking, calculates BA (Burned Area) and SE (Scorch Extent) metrics, and optionally uses manually collected sample points to calibrate thresholds for improved accuracy.",
+   "chain_head": "e -> e -> . -> F -> e -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 108226,
+   "split": "val",
+   "task_type": "Land surface/agriculture indicators",
+   "len_band": "long_>=8",
+   "final_len": 8,
+   "instruction": "Task: Compute principal components of Landsat bands\nCompute Principal Component Analysis (PCA) on a cloud-minimized Landsat 5 image over a point location, using four reflective bands (B1–B4). It centers the image by subtracting band means, calculates the covariance matrix, extracts eigenvalues and eigenvectors, and projects the data into principal components. The output includes the original image displayed in true color and each principal component band (PC1–PC4) visualized with standardized values (min: -2, max: 2), enabling dimensionality reduction and feature enhancement for land surface analysis.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 119952,
+   "split": "test",
+   "task_type": "Land use/land cover",
+   "len_band": "long_>=8",
+   "final_len": 16,
+   "instruction": "Task: Classify land cover over time\nClassify land cover in Malawi using MODIS MYD13Q1 NDVI time series data from 2003 to 2013. A reference image (malawi_250_ref) is used to train a Random Forest classifier on multi-temporal NDVI profiles, which is then applied annually to generate land cover maps. The output is a multi-band image where each band represents the classified land cover for a specific year (2003–2013), exported as a single raster file named 'africa_acca_2003-2013'.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 16708,
+   "split": "test",
+   "task_type": "Terrestrial hydrosphere indicators",
+   "len_band": "medium_5_7",
+   "final_len": 7,
+   "instruction": "Task: Identify surface water extent\nIdentify surface water extent in the Heihe region using MNDWI derived from Sentinel-2A/B SR (Surface Reflectance) imagery for 2018. It applies cloud masking, computes median MNDWI, and uses Otsu's thresholding method on the histogram of MNDWI values to automatically determine a dynamic threshold for separating water from non-water pixels. The output is a binary water mask (0: non-water, 1: water), which is visualized, clipped to the study area, and exported as a GeoTIFF. Additionally, the total water area in square meters is calculated and printed using pixel area summation within the region.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 95216,
+   "split": "test",
+   "task_type": "Terrestrial hydrosphere indicators",
+   "len_band": "short_<=4",
+   "final_len": 4,
+   "instruction": "Task: Estimate surface water area using NDWI\nEstimate the surface water area of a mining lagoon in Chile using the Normalized Difference Water Index (NDWI) derived from Landsat 5 TM surface reflectance imagery from 1986. It applies cloud filtering, subsets images to a region of interest, computes NDWI using GREEN and NIR bands, applies a threshold to identify water pixels, calculates the total water area in square meters per image, aggregates statistics across the collection, and generates a median NDWI composite. Outputs include a time-series of NDWI images, a median NDWI map, and summary statistics of water extent (mean area in sqm and sqkm).",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 106027,
+   "split": "test",
+   "task_type": "Vegetation",
+   "len_band": "long_>=8",
+   "final_len": 10,
+   "instruction": "Task: Estimate vegetation coverage\nEstimate fractional vegetation cover (FVC) from the greenest pixel composite of Landsat 8 surface reflectance data using NDVI percentile thresholds within a user-defined region. It classifies FVC into five levels, computes area statistics per class, and exports maps and charts.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  },
+  {
+   "line_id": 104142,
+   "split": "val",
+   "task_type": "Human settlements",
+   "len_band": "medium_5_7",
+   "final_len": 5,
+   "instruction": "Task: Classify built-up and slum areas\nClassify built-up and slum areas using Landsat 8 Collection 2 Level 2 surface reflectance imagery from March to April 2021. It applies a cloud and saturation mask using QA_PIXEL and QA_RADSAT, scales optical and thermal bands, then trains a CART classifier on labeled regions (builtuparea and slum) using six spectral bands. The classification is evaluated with a confusion matrix using a 70/30 train-test split, and outputs include a classified raster map of built-up (red) and slum (green) areas and accuracy assessment metrics.",
+   "chain_head": "e -> e -> . -> I -> m -> a",
+   "tier": "source_record_text_aligned"
+  }
+ ]
+}
