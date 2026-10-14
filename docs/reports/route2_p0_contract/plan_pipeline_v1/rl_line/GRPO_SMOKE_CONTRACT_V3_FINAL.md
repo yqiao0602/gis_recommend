@@ -1,4 +1,8 @@
-# GRPO 冒烟契约 v3 FINAL（三条件冻结完成——待 owner 最终签字）
+# GRPO 冒烟契约 v3 FINAL（已签字批准——启动待 GPU 资源与外部进程安全检查）
+
+> **签字记录**：owner 十八轮终审"契约签字批准"（2026-10-14）；启动授权仍等 GPU 资源
+> （≥12GB 裕量）与外部进程安全检查通过。签字前核验：`GRPO_LAUNCH_READINESS_VERIFICATION_V1.md`
+> （六项清单 5 静态 ✅ + 1 动态启动时点条件）。
 
 > 日期：2026-10-14 ｜ 前版：`GRPO_SMOKE_CONTRACT_V2_FINAL_CANDIDATE.md`（全文继续有效，保留为历史）
 > 本版变更 = owner 十七轮三个签字前条件的冻结件；**其余条款（§0-§7）不变**。
