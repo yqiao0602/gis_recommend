@@ -165,7 +165,18 @@
   监控/负 τ 独立调查）；INDEX L1/L2/L3（L2/L3 待表示层，金标先行构造）；
   GRPO 契约骨架另提；v0.6 补证清单。**执行：①新评估集采购+盲评 → ②S0-S3
   比较 → ③INDEX 金标 → ④准入评审+GRPO 契约。全程无参数更新无规则修改；
-  Phase 2/3 冻结。**
+  Phase 2/3 冻结。 **评估集生成+评分+盲评包完成（commit 578c8439）**：192 从未训练候选
+  （115.76 tok/s 同配置）；评分传参 bug 修正（预测文本误作任务解析→154 假弃权；
+  修正后 abstain 32/incomplete 100/coarse 16/complete 17/unparseable 27）；规则
+  口径缺失分布：MASK 44、TEMPORAL 38、SPATIAL 29、TERRAIN 23（新任务构成）、
+  INDEX 16、COMPOSITE 14、CLASSIFY 9、STATS 7；4/24 组全弃权（F3 正确）。
+  **盲评包 `eval_procurement/EVAL_SET_BLIND_PACKET_V1.md` 冻结待 owner 盲评**
+  → 解盲 → S0-S3 一次性比较 → 奖励准入评审。Phase 2/3 冻结。** **Owner 十四轮：新评估集采购已执行**——源池=b1_gee_stage 128,447 本地权威
+  备份减去 planner_v2_train 全部指令匹配（排除 33,371；训练文件无源 id 字段——指令
+  匹配为唯一可行且充分的排除，已披露）= 94,445 从未训练候选 → 24 任务（8/8/8 长度
+  带、22 类型、seed 20261013）；manifest SHA `4366a0c4…`、任务文件 SHA
+  `b9983488…`。component_missing 预注册已入设计文档。**候选生成被 GPU 预检停止**
+  （空闲 1,365 MiB<12GB；外部进程未触碰；监视器已挂）。Phase 2/3 冻结。
   **Owner 十一轮：INDEX 定义冻结（计算新指数；产品波段≠INDEX；9854=not_required）；
   v0.5 账本获批；重跑+独立复验批准。已执行 v0.5→v0.5.1 全链**：L1/L2/L3 落地并双次
   反向对照修复回归（9854 STATS 误删恢复 + 6878 derived-from 补检，均与 owner 裁定对

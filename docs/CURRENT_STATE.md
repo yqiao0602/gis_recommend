@@ -187,7 +187,66 @@ Last updated: 2026-10-13
   unresolved_wrapper; the 53 V2 instances keep original missing records as audit
   history but are marked unresolved_wrapper in new stats (preventing
   "representational limitation misjudged as model incapacity"); (3) 358 = rule
-  output scale, NOT independently human-confirmed errors; Phase 2/3 frozen. Owner
+  output scale, NOT independently human-confirmed errors;   frozen. **Eval-set generation + scoring + blind packet DONE
+  (commit 578c8439)**: 192 never-trained candidates (115.76 tok/s, same
+  decode config); scoring-bug fixed (prediction text was mistakenly parsed
+  as task text -> 154 false abstains; corrected: 32 abstain / 100
+  incomplete / 16 coarse / 17 complete / 27 unparseable); rule-level
+  missing marks: MASK 44, TEMPORAL 38, SPATIAL 29, TERRAIN 23 (new task
+  mix), INDEX 16, COMPOSITE 14, CLASSIFY 9, STATS 7; 4/24 groups fully
+  abstained (F3 correct). **Blind packet
+  `eval_procurement/EVAL_SET_BLIND_PACKET_V1.md` frozen (SHAs logged),
+  awaiting owner labels** -> unblind -> one-shot S0-S3 comparison ->
+  reward-admission review.   frozen. **Eval-set blind labeling + unblind + one-shot S0-S3 comparison
+  DONE (commit 98662901)**: 27 empty candidates EXACTLY match the r5
+  unparseable list by ID; slot order 0 mismatches; 314 adjudicable slot
+  instances: **TP 157 / TN 134 / FP 0 / FN 0** — r5 and the owner agree
+  100% on every non-TERRAIN slot; all 23 boundary disagreements are
+  TERRAIN (owner caliber: terrain processing unjudgeable at stage
+  granularity) -> v0.6 ledger gains: demote TERRAIN from required. One-shot
+  S0-S3 on the never-trained set (aligned adjudicable universe, TERRAIN
+  excluded both sides): **S0 r5-only discrimination 13/17, tau +1.0, 0
+  false-reward, 4 saturated — PASSES all thresholds**; lambda 0.3/0.5
+  identical; lambda 0.7 misses discrimination (11/17); **structure-only
+  (lambda=1.0) FAILS all** (0/17, tau -0.976, 7/17 false-reward groups,
+  15/17 saturated). **The owner's round-13 replication demand is FULFILLED
+  on never-trained tasks.** Bounds: n=17 tasks; owner score = stage-family
+  C/(C+O); TERRAIN excluded both sides (disclosed).   frozen. **Owner round-15 three rulings LANDED**: (1) lambda final = S0
+  (r5-only) as current default baseline — combinations kept only as
+  future comparisons, must show replicable incremental benefit without
+  extra costs to win; (2) v0.6 PARTIALLY approved & IMPLEMENTED: TERRAIN =
+  unscored/representation_boundary (requirement layer preserved, excluded
+  from both numerator and denominator, parser SHA `1cfd48c9...`, regression
+  clean) — 25159 wrapper caliber DEFERRED with an evidence checklist;
+  (3) GRPO smoke contract DRAFT submitted for review
+  (`R5_V06_LEDGER_AND_GRPO_CONTRACT_DRAFT_V1.md`: P0 fmt baseline + S0
+  reward only; <=48 updates + six abort conditions; E0/E1 one-shot;
+  reward metrics reported SEPARATELY from final-target metrics — S0
+  improvement != QGIS quality without independent end-to-end assessment;
+  L2/L3 operator/param/DAG metrics marked not-yet-measurable; stop/rollback
+  thresholds await owner). Statistical-unit discipline registered: tau=+1.0
+  (task-group level) and 157/134 (slot-instance level) mutually support but
+  are NOT the same metric.   frozen; RAFT/DPO/GRPO unrun. **Owner round-16 contract final review +
+  GRPO_SMOKE_CONTRACT_V2_FINAL_CANDIDATE landed**: §3.5 replaced with the
+  four-point red-line/conclusion-boundary text (reward-behavior diagnostics
+  != capability evidence; joint examination of coverage + ordered-F1 +
+  parse + structural validity + gaming checks; L2/L3 proxies flagged;
+  limited quality claims need four preconditions; 24 tasks = preliminary
+  evidence only); §3.7 pre-registered rules table (PRIMARY = independent-set
+  required-slot coverage at v0.6 caliber; CO-GATE = ordered-stage F1 no
+  >3pp drop; preliminary benefit target >=5pp coverage gain [engineering
+  threshold]; parse/invalid 5pp safety lines; discrimination DEMOTED to
+  reward diagnostic; task+candidate dual reporting mandatory). Three final-
+  approval preconditions landed: contract revision done; full checkpoint
+  identity recorded (adapter/base-config/train-data/eval-tasks/parser/vocab
+  full SHA-256s); update unit = 1 task prompt + k=8 responses = 1 update,
+  <=48; signal starvation computably defined (10 consecutive task-groups
+  with zero within-group formal-reward variance). 25159 wrapper does NOT
+  block this smoke: v0.5.1 conservative caliber (wrapper slots count as
+  missing) fixed for the whole run as an experimental condition. **Awaiting
+  owner final sign-off on GRPO_SMOKE_CONTRACT_V2_FINAL_CANDIDATE.md; after
+  sign-off still requires GPU window + >=12GB VRAM pre-check. Phase 2/3
+  frozen. Owner
   personally spot-checked 15 slot instances (merged by k): all "requirement
   confirmed; missing pending verification" — the JSON supports requirement
   confirmation, missing-confirmation needs full candidate stages; two evaluation
