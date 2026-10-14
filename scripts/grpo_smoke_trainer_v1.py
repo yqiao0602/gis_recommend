@@ -357,7 +357,7 @@ def mock_dryrun(args):
                                    {"update": updates, "kl": kl_tok}):
                 stop = "checkpoint save failure"
                 break
-        print(f"[mock] update {updates}: rewards={[round(r,3) for r in rewards]} "
+        print(f"[mock] update {updates}: rewards={[round(r,3) if r is not None else 'None' for r in rewards]} "
               f"zero_var={zero_var} kl={kl_tok:.3f}", flush=True)
         if updates >= args.max_updates:
             stop = f"budget: {args.max_updates} updates"
