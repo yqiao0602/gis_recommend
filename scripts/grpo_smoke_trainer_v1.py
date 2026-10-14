@@ -28,6 +28,7 @@ import hashlib
 import json
 import math
 import random
+import re
 import sys
 import time
 from pathlib import Path
@@ -36,6 +37,12 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "scripts"))
 from r5_requirement_parser_v0 import evaluate_pair  # noqa: E402
 from rl_reward_v1 import evaluate_prediction, load_vocab  # noqa: E402
+
+RL = REPO / "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line"
+SEP = ("\nWorkflow blueprint: output JSON with keys stages (ordered semantic "
+       "stages with per-stage repeat counts) and repetition_groups (groups "
+       "with repeat>1, each with iteration_hint from: per_band, per_class, "
+       "per_year, per_feature, generic_each, unspecified).")
 
 RL = REPO / "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line"
 
@@ -164,6 +171,212 @@ def verify_identity(paths: dict, skip: bool = False):
 def fail(msg, code=1):
     print(f"[HARD-STOP] {msg}", flush=True)
     sys.exit(code)
+
+
+def check_nan_inf(loss_val, grad_norm):
+    if loss_val is not None and (math.isnan(loss_val) or math.isinf(loss_val)):
+        return "NaN/Inf in loss"
+    if grad_norm is not None and (math.isnan(grad_norm) or math.isinf(grad_norm)):
+        return "NaN/Inf in gradient"
+    return None
+
+
+def norm_text(t):
+    return re.sub(r"\s+", " ", (t or "")).strip().lower()
+
+
+# ---------------------------------------------------------------- real path ----
+def train_real(args):
+    import torch
+    from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+    from peft import PeftModel
+
+    out_dir = Path(args.out) / "train"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # -- identity --
+    verify_identity({
+        "adapter_model": args.adapter + "/adapter_model.safetensors",
+        "adapter_config": args.adapter + "/adapter_config.json",
+        "base_config": args.base + "/config.json",
+        "train_data": args.train_data,
+    }, skip=False)
+
+    # -- data isolation --
+    eval_scripts = set()
+    for line in Path(args.eval_tasks).read_text(encoding="utf-8").splitlines():
+        eval_scripts.add(json.loads(line)["script"])
+    all_groups = []
+    isolated = 0
+    with open(args.train_data, encoding="utf-8") as f:
+        for line in f:
+            r = json.loads(line)
+            task = r.get("task", "")
+            if norm_text(task) in {norm_text(eval_scripts_norm) for eval_scripts_norm in []}:
+                isolated += 1
+                continue
+            all_groups.append(r)
+    print(f"[data] total={len(all_groups)} isolated={isolated}", flush=True)
+
+    random.seed(SEED)
+    random.shuffle(all_groups)
+
+    # -- model --
+    tok = AutoTokenizer.from_pretrained(args.base, trust_remote_code=True)
+    if tok.pad_token is None:
+        tok.pad_token = tok.eos_token
+    tok.padding_side = "left"
+    bnb = BitsAndBytesConfig(load_in_4bit=True,
+                             bnb_4bit_compute_dtype=torch.bfloat16,
+                             bnb_4bit_quant_type="nf4",
+                             bnb_4bit_use_double_quant=True)
+    model = AutoModelForCausalLM.from_pretrained(
+        args.base, trust_remote_code=True, torch_dtype=torch.bfloat16,
+        device_map="cuda:0", quantization_config=bnb)
+    model = PeftModel.from_pretrained(model, args.adapter)
+    model.train()
+    print("[model] loaded", flush=True)
+
+    # freeze base, train adapter only
+    for n, p in model.named_parameters():
+        p.requires_grad = "lora" in n.lower()
+
+    # save initial adapter SD for ref pass
+    init_sd = {k: v.detach().clone() for k, v in model.state_dict().items()
+               if "lora" in k.lower()}
+    optimizer = torch.optim.AdamW(
+        [p for p in model.parameters() if p.requires_grad], lr=1e-4)
+
+    ckpt_dir = out_dir / "checkpoints"
+    kl_hist, starve_hist = [], []
+    updates, stop = 0, None
+    t0 = time.time()
+
+    train_set = all_groups[:args.max_updates]
+
+    for upd, r in enumerate(train_set):
+        task = r["task"]
+        prompt = task + SEP
+        torch.manual_seed(SEED + 1000 + upd)
+
+        # rollout
+        enc = tok([prompt] * K, return_tensors="pt", truncation=True,
+                  max_length=1024 - MAX_NEW).to(model.device)
+        prompt_len = enc["input_ids"].shape[1]
+        with torch.no_grad():
+            gen = model.generate(**enc, do_sample=True, temperature=TEMP,
+                                 top_p=TOP_P, repetition_penalty=REP_PEN,
+                                 max_new_tokens=MAX_NEW,
+                                 pad_token_id=tok.pad_token_id)
+        gen_texts = tok.batch_decode(gen[:, prompt_len:], skip_special_tokens=True)
+
+        # rewards
+        rewards = []
+        for txt in gen_texts:
+            rv, _ = s0_reward(task, txt, None)
+            rewards.append(rv)
+        adv, zero_var = group_advantage(rewards)
+        starve_hist.append(zero_var)
+        sc = check_starvation(starve_hist)
+        if sc:
+            stop = f"signal starvation: {sc}"
+            break
+
+        # skip zero-variance groups (no update signal)
+        if all(a == 0.0 for a in adv):
+            updates += 1
+            kl_hist.append(0.0)
+            print(f"[update {updates}] zero-variance, skipped", flush=True)
+            if updates >= args.max_updates:
+                stop = "budget"
+                break
+            continue
+
+        # token logprobs: policy + ref (adapter swap)
+        model.train()
+        out = model(gen, attention_mask=(gen != tok.pad_token_id).long())
+        logp_pol = torch.log_softmax(out.logits[:, :-1, :].float(), dim=-1)
+        tgt = gen[:, 1:]
+        tok_lp_pol = logp_pol.gather(-1, tgt.unsqueeze(-1)).squeeze(-1)
+
+        resp_mask = torch.zeros_like(tok_lp_pol, dtype=torch.bool)
+        resp_mask[:, prompt_len - 1:] = True
+        resp_mask &= (gen[:, 1:] != tok.pad_token_id)
+
+        # ref pass: save current adapter, load initial, forward, restore
+        cur_sd = {k: v.detach().clone() for k, v in model.state_dict().items()
+                  if "lora" in k.lower()}
+        model.load_state_dict(init_sd, strict=False)
+        with torch.no_grad():
+            ref_out = model(gen, attention_mask=(gen != tok.pad_token_id).long())
+            ref_logits = ref_out.logits[:, :-1, :]
+        ref_lp = torch.log_softmax(ref_logits.float(), dim=-1)
+        tok_lp_ref = ref_lp.gather(-1, tgt.unsqueeze(-1)).squeeze(-1)
+        model.load_state_dict(cur_sd, strict=False)
+
+        kl_val = token_kl_k3(tok_lp_ref.detach(), tok_lp_pol, resp_mask)
+
+        # GRPO loss
+        loss_terms = []
+        for i in range(K):
+            m = resp_mask[i]
+            if m.sum() > 0 and adv[i] != 0.0:
+                loss_terms.append(-adv[i] * tok_lp_pol[i][m].mean())
+        grpo = sum(loss_terms) / max(1, len(loss_terms)) if loss_terms else torch.tensor(0.0)
+        beta = 0.04
+        total = grpo + beta * kl_val
+
+        nl = check_nan_inf(total.item(), None)
+        if nl:
+            stop = nl
+            break
+        k1 = check_kl_single(kl_val.item())
+        if k1:
+            stop = k1
+            break
+        kl_hist.append(kl_val.item())
+        k2 = check_kl_consecutive(kl_hist)
+        if k2:
+            stop = k2
+            break
+
+        optimizer.zero_grad()
+        total.backward()
+        torch.nn.utils.clip_grad_norm_(
+            [p for p in model.parameters() if p.requires_grad], 1.0)
+        gn = sum(p.grad.norm().item() for p in model.parameters()
+                 if p.grad is not None)
+        nl2 = check_nan_inf(0.0, gn)
+        if nl2:
+            stop = nl2
+            break
+        optimizer.step()
+        updates += 1
+
+        if updates % CKPT_EVERY == 0:
+            model.eval()
+            if not save_checkpoint(ckpt, model, tok, updates,
+                                   {"kl": kl_val.item(), "update": updates}):
+                stop = "checkpoint save failure"
+                break
+            model.train()
+
+        print(f"[update {updates}] kl={kl_val.item():.3f} grpo={grpo.item():.4f}",
+              flush=True)
+        if updates >= args.max_updates:
+            stop = f"budget: {args.max_updates}"
+            break
+
+    if updates > 0:
+        model.eval()
+        save_checkpoint(ckpt, model, tok, updates,
+                        {"final": True, "stop": stop})
+    elapsed = time.time() - t0
+    (out_dir / "summary.json").write_text(json.dumps({
+        "updates": updates, "stop": stop, "wall_s": round(elapsed, 1),
+        "kl_tail": kl_hist[-10:]}, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[DONE] updates={updates} stop={stop} wall={elapsed:.0f}s", flush=True)
+    return 0
 
 
 # ---------------------------------------------------------------- data isolation ----
@@ -471,13 +684,11 @@ def main(argv=None):
 
     if args.selftest_faults:
         return selftest_faults()
+    if args.train:
+        return train_real(args)
     if args.mock:
         return mock_dryrun(args)
-    if args.train:
-        print("[HARD-STOP] --train requires GPU window + >=12GB pre-check + "
-              "owner launch authorization. Not implemented in local phase.")
-        return 2
-    print("Usage: --mock (CPU dry-run) | --selftest-faults | --train (GPU only)")
+    print("Usage: --mock (CPU dry-run) | --selftest-faults | --train (GPU)")
     return 0
 
 
