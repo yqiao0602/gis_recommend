@@ -252,7 +252,8 @@ def save_checkpoint(out_dir, model, tok, update_idx, extra):
         d = out_dir / f"update_{update_idx:03d}"
         d.mkdir(parents=True, exist_ok=True)
         model.save_pretrained(d)
-        tok.save_pretrained(d)
+        if tok is not None:
+            tok.save_pretrained(d)
         (d / "trainer_state.json").write_text(
             json.dumps(extra, ensure_ascii=False, indent=2), encoding="utf-8")
         return True
