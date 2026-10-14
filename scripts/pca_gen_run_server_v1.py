@@ -130,7 +130,8 @@ for arm in ["A_base", "B_stage1", "C_stage1_tool", "Bprime_diag"]:
             n_new = int(g.shape[1] - maxlen)
             text = tok.decode(g[j][maxlen:], skip_special_tokens=True)
             eol = int(text.count("END OF PLAN") > 0)
-            loop = int(n_new >= MAXNEW and len(set(text.split(". "))[:20]) < len(text.split(". "))[:20] * 0.5)
+            sents = text.split(". ")[:20]
+            loop = int(n_new >= MAXNEW and len(set(sents)) < max(len(sents) * 0.5, 1))
             term = "END_OF_PLAN" if eol else ("CAP_TRUNC" if n_new >= MAXNEW else "EOS")
             if term == "EOS" and loop:
                 term = "DEGENERATE_LOOP"
