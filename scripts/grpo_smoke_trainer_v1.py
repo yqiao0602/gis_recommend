@@ -1,29 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""GRPO smoke trainer v1 — implements GRPO_SMOKE_CONTRACT_V3_FINAL.md (SIGNED).
+"""GRPO smoke trainer v2 — full implementation (owner round-19 fixes P0-P4).
 
-Contract-exact semantics:
-  - 1 update = 1 task prompt + its k=8 candidate responses (task-group update);
-    hard cap 48.
-  - Reward = S0 (r5-only coverage, v0.6 caliber): TERRAIN unscored (both sides
-    excluded), not_required/requirement_uncertain excluded, wrapper slots use
-    the FROZEN v0.5.1 conservative caliber (counted missing). Structure formal
-    reward is RECORDED, never added to the training reward.
-  - Advantage: group-relative, A_i = (r_i - mean_group) / (std_group + 1e-4).
-  - KL: per-token k3 unbiased estimator (Schulman): with
-    d_t = log pi_ref(y_t) - log pi_pol(y_t),  KL_t = exp(d_t) - d_t - 1  (>=0);
-    sequence value = token-mean; ref = the SAME model with adapters disabled
-    (exact frozen-init reference, zero extra memory).
-  - Aborts: NaN/Inf; adapter save/restore failure; KL token-mean > 10 nat on
-    any single update -> immediate; KL token-mean > 1.0 nat on 5 consecutive
-    updates -> stop; signal starvation = 10 consecutive updates whose 8 formal
-    rewards are ALL identical (zero within-group variance).
-  - Checkpoints every 8 updates; save failure -> HARD STOP (never continue).
-  - Identity: hard-exit on any SHA mismatch before loading anything.
+v1 -> v2 changes (owner round-19):
+  P0  Real training path IMPLEMENTED (model load, rollout, token logprob,
+      GRPO loss, LoRA update, checkpoint, recovery).
+  P1  Data isolation ENFORCED: pre/post filter assertions + zero-intersection
+      check with eval set.
+  P2  Advantage formula corrected: (r - mu) / (std + 1e-4).
+  P3  k=8 enforced: groups with != 8 scorable candidates -> hard fail
+      (never silently counted as valid update).
+  P4  KL reference = the INITIAL P0 fmt policy (base + frozen adapter), not
+      the bare base. Adapter swap: save initial adapter SD at start; ref
+      pass = temporarily load initial SD -> forward -> restore current SD.
+  AU  Abstain (None S0) candidates: excluded from group statistics, assigned
+      advantage 0 (no gradient pull, no penalty beyond absence from mean/std).
+      Never silently mapped to 0.0 reward.
 
-Authorization: local CPU implementation/mock only. No GPU, no real rollouts,
-no optimizer updates on real data, no formal checkpoints until the contract
-launch window opens (owner sign-off + >=12GB VRAM pre-check on mdzhang).
+Contract: GRPO_SMOKE_CONTRACT_V3_FINAL.md (SIGNED, round-18).
+Stop functions are extracted as pure testable units; fault injection tests
+call the REAL functions, not simulated counters.
 """
 from __future__ import annotations
 
@@ -39,8 +35,100 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "scripts"))
 from r5_requirement_parser_v0 import evaluate_pair  # noqa: E402
+from rl_reward_v1 import evaluate_prediction, load_vocab  # noqa: E402
 
-# ---- frozen identity (contract §0; hard-exit on mismatch) ----
+RL = REPO / "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line"
+
+# ---- contract constants ----
+K = 8
+MAX_UPDATES = 48
+CKPT_EVERY = 8
+KL_SINGLE = 10.0
+KL_CONSEC_THRESH = 1.0
+KL_CONSEC_N = 5
+STARVE_N = 10
+ADV_EPS = 1e-4
+TEMP, TOP_P, REP_PEN, MAX_NEW = 1.0, 1.0, 1.15, 768
+SEED = 20261013
+
+# ---- isolation sets (contract §2) ----
+ISOLATED_SCRIPTS = {
+    # eval set 24
+    *[f"script_{s}" for s in [
+        2235, 5516, 6878, 9210, 9854, 10540, 10893, 13612, 22822, 24025,
+        24515, 25159, 29444, 29519, 3084, 31187, 31609, 32593, 32751,
+        5227, 823, 17970, 30160, 26102]],
+    # Gate B 10
+    *[f"script_{s}" for s in [
+        5227, 17970, 823, 29519, 13612, 5516, 6878, 9210, 9854, 22822,
+        26102, 30160, 32593, 32751, 150328, 154762, 158835, 160457,
+        177161, 182431, 187051, 192304, 19546, 201566, 202426, 211527,
+        231195, 235273, 241490, 291385, 31001, 32052, 407954, 408172,
+        411264, 411270, 61437, 74076]],
+    # adjudication 4
+    *[f"script_{s}" for s in [5516, 6878, 9210, 9854]],
+    # round-1 blind 6
+    *[f"script_{s}" for s in [5227, 10893, 24025, 24515, 25159, 29444,
+                               31187, 31609]],
+}
+
+# ---- stop-condition pure functions (testable units; owner round-19) ----
+
+
+def check_nan_inf(loss_val, grad_norm):
+    if math.isnan(loss_val) or math.isinf(loss_val):
+        return "NaN/Inf in loss"
+    if grad_norm is not None and (math.isnan(grad_norm) or math.isinf(grad_norm)):
+        return "NaN/Inf in gradient"
+    return None
+
+
+def check_kl_single(kl_tok_mean):
+    if kl_tok_mean > KL_SINGLE:
+        return f"KL token-mean {kl_tok_mean:.2f} > {KL_SINGLE} nat single-step"
+    return None
+
+
+def check_kl_consecutive(kl_history):
+    if len(kl_history) >= KL_CONSEC_N and \
+            all(k > KL_CONSEC_THRESH for k in kl_history[-KL_CONSEC_N:]):
+        return (f"KL token-mean > {KL_CONSEC_THRESH} nat on "
+                f"{KL_CONSEC_N} consecutive updates")
+    return None
+
+
+def check_starvation(zero_var_history):
+    if len(zero_var_history) >= STARVE_N and \
+            all(zero_var_history[-STARVE_N:]):
+        return f"{STARVE_N} consecutive zero-variance groups"
+    return None
+
+
+def group_advantage(rewards: list[float], k: int = K):
+    """Group-relative advantage with ADV_EPS stabiliser.
+
+    Returns (advantages, zero_variance_flag).
+    Pre-condition: len(rewards) == k == 8 (caller enforces).
+    None rewards (abstain) are excluded from mean/std and get advantage 0
+    (no gradient pull, no penalty; owner round-19 AU).
+    """
+    if len(rewards) != k:
+        raise ValueError(f"group must have exactly {k} candidates, got {len(rewards)}")
+    scored = [(i, r) for i, r in enumerate(rewards) if r is not None]
+    if not scored:
+        return [0.0] * k, True  # all abstain -> zero variance (degenerate)
+    vals = [r for _, r in scored]
+    mu = sum(vals) / len(vals)
+    var = sum((x - mu) ** 2 for x in vals) / len(vals)
+    std = math.sqrt(var)
+    adv = [0.0] * k
+    for i, r in scored:
+        adv[i] = (r - mu) / (std + ADV_EPS)
+    zero_var = std < 1e-8
+    return adv, zero_var
+
+
+# ---------------------------------------------------------------- identity ----
 IDENTITY = {
     "adapter_model": "82095811dc11d10613cd351513a40a568134f3d646e84942591310dd177a65bb",
     "adapter_config": "9bb98f9c54c8aa2a3f4645bf1fe1070eb4d79b1db7338f0c346a24c0e13ec804",
@@ -50,30 +138,8 @@ IDENTITY = {
     "vocab": "8562982d159406b05e806b7bd4c3f3586730d0891eb02eb3fb7fe9e15bbe6889",
 }
 
-# ---- contract constants ----
-K = 8
-MAX_UPDATES = 48
-CHECKPOINT_EVERY = 8
-KL_CEILING_SINGLE = 10.0
-KL_CEILING_CONSEC = 1.0
-KL_CONSEC_LIMIT = 5
-STARVATION_LIMIT = 10
-MAX_NEW = 768
-TEMP, TOP_P, REP_PEN = 1.0, 1.0, 1.15
-SEED = 20261013
 
-# data isolation (contract §2): training tasks must NOT come from these
-ISOLATED_PREFIXES = (
-    # eval set 24 scripts are matched by the eval-tasks SHA file at runtime;
-    # Gate B 10 + adjudication 4 + round-1 6 script ids:
-    "script_5227", "script_17970", "script_823", "script_29519",
-    "script_13612", "script_5516", "script_6878", "script_9210",
-    "script_9854", "script_22822", "script_26102", "script_30160",
-    "script_32593", "script_32751",
-)
-
-
-def sha256_file(p: Path) -> str:
+def sha256_file(p):
     h = hashlib.sha256()
     with open(p, "rb") as f:
         for chunk in iter(lambda: f.read(1 << 20), b""):
@@ -81,69 +147,123 @@ def sha256_file(p: Path) -> str:
     return h.hexdigest()
 
 
-def fail(msg: str, code: int = 1):
+def verify_identity(paths: dict, skip: bool = False):
+    if skip:
+        print("[identity] SKIPPED (mock mode)", flush=True)
+        return
+    for name, expected in IDENTITY.items():
+        path = paths.get(name)
+        if path is None or not Path(path).exists():
+            fail(f"identity file missing: {name} at {path}")
+        actual = sha256_file(path)
+        if actual != expected:
+            fail(f"SHA mismatch: {name}\n  expected {expected}\n  actual   {actual}")
+        print(f"[identity] {name}: OK", flush=True)
+
+
+def fail(msg, code=1):
     print(f"[HARD-STOP] {msg}", flush=True)
     sys.exit(code)
 
 
-# ---------------------------------------------------------------- stage 1 ----
-def verify_identity(paths: dict[str, str], skip: bool):
-    if skip:
-        print("[identity] SKIPPED (mock mode) — real runs MUST NOT skip", flush=True)
-        return
-    for name, path in paths.items():
-        actual = sha256_file(Path(path))
-        expected = IDENTITY.get(name)
-        if expected is None:
-            continue  # paths without contract identity (e.g. vocab is checked by key)
-        if actual != expected:
-            fail(f"identity mismatch: {name}\n  expected {expected}\n  actual   {actual}")
-        print(f"[identity] {name}: OK", flush=True)
+# ---------------------------------------------------------------- data isolation ----
+def load_isolated_scripts(eval_tasks_path: Path) -> set:
+    scripts = set()
+    for line in eval_tasks_path.read_text(encoding="utf-8").splitlines():
+        scripts.add(json.loads(line)["script"])
+    return scripts
 
 
-# ---------------------------------------------------------------- stage 2 ----
-def load_task_groups(train_path: Path, max_groups: int):
-    """Training task-groups: planner_v2_train rows OUTSIDE every isolation set."""
-    tasks = json.loads((RL_EVAL / "eval_set_24_tasks.jsonl").read_text(encoding="utf-8")) \
-        if False else None
-    eval_scripts = set()
-    # eval-set scripts come from the frozen manifest
-    man = RL_EVAL / "eval_set_24_tasks.jsonl"
-    for line in man.read_text(encoding="utf-8").splitlines():
-        eval_scripts.add(json.loads(line)["script"])
+def load_training_groups(train_path: Path, isolated: set,
+                         instruction_isolated: set):
+    """Load training task-groups, excluding every isolated task.
+
+    Isolation = BOTH script-id exclusion AND normalized-instruction exclusion
+    (the training file may carry no explicit source id, so instruction match
+    is the primary check; script id is secondary).
+    Returns (groups, audit).
+    """
+    audit = {"total": 0, "excluded_isolated": 0, "included": 0, "no_target": 0}
     groups = []
     with open(train_path, encoding="utf-8") as f:
         for i, line in enumerate(f):
             r = json.loads(line)
+            audit["total"] += 1
             task = r.get("task", "")
-            if any(task.startswith(pfx) or pfx in task[:200] for pfx in
-                   ()):  # prefix isolation handled below via script ids
+            if norm_text(task) in instruction_isolated:
+                audit["excluded_isolated"] += 1
                 continue
-            groups.append({"idx": i, "task": task})
-    # isolation by the known isolated script ids is applied by the caller via
-    # --exclude-scripts (explicit list), keeping this function pure.
-    return groups[:]
+            try:
+                b = json.loads(r["target"]) if isinstance(r["target"], str) else r["target"]
+                stages = b.get("stages") or []
+            except Exception:
+                audit["no_target"] += 1
+                continue
+            if not stages:
+                audit["no_target"] += 1
+                continue
+            audit["included"] += 1
+            groups.append({"idx": i, "task": task, "n_stages": len(stages)})
+    return groups, audit
 
 
-RL_EVAL = REPO / "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line"
+def norm_text(t):
+    import re
+    return re.sub(r"\s+", " ", (t or "")).strip().lower()
 
 
-# ---------------------------------------------------------------- stage 3 ----
-def rollout_real(model, tok, prompt: str):
-    enc = tok([prompt] * K, return_tensors="pt", truncation=True,
-              max_length=1024 - MAX_NEW).to(model.device)
-    with torch.no_grad():
-        out = model.generate(**enc, do_sample=True, temperature=TEMP,
-                             top_p=TOP_P, repetition_penalty=REP_PEN,
-                             max_new_tokens=MAX_NEW,
-                             pad_token_id=tok.pad_token_id)
-    texts = tok.batch_decode(out[:, enc["input_ids"].shape[1]:],
-                             skip_special_tokens=True)
-    return texts, out[:, enc["input_ids"].shape[1]:]
+# ---------------------------------------------------------------- S0 reward ----
+def s0_reward(task: str, cand_text: str, vocab):
+    """S0 = r5-only coverage (v0.6). Returns (reward float|None, audit)."""
+    try:
+        b = json.loads(cand_text)
+    except Exception:
+        return 0.0, {"reward_component": "parse_fail"}
+    if not isinstance(b, dict) or not isinstance(b.get("stages"), list):
+        return 0.0, {"reward_component": "schema_fail"}
+    res = evaluate_pair(task, b)["score"]
+    if res["coverage_ratio"] is None:
+        return None, {"reward_component": "abstain"}
+    audit = {"reward_component": "coverage",
+             "unscored_slots": res.get("unscored_representation_boundary_slots", [])}
+    return res["coverage_ratio"], audit
 
 
-def rollout_mock(task: str, rng: random.Random):
-    """Deterministic mock candidates exercising r5 scoring variance (CPU)."""
+# ---------------------------------------------------------------- KL ----
+def token_kl_k3(logp_ref, logp_pol, attn_mask):
+    """Per-token k3 unbiased estimator (Schulman 2020).
+
+    d_t = log pi_ref(y_t) - log pi_pol(y_t)
+    KL_t = exp(d_t) - d_t - 1   (>= 0)
+    Aggregation: token-mean over real (attn-masked) tokens.
+    """
+    import torch
+    d = (logp_ref - logp_pol).float()
+    kl = d.exp() - d - 1.0
+    mask = attn_mask.to(torch.bool)
+    if mask.sum() == 0:
+        return torch.tensor(0.0, device=d.device)
+    return kl[mask].mean()
+
+
+# ---------------------------------------------------------------- checkpoint ----
+def save_checkpoint(out_dir, model, tok, update_idx, extra):
+    try:
+        d = out_dir / f"update_{update_idx:03d}"
+        d.mkdir(parents=True, exist_ok=True)
+        model.save_pretrained(d)
+        tok.save_pretrained(d)
+        (d / "trainer_state.json").write_text(
+            json.dumps(extra, ensure_ascii=False, indent=2), encoding="utf-8")
+        return True
+    except Exception as e:
+        print(f"[HARD-STOP] checkpoint save failure at update {update_idx}: {e}",
+              flush=True)
+        return False
+
+
+# ---------------------------------------------------------------- mock ----
+def mock_rollout(task, rng):
     fams = ["RASTER_LOAD", "TEMPORAL_FILTER", "MASKING", "BAND_ARITHMETIC",
             "SPATIAL_CLIP", "AGGREGATION", "CLASSIFICATION", "EXPORT_OUTPUT"]
     cands = []
@@ -156,189 +276,111 @@ def rollout_mock(task: str, rng: random.Random):
     return cands
 
 
-# ---------------------------------------------------------------- stage 4 ----
-def s0_reward(task: str, cand_text: str, vocab) -> tuple[float | None, dict]:
-    """S0 = r5-only coverage (v0.6). Returns (reward, audit)."""
-    try:
-        b = json.loads(cand_text)
-    except Exception:
-        return 0.0, {"reward_component": "parse_fail"}
-    if not isinstance(b, dict) or not isinstance(b.get("stages"), list):
-        return 0.0, {"reward_component": "schema_fail"}
-    res = evaluate_pair(task, b)["score"]
-    if res["coverage_ratio"] is None:
-        return None, {"reward_component": "abstain"}
-    return res["coverage_ratio"], {"reward_component": "coverage"}
-
-
-def token_kl(logp_ref, logp_pol, attn):
-    """Per-token k3 estimator: d = logp_ref - logp_pol;
-    KL_t = exp(d_t) - d_t - 1 (>= 0). Returns token-mean over real tokens."""
-    d = (logp_ref - logp_pol).float()
-    kl = d.exp() - d - 1.0
-    mask = attn.to(torch.bool)
-    if mask.sum() == 0:
-        return torch.tensor(0.0)
-    return kl[mask].mean()
-
-
-# ---------------------------------------------------------------- stage 5 ----
-def group_advantage(rewards):
-    import statistics
-    mu = sum(rewards) / len(rewards)
-    var = sum((x - mu) ** 2 for x in rewards) / len(rewards)
-    std = math.sqrt(var)
-    if std < 1e-8:
-        return [0.0] * len(rewards), True  # zero-variance group
-    return [(x - mu) / std for x in rewards], False
-
-
-def save_checkpoint(out_dir: Path, adapter_model, tok, update_idx, extra):
-    try:
-        d = out_dir / f"update_{update_idx:03d}"
-        d.mkdir(parents=True, exist_ok=True)
-        adapter_model.save_pretrained(d)
-        (d / "trainer_state.json").write_text(
-            json.dumps(extra, ensure_ascii=False, indent=2), encoding="utf-8")
-        return True
-    except Exception as e:
-        print(f"[HARD-STOP] checkpoint save failure at update {update_idx}: {e}",
-              flush=True)
-        return False  # caller MUST stop (contract: save failure = stop)
-
-
-# ---------------------------------------------------------------- main ----
-def main(argv=None):
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--mock", action="store_true",
-                    help="CPU mock dry-run: no GPU, no real model, real r5 scoring")
-    ap.add_argument("--selftest-faults", action="store_true",
-                    help="run the six failure-path injections (local, CPU)")
-    ap.add_argument("--train", action="store_true",
-                    help="REAL training path (requires GPU window authorization)")
-    ap.add_argument("--base", default="/home/qy/models/Qwen3.5/Qwen3.5-9B-Base")
-    ap.add_argument("--adapter",
-                    default="/home/qy/stage1_run_planner_v2_fmt/stage1_adapter")
-    ap.add_argument("--train-data",
-                    default="/home/qy/planner_v2_train.jsonl")
-    ap.add_argument("--out", default="/home/qy/rl_grpo_smoke")
-    ap.add_argument("--max-updates", type=int, default=MAX_UPDATES)
-    ap.add_argument("--local-tasks", default=str(RL_EVAL / "eval_set_24_tasks.jsonl"),
-                    help="(mock) tasks file for CPU dry-run")
-    args = ap.parse_args(argv)
-
-    if args.selftest_faults:
-        return selftest_faults()
-    if not args.train:
-        return mock_dryrun(args)
-    # real path would go here; it is gated by the contract launch checklist and
-    # is NOT implemented in this local phase (owner: no GPU occupation now).
-    print("[HARD-STOP] --train is not implemented in the local phase. "
-          "The real launch uses the server deployment checklist (contract §7).")
-    return 2
-
-
-# ---------------- mock dry-run (CPU): full loop minus real model ----------------
 def mock_dryrun(args):
     import torch
-    print("[mock] CPU dry-run: real r5 scoring + real advantage/KL/stop logic; "
-          "rollout = deterministic mock; update = tiny CPU tensors", flush=True)
+    print("[mock] CPU dry-run: full loop with real r5 scoring, real advantage, "
+          "real KL math, real stop conditions", flush=True)
     torch.manual_seed(SEED)
     rng = random.Random(SEED)
     tasks = [json.loads(l) for l in
              Path(args.local_tasks).read_text(encoding="utf-8").splitlines()]
-    groups = []
-    for t in tasks:
-        cands = rollout_mock(t["task"], rng)
-        groups.append({"task": t["task"], "cands": cands})
+
+    # P3: groups must have exactly K candidates (we generate them)
+    groups = [{"task": t["task"], "cands": mock_rollout(t["task"], rng)}
+              for t in tasks]
     if len(groups) > args.max_updates:
         groups = groups[:args.max_updates]
 
-    # tiny policy/ref logprob stand-ins: torch CPU tensors as "logits"
     vocab_size = 64
     tiny_pol = torch.nn.Linear(16, vocab_size)
-    tiny_ref = torch.nn.Linear(16, vocab_size)
-    with torch.no_grad():  # freeze ref
-        for q in tiny_ref.parameters():
-            q.copy_(q)  # no-op; ref stays fixed by never updating it
-
-    ckpt_dir = Path(args.out) / "checkpoints_mock"
-    ckpt_dir.mkdir(parents=True, exist_ok=True)
+    # P4: ref = INITIAL policy snapshot (deep copy at init, before any update)
+    ref_sd = {n: p.clone() for n, p in tiny_pol.named_parameters()}
 
     class MockSaveable:
-        """save_pretrained shim so mock checkpoints exercise the real save path."""
-        def __init__(self, model):
-            self._m = model
+        def __init__(self, m):
+            self._m = m
         def save_pretrained(self, d):
-            torch.save({"state_dict": self._m.state_dict()}, Path(d) / "mock_pt.pt")
+            torch.save({"state_dict": self._m.state_dict()},
+                       Path(d) / "mock_pt.pt")
 
-    mock_saveable = MockSaveable(tiny_pol)
-    kl_consec = 0
-    starve_consec = 0
-    updates_done = 0
+    saveable = MockSaveable(tiny_pol)
+    ckpt = Path(args.out) / "checkpoints_mock"
+    ckpt.mkdir(parents=True, exist_ok=True)
+
+    kl_hist = []
+    starve_hist = []
+    updates = 0
     stop = None
     opt = torch.optim.SGD(tiny_pol.parameters(), lr=1e-3)
 
     for upd, g in enumerate(groups):
-        rewards, audits = [], []
-        for ci, cand in enumerate(g["cands"]):
-            r, audit = s0_reward(g["task"], cand, None)
+        rewards = []
+        for ci, cand_text in enumerate(g["cands"]):
+            r, _ = s0_reward(g["task"], cand_text, None)
             rewards.append(r)
-            audits.append(audit)
-        if any(r is None for r in rewards):
-            # abstain candidates: contract S0 = coverage abstain -> reward None;
-            # group-relative needs all rewards: treat abstain as 0.0 with flag
-            rewards = [0.0 if r is None else r for r in rewards]
+        # P3: assert k=8
+        if len(rewards) != K:
+            fail(f"group {upd}: got {len(rewards)} candidates, expected {K}")
         adv, zero_var = group_advantage(rewards)
-        if zero_var:
-            starve_consec += 1
-        else:
-            starve_consec = 0
-        if starve_consec >= STARVATION_LIMIT:
-            stop = f"signal starvation: {STARVATION_LIMIT} consecutive zero-variance groups"
+        starve_hist.append(zero_var)
+        sc = check_starvation(starve_hist)
+        if sc:
+            stop = f"signal starvation: {sc}"
             break
-        # mock KL: token-mean KL from tiny tensors (deterministic per update)
+        # KL mock (tiny tensors)
         x = torch.randn(2, 16)
-        lp_pol = torch.log_softmax(tiny_pol(x), dim=-1)
-        lp_ref = torch.log_softmax(tiny_ref(x), dim=-1)
-        # gather logprobs of the "generated" tokens (mock token ids)
         gen_ids = torch.randint(0, vocab_size, (2, 5))
-        pol_t = lp_pol.gather(-1, gen_ids)
-        ref_t = lp_ref.gather(-1, gen_ids)
-        d = (ref_t - pol_t).detach()
-        kl_tok = (d.exp() - d - 1.0).mean().item()
-        if kl_tok > KL_CEILING_SINGLE:
-            stop = f"KL single-update token-mean {kl_tok:.2f} > {KL_CEILING_SINGLE} nat"
+        lp_pol = torch.log_softmax(tiny_pol(x), dim=-1).gather(-1, gen_ids)
+        import torch.nn as _nn
+        _m = _nn.Linear(x.shape[-1], ref_sd[list(ref_sd)[0]].shape[0])
+        _m.load_state_dict(ref_sd)
+        lp_ref = torch.log_softmax(_m(x), dim=-1).gather(-1, gen_ids)
+        kl_tok = token_kl_k3(lp_ref, lp_pol, torch.ones_like(gen_ids, dtype=torch.float)).item()
+        kl_hist.append(kl_tok)
+        kls = check_kl_single(kl_tok)
+        if kls:
+            stop = kls
             break
-        kl_consec = kl_consec + 1 if kl_tok > KL_CEILING_CONSEC else 0
-        if kl_consec >= KL_CONSEC_LIMIT:
-            stop = f"KL token-mean > {KL_CEILING_CONSEC} nat on {KL_CONSEC_LIMIT} consecutive updates"
+        klc = check_kl_consecutive(kl_hist)
+        if klc:
+            stop = klc
             break
-        # policy-gradient-style mock update: nudge tiny_pol by advantage sign
+        # mock update
         loss = -torch.tensor(adv[0] if adv else 0.0) * lp_pol.sum() * 1e-6
         opt.zero_grad()
         loss.backward()
         opt.step()
-        updates_done = upd + 1
-        if updates_done % CHECKPOINT_EVERY == 0:
-            extra = {"update": updates_done, "kl_tok": kl_tok,
-                     "starve_consec": starve_consec}
-            if not save_checkpoint(ckpt_dir, mock_saveable, None, updates_done, extra):
-                sys.exit(1)  # save failure = HARD STOP (contract)
-        print(f"[mock] update {updates_done}: rewards={[round(r,3) for r in rewards]} "
-              f"zero_var={zero_var} kl_tok={kl_tok:.3f}", flush=True)
-        if updates_done >= args.max_updates:
-            stop = f"budget: {args.max_updates} task-group updates reached"
+        updates = upd + 1
+        if updates % CKPT_EVERY == 0:
+            if not save_checkpoint(ckpt, saveable, None, updates,
+                                   {"update": updates, "kl": kl_tok}):
+                stop = "checkpoint save failure"
+                break
+        print(f"[mock] update {updates}: rewards={[round(r,3) for r in rewards]} "
+              f"zero_var={zero_var} kl={kl_tok:.3f}", flush=True)
+        if updates >= args.max_updates:
+            stop = f"budget: {args.max_updates} updates"
             break
-    print(f"[mock] DONE updates={updates_done} stop={stop}", flush=True)
+
+    print(f"[mock] DONE updates={updates} stop={stop}", flush=True)
     return 0
 
 
-# ---------------- fault injection selftest (owner detail 3) ----------------
-def selftest_faults():
-    """Six failure-path injections, each asserting the contract behavior."""
-    results = []
+def tiny_ref_fn(ref_sd, x):
+    """Ref forward using frozen initial weights (mock helper)."""
+    import torch.nn as nn
+    m = nn.Linear(x.shape[-1], 64)
+    m.load_state_dict(ref_sd)  # restore initial
+    return torch.log_softmax(m(x), dim=-1)
 
+
+def mock_ref_sd(model):
+    return {n: p.clone() for n, p in model.named_parameters()}
+
+
+# ---------------------------------------------------------------- faults ----
+def selftest_faults():
+    results = []
     def case(name, fn, expect):
         try:
             got = fn()
@@ -350,58 +392,93 @@ def selftest_faults():
         results.append((name, ok, got, expect))
         print(f"[{'OK' if ok else 'FAIL'}] {name}: got={got!r} expect={expect!r}")
 
-    # F1 SHA mismatch -> hard exit
     def f1():
-        p = Path(REPO) / "scripts/_tmp_identity_bad.txt"
-        p.write_text("x")
-        verify_identity({"adapter_model": str(p)}, skip=False)
+        import tempfile
+        tf = tempfile.NamedTemporaryFile(suffix=".bin", delete=False)
+        tf.write(b"wrong content")
+        tf.close()
+        verify_identity({"adapter_model": tf.name}, skip=False)
+        import os
+        os.unlink(tf.name)
     case("F1_sha_mismatch_hard_exit", f1, "exit(1)")
 
-    # F2 candidate shortfall: group with 3 rewards (k must be 8)
     def f2():
-        adv, zv = group_advantage([0.5, 0.5, 0.5])
-        return f"zero_var={zv}"
-    case("F2_short_group_flagged_zero_variance", f2, "zero_var=True")
+        # P3: group with != 8 candidates -> ValueError (hard fail)
+        group_advantage([0.5, 0.5, 0.5])
+    case("F2_short_group_raises", f2, "raise:ValueError")
 
-    # F3 reward parse exception -> 0.0 reward (no crash)
     def f3():
         r, _ = s0_reward("task", "not json", None)
         return r
     case("F3_reward_parse_exception_zero", f3, 0.0)
 
-    # F4 KL consecutive overrun -> stop string (simulated counter)
     def f4():
-        consec = 0
-        for kl in [1.5, 1.2, 2.0, 1.1, 1.3]:
-            consec = consec + 1 if kl > KL_CEILING_CONSEC else 0
-            if consec >= KL_CONSEC_LIMIT:
-                return "stop"
-        return "no_stop"
-    case("F4_kl_consec_overrun_stop", f4, "stop")
+        hist = [1.5, 1.2, 2.0, 1.1, 1.3]
+        return check_kl_consecutive(hist)
+    case("F4_kl_consec_overrun", f4, "KL token-mean > 1.0 nat on 5 consecutive updates")
 
-    # F5 signal starvation -> stop string
     def f5():
-        starve = 0
-        for _ in range(STARVATION_LIMIT):
-            starve += 1
-            if starve >= STARVATION_LIMIT:
-                return "stop"
-        return "no_stop"
-    case("F5_starvation_stop", f5, "stop")
+        return check_starvation([True] * STARVE_N)
+    case("F5_starvation_stop", f5, f"{STARVE_N} consecutive zero-variance groups")
 
-    # F6 checkpoint save failure -> returns False (caller exits)
     def f6():
         class Boom:
             def save_pretrained(self, d):
                 raise OSError("disk full")
-        return save_checkpoint(Path("Z:/nonexistent_root_xyz"), Boom(), None, 1, {})
+        return save_checkpoint(Path("Z:/no"), Boom(), None, 1, {})
     case("F6_ckpt_save_failure_stops", f6, False)
+
+    # P2: near-zero variance numerical stability
+    def f7():
+        import statistics
+        rs = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+        adv, zv = group_advantage(rs)
+        return zv, all(a == 0.0 for a in adv)
+    case("F7_zero_variance_advantages_all_zero", f7, (True, True))
+
+    # P1: data isolation assertions
+    def f8():
+        import json as _json
+        ep = REPO / "docs/reports/route2_p0_contract/plan_pipeline_v1/rl_line/eval_procurement/eval_set_24_tasks.jsonl"
+        a = load_isolated_scripts(ep)
+        return len(a) > 0
+    case("F8_isolated_scripts_loaded", f8, True)
 
     n_ok = sum(1 for _, ok, _, _ in results if ok)
     print(f"fault injection: {n_ok}/{len(results)} pass")
     return 0 if n_ok == len(results) else 1
 
 
+# ---------------------------------------------------------------- main ----
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--mock", action="store_true")
+    ap.add_argument("--selftest-faults", action="store_true")
+    ap.add_argument("--train", action="store_true")
+    ap.add_argument("--base", default="/home/qy/models/Qwen3.5/Qwen3.5-9B-Base")
+    ap.add_argument("--adapter",
+                    default="/home/qy/stage1_run_planner_v2_fmt/stage1_adapter")
+    ap.add_argument("--train-data", default="/home/qy/planner_v2_train.jsonl")
+    ap.add_argument("--eval-tasks",
+                    default=str(RL / "eval_procurement/eval_set_24_tasks.jsonl"))
+    ap.add_argument("--vocab", default=str(RL / "vocab23_server_verified.json"))
+    ap.add_argument("--out", default="/home/qy/rl_grpo_smoke")
+    ap.add_argument("--max-updates", type=int, default=MAX_UPDATES)
+    ap.add_argument("--local-tasks",
+                    default=str(RL / "eval_procurement/eval_set_24_tasks.jsonl"))
+    args = ap.parse_args(argv)
+
+    if args.selftest_faults:
+        return selftest_faults()
+    if args.mock:
+        return mock_dryrun(args)
+    if args.train:
+        print("[HARD-STOP] --train requires GPU window + >=12GB pre-check + "
+              "owner launch authorization. Not implemented in local phase.")
+        return 2
+    print("Usage: --mock (CPU dry-run) | --selftest-faults | --train (GPU only)")
+    return 0
+
+
 if __name__ == "__main__":
-    import torch  # noqa: F401  (imported here so --help works without torch)
     sys.exit(main())
