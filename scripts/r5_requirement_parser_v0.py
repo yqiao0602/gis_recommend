@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""r5 requirement parser + coverage scorer v0.5 (RL line, diagnostic).
+"""r5 requirement parser + coverage scorer v0.6 (RL line, diagnostic).
 
 v0.3 (frozen before synthetic round-2 per owner round-7): primary_family
 per slot - coverage via the primary family counts as plain `covered`;
@@ -121,6 +121,11 @@ SLOT_RULES = [
          (r"land cover", "land-cover mapping", "required")]},
     {"id": "TERRAIN", "families": ["TERRAIN_DERIVED"],
      "primary_family": "TERRAIN_DERIVED",
+     "scoring": "unscored_representation_boundary",  # v0.6, owner-approved:
+     # stage-family summaries cannot reliably adjudicate terrain processing;
+     # excluded from coverage numerator AND denominator; requirement label
+     # preserved for audit; restore scoring when a terrain family or reliable
+     # dataflow rule exists
      "patterns": [
          (r"slope|hillshade", "terrain derivation", "required")],
      "note": "'elevation' alone is NOT a terrain-derivation requirement (DEM "
@@ -176,6 +181,7 @@ def parse_task(task: str) -> dict:
             continue
         if hits_by_state["required"]:
             slots.append({"id": rule["id"], "state": "required",
+                          "scoring": rule.get("scoring", "scored"),
                           "requirement_determination": "required",
                           "families": rule["families"],
                           "primary_family": rule.get("primary_family"),
@@ -207,7 +213,11 @@ def score_candidate(slot_result: dict, blueprint: dict) -> dict:
             if isinstance(s, dict) and isinstance(s.get("family"), str)}
     per_slot, covered, missing, coarse = [], 0, 0, 0
     uncertain = []
+    unscored = []
     for slot in slot_result["slots"]:
+        if slot.get("scoring") == "unscored_representation_boundary":
+            unscored.append(slot["id"])  # v0.6: unadjudicable at stage granularity
+            continue
         if slot.get("requirement_determination") == "not_required":
             uncertain.append(slot["id"])  # not_required: excluded, reported
             continue
@@ -252,6 +262,7 @@ def score_candidate(slot_result: dict, blueprint: dict) -> dict:
         verdict = "incomplete"
     return {"per_slot": per_slot,
             "covered": covered, "missing": missing, "covered_coarse": coarse,
+            "unscored_representation_boundary_slots": unscored,
             "requirement_uncertain_slots": uncertain,
             "coverage_ratio": (round(covered / denom, 4) if denom else None),
             "coverage_verdict": verdict,
