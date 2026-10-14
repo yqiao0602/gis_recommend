@@ -1,0 +1,167 @@
+{
+ "_meta": {
+  "stage": "PCA results aggregation v1 (two-layer metrics)",
+  "layer1_rule": "response health, denominator = 59 per main arm",
+  "layer2_rule": "conditional semantic quality, denominator = scored rows per arm (declared)",
+  "n_scored": 83,
+  "n_unscored_ssl": 3,
+  "unscored_detail": [
+   [
+    "PCA-A-41652",
+    "C_stage1_tool"
+   ],
+   [
+    "PCA-A-55222",
+    "C_stage1_tool"
+   ],
+   [
+    "W068833",
+    "C_stage1_tool"
+   ]
+  ],
+  "review_sample": {
+   "n": 48,
+   "seed": 20261013,
+   "composition": {
+    "judge_scored": 36,
+    "degenerate": 12,
+    "bprime": 0
+   }
+  }
+ },
+ "layer1_response_health": {
+  "A_base": {
+   "denominator": 59,
+   "non_degenerate_responses": 59,
+   "non_degenerate_rate": 1.0,
+   "degenerate": {
+    "2token_eos": 0,
+    "period_repeat": 0
+   }
+  },
+  "B_stage1": {
+   "denominator": 59,
+   "non_degenerate_responses": 0,
+   "non_degenerate_rate": 0.0,
+   "degenerate": {
+    "2token_eos": 59,
+    "period_repeat": 0
+   }
+  },
+  "C_stage1_tool": {
+   "denominator": 59,
+   "non_degenerate_responses": 33,
+   "non_degenerate_rate": 0.559,
+   "degenerate": {
+    "2token_eos": 0,
+    "period_repeat": 26
+   }
+  }
+ },
+ "layer2_conditional_quality": {
+  "A_base": {
+   "scored_denominator": 59,
+   "unscored_missing": [],
+   "goal_sufficiency_mean": 0.56,
+   "goal_sufficiency_n": 59,
+   "step_coverage_mean": 0.232,
+   "hard_constraints": {
+    "satisfied": 58,
+    "violated": 7,
+    "not_addressed": 200
+   },
+   "presentation_done": {
+    "yes": 1,
+    "partial": 0,
+    "no": 9,
+    "not_applicable": 49
+   }
+  },
+  "B_stage1": {
+   "scored_denominator": 0,
+   "unscored_missing": [],
+   "goal_sufficiency_mean": null,
+   "goal_sufficiency_n": 0,
+   "step_coverage_mean": null,
+   "hard_constraints": {
+    "satisfied": 0,
+    "violated": 0,
+    "not_addressed": 0
+   },
+   "presentation_done": {
+    "yes": 0,
+    "partial": 0,
+    "no": 0,
+    "not_applicable": 0
+   }
+  },
+  "C_stage1_tool": {
+   "scored_denominator": 24,
+   "unscored_missing": [],
+   "goal_sufficiency_mean": 0.58,
+   "goal_sufficiency_n": 24,
+   "step_coverage_mean": 0.224,
+   "hard_constraints": {
+    "satisfied": 26,
+    "violated": 15,
+    "not_addressed": 69
+   },
+   "presentation_done": {
+    "yes": 0,
+    "partial": 0,
+    "no": 1,
+    "not_applicable": 23
+   }
+  }
+ },
+ "constraint_vs_planning_tally": {
+  "explicit_followed": 83,
+  "self_planned_mentioned": 83
+ },
+ "truncated_judgeability": {
+  "scored_truncated": 80,
+  "judgeable": 48
+ },
+ "core_contrast_table": {
+  "A_base": {
+   "normal_termination_rate": 1.0,
+   "structure_parse_rate": 1.0,
+   "semantic_quality_scored_n": 59,
+   "goal_sufficiency_mean": 0.56,
+   "hard_constraint_satisfied": 58,
+   "self_planning_quality": "see constraint_following_vs_planning per-row field (no single number by design)",
+   "truncated_sample_judgeable_rate": "global 0.60 (see truncated_judgeability)",
+   "denominators": {
+    "layer1": 59,
+    "layer2_conditional": 59
+   }
+  },
+  "B_stage1": {
+   "normal_termination_rate": 0.0,
+   "structure_parse_rate": 0.0,
+   "semantic_quality_scored_n": 0,
+   "goal_sufficiency_mean": null,
+   "hard_constraint_satisfied": 0,
+   "self_planning_quality": "see constraint_following_vs_planning per-row field (no single number by design)",
+   "truncated_sample_judgeable_rate": "global 0.60 (see truncated_judgeability)",
+   "denominators": {
+    "layer1": 59,
+    "layer2_conditional": 0
+   },
+   "note": "100% degenerate — no content to score; response layer only"
+  },
+  "C_stage1_tool": {
+   "normal_termination_rate": 0.559,
+   "structure_parse_rate": 0.508,
+   "semantic_quality_scored_n": 24,
+   "goal_sufficiency_mean": 0.58,
+   "hard_constraint_satisfied": 26,
+   "self_planning_quality": "see constraint_following_vs_planning per-row field (no single number by design)",
+   "truncated_sample_judgeable_rate": "global 0.60 (see truncated_judgeability)",
+   "denominators": {
+    "layer1": 59,
+    "layer2_conditional": 24
+   }
+  }
+ }
+}
