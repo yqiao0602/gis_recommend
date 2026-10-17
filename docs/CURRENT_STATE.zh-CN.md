@@ -73,10 +73,15 @@ P1/P2 与 E2E 详细过程以 `docs/CURRENT_STATE.md` 英文版为准）
   顶层 description 键 0/1291 守卫、49 个 retrieval.json 全量冻结 = A1 固定 Top-10 锚）
   → A2 受控检索对照（不静默改检索）→ B 独立推进。仪器发现：S1 检索实为算子 ID 词面相似度
   （0/1291 有 description 键、layer_c_intent 未读取）——S1 修复另立受控变更；
-  补卡禁写顶层 description 键。** B 轨（GEE 规划）：owner 假设裁定 + 池联合审计 Q1 完成
-  （`diag50_v1/B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`、`B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md`
-  ——全链复制度不高（44,721 模板、Top-10 仅 6.2%）但局部高度集中（30 标签词表、
-  bigram Top-100=90.3% 转移、57.4% RASTER_LOAD 开头）；Q2-Q4 方法已定待执行）。
+  补卡禁写顶层 description 键。** B 轨（GEE 规划）：owner 假设裁定 + 联合审计 **Q1-Q4 全部完成**
+  （`diag50_v1/B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`、`B_TRACK_Q2Q4_RULING_OWNER_V1.md`、
+  `B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md`[V1.1]、产物 `b_track_audit_v1/`）：全链复制度不高但
+  局部高度集中（Q1）；任务条件→结构耦合存在且单调，40 对语义抽验样本待人工判读（Q2）；
+  精确同指令异模板可忽略、差异=局部小变体（Q3）；**规划 exact 率随训练池支持度单调上升**
+  （absent 14.1%/singleton 0%/low 0%/mid 12.3%/high 25.6%）且预测向高频模板偏移 +19%
+  ——低支持错误=数据支持缺口（固有），高频偏移=训练引入（干净归因需 Base vs 训练版本 B 臂）；
+  813 个 AGGREGATION 模板混合时间合成/分区统计语境=30 标签抹平实证（方向②锚点）。
+  owner 不干预门已过——下一步=Q2 样本人工语义判读 → 审查后参考样本构建 → 小规模对照训练。
   D1 契约 ADR 签核仍待 owner。活跃计划见 task_plan.md。
 
 ## ⭐ 当前主线：Planning Capability Audit（PCA）— 协议 v1 已冻结，Phase 1 进行中（2026-10-13）

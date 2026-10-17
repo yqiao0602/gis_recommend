@@ -122,11 +122,22 @@ Last updated: 2026-10-15
   lexical similarity (0/1291 profiles have a description key; layer_c_intent
   unread) — S1 fix is a separate controlled change; card completion must NOT
   write the top-level `description` key.** B-track (GEE planning): owner
-  hypothesis ruling + pool joint audit Q1 done (`diag50_v1/
-  B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`, `B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md`
-  — full-chain duplication NOT severe (44,721 templates, top-10 = 6.2%) but
-  local concentration high: 30-label vocab, bigram top-100 = 90.3% transitions,
-  57.4% RASTER_LOAD starts; Q2-Q4 methods defined, awaiting execution).
+  hypothesis ruling + joint audit **Q1-Q4 ALL COMPLETE** (`diag50_v1/
+  B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`, `B_TRACK_Q2Q4_RULING_OWNER_V1.md`,
+  `B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md` [V1.1], artifacts `b_track_audit_v1/`):
+  full-chain duplication NOT severe but local concentration high (Q1);
+  task-condition→structure coupling exists and is monotone, 40-pair semantic
+  review sample pending human adjudication (Q2); exact-duplicate multi-template
+  negligible, differences are local variants (Q3); planner exact-rate rises
+  monotonically with training-pool support (absent 14.1% / singleton 0% /
+  low 0% / mid 12.3% / high 25.6%) and predictions skew +19% toward high-freq
+  templates — low-support errors = data support gap, high-freq skew =
+  training-introduced (clean attribution needs the Base-vs-trained B arm);
+  813 AGGREGATION templates mix temporal-composite vs zonal contexts =
+  label-flattening evidence anchoring direction ②. Per owner ruling the
+  no-intervention gate has now cleared — next = human semantic adjudication of
+  the Q2 sample → reviewed reference-sample construction → small-scale
+  controlled training comparison.
   D1 contract ADR sign-off still pending. Live plan: task_plan.md.
 
 ## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)

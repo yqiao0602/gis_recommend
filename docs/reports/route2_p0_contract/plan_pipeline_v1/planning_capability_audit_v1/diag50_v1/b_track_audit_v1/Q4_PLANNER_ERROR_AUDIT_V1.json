@@ -1,0 +1,343 @@
+{
+ "predictions_file": "planner_v2_fmt_dev_full_preds.json",
+ "n_dev": 1852,
+ "n_taskhead_aligned": 1852,
+ "n_pred_parsed": 1560,
+ "parse_fail_rate": 0.1577,
+ "n_exact": 247,
+ "exact_rate": 0.1334,
+ "err_class_hist": {
+  "ONLY_MISSING": 387,
+  "MIXED": 490,
+  "PARSE_FAIL": 292,
+  "ONLY_EXTRA": 281,
+  "EXACT": 247,
+  "SAME_SET_DIFF_ORDER": 155
+ },
+ "err_class_top_detail": [
+  [
+   "PARSE_FAIL",
+   292
+  ],
+  [
+   "EXACT",
+   247
+  ],
+  [
+   "SAME_SET_DIFF_ORDER",
+   155
+  ],
+  [
+   "ONLY_EXTRA:SPATIAL_FILTER",
+   50
+  ],
+  [
+   "ONLY_MISSING:SPATIAL_FILTER",
+   42
+  ],
+  [
+   "ONLY_MISSING:ITERATIVE_APPLY",
+   40
+  ],
+  [
+   "ONLY_EXTRA:AGGREGATION",
+   35
+  ],
+  [
+   "ONLY_MISSING:BAND_SELECT",
+   28
+  ],
+  [
+   "ONLY_MISSING:TEMPORAL_FILTER",
+   28
+  ],
+  [
+   "ONLY_EXTRA:ATTRIBUTE_FILTER",
+   24
+  ],
+  [
+   "ONLY_MISSING:VECTOR_LOAD",
+   23
+  ],
+  [
+   "ONLY_MISSING:AGGREGATION",
+   22
+  ]
+ ],
+ "by_gold_pool_freq": {
+  "absent(0)": {
+   "n": 1253,
+   "exact_rate": 0.1413,
+   "parse_fail_rate": 0.1915,
+   "hist": {
+    "ONLY_MISSING": 279,
+    "MIXED": 277,
+    "PARSE_FAIL": 240,
+    "EXACT": 177,
+    "ONLY_EXTRA": 166,
+    "SAME_SET_DIFF_ORDER": 114
+   }
+  },
+  "high(>100)": {
+   "n": 199,
+   "exact_rate": 0.2563,
+   "parse_fail_rate": 0.0101,
+   "hist": {
+    "ONLY_EXTRA": 56,
+    "ONLY_MISSING": 21,
+    "SAME_SET_DIFF_ORDER": 15,
+    "MIXED": 54,
+    "EXACT": 51,
+    "PARSE_FAIL": 2
+   }
+  },
+  "low(2-10)": {
+   "n": 166,
+   "exact_rate": 0.0,
+   "parse_fail_rate": 0.1807,
+   "hist": {
+    "ONLY_MISSING": 43,
+    "MIXED": 76,
+    "PARSE_FAIL": 30,
+    "SAME_SET_DIFF_ORDER": 9,
+    "ONLY_EXTRA": 8
+   }
+  },
+  "mid(11-100)": {
+   "n": 155,
+   "exact_rate": 0.1226,
+   "parse_fail_rate": 0.0387,
+   "hist": {
+    "EXACT": 19,
+    "MIXED": 45,
+    "SAME_SET_DIFF_ORDER": 17,
+    "ONLY_EXTRA": 42,
+    "PARSE_FAIL": 6,
+    "ONLY_MISSING": 26
+   }
+  },
+  "singleton(1)": {
+   "n": 79,
+   "exact_rate": 0.0,
+   "parse_fail_rate": 0.1772,
+   "hist": {
+    "ONLY_EXTRA": 9,
+    "ONLY_MISSING": 18,
+    "MIXED": 38,
+    "PARSE_FAIL": 14
+   }
+  }
+ },
+ "by_gold_len": {
+  "1-5": {
+   "n": 553,
+   "exact_rate": 0.2242,
+   "parse_fail_rate": 0.0416,
+   "hist": {
+    "ONLY_EXTRA": 155,
+    "ONLY_MISSING": 65,
+    "SAME_SET_DIFF_ORDER": 41,
+    "EXACT": 124,
+    "MIXED": 145,
+    "PARSE_FAIL": 23
+   }
+  },
+  "11-20": {
+   "n": 390,
+   "exact_rate": 0.1333,
+   "parse_fail_rate": 0.2333,
+   "hist": {
+    "PARSE_FAIL": 91,
+    "MIXED": 99,
+    "ONLY_MISSING": 91,
+    "EXACT": 52,
+    "SAME_SET_DIFF_ORDER": 29,
+    "ONLY_EXTRA": 28
+   }
+  },
+  "6-10": {
+   "n": 685,
+   "exact_rate": 0.1007,
+   "parse_fail_rate": 0.1139,
+   "hist": {
+    "ONLY_MISSING": 178,
+    "MIXED": 206,
+    "EXACT": 69,
+    "PARSE_FAIL": 78,
+    "ONLY_EXTRA": 86,
+    "SAME_SET_DIFF_ORDER": 68
+   }
+  },
+  ">20": {
+   "n": 224,
+   "exact_rate": 0.0089,
+   "parse_fail_rate": 0.4464,
+   "hist": {
+    "PARSE_FAIL": 100,
+    "ONLY_MISSING": 53,
+    "MIXED": 40,
+    "ONLY_EXTRA": 12,
+    "SAME_SET_DIFF_ORDER": 17,
+    "EXACT": 2
+   }
+  }
+ },
+ "mean_pool_freq_gold": 43.9,
+ "mean_pool_freq_pred": 52.34,
+ "n_distinct_pred_templates": 736,
+ "pred_top10_share": 0.1756,
+ "pred_top10": [
+  {
+   "template": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER",
+   "n": 83,
+   "pool_freq": 0
+  },
+  {
+   "template": "RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION",
+   "n": 28,
+   "pool_freq": 324
+  },
+  {
+   "template": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION",
+   "n": 26,
+   "pool_freq": 530
+  },
+  {
+   "template": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> SPATIAL_FILTER -> ITERATIVE_APPLY",
+   "n": 25,
+   "pool_freq": 0
+  },
+  {
+   "template": "RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION",
+   "n": 21,
+   "pool_freq": 0
+  },
+  {
+   "template": "RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION",
+   "n": 20,
+   "pool_freq": 0
+  },
+  {
+   "template": "RASTER_LOAD -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> SPATIAL_FILTER -> RASTER_LOAD -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER -> SPATIAL_FILTER",
+   "n": 19,
+   "pool_freq": 0
+  },
+  {
+   "template": "RASTER_LOAD -> SPATIAL_FILTER -> AGGREGATION",
+   "n": 18,
+   "pool_freq": 377
+  },
+  {
+   "template": "RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> ATTRIBUTE_FILTER",
+   "n": 18,
+   "pool_freq": 0
+  },
+  {
+   "template": "VECTOR_LOAD -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> AGGREGATION -> RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> SPATIAL_FILTER -> AGGREGATION -> AGGREGATION -> AGGREGATION -> AGGREGATION -> AGGREGATION -> AGGREGATION",
+   "n": 16,
+   "pool_freq": 0
+  }
+ ],
+ "missing_family_hist": [
+  [
+   "BAND_SELECT",
+   229
+  ],
+  [
+   "ITERATIVE_APPLY",
+   215
+  ],
+  [
+   "SPATIAL_FILTER",
+   174
+  ],
+  [
+   "VECTOR_LOAD",
+   130
+  ],
+  [
+   "TEMPORAL_FILTER",
+   126
+  ],
+  [
+   "AGGREGATION",
+   117
+  ],
+  [
+   "ATTRIBUTE_FILTER",
+   101
+  ],
+  [
+   "BAND_ARITHMETIC",
+   96
+  ],
+  [
+   "GEOMETRY_DEFINE",
+   53
+  ],
+  [
+   "COLLECTION_MGMT",
+   47
+  ],
+  [
+   "SPATIAL_CLIP",
+   27
+  ],
+  [
+   "MASKING",
+   23
+  ],
+  [
+   "THRESHOLD_LOGIC",
+   19
+  ],
+  [
+   "EXPORT_OUTPUT",
+   16
+  ],
+  [
+   "TERRAIN_DERIVED",
+   9
+  ],
+  [
+   "RASTER_LOAD",
+   7
+  ],
+  [
+   "VECTOR_GEOMETRY",
+   7
+  ],
+  [
+   "SPECTRAL_INDEX",
+   6
+  ],
+  [
+   "CLASSIFICATION",
+   6
+  ],
+  [
+   "REGIONAL_STATS",
+   6
+  ]
+ ],
+ "pool_rows": 101513,
+ "pool_templates": 36933,
+ "first_divergence_hist": [
+  [
+   "1-3",
+   799
+  ],
+  [
+   "na",
+   662
+  ],
+  [
+   "0",
+   263
+  ],
+  [
+   "4+",
+   128
+  ]
+ ]
+}
