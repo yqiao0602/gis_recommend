@@ -2086,3 +2086,11 @@
 - **owner 前置审查归档**（两轮，`Q2_POOL_RESCAN_RULING_OWNER_V1.md` 逐字+登记节）：七字段判读 schema（structural/literal/execution_equivalence、difference_source 多选、fidelity_A/B、decision_confidence、evidence_required）；三防误判守则（重复块须查依赖与输出/字面量可决定结果/同码双描述≠失实）；审查优先序（S058-S069 第一、S051-S057 第二、S070-S117 批量+例外；点名 S039/S042/S043/S026/S001/S002/S025/S027/S028/S078/S106/S110/S112）；**统计口径锁定**：分层加权 p̂=Σ(N_h/N)p̂_h、117 条不得直接算比例、置信区间按分层设计、证据不足/不可判/缺失单列、十对=既有证据不计入概率抽样、**机械漏检另设审计样本**；机械层与人工判读职责不可互替。
 - **117 份逐对卷宗证据包产出**（`scripts/b_track_q2_adjudication_pack_v1.py` → `b_track_audit_v1/q2_rescan_adjudication_evidence_v1/`，共 6.49MB）：每卷宗=元信息（sha/步数/flags/提名/owner 指引）+指令 A/B 全文+源码 A/B 全文（证据冻结入库）+统一 diff+七字段判读栏；`LEDGER_V1.json` 117 记录字段预置；`INDEX.md` 含分层 N_h/n_h 表、优先序、守则、十对处置。117/117 完整性检查通过；编号与 owner 所看工作表核验对齐（S039/S042/S043/S026 脚本号一致）。指令全文经池一次重扫取原始大小写版本（127,915 唯一映射）。
 - 下一步=owner 按卷宗判读（产出填入 LEDGER）→ 池级加权估计报告（双轴分布+区间+统计边界）→ A/B 联合设计规范。全程只读零变更。
+
+## 2026-10-17（B 轨判读启动）：owner 首批 S001-S003 裁定落库（3/117）
+
+- **首批三条全部改判**：机械类均为 `asset_version_candidate`，owner 终判全部 `substantive_structural_candidate`（结构不等价+参数字面量影响结果，置信高）——机械 asset_version 层的首批纯度证据（3/3 改判，stratum 总体 25、抽样 12，最终纯度待该层判完）。
+- **S001**：A 连续两个不重叠 filterDate（2010-2012 ∩ 2007-2008）→ **空集风险=最关键执行语义问题**（描述提两时期但代码交集化）；端元/掩膜阈值/输入集合（T1+T2 vs 仅 T1）均变；双侧欠描述。
+- **S002**：**fidelity_B=失实**（温度表达式括号配对异常+删除 Export 导出=声称能力与代码不一致）；C02/C01+QA_PIXEL/BQA 掩膜不等价；A 欠描述（K1/K2/A/M 读取未用）。池级第二个确认失实（首个为 SAME-15 A）。
+- **S003**：A 欠描述 / **B 忠实**（首个池级忠实判定）；不同时段数据+不同端元参数，无显性执行故障。
+- 落库位置：LEDGER_V1.json（七字段+终判+机械类改判标记）+ S001-S003.md 卷宗追加"Owner 判读结果"节（owner 落库记录逐字要点）。判读进度 3/117。

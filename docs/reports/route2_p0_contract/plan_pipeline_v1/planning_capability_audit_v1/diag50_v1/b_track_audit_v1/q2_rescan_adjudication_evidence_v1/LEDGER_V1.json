@@ -5,50 +5,90 @@
   {
    "id": "S001",
    "bucket": "diff",
-   "class": "asset_version_candidate",
    "jaccard": 0.8269,
    "script_a": "script_54184",
    "script_b": "script_54188",
-   "structural_equivalence": "",
-   "literal_equivalence": "",
-   "execution_equivalence": "",
-   "difference_source": [],
-   "fidelity_A": "",
-   "fidelity_B": "",
-   "decision_confidence": "",
-   "evidence_required": ""
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "execution_equivalence": "充分",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "evidence_required": "核对 EE 实际运行日志、过滤后影像数量及输出影像统计以量化差异影响；非判定实质差异的必要前提",
+   "owner_final_class": "substantive_structural_candidate",
+   "key_findings": [
+    "A 连续两个不重叠 filterDate（2010-2012 与 2007-2008）作用于同一集合→交集为空集风险，最关键执行语义问题；B 单区间 2010-2012",
+    "输入集合：A=T1_SR+T2_SR 合并，B=仅 T1_SR；端元参数（初始陆/水、第二次分解陆地端元）与水生植被掩膜阈值（0.15 vs 0.20）均变",
+    "B 新增 medindices 未被后续引用=非关键冗余；输出资产名 _040221 vs _v5 不构成算法差异",
+    "fidelity：A 欠描述（描述提两时期但代码交集化，执行效果与描述不一致）；B 欠描述（未说明端元/阈值等关键选择）"
+   ],
+   "owner_adjudicated": true,
+   "adjudication_date": "2026-10-17",
+   "mechanical_class": "asset_version_candidate",
+   "mechanical_to_final_override": true
   },
   {
    "id": "S002",
    "bucket": "diff",
-   "class": "asset_version_candidate",
    "jaccard": 0.8889,
    "script_a": "script_28606",
    "script_b": "script_28603",
-   "structural_equivalence": "",
-   "literal_equivalence": "",
-   "execution_equivalence": "",
-   "difference_source": [],
-   "fidelity_A": "",
-   "fidelity_B": "",
-   "decision_confidence": "",
-   "evidence_required": ""
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "execution_equivalence": "充分",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "fidelity_A": "欠描述",
+   "fidelity_B": "失实",
+   "decision_confidence": "高",
+   "evidence_required": "核验集合加载/表达式解析/输出有效像元与数值范围；静态代码已足以判定不等价",
+   "owner_final_class": "substantive_structural_candidate",
+   "key_findings": [
+    "B 温度表达式括号配对异常（末尾多余右括号）——可能解析失败或改变运算结构，不能当格式差异",
+    "集合版本 C02 vs C01、QA 波段 QA_PIXEL vs BQA（质量位语义不同，掩膜不等价）",
+    "B 删除 Export.image.toDrive=输出工作流能力差异（非 UI 差异）；可视化范围/调色板=显示配置；A 额外 RGB 加载未被引用=冗余",
+    "两侧均读取 K1/K2/A/M 属性但未用于公式=定标逻辑与描述不全；fidelity B=失实（针对代码与描述声称能力的不一致）"
+   ],
+   "owner_adjudicated": true,
+   "adjudication_date": "2026-10-17",
+   "mechanical_class": "asset_version_candidate",
+   "mechanical_to_final_override": true
   },
   {
    "id": "S003",
    "bucket": "diff",
-   "class": "asset_version_candidate",
    "jaccard": 0.8,
    "script_a": "script_54182",
    "script_b": "script_54187",
-   "structural_equivalence": "",
-   "literal_equivalence": "",
-   "execution_equivalence": "",
-   "difference_source": [],
-   "fidelity_A": "",
-   "fidelity_B": "",
-   "decision_confidence": "",
-   "evidence_required": ""
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "execution_equivalence": "充分",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "evidence_required": "量化需核验两时间范围有效影像数/掩膜覆盖/最终分数覆盖；不等价判定无需额外证据",
+   "owner_final_class": "substantive_structural_candidate",
+   "key_findings": [
+    "时间范围 2010-2012（排除 5 月） vs 1984-1986（无月份过滤）——处理不同时间样本",
+    "输入集合 A=T1_SR+T2_SR vs B=仅 T1_SR；端元与掩膜阈值参数族同 S001（0.15/0.20、-0.294…/-0.334…）",
+    "B 忠实=描述与代码在当前语义粒度相符（不含算法科学有效性主张）；A 欠描述=未交代时间筛选与参数条件",
+    "与 S001/S002 区别：无显性执行故障，主要是面向不同时段数据+不同模型参数"
+   ],
+   "owner_adjudicated": true,
+   "adjudication_date": "2026-10-17",
+   "mechanical_class": "asset_version_candidate",
+   "mechanical_to_final_override": true
   },
   {
    "id": "S004",
@@ -1874,5 +1914,9 @@
    "decision_confidence": "",
    "evidence_required": ""
   }
- ]
+ ],
+ "adjudication_progress": {
+  "adjudicated": 3,
+  "total": 117
+ }
 }
