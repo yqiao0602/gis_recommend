@@ -2050,3 +2050,10 @@
 - **提取器 V2**（dx_a_track_otb_extract_v2.py）：三类特殊 app 攻克——①TrainImages/VectorClassifier 参数在基类头文件+每分类器 hxx 的 AddChoice 树（classifier 10 选：libsvm/svm/boost/dt/knn/ann/bayes/rf/sharkrf/sharkkm）；②BundleToPerfectSensor=CompositeApplication（内嵌 Superimpose+Pansharpening 实例名前缀联合）；③ShareParameter 回解析（io.out/io.confmatout/io.imstat 从内嵌 training=TrainVectorClassifier 取回真实类型）。逐参数 sources 来源记录。修复 4 解析缺陷（内部应用调用误收/this-> 误杀/箭头漏 '-'/跨行回溯吃注释）。ram/elev/rand=OTB 框架自动参数排除不猜入册。
 - **v0_5 构建完成**（新文件，SHA256 `dfc03628…`；构建器 dx_a_track_build_v05_v1.py + manifest）：**109/109 卡填充**（1,011 参数+134 输出+116 choice 参数）；功能描述入 layer_c_intent；19 处 input_types_norm 证据级纠正；顶层 description 键 0/1291（S1 守卫）；非 OTB 逐条 deep-equal v0_4；v0_4 SHA 与冻结一致；6 unverified 标记+PROVENANCE_UNVERIFIED_V1.json。**full_card() 渲染抽查通过**：trainimagesclassifier 卡直接暴露 classifier(Choice)+io.out/confmatout——T-009#S4 弃权理由在 v0_5 卡面可证伪。已知限制：冻结渲染器不展开 choice 值/长描述（与全库 enum 现状一致，P2）。
 - **下一步待排程**：A1 pack（v0_5 卡 × 冻结 Top-10）→ 服务器 S2 重跑 → 四分指标。
+
+## 2026-10-17（B 轨 V3 完成）：SAME 四对源码级核验 4/4 + GEE 原始脚本体料本地定位
+
+- **owner 指认的两处本地目录即所需语料**：`.tmp_gee_batch13_sources/Data/dataNNNNN/script_XXXXX.txt` 对核验包 **36/36 脚本全覆盖**（路径映射物化 `b_track_audit_v1/Q2_PACKET_SCRIPT_PATHS_V1.json`）；`.tmp_gee_batch8_ast_bridge/sources` 为子集、本队列未用到。V2-P0 语料依赖解除。
+- **V3 标签表达力核验 4/4 完成**（源码级，`Q2_V3_WALKTHROUGH_FINDINGS_V1.md`）：①4/4 对"结构相同"在源码级成立（SAME 组 C 类=0 再获支持）；②**SAME-15 描述失证实锤**——script_21438/72061 逐字节相同，源码加载 GEDI04_B 波段 'MU' 且三处自证为 biomass（'Mean Biomass'/‘AGBD (Mg/ha)'/导出 Muf_AGBD_GEDI_2021）→ 指令 B 忠实、指令 A 把目标变量写成 canopy height；归类 owner 第三类（描述保真度），**非**"分类vs回归被抹平"的证据；③SAME-19 双侧忠实——唯一差异=1 行 asset 字面量（chelsa_all vs chelsa_2004 专用集），时间范围语义由字面量承载；④SAME-11 同码（AWEI_nsh 公式+阈值 0），A 命名精确、B 命名欠精确但阈值主张与代码一致；⑤SAME-9 双侧忠实——唯一差异=`var a` 8→33（单迭代年份循环起点），三指标（NDWI 面积/chl-a 带比值/富营养化比例）在代码中完整存在，owner 疑虑解除。
+- **仪器教训**：canonical API 序列一致 ≠ 字面量一致（SAME-19/9 canonical 相同而源码不同）——核验包 caveat 被证实必要；canonical 级对照会漏掉全部三个字面量差异。
+- **V2-P0 输入**：六对 DIFF 源码同树可读；遇可疑差异先做两侧 sha1 对比排除同码变体（SAME-15 式）。下一步=DIFF-6→4→5→1→12→19 逐步对照 → 判定"抽取/标注差异"占比量级。

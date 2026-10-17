@@ -164,13 +164,26 @@ Last updated: 2026-10-15
   pairs (15/19/11/9) share byte-identical canonical API sequences across
   sides (same code, two descriptions; literal-level differences require
   reading the scripts), while all 14 DIFF pairs differ canonically (the
-  programs genuinely differ). **Next: V2-P0 six-pair source-program
-  walkthrough (DIFF-6→4→5→1→12→19); the three-way alignment packet is
-  materialized (`Q2_PRIORITY_VERIFICATION_PACKET_V1.md/.json`: run-count RLE
-  rendering + automatic chain diff + script pointers + 18-pair summary
-  table). Discipline: verify source programs first — no loss changes or
-  resampling from sample judgments (owner wording); diagnostic tasks stay out
-  of the B-track training set; interventions still require owner release.**
+  programs genuinely differ). **Next: V3 label-expressiveness verification COMPLETE 4/4 at source level
+(2026-10-17, `b_track_audit_v1/Q2_V3_WALKTHROUGH_FINDINGS_V1.md`): same-
+structure held in all 4; SAME-15 instruction A mis-describes the target
+variable (three in-code self-proofs say biomass — a description-fidelity
+defect, NOT a structure/label-granularity issue); time range / index naming /
+loop parameters all live in the literal layer = direct evidence for the
+two-layer representation split; instrument lesson: canonical-identical does
+NOT imply literal-identical. V2-P0 six-pair source walkthrough (DIFF-6→4→5→
+1→12→19) is now UNBLOCKED — the raw GEE script corpus was located locally
+(`.tmp_gee_batch13_sources/Data/dataNNNNN/script_XXXXX.txt`, 36/36 packet
+scripts covered, path map `Q2_PACKET_SCRIPT_PATHS_V1.json`; the batch8 tree
+is a subset, unused); three-way alignment packet =
+`Q2_PRIORITY_VERIFICATION_PACKET_V1.md/.json` (run-count RLE rendering +
+automatic chain diff + script pointers + 18-pair summary table; sha1-compare
+both sides first to exclude same-code variants). Then: size the
+"extraction/annotation-difference" share → reviewed reference-sample
+construction → small-scale controlled training comparison. Discipline:
+verify source programs first — no loss changes or resampling from sample
+judgments (owner wording); diagnostic tasks stay out of the B-track training
+set; interventions still require owner release.**
   D1 contract ADR sign-off still pending. Live plan: task_plan.md.
 
 ## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)

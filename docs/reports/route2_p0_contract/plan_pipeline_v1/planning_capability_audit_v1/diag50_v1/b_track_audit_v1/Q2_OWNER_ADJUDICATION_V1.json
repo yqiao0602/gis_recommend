@@ -1,0 +1,103 @@
+{
+  "artifact": "Q2_OWNER_ADJUDICATION_V1",
+  "date": "2026-10-17",
+  "adjudicator": "owner (human, four batches)",
+  "registrar": "B-track agent",
+  "question": "两条指令的分析逻辑差异是否要求工作流结构变化？（Q2 裁定口径）",
+  "inputs": {
+    "sample": "Q2_SEMANTIC_REVIEW_SAMPLE_V1.md",
+    "mechanical": "Q23_MECHANICAL_RESULTS_V1.json::q2_sample_pairs",
+    "seed": 20261017
+  },
+  "field_schema": {
+    "requires_structure_change": ["yes", "no", "uncertain"],
+    "label_expressiveness": ["sufficient", "possibly_insufficient", "insufficient", "uncertain"],
+    "chain_diff_evidence": ["supported", "unsupported", "indeterminate", "not_applicable_chain_identical"]
+  },
+  "verdict_vocab": {
+    "accept": "接受（同结构有充分理由）",
+    "conditional_accept": "有条件接受（合理但需原始程序核验）",
+    "conditional_accept_priority_check": "有条件接受，重点核验",
+    "likely_reasonable": "合理结构差异可能性较高",
+    "suspicious": "可疑（差异缺少明确任务依据或证据不足）",
+    "weak_variant": "弱变体（机械差异极小，不作强正例）"
+  },
+  "summary": {
+    "same_group": {"A_accept": 8, "B_conditional": 12, "C_confirmed_error": 0},
+    "diff_group": {"likely_reasonable": 2, "conditional_accept": 5, "suspicious": 12, "weak_variant": 1},
+    "headline": "C 类（确认结构标注错误）= 0；分歧集中于局部小变体与标签表达力；三类（抽取/标注差异）占比待原始程序核验"
+  },
+  "mechanical_corrections": [
+    {
+      "pair_id": "DIFF-20",
+      "owner_premise": "两条链完全相同，分组与链条不一致",
+      "verified_fact": "Chain A 39 token vs Chain B 35 token：A 恰好多一个重复季节块 RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> BAND_SELECT（7 次 vs 6 次），其余逐 token 一致",
+      "grouping_verdict": "分组机械有效（抽样按 tmpl_set(a)!=tmpl_set(b) 划分；两侧模板确实不同）",
+      "cause": "MD 审查表对 39-token 高重复链并排渲染，肉眼不可辨 1 个重复块",
+      "instrument_lesson": "审查表 RLE 改用游程计数渲染 + 自动链 diff 列（核验包已实施）",
+      "owner_substance": "保留并加强：差异=单重复块计数增量，与 Q3 局部小变体同型，不作任务驱动结构变化的强正例",
+      "status": "closed"
+    }
+  ],
+  "priority_verification_queue": {
+    "v1_diff20_grouping": {"pairs": ["DIFF-20"], "status": "closed_no_grouping_bug"},
+    "v2_p0_source_walkthrough": {
+      "pairs": ["DIFF-6", "DIFF-4", "DIFF-5", "DIFF-1", "DIFF-12", "DIFF-19"],
+      "purpose": "原始 GEE 程序逐步对照：判断结构差异来自真实分析逻辑还是抽取/标注差异",
+      "packet": "Q2_PRIORITY_VERIFICATION_PACKET_V1.md",
+      "status": "pending"
+    },
+    "v3_same_semantic_checks": {
+      "pairs": ["SAME-15", "SAME-19", "SAME-11", "SAME-9"],
+      "purpose": "标签表达力语义核验（分类/回归抹平、时间聚合多维、参数语义、指标完整性）",
+      "packet": "Q2_PRIORITY_VERIFICATION_PACKET_V1.md (SAME-15/19)",
+      "status": "complete_4_of_4",
+      "findings": "Q2_V3_WALKTHROUGH_FINDINGS_V1.md",
+      "outcome": "4/4 结构相同在源码级成立；1/4 描述保真度缺陷（SAME-15 指令 A 目标变量写错，源码自证为 biomass）；字面量层承载时间范围/命名/循环参数语义，支持双层表示分工"
+    },
+    "second_batch": {"pairs": ["DIFF-2", "DIFF-3", "DIFF-7", "DIFF-8", "DIFF-9", "DIFF-10", "DIFF-13", "DIFF-16"], "status": "gated_on_v2_p0"},
+    "discipline": "先核验原始工作流，不因样本判读立即调整训练损失或重采样（owner 原文）"
+  },
+  "pairs": [
+    {"id": "SAME-1", "group": "same_template", "jaccard": 0.7922, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "年份/传感器变化不必然改变高层步骤；QA 波段与传感器适配实现差异粗标签不可判"},
+    {"id": "SAME-2", "group": "same_template", "jaccard": 0.75, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "整体框架可同；第二个 AGGREGATION 是否覆盖面积统计+精度评估无法确认"},
+    {"id": "SAME-3", "group": "same_template", "jaccard": 0.9259, "verdict": "accept", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "核心步骤一致；B 明确波段阈值但未要求新分析阶段，链相同合理"},
+    {"id": "SAME-4", "group": "same_template", "jaccard": 0.7921, "verdict": "accept", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "PA 指数逻辑一致；输出文件名差异不构成新分析步骤"},
+    {"id": "SAME-5", "group": "same_template", "jaccard": 0.8493, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "影像集合裁剪 vs 用户区域裁剪表述差异；云掩膜与 NDVI 计算未在粗链清晰体现"},
+    {"id": "SAME-6", "group": "same_template", "jaccard": 0.8229, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "possibly_insufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "Surat 全区域 vs Jaipur 30km 缓冲构造方式可能不同；链未体现多年份与指数融合完整逻辑，粗标签表达损失明显"},
+    {"id": "SAME-7", "group": "same_template", "jaccard": 0.7582, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "类别定义/纹理特征生成方式有差异；链重复片段无法确认对应真实数据流"},
+    {"id": "SAME-8", "group": "same_template", "jaccard": 0.7571, "verdict": "accept", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "B 描述更明确但未新增必须改变高层结构的分析目标"},
+    {"id": "SAME-9", "group": "same_template", "jaccard": 0.8519, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "possibly_insufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": "v3", "note": "A 三指标明确、B 概括；多个 AGGREGATION 不能证明三指标及时间维度完整表达（指标完整性核验）"},
+    {"id": "SAME-10", "group": "same_template", "jaccard": 0.7564, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "possibly_insufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "三步粗链不足以确认 RGB 中值合成/NDVI 时序/首景光谱图及依赖保留"},
+    {"id": "SAME-11", "group": "same_template", "jaccard": 0.7714, "verdict": "accept", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": "v3", "note": "高层结构相同合理；awei_ns vs awei 变体与阈值定义属参数/算法语义层核验点，非结构问题"},
+    {"id": "SAME-12", "group": "same_template", "jaccard": 0.8732, "verdict": "accept", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "研究区变化不改变高层结构（分析结构层正例）"},
+    {"id": "SAME-13", "group": "same_template", "jaccard": 0.8592, "verdict": "accept", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "类别名称描述变化不改变整体分类流程"},
+    {"id": "SAME-14", "group": "same_template", "jaccard": 0.7867, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "B 明确测试集验证与研究区裁剪，A 未明确；需确认链是否遗漏这些步骤（参数与任务约束层）"},
+    {"id": "SAME-15", "group": "same_template", "jaccard": 0.8491, "verdict": "conditional_accept_priority_check", "requires_structure_change": "uncertain", "label_expressiveness": "insufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": "v3_first", "note": "本批最重要核验对象：GEDI L4B 平均冠层高度 vs 平均生物量——目标变量语义不同；CLASSIFICATION 无法区分分类与回归；若确认将是标签粒度不足的直接证据"},
+    {"id": "SAME-16", "group": "same_template", "jaccard": 0.8537, "verdict": "accept", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "样本加载/筛选/划分/导出一致；类别与区域表述变化不改结构"},
+    {"id": "SAME-17", "group": "same_template", "jaccard": 0.8868, "verdict": "accept", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "与 SAME-9 同类；dams vs reservoirs 措辞变化不要求结构变化"},
+    {"id": "SAME-18", "group": "same_template", "jaccard": 0.7534, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "指数清单与研究区变化；需核验不同指数波段、特征生成及分类输入"},
+    {"id": "SAME-19", "group": "same_template", "jaccard": 0.8085, "verdict": "conditional_accept_priority_check", "requires_structure_change": "uncertain", "label_expressiveness": "insufficient", "chain_diff_evidence": "not_applicable_chain_identical", "priority": "v3_first", "note": "日尺度/月度累计/年度累计/动画步长多个时间维度被同一 AGGREGATION 概括；模型预测对标签也可能生成错误流程；三步粗链不足以验证时间语义保留"},
+    {"id": "SAME-20", "group": "same_template", "jaccard": 0.7818, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "not_applicable_chain_identical", "priority": null, "note": "云影屏蔽（B 有 A 无）与验证输出差异需结合原始任务和程序判断"},
+    {"id": "DIFF-1", "group": "diff_template", "jaccard": 0.8226, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "unsupported", "priority": "v2_p0", "note": "末尾差异（A 多 RASTER_LOAD->AGGREGATION）缺少明确任务依据；A 的派生指标 FeatureCollection 是否对应额外统计待核"},
+    {"id": "DIFF-2", "group": "diff_template", "jaccard": 0.75, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "时间范围差异不足以证明结构必变；COLLECTION_MGMT/ATTRIBUTE_FILTER 差异可能标注不一致"},
+    {"id": "DIFF-3", "group": "diff_template", "jaccard": 0.7857, "verdict": "likely_reasonable", "requires_structure_change": "yes", "label_expressiveness": "sufficient", "chain_diff_evidence": "supported", "priority": "second_batch", "note": "B 增 S1 VV 后向散射+DEM 入特征栈，A 链未体现；需检查 A 为何未体现训练/验证步骤"},
+    {"id": "DIFF-4", "group": "diff_template", "jaccard": 0.8478, "verdict": "suspicious", "requires_structure_change": "no", "label_expressiveness": "uncertain", "chain_diff_evidence": "unsupported", "priority": "v2_p0", "note": "A 多出 VECTOR_LOAD->ATTRIBUTE_FILTER->CLASSIFICATION，指令未解释额外分析步骤；疑似结构或标签映射差异"},
+    {"id": "DIFF-5", "group": "diff_template", "jaccard": 0.7937, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "v2_p0", "note": "AGGREGATION 与 BAND_ARITHMETIC 相对顺序变化；false-color composites 措辞差异不足以解释，需查实际数据依赖"},
+    {"id": "DIFF-6", "group": "diff_template", "jaccard": 0.8163, "verdict": "suspicious", "requires_structure_change": "no", "label_expressiveness": "uncertain", "chain_diff_evidence": "unsupported", "priority": "v2_p0_first", "note": "最高优先：指令几乎一致而 A 链 8 步 vs B 链 4 步；优先核查流程截断、步骤抽取遗漏或标签映射不一致（结构抽取一致性最好的检查样本）"},
+    {"id": "DIFF-7", "group": "diff_template", "jaccard": 0.7547, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "A 多 ATTRIBUTE_FILTER 但 B 反而明确提到辅助数据；需检查辅助数据与掩膜处理是否真的导致不同操作"},
+    {"id": "DIFF-8", "group": "diff_template", "jaccard": 0.7959, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "B 末尾多 AGGREGATION->VECTOR_LOAD；导出本身不自动解释这两个标签，需查是否对应实际必要操作"},
+    {"id": "DIFF-9", "group": "diff_template", "jaccard": 0.84, "verdict": "conditional_accept", "requires_structure_change": "yes", "label_expressiveness": "possibly_insufficient", "chain_diff_evidence": "supported", "priority": "second_batch", "note": "B 明确计算作物系数 Kc 而 A 未明确；B 额外步骤可能有据，但必须确认 A 是否隐含计算 Kc，不能仅凭文本缺失断定 A 结构错误"},
+    {"id": "DIFF-10", "group": "diff_template", "jaccard": 0.7692, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "地理范围与分组字段（subregion vs continent）变化可能影响统计组织但不必然改变结构；MASKING 差异待核"},
+    {"id": "DIFF-11", "group": "diff_template", "jaccard": 0.8605, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "多传感器表述与 MASKING/BAND_SELECT/EXPORT_OUTPUT 分布差异的对应关系不明确"},
+    {"id": "DIFF-12", "group": "diff_template", "jaccard": 0.75, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "unsupported", "priority": "v2_p0", "note": "A 在 GEOMETRY_DEFINE 后多一个 AGGREGATION；田块缓冲/日尺度拼接/区域均值统计间是否有真实额外操作待核（局部操作标注差异）"},
+    {"id": "DIFF-13", "group": "diff_template", "jaccard": 0.8387, "verdict": "conditional_accept", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "传感器（L5 vs L7）与时段变化影响筛选但不必改变插值/平滑核心流程；A 额外 VECTOR_LOAD 是否独立研究区加载待核"},
+    {"id": "DIFF-14", "group": "diff_template", "jaccard": 0.86, "verdict": "conditional_accept", "requires_structure_change": "yes", "label_expressiveness": "possibly_insufficient", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "85% 最大向后滚动 NDVI 阈值 vs 局部最大值百分比阈值——峰值检测定义可能不同；A 无 BAND_ARITHMETIC 而 B 有，值得核查抽取一致性"},
+    {"id": "DIFF-15", "group": "diff_template", "jaccard": 0.7875, "verdict": "conditional_accept", "requires_structure_change": "yes", "label_expressiveness": "insufficient", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "MODIS 派生土地覆盖标签 vs 分层样本训练——训练数据准备流程不同；ATTRIBUTE_FILTER/AGGREGATION 无法区分两种标签构建方式"},
+    {"id": "DIFF-16", "group": "diff_template", "jaccard": 0.7653, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "VECTOR_LOAD 与 ATTRIBUTE_FILTER 顺序互换；是否反映真实依赖关系待核（数据条件变化与步骤变化需分开）"},
+    {"id": "DIFF-17", "group": "diff_template", "jaccard": 0.7755, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "uncertain", "chain_diff_evidence": "indeterminate", "priority": "second_batch", "note": "开头 RASTER_LOAD/AGGREGATION/GEOMETRY_DEFINE 顺序不同；研究区输入与月度统计的真实依赖待核"},
+    {"id": "DIFF-18", "group": "diff_template", "jaccard": 0.7846, "verdict": "likely_reasonable", "requires_structure_change": "yes", "label_expressiveness": "sufficient", "chain_diff_evidence": "supported", "priority": "second_batch", "note": "B 点检查器对应多出 GEOMETRY_DEFINE->AGGREGATION；但 A 也提到点击位置时序图，需确认是否 A 标签遗漏而非 B 独有"},
+    {"id": "DIFF-19", "group": "diff_template", "jaccard": 0.7857, "verdict": "suspicious", "requires_structure_change": "uncertain", "label_expressiveness": "possibly_insufficient", "chain_diff_evidence": "unsupported", "priority": "v2_p0", "note": "B 双阈值条件（delta NBR>0.3 且 post-fire NBR<-0.02）未对应结构增量；A 反多 GEOMETRY_DEFINE；粗标签表达能力可能不足（owner 三字段示例样本）"},
+    {"id": "DIFF-20", "group": "diff_template", "jaccard": 0.9184, "verdict": "weak_variant", "requires_structure_change": "no", "label_expressiveness": "sufficient", "chain_diff_evidence": "indeterminate", "priority": "v1_closed", "note": "机械修正：链差异=1 个重复季节块（7v6），非完全相同；分组机械有效；属局部小变体，保留在近重复分析但不作结构不同强正例"}
+  ]
+}

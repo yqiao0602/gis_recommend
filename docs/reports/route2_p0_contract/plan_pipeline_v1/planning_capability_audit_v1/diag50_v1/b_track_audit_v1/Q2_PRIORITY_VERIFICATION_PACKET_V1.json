@@ -1,0 +1,1041 @@
+{
+ "artifact": "Q2_PRIORITY_VERIFICATION_PACKET_V1",
+ "date": "2026-10-17",
+ "pool": "E:\\02_projects\\03_PythonProject\\Operator-recommend-system\\Algorithm_classification\\04_DIAG_WORK\\b1_gee_stage_train.jsonl",
+ "pool_rows_scanned": 128447,
+ "read_only": true,
+ "queue_order": [
+  "DIFF-6",
+  "DIFF-4",
+  "DIFF-5",
+  "DIFF-1",
+  "DIFF-12",
+  "DIFF-19",
+  "SAME-15",
+  "SAME-19",
+  "SAME-11",
+  "SAME-9"
+ ],
+ "second_batch": [
+  "DIFF-2",
+  "DIFF-3",
+  "DIFF-7",
+  "DIFF-8",
+  "DIFF-9",
+  "DIFF-10",
+  "DIFF-13",
+  "DIFF-16"
+ ],
+ "max_chains_per_side": 3,
+ "adjudication_ref": "Q2_OWNER_ADJUDICATION_V1.json",
+ "pairs": [
+  {
+   "id": "DIFF-6",
+   "group": "diff_template",
+   "jaccard": 0.8163,
+   "verdict": "suspicious",
+   "owner_note": "最高优先：指令几乎一致而 A 链 8 步 vs B 链 4 步；优先核查流程截断、步骤抽取遗漏或标签映射不一致（结构抽取一致性最好的检查样本）",
+   "queue": "v2_p0_source_walkthrough",
+   "side_a": {
+    "normalized_instruction": "task: estimate nitrogen content from ndvi estimate nitrogen content (kg/ha) in agricultural areas using sentinel-2 surface reflectance data. it computes ndvi from bands b4 and b5, applies cloud masking using qa60 and b1 band thresholds, then derives a nitrogen indicator (tc) via a linear transformation of ndvi (tc = (224.76 - 1.1995)*ndvi). the output includes a time-series scatter chart of median tc over user-selected regions (e.g., mbita point, winam gulf), an interactive map layer visualizing tc with a custom color palette, and a clickable chart that displays the corresponding tc image upon selection. users can switch analysis scales and reset the view.",
+    "rle": "AGGREGATION -> ATTRIBUTE_FILTER -> RASTER_LOAD -> SPATIAL_CLIP -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER",
+    "rle_steps": 8,
+    "rle_rendered_runs": "AGGREGATION -> ATTRIBUTE_FILTER -> RASTER_LOAD -> SPATIAL_CLIP -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land surface/agriculture indicators"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 2,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_213853",
+      "task_type": "Land surface/agriculture indicators",
+      "run_cap_applied": false,
+      "canon_hash16": "0ecfe40016fe7a4a",
+      "canon_chars": 208,
+      "canonical_chain": "ee.Reducer.median -> ee.Reducer.mean -> ee.Filter.equals -> ee.Image -> ee.Image.clip -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.lt -> ee.Dictionary"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: estimate nitrogen content from ndvi estimate nitrogen content (kg/ha) in agricultural areas using sentinel-2 surface reflectance data. it computes ndvi from bands b4 and b5, applies cloud masking using qa60 and b1 band thresholds, then derives a nitrogen-related index (tc) via a linear equation based on ndvi: tc = (224.76 - 1.1995) * ndvi. the output includes a time-series scatter chart of median tc values over user-selected regions (e.g., mbita point, winam gulf), an interactive map layer visualizing tc with a custom color palette, and a clickable chart that displays the corresponding tc image upon selection. users can switch analysis scales and interact with the time series to explore spatial and temporal patterns in crop nitrogen levels.",
+    "rle": "AGGREGATION -> ATTRIBUTE_FILTER -> RASTER_LOAD -> SPATIAL_CLIP",
+    "rle_steps": 4,
+    "rle_rendered_runs": "AGGREGATION -> ATTRIBUTE_FILTER -> RASTER_LOAD -> SPATIAL_CLIP",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land surface/agriculture indicators"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 4,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_213841",
+      "task_type": "Land surface/agriculture indicators",
+      "run_cap_applied": false,
+      "canon_hash16": "983dea8767d41b0c",
+      "canon_chars": 85,
+      "canonical_chain": "ee.Reducer.median -> ee.Reducer.mean -> ee.Filter.equals -> ee.Image -> ee.Image.clip"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-4",
+   "group": "diff_template",
+   "jaccard": 0.8478,
+   "verdict": "suspicious",
+   "owner_note": "A 多出 VECTOR_LOAD->ATTRIBUTE_FILTER->CLASSIFICATION，指令未解释额外分析步骤；疑似结构或标签映射差异",
+   "queue": "v2_p0_source_walkthrough",
+   "side_a": {
+    "normalized_instruction": "task: classify land cover types classify land cover into five classes—water, tall vegetation, exposed soil, low vegetation, and built-up structures—using a random forest classifier trained on manually labeled sample regions and applied to a satellite image. the output is a classified map visualized with a custom color palette.",
+    "rle": "CLASSIFICATION -> OTHER_UNMAPPED -> RASTER_LOAD -> AGGREGATION -> REGIONAL_STATS -> RASTER_LOAD -> THRESHOLD_LOGIC -> AGGREGATION -> VECTOR_LOAD -> COLLECTION_MGMT -> VECTOR_LOAD -> ATTRIBUTE_FILTER -> CLASSIFICATION",
+    "rle_steps": 13,
+    "rle_rendered_runs": "CLASSIFICATION -> OTHER_UNMAPPED -> RASTER_LOAD -> AGGREGATION -> REGIONAL_STATS -> RASTER_LOAD -> THRESHOLD_LOGIC -> AGGREGATION -> VECTOR_LOAD -> COLLECTION_MGMT -> VECTOR_LOAD -> ATTRIBUTE_FILTER -> CLASSIFICATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 1,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_111047",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "7c99128fe565dbae",
+      "canon_chars": 573,
+      "canonical_chain": "ee.Clusterer.wekaKMeans -> ee.Clusterer.train -> ee.Image -> ee.Reducer.max -> ee.Image.reduceRegion -> ee.List.sequence -> ee.Image -> ee.Number -> ee.Number.toInt -> ee.Image.eq -> ee.Reducer.mean -> ee.Reducer.sum -> ee.Reducer.sum -> ee.Reducer.sum -> ee.Number -> ee.Number.multiply -> ee.Number.toLong -> ee.FeatureCollection -> ee.FeatureCollection -> ee.FeatureCollection.first -> ee.FeatureCollection.get -> ee.FeatureCollection -> ee.Number -> ee.Number.multiply -> ee.Filter.lt -> ee.Filter.gte -> ee.Filter.lt -> ee.Filter.gte -> ee.Classifier.smileRandomForest"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: classify land cover types classify land cover into five classes (water, tall vegetation, exposed soil, low vegetation, and built-up areas) using a random forest classifier trained on manually labeled sample regions and applied to a satellite image. the output is a classified image map with distinct color-coded land cover types.",
+    "rle": "CLASSIFICATION -> OTHER_UNMAPPED -> RASTER_LOAD -> AGGREGATION -> REGIONAL_STATS -> RASTER_LOAD -> THRESHOLD_LOGIC -> AGGREGATION -> CLASSIFICATION",
+    "rle_steps": 9,
+    "rle_rendered_runs": "CLASSIFICATION -> OTHER_UNMAPPED -> RASTER_LOAD -> AGGREGATION -> REGIONAL_STATS -> RASTER_LOAD -> THRESHOLD_LOGIC -> AGGREGATION -> CLASSIFICATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 1,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_111048",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "53c4cfc8b371de30",
+      "canon_chars": 287,
+      "canonical_chain": "ee.Clusterer.wekaKMeans -> ee.Clusterer.train -> ee.Image -> ee.Reducer.max -> ee.Image.reduceRegion -> ee.List.sequence -> ee.Image -> ee.Number -> ee.Number.toInt -> ee.Image.eq -> ee.Reducer.mean -> ee.Reducer.sum -> ee.Reducer.sum -> ee.Reducer.sum -> ee.Classifier.smileRandomForest"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-5",
+   "group": "diff_template",
+   "jaccard": 0.7937,
+   "verdict": "suspicious",
+   "owner_note": "AGGREGATION 与 BAND_ARITHMETIC 相对顺序变化；false-color composites 措辞差异不足以解释，需查实际数据依赖",
+   "queue": "v2_p0_source_walkthrough",
+   "side_a": {
+    "normalized_instruction": "task: analyze forest cover loss and gain analyze forest cover change in the republic of the congo using the hansen global forest change dataset from 2015. it visualizes tree cover in 2000, detects forest loss and gain events, computes total area of forest loss both nationally and within protected areas, and compares spatial patterns using masked image layers. the outputs include multiple map visualizations of forest attributes, binary masks for loss/gain, and printed statistics of lost forest area in square meters for the country and its protected regions.",
+    "rle": "ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> ATTRIBUTE_FILTER -> VECTOR_LOAD -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 10,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> ATTRIBUTE_FILTER -> VECTOR_LOAD -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Habitat conversion/fragmentation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 3,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_178822",
+      "task_type": "Habitat conversion/fragmentation",
+      "run_cap_applied": false,
+      "canon_hash16": "7730d89bd4ee1f8c",
+      "canon_chars": 269,
+      "canonical_chain": "ee.Filter.eq -> ee.Reducer.sum -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Filter.eq -> ee.FeatureCollection -> ee.Filter.bounds -> ee.Filter.neq -> ee.Filter.lt -> ee.Filter.and -> ee.FeatureCollection.filter -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Reducer.sum"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: analyze forest cover loss and gain analyze forest cover change in the republic of the congo using the umd hansen global forest change dataset from 2015. it visualizes tree cover in 2000, detects forest loss and gain events, computes total area of forest loss both nationally and within protected areas, and compares spatial patterns using false-color composites and masked layers. outputs include multiple map layers for visualization, as well as printed statistics of forest loss in square meters for the country and its protected regions.",
+    "rle": "ATTRIBUTE_FILTER -> AGGREGATION -> ATTRIBUTE_FILTER -> BAND_ARITHMETIC -> AGGREGATION -> ATTRIBUTE_FILTER -> VECTOR_LOAD -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 11,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> AGGREGATION -> ATTRIBUTE_FILTER -> BAND_ARITHMETIC -> AGGREGATION -> ATTRIBUTE_FILTER -> VECTOR_LOAD -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Habitat conversion/fragmentation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 8,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_292317",
+      "task_type": "Habitat conversion/fragmentation",
+      "run_cap_applied": false,
+      "canon_hash16": "82dbae5002b4a198",
+      "canon_chars": 285,
+      "canonical_chain": "ee.Filter.eq -> ee.Reducer.sum -> ee.Filter.eq -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Filter.eq -> ee.FeatureCollection -> ee.Filter.bounds -> ee.Filter.neq -> ee.Filter.lt -> ee.Filter.and -> ee.FeatureCollection.filter -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Reducer.sum"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-1",
+   "group": "diff_template",
+   "jaccard": 0.8226,
+   "verdict": "suspicious",
+   "owner_note": "末尾差异（A 多 RASTER_LOAD->AGGREGATION）缺少明确任务依据；A 的派生指标 FeatureCollection 是否对应额外统计待核",
+   "queue": "v2_p0_source_walkthrough",
+   "side_a": {
+    "normalized_instruction": "task: analyze elevation precipitation and vegetation patterns analyze relationships between mean elevation, annual precipitation, tree cover percentage, and mean ndvi across swiss cantons. it computes zonal statistics using dem, worldclim, esa worldcover, and sentinel-2 data, then generates bar charts for each variable per canton, identifies cantons with maximum and minimum values, and calculates pearson correlation coefficients and scatterplots between precipitation and other variables. outputs include thematic maps, statistical charts, and feature collection with derived metrics.",
+    "rle": "ATTRIBUTE_FILTER -> AGGREGATION -> ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> COLLECTION_MGMT -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> AGGREGATION",
+    "rle_steps": 14,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> AGGREGATION -> ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> COLLECTION_MGMT -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land surface/agriculture indicators"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 1,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_258065",
+      "task_type": "Land surface/agriculture indicators",
+      "run_cap_applied": false,
+      "canon_hash16": "291553588bbb35fd",
+      "canon_chars": 477,
+      "canonical_chain": "ee.Filter.eq -> ee.Filter.eq -> ee.String -> ee.String.cat -> ee.String -> ee.String.cat -> ee.String -> ee.String.cat -> ee.Array -> ee.Reducer.pearsonsCorrelation -> ee.Array -> ee.Array.get -> ee.String -> ee.String.cat -> ee.Filter.eq -> ee.Reducer.mean -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Reducer.mean -> ee.ImageCollection -> ee.ImageCollection.first -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Image -> ee.Reducer.mean"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: analyze elevation precipitation and vegetation patterns analyze relationships between mean elevation, annual precipitation, tree cover percentage, and mean ndvi across swiss cantons. it computes zonal statistics using dem, worldclim, worldcover, and sentinel-2 data, then generates bar charts for each variable per canton, identifies cantons with maximum and minimum values, and computes pearson correlation and scatterplots between variables. outputs include visualizations (bar charts, scatterplots, maps) and statistical summaries.",
+    "rle": "ATTRIBUTE_FILTER -> AGGREGATION -> ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> COLLECTION_MGMT -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 12,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> AGGREGATION -> ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> COLLECTION_MGMT -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land surface/agriculture indicators"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 5,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_220359",
+      "task_type": "Land surface/agriculture indicators",
+      "run_cap_applied": false,
+      "canon_hash16": "3338b0111acd7b70",
+      "canon_chars": 465,
+      "canonical_chain": "ee.Filter.eq -> ee.Filter.eq -> ee.String -> ee.String.cat -> ee.String -> ee.String.cat -> ee.String -> ee.String.cat -> ee.Array -> ee.Reducer.pearsonsCorrelation -> ee.Array -> ee.Array.get -> ee.String -> ee.String.cat -> ee.Filter.eq -> ee.Reducer.mean -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Reducer.mean -> ee.ImageCollection -> ee.ImageCollection.first -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Reducer.mean"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-12",
+   "group": "diff_template",
+   "jaccard": 0.75,
+   "verdict": "suspicious",
+   "owner_note": "A 在 GEOMETRY_DEFINE 后多一个 AGGREGATION；田块缓冲/日尺度拼接/区域均值统计间是否有真实额外操作待核（局部操作标注差异）",
+   "queue": "v2_p0_source_walkthrough",
+   "side_a": {
+    "normalized_instruction": "task: extract ndvi and evi time series for agricultural fields extract landsat 7 surface reflectance data over four agricultural fields in grant county, buffers them into small tiles, computes ndvi and evi vegetation indices, mosaics daily images, and reduces the collection by computing mean pixel values within each field. the output is a csv file containing time-series ndvi, evi, doy, image_year, system_start_time, and original field properties (id, county, croptyp, irrigtn, lstsrvd) exported to google drive.",
+    "rle": "GEOMETRY_DEFINE -> AGGREGATION -> BAND_ARITHMETIC -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ITERATIVE_APPLY -> AGGREGATION -> VECTOR_LOAD -> OTHER_UNMAPPED",
+    "rle_steps": 10,
+    "rle_rendered_runs": "GEOMETRY_DEFINE -> AGGREGATION -> BAND_ARITHMETIC -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ITERATIVE_APPLY -> AGGREGATION -> VECTOR_LOAD -> OTHER_UNMAPPED",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land surface/agriculture indicators"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 7,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_146442",
+      "task_type": "Land surface/agriculture indicators",
+      "run_cap_applied": false,
+      "canon_hash16": "a7cb579e1bfadbc4",
+      "canon_chars": 602,
+      "canonical_chain": "ee.Geometry.Point -> ee.Geometry.buffer -> ee.Geometry.bounds -> ee.Geometry.Point -> ee.Geometry.buffer -> ee.Geometry.bounds -> ee.Geometry.Point -> ee.Geometry.buffer -> ee.Geometry.bounds -> ee.Geometry.Point -> ee.Geometry.buffer -> ee.Geometry.bounds -> ee.Reducer.min -> ee.Image.constant -> ee.Image.uint16 -> ee.Date -> ee.Image.constant -> ee.Image.uint16 -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.ImageCollection.map -> ee.List.sequence -> ee.Algorithms.If -> ee.List -> ee.List -> ee.Reducer.mean -> ee.Feature -> ee.Feature.setGeometry"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: extract ndvi and evi time series for agricultural fields extract landsat 7 collection 2 level 2 surface reflectance data over four agricultural fields in grant county, computes ndvi and evi vegetation indices, mosaics daily images, and reduces them using mean values over buffered field geometries. the output is a csv file containing time-series ndvi, evi, doy, image_year, system_start_time, and original field properties (id, county, croptyp, irrigtn, lstsrvd) for each field.",
+    "rle": "GEOMETRY_DEFINE -> BAND_ARITHMETIC -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ITERATIVE_APPLY -> AGGREGATION -> VECTOR_LOAD -> OTHER_UNMAPPED",
+    "rle_steps": 9,
+    "rle_rendered_runs": "GEOMETRY_DEFINE -> BAND_ARITHMETIC -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ITERATIVE_APPLY -> AGGREGATION -> VECTOR_LOAD -> OTHER_UNMAPPED",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Vegetation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 22,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_146438",
+      "task_type": "Vegetation",
+      "run_cap_applied": false,
+      "canon_hash16": "9bfa45d6a5f7df4a",
+      "canon_chars": 584,
+      "canonical_chain": "ee.Geometry.Point -> ee.Geometry.buffer -> ee.Geometry.bounds -> ee.Geometry.Point -> ee.Geometry.buffer -> ee.Geometry.bounds -> ee.Geometry.Point -> ee.Geometry.buffer -> ee.Geometry.bounds -> ee.Geometry.Point -> ee.Geometry.buffer -> ee.Geometry.bounds -> ee.Image.constant -> ee.Image.uint16 -> ee.Date -> ee.Image.constant -> ee.Image.uint16 -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.ImageCollection.map -> ee.List.sequence -> ee.Algorithms.If -> ee.List -> ee.List -> ee.Reducer.mean -> ee.Feature -> ee.Feature.setGeometry"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-19",
+   "group": "diff_template",
+   "jaccard": 0.7857,
+   "verdict": "suspicious",
+   "owner_note": "B 双阈值条件（delta NBR>0.3 且 post-fire NBR<-0.02）未对应结构增量；A 反多 GEOMETRY_DEFINE；粗标签表达能力可能不足（owner 三字段示例样本）",
+   "queue": "v2_p0_source_walkthrough",
+   "side_a": {
+    "normalized_instruction": "task: identify burnt areas after fire identify burnt areas in bandipur national park by computing the difference in normalized burn ratio (nbr) between pre-fire and post-fire sentinel-2 images, applying cloud masking, water masking, and nbr thresholding, then calculates the total burnt area in hectares.",
+    "rle": "ATTRIBUTE_FILTER -> RASTER_LOAD -> GEOMETRY_DEFINE -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 5,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> RASTER_LOAD -> GEOMETRY_DEFINE -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Natural hazards"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 2,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_73545",
+      "task_type": "Natural hazards",
+      "run_cap_applied": false,
+      "canon_hash16": "bc190a298c063b91",
+      "canon_chars": 118,
+      "canonical_chain": "ee.Filter.eq -> ee.Image -> ee.Geometry.Point -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Number -> ee.Number.divide"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: identify burnt areas from fires identify burnt areas in bandipur national park by computing the difference in normalized burn ratio (nbr) between pre-fire and post-fire sentinel-2 imagery, applying cloud masking, water masking, and thresholding (delta nbr > 0.3 and post-fire nbr < -0.02), then calculates the total burnt area in hectares.",
+    "rle": "ATTRIBUTE_FILTER -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 4,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Natural hazards"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 69,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_73548",
+      "task_type": "Natural hazards",
+      "run_cap_applied": false,
+      "canon_hash16": "236a6d2a87396af6",
+      "canon_chars": 97,
+      "canonical_chain": "ee.Filter.eq -> ee.Image -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Number -> ee.Number.divide"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "SAME-15",
+   "group": "same_template",
+   "jaccard": 0.8491,
+   "verdict": "conditional_accept_priority_check",
+   "owner_note": "本批最重要核验对象：GEDI L4B 平均冠层高度 vs 平均生物量——目标变量语义不同；CLASSIFICATION 无法区分分类与回归；若确认将是标签粒度不足的直接证据",
+   "queue": "v3_same_semantic_checks",
+   "side_a": {
+    "normalized_instruction": "task: estimate aboveground biomass estimate aboveground biomass (agbd) in mg/ha using sentinel-1 and sentinel-2 satellite data, srtm elevation and slope, and esa worldcover land classification as predictors, trained on gedi l4b mean canopy height (mu) data through a random forest regression model. the output is a spatially continuous agbd map clipped to the study boundary and exported to google drive.",
+    "rle": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION -> RASTER_LOAD -> ATTRIBUTE_FILTER -> TERRAIN_DERIVED -> RASTER_LOAD -> ATTRIBUTE_FILTER -> CLASSIFICATION -> AGGREGATION -> BAND_ARITHMETIC",
+    "rle_steps": 12,
+    "rle_rendered_runs": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION -> RASTER_LOAD -> ATTRIBUTE_FILTER -> TERRAIN_DERIVED -> RASTER_LOAD -> ATTRIBUTE_FILTER -> CLASSIFICATION -> AGGREGATION -> BAND_ARITHMETIC",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Forest science"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 17,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_21438",
+      "task_type": "Forest science",
+      "run_cap_applied": false,
+      "canon_hash16": "6d85f81095ae36f6",
+      "canon_chars": 603,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.Filter.listContains -> ee.ImageCollection.filter -> ee.Filter.listContains -> ee.ImageCollection.filter -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.Reducer.percentile -> ee.Image -> ee.Number -> ee.Number.pow -> ee.Number -> ee.Number.pow -> ee.Filter.lt -> ee.Terrain.slope -> ee.ImageCollection -> ee.Filter.lt -> ee.Filter.gte -> ee.Classifier.smileRandomForest -> ee.Classifier.setOutputMode -> ee.Reducer.min -> ee.Reducer.max -> ee.Image.pixelLonLat -> ee.Dictionary -> ee.Dictionary.get"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: estimate aboveground biomass estimate aboveground biomass (agbd) in mg/ha using sentinel-1 and sentinel-2 satellite data, srtm elevation and slope, and esa worldcover land classification as predictor variables, trained on gedi l4b mean biomass (mu) data through a random forest regression model. the output is a spatially continuous agbd map exported to google drive.",
+    "rle": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION -> RASTER_LOAD -> ATTRIBUTE_FILTER -> TERRAIN_DERIVED -> RASTER_LOAD -> ATTRIBUTE_FILTER -> CLASSIFICATION -> AGGREGATION -> BAND_ARITHMETIC",
+    "rle_steps": 12,
+    "rle_rendered_runs": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION -> RASTER_LOAD -> ATTRIBUTE_FILTER -> TERRAIN_DERIVED -> RASTER_LOAD -> ATTRIBUTE_FILTER -> CLASSIFICATION -> AGGREGATION -> BAND_ARITHMETIC",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Forest science"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 17,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_72061",
+      "task_type": "Forest science",
+      "run_cap_applied": false,
+      "canon_hash16": "6d85f81095ae36f6",
+      "canon_chars": 603,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.Filter.listContains -> ee.ImageCollection.filter -> ee.Filter.listContains -> ee.ImageCollection.filter -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.Reducer.percentile -> ee.Image -> ee.Number -> ee.Number.pow -> ee.Number -> ee.Number.pow -> ee.Filter.lt -> ee.Terrain.slope -> ee.ImageCollection -> ee.Filter.lt -> ee.Filter.gte -> ee.Classifier.smileRandomForest -> ee.Classifier.setOutputMode -> ee.Reducer.min -> ee.Reducer.max -> ee.Image.pixelLonLat -> ee.Dictionary -> ee.Dictionary.get"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": true,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "SAME-19",
+   "group": "same_template",
+   "jaccard": 0.8085,
+   "verdict": "conditional_accept_priority_check",
+   "owner_note": "日尺度/月度累计/年度累计/动画步长多个时间维度被同一 AGGREGATION 概括；模型预测对标签也可能生成错误流程；三步粗链不足以验证时间语义保留",
+   "queue": "v3_same_semantic_checks",
+   "side_a": {
+    "normalized_instruction": "task: analyze daily precipitation patterns analyze daily precipitation data from the chelsa dataset, masking values below 20 mm/day, computing monthly and annual summed precipitation, generating a time series chart for a user-defined point, and exporting animated videos of global and regional precipitation patterns (usa, europe, africa) at daily resolution.",
+    "rle": "TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION",
+    "rle_steps": 3,
+    "rle_rendered_runs": "TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Precipitation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 60,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_15683",
+      "task_type": "Precipitation",
+      "run_cap_applied": false,
+      "canon_hash16": "ced1af7b2177acb1",
+      "canon_chars": 58,
+      "canonical_chain": "ee.Filter.calendarRange -> ee.Filter.eq -> ee.Reducer.mean"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: analyze monthly precipitation patterns analyze daily precipitation data from the chelsa dataset for the year 2004, masking values below 20 mm, computing total annual and monthly summed precipitation, generating a time series chart for a user-defined point, and exporting animated videos of masked precipitation over global and regional extents (usa, europe, africa).",
+    "rle": "TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION",
+    "rle_steps": 3,
+    "rle_rendered_runs": "TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Precipitation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 60,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_15682",
+      "task_type": "Precipitation",
+      "run_cap_applied": false,
+      "canon_hash16": "ced1af7b2177acb1",
+      "canon_chars": 58,
+      "canonical_chain": "ee.Filter.calendarRange -> ee.Filter.eq -> ee.Reducer.mean"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": true,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "SAME-11",
+   "group": "same_template",
+   "jaccard": 0.7714,
+   "verdict": "accept",
+   "owner_note": "高层结构相同合理；awei_ns vs awei 变体与阈值定义属参数/算法语义层核验点，非结构问题",
+   "queue": "v3_same_semantic_checks",
+   "side_a": {
+    "normalized_instruction": "task: identify surface water area calculate the automated water extraction index (awei_ns) using green, nir, swir1, and swir2 bands from landsat 8 toa reflectance data to detect surface water. it creates a binary water mask (water vs non-water), computes the total water-covered area per image by multiplying the mask with pixel area, and adds this as a new band 'waterarea' to each image. the output is a time-series image collection with water area information and a chart showing the sum of water area over the roi across time.",
+    "rle": "RASTER_LOAD -> SPATIAL_FILTER -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 4,
+    "rle_rendered_runs": "RASTER_LOAD -> SPATIAL_FILTER -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Terrestrial hydrosphere indicators"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 49,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_62643",
+      "task_type": "Terrestrial hydrosphere indicators",
+      "run_cap_applied": false,
+      "canon_hash16": "1ac26606303a3dc3",
+      "canon_chars": 93,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.Image.pixelArea -> ee.Reducer.sum"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: identify water area using awei calculate the automated water extraction index (awei) using green, nir, swir1, and swir2 bands from landsat 8 toa reflectance data to detect surface water. it creates a binary water mask (awei > 0), computes the actual water-covered area in square meters per pixel, and adds this as a new band ('waterarea') to each image. the output is a time-series image collection with water area estimates, and a chart showing the total water area over time within the roi.",
+    "rle": "RASTER_LOAD -> SPATIAL_FILTER -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 4,
+    "rle_rendered_runs": "RASTER_LOAD -> SPATIAL_FILTER -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Terrestrial hydrosphere indicators"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 49,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_62640",
+      "task_type": "Terrestrial hydrosphere indicators",
+      "run_cap_applied": false,
+      "canon_hash16": "1ac26606303a3dc3",
+      "canon_chars": 93,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.Image.pixelArea -> ee.Reducer.sum"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": true,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "SAME-9",
+   "group": "same_template",
+   "jaccard": 0.8519,
+   "verdict": "conditional_accept",
+   "owner_note": "A 三指标明确、B 概括；多个 AGGREGATION 不能证明三指标及时间维度完整表达（指标完整性核验）",
+   "queue": "v3_same_semantic_checks",
+   "side_a": {
+    "normalized_instruction": "task: analyze dam eutrophication trends analyze long-term changes in water body area, chlorophyll-a concentration, and eutrophication percentage for a specific dam location using multi-sensor satellite data from 1987 to 2021. it computes ndwi for water extraction, estimates chlorophyll-a via a band ratio model, and calculates the proportion of eutrophic areas over time, generating time-series charts for area, chl-a, and eutrophication percentage.",
+    "rle": "VECTOR_LOAD -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> OTHER_UNMAPPED -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION",
+    "rle_steps": 62,
+    "rle_rendered_runs": "VECTOR_LOAD -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> OTHER_UNMAPPED -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Water quality"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 51,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_38679",
+      "task_type": "Water quality",
+      "run_cap_applied": false,
+      "canon_hash16": "48760ec9d3de6f8c",
+      "canon_chars": 2296,
+      "canonical_chain": "ee.Feature -> ee.Number -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.ImageCollection.sort -> ee.ImageCollection.first -> ee.Date -> ee.Date.format -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.PixelType.float -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.ImageCollection.sort -> ee.ImageCollection.first -> ee.Date -> ee.Date.format -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Number.divide -> ee.Reducer.mean -> ee.Algorithms.If -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Algorithms.If -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.ImageCollection.sort -> ee.ImageCollection.first -> ee.Date -> ee.Date.format -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Number.divide -> ee.Reducer.mean -> ee.Algorithms.If -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Algorithms.If -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.ImageCollection.sort -> ee.ImageCollection.first -> ee.Date -> ee.Date.format -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Number.divide -> ee.Reducer.mean -> ee.Algorithms.If -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Algorithms.If"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: analyze reservoir eutrophication trends analyze long-term changes in water body area, chlorophyll-a concentration, and eutrophication percentage in dams from 1987 to 2021 using multi-sensor satellite data. it computes ndwi for water extraction, estimates chlorophyll-a via a band ratio model, and calculates the proportion of eutrophic areas over time, generating time-series charts for each parameter.",
+    "rle": "VECTOR_LOAD -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> OTHER_UNMAPPED -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION",
+    "rle_steps": 62,
+    "rle_rendered_runs": "VECTOR_LOAD -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> OTHER_UNMAPPED -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> COLLECTION_MGMT -> RASTER_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> COMPOSITE -> BAND_ARITHMETIC -> MASKING -> AGGREGATION -> BAND_ARITHMETIC -> MASKING -> AGGREGATION",
+    "n_matching_rows": 3,
+    "task_types": [
+     "Water quality"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 51,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_38703",
+      "task_type": "Water quality",
+      "run_cap_applied": false,
+      "canon_hash16": "48760ec9d3de6f8c",
+      "canon_chars": 2296,
+      "canonical_chain": "ee.Feature -> ee.Number -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.ImageCollection.sort -> ee.ImageCollection.first -> ee.Date -> ee.Date.format -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.PixelType.float -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.ImageCollection.sort -> ee.ImageCollection.first -> ee.Date -> ee.Date.format -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Number.divide -> ee.Reducer.mean -> ee.Algorithms.If -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Algorithms.If -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.ImageCollection.sort -> ee.ImageCollection.first -> ee.Date -> ee.Date.format -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Number.divide -> ee.Reducer.mean -> ee.Algorithms.If -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Algorithms.If -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.Filter.calendarRange -> ee.ImageCollection.filter -> ee.ImageCollection.sort -> ee.ImageCollection.first -> ee.Date -> ee.Date.format -> ee.ImageCollection -> ee.ImageCollection.filterBounds -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Number.divide -> ee.Reducer.mean -> ee.Algorithms.If -> ee.Image.constant -> ee.Image.updateMask -> ee.Reducer.sum -> ee.Number -> ee.Algorithms.If"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": true,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-2",
+   "group": "diff_template",
+   "jaccard": 0.75,
+   "verdict": "suspicious",
+   "owner_note": "时间范围差异不足以证明结构必变；COLLECTION_MGMT/ATTRIBUTE_FILTER 差异可能标注不一致",
+   "queue": "second_batch",
+   "side_a": {
+    "normalized_instruction": "task: estimate fractional land water vegetation cover estimate the fractional coverage of land, water, floating aquatic vegetation (fav), and submerged aquatic vegetation (sav) in the gulf of mexico using landsat 5 surface reflectance data from 1984 to 1986. it computes spectral indices (ndvi, mndwi, ndbi), performs spectral unmixing with predefined endmembers, and combines results to generate a final composition map of land, fav, sav, and water fractions.",
+    "rle": "RASTER_LOAD -> TEMPORAL_FILTER -> AGGREGATION",
+    "rle_steps": 3,
+    "rle_rendered_runs": "RASTER_LOAD -> TEMPORAL_FILTER -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 1339,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_54185",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "6e323db2d1522808",
+      "canon_chars": 93,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.Reducer.median -> ee.Reducer.stdDev"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: estimate fractional land water vegetation cover estimate the fractional cover of land, floating aquatic vegetation (fav), submerged aquatic vegetation (sav), and water in the gulf of mexico using landsat 5 surface reflectance data. it computes spectral indices (ndvi, mndwi, ndbi), performs spectral unmixing, and combines results with masks to derive final composition maps.",
+    "rle": "RASTER_LOAD -> COLLECTION_MGMT -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION -> RASTER_LOAD",
+    "rle_steps": 6,
+    "rle_rendered_runs": "RASTER_LOAD -> COLLECTION_MGMT -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION -> RASTER_LOAD",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 8,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_54182",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "fa27590d84aac88c",
+      "canon_chars": 206,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.merge -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.Filter.not -> ee.ImageCollection.filter -> ee.Reducer.median -> ee.Reducer.stdDev -> ee.Image"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-3",
+   "group": "diff_template",
+   "jaccard": 0.7857,
+   "verdict": "likely_reasonable",
+   "owner_note": "B 增 S1 VV 后向散射+DEM 入特征栈，A 链未体现；需检查 A 为何未体现训练/验证步骤",
+   "queue": "second_batch",
+   "side_a": {
+    "normalized_instruction": "task: classify land cover in kilwa classify land cover in kilwa using sentinel-2 and sentinel-1 satellite imagery from 2018. it generates a median cloud-masked sentinel-2 composite, computes multiple spectral indices (ndvi, ndwi, ndwbi, mndwbi, and band ratios), and merges them into a feature stack. using training samples from 'kilwa' and validation from 'fc', it trains a random forest classifier to produce a classified land cover map with seven classes: cropland, grassland, forest, barren, water, built-up, and fallow land. the output includes the classified raster map, accuracy assessment via confusion matrix, and an export to google drive.",
+    "rle": "ATTRIBUTE_FILTER -> RASTER_LOAD -> AGGREGATION -> BAND_SELECT -> CLASSIFICATION",
+    "rle_steps": 5,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> RASTER_LOAD -> AGGREGATION -> BAND_SELECT -> CLASSIFICATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 7,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_182308",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "59f2d016b9f0a052",
+      "canon_chars": 196,
+      "canonical_chain": "ee.Filter.lt -> ee.Filter.listContains -> ee.Filter.listContains -> ee.Filter.eq -> ee.Filter.eq -> ee.ImageCollection -> ee.ImageCollection.mean -> ee.Image.cat -> ee.Classifier.smileRandomForest"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: classify land cover in kilwa classify land cover in kilwa using sentinel-2 and sentinel-1 satellite imagery from 2018. it creates a median cloud-masked composite of sentinel-2, computes multiple spectral indices (ndvi, ndwi, ndwbi, mndwbi, and band ratios), integrates s1 vv backscatter and dem data, and combines them into a feature stack. using training samples from the 'kilwa' feature collection, it trains a random forest classifier to produce a land cover map with seven classes: cropland, grassland, forest, barren, water, built-up, and fallow land. the output includes the classified raster map, accuracy assessment via confusion matrix, and exports the result to google drive.",
+    "rle": "ATTRIBUTE_FILTER -> RASTER_LOAD -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> SPATIAL_FILTER -> BAND_SELECT -> AGGREGATION -> CLASSIFICATION",
+    "rle_steps": 8,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> RASTER_LOAD -> ATTRIBUTE_FILTER -> TEMPORAL_FILTER -> SPATIAL_FILTER -> BAND_SELECT -> AGGREGATION -> CLASSIFICATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 2,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_182335",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "242bb2f4406c6d53",
+      "canon_chars": 250,
+      "canonical_chain": "ee.Filter.lt -> ee.ImageCollection -> ee.Filter.listContains -> ee.ImageCollection.filter -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.ImageCollection.select -> ee.ImageCollection.median -> ee.Classifier.smileRandomForest"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-7",
+   "group": "diff_template",
+   "jaccard": 0.7547,
+   "verdict": "suspicious",
+   "owner_note": "A 多 ATTRIBUTE_FILTER 但 B 反而明确提到辅助数据；需检查辅助数据与掩膜处理是否真的导致不同操作",
+   "queue": "second_batch",
+   "side_a": {
+    "normalized_instruction": "task: estimate fractional land water vegetation cover estimate the fractional coverage of land, water, floating aquatic vegetation (fav), and submerged aquatic vegetation (sav) in the gulf of mexico using landsat 5 surface reflectance data from 2010–2012. it computes spectral indices (ndvi, mndwi, ndbi), performs spectral unmixing, and combines results with masks to derive final fractional cover maps.",
+    "rle": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION -> RASTER_LOAD",
+    "rle_steps": 5,
+    "rle_rendered_runs": "RASTER_LOAD -> TEMPORAL_FILTER -> ATTRIBUTE_FILTER -> AGGREGATION -> RASTER_LOAD",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 22,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_54188",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "6118d450a352f985",
+      "canon_chars": 178,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.Filter.calendarRange -> ee.Filter.not -> ee.ImageCollection.filter -> ee.Reducer.median -> ee.Reducer.stdDev -> ee.Image"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: estimate fractional land water vegetation cover estimate the fractional cover of land, water, floating aquatic vegetation (fav), and submerged aquatic vegetation (sav) in the gulf of mexico using landsat 5 surface reflectance data from 1984 to 1986. it computes spectral indices (ndvi, mndwi, ndbi), performs spectral unmixing, and combines results with masks and auxiliary data to produce a final composition map of land, fav, sav, and water fractions.",
+    "rle": "RASTER_LOAD -> TEMPORAL_FILTER -> AGGREGATION -> RASTER_LOAD",
+    "rle_steps": 4,
+    "rle_rendered_runs": "RASTER_LOAD -> TEMPORAL_FILTER -> AGGREGATION -> RASTER_LOAD",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 44,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_54187",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "7169cad92b0cb921",
+      "canon_chars": 105,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.Reducer.median -> ee.Reducer.stdDev -> ee.Image"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-8",
+   "group": "diff_template",
+   "jaccard": 0.7959,
+   "verdict": "conditional_accept",
+   "owner_note": "B 末尾多 AGGREGATION->VECTOR_LOAD；导出本身不自动解释这两个标签，需查是否对应实际必要操作",
+   "queue": "second_batch",
+   "side_a": {
+    "normalized_instruction": "task: classify land cover types classify land cover types in the cuyo region of argentina using a random forest classifier trained on sentinel-2 and sentinel-1 derived spectral indices, sar backscatter, and dem data. the output is a classified land cover map with 11 categories including water, forest, wetlands, and dunes.",
+    "rle": "ATTRIBUTE_FILTER -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_SELECT -> AGGREGATION -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_SELECT -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> ATTRIBUTE_FILTER -> CLASSIFICATION",
+    "rle_steps": 20,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_SELECT -> AGGREGATION -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_SELECT -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> ATTRIBUTE_FILTER -> CLASSIFICATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 4,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_35908",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "178b674d0117fba4",
+      "canon_chars": 733,
+      "canonical_chain": "ee.Filter.inList -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.ImageCollection.select -> ee.ImageCollection.mean -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.ImageCollection.select -> ee.ImageCollection.mean -> ee.Reducer.mean -> ee.Reducer.min -> ee.Reducer.max -> ee.Image -> ee.Image.addBands -> ee.Filter.lt -> ee.Filter.gt -> ee.Classifier.smileRandomForest"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: classify land cover types classify land cover types in the patagonia region of argentina using a random forest classifier trained on sentinel-2 and sentinel-1 derived spectral indices, topographic data from dem, and sar backscatter. the output is a classified land cover map with 11 categories including water, forest, wetlands, dunes, and various vegetation types, exported to google drive.",
+    "rle": "ATTRIBUTE_FILTER -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_SELECT -> AGGREGATION -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_SELECT -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> ATTRIBUTE_FILTER -> CLASSIFICATION -> AGGREGATION -> VECTOR_LOAD",
+    "rle_steps": 22,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_SELECT -> AGGREGATION -> RASTER_LOAD -> TEMPORAL_FILTER -> SPATIAL_FILTER -> ATTRIBUTE_FILTER -> BAND_SELECT -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> ATTRIBUTE_FILTER -> CLASSIFICATION -> AGGREGATION -> VECTOR_LOAD",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land use/land cover"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 3,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_35919",
+      "task_type": "Land use/land cover",
+      "run_cap_applied": false,
+      "canon_hash16": "38481ee4e312c91f",
+      "canon_chars": 820,
+      "canonical_chain": "ee.Filter.inList -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.ImageCollection.select -> ee.ImageCollection.mean -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.filterBounds -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.Filter.eq -> ee.ImageCollection.filter -> ee.ImageCollection.select -> ee.ImageCollection.mean -> ee.Reducer.mean -> ee.Reducer.min -> ee.Reducer.max -> ee.Image -> ee.Image.addBands -> ee.Filter.lt -> ee.Filter.gt -> ee.Classifier.smileRandomForest -> ee.Reducer.sum -> ee.Number -> ee.Number.multiply -> ee.Number.divide -> ee.Feature"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-9",
+   "group": "diff_template",
+   "jaccard": 0.84,
+   "verdict": "conditional_accept",
+   "owner_note": "B 明确计算作物系数 Kc 而 A 未明确；B 额外步骤可能有据，但必须确认 A 是否隐含计算 Kc，不能仅凭文本缺失断定 A 结构错误",
+   "queue": "second_batch",
+   "side_a": {
+    "normalized_instruction": "task: estimate cotton irrigation water requirements the workflow models daily soil water depletion and crop evapotranspiration for cotton using time-series landsat-derived ndvi, gldas meteorological data, and chirps precipitation to estimate root zone and soil zone depletions, compute effective rainfall, and calculate cumulative irrigation water requirements (iwr) over a growing season within a defined agricultural polygon.",
+    "rle": "RASTER_LOAD -> TEMPORAL_FILTER -> BAND_SELECT -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> BAND_SELECT -> BAND_ARITHMETIC -> BAND_SELECT -> SPATIAL_JOIN -> BAND_ARITHMETIC -> ATTRIBUTE_FILTER -> SPATIAL_JOIN -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> AGGREGATION -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> ATTRIBUTE_FILTER -> SPATIAL_JOIN -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> RESAMPLE_REPROJECT -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC",
+    "rle_steps": 68,
+    "rle_rendered_runs": "RASTER_LOAD -> TEMPORAL_FILTER -> BAND_SELECT -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> BAND_SELECT -> BAND_ARITHMETIC -> BAND_SELECT -> SPATIAL_JOIN -> BAND_ARITHMETIC -> ATTRIBUTE_FILTER -> SPATIAL_JOIN -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> AGGREGATION -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> ATTRIBUTE_FILTER -> SPATIAL_JOIN -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> RESAMPLE_REPROJECT -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land surface/agriculture indicators"
+    ],
+    "any_run_cap_applied": true,
+    "template_global_support_rows": 80,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_145258",
+      "task_type": "Land surface/agriculture indicators",
+      "run_cap_applied": true,
+      "canon_hash16": "65eb01a7f0d7a687",
+      "canon_chars": 3818,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.select -> ee.Date -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image -> ee.Image.addBands -> ee.Image.pixelLonLat -> ee.Image.select -> ee.Image.pixelLonLat -> ee.Image.select -> ee.Date -> ee.Date.format -> ee.Number -> ee.Number.add -> ee.Join.saveAll -> ee.Join.apply -> ee.Number -> ee.Image.constant -> ee.Date -> ee.Filter.equals -> ee.Join.saveAll -> ee.Join.apply -> ee.Date -> ee.Image -> ee.Image.rename -> ee.Image.float -> ee.Image.constant -> ee.Reducer.linearRegression -> ee.List -> ee.Number -> ee.List.add -> ee.List -> ee.Date -> ee.Date.difference -> ee.Image -> ee.Image.rename -> ee.Image -> ee.Image.rename -> ee.Date -> ee.Date.millis -> ee.Image -> ee.Image.select -> ee.Image.multiply -> ee.Image.reduce -> ee.Image.rename -> ee.Image.addBands -> ee.Number -> ee.Number.divide -> ee.Image -> ee.Image -> ee.Image -> ee.Image.multiply -> ee.Image -> ee.Image.multiply -> ee.Image -> ee.Image.subtract -> ee.Image -> ee.Filter.equals -> ee.Join.saveAll -> ee.Join.apply -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image -> ee.Image.get -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.where -> ee.Image -> ee.Date -> ee.Date.difference -> ee.Date -> lt -> ee.Image.where -> ee.Image -> ee.Image.where -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.add -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.gt -> ee.Image -> ee.Image.gte -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.where -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image.add -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image.add -> ee.Image -> ee.Image.subtract -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.multiply -> ee.Image.add -> ee.List -> ee.Image -> ee.Image.addBands -> ee.Date -> ee.Date.millis -> ee.Image.set -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.List.add -> ee.Image -> ee.Image.rename -> ee.Image -> ee.Image.rename -> ee.Number -> ee.Image -> ee.Image.rename -> ee.Number -> ee.Image -> ee.Image.rename -> ee.Number -> ee.Image -> ee.Image.rename -> ee.Image.addBands -> ee.Number -> ee.Image -> ee.Image.rename -> ee.Image.addBands -> ee.List -> ee.List.slice -> ee.Image -> ee.Image.pixelArea -> ee.Image.multiply -> ee.Reducer.sum -> ee.Image -> ee.Image.pixelArea -> ee.Image.multiply -> ee.Reducer.sum -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Number -> ee.Number -> ee.Number -> ee.Reducer.mean -> ee.Image -> ee.Image.reproject -> ee.Image.resample -> ee.Image -> ee.Image -> ee.Image.select -> ee.Image.multiply -> ee.Image.subtract"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: estimate cotton irrigation water requirement the workflow models daily soil water depletion and crop evapotranspiration for cotton using time-series landsat-derived ndvi, gldas meteorological data, and chirps precipitation to estimate root zone and soil zone depletions, compute crop coefficients (kc), and calculate cumulative irrigation water requirements (iwr) over a growing season within a defined polygon in australia.",
+    "rle": "RASTER_LOAD -> TEMPORAL_FILTER -> BAND_SELECT -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> BAND_SELECT -> BAND_ARITHMETIC -> BAND_SELECT -> SPATIAL_JOIN -> BAND_ARITHMETIC -> ATTRIBUTE_FILTER -> SPATIAL_JOIN -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> AGGREGATION -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> ATTRIBUTE_FILTER -> SPATIAL_JOIN -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> RESAMPLE_REPROJECT -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC",
+    "rle_steps": 70,
+    "rle_rendered_runs": "RASTER_LOAD -> TEMPORAL_FILTER -> BAND_SELECT -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> BAND_SELECT -> BAND_ARITHMETIC -> BAND_SELECT -> SPATIAL_JOIN -> BAND_ARITHMETIC -> ATTRIBUTE_FILTER -> SPATIAL_JOIN -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> AGGREGATION -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> ATTRIBUTE_FILTER -> SPATIAL_JOIN -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> THRESHOLD_LOGIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> RESAMPLE_REPROJECT -> RASTER_LOAD -> BAND_SELECT -> BAND_ARITHMETIC",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Land surface/agriculture indicators"
+    ],
+    "any_run_cap_applied": true,
+    "template_global_support_rows": 61,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_145162",
+      "task_type": "Land surface/agriculture indicators",
+      "run_cap_applied": true,
+      "canon_hash16": "f83b43362fbeb591",
+      "canon_chars": 4059,
+      "canonical_chain": "ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.select -> ee.Date -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image -> ee.Image.addBands -> ee.Image.pixelLonLat -> ee.Image.select -> ee.Image.pixelLonLat -> ee.Image.select -> ee.Date -> ee.Date.format -> ee.Number -> ee.Number.add -> ee.Join.saveAll -> ee.Join.apply -> ee.Number -> ee.Image.constant -> ee.Date -> ee.Filter.equals -> ee.Join.saveAll -> ee.Join.apply -> ee.Date -> ee.Image -> ee.Image.rename -> ee.Image.float -> ee.Image.constant -> ee.Reducer.linearRegression -> ee.List -> ee.Number -> ee.List.add -> ee.List -> ee.Date -> ee.Date.difference -> ee.Image -> ee.Image.rename -> ee.Image -> ee.Image.rename -> ee.Date -> ee.Date.millis -> ee.Image -> ee.Image.select -> ee.Image.multiply -> ee.Image.reduce -> ee.Image.rename -> ee.Image.addBands -> ee.Number -> ee.Number.divide -> ee.Image -> ee.Image -> ee.Image -> ee.Image.multiply -> ee.Image -> ee.Image.multiply -> ee.Image -> ee.Image.subtract -> ee.Image -> ee.Filter.equals -> ee.Join.saveAll -> ee.Join.apply -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image -> ee.Image.get -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.where -> ee.Image -> ee.Date -> ee.Date.difference -> ee.Date -> lt -> ee.Image.where -> ee.Image -> ee.Image.where -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.add -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.gt -> ee.Image -> ee.Image.gte -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.where -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image.add -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image.add -> ee.Image -> ee.Image.subtract -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.get -> ee.List -> ee.List.get -> ee.Image -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.gt -> ee.Image -> ee.Image.gte -> ee.Image -> ee.Image.where -> ee.Image -> ee.Image.where -> ee.List -> ee.List.get -> ee.Image -> ee.Image.select -> ee.Image -> ee.Image.multiply -> ee.Image.add -> ee.List -> ee.Image -> ee.Image.addBands -> ee.Date -> ee.Date.millis -> ee.Image.set -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.Image.addBands -> ee.List.add -> ee.Image -> ee.Image.rename -> ee.Image -> ee.Image.rename -> ee.Number -> ee.Image -> ee.Image.rename -> ee.Number -> ee.Image -> ee.Image.rename -> ee.Number -> ee.Image -> ee.Image.rename -> ee.Image.addBands -> ee.Number -> ee.Image -> ee.Image.rename -> ee.Image.addBands -> ee.List -> ee.List.slice -> ee.Image -> ee.Image.pixelArea -> ee.Image.multiply -> ee.Reducer.sum -> ee.Image -> ee.Image.pixelArea -> ee.Image.multiply -> ee.Reducer.sum -> ee.Image.pixelArea -> ee.Reducer.sum -> ee.Number -> ee.Number -> ee.Number -> ee.Reducer.mean -> ee.Image -> ee.Image.reproject -> ee.Image.resample -> ee.Image -> ee.Image -> ee.Image.select -> ee.Image.multiply -> ee.Image.subtract"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-10",
+   "group": "diff_template",
+   "jaccard": 0.7692,
+   "verdict": "suspicious",
+   "owner_note": "地理范围与分组字段（subregion vs continent）变化可能影响统计组织但不必然改变结构；MASKING 差异待核",
+   "queue": "second_batch",
+   "side_a": {
+    "normalized_instruction": "task: analyze wildfire proximity to roads analyze the length of roads within buffered wildfire perimeters in subcontinental regions of asia, using modis land cover and population density data to mask wildlands and assess human exposure. outputs are csv exports containing road lengths (km) grouped by buffer distance, date, and subregion.",
+    "rle": "ATTRIBUTE_FILTER -> VECTOR_LOAD -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> AGGREGATION -> RASTER_LOAD -> MASKING -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> VECTOR_LOAD -> VECTOR_GEOMETRY -> VECTOR_LOAD -> VECTOR_GEOMETRY -> VECTOR_LOAD -> BAND_ARITHMETIC -> VECTOR_LOAD",
+    "rle_steps": 19,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> VECTOR_LOAD -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> AGGREGATION -> RASTER_LOAD -> MASKING -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> VECTOR_LOAD -> VECTOR_GEOMETRY -> VECTOR_LOAD -> VECTOR_GEOMETRY -> VECTOR_LOAD -> BAND_ARITHMETIC -> VECTOR_LOAD",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Human settlements"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 2,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_36382",
+      "task_type": "Human settlements",
+      "run_cap_applied": false,
+      "canon_hash16": "6d3d484fba8fa002",
+      "canon_chars": 632,
+      "canonical_chain": "ee.Filter.neq -> ee.Filter.and -> ee.Filter.eq -> ee.Filter.or -> ee.Filter.eq -> ee.Filter.eq -> ee.FeatureCollection -> ee.FeatureCollection -> ee.Image -> ee.Image.float -> ee.Reducer.countEvery -> ee.Reducer.max -> ee.Image -> ee.Reducer.sum -> ee.Image -> ee.Image.mask -> ee.Image.pixelArea -> ee.Image.divide -> ee.Reducer.sum -> ee.Image -> ee.ErrorMargin -> ee.Number -> ee.Number.neq -> ee.FeatureCollection -> ee.FeatureCollection.geometry -> ee.FeatureCollection -> length -> ee.FeatureCollection -> divide -> ee.Number -> ee.List -> ee.List.length -> ee.List -> ee.List.length -> ee.List -> ee.List.length -> ee.Feature"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: analyze fire proximity to roads analyze the length of road networks within buffered wildfire perimeters across sub-continental regions in africa, using modis land cover and population density data to mask wildlands and assess human exposure. outputs are csv exports containing road lengths (km) near fires, grouped by buffer distance, date, and continent.",
+    "rle": "ATTRIBUTE_FILTER -> VECTOR_LOAD -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> MASKING -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> MASKING -> VECTOR_LOAD -> VECTOR_GEOMETRY -> VECTOR_LOAD -> VECTOR_GEOMETRY -> VECTOR_LOAD -> BAND_ARITHMETIC -> VECTOR_LOAD",
+    "rle_steps": 18,
+    "rle_rendered_runs": "ATTRIBUTE_FILTER -> VECTOR_LOAD -> RASTER_LOAD -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> MASKING -> BAND_ARITHMETIC -> AGGREGATION -> RASTER_LOAD -> MASKING -> VECTOR_LOAD -> VECTOR_GEOMETRY -> VECTOR_LOAD -> VECTOR_GEOMETRY -> VECTOR_LOAD -> BAND_ARITHMETIC -> VECTOR_LOAD",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Environmental impacts"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 2,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_36370",
+      "task_type": "Environmental impacts",
+      "run_cap_applied": false,
+      "canon_hash16": "11d56d349d20283e",
+      "canon_chars": 619,
+      "canonical_chain": "ee.Filter.neq -> ee.Filter.and -> ee.Filter.eq -> ee.Filter.or -> ee.Filter.eq -> ee.Filter.eq -> ee.FeatureCollection -> ee.FeatureCollection -> ee.Image -> ee.Image.float -> ee.Reducer.countEvery -> ee.Reducer.max -> ee.Reducer.sum -> ee.Image -> ee.Image.mask -> ee.Image.pixelArea -> ee.Image.divide -> ee.Reducer.sum -> ee.Image -> ee.Image.mask -> ee.Number -> ee.Number.neq -> ee.FeatureCollection -> ee.FeatureCollection.geometry -> ee.FeatureCollection -> length -> ee.FeatureCollection -> divide -> ee.Number -> ee.List -> ee.List.length -> ee.List -> ee.List.length -> ee.List -> ee.List.length -> ee.Feature"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-13",
+   "group": "diff_template",
+   "jaccard": 0.8387,
+   "verdict": "conditional_accept",
+   "owner_note": "传感器（L5 vs L7）与时段变化影响筛选但不必改变插值/平滑核心流程；A 额外 VECTOR_LOAD 是否独立研究区加载待核",
+   "queue": "second_batch",
+   "side_a": {
+    "normalized_instruction": "task: smooth ndvi time series analyze ndvi time series from landsat 5 toa data over a user-defined geometry between 1984 and 2011. it applies cloud masking, temporal interpolation to create a regular 5-day time grid, and savitzky-golay filtering to smooth the ndvi signal. the outputs include three interactive charts (original, interpolated, and smoothed ndvi), three video exports of spatial ndvi visualizations (original, regularized, and sg-filtered), and intermediate image collections for time series analysis.",
+    "rle": "VECTOR_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> COMPOSITE -> RASTER_LOAD -> COMPOSITE -> BAND_SELECT -> ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 15,
+    "rle_rendered_runs": "VECTOR_LOAD -> SPATIAL_FILTER -> TEMPORAL_FILTER -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> COMPOSITE -> RASTER_LOAD -> COMPOSITE -> BAND_SELECT -> ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Vegetation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 3,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_217889",
+      "task_type": "Vegetation",
+      "run_cap_applied": false,
+      "canon_hash16": "e874866b8dcf6c4b",
+      "canon_chars": 493,
+      "canonical_chain": "ee.FeatureCollection -> ee.Filter.bounds -> ee.Filter.calendarRange -> ee.Reducer.mean -> ee.Image -> ee.ImageCollection -> ee.ImageCollection.toBands -> ee.Number -> ee.Number.format -> ee.Number -> ee.Image -> ee.List -> ee.ImageCollection.fromImages -> ee.ImageCollection.mosaic -> ee.List -> ee.ImageCollection.fromImages -> ee.ImageCollection.mosaic -> ee.Image.cat -> ee.Filter.eq -> ee.Reducer.mean -> ee.Number -> ee.Number -> ee.Number.subtract -> ee.Image.constant -> ee.Reducer.mean"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: smooth ndvi time series analyze ndvi time series from landsat 7 toa data over a specified geometry between 2000 and 2023. it applies cloud masking, temporal interpolation to create a regular 5-day time grid, and savitzky-golay filtering to smooth the ndvi values. outputs include three interactive time-series charts (original, interpolated, and smoothed), three video exports of spatial ndvi visualizations (original, regularized, and sg-filtered), and intermediate image collections for analysis.",
+    "rle": "SPATIAL_FILTER -> TEMPORAL_FILTER -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> COMPOSITE -> RASTER_LOAD -> COMPOSITE -> BAND_SELECT -> ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION",
+    "rle_steps": 14,
+    "rle_rendered_runs": "SPATIAL_FILTER -> TEMPORAL_FILTER -> AGGREGATION -> RASTER_LOAD -> BAND_SELECT -> RASTER_LOAD -> COMPOSITE -> RASTER_LOAD -> COMPOSITE -> BAND_SELECT -> ATTRIBUTE_FILTER -> AGGREGATION -> BAND_ARITHMETIC -> AGGREGATION",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Vegetation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 6,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_217879",
+      "task_type": "Vegetation",
+      "run_cap_applied": false,
+      "canon_hash16": "1aafd66ae7da0709",
+      "canon_chars": 469,
+      "canonical_chain": "ee.Filter.bounds -> ee.Filter.calendarRange -> ee.Reducer.mean -> ee.Image -> ee.ImageCollection -> ee.ImageCollection.toBands -> ee.Number -> ee.Number.format -> ee.Number -> ee.Image -> ee.List -> ee.ImageCollection.fromImages -> ee.ImageCollection.mosaic -> ee.List -> ee.ImageCollection.fromImages -> ee.ImageCollection.mosaic -> ee.Image.cat -> ee.Filter.eq -> ee.Reducer.mean -> ee.Number -> ee.Number -> ee.Number.subtract -> ee.Image.constant -> ee.Reducer.mean"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  },
+  {
+   "id": "DIFF-16",
+   "group": "diff_template",
+   "jaccard": 0.7653,
+   "verdict": "suspicious",
+   "owner_note": "VECTOR_LOAD 与 ATTRIBUTE_FILTER 顺序互换；是否反映真实依赖关系待核（数据条件变化与步骤变化需分开）",
+   "queue": "second_batch",
+   "side_a": {
+    "normalized_instruction": "task: detect forest loss and degradation detect early signs of forest loss, degradation, and wildfires in the upper rao quan watershed, huong hoa, quang tri using landsat 8 toa imagery from 2017. it calculates ndvi and nbr indices to analyze vegetation and burn severity changes over time. the workflow includes filtering images by date and region, computing spectral indices, mosaicking the image collection, and exporting both individual images and a composite mosaic. additionally, it visualizes pre- and post-deforestation conditions side-by-side for comparison and enables point-based inspection through an interactive map interface. outputs include exported imageproperties table, a mosaic image, individual scene exports, and a dual-panel visualization for change detection analysis.",
+    "rle": "RASTER_LOAD -> VECTOR_LOAD -> RASTER_LOAD -> ATTRIBUTE_FILTER -> RASTER_LOAD -> EXPORT_OUTPUT -> RASTER_LOAD -> TEMPORAL_FILTER -> COMPOSITE -> RASTER_LOAD -> TEMPORAL_FILTER -> COMPOSITE",
+    "rle_steps": 12,
+    "rle_rendered_runs": "RASTER_LOAD -> VECTOR_LOAD -> RASTER_LOAD -> ATTRIBUTE_FILTER -> RASTER_LOAD -> EXPORT_OUTPUT -> RASTER_LOAD -> TEMPORAL_FILTER -> COMPOSITE -> RASTER_LOAD -> TEMPORAL_FILTER -> COMPOSITE",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Habitat conversion/fragmentation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 15,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_187005",
+      "task_type": "Habitat conversion/fragmentation",
+      "run_cap_applied": false,
+      "canon_hash16": "7f1db0c840faa0e4",
+      "canon_chars": 270,
+      "canonical_chain": "ee.Image -> ee.Feature -> ee.Image -> ee.Filter.equals -> ee.Image -> Export.image.toDrive -> ee.Image -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic"
+     }
+    ]
+   },
+   "side_b": {
+    "normalized_instruction": "task: detect forest loss and degradation detect early signs of forest loss, degradation, and forest fires in the trieu ai watershed, trieu phong, quang tri using landsat 8 toa imagery from 2017. it calculates ndvi and nbr indices to analyze vegetation and burn severity changes over time. the workflow includes filtering images by cloud cover and date, mosaicking composites, and exporting both a final mosaic and individual images. additionally, it visualizes pre- and post-deforestation conditions side-by-side for comparison and enables point-based inspection through an interactive map interface. outputs include a mosaic image, individual scene exports, image metadata table, and dual-map visualization for change detection analysis.",
+    "rle": "RASTER_LOAD -> ATTRIBUTE_FILTER -> VECTOR_LOAD -> RASTER_LOAD -> ATTRIBUTE_FILTER -> RASTER_LOAD -> EXPORT_OUTPUT -> RASTER_LOAD -> TEMPORAL_FILTER -> COMPOSITE -> RASTER_LOAD -> TEMPORAL_FILTER -> COMPOSITE",
+    "rle_steps": 13,
+    "rle_rendered_runs": "RASTER_LOAD -> ATTRIBUTE_FILTER -> VECTOR_LOAD -> RASTER_LOAD -> ATTRIBUTE_FILTER -> RASTER_LOAD -> EXPORT_OUTPUT -> RASTER_LOAD -> TEMPORAL_FILTER -> COMPOSITE -> RASTER_LOAD -> TEMPORAL_FILTER -> COMPOSITE",
+    "n_matching_rows": 1,
+    "task_types": [
+     "Habitat conversion/fragmentation"
+    ],
+    "any_run_cap_applied": false,
+    "template_global_support_rows": 10,
+    "n_distinct_canonical_in_pool": 1,
+    "canonical_chains_materialized": [
+     {
+      "row_id": "script_187007",
+      "task_type": "Habitat conversion/fragmentation",
+      "run_cap_applied": false,
+      "canon_hash16": "b54295d7f9a5f858",
+      "canon_chars": 287,
+      "canonical_chain": "ee.Image -> ee.Filter.lte -> ee.Feature -> ee.Image -> ee.Filter.equals -> ee.Image -> Export.image.toDrive -> ee.Image -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic -> ee.ImageCollection -> ee.ImageCollection.filterDate -> ee.ImageCollection.mosaic"
+     }
+    ]
+   },
+   "sides_share_canonical_api_sequence": false,
+   "canonical_caveat": "gee_canonical_chain 是 API 名级序列，不含字面量参数；波段名/阈值/目标变量等字面量差异在此层不可见，须读源程序（script 指针）确认"
+  }
+ ]
+}

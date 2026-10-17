@@ -100,10 +100,19 @@ P1/P2 与 E2E 详细过程以 `docs/CURRENT_STATE.md` 英文版为准）
   辨）；抽样分组（模板集合相等判据）机械有效，该对登记为弱变体不作强正例，"分组质量
   检查"关闭（无 bug）。**核验包机械预观察：V3 全部 4 对 SAME（15/19/11/9）双侧
   canonical API 序列一致=同码双描述（字面量层须读源码确认）；14 对 DIFF canonical
-  全部真实不同=程序确实不同。**下一步：V2-P0 六对原始程序逐步对照（DIFF-6→4→5→1→
-  12→19）；三对齐材料已物化（`Q2_PRIORITY_VERIFICATION_PACKET_V1.md/.json`：游程
-  渲染+自动链 diff+script 指针+18 对预观察总表）。纪律：先核验原始工作流，不因样本
-  判读调整训练损失或重采样（owner 原文）；诊断任务不入 B 轨训练；干预仍须 owner 放行。**
+  全部真实不同=程序确实不同。**V3 标签表达力核验已完成 4/4（2026-10-17，源码级，
+  `b_track_audit_v1/Q2_V3_WALKTHROUGH_FINDINGS_V1.md`）：4/4 结构相同成立；SAME-15
+  指令 A 目标变量描述失真（源码三处自证为 biomass）——属描述保真度缺陷非结构/标签
+  粒度问题；时间范围/指数命名/循环参数语义全在字面量层=双层表示分工的直接证据；
+  仪器教训：canonical 一致≠字面量一致。V2-P0 六对原始程序对照（DIFF-6→4→5→1→12→19）
+  **语料依赖已解锁**（GEE 原始脚本体料定位于 `.tmp_gee_batch13_sources/Data/
+  dataNNNNN/script_XXXXX.txt`，核验包 36/36 脚本全覆盖，路径映射
+  `Q2_PACKET_SCRIPT_PATHS_V1.json`；batch8 树为子集未用到）；三对齐材料=
+  `Q2_PRIORITY_VERIFICATION_PACKET_V1.md/.json`（游程渲染+自动链 diff+script 指针
+  +18 对预观察总表；遇可疑差异先做两侧 sha1 对比排除同码变体）。随后：判定"抽取/
+  标注差异"占比量级 → 审查后参考样本构建 → 小规模对照训练。纪律：先核验原始工作流，
+  不因样本判读调整训练损失或重采样（owner 原文）；诊断任务不入 B 轨训练；干预仍须
+  owner 放行。**
   D1 契约 ADR 签核仍待 owner。活跃计划见 task_plan.md。
 
 ## ⭐ 当前主线：Planning Capability Audit（PCA）— 协议 v1 已冻结，Phase 1 进行中（2026-10-13）
