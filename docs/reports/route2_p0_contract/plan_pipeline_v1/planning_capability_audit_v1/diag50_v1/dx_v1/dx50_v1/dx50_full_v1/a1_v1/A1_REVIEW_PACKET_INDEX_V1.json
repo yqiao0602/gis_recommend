@@ -1,0 +1,972 @@
+{
+ "n_entries": 52,
+ "by_priority": {
+  "P1": 11,
+  "P3": 15,
+  "P4": 26
+ },
+ "entries": [
+  {
+   "step_key": "PCA2-T-009#S3",
+   "task": "PCA2-T-009",
+   "cls_control": "ABST",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "saga:multibandvariation"
+   ],
+   "changed_oids": [
+    "otb:spectralangleclassification",
+    "otb:classificationmapregularization",
+    "otb:traindimensionalityreduction"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nBecause none of the provided operators support calculating vegetation indices (e.g., NDVI, NDSI) which require arithmetic combinations (ratio/difference) of specific bands; available operators only offer classification, buffering, recasting, or simple band-wise statistics.",
+   "raw_experiment_excerpt": "SELECT saga:multibandvariation - It computes statistical variations (mean, std dev, difference) across specified bands, generating new derived feature rasters from multi-band input.",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-009#S6",
+   "task": "PCA2-T-009",
+   "cls_control": "ABST",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "otb:trainvectorclassifier"
+   ],
+   "changed_oids": [
+    "otb:trainvectorclassifier",
+    "otb:trainimagesclassifier",
+    "otb:vectorclassifier",
+    "otb:trainregression",
+    "otb:classificationmapregularization",
+    "otb:fusionofclassifications",
+    "otb:trainvectorregression",
+    "otb:imageclassifier"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "REJECT otb:trainvectorclassifier - no parameters documented, cannot confirm CART implementation.  \nREJECT otb:trainimagesclassifier - no parameters documented, cannot confirm CART implementation.  \nREJECT otb:vectorclassifier - no parameters documented, output not specified.  \nREJECT saga:fuzzylandformelementclassification - specialized for landform element classification, not general CART.  \nREJECT otb:trainregression - intended for regression tasks, not classification.  \nREJECT otb:classificationmapregularization - regularizes existing classifications, does not train new models.  \nREJECT otb:fusionofclassifications - fuses multiple classifications, does not train new models.  \nREJECT otb:t…",
+   "raw_experiment_excerpt": "SELECT otb:trainvectorclassifier - It can train a CART classifier from the vector training data (using io.vd port) and the engineered features (via feat field parameter).",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-042#S1",
+   "task": "PCA2-T-042",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:trainimagesregression",
+    "otb:imageregression",
+    "otb:trainimagesclassifier"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the candidate operators provide functionality to retrieve or acquire precipitation imagery from an external dataset such as GPM IMERG; all listed operators assume pre-existing local raster or vector files as input.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-056#S5",
+   "task": "PCA2-T-056",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:spectralangleclassification",
+    "otb:trainvectorclassifier"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nBecause none of the candidate operators explicitly implement a Random Forest classifier; the closest candidate (saga:supervisedclassificationforrasters) has a generic METHOD enum whose specific algorithms are undocumented, and thus cannot be guaranteed to train a Random Forest model.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-056#S6",
+   "task": "PCA2-T-056",
+   "cls_control": "ABST",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "saga:supervisedclassificationforrasters"
+   ],
+   "changed_oids": [
+    "otb:trainimagesclassifier"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the listed operators support applying a pre-trained machine learning model (such as a Random Forest) to a raster; they either require training data, perform unsupervised tasks, or serve unrelated purposes.",
+   "raw_experiment_excerpt": "SELECT saga:supervisedclassificationforrasters - Loads the trained Random Forest model via FILE_LOAD and applies it to the preprocessed mosaic raster through the TRAINING source, producing the classified land cover raster at the CLASSES output port.",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-083#S6",
+   "task": "PCA2-T-083",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:trainimagesclassifier",
+    "otb:trainvectorclassifier",
+    "otb:traindimensionalityreduction",
+    "otb:fusionofclassifications",
+    "otb:trainvectorregression",
+    "otb:trainimagesregression"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the provided operators are capable of training a Random Forest model from a vector file; all either operate on raster/vector data differently or lack explicit support for such a task.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-083#S7",
+   "task": "PCA2-T-083",
+   "cls_control": "POS",
+   "cls_experiment": "POS",
+   "sel_control": [
+    "saga:supervisedclassificationforrasters"
+   ],
+   "sel_experiment": [
+    "otb:imageclassifier"
+   ],
+   "changed_oids": [
+    "otb:trainimagesclassifier",
+    "otb:imageclassifier",
+    "otb:spectralangleclassification",
+    "otb:trainimagesregression",
+    "otb:classificationmapregularization",
+    "otb:imagedimensionalityreduction"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT saga:supervisedclassificationforrasters - applies a trained model to a multilayer grid of raster predictors to generate a classified raster via the CLASSES output port, supporting both discrete class predictions and continuous probability scores based on method and threshold parameters.",
+   "raw_experiment_excerpt": "SELECT otb:imageclassifier - Applies a trained model to an input image containing stacked raster predictors to generate a classified raster output.",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-084#S2",
+   "task": "PCA2-T-084",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:classificationmapregularization",
+    "otb:morphologicalclassification",
+    "otb:imageclassifier"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] \n[tail]",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP\nbecause none of the provided operators perform direct threshold-based reclassification of a continuous aridity index raster into discrete aridity classes; they either require additional input layers (e.g., temperature and precipitation separately) or serve different purposes (albedo, wetness, evapotranspiration, regularization, etc.).",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-084#S5",
+   "task": "PCA2-T-084",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:smallregionsmerging",
+    "otb:polygonclassstatistics",
+    "otb:somclassification",
+    "otb:kmeansclassification"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause no candidate operator can conditionally override one raster based on another to produce two separate output masks (cold_land_mask and cold_ocean_mask) while handling the interaction between base_aridity_classes and temp_severity_raster.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-090#S4",
+   "task": "PCA2-T-090",
+   "cls_control": "NODEC",
+   "cls_experiment": "OOC",
+   "sel_control": [],
+   "sel_experiment": [
+    "otb:ImageClassifier"
+   ],
+   "changed_oids": [
+    "otb:trainimagesclassifier",
+    "otb:imageclassifier"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "REJECT grass7:r.watershed - calculates hydrological parameters, not applicable to applying a trained model for classification.  \nREJECT saga:",
+   "raw_experiment_excerpt": "SELECT otb:ImageClassifier - Applies a trained model file to an input image (feature stack) to produce a classified raster output.",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-092#S9",
+   "task": "PCA2-T-092",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:smoothing",
+    "otb:classificationmapregularization",
+    "otb:trainimagesclassifier"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe are given a plan step: \"Post-Classification Smoothing & Validation\". The purpose is to reduce speckle noise and assess accuracy against reference data. Inputs: Step 8 output (classified ras\n[tail] ctionality, I'm leaning towards rejecting unless we know it can smooth.\n- **otb:smoothing**: Select because it accepts a raster and presumably smooths it. Output is unspecified but likely a smoothed raster.\n- **otb:classificationmapregularization**: Select because it regularizes a classification map",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause no candidate operator provides both speckle reduction for a classified raster and generation of a validation confusion matrix/accuracy report from reference data.",
+   "priority": "P1",
+   "priority_why": "T-009 family / classifier-training card changed"
+  },
+  {
+   "step_key": "PCA2-T-001#S3",
+   "task": "PCA2-T-001",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "otb:concatenateimages"
+   ],
+   "changed_oids": [
+    "otb:imageregression",
+    "otb:segmentation",
+    "otb:smallregionsmerging",
+    "otb:mosaic",
+    "otb:concatenateimages"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe need to decide if any of the given candidate operators can accomplish the task described in Step 3: \"Combine multiple acquisitions temporally for each pixel location to enable statistical o\n[tail] kprocessing: Same as #5, bulk version. Reject.\n\n9. saga:superpixelsegmentation: Produces superpixels, not combining multiple acquisitions. Reject.\n\n10. otb:concatenateimages: As discussed, seems capable of concatenating images, which could include temporal stacking. Select.\n\nSo only one candidate is",
+   "raw_experiment_excerpt": "SELECT otb:concatenateimages - Combines multiple acquisitions temporally by accepting a list of images of the same size and outputting a single multi-channel image, enabling statistical operations per pixel across channels.",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-001#S4",
+   "task": "PCA2-T-001",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:sarpolarmatrixconvert",
+    "otb:sardecompositions",
+    "otb:sarcalibration",
+    "otb:sarburstextraction",
+    "otb:multiimagesamplingrate"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the provided operators offer dedicated speckle filtering capabilities (such as Lee, Frost, or Kuan filters) that reduce coherent noise while preserving features in SAR imagery; all listed operators focus on calibration, mosaicking, statistical summaries, or frequency-domain filtering without adaptive speckle suppression.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe are given a plan step: \"Speckle Filtering\". The purpose is to reduce coherent noise inherent in SAR imagery while preserving features. Input is from Step 3 output, and output should be filt\n[tail] ckle filter, but it does transform the data. However, the step is about reducing noise, not transforming the representation.\n\n Conclusion: No operator fits.\n\n However, let's consider if any of these operators could be misinterpreted as performing speckle filtering. For instance, the `saga:resampling",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-001#S5",
+   "task": "PCA2-T-001",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:imageregression",
+    "otb:multiimagesamplingrate"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe are given a plan step: \"Median Compositing\". The purpose is to generate a single representative image by taking the median value across the filtered time stack for each pixel. Input is from\n[tail] ers to specify the quantile level, and others are unrelated.\n\nNow, writing the exact lines:\n\nFor each candidate, I'll write a REJECT statement.\n\nList of candidates in order:\n\n1. saga:superpixelsegmentation\n2. grass7:i.image.mosaic\n3. gdal:viewshed\n4. otb:imageregression\n5. saga:imcorrfeaturetracking",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP\nbecause no candidate operator provides a function to compute the median across multiple input images (time stack) per pixel.",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-001#S6",
+   "task": "PCA2-T-001",
+   "cls_control": "POS",
+   "cls_experiment": "ABST",
+   "sel_control": [
+    "saga:mosaicking"
+   ],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:mosaic"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT saga:mosaicking - uses FILE_LIST to combine multiple raster inputs into a single output raster grid via TARGET_OUT_GRID, producing the final mosaic asset.",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP\nBecause none of the candidate operators are capable of formatting existing mosaics into required asset deliverables; they primarily perform mosaicking operations or export vector data.",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-025#S5",
+   "task": "PCA2-T-025",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "otb:contrastenhancement"
+   ],
+   "changed_oids": [
+    "otb:rasterization",
+    "otb:multiimagesamplingrate",
+    "otb:contrastenhancement",
+    "otb:colormapping"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe need to apply a linear stretch to the mean raster to optimize contrast for visualization, mapping −25 dB to black and 5 dB to white. The goal is to enhance the visual appearance of the mean\n[tail]  step and briefly how or why not.\n\nSo let's evaluate each candidate systematically:\n\n1. **otb:rasterization**: Reject because it does not produce a raster output (none documented) and is likely for converting vectors to rasters, not for enhancing contrast.\n\n2. **grass7:i.colors.enhance**: Select? Or",
+   "raw_experiment_excerpt": "SELECT otb:contrastenhancement - Uses minmax.manual.min (-25) and minmax.manual.max (5) to linearly stretch the mean backscatter raster, optimizing contrast for visualization.\n\nREJECT otb:rasterization - Designed to convert vector datasets to raster, not to modify existing raster values.\n\nREJECT grass7:i.colors.enhance - Processes bands serially but lacks explicit parameters for defining a linear stretch between specific min/max values.\n\nREJECT saga:resampling - Changes raster resolution or extent, not pixel values within a defined range.\n\nREJECT otb:multiimagesamplingrate - Computes sampling rates for image sets, does not alter raster content.\n\nREJECT native:rastersampling - Extracts sample…",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-046#S4",
+   "task": "PCA2-T-046",
+   "cls_control": "POS",
+   "cls_experiment": "NODEC",
+   "sel_control": [
+    "native:joinattributestable"
+   ],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:concatenatevectordata"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT native:joinattributestable - Joins the original soil points (INPUT) with the per-point lists (INPUT_2) by their respective fields (FIELD and FIELD_2) to create a combined feature collection.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe are given a plan step: \"Feature Construction\". The purpose is: \"Create individual features for each point-date pair with attributes\". Input: \"Per-point lists and original soil points\". Outp\n[tail] uteindex**: Doesn't change feature count.\n\n- **saga:featurestoraster**: Converts to raster, not desired.\n\n- **native:pointstopath**: Converts points to paths, not splitting.\n\n- **qgis:regularpoints**: Creates new points, not combining existing ones.\n\n- **qgis:joinbylocationsummary**: Similar to join",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-046#S5",
+   "task": "PCA2-T-046",
+   "cls_control": "POS",
+   "cls_experiment": "POS",
+   "sel_control": [
+    "native:mergevectorlayers"
+   ],
+   "sel_experiment": [
+    "otb:concatenatevectordata",
+    "native:mergevectorlayers"
+   ],
+   "changed_oids": [
+    "otb:concatenatevectordata"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT native:mergevectorlayers - Combines multiple vector layers into a single layer using the LAYERS port for inputs and OUTPUT for the merged result.",
+   "raw_experiment_excerpt": "SELECT otb:concatenatevectordata - Concatenates all temporary feature collections (passed as a list of vector data files) into a single OutputVectorData.  \nSELECT native:mergevectorlayers - Combines all temporary feature layers (provided via the LAYERS port) into a single merged vector layer.",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-056#S3",
+   "task": "PCA2-T-056",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "saga:mosaicking"
+   ],
+   "changed_oids": [
+    "otb:mosaic",
+    "otb:hyperspectralunmixing"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe need to decide which candidate operator(s) can accomplish Step 3: \"Band Stacking & Mosaic\". The purpose is to combine the median bands into a full-color multispectral scene suitable for cla\n[tail]  single multi-band raster. Which operator can do that? \n\nLooking at the parameters of saga:mosaicking, it mentions \"FILE_LIST(file, required, default=False)\" and \"GRIDS(multilayer)\". This suggests it can take a list of files and optionally treat them as multilayer grids. If we provide a list of band",
+   "raw_experiment_excerpt": "SELECT saga:mosaicking - Creates a mosaic from multiple median composite rasters using specified overlap blending, resampling, and extent parameters.\nREJECT saga:colournormalizedspectralsharpening - Designed for spectral sharpening, not for combining multiple rasters into a mosaic.\nREJECT grass7:i.image.mosaic - While it mosaics images, lacks documented parameters for controlling output extent/resolution, making suitability uncertain.\nREJECT otb:mosaic - Can perform mosaicking but requires complex configuration (feathering, harmonization) beyond basic band stacking.\nREJECT saga:focalstatistics - Computes local statistics on a single raster, not for combining multiple rasters.\nREJECT qgis:top…",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-060#S1",
+   "task": "PCA2-T-060",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:tilefusion",
+    "otb:sampleaugmentation"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the candidate operators accept vector input and produce tile-indexed training/testing sample arrays.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe need to decide which candidate operator(s) can accomplish Step 1: \"Sample Preparation & Splitting\". The purpose is: \"Organize ground-truth samples into tile-based training/testing subsets\".\n[tail] d to split samples? However, the operator itself doesn't output a mapping; it only outputs a field separator. That seems insufficient.\n\nAlternatively, maybe grass7:v.sample could be used in reverse? But it doesn't support inverse operation.\n\nThus, I think the correct response is NO OPERATOR FOR THIS",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-062#S4",
+   "task": "PCA2-T-062",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:stereoframework",
+    "otb:colormapping"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP\nbecause the provided operators focus on exporting static outputs (images/PDFs) or performing spatial analyses, and none offer the interactive map viewer functionality with panning, zooming, and dynamic year toggling described in the plan step.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-073#S1",
+   "task": "PCA2-T-073",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:dynamicconvert",
+    "otb:trainimagesregression",
+    "otb:smoothing"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the provided operators describe functionality to combine two separate raster layers (MODIS Daytime LST and MODIS Nighttime LST) into a single daily mean raster through pixel-wise averaging.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe need to preprocess LST data: create a single daily mean LST layer from separate daytime and nighttime inputs. The inputs are MODIS Daytime LST and MODIS Nighttime LST. We want to produce a \n[tail] transpiration - converts daily to hourly evapotranspiration, not LST.\nREJECT saga:diurnalanisotropicheat - computes heat flux from DEM, not LST.\nREJECT otb:dynamicconvert - changes pixel type/dynamic, not combines two rasters.\nREJECT saga:soilwaterbalancedays - models soil moisture dynamics, not LST",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-079#S5",
+   "task": "PCA2-T-079",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:stereoframework",
+    "otb:colormapping"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] \n[tail]",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the provided operators support combining a FeatureCollection (for station locations and buffers) with an LST raster to produce integrated map images; all operate solely on rasters or vectors individually and lack visualization capabilities such as symbology, labeling, or layout composition.",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-086#S4",
+   "task": "PCA2-T-086",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:pixelvalue",
+    "otb:multiimagesamplingrate",
+    "otb:imageregression"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nBecause none of the candidate operators can combine multiple single-layer rasters into a multi-band stack and simultaneously compute a pixel count per band across all bands.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe need to decide which candidate operator(s) can accomplish the plan step: \n\"Stack Layers & Count Pixels\". The purpose is to combine all single-layer outputs into a multi-band stack and then \n[tail] interpret \"zones\" as the union of all areas covered by any layer? But we need a zone raster that partitions space into cells where we want to compute statistics. If we had a regular grid (like a shapefile of cells), we could run this operator for each layer individually and then combine the results?",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-089#S5",
+   "task": "PCA2-T-089",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:disparitymaptoelevationmap",
+    "otb:refinesensormodel",
+    "otb:contrastenhancement",
+    "otb:classificationmapregularization",
+    "otb:morphologicalclassification"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the candidate operators accept both a change detection raster and a slope/pre‑flood water mask as combined inputs to produce a refined flood candidate raster; they either operate on DEM/disparity maps alone or perform simple Boolean operations without the needed conditional logic.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe are given a plan step: Step 5 - Refinement Using Ancillary Data\n Purpose: Incorporate topographic and prior knowledge to reduce false positives/negatives\n Input: Smoothed change detection r\n[tail] on raster is actually a DEM (which it isn't, it's a change detection raster), then it might be relevant. But the step says we have a slope layer, not a DEM. So no.\n\n - **otb:contrastenhancement**: Might enhance the change detection raster, but doesn't use slope or water mask.\n\n - **otb:classifcation",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-092#S5",
+   "task": "PCA2-T-092",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:sardecompositions",
+    "otb:sarpolarmatrixconvert",
+    "otb:sarburstextraction",
+    "otb:sarcalibration",
+    "otb:sarconcatenatebursts",
+    "otb:sarpolarsynth",
+    "otb:computeimagesstatistics"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP\nbecause no candidate operator provides functionality to compute coherency from SAR data.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P3",
+   "priority_why": "input_types_norm corrected operator involved"
+  },
+  {
+   "step_key": "PCA2-T-003#S2",
+   "task": "PCA2-T-003",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "otb:opticalcalibration"
+   ],
+   "changed_oids": [
+    "otb:radiometricindices",
+    "otb:opticalcalibration",
+    "otb:pixelvalue"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "REJECT otb:radiometricindices - lacks documented parameters for performing radiometric correction (e.g., gain/offset application).  \nREJECT otb:opticalcalibration - lacks documented parameters for performing radiometric correction (e.g., gain/offset application).  \nREJECT grass7:i.albedo - computes albedo from surface reflectance, not from",
+   "raw_experiment_excerpt": "SELECT otb:opticalcalibration - Converts raw Digital Numbers (DN) to Top-Of-Atmosphere (TOA) or Top-Of-Canopy (TOC) reflectance values through sensor-specific radiometric calibration, requiring acquisition metadata (date/time, sun/view angles) and sensor-dependent calibration coefficients.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-005#S3",
+   "task": "PCA2-T-005",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:imageregression",
+    "otb:compareimages"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] \n[tail]",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP  \nBecause none of the provided operators can compute a cloud cover percentage or similar metric needed to filter scenes based on low cloud cover; the closest (`saga:cloudDetection`) only outputs a binary cloud mask without aggregated statistics.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-005#S5",
+   "task": "PCA2-T-005",
+   "cls_control": "POS",
+   "cls_experiment": "ABST",
+   "sel_control": [
+    "grass7:r.mask.vect"
+   ],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:disparitymaptoelevationmap"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT grass7:r.mask.vect - uses a vector fire boundary to mask a raster, producing a binary mask where pixels within the boundary are set to 1 and outside to 0.",
+   "raw_experiment_excerpt": "SELECT grass7:r.mask.vect - Creates a binary raster mask by applying a vector polygon (fire boundary) to a raster, setting interior pixels to 1 and exterior to 0.  \nREJECT grass7:r.mask.rast - No documented parameters or outputs; unclear if it supports vector-based masking.  \nREJECT grass7:r.reclass.area - Reclassifies raster values based on thresholds, not designed to generate a mask from a vector boundary.  \nREJECT qgis:heatmapkerneldensityestimation - Produces a smoothed density surface, not a binary mask.  \nREJECT saga:fireriskanalysis - Calculates multi-factor fire risk indices, not a geometric mask.  \nREJECT saga:morphometricprotectionindex - Generates a terrain-derived protection inde…",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-012#S3",
+   "task": "PCA2-T-012",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:compareimages"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] \n[tail]",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP\nbecause none of the provided operators can compute a mean value across multiple raster time series; they either operate on vectors, perform comparisons returning scalar metrics, or do spatial operations unrelated to temporal averaging.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-021#S4",
+   "task": "PCA2-T-021",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:disparitymaptoelevationmap"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP\nbecause none of the candidate operators support combining multiple raster inputs into a single fused raster.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-022#S6",
+   "task": "PCA2-T-022",
+   "cls_control": "ABST",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "grass7:r.blend.rgb"
+   ],
+   "changed_oids": [
+    "otb:colormapping"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP\nbecause no operator is capable of extracting individual RGB bands from a multi-band raster; the closest candidate (grass7:r.rgb) only extracts the blue channel, while others either transform RGB to another color model or perform unrelated tasks.",
+   "raw_experiment_excerpt": "SELECT grass7:r.blend.rgb - It blends three raster maps (typically red, green, and blue bands from the mosaic) into a single RGB image, producing the final true-color mosaic.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-025#S4",
+   "task": "PCA2-T-025",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "saga:statisticsforrasters"
+   ],
+   "changed_oids": [
+    "otb:imageregression"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] \n[tail]",
+   "raw_experiment_excerpt": "SELECT saga:statisticsforrasters - Use GRIDS to input the aligned raster grids and retrieve the result from MEAN outputRaster.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-026#S4",
+   "task": "PCA2-T-026",
+   "cls_control": "POS",
+   "cls_experiment": "NODEC",
+   "sel_control": [
+    "native:rasterize"
+   ],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:rasterization"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT native:rasterize - Can combine multiple rasters into a single multi-band raster using the LAYERS parameter, producing an image stack that can be viewed interactively.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe need to decide which candidate operator(s) can accomplish Step 4: \"Integrate Layers for Visualization\". The purpose is to combine all generated rasters into a single viewable composition. I\n[tail] ing multiple layers into one image. So it could work.\n\nHowever, note that the input types for **native:rasterize** are literal or raster. Our inputs are rasters, so we can pass them. But the function might expect the layers to be provided as part of a map theme or something. Still, it seems possible",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-032#S2",
+   "task": "PCA2-T-032",
+   "cls_control": "ABST",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "otb:opticalcalibration"
+   ],
+   "changed_oids": [
+    "otb:opticalcalibration",
+    "otb:sarcalibration",
+    "otb:radiometricindices"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP\nbecause none of the candidate operators provide both radiometric calibration (converting digital numbers to top-of-atmosphere reflectance) and atmospheric correction capabilities; they primarily operate on already calibrated or non-radiometric",
+   "raw_experiment_excerpt": "SELECT otb:opticalcalibration - Performs radiometric calibration to TOA/TOC, requiring acquisition metadata and optionally input image, producing calibrated output.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-033#S1",
+   "task": "PCA2-T-033",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "gdal:rearrange_bands"
+   ],
+   "changed_oids": [
+    "otb:spectralangleclassification",
+    "otb:hyperspectralunmixing"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe need to decide which candidate operator(s) can accomplish Step 1: \"Band Extraction\". The purpose is to extract green and near-infrared spectral bands from the imagery. Input: Landsat 7 ETM+\n[tail] extent` which clips the raster but retains all bands. That doesn't help.\n\nWhat about `saga:multibandvariation`? It computes variations across bands, but doesn't extract individual bands.\n\nI think the most plausible is `gdal:rearrange_bands`. Many users would use it to extract bands. They might write",
+   "raw_experiment_excerpt": "SELECT gdal:rearrange_bands - Use it to extract specific bands by setting BANDS parameter to the respective band indices for green and NIR, producing separate rasters.  \nREJECT native:extractlabels - Operates on vector data, not raster bands.  \nREJECT gdal:extractprojection - Extracts projection information, not spectral bands.  \nREJECT grass7:r.colors.out - Exports color tables, not spectral bands.  \nREJECT sage:multibandvariation - Computes statistical variations across bands, not extraction.  \nREJECT native:extractbyextent - Clips vector layers by extent, not bands.  \nREJECT native:extractbylocation - Extracts features by location predicate, not bands.  \nREJECT otb:spectralangleclassifica…",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-052#S2",
+   "task": "PCA2-T-052",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:polygonclassstatistics"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause the task requires converting a raster into vector polygons, and none of the provided operators support that transformation.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe need to create vector polygons representing Water, Forest, and City features within an ROI for sampling. The inputs are processed raster stacks from Step 1. We have several candidate operat\n[tail] perator that outputs a vector table from a raster, it might be the best choice.\n\nAlso, note that **grass7:r.watershed** outputs various maps including 'drainage', 'basin'. Those could be converted to polygons? But the operator itself doesn't output polygons; it outputs raster maps. You would need to",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-056#S2",
+   "task": "PCA2-T-056",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:imageregression"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] \n[tail]",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the provided operators perform median computation across multiple layers/time-series; they either segment, mosaic, track features, divide, regress, composite fixed bands, or average with a mask—none generate a single-band median composite from a stack.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-056#S4",
+   "task": "PCA2-T-056",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:spectralangleclassification"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] \n[tail]",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the candidate operators provide functionality to extract spectral signatures from polygon vectors into a labeled feature table; available operators focus on classification, terrain analysis, or segmentation without generating the required tabular output.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-057#S4",
+   "task": "PCA2-T-057",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "otb:compareimages"
+   ],
+   "changed_oids": [
+    "otb:pixelvalue",
+    "otb:compareimages"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe need to compute mean squared differences between two images: the original image and two filtered versions (focal median and EDS). The purpose is to quantitatively measure pixel-wise deviati\n[tail]  grids. Each output cell corresponds to a block of input cells. The method is applied to the blocks. For example, if we use method=\"average\", it averages the values of all input cells falling into that output cell. If we use method=\"(@A - @B)^2\", it would compute the squared difference for each pair",
+   "raw_experiment_excerpt": "SELECT otb:compareimages - Computes mean squared error between two images via its 'mse' output port; applying it with original image as reference and focal median/EED result as measurement gives the respective MSD values.\n\nREJECT native:filterbygeometry - Operates on vector geometries, not raster pixel values, and cannot compute statistical differences between images.\n\nREJECT otb:pixelvalue - Retrieves a single pixel value rather than comparing two images or averaging differences.\n\nREJECT grass7:r.stats.quantile.rast - Computes quantiles of a single raster, not pairwise differences between two images.\n\nREJECT grass7:r.resamp.stats - Aggregates raster values to a coarser grid but does not com…",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-068#S4",
+   "task": "PCA2-T-068",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:smallregionsmerging"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe need to determine which candidate operator(s) can calculate the initial forest area calculation. The purpose is to compute the total pixel count (area) classified as 'Tree Cover Lost' (or e\n[tail] ons to compute cross-tabulated statistics, yielding pixel counts per class within each park zone.\n\nNo other operators seem suitable.\n\nCheck if any other operator could work: Perhaps `grass7:r.reclass.area` could be misinterpreted? But it lacks polygon input. So reject others.\n\nHence, output only one",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the candidate operators support processing polygon geometries (e.g., park polygons) alongside a raster to extract class-specific pixel counts within specified boundaries.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-068#S6",
+   "task": "PCA2-T-068",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "native:aggregate"
+   ],
+   "changed_oids": [
+    "otb:smallregionsmerging"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe need to decide which candidate operator(s) can accomplish the plan step: \"Cumulative Loss Aggregation\". The purpose is to sum annual losses to find total loss per park zone. Input: Output f\n[tail] rovided that the input from Step 5 is a vector dataset containing the necessary attributes (park zone identifier, year, and area of loss). If the input is a raster, then none of these operators fit well. But since the step mentions \"per park zone\", it strongly suggests that park zones are defined as",
+   "raw_experiment_excerpt": "SELECT native:aggregate - takes vector input from Step 5, groups by park zone attribute, and aggregates loss values to produce summary table with cumulative area lost per zone.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-070#S1",
+   "task": "PCA2-T-070",
+   "cls_control": "NODEC",
+   "cls_experiment": "POS",
+   "sel_control": [],
+   "sel_experiment": [
+    "saga:resampling"
+   ],
+   "changed_oids": [
+    "otb:segmentation"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] \n[tail]",
+   "raw_experiment_excerpt": "SELECT saga:resampling - Uses the optional TARGET_USER_EXTENT parameter to define the ROI bounding box and resamples the input raster to match that extent, producing a cropped output raster.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-079#S3",
+   "task": "PCA2-T-079",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:sampleextraction",
+    "otb:sampleaugmentation"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nBecause none of the candidate operators can directly generate multiple concentric circular zones (multiple rings) around each station; they either produce a single buffer per feature, operate on raster inputs, or serve different purposes such as random point generation or distance calculation.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe need to generate variable buffers around stations at specific distances: 50m, 100m, ..., 300m. The goal is to create concentric circular zones for each station. This means we want to produc\n[tail] nces via the FIELD parameter if the field is a string array? Not sure.\n\nGiven the information, I'll reject all.\n\nHowever, let's double-check the names: \"qgis:variabledistancebuffer\" – the word \"variable\" might imply that the distance varies across features, not that multiple rings are created. So it",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-080#S4",
+   "task": "PCA2-T-080",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:spectralangleclassification"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause the required indices (BAI, BAIS2, TBR) are not supported by any of the provided operators, which lack functionality to compute these specific burn-area-sensitive spectral indices from a vegetated pixel stack.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-081#S5",
+   "task": "PCA2-T-081",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:disparitymaptoelevationmap"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "[no closed think | head] <think>\nWe are given a plan step: \"Topographic Constraint Integration\". The purpose is to refine a mask using elevation suitability rules. Input: Step 4 mask and SRTM DEM. Output: Final refined sugarc\n[tail] ased on elevation data.\n\n But wait: What about **native:meshcontours**? It accepts a mesh (which could be created from the DEM?) and outputs contours. Then we could clip the mask with those contours? But that would be two separate steps, and the operator itself doesn't take a mask.\n\n Similarly, **gd",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP  \nbecause none of the candidate operators can accept both a mask and a DEM to produce a refined mask.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-084#S4",
+   "task": "PCA2-T-084",
+   "cls_control": "NODEC",
+   "cls_experiment": "ABST",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:polygonclassstatistics",
+    "otb:lsmssmallregionsmerging",
+    "otb:smallregionsmerging",
+    "otb:obtainutmzonefromgeopoint"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "REJECT saga:climateclassification - requires temperature and precipitation multilayers, not available from given inputs  \nREJECT otb:polygonclassstatistics - output not",
+   "raw_experiment_excerpt": "NO OPERATOR FOR THIS STEP\nbecause none of the candidate operators can directly derive monsoonal and Mediterranean precipitation patterns from hs_ratio.tif and latitude_zone_mask.tif; the climate classification operator requires temperature and precipitation multilayers instead of the given inputs, and other operators either perform unrelated spatial analyses or require additional preprocessing steps not supported by the provided tools.",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-086#S5",
+   "task": "PCA2-T-086",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:pixelvalue"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP  \nBecause none of the candidate operators can simultaneously compute the mean number of observations per pixel (requiring summation and division by total pixels) and generate a binary mask of pixels with at least one valid observation from a single raster input. All listed operators either lack appropriate output types, require additional inputs not present, or perform unrelated functions.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe need to compute two outputs: \n   average_observation_frequency: mean number of observations per pixel (average frequency)\n   effective_observation_frequency: pixels that have at least one v\n[tail] ry mask; unclear if it can produce both.\n REJECT grass7:r.stats.zonal - Requires two input rasters and accumulator-based statistics, not direct mean and binary mask.\n\n Since none work, we output:\n\n NO OPERATOR FOR THIS STEP\n because none of the candidate operators can simultaneously compute the mean",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-089#S4",
+   "task": "PCA2-T-089",
+   "cls_control": "POS",
+   "cls_experiment": "NODEC",
+   "sel_control": [
+    "saga:morphologicalfilter"
+   ],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:morphologicalclassification",
+    "otb:segmentation",
+    "otb:morphologicalprofilesanalysis",
+    "otb:classificationmapregularization",
+    "otb:opticalcalibration"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT saga:morphologicalfilter - Takes raw change detection raster as input and applies morphological filtering (e.g., opening/closing) using specified kernel and radius to produce a smoothed output raster.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe are given a plan step: \n   Step 4 - Morphological Filtering\n   purpose: Remove small speckles and noise from initial change detection\n   input: Raw change detection raster\n   output: Smooth\n[tail] rve the original classes. So I'm leaning towards rejecting it.\n\n   Similarly, the fourth operator (otb:morphologicalprofilesanalysis) is for profiling, not smoothing.\n\n   The fifth and sixth are for vectors.\n\n   The seventh (otb:classifcationmapregularization) we already considered.\n\n   The eighth (",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-092#S2",
+   "task": "PCA2-T-092",
+   "cls_control": "POS",
+   "cls_experiment": "NODEC",
+   "sel_control": [
+    "saga:clouddetection"
+   ],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:pixelvalue"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT saga:clouddetection - Uses the blue, green, red, near-infrared, short-wave infrared bands from the Sentinel-2 stack as inputs to compute cloud probabilities and outputs a cloud mask raster for subsequent masking.",
+   "raw_experiment_excerpt": "[no closed think | head] <think>\nWe need to identify which candidate operator(s) can accomplish the task: \"Identify and mask out cloudy pixels in optical imagery\". The input is from Step 1 output (Sentinel-2 stack), and the o\n[tail] ly a mask, but it's undocumented. Alternatively, maybe we can use the cloud mask as a condition in a raster calculator, but that's not an operator here.\n\nGiven the instructions, we must base our judgment solely on the provided records. Since clouddetection outputs a cloud mask, and the step includes",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-098#S1",
+   "task": "PCA2-T-098",
+   "cls_control": "ABST",
+   "cls_experiment": "NODEC",
+   "sel_control": [],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:pixelvalue",
+    "otb:imagedimensionalityreduction"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "NO OPERATOR FOR THIS STEP\nbecause none of the operators provide a way to conditionally mask pixels based on quality assurance information; they either operate on single rasters without masks, convert formats, or perform unrelated tasks.",
+   "raw_experiment_excerpt": "NO",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  },
+  {
+   "step_key": "PCA2-T-098#S6",
+   "task": "PCA2-T-098",
+   "cls_control": "POS",
+   "cls_experiment": "NODEC",
+   "sel_control": [
+    "saga:resamplingfilter"
+   ],
+   "sel_experiment": [],
+   "changed_oids": [
+    "otb:smoothing",
+    "otb:meanshiftsmoothing"
+   ],
+   "sel_contains_unverified_exp": false,
+   "raw_control_excerpt": "SELECT saga:resamplingfilter - Applies a low-pass filter to the time series when stacked as bands, reducing high-frequency noise while preserving low-frequency phenological trends.",
+   "raw_experiment_excerpt": "[no closed think | head] \n[tail]",
+   "priority": "P4",
+   "priority_why": "decision discordant"
+  }
+ ]
+}

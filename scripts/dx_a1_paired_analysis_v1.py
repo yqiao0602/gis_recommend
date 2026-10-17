@@ -30,27 +30,37 @@ FULL = (REPO / ("docs/reports/route2_p0_contract/plan_pipeline_v1/"
                 "planning_capability_audit_v1/diag50_v1/dx_v1/dx50_v1/"
                 "dx50_full_v1"))
 A1 = FULL / "a1_v1"
+# MAX_PATH-safe roots: the frozen control tree is read through the dx50_short
+# junction and the pulled experiment mirror lives at a short real path (both
+# keep every open() under the 260-char Win32 limit; the deep repo spelling
+# overflows for runs/<task>/S2/S<n>/raw_output.txt).
+SHORT_BASE = REPO.parent  # Algorithm_classification/
+CTRL_RUNS = SHORT_BASE / "dx50_short" / "runs"
+EXP_ROOT = SHORT_BASE / "_a1_work" / "runs_local"
 UNVERIFIED = {"otb:aggregate", "otb:genericregionmerging",
               "otb:imagetimeseriesgapfilling", "otb:multitempfilteringfilter",
               "otb:multitempfilteringoutcore", "otb:objectsradiometricstatistics"}
 
 
 def classify(parsed, raw, oids):
+    """Preregistered three-way (+OOC): POS requires operator IN candidates;
+    an out-of-candidates SELECT is OOC (越选), never POS (A1_PREREGISTRATION_V1)."""
     if not raw or not raw.strip():
         return "NODEC", []
-    sel = parsed.get("selected_in_candidates") or []
-    ooc = [o for o in (parsed.get("selected") or [])
-           if o.get("operator_id") not in oids]
+    in_cand = parsed.get("selected_in_candidates") or []
+    outside = parsed.get("selected_outside_candidates") or []
     if parsed.get("no_operator_for_step"):
         return "ABST", []
-    if sel or ooc:
-        return "POS", sel + [o["operator_id"] for o in ooc]
+    if in_cand:
+        return "POS", in_cand
+    if outside:
+        return "OOC", outside
     return "NODEC", []
 
 
 def read_control(step_key, affected):
     tid, snum = step_key.split("#S")
-    d = FULL / "runs" / tid / "S2" / f"S{snum}"
+    d = CTRL_RUNS / tid / "S2" / f"S{snum}"
     raw = (d / "raw_output.txt").read_text(encoding="utf-8")
     pv2 = d / "parsed_v2.json"
     parsed = json.loads(pv2.read_text(encoding="utf-8")) if pv2.exists() else \
@@ -60,11 +70,13 @@ def read_control(step_key, affected):
     return raw, parsed
 
 
-def read_experiment(step_key, affected, exp_root):
+def read_experiment(step_key, affected):
     tid, snum = step_key.split("#S")
-    d = exp_root / tid / "S2" / f"S{snum}"
+    d = EXP_ROOT / tid / "S2" / f"S{snum}"
     raw = (d / "raw_output.txt").read_text(encoding="utf-8")
-    parsed = json.loads((d / "parsed.json").read_text(encoding="utf-8"))
+    ppath = d / "parsed.json"
+    parsed = json.loads(ppath.read_text(encoding="utf-8")) if ppath.exists() \
+        else parse_s2_v2(raw, affected[step_key]["oids"])
     if parsed.get("parser") != "s2_v2":
         parsed = parse_s2_v2(raw, affected[step_key]["oids"])
     return raw, parsed
@@ -73,10 +85,9 @@ def read_experiment(step_key, affected, exp_root):
 def main():
     affected_doc = json.loads((A1 / "A1_AFFECTED_SET_V1.json")
                               .read_text(encoding="utf-8"))
-    exp_root = A1 / "runs_local"
-    if not exp_root.exists():
+    if not EXP_ROOT.exists():
         raise SystemExit("experiment runs not pulled yet (expected at "
-                         f"{exp_root})")
+                         f"{EXP_ROOT})")
 
     # candidate oids per step from the frozen retrieval
     from dx_common import PCA2  # noqa: E402
@@ -92,7 +103,7 @@ def main():
     for key in sorted(affected):
         oids = affected[key]
         craw, cpars = read_control(key, {k: {"oids": affected[k]} for k in affected})
-        eraw, epars = read_experiment(key, {k: {"oids": affected[k]} for k in affected}, exp_root)
+        eraw, epars = read_experiment(key, {k: {"oids": affected[k]} for k in affected})
         ccls, csel = classify(cpars, craw, oids)
         ecls, esel = classify(epars, eraw, oids)
         pairs.append({
@@ -107,7 +118,7 @@ def main():
         c = Counter(cls_list)
         n = len(cls_list)
         return {k: (c.get(k, 0), round(c.get(k, 0) / n, 4)) for k in
-                ("POS", "ABST", "NODEC")} | {"n": n, "arm": which}
+                ("POS", "OOC", "ABST", "NODEC")} | {"n": n, "arm": which}
 
     ctl = rate([p["cls_control"] for p in pairs], "control v0_4")
     exp = rate([p["cls_experiment"] for p in pairs], "experiment v0_5")
