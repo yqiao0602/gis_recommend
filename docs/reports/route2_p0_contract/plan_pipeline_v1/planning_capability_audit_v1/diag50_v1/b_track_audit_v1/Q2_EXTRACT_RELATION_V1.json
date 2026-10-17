@@ -1,0 +1,2929 @@
+{
+ "artifact": "Q2_EXTRACT_RELATION_V1",
+ "date": "2026-10-18",
+ "n_relations": 117,
+ "relations": [
+  {
+   "pair_id": "S001",
+   "bucket": "diff",
+   "jaccard": 0.8269,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "evidence_required": [
+    "核对 EE 实际运行日志、过滤后影像数量及输出影像统计以量化差异影响；非判定实质差异的必要前提"
+   ],
+   "key_findings": [
+    "A 连续两个不重叠 filterDate（2010-2012 与 2007-2008）作用于同一集合→交集为空集风险，最关键执行语义问题；B 单区间 2010-2012",
+    "输入集合：A=T1_SR+T2_SR 合并，B=仅 T1_SR；端元参数（初始陆/水、第二次分解陆地端元）与水生植被掩膜阈值（0.15 vs 0.20）均变",
+    "B 新增 medindices 未被后续引用=非关键冗余；输出资产名 _040221 vs _v5 不构成算法差异",
+    "fidelity：A 欠描述（描述提两时期但代码交集化，执行效果与描述不一致）；B 欠描述（未说明端元/阈值等关键选择）"
+   ]
+  },
+  {
+   "pair_id": "S002",
+   "bucket": "diff",
+   "jaccard": 0.8889,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "失实",
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "evidence_required": [
+    "核验集合加载/表达式解析/输出有效像元与数值范围；静态代码已足以判定不等价"
+   ],
+   "key_findings": [
+    "B 温度表达式括号配对异常（末尾多余右括号）——可能解析失败或改变运算结构，不能当格式差异",
+    "集合版本 C02 vs C01、QA 波段 QA_PIXEL vs BQA（质量位语义不同，掩膜不等价）",
+    "B 删除 Export.image.toDrive=输出工作流能力差异（非 UI 差异）；可视化范围/调色板=显示配置；A 额外 RGB 加载未被引用=冗余",
+    "两侧均读取 K1/K2/A/M 属性但未用于公式=定标逻辑与描述不全；fidelity B=失实（针对代码与描述声称能力的不一致）"
+   ]
+  },
+  {
+   "pair_id": "S003",
+   "bucket": "diff",
+   "jaccard": 0.8,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "evidence_required": [
+    "量化需核验两时间范围有效影像数/掩膜覆盖/最终分数覆盖；不等价判定无需额外证据"
+   ],
+   "key_findings": [
+    "时间范围 2010-2012（排除 5 月） vs 1984-1986（无月份过滤）——处理不同时间样本",
+    "输入集合 A=T1_SR+T2_SR vs B=仅 T1_SR；端元与掩膜阈值参数族同 S001（0.15/0.20、-0.294…/-0.334…）",
+    "B 忠实=描述与代码在当前语义粒度相符（不含算法科学有效性主张）；A 欠描述=未交代时间筛选与参数条件",
+    "与 S001/S002 区别：无显性执行故障，主要是面向不同时段数据+不同模型参数"
+   ]
+  },
+  {
+   "pair_id": "S004",
+   "bucket": "diff",
+   "jaccard": 0.8627,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "evidence_required": [
+    "①核对开头完整变量定义确认 aoi0 几何范围两侧是否一致；②EE 中确认 A 硬编码转移表路径与 B bulc_current.transitionMatrix 路径均可执行；③检查 B 事件集合大小/重复影像是否导致额外迭代与概率更新；④对比最终分类/置信度/像元计数量化影响；确认是否存在源码外的导出步骤"
+   ],
+   "key_findings": [
+    "事件影像构造实质差异：A=NLCD 2001+2006 两幅不同年份事件；B=仅 2001 且连续两次自合并（merge 自身）→ 重复扩展同一事件而非补回 2006——未按任务描述建模 1992/2001/2006 三期变化",
+    "核心算法路径不同：A usehardcodedtruthtable=1（硬编码真值表）；B=0 并启用 overlayConsecutiveEventsByBitpackingForSupervised=1（叠加事件构建转移矩阵，依赖 afn_assembleTables/bulc_current）",
+    "初始分类图 NLCD 1992 相同、BULC 迭代更新函数主体相同——但不能据主体复用认定等价",
+    "双侧欠描述：A 未说明逐时间步输出的具体形态且无显式导出；B 未交代 2001 重复扩展与路径切换，同样无导出"
+   ]
+  },
+  {
+   "pair_id": "S005",
+   "bucket": "diff",
+   "jaccard": 0.7879,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "68KB×2 仅通读 diff 头部+数据集+RLE 映射；SoilGrids 分析主体段未逐行比对（分类判定不依赖，深层差异不穷尽）"
+   ],
+   "key_findings": [
+    "同一 SoilGrids 六深度土壤属性交互应用的国家重定向：Costa Rica（provincias+cantones 两级行政资产） vs Belize（distritos 一级）",
+    "RLE 差（13v10）= A 的两级行政边界加载块（VECTOR_LOAD->ATTRIBUTE_FILTER ×2）；源于行政区划数据模型差异，非新分析步骤",
+    "5,263 行 diff 主体为 UI 面板重构（标题/说明/notes 按钮级联）——脚手架层",
+    "fidelity 双侧忠实：各自描述与各自国家变体的资产/交互一致（A 省-县两级选择 ✓；B 区一级选择 ✓）"
+   ]
+  },
+  {
+   "pair_id": "S006",
+   "bucket": "diff",
+   "jaccard": 0.9184,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "seasonal_block_candidate（A 多一个双月合成块，输出未入最终栈，疑似未使用中间产物）",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "确认 A 的 Recfebb（二月合成）确无其他使用点（当前 imgTOTAL 栈与 S1 段均未见）；确认双方导出与描述一致"
+   ],
+   "key_findings": [
+    "= owner 40 对中的 DIFF-20（J=0.9184 同对）：源码级补强 owner 弱变体裁定——RLE 39v35 差异 = A 的 senfebb 二月合成块，其输出 Recfebb 不在 imgTOTAL 最终栈（疑似未使用）",
+    "区域重定向：A=Tandil 单区（LINK 14098，样本 verdadDepRioCuarto+urbanocordoba）；B=Necochea+Tandil 双区（6581+6049，样本合并 NECOCHEA_GRUESA2021）",
+    "影响结果的参数差：各双月合成日期窗全部错开；train/test 阈值 0.55→0.70；scale 56→30",
+    "B 删多个 Map.addLayer 与 'Multi-T Mean DESC' 图层=UI 层",
+    "fidelity 双侧忠实：A 'Tandil region' ✓；B 'Necochea/Tandil' 与双 roi 一致 ✓"
+   ]
+  },
+  {
+   "pair_id": "S007",
+   "bucket": "diff",
+   "jaccard": 0.7935,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "evidence_required": [
+    "如需确认实际输出差异需 GEE 运行比较；静态代码已足以判定执行逻辑不同"
+   ],
+   "key_findings": [
+    "训练/验证构造实质变化：A=用户定义六类 GCP 训练+独立验证点；B=合并 GCP 随机抽取 75% 训练，验证从训练合并集合筛选（gte 0.25）——0.25-0.75 区间重叠，非互斥划分，验证精度可能偏高",
+    "数据源版本：C02/T1_TOA vs C01/T1_TOA",
+    "ee.Image(...) 外层包装差异不是主要结构差异来源（方法学裁定示例）",
+    "fidelity：A 忠实（描述与代码整体吻合）；B 欠描述（未提 Collection 1、未交代随机划分及重叠）"
+   ]
+  },
+  {
+   "pair_id": "S008",
+   "bucket": "diff",
+   "jaccard": 0.8125,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "evidence_required": [
+    "核验资产内容/样本划分/特征波段/验证统计以确认预测差异；需确认 B 资产 UMSExt900_2017LOmCaobaB 存在 VA17_900 字段且为有效实测体积标签"
+   ],
+   "key_findings": [
+    "研究区与数据资产变化：SBI（SBInundable） vs SM（SMSubperennifolia）资产——空间范围可能不同，裁剪范围全部随改",
+    "训练/验证构造变化：A=训练资产+独立验证资产；B=同一资产随机列 80/20 划分（VA17_900 字段）",
+    "模型输入特征实质变化：A=Ratios5；B=Ratios5.addBands(TEXTURES_11x11)（A 定义了纹理变量但未用于训练——定义≠使用）",
+    "验证字段 VT_900 vs VA17_900（随资产变化，未必错误但需确认字段有效）；A 说 vegetation volume、B 说 forest volume——目标范围是否同义不可判"
+   ]
+  },
+  {
+   "pair_id": "S009",
+   "bucket": "diff",
+   "jaccard": 0.7903,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "duplicate_block_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "无（LAI 场景分支已经 grep 证实：LAIfraction/LAIfraction_Area_yield 变量族+对应导出）"
+   ],
+   "key_findings": [
+    "canonical API 序列完全相同（sym_diff=0）——分析结构等价；RLE 56v54 差 = A 的 villages 双重声明块（diff 可见连续两次相同 FeatureCollection 定义）",
+    "任务条件字面量全变：作物 soybean→cotton、行政区 Nanded→Aurangabad、CCE 均值 1.543→0.948、播期窗错开、村庄资产换源",
+    "CCE 产量字段 'Dry weig_3'→'Wet weig_3'（干重→湿重=测量语义差异，回读 grep 证实）",
+    "fidelity 双侧忠实：B 的三场景主张（early/late/LAI-based）在代码中有 LAIfraction_Area_yield 变量族与导出支持（避免了一次误判失实）"
+   ]
+  },
+  {
+   "pair_id": "S010",
+   "bucket": "diff",
+   "jaccard": 0.75,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "evidence_required": [
+    "比较影像数量/有效像元/掩膜覆盖率/最终组分图；实际运行确认定量影响；B 一维 unmix 能否产生有意义稳定的分解需运行验证"
+   ],
+   "key_findings": [
+    "时间范围：1984-1986 vs 2010-2012（排除 5 月）——不同年份 L5 数据",
+    "第一次解混输入维度实质变化：A=四波段（B5/B7/NDVI/mNDWI median）；B=单波段（仅 mNDWI_median），端元从四维向量变一维",
+    "mNDWI 波段顺序 ['B5','B2'] vs ['B2','B5']——normalizedDifference 分子顺序变化一般改变符号=实质参数/实现差异",
+    "B 新增 mNDWI_stdDev>0.15 掩膜条件；第二阶段端元参数改变（部分变正负号）",
+    "fidelity：A 忠实（1984-1986+解混+组分与代码一致）；B 欠描述（未限定时间范围、未说明单波段分解等关键变化）"
+   ]
+  },
+  {
+   "pair_id": "S011",
+   "bucket": "diff",
+   "jaccard": 0.8491,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "multiref_eligible": true,
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "evidence_required": [
+    "实际运行 A：核查两次日期过滤后集合大小及后续计算是否失败；必要时比较掩膜覆盖率与最终组分图"
+   ],
+   "key_findings": [
+    "A 连续两次 filterDate（2010-2012 ∩ 2007-2008 不重叠）→ 集合预期为空——声称处理两时期但交集化，无法形成所描述的正常时段合成=fidelity_A 失实",
+    "初始水陆分解参数：land_L5 -0.32453812 vs -0.33453812、water_L5 0.21103338 vs 0.20103338；植被掩膜阈值 0.15 vs 0.20；第二阶段陆地端元参数族同 S001/S003",
+    "B 多定义 medindices 未参与计算=非关键；导出资产名不同不构成算法差异",
+    "fidelity_B 忠实：描述明确 1984-1986 且代码完成指数/解混/掩膜/组分图"
+   ]
+  },
+  {
+   "pair_id": "S012",
+   "bucket": "diff",
+   "jaccard": 0.7959,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "无（导出块已 grep 证实：A/B 均有样本+影像导出，B 另有重要性表导出）"
+   ],
+   "key_findings": [
+    "= owner 40 对中的 DIFF-8：B 尾链多出的 AGGREGATION->VECTOR_LOAD 定位为变量重要性表（importanceFc）计算+导出块——解决 owner 当初'导出是否解释这两个标签'的疑问：能，且是输出能力差异",
+    "区域重定向：Cuyo（la rioja/san juan/mendoza+MDE cuyo）vs Patagonia（chubut+MDE patagonia）；云阈 0.3→0.5；RF 树 300→150",
+    "双侧均有样本+影像导出（grep 证实）：A 描述漏提导出=欠描述；B 描述导出 ✓ 且代码重要性表为额外输出=忠实"
+   ]
+  },
+  {
+   "pair_id": "S013",
+   "bucket": "diff",
+   "jaccard": 0.7612,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "互有分析块增删：A=RF 树数调参扫描（5..200 步长 5）+NDVI 导出；B=分区 NDVI 统计（B 尾链 +1 AGGREGATION 的来源）",
+    "年份数据 2010 vs 2002；定标函数 applyScaleFactors vs maskL5sr；RF 60(种子) vs 10 树；样本资产 09 vs 02 后缀",
+    "fidelity：A 欠描述（调参扫描+NDVI 导出未述）；B 忠实（分区 NDVI 统计已述 ✓）"
+   ]
+  },
+  {
+   "pair_id": "S014",
+   "bucket": "diff",
+   "jaccard": 0.8261,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "A 多逐景对比导出循环（RLE +6 的来源；经 S016 同 A 脚本 diff 交叉证实该块在 B 缺失）",
+    "roi 多边形坐标不同；日期窗 2020-05-01..09-30 vs 03-22..07-23；B 去掉 CLOUDY 过滤；目标日期 05-12 vs 04-22",
+    "B 增 Red 波段单导出（其指令 'exports synthetic spectral bands' 已述 ✓）",
+    "fidelity：A 欠描述（逐景循环未述）；B 忠实"
+   ]
+  },
+  {
+   "pair_id": "S015",
+   "bucket": "diff",
+   "jaccard": 0.7544,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "特征栈构成实质不同：A=NDBI+NASADEM 高程+全百分位特征（p5-p95）+RF(310,9)；B=极简特征（B_p95+NDVI_p50+NDWI_p50）+remap 1-6→0-5+RF(10)+300 随机点验证",
+    "NDVI 波段 ['B4','B2'] vs ['B4','B3']（MSS 标准NDVI 用 B2——B 侧波段选择存疑，实质参数差异）",
+    "fidelity：A 欠描述（高程+NDBI 特征未述）；B 忠实（随机点验证与其 'validation against reference data' 相符）"
+   ]
+  },
+  {
+   "pair_id": "S016",
+   "bucket": "diff",
+   "jaccard": 0.8478,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "A 的逐景对比导出循环在 B 整块删除（diff 直接可见）=RLE 23v17 差异来源",
+    "B 换 shuiku（水库）roi+单月窗 2020-05-01..05-30 vs A 全季窗；命名前缀 shuiku*",
+    "fidelity：A 欠描述（循环未述）；B 忠实"
+   ]
+  },
+  {
+   "pair_id": "S017",
+   "bucket": "diff",
+   "jaccard": 0.7931,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "站点重定向 Arabilla→Parincota（name 过滤字面量）；分析结构同构（canon 集合相同，RLE +1=B 的 MGRS_TILE 排除过滤=输入质量条件）",
+    "云阈 0.90→0.75；B 场景黑名单大幅扩展（数据质量硬化，影响进入数据）",
+    "fidelity 双侧忠实（B 'cloud-filtered imagery' 与其过滤强化一致 ✓）"
+   ]
+  },
+  {
+   "pair_id": "S018",
+   "bucket": "diff",
+   "jaccard": 0.7805,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "样本构造路径实质不同（R3 判据）：A=expression 掩膜+两次 sample(factor .05, scale 30)；B=remap+单次 sample(scale 10000)+randomColumn 0.3/0.7 留隙划分（0.3-0.7 中段弃用）",
+    "A 另有 LSIB 美国边界绘制块（RLE +5 的一部分）；clipToCollection vs clip",
+    "导出核验（grep）：A 有 Export.image.toDrive+面积统计 ✓（其描述如实）；B 无导出无面积（其描述亦未提）——双侧忠实"
+   ]
+  },
+  {
+   "pair_id": "S019",
+   "bucket": "diff",
+   "jaccard": 0.8478,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "duplicate_block_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "= 十对已知中的 DIFF-4（111047/111048），owner 亲核结论沿用：A=逐类像元采样(200/类)+三分割+验证/测试误差矩阵；B=sampleRegions 全样本+仅训练集混淆=同目标两种合法实现（实现级合理多解）",
+    "双方指令均只写 'trained on manually labeled sample regions'、均未述验证协议=均忠实（欠详但不失实）",
+    "A 验证块存在顺带重复（机械 dup 信号来源）"
+   ]
+  },
+  {
+   "pair_id": "S020",
+   "bucket": "diff",
+   "jaccard": 0.7636,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "特征栈构成完全不同（数据源族不同 families_equal=False）：A=~40 个中国区用户资产环境层+L8+S1/S2；B=OpenLandMap 土壤层+ALOS PALSAR+生态区",
+    "模型输入结构变化=实质（S008 判据）；A 侧存在重复变量声明（Amm×2 等，机械 dup 信号来源）",
+    "fidelity 双侧忠实（各自描述的特征源清单与各自代码一致）"
+   ]
+  },
+  {
+   "pair_id": "S021",
+   "bucket": "diff",
+   "jaccard": 0.7778,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "通读 810 行 diff 后半段以穷尽隐性差异（分类判定基于头部+canon+flags，不依赖后半段）"
+   ],
+   "key_findings": [
+    "同数据同年份同统计框架；差异=变量命名重构（Guate/gtTmax→gt/gt_anual 族）+A 的可视化调色板块+各国块结构重排（dup_delta=16 来源=A 的逐国同构块）",
+    "RLE 8v9 的 +1 为 B 侧一个过滤标签；number diff=调色板/坐标类",
+    "置信中：810 行 diff 仅通读头部，后半段未穷尽（evidence_required 保留）"
+   ]
+  },
+  {
+   "pair_id": "S022",
+   "bucket": "diff",
+   "jaccard": 0.7778,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "ui_scaffold_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "通读 70KB 两侧核心计算段（当前判定基于 diff 头部+RLE 映射）"
+   ],
+   "key_findings": [
+    "水量平衡计算主体同构；diff 主体=UI 图层选择器扩展（B 增 basin2/basin3 复选框+onChange 互斥清空、style→draw）",
+    "RLE 8v5 的 +3（VECTOR_LOAD/OTHER_UNMAPPED 等）对应 A 侧图层绘制类操作",
+    "置信中：70KB 应用仅读 diff 头部，核心计算段未见差异但未穷尽"
+   ]
+  },
+  {
+   "pair_id": "S023",
+   "bucket": "diff",
+   "jaccard": 0.8557,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "B 增完整 S2 掩膜链+叶绿素反演块（~140 行插入：QA60/SCL/B9 掩膜+rrs 转换+m0/m1 指数）——新分析组件",
+    "SST 分段函数结构不同：A=4 段（18/21/28/30°C 阈值）vs B=2 段（24/29.5°C）——应激评分语义不同",
+    "导出分辨率 2500m vs 500m、EEZ 裁剪（B）——各自指令均已如实声明（含分辨率！）→ 双侧忠实"
+   ]
+  },
+  {
+   "pair_id": "S024",
+   "bucket": "diff",
+   "jaccard": 0.7576,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "S013 同族（同 A 脚本 269974）：A=2010+调参扫描+NDVI 导出；B=2005+分区 NDVI 统计",
+    "B 样本资产年份混杂（buildup04 vs 其余 05）——跨年样本组合，潜在数据条件不一致点",
+    "fidelity：A 欠描述（扫描+导出未述）；B 忠实"
+   ]
+  },
+  {
+   "pair_id": "S025",
+   "bucket": "diff",
+   "jaccard": 0.7843,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "RF 分类块整体位置移动（kappa 后 → randomColumn 前）=RLE 顺序差的来源；canon 多重集相同",
+    "年份 2013 vs 2020（同一 Landsat 8 TOA 流程）",
+    "fidelity：A 忠实（NDVI/EVI/SAVI 已述且在码内）；B 欠描述（未交代指数计算步骤）"
+   ]
+  },
+  {
+   "pair_id": "S026",
+   "bucket": "diff",
+   "jaccard": 0.7759,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 点名样本裁决：filterDate/filterBounds 换序=两独立过滤作用于同一集合，语义可交换（交换律成立）——RLE 顺序差无分析意义",
+    "实质差异全在字面量：点位 (121.6918,37.45173) vs (121.36,37.53)、缓冲 50m vs 100m、时间跨度 2013-2021 全期 vs 2020 单年",
+    "双侧指令各自精确声明自己的点/缓冲/年份 → 双忠实；函数改名+Map.addLayer/print 为脚手架"
+   ]
+  },
+  {
+   "pair_id": "S027",
+   "bucket": "diff",
+   "jaccard": 0.7778,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "S027: 通读 6,291 行 diff 穷尽隐性差异。S029: 复核 B 的 semantic_chain_raw 为何仅 4 步（与 canonical 不匹配）；核验 B 的 SVM 分类器与验证段"
+   ],
+   "key_findings": [
+    "同一藻华监测应用的大块代码重排（~2,800 行水库/流域定义块位置移动，diff 6,291 行=大插大删的移动伪影）；canon 多重集相同、number_sym_diff=0、数据集全同",
+    "RLE 34v34 仅开头 GEOMETRY/ATTRIBUTE 顺序微差",
+    "置信中：大 diff 未通读，判定基于多重集相等+零数字差+RLE 等长三强指标"
+   ]
+  },
+  {
+   "pair_id": "S028",
+   "bucket": "diff",
+   "jaccard": 0.7619,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "A 的退化年份循环（anoIncial=anoFinal=2019）vs B 直接式 ano='2017'=同构展开；terrain 块位置移动=B 的 RLE +1 RASTER_LOAD 来源",
+    "class_tipo class1 vs class3（不同类别方案参数）；年份 2019 vs 2017",
+    "fidelity 双侧忠实（各自年份与导出目标已述；B 双导出目标未逐一核验——低风险）"
+   ]
+  },
+  {
+   "pair_id": "S029",
+   "bucket": "diff",
+   "jaccard": 0.7805,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "extraction_artifact_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "S027: 通读 6,291 行 diff 穷尽隐性差异。S029: 复核 B 的 semantic_chain_raw 为何仅 4 步（与 canonical 不匹配）；核验 B 的 SVM 分类器与验证段"
+   ],
+   "key_findings": [
+    "**抽取层异常（重要）**：B 的 RLE 仅 4 步但 canonical 多重集与 A（RLE 11 步）相同——B 的 semantic chain 疑被截断/未对齐，RLE 差异主要为抽取伪影而非代码差异",
+    "代码层：双方均含 2009/2014/2019 三年处理（diff 可见 B 的 image2014 块与 2009 训练段）",
+    "实质差异=AOI 边界资产（users/jonejunior92/QNP vs users/nsr8s/potentialareas）",
+    "置信中：B 的 SVM/验证细节未逐段核验；抽取异常建议 owner 复核并纳入机械漏检审计样本设计"
+   ]
+  },
+  {
+   "pair_id": "S030",
+   "bucket": "diff",
+   "jaccard": 0.7818,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "B 增 L7(2012)+L8 双集合合并块（lc8_col_l8.merge(lc7_col_l7)）=RLE 37v41 差异来源——输入管线传感器组合变化",
+    "时期 1997-2002 vs 2012-2017；WRS path 123→127；按传感器重命名波段（B1/B3/B4/B5 vs B2/B4/B5/B6）",
+    "fidelity 双侧忠实（描述均未钉死时期/传感器，各自与代码不矛盾）"
+   ]
+  },
+  {
+   "pair_id": "S031",
+   "bucket": "diff",
+   "jaccard": 0.8333,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "边界来源重构：A=预定义变量 Khulna；B=GAUL level1 资产按 ADM1_NAME 过滤=RLE +1 ATTRIBUTE_FILTER 的来源",
+    "同一 Khulna 洪水分析、同一 S1 数据；diff 全长仅 11 行",
+    "fidelity 双侧忠实（B 的 'May 2020' 与代码日期一致）"
+   ]
+  },
+  {
+   "pair_id": "S032",
+   "bucket": "diff",
+   "jaccard": 0.9079,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "**B 增 filterDate(2017-2018)+IW 模式过滤；A 无日期过滤（diff 全长 11 行仅此一处差异）→ A 指令声称 2017-2018 时间窗但代码未过滤=失实**",
+    "结构等价（同一变异系数分析）；时间窗有无=数据条件差异（影响结果）",
+    "fidelity_B 忠实（时间窗与代码一致 ✓）"
+   ]
+  },
+  {
+   "pair_id": "S033",
+   "bucket": "diff",
+   "jaccard": 0.8254,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "ui_scaffold_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "= 十对已知中的 DIFF-18 同脚本对（45670/45675）：B 增点检查器交互块（ui.Panel+Map.onClick+reduceRegion）=RLE +2 标签来源——owner 当初'B 点检查器'判断源码级证实",
+    "本样本指令对与 DIFF-18 不同：B 指令未述检查器 → fidelity_B 欠描述；A 忠实（点击时序图已述且在码内）",
+    "ccc→cc 图表变量修正"
+   ]
+  },
+  {
+   "pair_id": "S034",
+   "bucket": "diff",
+   "jaccard": 0.8548,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "**土壤层亏缺核算方法实质不同**：A=逆路径机制（revrspath_soilzonefill+_Kr/_Ke/_KexETo/_De_new_soil ~28 行）；B=简化 IWR=soilzonefill.add(Eirri)——解决 owner DIFF-9 系'额外步骤对应什么'之问",
+    "参数全变：polygon3/4、initDEfrac 0.25/1、irrigateto 0.25/0.0、criticalDE 1.25/0.75、面积 1037.5/480ha",
+    "fidelity 双侧欠描述（核算方法与简化均未述）"
+   ]
+  },
+  {
+   "pair_id": "S035",
+   "bucket": "diff",
+   "jaccard": 0.8636,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "= SAME-2 指令族（2016/2021 六类 GCP）的另一脚本对：**B 增 randomColumn 非互斥划分（lt 0.75/gte 0.25）并覆盖独立验证集——S007 同型**",
+    "年份 2016 vs 2021；RLE +1 = 划分块",
+    "fidelity：A 忠实；B 欠描述（随机划分与验证集覆盖未述）",
+    "家族启示：同一指令族的成员可分属 same/diff 模板——SAME-2 的'结构相同'判定只对其代表行成立"
+   ]
+  },
+  {
+   "pair_id": "S036",
+   "bucket": "diff",
+   "jaccard": 0.898,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "S034 同族（逆路径 vs 简化 IWR 核算）；参数 polygon4/0.75/0.25/1.0/480 vs polygon3/0.25/0.0/0.75/1037.5",
+    "fidelity 双侧欠描述"
+   ]
+  },
+  {
+   "pair_id": "S037",
+   "bucket": "diff",
+   "jaccard": 0.7551,
+   "structural_equivalence": "不可判",
+   "literal_equivalence": "可替换差异",
+   "difference_source": [
+    "证据不足",
+    "实现与脚手架"
+   ],
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "通读 B 的影像获取段，确认移除选景块后的回退输入机制"
+   ],
+   "key_findings": [
+    "A 有两处按索引选景块（toList(200).get(6)/get(7)+clip）；B 整块移除——B 的回退输入来源未在 diff 窗口内确认",
+    "diff 全长 21 行、number_sym_diff=0（纯选景方式差异）",
+    "置信中；evidence_required：通读 B 的影像获取段确认回退机制"
+   ]
+  },
+  {
+   "pair_id": "S038",
+   "bucket": "diff",
+   "jaccard": 0.9821,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "A 内联无监督步骤（sample 5000+wekaKMeans(15)+cluster+导出）；B 改为加载预计算资产（kmeans/ndvi/dsm image）+styled 可视化+RF 0.7 划分",
+    "fidelity：A 欠描述（KMeans 步骤未述）；B 忠实（预计算资产为辅助显示层，RF 流程与描述一致）"
+   ]
+  },
+  {
+   "pair_id": "S039",
+   "bucket": "diff",
+   "jaccard": 0.8,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 高优先样本裁决：云处理变体（A=CLOUD_COVER<10 元数据预滤+直接 mosaic；B=cloudfree_landsat7 掩膜函数+mosaic）=数据条件处理变体，非新分析步骤",
+    "字面量：1989 vs 2004、波段序 B4/B3/B2 vs B3/B2/B1、**spliting 0.8 vs 0.5（训练分割比例）**",
+    "两侧资产均经未定义变量 landsat5 引用（S039 早前抽查已证）——传感器主张代码层不可核",
+    "fidelity：A 忠实；B 欠描述（spliting=0.5 与其注释'80% training'自相矛盾——S002 型注释-值矛盾登记；传感器主张无法从代码确认）"
+   ]
+  },
+  {
+   "pair_id": "S040",
+   "bucket": "diff",
+   "jaccard": 0.8,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "A 多最大值滑动平均平滑级（addmax+Join.saveAll+smoothedmaxMA ~60 行）；B 直接均值——平滑级增删=实质",
+    "站点资产 predPP vs viote_pla；日期窗 04-15..11-15 vs 05-15..10-15",
+    "fidelity 双侧忠实（'applying smoothing' 泛述与各自实现不矛盾）"
+   ]
+  },
+  {
+   "pair_id": "S041",
+   "bucket": "diff",
+   "jaccard": 0.8556,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "国家重定向 IN→BR（country_co 过滤字面量）；A 另有用户矩形子区+scales=1000（=A 的 GEOMETRY_DEFINE 来源）",
+    "同一 S5P CH4 分析框架、同一数据集",
+    "fidelity 双侧忠实（各自描述与其裁剪方式精确一致——A 述矩形子区 ✓ B 述国家边界 ✓）"
+   ]
+  },
+  {
+   "pair_id": "S042",
+   "bucket": "diff",
+   "jaccard": 0.8969,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 高优先样本裁决：A 的 NEIGHBORHOOD=云掩膜 focal_min(circle 1)；B 去掉 focal_min 并**增 S2 反演深度块**（median→rrs→chla 0.5→log-ratio 深度模型 m0/m1）——深度应激源获取方法实质不同",
+    "startDate 2016 vs 2012；SST 分段函数阈值结构不同（4 段 vs 2 段）",
+    "数字 2.5 提名Resolution：2500m vs 2.5km 表述差（同一值）；fidelity 双侧忠实（各自分辨率表述 ✓）"
+   ]
+  },
+  {
+   "pair_id": "S043",
+   "bucket": "diff",
+   "jaccard": 0.8313,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 结构审查样本裁决：B 多出的 SPATIAL_JOIN->ATTRIBUTE_FILTER->SPATIAL_JOIN = **format 输出透视函数**（distinct+Join.saveAll+行转列）——非新分析步骤，属输出整形（回答 owner'字段恢复还是新步骤'之问）",
+    "透视取值为 **RI 列**而非 NDVI——B 实际导出形态与其'flattened feature collection containing NDVI values'表述不完全一致 → fidelity_B 欠描述",
+    "fidelity_A 忠实（长表输出与描述一致）"
+   ]
+  },
+  {
+   "pair_id": "S044",
+   "bucket": "diff",
+   "jaccard": 0.7941,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "规划结构"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "MapBiomas Collection 5→6 典型版本迁移（四组资产路径全换）+ 年份 1985 vs 2020",
+    "B 的 Imazon 加载从单年 Image 拼路径改为 ImageCollection+version/biome 过滤+toBands+38 年重命名=RLE +7 来源（版本迁移伴随的加载结构扩展）",
+    "fidelity 双侧忠实（各自 Collection/年份表述与代码一致）"
+   ]
+  },
+  {
+   "pair_id": "S045",
+   "bucket": "diff",
+   "jaccard": 0.8654,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "A 多缨帽变换 PCA 块（6×6 系数矩阵→brightness/greenness/wetness 等 6 分量+可视化）=RLE +3 来源",
+    "年份 2010 vs 1990-1991；云滤有无；GLCM 纹理特征集 corr/idm/ent 启停（A 注释掉）",
+    "fidelity：A 欠描述（TC 变换未述）；B 忠实"
+   ]
+  },
+  {
+   "pair_id": "S046",
+   "bucket": "diff",
+   "jaccard": 0.7674,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "B 为双年集合合并（2005+2003 两集合 merge）+qualityMosaic 绿度合成；A 单年 L8 2015",
+    "L8/maskL8sr vs L5/cloudMaskL457",
+    "fidelity：A 忠实；B 欠描述（2003 集合参与合并未述——其指令只说 2005）"
+   ]
+  },
+  {
+   "pair_id": "S047",
+   "bucket": "diff",
+   "jaccard": 0.7778,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "**A 引用未定义变量**：bio 行使用 evi/gcc/ndpi 但其定义块仅存在于 B（diff 全长 40 行已穷尽）→ A 脚本原样运行将 ReferenceError=fidelity_A 失实（S002 型运行级缺陷）",
+    "实质差异：点位（沙特 vs 瑞典北部）、vegIndex 'ndvi' vs 'evi'、B 增雪掩膜+显式波段缩放",
+    "结构等价（同一 SoS/EoS 阈值插值框架）"
+   ]
+  },
+  {
+   "pair_id": "S048",
+   "bucket": "diff",
+   "jaccard": 0.7642,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "深度应激源来源不同：A=NOAA/NGDC/ETOPO1 地形水深；B=S2 反演水深（families 不同）——应激源管线实质差异",
+    "区域 Red Sea vs EEZ；SST 分段函数不同（4 段 vs 2 段）",
+    "fidelity 双侧忠实（各自区域/分辨率/11 分量表述与代码一致）"
+   ]
+  },
+  {
+   "pair_id": "S049",
+   "bucket": "diff",
+   "jaccard": 0.76,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "传感器年代迁移 L5/1995→L8/2015（波段 B4/B3→B5/B4）；云掩膜函数与 CLOUD<55 过滤为 B 增（RLE +3）",
+    "合成策略变体：A=qualityMosaic 绿度合成 vs B=mosaic——影响结果但同属合成步骤",
+    "fidelity 双侧忠实（各自年份/输出清单与代码一致）"
+   ]
+  },
+  {
+   "pair_id": "S050",
+   "bucket": "diff",
+   "jaccard": 0.8125,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "通读 2,850 行 diff 后半段（方法差异已证，深层未穷尽）"
+   ],
+   "key_findings": [
+    "**处理链方法差异**：A=BRDF+地形校正（calculate_IC+topo_SCSc 双传感器）；B=仅 BRDF（其文本自述'only BRDF'）+残差阈值过滤（res_list+vi_sd+1.5σ 掩膜）",
+    "fidelity：A 忠实（topographic normalization 已述 ✓）；B 欠描述（残差过滤未述；未提地形校正与其缺失一致 ✓）",
+    "evidence_required：48KB×2、diff 2,850 行仅通读头部——方法差异已证，深层差异未穷尽"
+   ]
+  },
+  {
+   "pair_id": "S051",
+   "bucket": "diff",
+   "jaccard": 0.7576,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "分析对象范围字面量：A=单一冰川（GLIMSId 过滤，=RLE +1 ATTRIBUTE_FILTER）；B=全区域",
+    "日期 2018-08-14/16 vs 2021-08-15/09-01；面积 round() 增删=格式",
+    "fidelity：A 欠描述（'total basin area'表述与单冰川过滤有出入）；B 忠实；A 导出名 BP2014 与日期 2018 不一致=代码内命名瑕疵（登记）"
+   ]
+  },
+  {
+   "pair_id": "S052",
+   "bucket": "diff",
+   "jaccard": 0.8434,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "火后影像来源路径不同：A=用户资产单景（users/omercan/bodrum_post_1208，小写波段名）；B=COPERNICUS/S2 集合日期窗均值（B +2 RLE=第二集合构建）",
+    "几何/日期窗/假彩色图层/export toUint8+region 差异",
+    "fidelity：A 欠描述（火后影像经资产中转未述——描述称 Sentinel-2 imagery）；B 忠实（S2+July/August ✓）"
+   ]
+  },
+  {
+   "pair_id": "S053",
+   "bucket": "diff",
+   "jaccard": 0.7586,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "年份迁移 1989 vs 2005；A 的云滤 CLOUD<20+sort 为 B 所无（RLE +2）",
+    "A 导出名 1985 与日期 1989 不一致=代码内命名瑕疵（登记，非指令问题）",
+    "fidelity 双侧忠实"
+   ]
+  },
+  {
+   "pair_id": "S054",
+   "bucket": "diff",
+   "jaccard": 0.7627,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "同一 RUSLE 五因子流程（RLE 16 步全同）；差异=子流域资产层级 hybas_12/MAIN_BAS vs hybas_7/PFAF_ID——分区粒度影响逐子流域统计",
+    "B 显式定义五数据源；A 经由无字面量方式引用（DS_A 仅 hybas_12）",
+    "template_multiplicity 来源=该指令族映射多模板；本对代表行恰好同 RLE"
+   ]
+  },
+  {
+   "pair_id": "S055",
+   "bucket": "diff",
+   "jaccard": 0.7818,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "S054 镜像对（hybas_7/PFAF vs hybas_12/MAIN_BAS，mainID 不同）；RLE 全同",
+    "B 指令提及饼图（B 代码有）——双侧忠实"
+   ]
+  },
+  {
+   "pair_id": "S056",
+   "bucket": "diff",
+   "jaccard": 0.95,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 点名 123 步长链对：同一藻华监测应用；B 删 ~25 个水库定义与字典项（覆盖清单收缩）+起始日期 2023-04-01→06-01（三处）",
+    "diff 131 行近全读：其余=分号格式；canon 计数差=被删水库的过滤调用",
+    "双侧指令均泛述'Latin America 水库'→双侧忠实；覆盖范围变化未述但描述粒度不承诺"
+   ]
+  },
+  {
+   "pair_id": "S057",
+   "bucket": "diff",
+   "jaccard": 0.8077,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "同一 RUSLE 流程；年份 2017-2018 vs 2016-2017；子流域字段 HYBAS_ID vs 'Feature Index'；B 无数据集字面量定义（S039 型变量间接引用模式再现实例）",
+    "RLE 15v16：B 缺引导 ATTRIBUTE_FILTER（盆地过滤方式差异）"
+   ]
+  },
+  {
+   "pair_id": "S058",
+   "bucket": "diff",
+   "jaccard": 0.7705,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "采样与训练路径不同：A=reduceRegions 均值特征+合并双样本表（table.merge(table2)）+种子化随机；B=sampleRegions 点采样（训练/验证各自采样）+minLeafPops 1..10 调参扫描",
+    "A 导出训练集 CSV（其指令已述 ✓）；B 增 RGB 图层"
+   ]
+  },
+  {
+   "pair_id": "S059",
+   "bucket": "diff",
+   "jaccard": 0.8571,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "A 含完整年份评估循环（逐年过滤 GRACE+计数≥12 判断+下拉菜单填充）；B 精简版（RLE 34v13）",
+    "B 数据集经变量间接引用（DS_B 空——S039/S057 模式再现）",
+    "指令泛述一致→双侧忠实"
+   ]
+  },
+  {
+   "pair_id": "S060",
+   "bucket": "diff",
+   "jaccard": 0.8333,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "B 数据管线扩展（RLE 14v28：多段 TEMPORAL/SPATIAL 过滤）+otsu/constructHistChart 函数顶层化重构",
+    "evidence_required：424 行 diff 部分通读"
+   ]
+  },
+  {
+   "pair_id": "S061",
+   "bucket": "diff",
+   "jaccard": 0.7885,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 点名样本（82v34 步、ui_delta=35、dup_delta=349）：**架构级差异**——A=在线 S2 处理扩展版（104KB，含 S2_SR/JRC 双版本资产）；B=依赖 NDCI_daily 预计算资产的精简架构（68KB）",
+    "按 owner 守则不把差异全归脚手架：RLE 差主要来自数据获取架构，UI 差为次要",
+    "evidence_required：7,301 行 diff 仅头部；双侧指令泛述→双侧忠实"
+   ]
+  },
+  {
+   "pair_id": "S062",
+   "bucket": "diff",
+   "jaccard": 0.8372,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 点名样本（285KB/250KB，diff 18,545 行）：同一 BULC-D 应用——差异=模块版本 require 路径 A2b→A2 + verbose 开关 + UI 面板重构 + 调试输出删减；RLE 28v27 近等长",
+    "evidence_required：大 diff 不可能通读；判定基于 RLE 近等长+同族+头部证据"
+   ]
+  },
+  {
+   "pair_id": "S063",
+   "bucket": "diff",
+   "jaccard": 0.76,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "规划结构"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 点名样本（number_sym_diff=1301）：传感器代际迁移 L8/2014→L9/2022（C01→C02）+S2_SR 与预计算镶嵌资产（LC_2022_mosaic_mode2）并入",
+    "训练几何集大幅扩展（千级坐标字面量差=新标注样本集）",
+    "双侧指令各自声明传感器与年代→双侧忠实"
+   ]
+  },
+  {
+   "pair_id": "S064",
+   "bucket": "diff",
+   "jaccard": 0.8182,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "区域重定向 Ceará→Pernambuco（PCA/分类资产/导出路径全换）",
+    "类别构成变化（crops/13 类 vs waves/shoreline/14 类）+B 增 remap 0-13→1-14 与额外 Drive 导出",
+    "B 另有海草 absence 样本资产族——数据准备扩展"
+   ]
+  },
+  {
+   "pair_id": "S065",
+   "bucket": "diff",
+   "jaccard": 0.7963,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "特征集大幅扩展：A=MNDWI/NDBI/NDVI/RVI 4 指数；B=+BAEI/NIRv/EVI/DVI/SAVI/IBI 等 10+ 指数族（RLE 6v10）",
+    "气候源 TerraClimate→NASA IMERG；样本资产 gs_bc16→gs_jd16；季节窗 1-4 月→5-9 月"
+   ]
+  },
+  {
+   "pair_id": "S066",
+   "bucket": "diff",
+   "jaccard": 0.8136,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "multiref_eligible": true,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "云掩膜方法族不同：A=simpleCloudScore 简单评分；B=sentinelCloudScore+TDOM2 阴影投影+dilate/contract 全套复合掩膜（含年份/儒略日参数组）",
+    "evidence_required：1,855 行 diff 部分通读"
+   ]
+  },
+  {
+   "pair_id": "S067",
+   "bucket": "diff",
+   "jaccard": 0.9038,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "primary_category": "ui_scaffold_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "owner 点名样本（ui_delta=41, dup_delta=68）：差异主体=UI 重构（county 菜单族/welcome 面板/RMSE 显示块）+调试清理；RLE 65v63",
+    "**end_Spring 5/31→4/15=季节窗参数变化（影响结果）**——少数实义差异",
+    "evidence_required：3,064 行 diff 主体为 UI，核心计算段未穷尽"
+   ]
+  },
+  {
+   "pair_id": "S068",
+   "bucket": "diff",
+   "jaccard": 0.8406,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "传感器年代迁移 L7/2000→L5/1994；B 增双云掩膜函数+TerraClimate 数据段+真/假彩色图层+原始影像导出（RLE 13v14）",
+    "fidelity：A 忠实；B 欠描述（TerraClimate 段未述）"
+   ]
+  },
+  {
+   "pair_id": "S069",
+   "bucket": "diff",
+   "jaccard": 0.75,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量",
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "代码版本 2939pt5b→2940pt1+参数模块源切换（alemlakes r-2900 → HOME--hazel StageProjects——不同作者的参数模块）",
+    "B 增早期迭代资产导入函数+Record/Export 开关族（~20 个参数旗标）",
+    "evidence_required：1,095 行 diff 部分通读"
+   ]
+  },
+  {
+   "pair_id": "S070",
+   "bucket": "same",
+   "jaccard": 0.8148,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "Cumberland County RF+NLCD 家族；双侧描述与其共享代码一致"
+   ]
+  },
+  {
+   "pair_id": "S071",
+   "bucket": "same",
+   "jaccard": 0.9333,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "CH4 IDW 插值（同窗 2019-08-01..15）；双侧同义改写"
+   ]
+  },
+  {
+   "pair_id": "S072",
+   "bucket": "same",
+   "jaccard": 0.8202,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "B 额外具体化 'B3–B7' 波段名（与 L8 SR RF 一致性高，未逐波段核验）"
+   ]
+  },
+  {
+   "pair_id": "S073",
+   "bucket": "same",
+   "jaccard": 0.9878,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "SAME-2 指令族成员（2016 变体、独立验证 GCP）；双侧一致"
+   ]
+  },
+  {
+   "pair_id": "S074",
+   "bucket": "same",
+   "jaccard": 0.7556,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "EVI 累积异常（MYD13A1 2001-2010 基线）；双侧一致"
+   ]
+  },
+  {
+   "pair_id": "S075",
+   "bucket": "same",
+   "jaccard": 0.8295,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "Cumberland 家族；双侧一致"
+   ]
+  },
+  {
+   "pair_id": "S076",
+   "bucket": "same",
+   "jaccard": 0.7658,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "GCVI 谐波回归：A 'phase/amplitude' vs B '(cos,sin,constant)' 措辞差，同义"
+   ]
+  },
+  {
+   "pair_id": "S077",
+   "bucket": "same",
+   "jaccard": 0.7619,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "坡度/高程面积：双侧均如实描述代码中故意保留的 1m 尺度错误演示"
+   ]
+  },
+  {
+   "pair_id": "S078",
+   "bucket": "same",
+   "jaccard": 0.8696,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "不可判",
+   "fidelity_B": "不可判",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "S078：确认间接引用变量的资产内容（Landsat 8/NASS）后可升级保真度判定"
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "**数据集主张不可静态核实**（Landsat 8/NASS 经变量间接引用——机械保真度提名的假阳性机制之一，早前抽查已证）；流程段（RF/混淆矩阵/直方图）与 RLE 一致"
+   ]
+  },
+  {
+   "pair_id": "S079",
+   "bucket": "same",
+   "jaccard": 0.8125,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "Cumberland 家族；B 额外提 NLCD（与代码一致）"
+   ]
+  },
+  {
+   "pair_id": "S080",
+   "bucket": "same",
+   "jaccard": 0.8222,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "S1 CART 分类；双侧一致"
+   ]
+  },
+  {
+   "pair_id": "S081",
+   "bucket": "same",
+   "jaccard": 0.8415,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "归一化源码相同（formatting_only）——指令差异为纯描述层措辞（同义改写），无代码差异来源（difference_source 留空）",
+    "Cumberland 家族；双侧一致"
+   ]
+  },
+  {
+   "pair_id": "S082",
+   "bucket": "same",
+   "jaccard": 0.789,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "安哥拉地形适宜性 44 步全同；A 声称 '22 raster layers'（数量未逐层核验）"
+   ]
+  },
+  {
+   "pair_id": "S083",
+   "bucket": "same",
+   "jaccard": 0.9516,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "DAYMET tmax 提取（389 字节微脚本）；双侧同义"
+   ]
+  },
+  {
+   "pair_id": "S084",
+   "bucket": "same",
+   "jaccard": 0.7714,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "S5P CO 雅加达；双侧同义"
+   ]
+  },
+  {
+   "pair_id": "S085",
+   "bucket": "same",
+   "jaccard": 0.9302,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "植被指数时序（NDVI/CIRE/SeLI/SAVI）；双侧同义"
+   ]
+  },
+  {
+   "pair_id": "S086",
+   "bucket": "same",
+   "jaccard": 0.8384,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "安哥拉基础设施评分；B 声称 '18 named bands'、A 声称 '1 km'（同一代码，两具体主张均可能真，未逐项核验）"
+   ]
+  },
+  {
+   "pair_id": "S087",
+   "bucket": "same",
+   "jaccard": 0.8261,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "S1 VV 伊朗区月合成；双侧同义"
+   ]
+  },
+  {
+   "pair_id": "S088",
+   "bucket": "same",
+   "jaccard": 0.7667,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "SF Bay 三类分类（CART+RF）；双侧同义"
+   ]
+  },
+  {
+   "pair_id": "S089",
+   "bucket": "same",
+   "jaccard": 0.7831,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "VCI 干旱指数：A '2001-2003 median + 2001-2024 mode' vs B 'median map + mode-based for full series'——窗口表述略异，同码下需以代码为准（未逐行核验）"
+   ]
+  },
+  {
+   "pair_id": "S090",
+   "bucket": "same",
+   "jaccard": 0.7876,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "证据不足"
+   ],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "WorldPop 2020 波段定义/像元值单位/投影尺度元数据（确认阈值精确数据语义；代码一致性无须补证）"
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；本对证明'同码双描述'不必然同义——单位级失实可在同码对内出现",
+    "**保真度分歧实证**：代码 population.gt(50) 作用于 WorldPop 100m 像元（≈1ha）——B '50 persons/ha' ✓；A '50 persons/100m²' 单位错 100 倍（数值阈值相同、单位语义错）=轻度失实",
+    "owner 复核裁定（2026-10-17）：A=失实确认（population.gt(50) 是像元值阈值，非'每100m² 50人'，无面积归一化）；B=忠实（限定解释：'50 persons/ha'与 100m 像元≈1ha 尺度相符，但代码是像元值直接比较、非显式每公顷换算——严格单位语义待 WorldPop 数据集值定义确认）",
+    "owner 补充记录：B 的'resampled to 1 km+fastDistanceTransform 2km'为概括性表述（DIST_SCALE=2000 确在码内，但非每个中间指标显式统一重采样）——保真度限定项；B 的 '18 named layers' 有源码依据（rename 列表证实）"
+   ]
+  },
+  {
+   "pair_id": "S091",
+   "bucket": "same",
+   "jaccard": 0.7742,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "夜间灯光城市扩张（VIIRS+DMSP 1999-2019）；双侧同义"
+   ]
+  },
+  {
+   "pair_id": "S092",
+   "bucket": "same",
+   "jaccard": 0.7532,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "Pantanal 湿地样本提取（56 步全同）；双侧同义"
+   ]
+  },
+  {
+   "pair_id": "S093",
+   "bucket": "same",
+   "jaccard": 0.7667,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [],
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "SHA 相同=代码逐字节同；任务描述是否等价需独立判断（owner 守则）——本对为纯描述层差异",
+    "**双侧内部不一致**：均称 'seven classes' 但括号仅列 5 类名（maize/soybean/fallow/pasture/water）——类别清单不完整，双侧欠描述"
+   ]
+  },
+  {
+   "pair_id": "S094",
+   "bucket": "same",
+   "jaccard": 0.7595,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "分类器交换 SVM(libsvm) vs Random Forest=canonical 差异本体；两侧指令各自点名自己的分类器→双忠实"
+   ]
+  },
+  {
+   "pair_id": "S095",
+   "bucket": "same",
+   "jaccard": 0.7857,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "BULC 同族（RLE 9 步全同）；canonical 差异未定位到具体调用（两侧指令均泛述框架→双忠实）"
+   ]
+  },
+  {
+   "pair_id": "S096",
+   "bucket": "same",
+   "jaccard": 0.902,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "复核 RLE 为空步的行在池内的规模（same_template_canonical_diff 层抽样 12 中出现 1 例）"
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "**RLE 退化实例**：两侧链均 1 空步——纯数组/矩阵运算代码（伪逆 SG 平滑）几乎无 ee.ImageCollection 调用→抽取覆盖缺口（机械漏检审计的设计输入）",
+    "B 明确 MOD09A1、A 未提——两侧描述各自无矛盾",
+    "owner 复核修正（2026-10-17）：真正差异=图表横轴语义（A 显式日期轴 advance 1 天 vs 标签 'x 8 days' 不一致；B 默认数组索引）——图表表达层语义差，非平滑计算结构差",
+    "owner 裁定 RLE 空步解释：ee.List/ee.Array/矩阵运算范式未被抽取规则覆盖（非'工作流无结构'）；改进建议=增补 ARRAY_CONSTRUCTION/MATRIX_PSEUDOINVERSE/WINDOW_SMOOTHING/SERIES_PADDING/CHART_RENDERING 语义类+池级空 RLE 普查（不凭单例推断缺口规模）",
+    "owner 保真度精化：B 的 MOD09A1 为未经代码证实的来源声明（y 为硬编码数组，仅图表标题标注）——忠实但来源不可追溯"
+   ]
+  },
+  {
+   "pair_id": "S097",
+   "bucket": "same",
+   "jaccard": 0.7544,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "NDCI 叶绿素 Lobo 算法同管线（RLE 12 步全同）；canonical 差异为细节调用；双侧描述一致"
+   ]
+  },
+  {
+   "pair_id": "S098",
+   "bucket": "same",
+   "jaccard": 0.942,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "Spearman ET-降水相关同管线；双侧描述一致（B 'non-parametric' 与 Spearman 同义）"
+   ]
+  },
+  {
+   "pair_id": "S099",
+   "bucket": "same",
+   "jaccard": 0.9143,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "S1 水体 Otsu 同管线（RLE 14 步全同，S060 的同族脚本）；双侧描述一致"
+   ]
+  },
+  {
+   "pair_id": "S100",
+   "bucket": "same",
+   "jaccard": 0.84,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "复核该行 canonical 差异的具体调用（1 步 RLE 下 canonical 仍异的机制）"
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "**RLE 极限压缩实例**：47KB 三分类器（CART/RF/KMeans）代码压成单 CLASSIFICATION 标签——Q1.5 标签粒度上限的极端佐证；双侧指令列举三分类器与代码一致"
+   ]
+  },
+  {
+   "pair_id": "S101",
+   "bucket": "same",
+   "jaccard": 0.85,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "BULC-NLCD 1992/2001/2006 同管线（RLE 19 步全同）；双侧描述一致（S004 的正确版同族对照——正常 NLCD 事件序列）"
+   ]
+  },
+  {
+   "pair_id": "S102",
+   "bucket": "same",
+   "jaccard": 0.76,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "第二分类器交换：A 评 SVM vs B 评 GMO MaxEnt（canonical 差异本体）；两侧指令各自点名→双忠实"
+   ]
+  },
+  {
+   "pair_id": "S103",
+   "bucket": "same",
+   "jaccard": 0.7614,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "水稻识别同管线：A=MaxEnt vs B=RF（canonical 差异）；两侧各自点名→双忠实"
+   ]
+  },
+  {
+   "pair_id": "S104",
+   "bucket": "same",
+   "jaccard": 0.82,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "Cass County NASS 家族：A=RF vs B=CART（各自点名→双忠实）；S078 的近亲对（数据集同样间接引用）"
+   ]
+  },
+  {
+   "pair_id": "S105",
+   "bucket": "same",
+   "jaccard": 0.9155,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "PostHammar CART 4 类：年份组合 2015/2016 vs 2014/2020（字面量）；两侧各自声明→双忠实"
+   ]
+  },
+  {
+   "pair_id": "S106",
+   "bucket": "same",
+   "jaccard": 0.8551,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "间接引用变量的实际资产内容（与 S078/S110 同一复核任务）"
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "jlj SVM 家族：L7/2013 vs L5/2008；数据集经变量间接引用（DS 空）→传感器主张代码层不可核（S039 同模式），其余一致"
+   ]
+  },
+  {
+   "pair_id": "S107",
+   "bucket": "same",
+   "jaccard": 0.8333,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "检查 ERM 输出影像是否含 cosS 波段（裁定 A/B 措辞孰真）"
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "ERM 地形校正同管线（RLE 7 步全同）；**保留波段清单表述分歧**：A 称输出含 'cosS'、B 未提——同码下两者至多一对一错，待查输出波段表裁定"
+   ]
+  },
+  {
+   "pair_id": "S108",
+   "bucket": "same",
+   "jaccard": 0.8627,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "棉花 IWR 同 70 步管线（S036-A 脚本所在族另一成员）；A 提 rtzfill、B 提 crop coefficients——均在码内（Kcb/Kr/Ke 族）→双忠实"
+   ]
+  },
+  {
+   "pair_id": "S109",
+   "bucket": "same",
+   "jaccard": 0.8636,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "布宜诺斯艾利斯植被异常：样本省界资产 Cursos vs LCD 路径字面量；算法同构→双忠实"
+   ]
+  },
+  {
+   "pair_id": "S110",
+   "bucket": "same",
+   "jaccard": 0.7604,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    "核验 2016 年份与间接引用资产；两例极端压缩行的池级规模统计"
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "福建六市 RF：**32KB 代码压成 3 步 RLE**（第二例极端压缩）；B 明确 2016 年、A 未提年份（若 2016 为真则 A 欠描述）；数据集大量间接引用（DS 仅 SRTM）"
+   ]
+  },
+  {
+   "pair_id": "S111",
+   "bucket": "same",
+   "jaccard": 0.8194,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "河中心线提取（MNDWI+Zhang-Suen 细化）同管线；双侧描述一致"
+   ]
+  },
+  {
+   "pair_id": "S112",
+   "bucket": "same",
+   "jaccard": 0.7895,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "jlj SVM 家族：A=L5/2006 且**类别数表述自相矛盾**（训练 7 类但输出称 6 类）→A 欠描述；B=L5/1992 一致忠实"
+   ]
+  },
+  {
+   "pair_id": "S113",
+   "bucket": "same",
+   "jaccard": 0.8704,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "= SAME-9/17 优营养化家族成员对（38688/38701，62 步全同）；dams vs 'specific point' 措辞差；家族已核：三指标齐备→双忠实"
+   ]
+  },
+  {
+   "pair_id": "S114",
+   "bucket": "same",
+   "jaccard": 0.7931,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "1990 vs 2000 RF 七类：样本资产族按年份成对切换（abrehetkahsay66 vs biadgilgn）→字面量；双忠实"
+   ]
+  },
+  {
+   "pair_id": "S115",
+   "bucket": "same",
+   "jaccard": 0.8333,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "SAME-17 家族成员对（38694/38685，62 步全同）；措辞差 dams/point；双忠实"
+   ]
+  },
+  {
+   "pair_id": "S116",
+   "bucket": "same",
+   "jaccard": 0.8372,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "向日葵/小麦 NDVI 时序同管线；'respective crop parcels' vs 'each crop type' 同义→双忠实"
+   ]
+  },
+  {
+   "pair_id": "S117",
+   "bucket": "same",
+   "jaccard": 0.8723,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "multiref_eligible": false,
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "evidence_required": [
+    ""
+   ],
+   "key_findings": [
+    "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
+    "MapBiomas 缓冲区 LULC 同管线（RLE 17 步全同）；amortecimento/amortization 同义→双忠实",
+    "owner 复核修正（2026-10-17）：差异非'字面量'而是调试输出+格式——新增 print(listToSelect)（不参与计算=调试输出非分析步骤）+面板样式等价重写；difference_source 按源码真实差异填写",
+    "owner 登记的共同实现边界：面积统计 region=bzSelected.geometry()，未显式 clipToCollection——缓冲区几何重叠时统计范围需结合资产结构确认"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,3024 @@
+{
+ "artifact": "Q2_ADMISSION_V1",
+ "date": "2026-10-18",
+ "source_ledger": "LEDGER_V1.json",
+ "n_records": 117,
+ "bucket_counts": {
+  "C2_conditional_underdesc": 29,
+  "Q1_misdescribed": 5,
+  "A_high_confidence": 41,
+  "C1_conditional_literal": 26,
+  "M_multiref_candidate": 14,
+  "Q2_insufficient": 2
+ },
+ "pending_deep_check_blocking": [
+  "S017",
+  "S018",
+  "S019",
+  "S020",
+  "S021",
+  "S023",
+  "S026",
+  "S028",
+  "S029",
+  "S030",
+  "S031",
+  "S032",
+  "S037",
+  "S040",
+  "S041",
+  "S042",
+  "S047",
+  "S048",
+  "S049",
+  "S053",
+  "S054",
+  "S055",
+  "S056",
+  "S057",
+  "S058",
+  "S059",
+  "S060",
+  "S061",
+  "S062",
+  "S065",
+  "S066",
+  "S067",
+  "S078",
+  "S094",
+  "S096",
+  "S102",
+  "S103",
+  "S104",
+  "S105",
+  "S106",
+  "S107",
+  "S109",
+  "S114"
+ ],
+ "rules": {
+  "A_high_confidence": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+  "C1_conditional_literal": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+  "C2_conditional_underdesc": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+  "M_multiref_candidate": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+  "Q1_misdescribed": "指令失实或与源码矛盾——隔离并标记，核实/修正后再议；暂不入高置信集",
+  "Q2_insufficient": "证据不足/不可判——隔离待审，不当作可靠标准答案"
+ },
+ "records": [
+  {
+   "pair_id": "S001",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_54184",
+   "script_b": "script_54188",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "核对 EE 实际运行日志、过滤后影像数量及输出影像统计以量化差异影响；非判定实质差异的必要前提"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S002",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_28606",
+   "script_b": "script_28603",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "失实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "admission_bucket": "Q1_misdescribed",
+   "admission_rule": "指令失实或与源码矛盾——隔离并标记，核实/修正后再议；暂不入高置信集",
+   "evidence_required": [
+    "核验集合加载/表达式解析/输出有效像元与数值范围；静态代码已足以判定不等价"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S003",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_54182",
+   "script_b": "script_54187",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "量化需核验两时间范围有效影像数/掩膜覆盖/最终分数覆盖；不等价判定无需额外证据"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S004",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_23493",
+   "script_b": "script_23496",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "①核对开头完整变量定义确认 aoi0 几何范围两侧是否一致；②EE 中确认 A 硬编码转移表路径与 B bulc_current.transitionMatrix 路径均可执行；③检查 B 事件集合大小/重复影像是否导致额外迭代与概率更新；④对比最终分类/置信度/像元计数量化影响；确认是否存在源码外的导出步骤"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S005",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_36129",
+   "script_b": "script_36118",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    "68KB×2 仅通读 diff 头部+数据集+RLE 映射；SoilGrids 分析主体段未逐行比对（分类判定不依赖，深层差异不穷尽）"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S006",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_16762",
+   "script_b": "script_104683",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "seasonal_block_candidate（A 多一个双月合成块，输出未入最终栈，疑似未使用中间产物）",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    "确认 A 的 Recfebb（二月合成）确无其他使用点（当前 imgTOTAL 栈与 S1 段均未见）；确认双方导出与描述一致"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S007",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_213786",
+   "script_b": "script_213790",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "如需确认实际输出差异需 GEE 运行比较；静态代码已足以判定执行逻辑不同"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S008",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_31850",
+   "script_b": "script_31855",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "核验资产内容/样本划分/特征波段/验证统计以确认预测差异；需确认 B 资产 UMSExt900_2017LOmCaobaB 存在 VA17_900 字段且为有效实测体积标签"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S009",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_74517",
+   "script_b": "script_74490",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "duplicate_block_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    "无（LAI 场景分支已经 grep 证实：LAIfraction/LAIfraction_Area_yield 变量族+对应导出）"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S010",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_54185",
+   "script_b": "script_54182",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "比较影像数量/有效像元/掩膜覆盖率/最终组分图；实际运行确认定量影响；B 一维 unmix 能否产生有意义稳定的分解需运行验证"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S011",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_54184",
+   "script_b": "script_54187",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "owner",
+   "admission_bucket": "Q1_misdescribed",
+   "admission_rule": "指令失实或与源码矛盾——隔离并标记，核实/修正后再议；暂不入高置信集",
+   "evidence_required": [
+    "实际运行 A：核查两次日期过滤后集合大小及后续计算是否失败；必要时比较掩膜覆盖率与最终组分图"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S012",
+   "bucket": "diff",
+   "mechanical_class": "asset_version_candidate",
+   "script_a": "script_35908",
+   "script_b": "script_35919",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "无（导出块已 grep 证实：A/B 均有样本+影像导出，B 另有重要性表导出）"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S013",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_269974",
+   "script_b": "script_269963",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S014",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_10524",
+   "script_b": "script_10526",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S015",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_1050",
+   "script_b": "script_1051",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S016",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_10524",
+   "script_b": "script_10535",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S017",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_151508",
+   "script_b": "script_151526",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S018",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_138658",
+   "script_b": "script_138646",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S019",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_111047",
+   "script_b": "script_111048",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "duplicate_block_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S020",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_66366",
+   "script_b": "script_66381",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S021",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_228758",
+   "script_b": "script_277196",
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    "通读 810 行 diff 后半段以穷尽隐性差异（分类判定基于头部+canon+flags，不依赖后半段）"
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S022",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_118778",
+   "script_b": "script_118777",
+   "primary_category": "ui_scaffold_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    "通读 70KB 两侧核心计算段（当前判定基于 diff 头部+RLE 映射）"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S023",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_231951",
+   "script_b": "script_231947",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S024",
+   "bucket": "diff",
+   "mechanical_class": "duplicate_block_candidate",
+   "script_a": "script_269974",
+   "script_b": "script_269968",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S025",
+   "bucket": "diff",
+   "mechanical_class": "reorder_refactor_candidate",
+   "script_a": "script_103222",
+   "script_b": "script_103223",
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S026",
+   "bucket": "diff",
+   "mechanical_class": "reorder_refactor_candidate",
+   "script_a": "script_306671",
+   "script_b": "script_205671",
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S027",
+   "bucket": "diff",
+   "mechanical_class": "reorder_refactor_candidate",
+   "script_a": "script_109923",
+   "script_b": "script_137561",
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    "S027: 通读 6,291 行 diff 穷尽隐性差异。S029: 复核 B 的 semantic_chain_raw 为何仅 4 步（与 canonical 不匹配）；核验 B 的 SVM 分类器与验证段"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S028",
+   "bucket": "diff",
+   "mechanical_class": "reorder_refactor_candidate",
+   "script_a": "script_99819",
+   "script_b": "script_99816",
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S029",
+   "bucket": "diff",
+   "mechanical_class": "reorder_refactor_candidate",
+   "script_a": "script_170688",
+   "script_b": "script_249991",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "extraction_artifact_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    "S027: 通读 6,291 行 diff 穷尽隐性差异。S029: 复核 B 的 semantic_chain_raw 为何仅 4 步（与 canonical 不匹配）；核验 B 的 SVM 分类器与验证段"
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S030",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_148097",
+   "script_b": "script_148112",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S031",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_16222",
+   "script_b": "script_68816",
+   "primary_category": "reorder_refactor_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S032",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_277481",
+   "script_b": "script_209898",
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "Q1_misdescribed",
+   "admission_rule": "指令失实或与源码矛盾——隔离并标记，核实/修正后再议；暂不入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S033",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_45670",
+   "script_b": "script_45675",
+   "primary_category": "ui_scaffold_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S034",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_145186",
+   "script_b": "script_145241",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S035",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_213788",
+   "script_b": "script_213790",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S036",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_145163",
+   "script_b": "script_145258",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S037",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_113158",
+   "script_b": "script_113160",
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "不可判",
+   "literal_equivalence": "可替换差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "证据不足",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "Q2_insufficient",
+   "admission_rule": "证据不足/不可判——隔离待审，不当作可靠标准答案",
+   "evidence_required": [
+    "通读 B 的影像获取段，确认移除选景块后的回退输入机制"
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S038",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_109366",
+   "script_b": "script_109367",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S039",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_211895",
+   "script_b": "script_211910",
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S040",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_80237",
+   "script_b": "script_80223",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S041",
+   "bucket": "diff",
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "script_a": "script_236072",
+   "script_b": "script_236022",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S042",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_231951",
+   "script_b": "script_231952",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S043",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_265104",
+   "script_b": "script_265105",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S044",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_152529",
+   "script_b": "script_152447",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "规划结构"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S045",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_994",
+   "script_b": "script_976",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S046",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_129577",
+   "script_b": "script_129575",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S047",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_293907",
+   "script_b": "script_166973",
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "Q1_misdescribed",
+   "admission_rule": "指令失实或与源码矛盾——隔离并标记，核实/修正后再议；暂不入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S048",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_231953",
+   "script_b": "script_231946",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S049",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_130615",
+   "script_b": "script_130620",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S050",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_127247",
+   "script_b": "script_127245",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "通读 2,850 行 diff 后半段（方法差异已证，深层未穷尽）"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S051",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_52924",
+   "script_b": "script_52910",
+   "primary_category": "small_literal_cosmetic_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S052",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_253401",
+   "script_b": "script_253403",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S053",
+   "bucket": "diff",
+   "mechanical_class": "substantive_structural_candidate",
+   "script_a": "script_129524",
+   "script_b": "script_129527",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S054",
+   "bucket": "diff",
+   "mechanical_class": "template_multiplicity_artifact",
+   "script_a": "script_17869",
+   "script_b": "script_69799",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S055",
+   "bucket": "diff",
+   "mechanical_class": "template_multiplicity_artifact",
+   "script_a": "script_69799",
+   "script_b": "script_3327",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S056",
+   "bucket": "diff",
+   "mechanical_class": "template_multiplicity_artifact",
+   "script_a": "script_109918",
+   "script_b": "script_109917",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S057",
+   "bucket": "diff",
+   "mechanical_class": "template_multiplicity_artifact",
+   "script_a": "script_69799",
+   "script_b": "script_17871",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S058",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_87903",
+   "script_b": "script_87898",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S059",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_98866",
+   "script_b": "script_98857",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S060",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_109352",
+   "script_b": "script_131734",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S061",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_109927",
+   "script_b": "script_137561",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架",
+    "参数字面量"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S062",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_23594",
+   "script_b": "script_23960",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S063",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_152314",
+   "script_b": "script_152326",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "规划结构"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S064",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_101572",
+   "script_b": "script_101511",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S065",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_45911",
+   "script_b": "script_45875",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S066",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_244602",
+   "script_b": "script_169585",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "ui_scaffold_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "M_multiref_candidate",
+   "admission_rule": "同目标合理替代实现/实质差异——建多参考关系、各自适用条件；不选定唯一答案",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S067",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_49241",
+   "script_b": "script_49237",
+   "primary_category": "ui_scaffold_candidate",
+   "secondary_category": "small_literal_cosmetic_candidate",
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S068",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_236615",
+   "script_b": "script_236626",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "difference_source": [
+    "参数字面量",
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S069",
+   "bucket": "diff",
+   "mechanical_class": "ui_scaffold_candidate",
+   "script_a": "script_23567",
+   "script_b": "script_24716",
+   "primary_category": "asset_version_candidate",
+   "secondary_category": "substantive_structural_candidate",
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量",
+    "规划结构",
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S070",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_87537",
+   "script_b": "script_19911",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S071",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_121094",
+   "script_b": "script_121103",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S072",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_255153",
+   "script_b": "script_291890",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S073",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_213788",
+   "script_b": "script_213794",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S074",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_9727",
+   "script_b": "script_45393",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S075",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_179597",
+   "script_b": "script_243089",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S076",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_405511",
+   "script_b": "script_403124",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S077",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_84504",
+   "script_b": "script_84457",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S078",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_71197",
+   "script_b": "script_71212",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "不可判",
+   "fidelity_B": "不可判",
+   "difference_source": [],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "Q2_insufficient",
+   "admission_rule": "证据不足/不可判——隔离待审，不当作可靠标准答案",
+   "evidence_required": [
+    "S078：确认间接引用变量的资产内容（Landsat 8/NASS）后可升级保真度判定"
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S079",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_287326",
+   "script_b": "script_174756",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S080",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_65791",
+   "script_b": "script_65770",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S081",
+   "bucket": "same",
+   "mechanical_class": "formatting_only",
+   "script_a": "script_179597",
+   "script_b": "script_262184",
+   "primary_category": "formatting_only",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S082",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_402532",
+   "script_b": "script_402547",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S083",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_203560",
+   "script_b": "script_185722",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S084",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_289209",
+   "script_b": "script_289239",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S085",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_84772",
+   "script_b": "script_84828",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S086",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_402552",
+   "script_b": "script_402511",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S087",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_400284",
+   "script_b": "script_401293",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S088",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_405876",
+   "script_b": "script_411174",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S089",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_402765",
+   "script_b": "script_400263",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S090",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_402494",
+   "script_b": "script_402531",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "证据不足"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "Q1_misdescribed",
+   "admission_rule": "指令失实或与源码矛盾——隔离并标记，核实/修正后再议；暂不入高置信集",
+   "evidence_required": [
+    "WorldPop 2020 波段定义/像元值单位/投影尺度元数据（确认阈值精确数据语义；代码一致性无须补证）"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": "reviewed_maintained_with_refinements"
+  },
+  {
+   "pair_id": "S091",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_183850",
+   "script_b": "script_183861",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S092",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_219822",
+   "script_b": "script_219821",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S093",
+   "bucket": "same",
+   "mechanical_class": "same_code_two_descriptions",
+   "script_a": "script_215911",
+   "script_b": "script_215898",
+   "primary_category": "same_code_two_descriptions",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "difference_source": [],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S094",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_154411",
+   "script_b": "script_154408",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S095",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_24714",
+   "script_b": "script_23548",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S096",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_186175",
+   "script_b": "script_187237",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    "复核 RLE 为空步的行在池内的规模（same_template_canonical_diff 层抽样 12 中出现 1 例）"
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": "reviewed_maintained_with_refinements"
+  },
+  {
+   "pair_id": "S097",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_109902",
+   "script_b": "script_109898",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S098",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_186250",
+   "script_b": "script_194398",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S099",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_147902",
+   "script_b": "script_77491",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S100",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_131053",
+   "script_b": "script_131074",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    "复核该行 canonical 差异的具体调用（1 步 RLE 下 canonical 仍异的机制）"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S101",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_23477",
+   "script_b": "script_23475",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S102",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_30704",
+   "script_b": "script_30698",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S103",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_65642",
+   "script_b": "script_65640",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S104",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_71201",
+   "script_b": "script_71206",
+   "primary_category": "same_template_canonical_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S105",
+   "bucket": "same",
+   "mechanical_class": "same_template_canonical_diff",
+   "script_a": "script_26820",
+   "script_b": "script_26818",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S106",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_211918",
+   "script_b": "script_211914",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    "间接引用变量的实际资产内容（与 S078/S110 同一复核任务）"
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S107",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_171771",
+   "script_b": "script_169539",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "可替换差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    "检查 ERM 输出影像是否含 cosS 波段（裁定 A/B 措辞孰真）"
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S108",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_145163",
+   "script_b": "script_145191",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S109",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_101249",
+   "script_b": "script_101160",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S110",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_55526",
+   "script_b": "script_55520",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "中",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    "核验 2016 年份与间接引用资产；两例极端压缩行的池级规模统计"
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S111",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_214722",
+   "script_b": "script_214719",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S112",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_211912",
+   "script_b": "script_211898",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "欠描述",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C2_conditional_underdesc",
+   "admission_rule": "指令欠描述——保留样本，补全关键条件或作为条件化参考；须标注缺失项",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S113",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_38688",
+   "script_b": "script_38701",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S114",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_14882",
+   "script_b": "script_50691",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "影响结果差异",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "参数字面量"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "C1_conditional_literal",
+   "admission_rule": "结构等价但参数字面量影响结果——保留差异并关联为同结构条件化参考；须带条件字段方可入训",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": true,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S115",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_38694",
+   "script_b": "script_38685",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S116",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_35319",
+   "script_b": "script_35318",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": null
+  },
+  {
+   "pair_id": "S117",
+   "bucket": "same",
+   "mechanical_class": "same_template_literal_diff",
+   "script_a": "script_96217",
+   "script_b": "script_96230",
+   "primary_category": "same_template_literal_diff",
+   "secondary_category": null,
+   "structural_equivalence": "等价",
+   "literal_equivalence": "等价",
+   "fidelity_A": "忠实",
+   "fidelity_B": "忠实",
+   "difference_source": [
+    "实现与脚手架"
+   ],
+   "decision_confidence": "高",
+   "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
+   "admission_bucket": "A_high_confidence",
+   "admission_rule": "描述可信、结构等价/合理、无失实——保留原始样本+审核记录；可进入高置信集",
+   "evidence_required": [
+    ""
+   ],
+   "deep_check_blocking": false,
+   "owner_spot_checked": "reviewed_maintained_with_refinements"
+  }
+ ]
+}

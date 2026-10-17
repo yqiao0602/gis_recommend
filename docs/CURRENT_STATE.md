@@ -204,6 +204,27 @@ reference samples -> small-scale controlled training (judged on planning
 correctness, not label similarity). Discipline: no loss changes or
 resampling; diagnostic tasks stay out of the B-track training set;
 interventions still require owner release.**
+  **B-TRACK PHASE TRANSITION (owner decision 2026-10-18): data audit ->
+  training-data governance & planning-capability verification.** No further
+  human adjudication expansion; no full-pool cleansing; no retraining yet.
+  Deliverables this round: `B_TRACK_DATA_GOVERNANCE_SPEC_V1.md` (six
+  admission buckets A41/C1-26/C2-29/M14/Q1-5/Q2-2; adjudicator tiers and
+  provisional state machine; multi-reference equivalence + applicability;
+  four-question traceability; version/hash/change-log; task-group split
+  governance), `Q2_ADMISSION_V1.json`, `Q2_EXTRACT_SAMPLE_V1.json` (221
+  unique), `Q2_EXTRACT_RELATION_V1.json`, `Q2_ARCHIVE_FREEZE_INDEX_V1.md/.json`
+  (19 files hashed + 8 commits), 17 blocking deep-checks + 8 non-blocking
+  run-verifications separated. `B_TRACK_TWO_LAYER_REPRESENTATION_SPEC_V1.md`
+  freezes L0 raw / L1 planning-semantic / L2 condition-implementation mapping
+  + L3 fidelity + L4 supervision (NOT a finer label sequence; raw scripts
+  always retained). `B_TRACK_TRUSTED_REFERENCE_SET_V0_SCOPING.md` selects 24
+  representative groups across 10 difference types (semantic fields pending
+  evidence-backed curation, no model-imagined steps). Five-step order:
+  governance freeze (done) -> minimal reference set -> split freeze -> three
+  small controlled arms (A original-sequence SFT / B curated-sequence SFT /
+  C curated two-layer supervision; judged on necessary-step recall, constraint
+  coverage, dependency correctness, harmful steps, long-chain degradation,
+  multi-reference usability) -> scale only if independently validated.
   D1 contract ADR sign-off still pending. Live plan: task_plan.md.
 
 ## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)
