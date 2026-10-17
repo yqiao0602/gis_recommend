@@ -1,0 +1,200 @@
+{
+ "artifact": "Q2_POOL_RESCAN_MECHANICAL_V1",
+ "date": "2026-10-17",
+ "owner_ruling_ref": "chat ruling 2026-10-17 evening (registered in MD)",
+ "read_only": true,
+ "seed": 20261017,
+ "population": {
+  "pool_rows": 128447,
+  "n_near_dup_pairs": 4554,
+  "n_diff_template_pairs": 382,
+  "n_same_template_pairs": 4172,
+  "unique_member_scripts": 4843,
+  "scripts_locally_covered": 4824,
+  "member_coverage_ratio": 0.9961
+ },
+ "uncovered": {
+  "diff_pairs": 3,
+  "same_pairs": 36
+ },
+ "diff_template_class_distribution": {
+  "small_literal_cosmetic_candidate": 167,
+  "substantive_structural_candidate": 111,
+  "asset_version_candidate": 25,
+  "duplicate_block_candidate": 27,
+  "ui_scaffold_candidate": 40,
+  "reorder_refactor_candidate": 5,
+  "template_multiplicity_artifact": 4
+ },
+ "same_template_class_distribution": {
+  "same_template_literal_diff": 3144,
+  "same_code_two_descriptions": 716,
+  "same_template_canonical_diff": 232,
+  "formatting_only": 44
+ },
+ "fidelity_proxy": {
+  "diff_pairs_with_any_fidelity_flag": 29,
+  "same_pairs_with_any_fidelity_flag": 717
+ },
+ "fidelity_caveat": "numbers_missing/dataset_absent 是机械下界候选（数字/数据集名在源码中缺失即标记；不含语义级失实如 SAME-15 目标变量写错——机械层不可见）",
+ "calibration_ten_known_pairs": [
+  {
+   "id": "DIFF-6",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "ui_scaffold_candidate",
+   "source_verified_class": "ui_scaffold_candidate",
+   "agree": true
+  },
+  {
+   "id": "DIFF-4",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "duplicate_block_candidate",
+   "source_verified_class": "substantive_structural_candidate",
+   "agree": false
+  },
+  {
+   "id": "DIFF-5",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "source_verified_class": "duplicate_block_candidate",
+   "agree": false
+  },
+  {
+   "id": "DIFF-1",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "substantive_structural_candidate",
+   "source_verified_class": "substantive_structural_candidate",
+   "agree": true
+  },
+  {
+   "id": "DIFF-12",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "source_verified_class": "asset_version_candidate",
+   "agree": false
+  },
+  {
+   "id": "DIFF-19",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "source_verified_class": "small_literal_cosmetic_candidate",
+   "agree": true
+  },
+  {
+   "id": "SAME-15",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "same_code_two_descriptions",
+   "source_verified_class": "same_code_two_descriptions",
+   "agree": true
+  },
+  {
+   "id": "SAME-19",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "same_template_literal_diff",
+   "source_verified_class": "same_template_literal_diff",
+   "agree": true
+  },
+  {
+   "id": "SAME-11",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "same_code_two_descriptions",
+   "source_verified_class": "same_code_two_descriptions",
+   "agree": true
+  },
+  {
+   "id": "SAME-9",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "same_template_literal_diff",
+   "source_verified_class": "same_template_literal_diff",
+   "agree": true
+  },
+  {
+   "id": "DIFF-2",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "asset_version_candidate",
+   "source_verified_class": null,
+   "agree": false
+  },
+  {
+   "id": "DIFF-3",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "substantive_structural_candidate",
+   "source_verified_class": null,
+   "agree": false
+  },
+  {
+   "id": "DIFF-7",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "substantive_structural_candidate",
+   "source_verified_class": null,
+   "agree": false
+  },
+  {
+   "id": "DIFF-8",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "asset_version_candidate",
+   "source_verified_class": null,
+   "agree": false
+  },
+  {
+   "id": "DIFF-9",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "source_verified_class": null,
+   "agree": false
+  },
+  {
+   "id": "DIFF-10",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "source_verified_class": null,
+   "agree": false
+  },
+  {
+   "id": "DIFF-13",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "small_literal_cosmetic_candidate",
+   "source_verified_class": null,
+   "agree": false
+  },
+  {
+   "id": "DIFF-16",
+   "found": true,
+   "covered": true,
+   "mechanical_class": "substantive_structural_candidate",
+   "source_verified_class": null,
+   "agree": false
+  }
+ ],
+ "class_definitions": {
+  "template_multiplicity_artifact": "两指令共享至少一个模板但模板集合不同（DIFF-20 型：代表链可能相同）",
+  "formatting_only": "归一化源码相同（仅格式差异）",
+  "literal_param_only": "canonical API 序列完全相同，仅字面量不同（SAME-19/19 型）",
+  "reorder_refactor_candidate": "canonical 多重集相同但顺序不同（重构候选）",
+  "small_literal_cosmetic_candidate": "canonical 对称差≤2 且数字对称差≤8（DIFF-19 型小差异）",
+  "asset_version_candidate": "数据集族相同但精确 ID 不同（DIFF-12 型版本差异）",
+  "ui_scaffold_candidate": "UI/可视化调用差≥3（DIFF-6 型脚手架）",
+  "duplicate_block_candidate": "重复行差≥5（DIFF-5 型拼接变体）",
+  "substantive_structural_candidate": "以上规则均不匹配——需人工语义判读（规划结构差异的候选居所）",
+  "same_code_two_descriptions": "源码逐字节相同、双描述（SAME-15/11 型）",
+  "same_template_literal_diff": "同模板、canonical 相同、字面量不同（SAME-19/9 型）",
+  "same_template_canonical_diff": "同模板（RLE）但 canonical 序列不同"
+ }
+}

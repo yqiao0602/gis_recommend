@@ -164,31 +164,34 @@ Last updated: 2026-10-15
   pairs (15/19/11/9) share byte-identical canonical API sequences across
   sides (same code, two descriptions; literal-level differences require
   reading the scripts), while all 14 DIFF pairs differ canonically (the
-  programs genuinely differ). **Next: V2-P0 six-pair source walkthrough COMPLETE 6/6 (2026-10-17,
-`b_track_audit_v1/Q2_V2P0_WALKTHROUGH_FINDINGS_V1.md`): 6/6 structural
-differences have NO task-logic basis — decomposed as UI date-slider add-on
-(DIFF-6), implementation-level reasonable multisolution (DIFF-4: held-out
-validation vs train-only), duplicated-block splice variant (DIFF-5), refactor
-+ auxiliary dataset (DIFF-1), dataset version + cloud-mask variant (DIFF-12:
-L7 C1->C2), threshold literal + map-centering (DIFF-19: lte(0) vs
-lte(-0.02), invisible in RLE). Extractor made ZERO errors on all ten pairs —
-the defect is the RLE representation projecting non-analytical factors
-(UI scaffolding, duplicates, refactors) at equal weight while being blind to
-the literals that carry real semantics. Instruction-level mis-statements 0/6;
-one under-description (DIFF-6 A) + one in-script comment/code contradiction
-(DIFF-19 A). MERGED V2+V3 CONCLUSION DELIVERED
-(`b_track_audit_v1/Q2_SEMANTIC_AUDIT_CONCLUSION_V1.md`): across the ten
-source-verified pairs, chain same/diff and task-logic same/diff are near-
-orthogonal axes — 0/10 task-driven structure differences, 7/10 carry
-literal-layer differences, 1 mis-description + 2 under-descriptions; four
-candidate directions (A chain cleansing excluding UI scaffolding / B two-
-layer representation / C description-fidelity gate / D near-duplicate-layer
-multi-reference) ALL awaiting owner ruling. Suggested order if ratified:
-extend sample or full mechanical re-scan (turn n=10 four-class shares into
-pool-level numbers) -> A/B design freeze -> reference-sample construction ->
-small-scale controlled training comparison. Discipline: no loss changes or
-resampling from sample judgments (owner wording); diagnostic tasks stay out
-of the B-track training set; interventions still require owner release.**
+  programs genuinely differ). **Next: OWNER RULING on the merged conclusion (2026-10-17 evening): conclusions
+1-3 accepted (RLE information loss / chain-diff != planning-structure diff /
+instruction-fidelity checks required), ten-pair boundary RETAINED (0/10 and
+7/10 are sample-level, not pool rates; "extractor zero errors on ten pairs"
+tightened to those ten only). B two-layer representation = main direction, A
+chain cleansing = necessary governance (not either/or). NOT approved: RLE
+modification, batch chain cleansing, new training. Pool-level READ-ONLY
+re-scan EXECUTED same day (`b_track_audit_v1/Q2_POOL_RESCAN_MECHANICAL_V1.
+md/.json`, generator scripts/b_track_q2_pool_rescan_v1.py): 4,554-pair
+sanity gate reproduced EXACTLY; script coverage 99.6% (4,824/4,843); the
+diff-template population is small — 382/4,554 (8.4%) — with substantive
+candidates 111 (29.3% of covered diff pairs; task-driven UPPER bound ≈ 2.4%
+of all near-dup pairs, truth pending adjudication); non-substantive
+mechanical candidates 70.7%; same-code-two-descriptions = 716 pairs (17.3%,
+a POOL-SCALE phenomenon); same_template_canonical_diff 232 (5.6%) = live
+Q1.5 flattening instances; calibration 7/10 agree with 3 known-mechanism
+disagreements (set-symmetric-difference blind to duplicated blocks; no
+post-hoc threshold tuning per prereg discipline); fidelity mechanical proxy
+= nomination-only (3 spot-checks ALL false positives: precision rounding /
+variable indirection / common-cause — the 17.3% flag rate is NOT prevalence).
+CURRENT ACTION = owner adjudicates the 117-record stratified sample
+(`Q2_POOL_RESCAN_ADJUDICATION_SAMPLE_V1.md/.json`, seed 20261017, ≤12/class;
+difference-source four classes non-exclusive + fidelity axis separate) ->
+pool-level four-class shares with uncertainty -> A/B joint design-spec
+freeze -> reviewed reference samples -> small-scale controlled training
+(judged on planning correctness, not label similarity). Discipline: no loss
+changes or resampling; diagnostic tasks stay out of the B-track training
+set; interventions still require owner release.**
   D1 contract ADR sign-off still pending. Live plan: task_plan.md.
 
 ## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)
