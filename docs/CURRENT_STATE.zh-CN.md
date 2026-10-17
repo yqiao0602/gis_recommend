@@ -68,20 +68,42 @@ P1/P2 与 E2E 详细过程以 `docs/CURRENT_STATE.md` 英文版为准）
   （`dx_v1/DX_EXPERIMENT_DESIGN_RULING_OWNER_V1.md`：**A1 卡片补全 / A2 检索语料升级 /
   B 规划能力对照，单变量分离，A1 与 A2 各自完成后才测组合；「在库中/被 Top-10 召回/
   卡片足以证明适用」三态分记不合并**）。解析器 v2 修正基线：无判定 130（44.4%）、
-  显式弃权 119、正选 48（16.4%）。**执行队列：A 轨 P0 = OTB 115 卡证据驱动补全（已放行；
-  补卡前哈希冻结已落 `A_TRACK_P0_HASH_FREEZE_V1.json`：profile v0_4 SHA `95ae97bc…`、
-  顶层 description 键 0/1291 守卫、49 个 retrieval.json 全量冻结 = A1 固定 Top-10 锚）
-  → A2 受控检索对照（不静默改检索）→ B 独立推进。仪器发现：S1 检索实为算子 ID 词面相似度
+  显式弃权 119、正选 48（16.4%）。**执行队列：A 轨 P0 补卡已构建（2026-10-17）：
+  profile v0_5 以新文件落盘（SHA `dfc03628…`；构建器 `dx_a_track_build_v05_v1.py` +
+  逐字段 provenance manifest）——109/109 张 OTB 卡自上游 8.1.2 经宏提取器 v2 填充
+  （1,011 参数 + 134 输出 + 116 个 choice 树参数；19 处 input_types_norm 纠正；
+  攻克基类头文件/CompositeApplication/ShareParameter 三类特殊 app；框架自动参数
+  ram/elev/rand 排除不猜）；顶层 description 键 0/1291（S1 守卫）、非 OTB 条目与
+  v0_4 逐条相等（v0_4 SHA `95ae97bc…` 未动）、6 算子标记 `provenance_unverified`
+  （owner 裁定：来源与目标环境可用性未核实——后续核验任务已登记，不作定性幽灵）。
+  full_card() 渲染抽查通过：trainimagesclassifier 卡可见 classifier(Choice)+io.out
+  ——T-009 卡盲区解除。队列下一步：A1 pack（v0_5 卡 × 冻结 Top-10）→ 服务器 S2
+  重跑 → 四分指标；再 A2 受控检索对照（不静默改检索）→ B 独立。仪器发现：S1 检索实为算子 ID 词面相似度
   （0/1291 有 description 键、layer_c_intent 未读取）——S1 修复另立受控变更；
   补卡禁写顶层 description 键。** B 轨（GEE 规划）：owner 假设裁定 + 联合审计 **Q1-Q4 全部完成**
   （`diag50_v1/B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`、`B_TRACK_Q2Q4_RULING_OWNER_V1.md`、
   `B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md`[V1.1]、产物 `b_track_audit_v1/`）：全链复制度不高但
-  局部高度集中（Q1）；任务条件→结构耦合存在且单调，40 对语义抽验样本待人工判读（Q2）；
+  局部高度集中（Q1）；任务条件→结构耦合存在且单调，**Q2 40 对人工判读已完成并登记（见下）**；
   精确同指令异模板可忽略、差异=局部小变体（Q3）；**规划 exact 率随训练池支持度单调上升**
   （absent 14.1%/singleton 0%/low 0%/mid 12.3%/high 25.6%）且预测向高频模板偏移 +19%
   ——低支持错误=数据支持缺口（固有），高频偏移=训练引入（干净归因需 Base vs 训练版本 B 臂）；
   813 个 AGGREGATION 模板混合时间合成/分区统计语境=30 标签抹平实证（方向②锚点）。
-  owner 不干预门已过——下一步=Q2 样本人工语义判读 → 审查后参考样本构建 → 小规模对照训练。
+  owner 不干预门已过——Q2 人工判读已完成，下一步=V2-P0 原始程序逐步对照（见下）
+  → 审查后参考样本构建 → 小规模对照训练。
+  **Q2 40 对人工判读已登记（2026-10-17，owner 四批判读 →
+  `b_track_audit_v1/Q2_OWNER_ADJUDICATION_V1.md/.json`）**：SAME 组 C 类（确认结构
+  标注错误）=**0**、A 类（同结构充分合理）8/20、B 类（需原始程序核验）12/20，重点核验
+  =SAME-15（分类 vs 回归被 CLASSIFICATION 抹平）与 SAME-19（多时间粒度被单一
+  AGGREGATION 概括）；DIFF 组可疑 12/20、合理差异可能性较高 2（DIFF-3/18）、弱变体 1；
+  **owner 三字段口径（结构变化要求/标签表达力/链条差异证据）冻结为 B 轨审查标准**。
+  **机械修正：DIFF-20 两条链并非完全相同——恰差 1 个重复季节块（7 vs 6，MD 渲染不可
+  辨）；抽样分组（模板集合相等判据）机械有效，该对登记为弱变体不作强正例，"分组质量
+  检查"关闭（无 bug）。**核验包机械预观察：V3 全部 4 对 SAME（15/19/11/9）双侧
+  canonical API 序列一致=同码双描述（字面量层须读源码确认）；14 对 DIFF canonical
+  全部真实不同=程序确实不同。**下一步：V2-P0 六对原始程序逐步对照（DIFF-6→4→5→1→
+  12→19）；三对齐材料已物化（`Q2_PRIORITY_VERIFICATION_PACKET_V1.md/.json`：游程
+  渲染+自动链 diff+script 指针+18 对预观察总表）。纪律：先核验原始工作流，不因样本
+  判读调整训练损失或重采样（owner 原文）；诊断任务不入 B 轨训练；干预仍须 owner 放行。**
   D1 契约 ADR 签核仍待 owner。活跃计划见 task_plan.md。
 
 ## ⭐ 当前主线：Planning Capability Audit（PCA）— 协议 v1 已冻结，Phase 1 进行中（2026-10-13）

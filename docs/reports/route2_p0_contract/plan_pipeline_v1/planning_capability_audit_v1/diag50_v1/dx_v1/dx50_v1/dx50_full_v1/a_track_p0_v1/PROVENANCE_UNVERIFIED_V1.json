@@ -1,0 +1,47 @@
+{
+ "date": "2026-10-17",
+ "status": "provenance_unverified",
+ "definition": "算子来源及其在目标运行环境中的可用性未核实（非'已定性幽灵'）",
+ "proven_facts": [
+  "6 个 oid 在上游官方 6.6.2/7.4.2/8.1.2/9.1.1 四版本均无对应 application（逐 tag 实测 Modules/*/Applications 与 Modules/Applications）",
+  "115 算子集合跨版本混合，不可能来自单一官方 release"
+ ],
+ "unproven": [
+  "不存在于所有相关构建（remote module / 自定义构建未排除）",
+  "一定来自 QGIS 官方 OTB 包的 remote module（QGIS 文档证实 OTB 需单独安装、支持多应用目录，但这不能定位 6 算子来源）"
+ ],
+ "operators": [
+  {
+   "oid": "otb:aggregate",
+   "v04_state": "bare (no layer_b params/outputs, intent null)",
+   "v05_state": "unchanged + provenance_status marker; not treated as confirmed-executable"
+  },
+  {
+   "oid": "otb:genericregionmerging",
+   "v04_state": "bare (no layer_b params/outputs, intent null)",
+   "v05_state": "unchanged + provenance_status marker; not treated as confirmed-executable"
+  },
+  {
+   "oid": "otb:imagetimeseriesgapfilling",
+   "v04_state": "bare (no layer_b params/outputs, intent null)",
+   "v05_state": "unchanged + provenance_status marker; not treated as confirmed-executable"
+  },
+  {
+   "oid": "otb:multitempfilteringfilter",
+   "v04_state": "bare (no layer_b params/outputs, intent null)",
+   "v05_state": "unchanged + provenance_status marker; not treated as confirmed-executable"
+  },
+  {
+   "oid": "otb:multitempfilteringoutcore",
+   "v04_state": "bare (no layer_b params/outputs, intent null)",
+   "v05_state": "unchanged + provenance_status marker; not treated as confirmed-executable"
+  },
+  {
+   "oid": "otb:objectsradiometricstatistics",
+   "v04_state": "bare (no layer_b params/outputs, intent null)",
+   "v05_state": "unchanged + provenance_status marker; not treated as confirmed-executable"
+  }
+ ],
+ "follow_up_task": "核验目标 QGIS/OTB 安装环境：实际应用清单（otbApplicationLauncherCommandLine --list）、QGIS OTB 配置的应用目录、构建来源/remote modules；取得证据后判定为真实扩展算子或误入 Capability Profile 的记录",
+ "a1_note": "A1 复用冻结 Top-10，候选集不因本发现改变"
+}

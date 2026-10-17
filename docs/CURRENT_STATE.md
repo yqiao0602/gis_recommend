@@ -113,12 +113,21 @@ Last updated: 2026-10-15
   combined arm only after A1 and A2; three states recorded separately:
   in-library / recalled-into-Top-10 / card-proves-applicable**). Corrected
   baselines under parser v2: no-decision 130 (44.4%), explicit abstention 119,
-  positive selection 48 (16.4%). **EXECUTION QUEUE: A-track P0 = OTB 115
-  evidence-driven card completion (authorized; pre-completion hash freeze done —
-  `A_TRACK_P0_HASH_FREEZE_V1.json`: profile v0_4 SHA 95ae97bc…, top-level
-  description keys 0/1291 guard, all 49 retrieval.json hashed = A1 frozen
-  Top-10 anchor) → A2 controlled retrieval comparison (no silent retrieval
-  change) → B independent. Instrument finding: S1 retrieval is operator-ID
+  positive selection 48 (16.4%). **EXECUTION QUEUE: A-track P0 card completion
+  BUILT (2026-10-17): profile v0_5 created as a NEW file (SHA dfc03628…;
+  builder `dx_a_track_build_v05_v1.py` + per-field provenance manifest) — 109/
+  109 OTB cards filled from upstream 8.1.2 via macro extractor v2 (1,011
+  params + 134 outputs + 116 choice-tree params; 19 input_types_norm fixes;
+  base-class headers + CompositeApplication + ShareParameter resolution;
+  framework auto-params ram/elev/rand excluded, not guessed); top-level
+  description keys 0/1291 (S1 guard), non-OTB entries byte-equal to v0_4
+  (SHA 95ae97bc… unchanged), 6 operators marked `provenance_unverified`
+  (owner ruling: source & target-env availability unverified — follow-up task
+  registered, not treated as confirmed ghosts). full_card() spot-check PASS:
+  trainimagesclassifier card now shows classifier(Choice)+io.out — the T-009
+  card blindness is lifted. NEXT in queue: A1 pack (v0_5 cards x frozen
+  Top-10) → server S2 rerun → four-metric comparison; then A2 controlled
+  retrieval comparison (no silent retrieval change) → B independent. Instrument finding: S1 retrieval is operator-ID
   lexical similarity (0/1291 profiles have a description key; layer_c_intent
   unread) — S1 fix is a separate controlled change; card completion must NOT
   write the top-level `description` key.** B-track (GEE planning): owner
@@ -126,8 +135,8 @@ Last updated: 2026-10-15
   B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`, `B_TRACK_Q2Q4_RULING_OWNER_V1.md`,
   `B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md` [V1.1], artifacts `b_track_audit_v1/`):
   full-chain duplication NOT severe but local concentration high (Q1);
-  task-condition→structure coupling exists and is monotone, 40-pair semantic
-  review sample pending human adjudication (Q2); exact-duplicate multi-template
+  task-condition→structure coupling exists and is monotone, Q2 40-pair human
+  adjudication COMPLETE (see below); exact-duplicate multi-template
   negligible, differences are local variants (Q3); planner exact-rate rises
   monotonically with training-pool support (absent 14.1% / singleton 0% /
   low 0% / mid 12.3% / high 25.6%) and predictions skew +19% toward high-freq
@@ -135,9 +144,33 @@ Last updated: 2026-10-15
   training-introduced (clean attribution needs the Base-vs-trained B arm);
   813 AGGREGATION templates mix temporal-composite vs zonal contexts =
   label-flattening evidence anchoring direction ②. Per owner ruling the
-  no-intervention gate has now cleared — next = human semantic adjudication of
-  the Q2 sample → reviewed reference-sample construction → small-scale
-  controlled training comparison.
+  no-intervention gate has now cleared — Q2 human adjudication is done; the
+  next step is the V2-P0 source-program walkthrough (below) → reviewed
+  reference-sample construction → small-scale controlled training comparison.
+  **Q2 40-pair human adjudication REGISTERED (2026-10-17, owner four-batch
+  review → `b_track_audit_v1/Q2_OWNER_ADJUDICATION_V1.md/.json`)**: SAME group
+  C-class (confirmed structure-mislabel) = **0**, A-class (same-structure well
+  justified) 8/20, B-class (needs source verification) 12/20 with SAME-15
+  (classification-vs-regression flattening) and SAME-19 (multi-granularity
+  temporal aggregation under one label) as priority checks; DIFF group:
+  suspicious 12/20, likely-reasonable 2 (DIFF-3/18), weak variant 1; the
+  owner's three-field schema (requires-structure-change / label-
+  expressiveness / chain-diff-evidence) frozen as the B-track review standard.
+  **Mechanical correction: DIFF-20's two chains are NOT identical — they
+  differ by exactly one repeated seasonal quad (7 vs 6, invisible in the MD
+  rendering); the sampling grouping (template-set equality) is mechanically
+  valid, the pair is registered as a weak variant, and the "grouping quality
+  check" item is CLOSED (no bug).** Packet pre-observation: all 4 V3 SAME
+  pairs (15/19/11/9) share byte-identical canonical API sequences across
+  sides (same code, two descriptions; literal-level differences require
+  reading the scripts), while all 14 DIFF pairs differ canonically (the
+  programs genuinely differ). **Next: V2-P0 six-pair source-program
+  walkthrough (DIFF-6→4→5→1→12→19); the three-way alignment packet is
+  materialized (`Q2_PRIORITY_VERIFICATION_PACKET_V1.md/.json`: run-count RLE
+  rendering + automatic chain diff + script pointers + 18-pair summary
+  table). Discipline: verify source programs first — no loss changes or
+  resampling from sample judgments (owner wording); diagnostic tasks stay out
+  of the B-track training set; interventions still require owner release.**
   D1 contract ADR sign-off still pending. Live plan: task_plan.md.
 
 ## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)
