@@ -97,14 +97,29 @@
    "jaccard": 0.8627,
    "script_a": "script_23493",
    "script_b": "script_23496",
-   "structural_equivalence": "",
-   "literal_equivalence": "",
-   "execution_equivalence": "",
-   "difference_source": [],
-   "fidelity_A": "",
-   "fidelity_B": "",
-   "decision_confidence": "",
-   "evidence_required": ""
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "execution_equivalence": "充分",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "evidence_required": "①核对开头完整变量定义确认 aoi0 几何范围两侧是否一致；②EE 中确认 A 硬编码转移表路径与 B bulc_current.transitionMatrix 路径均可执行；③检查 B 事件集合大小/重复影像是否导致额外迭代与概率更新；④对比最终分类/置信度/像元计数量化影响；确认是否存在源码外的导出步骤",
+   "owner_final_class": "substantive_structural_candidate",
+   "key_findings": [
+    "事件影像构造实质差异：A=NLCD 2001+2006 两幅不同年份事件；B=仅 2001 且连续两次自合并（merge 自身）→ 重复扩展同一事件而非补回 2006——未按任务描述建模 1992/2001/2006 三期变化",
+    "核心算法路径不同：A usehardcodedtruthtable=1（硬编码真值表）；B=0 并启用 overlayConsecutiveEventsByBitpackingForSupervised=1（叠加事件构建转移矩阵，依赖 afn_assembleTables/bulc_current）",
+    "初始分类图 NLCD 1992 相同、BULC 迭代更新函数主体相同——但不能据主体复用认定等价",
+    "双侧欠描述：A 未说明逐时间步输出的具体形态且无显式导出；B 未交代 2001 重复扩展与路径切换，同样无导出"
+   ],
+   "owner_adjudicated": true,
+   "adjudication_date": "2026-10-17",
+   "mechanical_class": "asset_version_candidate",
+   "mechanical_to_final_override": true
   },
   {
    "id": "S005",
@@ -1916,7 +1931,7 @@
   }
  ],
  "adjudication_progress": {
-  "adjudicated": 3,
+  "adjudicated": 4,
   "total": 117
  }
 }
