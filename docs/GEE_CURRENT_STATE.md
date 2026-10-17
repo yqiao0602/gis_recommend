@@ -51,10 +51,6 @@ current production yield.
   + recompute BAND_SELECT P/R/F1 -> (5) only then discuss training. Not
   authorized: full retrain, P1 format overhaul, RL, auto-compressing
   unverified loops.
-  **Ruling update (2026-10-13, OWNER_RULINGS_20261013_V1.md ruling C)**:
-  steps (2) and (4) approved to run IN PARALLEL. This authorizes the
-  audits/repairs only — no new training, no frozen-data modification, no
-  formal generation against unverified gold.
 - Boundary: closure does NOT mean the 90 suspected binding-error groups are
   all proven, nor that the trusted dev subset is frozen; suspicious items do
   not auto-upgrade.

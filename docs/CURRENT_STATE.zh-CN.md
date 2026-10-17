@@ -1,7 +1,68 @@
 # 当前项目状态
 
-最后更新：2026-10-13（PCA 快照对齐；10-05 → 10-12 的 Planner P1/P2 与 E2E 详细过程以
-`docs/CURRENT_STATE.md` 英文版为准）
+最后更新：2026-10-15（QGIS 专项训练路线冻结登记；PCA/RL 快照以 10-13 条目为准，Planner
+P1/P2 与 E2E 详细过程以 `docs/CURRENT_STATE.md` 英文版为准）
+
+## (00) QGIS 专项训练路线冻结为项目正式方向（2026-10-15，owner 终裁）
+
+- owner 终裁：QGIS 专项训练技术路线冻结（A 算子知识底座 → B 训练数据建设 → C 两阶段
+  SFT → D 完整推理链路 → E 初版交付+定向优化），A/B 并行。三项修正：①同一 Qwen3.5-9B
+  连续训练配方（GEE 规划监督+QGIS 算子语义+工作流组合+DAG 监督按职责混入，不做两次独立
+  训练）；②复杂任务完整性靠分工验证（模型提计划/外部证据账本追踪/结构化校验器查结构/
+  独立语义评审+人工抽查——结构合法≠语义正确）；③知识整理与训练数据建设并行推进，防知识
+  工程变长期项目。
+- 常设原则：最终工作流质量=唯一主目标；完整约 1,200 算子目录=权威知识源（RAG+结构校验，
+  不要求模型背全）；规划步骤≠算子抽象层（不引入统一算法分类层，输出=真实 QGIS 算子的
+  processes+links DAG）；先完整系统后定向优化；禁自我评价代替外部验证。GRPO 与完整
+  GraphRAG 后置（等第一版瓶颈实测）。第一版验收=6 项清单（算子知识/算子接地/规划完整性/
+  DAG 正确性/问题修复/评估可信度）。
+- 评测纪律沿用：dev-120 选点 / test-111 终判；route2_C0 dev opF1 0.5611 = 统一协议对比
+  基线；系统级与模型级贡献自第一版起分开记账。
+- 盘点已完成（2026-10-15，四路并行只读审计）：《QGIS 专项训练实施规范》V1 骨架已产出
+  `docs/plans/QGIS_SPECIALIZED_TRAINING_IMPLEMENTATION_SPEC_V1.md`。要点：目录 = 1,291 算子
+  三源一体；**309 = 1,565 行接地数据的 gold 已行使子集**（148=test111，38=benchmark
+  v0.1-120）；Capability Profile v0_4 覆盖全部 1,291 且含参数 schema（1,127 ops 有默认值）
+  = 知识底座主干；四项校验器现成可复用；数据头号缺口 = 参数监督为零 + 接地仅 1,565 行
+  （D5 渲染管线 = 扩量路径）；`stage1_train_v2_2A` 本地缺失且行数出入——冻结勿引用；
+  blueprint_v2_gold_v3 本地镜像已找回（SHA 核验，旧"无镜像"记录作废）。**快看线已执行并关闭（同日，owner 指令）**：108 held-out 任务 × P0/Base 216 生成；31 样本
+  人工判分（L1 全查 22 + 三带抽查各 3）——P0 CM 31/31=Y 跨带一致（通用骨架+核心缺失）、
+  Base 3/31；故障定位（原始 Blueprint 仅 2-5 通用 stage、转换无损排除）+同接口探针（P0+NL
+  提示+rep-pen → 8/8 立即 EOS）闭环归因：接口脆性+内容贫瘠+schema 天花板；"二次训练毁能力"
+  不成立（Base 优势=预训练先验）。**owner 终裁**：①P0 fmt 除名 Stage-1 候选；②新训练
+  from-Base；③Blueprint v2 降级为辅助监督（输出目标除名）；④unified training 输出空间=
+  完整 QGIS workflow（processes+links 含算子/参数/IO/DAG）。三原则：先冻结输出契约再扩数
+  据；与 Base 同测试集/提示/评测器对比（格式正确率≠工作流质量）；统一≠无差别混合（GEE 仅
+  辅助、禁跨平台标签错配）。执行序：D1 Unified Workflow Contract → D2 渲染管线 → D3 配方
+  → D4 评估门槛 → CPU 审查后 GPU（当前不批准配方与训练）。RL 线（输出空间=Blueprint/P0）
+  无限挂起。归档 `pca2_v1/QUICKLOOK_FINDINGS_V1.md`。**DIAG-50 已收口（2026-10-15）**：
+  从 100 任务分层抽 50（12/18/12/8，seed 20261013）；A 臂 50/50 就绪（复用快看 Base NL 行）；
+  B 臂（Base+算子卡→processes+links JSON）批前烟测五轮全 FAIL——两轮为仪器 bug 已修
+  （TRUNC 1024 截掉提示词尾部指令块；greedy 未对齐 rep-pen 1.15 冻结仪器），其余为内容级
+  失败（think 不收敛/字面循环/卡片循环枚举/schema 回声），全部仪器组合 parsed_ok 0/4。
+  **owner 裁定：接受「裸 Base 零样本 JSON 图契约不可用」为正式诊断结论**（签名归档
+  parsed_ok 0/20；同批任务 A 臂 NL 步骤正常 → **Base 能力格式条件化，SFT 优先级证据指向
+  格式+接地监督**）。产物：`diag50_v1/DIAG50_SMOKE_ROUNDS_V1.md`、
+  `DIAG50_BARM_FAILURE_SIGNATURES_V1.json`、`DIAG50_WORKBOOK_A_V1.md`。该评审路径已演化为
+  **DX 五阶段诊断线（`dx_v1`，经 owner 多轮审查）**：冻结仪器（S0 规划 → S1 冻结 MiniLM
+  Top-10 → S2 逐步选拔含完整算子卡 → S3 组合 → S4 静态验证）+ commit-marker recorder
+  （raw+gen+commit 无覆盖发布；15/15 测试、mdzhang ext4 探针 8/8）。**DX smoke6（6 任务，
+  2026-10-16）完成：45/45 记录 COMMITTED**；头条：第一堵能力墙 = **S2 选拔**（正选 7 /
+  显式弃权 16 / 无判定 10，其中 9 个空 raw 已由 recorder 证据定位为生成侧输出、排除存储
+  损坏）；S0 可解析 6/6；S3 被 S2 饿死（组合能力不可判）；GAP_COMPLETE≠成功与 S4 零缺陷≠
+  好工作流均有活例证（T-086、T-062）。报告：`diag50_v1/dx_v1/dx50_v1/smoke6_v1/`
+  下 `DX50_SMOKE_FINDINGS_SMOKE6_V1.md` + `DX50_SMOKE_REVIEW_SMOKE6_V1.md`。
+  **owner 审查勘误（同日，已解决）**：评审表的 UNCOMMITTED 属实但仅限本地——解析阶段旧工具
+  `save_record` 以文本模式重写已发布 raw（LF→CRLF，36 条）；服务器原件经同 recorder 复审计
+  45/45 COMMITTED、零内容损失（CR 剥离哈希 45/45==标记，隔离存证）；镜像已从服务器原件恢复，
+  解析工具改 parse-only 并加回归测试（16/16），评审表重生成（机械摘要置顶 45 条完整性）。
+  findings 升 V1.1 含勘误节。**全量 DX-50 已完成（owner 授权 2026-10-16，tag dx50_full_v1）：
+  392/392 记录全 COMMITTED**（S0 50/16.9min、S2 293/137.9min、S3 49/39.4min；raw
+  VERIFIED 316/EMPTY 76；三 ledger complete=True；T-050 显式排除）。n=50 头条：
+  **S2 选拔=确证的第一堵墙**——正选 48/293=16.4%、可判定步弃权 74.2%、无判定 37.9%
+  （其中 72%=2048 截断）；S3 CAP_TRUNC 83.7%；越选 1 例。报告：
+  `dx50_v1/dx50_full_v1/DX50_BATCH50_FINDINGS_V1.md` + `DX50_BATCH_REVIEW_DX50_FULL_V1.md`。
+  **下一步：owner 对 S2 弃权做语义抽查 + 裁定空 raw 机理立项与定向优化预注册**；
+  D1 契约 ADR 签核仍待 owner。活跃计划见 task_plan.md。
 
 ## ⭐ 当前主线：Planning Capability Audit（PCA）— 协议 v1 已冻结，Phase 1 进行中（2026-10-13）
 
@@ -165,6 +226,12 @@
   监控/负 τ 独立调查）；INDEX L1/L2/L3（L2/L3 待表示层，金标先行构造）；
   GRPO 契约骨架另提；v0.6 补证清单。**执行：①新评估集采购+盲评 → ②S0-S3
   比较 → ③INDEX 金标 → ④准入评审+GRPO 契约。全程无参数更新无规则修改；
+  Phase 2/3 冻结。 **Owner 十五~十六轮 + trainer v2 实现**：(1) λ 终选=S0 默认；(2) v0.6 部分实现
+  （TERRAIN unscored，25159 暂缓）；(3) GRPO 冒烟契约草案提交审查。**trainer v2**
+  （commit 34058b6a）：P0-P4 全修——真实路径骨架、数据隔离断言、优势公式精确、
+  k=8 强制、KL 参照=P0 fmt 初始策略（adapter swap）、abstain 不入统计。故障注入
+  8/8 + mock 干跑 24/24 全过。**Owner 十六轮契约终审：v2 FINAL CANDIDATE 产出**
+  （commit c4ddbcbb）——§3.5 四点红线、§3.7 预注册规则表、三确认落地。
   Phase 2/3 冻结。 **评估集生成+评分+盲评包完成（commit 578c8439）**：192 从未训练候选
   （115.76 tok/s 同配置）；评分传参 bug 修正（预测文本误作任务解析→154 假弃权；
   修正后 abstain 32/incomplete 100/coarse 16/complete 17/unparseable 27）；规则

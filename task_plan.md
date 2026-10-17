@@ -1,5 +1,149 @@
 # 任务计划：QGIS 工作流推荐系统 — 评测体系 + 矢量修复
 
+## ⭐ 当前最高主线（2026-10-15，owner 终裁）：QGIS 专项训练路线冻结，先盘点后实施
+
+**owner 终裁（2026-10-15）**：QGIS 专项训练技术路线正式冻结为项目方向；下一步不是训练，
+而是先做资产盘点并产出《QGIS 专项训练实施规范》。
+
+- **冻结路线（A→E）**：A QGIS 知识底座（完整算子目录→规范化 Schema→来源/版本管理→混合
+  RAG→基础关系与结构校验；完整 GraphRAG 不作前置依赖）→ B 训练数据建设（GEE 规划监督 +
+  QGIS 算子语义 + QGIS 工作流组合 + 高质量 DAG 监督；与 A 并行，基础知识记录验证后即入
+  数据流水线）→ C 两阶段模型训练（Stage 1 一般 GIS 任务理解与规划 / Stage 2 QGIS 算子
+  接地、参数配置与 DAG 生成；保留适量规划监督防遗忘）→ D 完整推理链路（任务规划→证据
+  账本→算子检索→`processes + links` DAG 生成→结构与语义检查→有限修正）→ E 初版交付与
+  定向优化。
+- **三项修正（owner）**：①GEE 规划与 QGIS 专项 = 同一 Qwen3.5-9B 连续训练配方，按数据
+  职责划分混入，不做"先训 GEE Planner 再从头训 QGIS"两次独立训练；②复杂任务完整性靠
+  分工验证——模型提计划/外部账本追踪/结构化校验器查结构/独立语义检查（模型评审+人工
+  抽查），结构合法≠语义正确；③知识整理与训练数据建设并行，防知识工程变长期项目。
+- **五原则**：最终工作流质量唯一主目标（损失/问答准确率/知识库规模只是中间证据）；完整
+  算子库=权威知识源（模型参数非唯一载体）；规划步骤≠算子抽象层（不引入统一算法分类层，
+  最终输出真实 QGIS 算子 DAG）；先完整系统后定向优化（不预铺大量消融）；禁自我评价代替
+  外部验证。
+- **暂缓**：GRPO 具体方案、完整 GraphRAG（待第一版系统真实瓶颈定位后由 owner 另行裁定）。
+  第一版验收 = 6 项清单：算子知识/算子接地/规划完整性/DAG 正确性/问题修复/评估可信度。
+- **评测纪律沿用**：dev-120 选点、test-111 终判不调参；route2_C0 dev opF1 0.5611 为统一
+  协议对比基线；系统级 vs 模型级贡献分开记账（日志与基线从第一版就保留）。
+- **资产盘点四问已完成（2026-10-15，四路并行只读盘点）**：《QGIS 专项训练实施规范》V1 骨架已产出：
+  `docs/plans/QGIS_SPECIALIZED_TRAINING_IMPLEMENTATION_SPEC_V1.md`（六节固定 + 盘点四问总答 +
+  开放决策点汇总）。盘点要点：目录 = 1,291 算子三源一体（catalog/profile v0_4/operators-json），
+  **309 = v2a 1,565 行 gold 已行使子集**（148=test111，38=benchmark v0.1-120）；Capability Profile
+  v0_4 = 1,291 全集 + 参数 schema（1,127 ops 含 2,946 非空默认值）= 知识底座主干；四项校验器现成
+  可复用（benchmark 结构门/io_factor/rl_reward r 电池/r5 覆盖）；头号数据缺口 = 参数监督为零 +
+  接地仅 1,565 行（D5 渲染管线 = 扩量路径）；`stage1_train_v2_2A` 本地缺失且行数出入（35,246 vs
+  23,030）冻结勿引用；blueprint_v2_gold_v3 本地镜像已找回（SHA 核验，旧"无镜像"记录作废）。
+  **待 owner：审规范骨架 + 六个开放决策点（骨架放行/D1 混合比例/词表 30v23/D5 渲染管线三连/
+  验收阈值/训练放行令）**。
+- **PCA-2 · 100 任务规划能力审查立项（2026-10-15，owner 方向指示；预注册草案已出）**：一次性
+  诊断——双臂（A=P0 fmt 唯一有效规划检查点【P1/P2/LT-1/CB 全 FAIL 出局；adapter SHA
+  `82095811…`】vs B=Qwen3.5-9B-Base 零样本）× 100 分层任务（25 基础/35 多步/25 综合/15 时序
+  条件），只出 NL 编号步骤清单（不要求算子/参数/processes+links）；0-2×五维量表 +
+  critical_miss 标志 + 配对盲评（QWκ 预注册）；三类决策出口（A 可用→进落地不重训 / B 有明确
+  短板→择一补 / C 明显不足→重审监督）+ 仪器阻塞独立条款（格式健康率<50% 臂质量不判读）。
+  与 PCA-1 关系：复用其基建，关键差异 = 格式解耦（绕开 B 臂塌缩墙）+ n=100 + 双臂。任务来源 =
+  PCA-1 已审 B/C 组 40 条复用 + 新起草 60 条（GEE 域不入轮；三道防泄漏）。预注册草案：
+  `planning_capability_audit_v1/PCA2_100TASK_PREREGISTRATION_V0_DRAFT.md`。**Owner 六项裁定已落（2026-10-15）**：①③④⑤⑧通过、②有条件通过（阈值先冻/脚本先写/
+  截断≠正常完成）；两条执行边界并入——smoke 三结果分报（管线完整性/格式健康/规划可评估性，
+  smoke 不判规划质量）+ 归一化三列分记（原始格式符合/归一成功/归一后质量，格式转换不得误读
+  为模型能力）。**Owner 任务集策略调整（2026-10-15）**：任务集改用 **GEE 真实任务描述**（held-out 池直接
+  检验"现有规划模型能否生成合理步骤清单"）——域内先测；39 条 QGIS 味历史任务与新起草任务
+  PARKED（冻结资产保留，跨域问题留后）；防泄漏继承 PCA A 组隔离方法 + RL 评估集采购的指令
+  匹配排除法（94,445 从未训练池，另排除 PCA-1 A 组 20 条与 RL 评估集 24 条防评审锚定）；
+  分层改按可观测量（final_semantic_length 带）25/35/25/15，分位边界建池时计算并随 manifest
+  冻结；seed 20261013 惯例。预注册升版 V2 CANDIDATE（V1 未冻结即被替代，留档）。**CPU 侧
+  已完成件**：格式健康自检 6/6 + 归一化电池 15/15 全绿（SHA 钉档）；族→NL 映射表 23 短语待
+  owner 逐词审。GPU smoke 待全冻结后单独授权。本轮不扩展额外模型对比或训练实验。
+  **任务集已构建（2026-10-15，seed 20261013）**：池 94,405 从未训练候选（排除：train 指令匹配
+  33,371=与 RL 采购口径精确互证 / 脚本号 / RL 评估集 24 / PCA-1 A 组 20 行）→ 25/35/25/15 全带
+  满额 + smoke 8 条严格不相交；A 组零重叠已独立核验（20/20 行号在案、script 零交集；16/20 专
+  用计数差 = 另 4 行被更早的脚本号规则排除，双保险成立）。产物：`pca2_v1/pca2_taskset_100.jsonl`
+  （SHA `c0274cc8…`）+ smoke（`afc16cc6…`）+ manifest（`16f721a3…`）+ **owner 审核表
+  `PCA2_TASK_REVIEW_WORKSHEET_V1.md`**。**Owner 快看指令（2026-10-15，覆盖既有审核序列）**：跳过逐条审核/映射表审核/冻结清单仪式，
+  直接生成看"当前模型究竟能做到什么程度"。正式 PCA-2 预注册 V2 转入 PARKED（若日后要正式
+  盲评版须另抽任务——owner 将看到本次输出，同批任务不可再作盲评）。本次运行定性 = **快速
+  能力快照（非正式审查）**：复用 PCA-1 冻结生成仪器（NL 步骤清单 prompt / greedy / 768 /
+  bs=8 / 截断 1024），任务 = pca2_taskset_100 + smoke 8（held-out 纪律保留）；**臂设计依
+  PCA-1 健康证据修正**——stage1 在 NL prompt 下 59/59 全塌（含 GEE 域 A 组）为已知事实，
+  故主臂 = **Bprime 形态（P0 原生部署：任务+训练分隔符→Blueprint）** 5/6 健康，对照臂 =
+  A_base（NL prompt，100% 健康）；P0 输出经已建归一化器渲染可读。逐条格式健康即时分报。
+  **快看结果（2026-10-15，216/216 完成，24.4min，服务器 /home/qy/pca2_gen/ + 本地镜像）**：
+  **两臂零塌缩**——P0 原生形态不塌实证确认（NL 问法才塌，59/59 为 PCA-1 旧证）。P0 渲染率
+  **63/108=58.3%，分带 L1 74% / L2 73% / L3 37% / L4 35%——瓶颈=长任务 768 预算截断**（45 条
+  JSON 全为真截断，0 条尾部垃圾；本次为裸 greedy 仪器，无 R1 护栏）。Base 108/108 顶格写满
+  不停（42 条含 END_OF PLAN 仍继续写）。产物：`pca2_v1/QUICKLOOK_RESULTS_V1.json`
+  （SHA `228fa6e2…`）+ `QUICKLOOK_WORKBOOK_V1.md`（108 条任务×P0 渲染×Base 摘录对照）。
+  正式 PCA-2 维持 PARKED**。**B 档判分收口（2026-10-15）：31/108 = L1 全查 22 + L2/L3/L4
+  定向抽查各 3**：P0 CM **31/31=Y、跨带一致**（L1 22/22、L2 3/3、L3 3/3、L4 3/3；L2-L4 均分
+  3.0-3.67/10，无复杂度梯度改善）；五维均值 1.32/**0.52**/1.00/0.52/1.00；Base CM 3/31=Y
+  （1 参数错误+1 真实缺口+1 截断暂定；Base 撞顶截断为仪器病，多处 caveat）。**关键细分样本
+  T-098**：P0 参考链族覆盖高达 14/21 仍 CM=Y——族覆盖广度≠任务特定语义（插值/SG 滤波/邻域
+  回归无表达槽位）。**结论定性（owner 手判+顾问复核）**：①Base 优势=预训练先验（从未进训练
+  目标，非被训掉）；②P0=23 族压缩表示的信息瓶颈（任务文本标准下金标链同样不达标）+任务条
+  件化弱+模板化终止（中位 127 token）；③SFT 忠实复现了贫瘠目标——**换训练方法无用，须换目
+  标空间**=unified training design（from-Base+完整 QGIS workflow 输出+keep-all 长尾）已冻结
+  方向，本判分为其最强经验证据。机械四指标（族召回/长度比/终止率/可用率）已全在
+  `QUICKLOOK_JUDGMENTS_V1.json`。待 owner：判定快看线收口（建议收口，剩 77 条无决策增量）
+  → 产出 QUICKLOOK_FINDINGS_V1 归档 → 转 unified training 实施。**故障定位已完成
+  （2026-10-15，`PCA2_FAULT_LOCALIZATION_V1.md`，5 代表任务全原始记录并排）**：P0 原始
+  Blueprint 仅含 **2-5 个 stage / 88-137 token**（Base 同任务 2,600-3,200 字符）——**转换环节
+  被排除**（机械渲染构造上不可能丢信息+电池 15/15），**格式崩溃被排除**（rep15 108/108 稳定
+  EOS）。判定=顾问决策表**分支 2 + 表示层结构上限**：①schema 天花板——Blueprint v2 只能表达
+  {seq,family,repeat}，完美 Blueprint 也无法表达投影统一/参数/IO 绑定（T-010 覆盖 4/4 仍
+  CM=Y）；②模型层条件化弱——自己词表内也只出 2-5 通用族（T-009 已掌握族仍漏）。**推论**：
+  Blueprint-v2 不应作为新训练输出目标（至多辅助监督）；P0 不再作 Stage-1 默认检查点（from-
+  Base 已双反驳在案）；资源方向 = unified training（from-Base + 完整 QGIS workflow 输出空间
+  + 多源数据），与冻结路线一致，**待 owner 终裁确认**。**owner 侧顾问四决定转入
+  （2026-10-15）**：①P0 fmt 停止作为 Stage-1 默认候选（不追加训练追赶）；②Base 为 Stage-1
+  规划基线（围绕其实际缺口设计增强；Base≠已验证规划器——参数错误/逻辑缺口/不停笔如实记
+  录）；③Blueprint 暂停作为核心规划监督目标（数据保留，候选目标=任务→有序步骤含输入/输出/
+  依赖/约束）；④资源优先 QGIS 专项落地（算子语义/选择/参数/IO 绑定/processes+links DAG）。
+  **与冻结路线的关系**：③④正是 unified training design 的核心（from-Base+输出空间=最终任务
+  格式+规划与落地统一训练）——顾问的"NL 步骤清单候选目标"可作为该设计 D1-D4 的辅助监督候
+  选；**连带后果登记**：RL 线输出空间钉死 Blueprint v2/P0（预注册条款），P0 除名后 RL 冒烟
+  无限挂起（本就等位，无需新动作）。**同接口探针已发**（pca2_nlprobe_v1：8 smoke 任务、
+  P0+NL 提示词+rep-pen 1.15、同解码）——关闭"接口分布偏移"混杂的最后一环；PCA-1 旧证
+  （NL 下 59/59 塌缩）系裸 greedy 所测，rep-pen 下未测。**同接口探针结果（2026-10-15，
+  归因闭环）**：P0+NL 提示+rep-pen 1.15 → **8/8 全部 2-token 立即 EOS 塌缩**（rep-pen 对该
+  失败模式无效——它罚重复 token，而 immediate-EOS 是单步分布坍缩，无可罚之物）。**归因
+  终版**：①接口脆性=实锤（SFT 后模型丧失训练格式外的响应能力，连同接口对照要求一并关闭
+  "只修接口/转换"选项）；②内容贫瘠=实锤（原生格式内也只有 2-5 通用族）；两者同根=Blueprint
+  v2 监督目标既语义贫瘠又被训练压死通用接口。顾问四决定证据链齐备。
+  **⭐ owner 终裁（2026-10-15，快看线就此关闭）**：①P0 fmt 除名 Stage-1 默认候选（不修补不
+  追赶）；②新训练 from-Base；③Blueprint v2 降级（数据保留作辅助监督，输出目标除名，是否用
+  其标签由新配方决定）；④unified training，输出空间=完整 QGIS workflow（processes+links，
+  含算子/参数/IO/DAG）。**三原则**：先冻结输出契约再扩数据；新训练与 Base 同测试集/提示/
+  评测器对比（格式正确率≠工作流质量）；统一≠无差别混合（GEE 仅作通用规划辅助监督、禁跨
+  平台标签错配；监督源可异、生成接口与验收目标唯一）。**执行序：D1 冻结 Unified Workflow
+  Contract → D2 渲染管线裁定 → D3 训练配方 → D4 评估门槛 → CPU 审查后 GPU（当前不批准任
+  何配方/训练启动）**。归档：`pca2_v1/QUICKLOOK_FINDINGS_V1.md`；progress.md 里程碑已记。
+  **下一动作 = D1 候选草案已写**：`planner_design/UNIFIED_WORKFLOW_CONTRACT_V0_DRAFT.md`（owner 建议完整支持 DAG 分支/多解表达但首轮不要求覆盖全部模式；先冻 schema 再分阶段扩数据）。**D1 v0 候选草案已写**：`planner_design/UNIFIED_WORKFLOW_CONTRACT_V0_DRAFT.md`；Owner Decision Record 候选 `D1_OWNER_DECISION_RECORD_V1_DRAFT.md` + validator 分级表 `D1_VALIDATOR_CLASSIFICATION_TABLE_V1_DRAFT.md`。顾问技术建议候选：ADR1/3/5/7 ACCEPT、ADR2/4/6 MODIFY；**仍待 owner 签核，未生效、D1 未冻结**。参数状态记录 process/parameter 键+证据并要求 L1 参数 loss mask；输出拆静态推导/条件推导/运行时产物；分支 schema gate 与 training/runtime gate 分开。拒答 authority 已核：v0.2.1 refusal 继承 v0.1，12 条，reason_code=`unsupported_capability`/`underspecified_goal` 各6；预测字段 `sample_id/decision/reason_code`，无 `missing_info` 字段。
+- **Owner 新执行顺序（2026-10-15，待按下述方案落地）**：①先裁定并冻结**最小 D1 核心契约**（最终 processes+links、unknown/default、验证边界；扩展能力单列，不等所有高级模式实现）→ ②建立 50-task 通用 GIS 推理诊断（Base、无外部 QGIS 算子资料）→ ③同任务、同 Base、提供最小可追溯 QGIS operator cards，直接产出完整 DAG，配对比较推理/grounding/DAG 瓶颈 → ④根据诊断再定 D2 数据与 D3 from-Base SFT、D4 评估门槛 → CPU 验证后独立申请 GPU。**明确暂缓**：完整 RAG/GraphRAG、SFT、GRPO、训练启动。
+- **50 任务配对诊断定案（2026-10-15，owner 终裁；覆盖此前"泄露阻碍"顾虑）**：从快看 100 任务按原四带比例抽 50（12/18/12/8，固定种子，存 ID）；**A 臂=复用既有 A_base**（Base+NL 步骤提示，greedy/768，108/108 已有）；**B 臂=Base+检索 QGIS 算子卡→直接生成最小 `processes+links` JSON**（同解码；新提示词需定义并随 pack 存证；cards 从 capability profile 检索、带 provenance）。100 生成中 A 半边已有，只补 B 50 条。评审四项=步骤完整性/算子正确性/依赖正确性/整体可用性；产出→决定 SFT 数据设计优先级（推理监督 vs 算子知识 vs DAG 监督）。**定位**：能力诊断，非正式 benchmark，不证明模型达标；test-111 纪律不受影响。
+- **DIAG-50 执行状态（2026-10-15，B 臂烟测五轮全 FAIL → 已停，待 owner 裁定）**：抽样+检索+pack 完成（`diag50_v1/DIAG50_SAMPLE_50.json`、`DIAG50_RETRIEVAL_V1.json`、`DIAG50_PACK_B_V1.json`，pack SHA `f6533624…`；seed 20261013；卡片=PCA 冻结格式 top-15，MiniLM 本地）。**A 臂 50/50 就绪**（复用 quicklook A_base，rep-pen 1.15，本地齐全）。**B 臂批前烟测（owner 烟测纪律）五轮记录 `diag50_v1/DIAG50_SMOKE_ROUNDS_V1.md`**：v1 仪器 bug=TRUNC 1024 截掉尾部 [Instruction]（提示词实测 1,121–1,439 token）→卡片碎片复读；v2 截断修复→think 不闭合+卡片循环；v3 预算 2560→think 字面循环不止；v4 rep-pen 1.15（对齐 A 臂冻结仪器；v1-v3 greedy 是仪器错误）→循环消失但开放式商议不收敛；v5 prefill `[Output]{`→schema 回声多候选 JSON/T-086 算子循环/T-098 转回 think。**结论：裸 Base+算子卡+JSON 图契约零样本在全部仪器组合下不可解析；A 臂同任务 NL 步骤 50/50 正常 → Base 能力格式条件化（NL 可用 / JSON 图契约不可用）**。v1 仪器下预跑 32 行（服务器 `diag50_b_out/`）superseded 保留不删除、禁入分析。烟测产物五轮全镜像 `diag50_v1/diag50_smoke_out_local/`。**owner 裁定已落（2026-10-15）：选项①**——B 臂零样本 JSON 契约不可用=正式诊断结论；不烧 GPU、3-shot 不立项。**收敛产物已出**：`DIAG50_BARM_FAILURE_SIGNATURES_V1.json`（20 行签名：literal_loop 7/think_unclosed 4/cap_trunc_open_ended 3/card_cycle 3/schema_echo 3/**parsed_ok 0**）+ `DIAG50_WORKBOOK_A_V1.md`（A 臂 50 任务评审工作簿；机械项 CAP_TRUNC 30/END_OF_PLAN 20，gen_tokens 中位 768）。**下一步 = owner 按 A 工作簿评审三项（步骤完整性/依赖正确性/整体可用性；算子正确性无对象）→ 按决策表定 SFT 数据设计优先级（当前证据已指向：格式+接地监督）**。结构统计+配对评审工作簿脚本保留备查（`diag50_analyze_v1.py`）。
+- **DX 五阶段诊断线（dx_v1）smoke6 完成（2026-10-16，待 owner 审后放行全量 50）**：A 工作簿评审路径经 owner 多轮审查演化为 dx_v1（S0 规划→S1 冻结检索→S2 选拔→S3 组合→S4 静态；commit-marker recorder 15/15 测试 + mdzhang ext4 探针 8/8）。smoke6（6 任务全链）45/45 记录 COMMITTED；结论：**S2 选拔=第一堵能力墙**（正选 7/33、弃权 16、无判定 10 含 9 个生成侧空 raw——存储损坏被 recorder 证据排除）；S0 可解析 6/6；S3 被 S2 饿死不可判。报告 `diag50_v1/dx_v1/dx50_v1/smoke6_v1/DX50_SMOKE_FINDINGS_SMOKE6_V1.md`（三问+待裁 3 项）。**阻塞门：owner 审 smoke → 全量 50 放行（S0 pack `6896f542…` 已备；S2/S3 pack 分阶段构建）。**
+- **【待办·未立项】DX Workflow Controller（owner 设计指导 2026-10-17「这个作为待办吧」）**：DX-50 后续演化方向——五阶段外加状态化控制层（workflow_state/plan_version/错误路由表/重试预算），从分阶段诊断走向自纠错工作流构建；五步实施序（保落盘→workflow_state 版本化→确定性错误局部回退→语义错误重选/重规划→四臂对照实验：Baseline[=dx50_full_v1 已就绪]/全链重试/局部重试/诊断式回退；核心指标含「原本正确步骤被破坏比例」）。原文归档：`dx_v1/DX_WORKFLOW_CONTROLLER_DESIGN_V0_OWNER.md`（含与现有 S4 错误标签/落盘机制的对位补注与开放点：稳定步骤 ID、目录版式迁移）。**未获批不进入执行序；前置依赖=S2 弃权语义抽查产出的错误标签。**
+- **50-task 诊断设计硬边界（待 D1 冻结后建池）**：人工审核参考方案允许多解；同一任务双条件；步骤级输出只作诊断评测表示，最终产品目标仍为完整 QGIS DAG。任务必须排除已暴露的 PCA-2 quicklook 108、已见 PCA-1/RL 评审任务及已知训练池；“source-disjoint from known fine-tune data”可以核验，不能声称 Base 预训练语料绝对未见。既有 dev-120/test-111 职责不变：不可把 test-111 用作挑选/调参；新诊断集须单独标注为 diagnostic set，不替代正式 benchmark。**B 档人工判分进行中（2026-10-15，owner+顾问逐条手判）**：已记录 4/108
+  （S-01/02、T-001/002，`QUICKLOOK_JUDGMENTS_V1.json`，`scripts/pca2_record_judgments_v1.py`
+  转录）。初步形态：P0 全部 CM=Y（输出=高频族通用骨架：仅 RASTER_LOAD/ATTRIBUTE_FILTER/
+  SPATIAL_FILTER/TEMPORAL_FILTER/CLASSIFICATION）；Base 覆盖完整但有技术错误（NDVI 波段反、
+  stripmap 存疑）。CM 口径采纳严格版（必需环节缺失 OR 核心计算错误=Y），聚合时缺失/错误
+  分列。**关键机械核对：参考链本身同为 3 步粗粒度且仅含已掌握族**——P0 对参考链同粒度覆盖
+  仅 1/3~2/3（连已掌握族 CLASSIFICATION 都漏）→ 三层归因：①Base 表现=预训练先验（从未进训
+  练目标，非"被训掉"）；②P0/参考链=23 族压缩表示（任务文本细粒度标准连金标都不达标——粒度
+  口径须双镜头）；③同粒度下 P0 仍欠账=任务条件化不足（边际骨架预测），与 B 线 bag-F1
+  0.645/763 漏族一致 → 支持 unified training design 立项理由（from-Base+全 workflow 输出空
+  间+keep-all 长尾）。判分继续中。**截断判别+部署解码验证已完成（2026-10-15）**：`TRUNCATION_DIAG_V1.json` 判明 45 条
+  渲染失败中 **43=不会停（超长编造：seq 冲到中位 50 vs 期望 10，零重复 tuple，结构性贪走）/
+  仅 2=真预算不足**。rep-pen 1.15（部署解码，R1 核心杠杆）重跑 P0 臂 108 条（2.0min）：
+  **108/108 EOS 正常终止、中位 127 token、0 撞顶、渲染率 58.3%→100%（L4 35%→100%）**——
+  快看全部瓶颈定位为解码期终止病，结构可用率在部署形态下打满；**质量（步骤对错）未评，
+  属正式轨范畴**。产物：`QUICKLOOK_REP15_RESULTS_V1.json`（SHA `7ecdd704…`）+
+  `QUICKLOOK_WORKBOOK_REP15_V1.md`（108 全渲染对照）。服务器 /home/qy/pca2_gen/（本地镜像
+  quicklook_out_local/）。
+- **与既有线关系**：RL 线（Stage-3 位）冻结工件与预注册协议保留不删；GRPO 冒烟（契约 v3
+  已签，本就等 GPU 窗口+owner 放行）按本裁定继续挂起，启动优先级让位于专项训练主线；
+  PCA 结论作为新路线外部输入。
+
 ## 当前活跃状态（2026-10-10，双主线）
 
 **GEE 语义规划器主线（Route-2）**：**A2 复审已关闭（2026-10-10）**——146 项分歧全量裁定入表（V1_4），协议 v1.0 冻结，annotation_results_v2（50 单位修订，v2 SHA d3fca732/v1 归档）。复核后指标（单人探索性）：状态 89.64%（复审带，70 项分歧全归因三错误族 F-A/F-B/F-C）、计数 92.16%（达标）。A1 暂时通过 / A3 v1.1 冻结 92.02% / A4 insufficient_sample。三错误族按 owner 裁定不再修复，结论报告即未来修复规格。检测器评估与校准作为数据质量基础设施归档，**回到毕设主线**（GEE 工作流监督→工作流推理；QGIS grounding→processes+links）。未授权：重抽、全库推广、gold、训练。

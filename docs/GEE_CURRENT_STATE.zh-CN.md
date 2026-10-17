@@ -16,7 +16,6 @@
 - **B2-P1 重复组审计 v2（dev 1,852 行，只读）**：rg.repeat 与 stage.repeat 2,645/2,645 完全一致——内部一致性零缺陷；缺陷轴=折叠语义正确性：condition_count_suspect 1,411（过滤条件数≠执行次数，owner A 裁定类）/ unverifiable 986 / task_loop_supported 243 / invariant_fold_suspect 5 / 长周期字面展开无 rg 覆盖 99 行。受影响 885 行（47.8%）。报告 `REP_GROUP_CONSISTENCY_AUDIT_DEV_V2.json`。
 - **重复语义生成链已追平（2026-10-12）**：`blueprint_v2_preflight_v1.py` = 语义链相邻同族 RLE 机械计数 → stage.repeat；rg = count>1 的游程；iteration_hint = 任务文本关键词（整行共享，无逐阶段证据）。**无执行语义、无交错模式检测、无循环不变量处理**。三机制定位：M1 计数无误（k=370 上游链 sid=60463 链尾字面 38×VECTOR_LOAD，RLE 忠实）但不变量归属在上游链生成；M2 条件计数混淆源于链 token 粒度（1,411 分层抽样材料 `COND_COUNT_ADJUDICATION_SAMPLE_V1.json` 已出，28 样本×15 层，含链上下文）；M3 交错循环无 rg 因生成器无该检测（99 行）。repeat 结构：19,379×repeat=1 + 2,645×repeat>1（和 8,625）= 28,004 展开操作。修复 = 上游策略问题在蓝图层的表示政策裁定，非字段修复。
 - **owner 五步指令**：①裁定冻结✓ → ②B2-P1 修复（区分源级真实性与表示完整性）→ ③前后差异报告 → ④可信 dev 子集冻结+重算 BAND_SELECT P/R/F1 → ⑤之后才议训练。未授权：全量重训、P1 格式改造、RL、自动压缩不可核验循环。
-  **裁定更新（2026-10-13，OWNER_RULINGS_20261013_V1.md 裁定 C）**：②与④批准**并行启动**。仅授权相应审计与修复工作——不授权新训练、修改冻结数据、或对未核实金标做正式生成。
 - 边界：收口 ≠ 90 组绑定错误已全证 ≠ 可信 dev 子集已冻结；suspicious 不因结构解释成功自动升级。
 
 ## 先前状态（2026-10-10，Route-2 GEE 语义规划器试点）

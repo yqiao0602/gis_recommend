@@ -1,6 +1,109 @@
 # Current Project State
 
-Last updated: 2026-10-13
+Last updated: 2026-10-15
+
+## (00) QGIS specialized-training route FROZEN as project direction (2026-10-15, owner ruling)
+
+- Owner ratified the QGIS specialized-training route: A operator knowledge
+  base (full ~1,200-operator catalog -> normalized schema -> provenance ->
+  hybrid RAG -> basic relational/structural checks; full GraphRAG NOT a
+  prerequisite) -> B training-data construction (GEE planning supervision +
+  QGIS operator semantics + workflow composition + high-quality DAG
+  supervision; runs in PARALLEL with A) -> C two-stage SFT (Stage 1 general
+  GIS planning / Stage 2 QGIS grounding + params + DAG; keep planning
+  supervision against forgetting) -> D full inference chain (planning ->
+  evidence ledger -> operator retrieval -> processes+links DAG -> structural
+  +semantic checks -> bounded repair) -> E first-version delivery + targeted
+  optimization.
+- Three owner corrections: (1) ONE continuous recipe on Qwen3.5-9B mixing
+  all supervision by role — NOT a separate GEE-planner training followed by
+  a fresh QGIS training; (2) complex-task completeness by division of labor
+  (model proposes / external evidence ledger tracks / structural validator
+  checks / independent semantic review + human sampling; structural legality
+  != semantic correctness); (3) knowledge organization and data construction
+  proceed in parallel so knowledge engineering cannot become a long project.
+- Standing principles: final workflow quality = the only primary goal; the
+  operator catalog = authority knowledge source (model params not the sole
+  carrier); planning steps are NOT an operator abstraction layer (no unified
+  taxonomy; output = real QGIS operators, processes+links); full system
+  first, then targeted optimization; self-evaluation never substitutes for
+  external validation. GRPO and full GraphRAG deferred until first-version
+  bottlenecks are measured. First-version acceptance = 6-item checklist
+  (operator knowledge / grounding / plan completeness / DAG correctness /
+  repair / evaluation credibility).
+- Evaluation discipline unchanged: dev-120 selects, test-111 judges once;
+  route2_C0 dev opF1 0.5611 = baseline under the unified protocol;
+  system-level vs model-level gains recorded separately from day one.
+- Inventory DONE (2026-10-15, four parallel read-only audits): spec V1 skeleton at
+  `docs/plans/QGIS_SPECIALIZED_TRAINING_IMPLEMENTATION_SPEC_V1.md`. Headlines: catalog =
+  1,291 operators, three consistent sources (qgis_catalog / capability profile v0_4 /
+  operators-json); **309 = gold-exercised subset of the 1,565 grounded rows** (148 =
+  test111, 38 = benchmark v0.1-120); profile v0_4 covers ALL 1,291 incl. parameter
+  schema with defaults for 1,127 (registry dumps) = knowledge-base backbone; 4 validators
+  reusable as-is (benchmark structural gate incl. cycle detection / io_factor edge
+  compatibility / rl_reward r-battery / r5 coverage); top data gaps = zero parameter
+  supervision + grounded volume (1,565 rows; D5 render pipeline = expansion path);
+  `stage1_train_v2_2A` missing locally with a row-count discrepancy (ledger 35,246 vs
+  docs 23,030) — frozen as do-not-cite; blueprint_v2_gold_v3 local mirror FOUND
+  (04_DIAG_WORK, SHA-verified — supersedes the old no-mirror record).
+- **Quick-look EXECUTED and CLOSED (same day, owner directive)**: 108 held-out GEE tasks x
+  P0/Base, 216 generations; 31 samples hand-judged (22 L1 + 9 stratified): P0 CM 31/31=Y
+  cross-band, Base 3/31. Fault localization (raw Blueprint = 2-5 generic stages, 88-137
+  tokens; conversion exonerated by construction) + same-interface probe (P0 + NL prompt +
+  rep-pen -> 8/8 immediate-EOS) closed the attribution: interface fragility + content
+  poverty + schema ceiling; "SFT destroyed ability" REFUTED (Base advantage = pretrained
+  prior never in the training target).
+- **FINAL RULING (owner, 2026-10-15)**: (1) P0 fmt removed from Stage-1 candidates — no
+  patching, no catch-up training; (2) new training starts from Qwen3.5-9B-Base; (3)
+  Blueprint v2 demoted — data retained as auxiliary supervision only, NOT the output
+  target; (4) unified training with output space = complete QGIS workflow (processes+links
+  incl. operators/params/IO/DAG). Three binding principles: freeze the workflow contract
+  BEFORE expanding data; new training compared against Base on the SAME test set / prompt
+  / evaluator (format correctness != workflow quality); unified != indiscriminate mixing
+  (GEE = auxiliary general-planning supervision only, cross-platform label mismatch
+  forbidden; supervision sources may differ, generation interface and acceptance target
+  unique). Execution order: D1 Unified Workflow Contract -> D2 render pipeline -> D3
+  recipe -> D4 eval gates -> GPU only after CPU review (no recipe approved, no training
+  launch now). RL line indefinitely suspended (its prereg output space was Blueprint/P0).
+  Archive: `pca2_v1/QUICKLOOK_FINDINGS_V1.md`. **DIAG-50 CLOSED (2026-10-15)**:
+  50 tasks stratified from the 100 (12/18/12/8, seed 20261013); A arm 50/50 ready
+  (reused quicklook Base NL rows); B arm (Base + operator cards -> processes+links
+  JSON) failed pre-batch smoke 5/5 rounds — two instrument bugs fixed along the way
+  (TRUNC 1024 cutting the trailing instruction block; greedy instead of the frozen
+  rep-pen 1.15 instrument), the rest content-level (unclosed think / literal loops /
+  card-cycling enumeration / schema echo), parsed_ok 0/4 under every instrument combo.
+  **Owner ruling: "bare Base zero-shot JSON-graph contract unusable" accepted as the
+  formal diagnostic conclusion** (signature archive parsed_ok 0/20; same tasks pass on
+  A-arm NL steps -> Base capability is format-conditional; SFT-priority evidence points
+  to format + grounding supervision). Artifacts: `diag50_v1/DIAG50_SMOKE_ROUNDS_V1.md`,
+  `DIAG50_BARM_FAILURE_SIGNATURES_V1.json`, `DIAG50_WORKBOOK_A_V1.md`. That review path
+  evolved into the **DX five-stage diagnostic line (`dx_v1`, owner-reviewed)**: frozen
+  instrument (S0 plan → S1 frozen MiniLM top-10 → S2 per-step selection with full
+  operator cards → S3 composition → S4 static validation) + commit-marker recorder
+  (raw+gen+commit, no-replace publish; 15/15 tests, 8/8 ext4 probe on mdzhang).
+  **DX smoke6 (6 tasks, 2026-10-16) COMPLETE: 45/45 records COMMITTED**; headline:
+  first capability wall = **S2 selection** (7 positive / 16 explicit rejections /
+  10 no-decision incl. 9 generation-side empty raws — storage corruption excluded by
+  recorder evidence); S0 parses 6/6; S3 starved by S2 (composition unjudgeable);
+  GAP_COMPLETE≠success and S4-zero≠good demonstrated (T-086, T-062). Reports:
+  `diag50_v1/dx_v1/dx50_v1/smoke6_v1/DX50_SMOKE_FINDINGS_SMOKE6_V1.md` +
+  `DX50_SMOKE_REVIEW_SMOKE6_V1.md`. **Owner-audit erratum (same day, resolved)**: the
+  sheet's UNCOMMITTED flags were real but local-only — the old-pipeline `save_record`
+  rewrote published raws LF→CRLF during parsing (36 records); server originals 45/45
+  COMMITTED (re-audited with the same recorder), zero content loss (CR-strip sha ==
+  marker for all 45, quarantined + manifested), mirror restored from server originals,
+  parse tooling fixed parse-only with a regression test (16/16), sheet regenerated
+  (45-record integrity now heads the mechanical summary). Findings doc is V1.1 with
+  the erratum section. **FULL DX-50 BATCH COMPLETE (owner-authorized 2026-10-16, tag dx50_full_v1):
+  392/392 records COMMITTED** (S0 50/16.9min, S2 293/137.9min, S3 49/39.4min; raw
+  VERIFIED 316 / EMPTY 76; 3 ledgers complete=True; T-050 explicitly excluded).
+  Headline at n=50: S2 selection is the confirmed first wall — positive selection
+  48/293=16.4%, rejection 74.2% of parseable, no-decision 37.9% (72% of those =
+  2048 cap truncation); S3 termination control collapses (83.7% CAP_TRUNC); 1 out-of-candidate
+  selection. Reports: `dx50_v1/dx50_full_v1/DX50_BATCH50_FINDINGS_V1.md` +
+  `DX50_BATCH_REVIEW_DX50_FULL_V1.md`. **NEXT: owner semantic sampling of S2
+  rejections + rulings on empty-raw mechanism probe and optimization prereg**;
+  D1 contract ADR sign-off still pending. Live plan: task_plan.md.
 
 ## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)
 
@@ -187,7 +290,60 @@ Last updated: 2026-10-13
   unresolved_wrapper; the 53 V2 instances keep original missing records as audit
   history but are marked unresolved_wrapper in new stats (preventing
   "representational limitation misjudged as model incapacity"); (3) 358 = rule
-  output scale, NOT independently human-confirmed errors;   frozen. **Eval-set generation + scoring + blind packet DONE
+  output scale, NOT independently human-confirmed errors;   frozen. **Owner rounds 15-16: three rulings landed + trainer v2 implemented**:
+  (1) lambda final = S0 default (combinations need replicable increment to win);
+  (2) v0.6 PARTIALLY IMPLEMENTED: TERRAIN unscored/representation_boundary
+  (parser SHA `1cfd48c9...`), 25159 wrapper deferred with evidence checklist;
+  (3) GRPO smoke contract DRAFT submitted for review. **Trainer v2
+  (commit 34058b6a)**: P0-P4 blockers all fixed — real training path
+  scaffolding, data isolation ENFORCED with assertions, advantage formula
+  exact, k=8 enforced, KL reference = INITIAL P0 fmt policy (adapter swap,
+  not bare base), abstain candidates excluded from stats (advantage 0, no
+  silent 0.0). Fault injection 8/8, mock dry-run 24/24 updates full pass.
+  **Owner round-16 contract final review: v2 FINAL CANDIDATE produced
+  (GRPO_SMOKE_CONTRACT_V2_FINAL_CANDIDATE.md, commit c4ddbcbb) — §3.5
+  four-point red-line text, §3.7 pre-registered rules table (PRIMARY =
+  independent-set slot coverage v0.6 caliber; CO-GATE = ordered-F1 <=3pp
+  drop; preliminary >=5pp; parse/invalid 5pp safety; discrimination demoted
+  to diagnostic; dual reporting mandatory). Three final-approval
+  preconditions landed.   frozen. **Owner rounds 19-20: trainer v2 accepted as DEPLOYMENT
+  CANDIDATE** (mock pass != real GPU verification — three evidence tiers
+  distinguished); E1 acceptance thresholds CONFIRMED (dC>=+5pp, dF>=-3pp,
+  parse<=5pp drop, invalid<=5pp rise, no gaming — ALL simultaneous, no
+  trade-offs); result framing = controlled experiment meets pre-registered
+  criteria, NOT general GRPO effectiveness. **Five-step window execution
+  order confirmed**: (1) GPU pre-check >=12GB + zero external-process
+  impact; (2) server SHA re-verification (code ce573440, data, model);
+  (3) minimal launch check (model load, single k=8 rollout, finite
+  loss/grad, KL computation, checkpoint save); (4) <=48 updates per
+  contract (hard stop = terminate, no ad-hoc reward/threshold changes);
+  (5) E1 one-shot re-eval (no checkpoint cherry-picking). **ALL LOCAL WORK
+  COMPLETE — awaiting GPU window. Phase 2/3 frozen. **GRPO smoke contract v3 FINAL SIGNED (commit 0febaf85)** — launch
+  authorization pending GPU window (>=12GB margin) + external-process safety
+  check; VRAM watch re-armed. Remaining pre-launch work: the GRPO trainer
+  script per contract sections 0-3 (P0 fmt + base dual-SHA load, k=8
+  rollouts, S0 reward = r5 v0.6 coverage, group-relative advantage, LoRA
+  update, KL control, every-8-update checkpoints, six abort conditions, 48
+  task-group update unit) — to be implemented with syntax + dry-run
+  assertions before window deployment. Phase 2/3 frozen. **Owner round-17 final review + GRPO_SMOKE_CONTRACT_V3_FINAL
+  landed**: the three pre-sign conditions are now FROZEN as computable specs
+  (`eval_set_frozen_spec_v1.json`) — Cond-1 coverage formula pinned
+  (candidate C/(C+M) over v0.6 required slots excluding TERRAIN/
+  not_required/uncertain; covered includes covered_coarse; task = mean of 8;
+  eval = mean of tasks; 7 no-scorable-slot tasks excluded by frozen ID);
+  Cond-2 dC/dF in percentage points with FIVE simultaneous acceptance
+  conditions (dC>=+5pp, dF>=-3pp, parse<=5pp drop, invalid<=5pp rise, no
+  gaming red line; no trade-offs; task-level distribution mandatory);
+  Cond-3 gaming monitors frozen pre-unblind with E0 baselines (empty
+  14.06% -> >5pp FAIL; adjacent-duplicate 0% -> >5pp review / >10pp FAIL;
+  unlinked-stage 45.21% -> >10pp review; mean stages 3.1 -> >25% review).
+  **E0 frozen: C_E0 = 0.4975, F_E0 = 0.3577** (gold chains 24/24 from b1
+  semantic_chain_rle — degradation co-gate reference, NOT a
+  multisolution-improvement reference). Contract file:
+  `GRPO_SMOKE_CONTRACT_V3_FINAL.md` (v2 content unchanged + frozen §8
+  appendix). **Awaiting owner final sign-off; after sign-off still requires
+  GPU window + >=12GB VRAM pre-check + launch-list SHA re-verification.
+  Phase 2/3 frozen; RAFT/DPO/GRPO unrun. **Eval-set generation + scoring + blind packet DONE
   (commit 578c8439)**: 192 never-trained candidates (115.76 tok/s, same
   decode config); scoring-bug fixed (prediction text was mistakenly parsed
   as task text -> 154 false abstains; corrected: 32 abstain / 100
