@@ -2142,3 +2142,10 @@
 - **双层表示规范 V1**（`B_TRACK_TWO_LAYER_REPRESENTATION_SPEC_V1.md`）：L0 原始实现（永不改写）/L1 规划语义（目标/必要步骤/依赖/分支/停止条件/多参考）/L2 条件与实现映射（API/参数/数据版本/阈值+适用条件+证据）/L3 保真度（独立轴、失实样本隔离）/L4 监督（规划+条件监督，保真度只作闸门与掩码）；四个案例映射（DIFF-19 阈值、DIFF-4 多解、DIFF-6 UI 挂件、SAME-15 同码双描述）；明确非目标=不是更细标签序列、不是扩词表、不是已验方案。
 - **可信参考集 V0 选样**（`B_TRACK_TRUSTED_REFERENCE_SET_V0_SCOPING.md` + `B_TRACK_TRUSTED_REFERENCE_CANDIDATES_V0.json`）：24 组候选覆盖 10 类差异（失实/多解/阈值/方法参数/数据集版本/长链 62 与 123 步/聚合语义/UI 脚手架/重复块/抽取缺口/同码对照）；**仅选样冻结，语义字段待阶段二逐条证据化策展**，禁止模型想象生成。
 - **变更账本** `GOVERNANCE_CHANGE_LOG_V1.md` 初始化。下一步=阶段二策展（24 组 L1/L2 填写+交叉审查）；训练仍须 owner 放行。
+
+## 2026-10-18（A1 逐对裁决完成）：52/52 裁决落库，四指标与核心判据回应交付（待 owner 抽检）
+
+- **裁决方式**：按 owner 冻结规则（A1_OWNER_ADJUDICATION_V1.md）逐卷审证——任务全文/步骤定义/Top-10/双版本卡面/双臂完整决策；NODEC 不入四指标；OOC=错误；卡面证据不足不用外部知识升级。产出 `A1_FULL_EVIDENCE_PACKET_V1/A1_ADJUDICATION_V1.md`（逐对表+四指标+配对转移+机制分布+核心判据回应）+ `A1_ADJUDICATION_SUMMARY_V1.json`；LEDGER_V1.json 双侧 decision_quality/mechanism/final_note 全部落库（status=agent_adjudication_v1_pending_owner_spotcheck）。脚本 `scripts/dx_a1_adjudicate_v1.py`（含 52 对裁决表）+ `dx_a1_dossier_digest.py`（卷宗摘要）。
+- **四指标（形成判定步分母；NODEC 单列）**：对照 v0_4——正确 4/29=13.8%、错误 3/29=10.3%、合理弃权 22/29=75.9%、误弃权 0、不可判 2；实验 v0_5——**正确 11/26=42.3%**、错误 3/26=11.5%、合理弃权 11/26=42.3%、**误弃权 1（3.9%）**、不可判 4；无判定 21→22。
+- **核心判据回应**：①直接命中"合理弃权→正确选择"=**T-032#S2**（opticalcalibration 卡新增 TOA/TOC+手动参数通路）；②补卡解锁正确选择共 5 对（另 4 对由 NODEC→正确：T-001#S3 concatenateimages、T-025#S5 contrastenhancement minmax、T-003#S2、T-057#S4 compareimages mse）；③另有 4 对正确选择来自未改卡算子（上下文诱发，须单列：T-033#S1/T-025#S4/T-068#S6/T-070#S1）；④**错误选择 3→3 但完全置换**（对照 3 错全消失：T-001#S6 打包误选→纠正为合理弃权、T-026#S4/T-098#S6→实验无判定；实验 3 错全为新出现：T-009#S3 补卡诱发、T-090#S4 笔误越选、T-056#S3 部分匹配）；**无正确选择被破坏为错误选择**，但 3 个对照正确步因实验臂截断变无判定（T-046#S4/T-089#S4/T-092#S2）；⑤新增 1 例误弃权 T-068#S4（grass7:r.statistics 卡面已足够，上下文诱发）。**结论：预注册解释表第一行成立（正确 4→11、错误 3→3），但增益主体是"无判定→正确"，合理弃权→正确仅 1 对直接成立——不得表述为"补卡普遍把合理弃权转为正确选择"。**
+- T-009#S4（RF 训练步）在 v0_5 仍弃权且已被本裁决确认属"卡面未展开 choice 值"（不可判），P2 enum 展开为唯一解。

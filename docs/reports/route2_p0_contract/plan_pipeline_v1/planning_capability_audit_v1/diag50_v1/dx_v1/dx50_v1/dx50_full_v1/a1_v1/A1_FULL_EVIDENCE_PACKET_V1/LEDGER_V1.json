@@ -37,16 +37,18 @@
     ]
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "wrong_selection"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "补卡诱发错误选择（间接/上下文）",
+    "final_note": "multibandvariation 卡输出仅 MEAN/STDDEV/DIFF（纯统计），步骤要求 NDVI/NDSI 波段运算；所选算子卡未变——其余 OTB 候选卡面变化诱发错误选择",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -82,16 +84,18 @@
     ]
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（待 P2 enum 证据）",
+    "final_note": "卡面证明分类器训练+模型文件输出+矢量/特征/类别字段；classifier(Choice) 选项未展开（CART 不可见）——owner 的'足以证明算法选择'门槛未达成，不能凭外部知识升级为正确",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -118,16 +122,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "数据获取步骤（GPM IMERG）无算子；实验臂空输出",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -153,16 +159,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "RF 训练能力候选全无记载；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -191,16 +199,18 @@
     ]
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（待 P2/官方文档）",
+    "final_note": "所选 supervisedclassificationforrasters 卡载 FILE_LOAD(file) 无语义、METHOD 枚举未展开——能否加载预训练 RF 不可由卡面证实",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -230,16 +240,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "RF-from-vector 不可见；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -275,16 +287,18 @@
     ]
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "indeterminate",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "选择保持（算子替换、实验臂证据更充分）",
+    "final_note": "对照 supervisedclassificationforrasters 的'加载预训练模型'语义卡面未载（不可判）；实验 otb:imageclassifier 卡明载 'classification according to a model file' + probamap/confmap 输出，与步骤'概率或离散分类输出'完全匹配",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -311,16 +325,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（能力边界经卡面明确化）",
+    "final_note": "候选无阈值重分类能力（regularization=众数平滑）；实验弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -348,16 +364,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "冷气候例外覆盖需双输出掩膜；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -385,16 +403,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "wrong_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动（大小写笔误→越选）",
+    "final_note": "实验臂输出 'otc:ImageClassifier'（应为 otb:imageclassifier），OOC 按预注册判错",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -421,16 +441,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（能力边界经卡面明确化）",
+    "final_note": "步骤同时要求平滑+混淆矩阵/精度报告；候选仅覆盖平滑——弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -463,16 +485,18 @@
     ]
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "补卡解锁正确选择",
+    "final_note": "concatenateimages v0_5 卡：'list of images of the same size into a single multi-channel image'——正是逐像元跨时相堆叠；所选算子卡面变化",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -501,16 +525,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "候选无 SAR 斑点滤波；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -536,16 +562,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他",
+    "final_note": "候选无跨影像中值合成（镶嵌≠中值）；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -574,16 +602,18 @@
     ]
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "wrong_selection",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（对照错误被纠正为合理弃权）",
+    "final_note": "对照选 mosaicking（属上一步功能，非资产打包/导出）→ 错误；实验合理弃权（候选无栅格资产导出）",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -613,16 +643,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "补卡解锁正确选择",
+    "final_note": "contrastenhancement v0_5 卡含 minmax.manual.min/max——与步骤 -25/5 dB 线性拉伸精确匹配；所选算子卡面变化",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -649,16 +681,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "correct_selection",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动（正确→无判定）",
+    "final_note": "对照 joinattributestable 一对多展开与步骤匹配；实验臂 think 未闭合截断",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -691,16 +725,18 @@
     ]
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "correct_selection",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "选择保持（实验臂增加冗余算子）",
+    "final_note": "mergevectorlayers 与 concatenatevectordata 均满足展平合并；双选冗余但皆正确",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -728,16 +764,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "wrong_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "补卡诱发错误选择（部分匹配/上下文）",
+    "final_note": "步骤含 Band Stacking + Mosaic 两半；mosaicking 卡仅空间镶嵌（FILE_LIST/TARGET_OUT_GRID），无波段堆叠证据——所选算子未变，属上下文诱发",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -763,16 +801,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "无可做 tile 划分的候选；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -798,16 +838,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "交互式查看属架构层；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -834,16 +876,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "无昼夜均值合成算子；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -869,16 +913,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他",
+    "final_note": "可视化制图超出处理算子；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -905,16 +951,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "无堆叠+逐像元计数的复合能力；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -943,16 +991,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "无掩膜+DEM 条件精化；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -983,16 +1033,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "无相干性计算；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1021,16 +1073,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "补卡解锁正确选择",
+    "final_note": "opticalcalibration v0_5 卡：TOA/TOC 定标+手动参数通路（Landsat 不在内置传感器列表但有手动通路）；所选算子卡面变化",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1056,16 +1110,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他",
+    "final_note": "云量百分比不可得（clouddetection 仅二值掩膜）；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1092,16 +1148,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "indeterminate",
+     "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "self_contradictory"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动（自相矛盾输出）",
+    "final_note": "实验臂同时输出 SELECT r.mask.vect 与 NO OPERATOR（语义自相矛盾）；对照 r.mask.vect 卡无参数/输出记载（不可判）",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1126,16 +1184,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他",
+    "final_note": "候选无跨时相均值；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1160,16 +1220,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "无多掩膜融合；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1196,16 +1258,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（待输入结构）",
+    "final_note": "r.blend.rgb 为三栅格混合成 RGB；若输入为多波段合成体则需波段提取而非混合——取决于步骤 5 输出结构",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1232,16 +1296,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（上下文诱发正确选择）",
+    "final_note": "statisticsforrasters 卡：GRIDS 多层输入 + MEAN 输出——跨栅格均值成立（所选算子卡未变）",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1268,16 +1334,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "wrong_selection",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动（对照错误→无判定）",
+    "final_note": "对照 native:rasterize 卡描述=渲染地图画布，并非多栅格合成；判错",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1306,16 +1374,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "补卡解锁正确选择（owner 核心判据命中）",
+    "final_note": "步骤要求定标+大气校正；opticalcalibration 卡载 TOA/TOC（TOC 覆盖大气校正通路）；所选算子卡面变化——本对=合理弃权→正确选择",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1345,16 +1415,18 @@
     ]
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（上下文诱发正确选择）",
+    "final_note": "rearrange_bands 卡含 BANDS 波段索引参数——波段提取成立（所选算子卡未变）",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1379,16 +1451,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "候选 native:polygonize 卡面 accepts=vector（栅格→矢量未由卡面证实）——弃权与卡面一致；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1413,16 +1487,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他",
+    "final_note": "候选中值合成能力缺（averagewithmask1=均值）；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1447,16 +1523,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他",
+    "final_note": "候选无样点光谱提取到特征表；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1484,16 +1562,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "补卡解锁正确选择",
+    "final_note": "compareimages v0_5 卡含 ref.in/meas.in 双输入与 mse/mae/psnr 输出参数——MSD 计算成立；所选算子卡面变化",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1518,16 +1598,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "wrong_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "上下文诱发误弃权",
+    "final_note": "候选 grass7:r.statistics 卡载 base+cover+method（分区统计），完全满足按公园多边形统计类别像元数——弃权错误（对照臂 think 内已自行找到该算子后截断）",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1554,16 +1636,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（上下文诱发正确选择）",
+    "final_note": "native:aggregate 卡 GROUP_BY+AGGREGATES——按公园分区聚合损失成立(所选算子卡未变)",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1590,16 +1674,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他（上下文诱发正确选择）",
+    "final_note": "saga:resampling 卡含 TARGET_USER_* extent 参数——可达 ROI 对齐裁剪（所选算子卡未变，注意重采样≠裁剪的语义差）",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1625,16 +1711,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "variabledistancebuffer=单缓冲按字段距离，非多级同心环；弃权合理；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1659,16 +1747,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "候选无 BAI/BAIS2/TBR 指数；弃权合理；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1693,16 +1783,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他",
+    "final_note": "无掩膜+DEM 条件精化；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1730,16 +1822,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "n/a_no_decision",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision_preliminary",
-     "experiment": "valid_preliminary"
+     "control": "no_decision",
+     "experiment": "valid"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "其他",
+    "final_note": "候选与 hs_ratio+纬度带输入不匹配；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1764,16 +1858,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "无逐像元观测频次统计；实验臂无判定",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1804,16 +1900,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "correct_selection",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动（正确→无判定）",
+    "final_note": "对照 saga:morphologicalfilter 卡含 METHOD/KERNEL——形态学滤波与步骤匹配；实验臂 think 未闭合",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1840,16 +1938,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "correct_selection",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动（正确→无判定）",
+    "final_note": "对照 saga:clouddetection 卡输出 CLOUDS 掩膜（云识别核心能力；掩膜应用属平凡组合）；实验臂 think 未闭合",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1875,16 +1975,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "reasonable_abstention",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动",
+    "final_note": "候选无 QA 条件去云；弃权合理",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   },
@@ -1912,16 +2014,18 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
+    "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": null,
-     "experiment": null
+     "control": "wrong_selection",
+     "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid_preliminary",
-     "experiment": "no_decision_preliminary"
+     "control": "valid",
+     "experiment": "no_decision"
     },
-    "final_note": null,
-    "confidence": null
+    "mechanism": "生成波动（对照错误→无判定）",
+    "final_note": "对照 resamplingfilter=LOPASS/HIPASS 空间滤波（SCALE 参数），非时间序列平滑；判错",
+    "confidence": "medium-high"
    },
    "sel_contains_unverified_exp": false
   }
