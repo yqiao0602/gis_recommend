@@ -1,0 +1,112 @@
+{
+ "date": "2026-10-17",
+ "purpose": "A-track P0 pre-completion freeze (OTB 115 cards next; A1 = card-completion experiment, S1 retrieval + Top-10 frozen)",
+ "rules": [
+  "profile v0_4 is immutable: any completed-card version is a NEW file (v0_5+), never an overwrite",
+  "A1 S2 packs must reuse the frozen retrieval.json Top-10 (no S1 re-run)",
+  "card completion must NOT write a top-level `description` key (S1 corpus silent-change guard); descriptions go to layer_c_intent"
+ ],
+ "profile": {
+  "path": "route2_training/profile/qgis_operator_capability_profile_v0_4.json",
+  "sha256": "95ae97bc3600429275eb78a077850755a972105083c65b167ce1247048b2079c"
+ },
+ "s1_guard_snapshot": {
+  "ops_with_top_level_description_key": 0,
+  "expected": 0,
+  "ops_with_layer_c_intent_text": 343,
+  "n_operators": 1291
+ },
+ "completeness_recomputed": {
+  "total": 1291,
+  "params_layer": 1114,
+  "outputs_layer": 815,
+  "fully_bare": 177
+ },
+ "baseline_cross_check": {
+  "baseline_file_sha256": "5bb7a2156ecfc67ba82f94844986d41747cbc7d8298e5086de23dc8b203fe7f5",
+  "aggregate_match": true,
+  "provider_match": true,
+  "otb_all_bare": true,
+  "grass7_outputs_all_missing": true
+ },
+ "frozen_retrieval_top10": {
+  "n_tasks": 49,
+  "retrieval_json_sha256": {
+   "PCA2-T-001": "55c6aa05db421f303d1ed60545e19fefe6ff22bb0d31b726ddacb7bfe639b497",
+   "PCA2-T-003": "620d06055d401ca4034c756c3b1236b1edecfe9ff729e4d4b76813f1934ffe6d",
+   "PCA2-T-005": "0b78beb5354780ad9c5d31d870bf89ede5750a83f1217cf760f8665e02391c65",
+   "PCA2-T-006": "9d744863232b1e06054537b273d718ab5b4e17c8921a66fa3047f20a7003a174",
+   "PCA2-T-009": "46b44037429dc47916c663d77f2b8c0624df74dbf7680a284d55e6f056b14785",
+   "PCA2-T-012": "5e9de4f54faba88146f45396e5d333488e7d1d5d1ec7598b1627160fdd3e3ed1",
+   "PCA2-T-013": "e30dd5626753194cda179e241980da328274a9205e17bd666acc74cbab75f6a8",
+   "PCA2-T-021": "508f63d4856f41ad3bd39bff62c64e90d7931ac227cd67724e815616c85d2415",
+   "PCA2-T-022": "7e6d4dfb89a5acabb8975fe569b59c4317351b960893e7a24f43fc46703066c7",
+   "PCA2-T-023": "a085454ca5cee29a9f128901316aa03bfc1c03f5953b5dd8b473168e535d38d1",
+   "PCA2-T-024": "4f2d237032ce28dd7b498d86c7affc7c48f87fc88fd49cd249befeb2e37cf1c3",
+   "PCA2-T-025": "a0fa4fed50ba2880d04f8367e7e0e1dcb1cf04db96873ce01e63d72a1ff1f619",
+   "PCA2-T-026": "3e07383800c54819e794f212532152504366185a062508b5208d3adf1ddfb7a4",
+   "PCA2-T-027": "cf94cfd7443d0a5c8fe982d6a5744f32a1f0b6babac4231a55d913d952e8f95b",
+   "PCA2-T-029": "d3a26b5a817f0c1caa07468850f7ba6fff3848bfc51636391a665dd8ffabf1d8",
+   "PCA2-T-030": "0fc8206c0a8a5e624b124d1ba74d4c0d73316adbe4c2f256f858cb9555f36a91",
+   "PCA2-T-032": "8f7c54cd5c1003e2937b049168923afad63f3d219237f967f7b20b468938e61d",
+   "PCA2-T-033": "f2bea7a69a9753f5801612c2cc78f7d72c1020bf08b213220dc0228ba1bc303a",
+   "PCA2-T-037": "8fcb0671732345291fddfe947351d81d09dd63a18223d16ddee6d5e3c670c118",
+   "PCA2-T-042": "473a2125a33089b0e46e87b792a85ce7d08f9340a0dc02ac18902da3156f6290",
+   "PCA2-T-046": "64730163af99fe82630782713561a1e611a95332b385dbc063fbf7835ef8643d",
+   "PCA2-T-048": "903a7a43613c6a6bf3d16674c416a77674ae537625ae5c7ea7f955ab881009d6",
+   "PCA2-T-052": "884b684208d6b1f643b689c9853126fa67cebdceaa47f2b23a9a94c133d77826",
+   "PCA2-T-053": "093b8b06ec2b9e8c5dfac6dc5d6b824f0655573ae3218c5efe95090964983803",
+   "PCA2-T-056": "8b499ea515b1f8a925535d5981d96adffc95a7cead297847711c1746c97d45d9",
+   "PCA2-T-057": "84e7ac105aa4304aed03f7a9e7ad5076670a16c532e3ac4829830c0556ea47fd",
+   "PCA2-T-058": "02cd8bc10b57e9332869341835369c27c25add48138e43c49a6123e07292893f",
+   "PCA2-T-059": "d446361c10fa4ef7a35c8a6b317401d68b7f8b7e7d6da09be5a4fd10ce780abf",
+   "PCA2-T-060": "15f80ebb7296b3ce775dfdaa2da4b47e12fd864a875079ff78459cff1fd7007b",
+   "PCA2-T-062": "e34504ea3830496ba2c165cbf39e6910c697fd3c10e13912be1299a7744bc7b3",
+   "PCA2-T-068": "43981fdb86862d2136ab884d6ed7b112327583ec340e03272ee4624f8c921e7b",
+   "PCA2-T-069": "6758eeca4e0f2e8bdbc5b5d635abb27790207190aa8e1d16632813f87240eaea",
+   "PCA2-T-070": "808e639d8020915d27a15f25612d8c077be7679300e3ae47ee813c6f0f59868d",
+   "PCA2-T-071": "4b584d6791716b7320adc08d9b852291259a00e9eda70a819ac2b623d78792d1",
+   "PCA2-T-072": "ef8699c2e69f8d2b3d4f6cc2a6939add1509c898f578310509638ec12f2dc359",
+   "PCA2-T-073": "86cf28c126125490d47d53f5bc5294fde7f761b2736c6704f342a3581a9fbff0",
+   "PCA2-T-079": "c3dc979427dc2be747d45275eae258f2ed0c9a3f87d59e046aeaaaa97e1557b8",
+   "PCA2-T-080": "52c54d2f18ce748f1876b58588b83ae1d8a9b77cd12bbdbade84391d63331800",
+   "PCA2-T-081": "a56b52647e2d1fc70c4111c5c353e9a2f4e0a9ed7fdb165e66096685def62515",
+   "PCA2-T-083": "0d6499f91232ffbd3e98e1f1515c94a3b0dbfa1430be9b9047208b1e38a93bed",
+   "PCA2-T-084": "33235224731f10b868d7ee7de2cab9635c9969804c819236e8ad4037bfd4aa86",
+   "PCA2-T-086": "e29095cc32aefb4abfe92d3358f949668f1e134cb3cf8c4fe2361d2181d7fd97",
+   "PCA2-T-087": "a61a536b6bc318c184b31f3f801de7897e8b32fbdd109ee81d848c1a096bc760",
+   "PCA2-T-089": "f964d31fd87074ebc5386a945f13c9e6e7651bcdaf846df4baad16e805e97480",
+   "PCA2-T-090": "ee2f5c2cba72df1096de908bd06961e2791a95cc634c18c8daa80c170aea005e",
+   "PCA2-T-092": "868b393f822589504f641c92d9f90f5f0b285b9a0c04c72693ea4e199c27bd95",
+   "PCA2-T-095": "cb4981d2642576cdbfb45265056d58b6446cbf78730fe5b0d4a1aadf794c639b",
+   "PCA2-T-096": "4d2c14cc4a972495323bc36a888e557a61a79db373bd9393d662ce3a0605c782",
+   "PCA2-T-098": "6ded71c1e9c8ac75d76430ab3042d39bd684d9d5697eaa32190f7040534740f5"
+  }
+ },
+ "recorded_packs": {
+  "S0_pack": {
+   "sha16_prefix": "335a8b6f",
+   "note": "50 items; items == frozen 6896f542 baseline"
+  },
+  "S2_pack": {
+   "sha16_prefix": "a5370692",
+   "note": "293 items; excluded_s0_tasks={T-050}"
+  },
+  "S3_pack": {
+   "sha16_prefix": "b8c8af07",
+   "note": "49 items"
+  }
+ },
+ "instrument": {
+  "model": "/home/qy/models/Qwen3.5/Qwen3.5-9B-Base",
+  "hf_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "decode": {
+   "greedy": true,
+   "repetition_penalty": 1.15,
+   "truncation": 4096,
+   "batch": 4
+  },
+  "encoder": "pca_data_ref/minilm",
+  "top_k": 10
+ }
+}

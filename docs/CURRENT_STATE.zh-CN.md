@@ -61,7 +61,22 @@ P1/P2 与 E2E 详细过程以 `docs/CURRENT_STATE.md` 英文版为准）
   **S2 选拔=确证的第一堵墙**——正选 48/293=16.4%、可判定步弃权 74.2%、无判定 37.9%
   （其中 72%=2048 截断）；S3 CAP_TRUNC 83.7%；越选 1 例。报告：
   `dx50_v1/dx50_full_v1/DX50_BATCH50_FINDINGS_V1.md` + `DX50_BATCH_REVIEW_DX50_FULL_V1.md`。
-  **下一步：owner 对 S2 弃权做语义抽查 + 裁定空 raw 机理立项与定向优化预注册**；
+  **owner 审查已收口（2026-10-17）：S0 50/50 终审确认；S2 弃权 63 行抽查全数裁定——
+  过度拒绝(明确)=0，首要根因=算子卡贫瘠，其次检索缺失。** 已冻结裁定两份：方法论
+  （`dx_v1/DX_RESEARCH_ROUTE_RULING_OWNER_V1.md`：已证实 vs 待验证严格区分/A 轨四项验收/
+  解析器 v2/推进顺序①补卡底座→②仪器→③重建 S2 基线→④再定训练）与实验设计
+  （`dx_v1/DX_EXPERIMENT_DESIGN_RULING_OWNER_V1.md`：**A1 卡片补全 / A2 检索语料升级 /
+  B 规划能力对照，单变量分离，A1 与 A2 各自完成后才测组合；「在库中/被 Top-10 召回/
+  卡片足以证明适用」三态分记不合并**）。解析器 v2 修正基线：无判定 130（44.4%）、
+  显式弃权 119、正选 48（16.4%）。**执行队列：A 轨 P0 = OTB 115 卡证据驱动补全（已放行；
+  补卡前哈希冻结已落 `A_TRACK_P0_HASH_FREEZE_V1.json`：profile v0_4 SHA `95ae97bc…`、
+  顶层 description 键 0/1291 守卫、49 个 retrieval.json 全量冻结 = A1 固定 Top-10 锚）
+  → A2 受控检索对照（不静默改检索）→ B 独立推进。仪器发现：S1 检索实为算子 ID 词面相似度
+  （0/1291 有 description 键、layer_c_intent 未读取）——S1 修复另立受控变更；
+  补卡禁写顶层 description 键。** B 轨（GEE 规划）：owner 假设裁定 + 池联合审计 Q1 完成
+  （`diag50_v1/B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`、`B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md`
+  ——全链复制度不高（44,721 模板、Top-10 仅 6.2%）但局部高度集中（30 标签词表、
+  bigram Top-100=90.3% 转移、57.4% RASTER_LOAD 开头）；Q2-Q4 方法已定待执行）。
   D1 契约 ADR 签核仍待 owner。活跃计划见 task_plan.md。
 
 ## ⭐ 当前主线：Planning Capability Audit（PCA）— 协议 v1 已冻结，Phase 1 进行中（2026-10-13）

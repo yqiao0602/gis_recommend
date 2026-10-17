@@ -1976,3 +1976,56 @@
 - **工具修正（不触冻结仪器，测试 16/16）**：解析器排除任务守卫×2、build_s3 补 S0 可用性排除（首版 50-item S3 pack 未上传即弃换）、表脚本批次模式+排除任务跳过。
 - **产物**：dx50_full_v1/ 下 DX50_BATCH50_FINDINGS_V1.md（含 S2 判定×终止分解表、待裁 3 项）+ DX50_BATCH_REVIEW_DX50_FULL_V1.md（2.8MB 全 392 记录）。
 - **待 owner**：S2 弃权语义抽查设计；空 raw 机理立项；定向优化预注册（指向：选拔监督 > 终止控制）。
+
+## 2026-10-17（DX 线）：首条人工确认 S2 弃权恢复闭环 + dx_state 投产接入 + GitHub 推送链路打通
+
+- **dx_state V1 已提交并接入真实树**（见上条 commit）；Phase A 导入 50 runs/293 steps/441 artifacts/283 issues，INVALID 76=空 raw 全 PENDING。
+- **首条 RERUN_S2 恢复闭环（owner 确认 3 案例）**：恢复包=冻结 S2 提示词+追加证据指令（前次弃权+owner 确认算子），写至 <step>/retry_001 不触碰 v1。结果 **1/3 修复**：T-083#S8 精确选中 gdal:cliprasterbyextent（issue RESOLVED、v1 SUPERSEDED、S3 失效待重组）；T-009#S4 立即输出 END OF LIST 空判定；T-087#S2 先吐一行 END OF LIST 破坏格式+思考到正确结论后 2048 截断——恢复提示词 v2 改进点（指令置位/解析器容错/重试预算）。全部动作入 recovery_actions（SUCCEEDED 1 / VALIDATION_FAILED 2），原始产物零改动。
+- **GitHub 推送链路打通**：22 端口被代理劫持→SSH 改走 ssh.github.com:443（修复 ~/.ssh/config 首块优先问题）；GH001 拒收 4 个 >100MB 活数据 → owner 裁定「大文件移出+剥历史」：4 文件外移 repo_excluded_bigdata（SHA manifest），git-filter-repo 剥离全历史，**仓库 816MB→337.5MB，全部旧哈希作废**（映射 commit-map-20261017.txt + HISTORY_REWRITE_NOTICE）；F 盘迁移包/laptop 远端需重新同步。
+- **Base vs SFT 分类型对比现状**：控制器分类型错误证据已就绪（issues 表 283 条含 GROUNDING_ERROR/GENERATION_FAILURE/TYPE_OR_PORT_ERROR/SELECTION_ABSTENTION）；**SFT 臂暂无合格模型**（P0 除名/Stage1 FAIL/unified 未训，无任何能产 QGIS workflow 的 checkpoint）——需 owner 指定模型或等 unified SFT 产出后对比自动可跑。
+
+## 2026-10-17（DX 线补记）：S0 终判收口 + S2 弃权抽查表并入工作簿
+
+- **S0 终判完成**（owner 指令委托终判；10 项明确错误逐条对照计划原文复核全部确认，23 项待确认确认分级）——总表 50/50 行 Owner 列='终审确认'，判读说明记委托来源。
+- **S2 弃权抽查表**新增 sheet 并入 DX50_S0_REVIEW_DX50_FULL_V1.xlsx：总体=130 个非空显式弃权步，抽样 63（L1 全查 33 + L2/L3/L4 各~30% 封顶 12，seed 20261017）。每行含步骤目的/Top-10/S2 原文摘录 + Claude 初判；Owner 判定列留白。
+- **S2 初判分布(63)**：过度拒绝 19（**明确 6**：T-009#S4/S6、T-012#S4、T-022#S5、T-042#S2、T-090#S3——拒绝理由均可被候选内算子卡证伪｜中度 8｜弱 5）｜检索缺失致相对合理 19（含 1 待查库）｜架构级合理 18（目录检索/图表/交互类）｜截断非弃权 5｜上游 S0 传导 2。生成器 scripts/dx_finalize_review_xlsx_v1.py。
+- **读数意义**：过度拒绝 19/63≈30%（显式弃权的 ~15%）直接支撑「选拔监督」优化方向；架构级 18 项界定了 QGIS 处理算子域的能力边界（场景获取/绘图/交互永远需要系统层解决而非模型层）；检索缺失 19 项把 S1 锅与 S2 锅定量分开。
+
+## 2026-10-17（DX 线再补记）：owner 复核 63 行 + 卡片核实推翻全部"明确过度拒绝"——根因改判知识底座
+
+- **owner 逐条复核 63 行**（权威判定，归档 DX50_S2_ABSTENTION_OWNER_REVIEW_V1.md，已并入工作簿 Owner 列 63/63）：维持 38 / 改判 17 / 待核 8。核心修正：'候选中有相似工具'≠'候选中有足够完成任务的工具'；无判定(截断)独立统计不入弃权分母；增设'步骤定义/输入输出含混'标签。
+- **卡片核实（4 例校准案例，证据=模型实际收到的卡）推翻全部'明确过度拒绝'**：otb:trainimagesclassifier/vectorclassifier 卡 params+outputs 全未记载；saga:difference 按卡为矢量叠加差；saga:clipgrids 参数未记载需先造几何；saga:supervisedclassificationforrasters 的 METHOD 枚举未展开。→ 4 例全部改判'拒绝成立(相对卡片)'。
+- **根因层级改判**：S2"过度拒绝"坍缩 → 首要根因=**算子卡内容贫瘠（知识底座 A 轨参数/输出层缺失）**，其次检索缺失。**排序修正：知识底座卡片补全是 S2 选拔监督的前置条件**——否则监督样本建立在模型不可见的证据上（不可学习）。这直接把 A 轨（知识底座）从"并行项"提为"选拔优化前置"。
+- **解析器缺陷（仪器）**：5 个截断步的 NO OPERATOR 标记出现在 <think> 内部被误计 no_operator——无判定 5+ 不入弃权分母；parse_s2 v2 需只在 think 外识别判定标记（冻结仪器改动，记档下版）。
+- **监督数据 A/B/C 分级落地**：A 级（卡矛盾直备）本批复核后暂无；B 级补证：T-022#S5、T-042#S2、T-009#S6 等；C 级不入 S2 训练：检索缺失/步骤含混/应用层/截断。**训练监督正确决策而非惩罚弃权**。
+- 工作簿已更新：Owner 判定 63/63、判读说明+4 行（owner 终审/卡片核实/监督分级/尺度修正）。生成器 scripts/dx_integrate_owner_review_v1.py。
+
+## 2026-10-17（DX 线收官补记）：owner 方法论裁定冻结 + 解析器 v2 落地 + A 轨基线审计
+
+- **owner 裁定冻结**（DX_RESEARCH_ROUTE_RULING_OWNER_V1.md）：已证实 vs 待验证严格区分（卡核实只证明原案例不作过度拒绝证据，不证明 S2 没问题/补卡必有效）；A 轨四项验收（功能/IO/参数完整性+证据可追溯，未知标"当前证据无法确认"禁猜测补全）；三组条件对照实验（原始卡/补全卡/补全卡+训练；四分指标防"更积极更不准"）；解析器协议（冻结+重算+版本入记录）；推进顺序 ①A 轨补卡(P0=OTB) → ②仪器 → ③重建 S2 基线 → ④再定专项训练；规划层独立诊断线保留。
+- **解析器 v2 落地**：parse_s2_v2（标记只在 </think> 后决策段识别；截断/无think/空三分语义）单测 5/5；293 条全量重算 parsed_v2.json 并列存档（v1 冻结）；差异=19 条翻转，**修正基线：无判定 111→130(44.4%)、显式弃权 135→119**；差异报告 manifests/reparse_s2_v2_diff_report.json。此后实验记录解析器版本。
+- **A 轨卡片完备度基线**（A_TRACK_CARD_COMPLETENESS_BASELINE_V1.json）：1,291 卡参数层 1,114(86%)/输出层 815(63%)/全裸 177(14%)；**OTB 全 provider 115 卡全裸**（遥感 ML 训练分类核心=分类器训练失败族直接来源）；grass7 输出层 304 全缺；enum 值普遍未展开。优先级 P0=OTB 115 卡全补（官方文档溯源）。
+- 抽查表初判读数修正声明：早前"过度拒绝 19"系未核卡的技术预审，按 owner 尺度（卡明确暴露且拒绝理由与卡相悖）修正为 0；真正排序=A 轨补卡→重建基线→再定训练。
+
+## 2026-10-17（DX 线终补记）：A 轨 P0 放行（OTB 115 卡）+ S1 语料重大仪器发现
+
+- **owner 裁定：A 轨 P0 正式放行**（OTB 115 卡证据驱动补全）；P1/P2/S2 微调全部暂缓；规划层独立推进。四项验收 + full_card() 渲染抽查 + 哈希冻结保护 + 三条件对照与四分指标。已归档进 DX_RESEARCH_ROUTE_RULING_OWNER_V1.md 附加裁定节。
+- **S1 语料重大发现（代码级核实）**：检索器读 profile 顶层 description 键——**实测 0/1291 存在**，全部回退为"ID | ID去冒号"；layer_c_intent（27%）未被读取。**S1 实为算子 ID 字符串相似度检索**（覆盖 100%，相关性=词面重叠）——19 个检索缺失的系统性解释；retrieval.json 的 index_meta 语料描述与实际不符。
+- **交叉风险已上报**：P0 补卡禁止写入 description 键（防 S1 索引静默变化）；描述写 layer_c_intent/专用键；S1 语料升级另立受控变更。
+
+## 2026-10-17（B 轨立项）：owner「高频模式 vs 任务语义」裁定冻结 + GEE 池联合审计 Q1 完成
+
+- **owner B 轨裁定归档**（B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md）：核心假设为「高频模式过拟合 vs 任务语义规划缺失」研究假设（非定论）；训练目标从复现序列转向条件规划学习；四改造方向（规划监督信号提取/循环双层表示/任务对照样本/分阶段训练目标）；诊断矩阵 A-E 实验+六指标；双轨纪律（A 知识补卡与 B 规划研究并行各自冻结基线；诊断任务不入训练集；50 任务禁自证提升）。
+- **联合审计 Q1 完成**（B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md，数据=04_DIAG_WORK/b1_gee_stage_train.jsonl 128,447 行只读）：**全链层复制度不高**——44,721 个精确模板，Top-10 仅覆盖 6.2%，68.7% 模板只出现一次；**但局部层高度集中**——语义词表仅 30 标签，bigram Top-100 覆盖 90.3% 转移，57.4% 链以 RASTER_LOAD 开头，3-6 步短链为主+11% 撞 25 步截断桶。判读：高频模式形态=局部转移规律+短链先验+起点偏置，非整条模板复制；44k 模板×30 词表=监督信号区分度受标签粒度上限约束（关联 B 轨方向②③）。
+- **Q2-Q4 方法已定待执行**：Q2 instruction 聚类内模板差异率；Q3 近重复 instruction→异模板比率（多参考候选清单）；Q4 规划线错误×池分布分层（训练引入 vs 数据固有）。审计完成前不追加损失函数/重采样。
+
+## 2026-10-17（DX 线）：owner 实验设计细化裁定归档 + A 轨 P0 补卡前哈希冻结落地
+
+- **owner 裁定归档**（DX_EXPERIMENT_DESIGN_RULING_OWNER_V1.md，逐字 + 登记节；路线裁定文档同步指针节）：三条件表升格为 **A1 卡片补全 / A2 检索语料升级 / B 规划能力对照** 三实验单变量分离——A1 冻结 S1 检索文本+Top-10（唯一变量=卡）；A2 唯一变量=ID 文本 vs layer_c_intent.text（记录可行算子入 Top-10 与否+排名/分数+四分指标+按类别/复杂度分层）；B 冻结独立测试集（Base vs 训练版本）。A1、A2 先分别做再测组合。新增测量协议：**「在库中 / 被 Top-10 召回 / 卡片足以证明适用」三态分记不合并**。执行序：先做已放行 OTB 115 卡补全（=A1 证据底座）；A2 不静默改检索、另立受控变更；B 独立推进。
+- **A 轨 P0 补卡前哈希冻结**（`A_TRACK_P0_HASH_FREEZE_V1.json`，生成器 `scripts/dx_a_track_freeze_v1.py`）：profile v0_4 **SHA256 `95ae97bc3600429275eb78a077850755a972105083c65b167ce1247048b2079c`** 冻结（补卡出 v0_5+ 新文件不覆盖）；S1 守卫快照 desc 键 0/1291、layer_c_intent 343/1291；**49 个 dx50_full_v1 retrieval.json 全量 SHA256 冻结 = A1 固定 Top-10 锚**（A1 S2 pack 必须复用，不重跑 S1）；卡完备度基线四项交叉校验全过（aggregate/provider/otb_all_bare/grass7_outputs_all_missing = True×4）；DX-50 三个 pack SHA 前缀与仪器块（模型/HF rev/解码）登记入册。
+- 工作簿「判读说明」新增一行（生成器 `scripts/dx_note_experiment_ruling_v1.py`，幂等可重跑）。
+
+## 2026-10-17（A 轨 P0 启动）：证据源侦察完成 + 6/115 幽灵算子发现
+
+- **本地证据盘点**：OTB 参数层本地零证据（catalog 仅 IO 类型；catalog 声明的原始上游 operators-json 已被后续导出覆盖，115 清单原始出处无本地记录）→ 上游官方仓库钉定：`Algorithm_classification/_external_evidence/otb_upstream_v1`（仓库外），提取器 `scripts/dx_a_track_otb_extract_v1.py`（C++ 宏解析）→ 证据层 `a_track_p0_v1/otb_evidence_812_v1.json`（8.1.2 解析 113 app、0 失败；T-009 失败族 TrainImagesClassifier/ComputeConfusionMatrix 全参数结构验证通过）。
+- **重大发现：6/115 幽灵算子**（OTB_EVIDENCE_SOURCING_REPORT_V1.md）：aggregate/genericregionmerging/imagetimeseriesgapfilling/multitempfilteringfilter/multitempfilteringoutcore/objectsradiometricstatistics 在上游 6.6.2/7.4.2/8.1.2/9.1.1 四版本均不存在（逐 tag 实测）；115 集合跨版本混合、不可能来自单一官方 release。默认处置：6 卡不补不猜、标"当前证据无法确认"；109/115 以 8.1.2（commit b3eb5603…）为钉定证据源。诊断意义登记：S1/S2 曾把可能不存在的算子作为候选曝光给模型。**等 owner 裁定后批量执行 v0_5 构建。**

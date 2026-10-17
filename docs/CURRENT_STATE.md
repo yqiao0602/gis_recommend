@@ -101,8 +101,32 @@ Last updated: 2026-10-15
   48/293=16.4%, rejection 74.2% of parseable, no-decision 37.9% (72% of those =
   2048 cap truncation); S3 termination control collapses (83.7% CAP_TRUNC); 1 out-of-candidate
   selection. Reports: `dx50_v1/dx50_full_v1/DX50_BATCH50_FINDINGS_V1.md` +
-  `DX50_BATCH_REVIEW_DX50_FULL_V1.md`. **NEXT: owner semantic sampling of S2
-  rejections + rulings on empty-raw mechanism probe and optimization prereg**;
+  `DX50_BATCH_REVIEW_DX50_FULL_V1.md`. **Owner review closed (2026-10-17): S0
+  50/50 final-confirmed; S2 63-row abstention sample fully adjudicated —
+  over-rejection (clear) = 0; leading root cause = impoverished operator cards,
+  then retrieval misses.** Rulings frozen: methodology
+  (`dx_v1/DX_RESEARCH_ROUTE_RULING_OWNER_V1.md` — proven-vs-unverified split,
+  A-track 4-criteria acceptance, parser v2, order ①card base → ②instrument →
+  ③S2 baseline rebuild → ④training decisions) and experiment design
+  (`dx_v1/DX_EXPERIMENT_DESIGN_RULING_OWNER_V1.md` — **A1 card completion /
+  A2 retrieval-corpus upgrade / B planning control, single-variable separated,
+  combined arm only after A1 and A2; three states recorded separately:
+  in-library / recalled-into-Top-10 / card-proves-applicable**). Corrected
+  baselines under parser v2: no-decision 130 (44.4%), explicit abstention 119,
+  positive selection 48 (16.4%). **EXECUTION QUEUE: A-track P0 = OTB 115
+  evidence-driven card completion (authorized; pre-completion hash freeze done —
+  `A_TRACK_P0_HASH_FREEZE_V1.json`: profile v0_4 SHA 95ae97bc…, top-level
+  description keys 0/1291 guard, all 49 retrieval.json hashed = A1 frozen
+  Top-10 anchor) → A2 controlled retrieval comparison (no silent retrieval
+  change) → B independent. Instrument finding: S1 retrieval is operator-ID
+  lexical similarity (0/1291 profiles have a description key; layer_c_intent
+  unread) — S1 fix is a separate controlled change; card completion must NOT
+  write the top-level `description` key.** B-track (GEE planning): owner
+  hypothesis ruling + pool joint audit Q1 done (`diag50_v1/
+  B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`, `B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md`
+  — full-chain duplication NOT severe (44,721 templates, top-10 = 6.2%) but
+  local concentration high: 30-label vocab, bigram top-100 = 90.3% transitions,
+  57.4% RASTER_LOAD starts; Q2-Q4 methods defined, awaiting execution).
   D1 contract ADR sign-off still pending. Live plan: task_plan.md.
 
 ## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)
