@@ -1,0 +1,1929 @@
+{
+ "schema": "A1_ADJUDICATION_LEDGER_V1",
+ "rules": "decision_quality 与 output_validity 正交；NODEC 不入四指标；OOC=错误选择；初判=initial_not_gold",
+ "priority_five": [
+  "PCA2-T-009#S6",
+  "PCA2-T-001#S3",
+  "PCA2-T-025#S5",
+  "PCA2-T-033#S1",
+  "PCA2-T-068#S6"
+ ],
+ "n_pairs": 52,
+ "entries": [
+  {
+   "step_key": "PCA2-T-009#S3",
+   "batch": "P1",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "saga:multibandvariation"
+    ]
+   },
+   "changed_oids": [
+    "otb:classificationmapregularization",
+    "otb:spectralangleclassification",
+    "otb:traindimensionalityreduction"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "wrong_selection_tendency",
+    "note": "统计波段变化≠可靠计算指定植被指数；需核对实际输出与表达式能力",
+    "evidence_checks": [
+     "saga:multibandvariation 实际输出与表达式能力"
+    ]
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-009#S6",
+   "batch": "P1",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "otb:trainvectorclassifier"
+    ]
+   },
+   "changed_oids": [
+    "otb:classificationmapregularization",
+    "otb:fusionofclassifications",
+    "otb:imageclassifier",
+    "otb:trainimagesclassifier",
+    "otb:trainregression",
+    "otb:trainvectorclassifier",
+    "otb:trainvectorregression",
+    "otb:vectorclassifier"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "训练矢量分类器与训练 CART 任务方向一致；最有价值的正向证据候选",
+    "evidence_checks": [
+     "卡面是否足以证明算法选择及参数配置"
+    ]
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-042#S1",
+   "batch": "P1",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:imageregression",
+    "otb:trainimagesclassifier",
+    "otb:trainimagesregression"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "NODEC 无可审查完整决策，暂不计入弃权指标",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-056#S5",
+   "batch": "P1",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:spectralangleclassification",
+    "otb:trainvectorclassifier"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-056#S6",
+   "batch": "P1",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "saga:supervisedclassificationforrasters"
+    ]
+   },
+   "changed_oids": [
+    "otb:trainimagesclassifier"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "预训练 RF 应用于栅格与任务目标一致",
+    "evidence_checks": [
+     "模型文件输入和参数语义"
+    ]
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-083#S6",
+   "batch": "P1",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:fusionofclassifications",
+    "otb:traindimensionalityreduction",
+    "otb:trainimagesclassifier",
+    "otb:trainimagesregression",
+    "otb:trainvectorclassifier",
+    "otb:trainvectorregression"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-083#S7",
+   "batch": "P1",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [
+     "saga:supervisedclassificationforrasters"
+    ],
+    "experiment": [
+     "otb:imageclassifier"
+    ]
+   },
+   "changed_oids": [
+    "otb:classificationmapregularization",
+    "otb:imageclassifier",
+    "otb:imagedimensionalityreduction",
+    "otb:spectralangleclassification",
+    "otb:trainimagesclassifier",
+    "otb:trainimagesregression"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "both_possibly_correct",
+    "note": "算子替换（SAGA 分类→OTB 分类）≠收益；按决策质量评分",
+    "evidence_checks": [
+     "模型格式、输入数据和输出要求"
+    ]
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-084#S2",
+   "batch": "P1",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:classificationmapregularization",
+    "otb:imageclassifier",
+    "otb:morphologicalclassification"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "连续干旱指数阈值重分类需明确重分类能力",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-084#S5",
+   "batch": "P1",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:kmeansclassification",
+    "otb:polygonclassstatistics",
+    "otb:smallregionsmerging",
+    "otb:somclassification"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "无完整判定，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-090#S4",
+   "batch": "P1",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "OOC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "otb:ImageClassifier"
+    ]
+   },
+   "changed_oids": [
+    "otb:imageclassifier",
+    "otb:trainimagesclassifier"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "wrong_selection",
+    "note": "OOC 越选按预注册口径判错（不再归 POS）",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-092#S9",
+   "batch": "P1",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:classificationmapregularization",
+    "otb:smoothing",
+    "otb:trainimagesclassifier"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "平滑分类图与生成混淆矩阵是两个功能；单候选无法覆盖全部要求时弃权合理",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-001#S3",
+   "batch": "P3",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "otb:concatenateimages"
+    ]
+   },
+   "changed_oids": [
+    "otb:concatenateimages",
+    "otb:imageregression",
+    "otb:mosaic",
+    "otb:segmentation",
+    "otb:smallregionsmerging"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "多时相影像堆叠与任务目的相符",
+    "evidence_checks": [
+     "是否要求逐像元统计而非仅拼接波段"
+    ]
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-001#S4",
+   "batch": "P3",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:multiimagesamplingrate",
+    "otb:sarburstextraction",
+    "otb:sarcalibration",
+    "otb:sardecompositions",
+    "otb:sarpolarmatrixconvert"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整；对照合理弃权与实验无判定必须分开",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-001#S5",
+   "batch": "P3",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:imageregression",
+    "otb:multiimagesamplingrate"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "逐像元中位数合成需明确跨影像统计能力",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-001#S6",
+   "batch": "P3",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [
+     "saga:mosaicking"
+    ],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:mosaic"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "暂判合理弃权；输出格式化/资产交付未必是镶嵌功能",
+    "evidence_checks": [
+     "结合实际步骤目标确认"
+    ]
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-025#S5",
+   "batch": "P3",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "otb:contrastenhancement"
+    ]
+   },
+   "changed_oids": [
+    "otb:colormapping",
+    "otb:contrastenhancement",
+    "otb:multiimagesamplingrate",
+    "otb:rasterization"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "min=-25 max=5 线性拉伸与描述匹配",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-046#S4",
+   "batch": "P3",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [
+     "native:joinattributestable"
+    ],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:concatenatevectordata"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "无完整结论，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-046#S5",
+   "batch": "P3",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [
+     "native:mergevectorlayers"
+    ],
+    "experiment": [
+     "otb:concatenatevectordata",
+     "native:mergevectorlayers"
+    ]
+   },
+   "changed_oids": [
+    "otb:concatenatevectordata"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "合并多矢量集合方向合理",
+    "evidence_checks": [
+     "输入是否同类要素集合",
+     "拼接算子输出语义"
+    ]
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-056#S3",
+   "batch": "P3",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "saga:mosaicking"
+    ]
+   },
+   "changed_oids": [
+    "otb:hyperspectralunmixing",
+    "otb:mosaic"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "partial_match_pending",
+    "note": "镶嵌≠波段堆叠；若目标是组合多波段影像仅靠镶嵌可能不满足",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-060#S1",
+   "batch": "P3",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:sampleaugmentation",
+    "otb:tilefusion"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-062#S4",
+   "batch": "P3",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:colormapping",
+    "otb:stereoframework"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-073#S1",
+   "batch": "P3",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:dynamicconvert",
+    "otb:smoothing",
+    "otb:trainimagesregression"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-079#S5",
+   "batch": "P3",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:colormapping",
+    "otb:stereoframework"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "同心环≠逐要素可变缓冲距离",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-086#S4",
+   "batch": "P3",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:imageregression",
+    "otb:multiimagesamplingrate",
+    "otb:pixelvalue"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-089#S5",
+   "batch": "P3",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:classificationmapregularization",
+    "otb:contrastenhancement",
+    "otb:disparitymaptoelevationmap",
+    "otb:morphologicalclassification",
+    "otb:refinesensormodel"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-092#S5",
+   "batch": "P3",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:computeimagesstatistics",
+    "otb:sarburstextraction",
+    "otb:sarcalibration",
+    "otb:sarconcatenatebursts",
+    "otb:sardecompositions",
+    "otb:sarpolarmatrixconvert",
+    "otb:sarpolarsynth"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-003#S2",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "otb:opticalcalibration"
+    ]
+   },
+   "changed_oids": [
+    "otb:opticalcalibration",
+    "otb:pixelvalue",
+    "otb:radiometricindices"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "前提=传感器辐射定标且输入元数据/校准参数满足",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-005#S3",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:compareimages",
+    "otb:imageregression"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "二值云掩膜≠云量比例统计",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-005#S5",
+   "batch": "P4",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [
+     "grass7:r.mask.vect"
+    ],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:disparitymaptoelevationmap"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_retained",
+    "note": "选择未变非新增收益；确认可执行性未变",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-012#S3",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:compareimages"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "多时相栅格均值需跨影像统计能力",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-021#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:disparitymaptoelevationmap"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-022#S6",
+   "batch": "P4",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "grass7:r.blend.rgb"
+    ]
+   },
+   "changed_oids": [
+    "otb:colormapping"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "conditional_correct",
+    "note": "R/G/B 三独立栅格合成 RGB=匹配；从多波段提取=不匹配",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-025#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "saga:statisticsforrasters"
+    ]
+   },
+   "changed_oids": [
+    "otb:imageregression"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "确认多栅格统计与 MEAN 输出结构一致",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-026#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [
+     "native:rasterize"
+    ],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:rasterization"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "对照臂 native:rasterize 的'合并多栅格'描述本身待复核",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-032#S2",
+   "batch": "P4",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "otb:opticalcalibration"
+    ]
+   },
+   "changed_oids": [
+    "otb:opticalcalibration",
+    "otb:radiometricindices",
+    "otb:sarcalibration"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "conditional_correct",
+    "note": "仅辐射定标=可判正确；明确要求含大气校正=不足",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-033#S1",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "gdal:rearrange_bands"
+    ]
+   },
+   "changed_oids": [
+    "otb:hyperspectralunmixing",
+    "otb:spectralangleclassification"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "波段索引重排/选取可能满足波段提取",
+    "evidence_checks": [
+     "参数是否支持目标输出形式"
+    ]
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-052#S2",
+   "batch": "P4",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:polygonclassstatistics"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "若候选确无栅格转面工具则弃权合理",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-056#S2",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:imageregression"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "摘录证据不足以支持中位数合成",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-056#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:spectralangleclassification"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "分区统计/采样能力待确认",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-057#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "otb:compareimages"
+    ]
+   },
+   "changed_oids": [
+    "otb:compareimages",
+    "otb:pixelvalue"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "conditional_correct",
+    "note": "确认 MSE 输出与双滤波结果输入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-068#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:smallregionsmerging"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "按公园多边形统计类别像元数需分区统计能力",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-068#S6",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "native:aggregate"
+    ]
+   },
+   "changed_oids": [
+    "otb:smallregionsmerging"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "correct_selection_tendency",
+    "note": "前提=矢量含分区标识+损失面积字段且聚合表达式正确",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-070#S1",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "POS"
+   },
+   "selections": {
+    "control": [],
+    "experiment": [
+     "saga:resampling"
+    ]
+   },
+   "changed_oids": [
+    "otb:segmentation"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "conditional_correct",
+    "note": "重采样≠裁剪；确认目标范围参数支持 ROI",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-079#S3",
+   "batch": "P4",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:sampleaugmentation",
+    "otb:sampleextraction"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "多级同心缓冲≠单一可变缓冲；弃权可能合理",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-080#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:spectralangleclassification"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "弃权可能合理；核验通用栅格计算候选",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-081#S5",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:disparitymaptoelevationmap"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "掩膜+DEM 条件筛选需候选可表达",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-084#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "NODEC",
+    "experiment": "ABST"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:lsmssmallregionsmerging",
+    "otb:obtainutmzonefromgeopoint",
+    "otb:polygonclassstatistics",
+    "otb:smallregionsmerging"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": "reasonable_abstention_tendency",
+    "note": "候选与气候分类输入不匹配（按摘录）",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "no_decision_preliminary",
+     "experiment": "valid_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-086#S5",
+   "batch": "P4",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:pixelvalue"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "输出不完整，暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-089#S4",
+   "batch": "P4",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [
+     "saga:morphologicalfilter"
+    ],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:classificationmapregularization",
+    "otb:morphologicalclassification",
+    "otb:morphologicalprofilesanalysis",
+    "otb:opticalcalibration",
+    "otb:segmentation"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "形态学滤波是合理方向；实验臂输出无法确认最终选择",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-092#S2",
+   "batch": "P4",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [
+     "saga:clouddetection"
+    ],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:pixelvalue"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "saga:clouddetection 适用性需按实际输出核对，不能凭名称",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-098#S1",
+   "batch": "P4",
+   "mechanical": {
+    "control": "ABST",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:imagedimensionalityreduction",
+    "otb:pixelvalue"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "暂不计入",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  },
+  {
+   "step_key": "PCA2-T-098#S6",
+   "batch": "P4",
+   "mechanical": {
+    "control": "POS",
+    "experiment": "NODEC"
+   },
+   "selections": {
+    "control": [
+     "saga:resamplingfilter"
+    ],
+    "experiment": []
+   },
+   "changed_oids": [
+    "otb:meanshiftsmoothing",
+    "otb:smoothing"
+   ],
+   "owner_initial_v1": {
+    "status": "initial_not_gold",
+    "experiment_decision_quality_tendency": null,
+    "note": "低通滤波可能合理；无最终结论可审",
+    "evidence_checks": []
+   },
+   "ledger_fields_pending_owner": {
+    "decision_quality": {
+     "control": null,
+     "experiment": null
+    },
+    "output_validity": {
+     "control": "valid_preliminary",
+     "experiment": "no_decision_preliminary"
+    },
+    "final_note": null,
+    "confidence": null
+   },
+   "sel_contains_unverified_exp": false
+  }
+ ]
+}

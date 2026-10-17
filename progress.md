@@ -2123,3 +2123,8 @@
 - **判读完成 117/117**：owner 亲判 8（S001-S004/S007/S008/S010/S011）+ agent 受委托 109（三轮方法学裁定规范、七字段+双标签、三防误判；逐条源码/diff 证据；全部落 LEDGER_V1.json + 卷宗）。agent 关键裁决：S043 透视函数=输出整形非新步骤（解 owner DIFF 疑问）；S019=DIFF-4 结论沿用；S090 同码对内单位级失实实证；S096/S100/S110 三例 RLE 退化/极限压缩=抽取覆盖缺口；S039/S106/S110 间接资产引用族；S039 spliting=0.5 注释-代码矛盾（S002 同型）。
 - **池级加权估计交付**（`Q2_POOL_WEIGHTED_ESTIMATE_V1.md`，owner 锁定口径 p̂=Σ(N_h/N)p̂_h）：P(结构等价|近重复对)=0.942 [0.90-0.97]；P(非等价)=0.057 [0.03-0.09]；**P(任务逻辑驱动结构差异)=上界 0.057、样本点估计 0/117——owner 十对 0/10 在池级样本上复现**；P(侧失实)=0.012、P(侧欠描述)=0.058（机械可见下界）。层纯度：ui_scaffold 11/12 改判、asset_version 8/12、dup 9/12；reorder/multiplicity 最纯。same 桶 48/48 结构等价。
 - **待 owner**：抽查 agent 判读（每层 2-3 条；关键六条 S019/S023/S043/S090/S096/S107）→ A/B 联合设计规范冻结（B 主+A 治理，治理范围现有池级占比支撑）→ 参考样本集 → 小规模受控对照训练。全程只读零变更。
+
+## 2026-10-18（A1 裁定规则冻结 + 全证据卷宗包交付）：owner 初判 V1 入账 + 52 对材料缺口补齐
+
+- **owner 裁定归档**（A1_OWNER_ADJUDICATION_V1.md）：52 对人工复核初判 V1 冻结（倾向≠金标）；四指标判读规则表冻结（POS≠正确、ABST≠合理、NODEC 不得当弃权、OOC=错误选择）；**账本双正交字段固定**（decision_quality × output_validity，防生成失败误算合理弃权/无答案误算知识退化）；裁决序=P1 11 对（T-009#S6 解锁 vs T-009#S3 诱发重点）→ P3 15 对（功能修正收益 vs 截断波动）→ P4 26 对 → 四指标汇总 → 解释表选行；此前不宣称补卡有效、不启动 A2。owner 指认材料缺口=复核包缺完整任务/完整候选/双版本卡面。
+- **全证据卷宗包产出**（scripts/dx_a1_full_evidence_packet_v1.py → `a1_v1/A1_FULL_EVIDENCE_PACKET_V1/`，52 卷宗 + INDEX + LEDGER_V1.json）：每对含①任务全文+步骤四字段定义②Top-10 完整候选③变化算子双版本卡面（v0_4/v0_5 并排）+未变算子单卡④双臂**完整决策段**（不截断）⑤owner 初判 V1 转录（status=initial_not_gold）⑥双正交字段预填（output_validity 由机械类初标，decision_quality 留 owner）⑦终判栏+机制归类勾选。优先五对点名（T-009#S6/T-001#S3/T-025#S5/T-033#S1/T-068#S6）。抽检通过：T-009#S6 卡证据=classifier(Choice)+libsvm 子参数可见但 choice 值未展开（owner 判断点完整保留）；T-009#S3 的 multibandvariation 卡=MEAN/STDDEV/DIFF 纯统计输出（错误选择倾向可直接对卡核验）。
