@@ -2109,3 +2109,17 @@
 - **S011**：**fidelity_A=失实**（双 filterDate 交集空集——与 S001-A 同模式，owner 判失实/欠描述口径不合并）；端元/阈值参数族同 S001/S003；B 忠实。池级失实累计 3 侧（SAME-15 A、S002 B、S011 A）。
 - **保真度全景答疑（owner 问）**：不是"描述与步骤完全对不上"——16 侧已判：忠实 4 / 欠描述 10 / 失实 2；**规划层映射基本存在（训练可学），实现层细节天然不在描述文本里（双层表示立论）**；真正要拦的是失实+藏执行缺陷的关键欠描述，非要求描述穷尽参数。
 - asset_version 机械层已判 **8/12**，全部改判 substantive（含 secondary 3 条保留 asset_version）。
+
+## 2026-10-18（A1 机械结果收口）：158/158 验证全过 + POS +4.4pp（CI 跨零不显著）+ T-009#S4 弃权未解=渲染层实证
+
+- **运行与完整性**：生成 158/158 @ 76.4min（mdzhang pid 3229138）；ledger item_audit_complete=True；双端 tar SHA 一致（`cb0a84f2…`）；本地 raw 158/158 + gen 158/158 哈希全对 commit 标记；空 raw 38（24.1%，与基线同水平）。镜像置 `Algorithm_classification/_a1_work/runs_local`（**MAX_PATH 教训**：深 repo 路径 + S2/S{n}/raw_output.txt=262 字符溢出 Win32 上限，MSYS 工具可过、Python io 拒读、`\?\` 前缀可读——实验镜像一律用短真实路径）。产物经 a1_short junction 读写。
+- **三分结果**（n=158，唯一变量=OTB 卡）：对照 v0_4 POS 24/OOC 0/ABST 68/NODEC 66 → 实验 v0_5 **POS 31**/OOC 1/ABST 59/NODEC 67。转移：POS→POS 17、**收益 14、损失 7**、ABST→ABST 46、NODEC→NODEC 45、ABST↔NODEC 17/11、NODEC→OOC 1。**统计（预注册 cluster bootstrap，49 任务）：+4.4pp，95% CI [−1.4, +10.5] 跨零，符号检验 p≈0.189——方向正、不显著，不作能力结论**。
+- **关键明细**：①T-009#S6 `ABST→POS(otb:trainvectorclassifier)`=owner 优先复核步被补卡直接解锁；②**T-009#S4（RF 训练步）卡面已有 classifier(Choice) 仍 ABST**——冻结渲染器不展开 choice 候选值，"卡是否展示 RF"=否，owner 警示（Choice≠充分证据）精确命中，指向 full_card 表现层而非知识缺失（解释表第三行机制候选）；③收益对中 7 个选中未改卡算子（上下文倾向效应，合理性待裁）；④损失 7 对中 5 对=POS→NODEC 生成侧退化；⑤**unverified 6 算子实验臂选中=0**。
+- **口径修正**：classify 初版把越选计 POS，已按预注册修正（T-090#S4 模型笔误 `otc:ImageClassifier`=OOC，parser v2 正确判出）。产物：A1_MECHANICAL_FINDINGS_V1.md + A1_RUN_RECORD_V1.json + 配对结果/复核包（52 对：P1 分类器族 11/P3 IO 纠正 15/P4 其余 26）。**等 owner 裁定四指标；裁定前不启动 A2、不冻结"补卡有效"表述。**
+
+## 2026-10-17（B 轨 Q2 判读收口）：117/117 完成 + 池级加权估计交付
+
+- **owner 问询答复登记**：保真度四标签定义复述（失实=说的和做的矛盾/SAME-15 A、S002 B；欠描述=方向对但不全/占多数；忠实=当前粒度对得上；不可判）+ 核心图景澄清——**不是"描述与步骤完全对不上"，是"规划层对得上、实现层天然不在描述文本里"**（训练可行性与双层表示立论并行成立）；真正要拦的是失实+藏执行缺陷的关键欠描述。
+- **判读完成 117/117**：owner 亲判 8（S001-S004/S007/S008/S010/S011）+ agent 受委托 109（三轮方法学裁定规范、七字段+双标签、三防误判；逐条源码/diff 证据；全部落 LEDGER_V1.json + 卷宗）。agent 关键裁决：S043 透视函数=输出整形非新步骤（解 owner DIFF 疑问）；S019=DIFF-4 结论沿用；S090 同码对内单位级失实实证；S096/S100/S110 三例 RLE 退化/极限压缩=抽取覆盖缺口；S039/S106/S110 间接资产引用族；S039 spliting=0.5 注释-代码矛盾（S002 同型）。
+- **池级加权估计交付**（`Q2_POOL_WEIGHTED_ESTIMATE_V1.md`，owner 锁定口径 p̂=Σ(N_h/N)p̂_h）：P(结构等价|近重复对)=0.942 [0.90-0.97]；P(非等价)=0.057 [0.03-0.09]；**P(任务逻辑驱动结构差异)=上界 0.057、样本点估计 0/117——owner 十对 0/10 在池级样本上复现**；P(侧失实)=0.012、P(侧欠描述)=0.058（机械可见下界）。层纯度：ui_scaffold 11/12 改判、asset_version 8/12、dup 9/12；reorder/multiplicity 最纯。same 桶 48/48 结构等价。
+- **待 owner**：抽查 agent 判读（每层 2-3 条；关键六条 S019/S023/S043/S090/S096/S107）→ A/B 联合设计规范冻结（B 主+A 治理，治理范围现有池级占比支撑）→ 参考样本集 → 小规模受控对照训练。全程只读零变更。
