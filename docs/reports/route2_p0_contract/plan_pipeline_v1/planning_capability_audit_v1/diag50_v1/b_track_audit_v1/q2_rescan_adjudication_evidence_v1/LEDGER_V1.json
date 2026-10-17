@@ -156,34 +156,66 @@
   {
    "id": "S007",
    "bucket": "diff",
-   "class": "asset_version_candidate",
    "jaccard": 0.7935,
    "script_a": "script_213786",
    "script_b": "script_213790",
-   "structural_equivalence": "",
-   "literal_equivalence": "",
-   "execution_equivalence": "",
-   "difference_source": [],
-   "fidelity_A": "",
-   "fidelity_B": "",
-   "decision_confidence": "",
-   "evidence_required": ""
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "execution_equivalence": "充分",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "evidence_required": "如需确认实际输出差异需 GEE 运行比较；静态代码已足以判定执行逻辑不同",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "key_findings": [
+    "训练/验证构造实质变化：A=用户定义六类 GCP 训练+独立验证点；B=合并 GCP 随机抽取 75% 训练，验证从训练合并集合筛选（gte 0.25）——0.25-0.75 区间重叠，非互斥划分，验证精度可能偏高",
+    "数据源版本：C02/T1_TOA vs C01/T1_TOA",
+    "ee.Image(...) 外层包装差异不是主要结构差异来源（方法学裁定示例）",
+    "fidelity：A 忠实（描述与代码整体吻合）；B 欠描述（未提 Collection 1、未交代随机划分及重叠）"
+   ],
+   "owner_final_class": "substantive_structural_candidate",
+   "owner_adjudicated": true,
+   "adjudication_date": "2026-10-17",
+   "mechanical_class": "asset_version_candidate",
+   "mechanical_to_final_override": true
   },
   {
    "id": "S008",
    "bucket": "diff",
-   "class": "asset_version_candidate",
    "jaccard": 0.8125,
    "script_a": "script_31850",
    "script_b": "script_31855",
-   "structural_equivalence": "",
-   "literal_equivalence": "",
-   "execution_equivalence": "",
-   "difference_source": [],
-   "fidelity_A": "",
-   "fidelity_B": "",
-   "decision_confidence": "",
-   "evidence_required": ""
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "execution_equivalence": "充分",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "fidelity_A": "欠描述",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "evidence_required": "核验资产内容/样本划分/特征波段/验证统计以确认预测差异；需确认 B 资产 UMSExt900_2017LOmCaobaB 存在 VA17_900 字段且为有效实测体积标签",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "key_findings": [
+    "研究区与数据资产变化：SBI（SBInundable） vs SM（SMSubperennifolia）资产——空间范围可能不同，裁剪范围全部随改",
+    "训练/验证构造变化：A=训练资产+独立验证资产；B=同一资产随机列 80/20 划分（VA17_900 字段）",
+    "模型输入特征实质变化：A=Ratios5；B=Ratios5.addBands(TEXTURES_11x11)（A 定义了纹理变量但未用于训练——定义≠使用）",
+    "验证字段 VT_900 vs VA17_900（随资产变化，未必错误但需确认字段有效）；A 说 vegetation volume、B 说 forest volume——目标范围是否同义不可判"
+   ],
+   "owner_final_class": "substantive_structural_candidate",
+   "owner_adjudicated": true,
+   "adjudication_date": "2026-10-17",
+   "mechanical_class": "asset_version_candidate",
+   "mechanical_to_final_override": true
   },
   {
    "id": "S009",
@@ -204,34 +236,67 @@
   {
    "id": "S010",
    "bucket": "diff",
-   "class": "asset_version_candidate",
    "jaccard": 0.75,
    "script_a": "script_54185",
    "script_b": "script_54182",
-   "structural_equivalence": "",
-   "literal_equivalence": "",
-   "execution_equivalence": "",
-   "difference_source": [],
-   "fidelity_A": "",
-   "fidelity_B": "",
-   "decision_confidence": "",
-   "evidence_required": ""
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "execution_equivalence": "充分",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "fidelity_A": "忠实",
+   "fidelity_B": "欠描述",
+   "decision_confidence": "高",
+   "evidence_required": "比较影像数量/有效像元/掩膜覆盖率/最终组分图；实际运行确认定量影响；B 一维 unmix 能否产生有意义稳定的分解需运行验证",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": "asset_version_candidate",
+   "key_findings": [
+    "时间范围：1984-1986 vs 2010-2012（排除 5 月）——不同年份 L5 数据",
+    "第一次解混输入维度实质变化：A=四波段（B5/B7/NDVI/mNDWI median）；B=单波段（仅 mNDWI_median），端元从四维向量变一维",
+    "mNDWI 波段顺序 ['B5','B2'] vs ['B2','B5']——normalizedDifference 分子顺序变化一般改变符号=实质参数/实现差异",
+    "B 新增 mNDWI_stdDev>0.15 掩膜条件；第二阶段端元参数改变（部分变正负号）",
+    "fidelity：A 忠实（1984-1986+解混+组分与代码一致）；B 欠描述（未限定时间范围、未说明单波段分解等关键变化）"
+   ],
+   "owner_final_class": "substantive_structural_candidate",
+   "owner_adjudicated": true,
+   "adjudication_date": "2026-10-17",
+   "mechanical_class": "asset_version_candidate",
+   "mechanical_to_final_override": true
   },
   {
    "id": "S011",
    "bucket": "diff",
-   "class": "asset_version_candidate",
    "jaccard": 0.8491,
    "script_a": "script_54184",
    "script_b": "script_54187",
-   "structural_equivalence": "",
-   "literal_equivalence": "",
-   "execution_equivalence": "",
-   "difference_source": [],
-   "fidelity_A": "",
-   "fidelity_B": "",
-   "decision_confidence": "",
-   "evidence_required": ""
+   "structural_equivalence": "不等价",
+   "literal_equivalence": "影响结果差异",
+   "execution_equivalence": "充分",
+   "difference_source": [
+    "规划结构",
+    "参数字面量",
+    "实现与脚手架"
+   ],
+   "fidelity_A": "失实",
+   "fidelity_B": "忠实",
+   "decision_confidence": "高",
+   "evidence_required": "实际运行 A：核查两次日期过滤后集合大小及后续计算是否失败；必要时比较掩膜覆盖率与最终组分图",
+   "primary_category": "substantive_structural_candidate",
+   "secondary_category": null,
+   "key_findings": [
+    "A 连续两次 filterDate（2010-2012 ∩ 2007-2008 不重叠）→ 集合预期为空——声称处理两时期但交集化，无法形成所描述的正常时段合成=fidelity_A 失实",
+    "初始水陆分解参数：land_L5 -0.32453812 vs -0.33453812、water_L5 0.21103338 vs 0.20103338；植被掩膜阈值 0.15 vs 0.20；第二阶段陆地端元参数族同 S001/S003",
+    "B 多定义 medindices 未参与计算=非关键；导出资产名不同不构成算法差异",
+    "fidelity_B 忠实：描述明确 1984-1986 且代码完成指数/解混/掩膜/组分图"
+   ],
+   "owner_final_class": "substantive_structural_candidate",
+   "owner_adjudicated": true,
+   "adjudication_date": "2026-10-17",
+   "mechanical_class": "asset_version_candidate",
+   "mechanical_to_final_override": true
   },
   {
    "id": "S012",
@@ -1931,7 +1996,8 @@
   }
  ],
  "adjudication_progress": {
-  "adjudicated": 4,
+  "adjudicated": 8,
   "total": 117
- }
+ },
+ "schema_note": "primary/secondary_category 双标签制自 S007 起启用（owner 方法学裁定第三轮，见 Q2_POOL_RESCAN_RULING_OWNER_V1.md）；S001-S004 为方法学前登记，仅 owner_final_class"
 }
