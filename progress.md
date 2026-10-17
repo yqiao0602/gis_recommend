@@ -2128,3 +2128,9 @@
 
 - **owner 裁定归档**（A1_OWNER_ADJUDICATION_V1.md）：52 对人工复核初判 V1 冻结（倾向≠金标）；四指标判读规则表冻结（POS≠正确、ABST≠合理、NODEC 不得当弃权、OOC=错误选择）；**账本双正交字段固定**（decision_quality × output_validity，防生成失败误算合理弃权/无答案误算知识退化）；裁决序=P1 11 对（T-009#S6 解锁 vs T-009#S3 诱发重点）→ P3 15 对（功能修正收益 vs 截断波动）→ P4 26 对 → 四指标汇总 → 解释表选行；此前不宣称补卡有效、不启动 A2。owner 指认材料缺口=复核包缺完整任务/完整候选/双版本卡面。
 - **全证据卷宗包产出**（scripts/dx_a1_full_evidence_packet_v1.py → `a1_v1/A1_FULL_EVIDENCE_PACKET_V1/`，52 卷宗 + INDEX + LEDGER_V1.json）：每对含①任务全文+步骤四字段定义②Top-10 完整候选③变化算子双版本卡面（v0_4/v0_5 并排）+未变算子单卡④双臂**完整决策段**（不截断）⑤owner 初判 V1 转录（status=initial_not_gold）⑥双正交字段预填（output_validity 由机械类初标，decision_quality 留 owner）⑦终判栏+机制归类勾选。优先五对点名（T-009#S6/T-001#S3/T-025#S5/T-033#S1/T-068#S6）。抽检通过：T-009#S6 卡证据=classifier(Choice)+libsvm 子参数可见但 choice 值未展开（owner 判断点完整保留）；T-009#S3 的 multibandvariation 卡=MEAN/STDDEV/DIFF 纯统计输出（错误选择倾向可直接对卡核验）。
+
+## 2026-10-17（B 轨 Q2 判读终局）：owner 抽查第 1 轮收口——3/3 主标签维持 + 三条横切规则
+
+- **owner 复核 S117/S090/S096**（agent 六条关键判定中的三条+一条额外）：全部维持主标签，七字段精化落库（S117 difference_source=实现与脚手架——print 调试输出+格式重写非字面量；S090 fidelity_A=失实确认、B=忠实限定解释、evidence_required=WorldPop 值定义元数据；S096 execution=充分、literal=可替换差异——图表横轴语义差=真正差异本体）。
+- **三条横切规则入账本**：①same_template_literal_diff 是机械差异分类，不代表实际字面量变化——difference_source 按源码真实差异填写；②same_code_two_descriptions 可识别代码一致而描述有事实错误的样本——数量/单位/阈值须与代码及数据定义一致、分辨率不能替代值单位证据；③RLE 空步=抽取范式缺口（数组/矩阵/序列平滑），建议增补五类语义标签+池级空 RLE 普查。
+- owner 收口示意（"差不多吧"）。Q2 线自此收口：40 对人工判读 → 十对源码级核验 → 池级机械扫描 → 117 条分轴判读 → 池级加权估计 → 抽查收口，全链五层证据闭合。下一步=**A/B 联合设计规范冻结**（等 owner 启动令）。

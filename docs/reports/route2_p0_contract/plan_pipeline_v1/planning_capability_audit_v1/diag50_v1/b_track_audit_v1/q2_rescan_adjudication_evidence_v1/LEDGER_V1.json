@@ -2608,22 +2608,27 @@
    "structural_equivalence": "等价",
    "literal_equivalence": "等价",
    "execution_equivalence": "充分",
-   "difference_source": [],
-   "fidelity_A": "忠实",
+   "difference_source": [
+    "证据不足"
+   ],
+   "fidelity_A": "失实",
    "fidelity_B": "忠实",
    "decision_confidence": "中",
-   "evidence_required": "",
+   "evidence_required": "WorldPop 2020 波段定义/像元值单位/投影尺度元数据（确认阈值精确数据语义；代码一致性无须补证）",
    "primary_category": "same_code_two_descriptions",
    "secondary_category": null,
    "key_findings": [
     "SHA 相同=代码逐字节同；本对证明'同码双描述'不必然同义——单位级失实可在同码对内出现",
-    "**保真度分歧实证**：代码 population.gt(50) 作用于 WorldPop 100m 像元（≈1ha）——B '50 persons/ha' ✓；A '50 persons/100m²' 单位错 100 倍（数值阈值相同、单位语义错）=轻度失实"
+    "**保真度分歧实证**：代码 population.gt(50) 作用于 WorldPop 100m 像元（≈1ha）——B '50 persons/ha' ✓；A '50 persons/100m²' 单位错 100 倍（数值阈值相同、单位语义错）=轻度失实",
+    "owner 复核裁定（2026-10-17）：A=失实确认（population.gt(50) 是像元值阈值，非'每100m² 50人'，无面积归一化）；B=忠实（限定解释：'50 persons/ha'与 100m 像元≈1ha 尺度相符，但代码是像元值直接比较、非显式每公顷换算——严格单位语义待 WorldPop 数据集值定义确认）",
+    "owner 补充记录：B 的'resampled to 1 km+fastDistanceTransform 2km'为概括性表述（DIST_SCALE=2000 确在码内，但非每个中间指标显式统一重采样）——保真度限定项；B 的 '18 named layers' 有源码依据（rename 列表证实）"
    ],
    "owner_final_class": "same_code_two_descriptions",
    "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
    "adjudication_date": "2026-10-17",
    "mechanical_class": "same_code_two_descriptions",
-   "mechanical_to_final_override": false
+   "mechanical_to_final_override": false,
+   "owner_spot_check": "reviewed_maintained_with_refinements"
   },
   {
    "id": "S091",
@@ -2766,14 +2771,14 @@
    "script_a": "script_186175",
    "script_b": "script_187237",
    "structural_equivalence": "等价",
-   "literal_equivalence": "等价",
-   "execution_equivalence": "中",
+   "literal_equivalence": "可替换差异",
+   "execution_equivalence": "充分",
    "difference_source": [
     "实现与脚手架"
    ],
    "fidelity_A": "忠实",
    "fidelity_B": "忠实",
-   "decision_confidence": "中",
+   "decision_confidence": "高",
    "evidence_required": [
     "复核 RLE 为空步的行在池内的规模（same_template_canonical_diff 层抽样 12 中出现 1 例）"
    ],
@@ -2782,13 +2787,17 @@
    "key_findings": [
     "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
     "**RLE 退化实例**：两侧链均 1 空步——纯数组/矩阵运算代码（伪逆 SG 平滑）几乎无 ee.ImageCollection 调用→抽取覆盖缺口（机械漏检审计的设计输入）",
-    "B 明确 MOD09A1、A 未提——两侧描述各自无矛盾"
+    "B 明确 MOD09A1、A 未提——两侧描述各自无矛盾",
+    "owner 复核修正（2026-10-17）：真正差异=图表横轴语义（A 显式日期轴 advance 1 天 vs 标签 'x 8 days' 不一致；B 默认数组索引）——图表表达层语义差，非平滑计算结构差",
+    "owner 裁定 RLE 空步解释：ee.List/ee.Array/矩阵运算范式未被抽取规则覆盖（非'工作流无结构'）；改进建议=增补 ARRAY_CONSTRUCTION/MATRIX_PSEUDOINVERSE/WINDOW_SMOOTHING/SERIES_PADDING/CHART_RENDERING 语义类+池级空 RLE 普查（不凭单例推断缺口规模）",
+    "owner 保真度精化：B 的 MOD09A1 为未经代码证实的来源声明（y 为硬编码数组，仅图表标题标注）——忠实但来源不可追溯"
    ],
    "owner_final_class": "same_template_canonical_diff",
    "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
    "adjudication_date": "2026-10-17",
    "mechanical_class": "same_template_canonical_diff",
-   "mechanical_to_final_override": false
+   "mechanical_to_final_override": false,
+   "owner_spot_check": "reviewed_maintained_with_refinements"
   },
   {
    "id": "S097",
@@ -3378,18 +3387,35 @@
    "secondary_category": null,
    "key_findings": [
     "same 桶代码层类为本征终类（维持机械类）；本轴只承载描述保真度",
-    "MapBiomas 缓冲区 LULC 同管线（RLE 17 步全同）；amortecimento/amortization 同义→双忠实"
+    "MapBiomas 缓冲区 LULC 同管线（RLE 17 步全同）；amortecimento/amortization 同义→双忠实",
+    "owner 复核修正（2026-10-17）：差异非'字面量'而是调试输出+格式——新增 print(listToSelect)（不参与计算=调试输出非分析步骤）+面板样式等价重写；difference_source 按源码真实差异填写",
+    "owner 登记的共同实现边界：面积统计 region=bzSelected.geometry()，未显式 clipToCollection——缓冲区几何重叠时统计范围需结合资产结构确认"
    ],
    "owner_final_class": "same_template_literal_diff",
    "adjudicator": "agent (owner-delegated, rulings rounds 1-3)",
    "adjudication_date": "2026-10-17",
    "mechanical_class": "same_template_literal_diff",
-   "mechanical_to_final_override": false
+   "mechanical_to_final_override": false,
+   "owner_spot_check": "reviewed_maintained_with_refinements"
   }
  ],
  "adjudication_progress": {
   "adjudicated": 117,
   "total": 117
  },
- "schema_note": "primary/secondary_category 双标签制自 S007 起启用（owner 方法学裁定第三轮，见 Q2_POOL_RESCAN_RULING_OWNER_V1.md）；S001-S004 为方法学前登记，仅 owner_final_class"
+ "schema_note": "primary/secondary_category 双标签制自 S007 起启用（owner 方法学裁定第三轮，见 Q2_POOL_RESCAN_RULING_OWNER_V1.md）；S001-S004 为方法学前登记，仅 owner_final_class",
+ "owner_spot_check_round1": {
+  "date": "2026-10-17",
+  "records": [
+   "S117",
+   "S090",
+   "S096"
+  ],
+  "outcome": "3/3 主标签维持；七字段精化落库（S117 difference_source、S090 fidelity_B 限定+evidence_required、S096 execution/literal/difference_source）",
+  "cross_cutting_rulings": [
+   "same_template_literal_diff 是机械差异分类，不意味着实际存在参数字面量变化；difference_source 按源码真实差异填写",
+   "same_code_two_descriptions 的价值不止重复检测——可识别代码一致而描述有事实错误的样本；保真度规则：数量/单位/阈值必须与代码及数据定义一致，分辨率不能替代值单位证据",
+   "RLE 空步=抽取范式缺口（数组/矩阵/序列平滑类），不是无结构；空 RLE 池级普查列入机械漏检审计设计"
+  ]
+ }
 }
