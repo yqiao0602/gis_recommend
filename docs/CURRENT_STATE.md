@@ -184,14 +184,26 @@ disagreements (set-symmetric-difference blind to duplicated blocks; no
 post-hoc threshold tuning per prereg discipline); fidelity mechanical proxy
 = nomination-only (3 spot-checks ALL false positives: precision rounding /
 variable indirection / common-cause — the 17.3% flag rate is NOT prevalence).
-CURRENT ACTION = owner adjudicates the 117-record stratified sample
-(`Q2_POOL_RESCAN_ADJUDICATION_SAMPLE_V1.md/.json`, seed 20261017, ≤12/class;
-difference-source four classes non-exclusive + fidelity axis separate) ->
-pool-level four-class shares with uncertainty -> A/B joint design-spec
-freeze -> reviewed reference samples -> small-scale controlled training
-(judged on planning correctness, not label similarity). Discipline: no loss
-changes or resampling; diagnostic tasks stay out of the B-track training
-set; interventions still require owner release.**
+ALL 117/117 ADJUDICATED (2026-10-17; owner personally 8 + agent-delegated
+109 under the three methodology rulings; LEDGER_V1.json + 117 dossiers with
+per-record source evidence). POOL-LEVEL WEIGHTED ESTIMATE DELIVERED
+(`Q2_POOL_WEIGHTED_ESTIMATE_V1.md`, owner-locked stratified caliber):
+P(structure-equivalent | near-dup pair) = 0.942 [~0.90-0.97]; P(non-
+equivalent) = 0.057 [~0.03-0.09]; **P(task-logic-driven structure
+difference): upper bound 0.057, sample point estimate 0/117 — the owner's
+ten-pair 0/10 REPRODUCES at pool-sample scale**; per-side mis-description
+0.012 / under-description 0.058 (mechanically visible lower bounds);
+stratum purity: ui_scaffold 11/12 and asset_version 8/12 overridden,
+reorder/multiplicity cleanest; same bucket 48/48 structure-equivalent.
+Instrument findings: three RLE-degenerate cases (S096 empty-step / S100
+47KB->1 label / S110 32KB->3 labels), indirect asset references, in-script
+comment-code contradictions, non-exclusive train/val splits. Awaiting
+owner: spot-check agent labels (2-3 per stratum; six pivotal records
+S019/S023/S043/S090/S096/S107) -> A/B joint design-spec freeze ->
+reference samples -> small-scale controlled training (judged on planning
+correctness, not label similarity). Discipline: no loss changes or
+resampling; diagnostic tasks stay out of the B-track training set;
+interventions still require owner release.**
   D1 contract ADR sign-off still pending. Live plan: task_plan.md.
 
 ## (0a) Planning Capability Audit (PCA): protocol v1 FROZEN, Phase 1 underway (2026-10-13)
