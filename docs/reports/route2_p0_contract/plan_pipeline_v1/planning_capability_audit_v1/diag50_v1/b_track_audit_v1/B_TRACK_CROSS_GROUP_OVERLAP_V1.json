@@ -1,9 +1,16 @@
 {
  "artifact": "B_TRACK_CROSS_GROUP_OVERLAP_V1",
  "date": "2026-10-18",
- "rule": "共享脚本的参考组在阶段三必须同侧（同训练或同评估），不得分属训练/验证",
- "n_groups": 25,
- "edges": [
+ "version": "V2_full_scan",
+ "baseline_commit": "9a418d1",
+ "n_groups": 28,
+ "coverage": {
+  "unique_scripts": 78,
+  "found_in_corpus": 78,
+  "missing": [],
+  "coverage_ratio": 1.0
+ },
+ "edges_script_id": [
   {
    "groups": [
     "R03",
@@ -13,8 +20,7 @@
     "script_54184",
     "script_54187",
     "script_54188"
-   ],
-   "constraint": "same_split_only"
+   ]
   },
   {
    "groups": [
@@ -24,8 +30,72 @@
    "shared_scripts": [
     "script_74490",
     "script_74517"
+   ]
+  }
+ ],
+ "edges_content_hash": [
+  {
+   "groups": [
+    "R03",
+    "R10"
    ],
-   "constraint": "same_split_only"
+   "shared_content_hashes": [
+    "41525810f27a47db",
+    "62f8eb2110422085",
+    "85f337d4ba3f16e3"
+   ],
+   "script_pairs": [
+    [
+     "script_54187",
+     "script_54187"
+    ],
+    [
+     "script_54184",
+     "script_54184"
+    ],
+    [
+     "script_54188",
+     "script_54188"
+    ]
+   ]
+  },
+  {
+   "groups": [
+    "R18A",
+    "R20"
+   ],
+   "shared_content_hashes": [
+    "2608a6e8d6ab3edf",
+    "3fc551b9d6a33bb7"
+   ],
+   "script_pairs": [
+    [
+     "script_74490",
+     "script_74490"
+    ],
+    [
+     "script_74517",
+     "script_74517"
+    ]
+   ]
+  }
+ ],
+ "edges_exact_instruction": [
+  {
+   "groups": [
+    "R03",
+    "R10"
+   ],
+   "shared_instruction_count": 3,
+   "example": "task: estimate fractional land water vegetation cover estimate the fractional cover of land, water, floating aquatic vegetation (fav), and submerged aquatic veg"
+  },
+  {
+   "groups": [
+    "R18A",
+    "R20"
+   ],
+   "shared_instruction_count": 2,
+   "example": "task: estimate cotton yield using gpp and lai fractions estimate village-level cotton yield in aurangabad, maharashtra by combining modis and gcom-c lai/gpp dat"
   }
  ],
  "connected_components": [
@@ -38,5 +108,6 @@
    "R20"
   ]
  ],
- "future_rule": "全量扫描发现的新重叠边必须合并连通分量后再划分；不得只处理已知边"
+ "rule": "共享脚本/同内容脚本/同一任务描述的组在阶段三必须同侧；重叠边≠多参考关系，两者独立维护；新边必须合并分量",
+ "note": "content-hash 边用于发现不同 script_id 但内容相同的泄漏风险；exact-instruction 边用于发现同一任务文本跨组"
 }

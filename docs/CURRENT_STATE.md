@@ -251,7 +251,15 @@ interventions still require owner release.**
   R22 split into DIFF5/S013/S027; R24 modified pass (eutrophication `a` is a
   56-feature list INDEX, not a year loop -> A/B analyze different features).
   ALL 28 records reviewed; NO group has unconditional multiref admission.**
-  -> split freeze -> three
+  **STAGE-3 STEPS 1-2 DONE (2026-10-18):** relation/admission baseline FROZEN
+  (`B_TRACK_RELATION_ADMISSION_FREEZE_V1`, 28 records, baseline commit 9a418d1)
+  and the FULL overlap scan executed (`B_TRACK_CROSS_GROUP_OVERLAP_V1` V2:
+  28 groups / 78 unique scripts / 100% local coverage / zero missing; three
+  layers = script ID, content hash, exact instruction; still exactly two
+  components R03+R10 and R18A+R20). Split constraints frozen
+  (`B_TRACK_SPLIT_CONSTRAINTS_V1`): shared-script groups must be same-side;
+  overlap edge != multiref relation. Five external-evidence items remain
+  tracked separately and do not gate steps 1-2.** -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
   coverage, dependency correctness, harmful steps, long-chain degradation,

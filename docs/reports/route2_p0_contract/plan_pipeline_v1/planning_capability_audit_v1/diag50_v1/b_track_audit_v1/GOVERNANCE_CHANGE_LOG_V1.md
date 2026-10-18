@@ -12,3 +12,4 @@
 | 2026-10-18 | B_TRACK_GOVERNANCE_V1.3 | owner 第三轮：R01–R11 逐组裁定（多参考全部暂缓；R03/R10 口径漂移待裁；R04 外部单位待补；R08 事实修正） | 11 组关系/证据/准入更新；索引 V4 | `B_TRACK_TRUSTED_REFERENCE_DRAFTS_V1.json` | owner 第三轮评审 |
 | 2026-10-18 | B_TRACK_GOVERNANCE_V1.4 | owner 第四轮：R12–R15 修改后通过（多参考全部暂缓；R12 方法映射修正；R14 C2 缩放未观测） | 4 组状态更新；索引 V5；R16/R17/R21/R22/R24 复核包 | `B_TRACK_BATCH4_REVIEW_PACKET.md` | owner 第四轮评审 |
 | 2026-10-18 | B_TRACK_GOVERNANCE_V1.5 | owner 第五轮：R16/R17/R21/R22/R24 修改后通过/拆分；R17→S068+S105；R22→DIFF5+S013+S027；R24 修正 a=要素索引 | 29 条记录全复核；无无条件多参考准入；索引 V6 | `B_TRACK_BATCH4_REVIEW_PACKET.md` 更新前版本 | owner 第五轮评审 |
+| 2026-10-18 | B_TRACK_GOVERNANCE_V1.6 | 阶段三第 1–2 步：关系/准入冻结 V1（28 条，基线 9a418d1）+ 全量重叠扫描 V2（28 组/78 脚本/覆盖 100%，三层边扫描）+ 划分约束 V1 | 无新增无条件多参考；连通分量仍为 R03+R10、R18A+R20 | `B_TRACK_RELATION_ADMISSION_FREEZE_V1.md/.json`、`B_TRACK_SPLIT_CONSTRAINTS_V1.md`、`B_TRACK_CROSS_GROUP_OVERLAP_V1.md/.json` | owner 阶段三启动裁定 |
