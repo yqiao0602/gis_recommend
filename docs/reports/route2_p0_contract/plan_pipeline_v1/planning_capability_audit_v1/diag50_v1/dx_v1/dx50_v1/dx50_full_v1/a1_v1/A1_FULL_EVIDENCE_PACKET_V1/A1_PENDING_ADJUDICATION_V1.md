@@ -2,14 +2,12 @@
 
 位置：本目录 `A1_FULL_EVIDENCE_PACKET_V1/`。每对一卷宗（任务全文/步骤定义/Top-10/双版本卡面/双臂完整决策）。裁决写入 `LEDGER_V1.json` 对应条目的 `ledger_fields_pending_owner`（decision_quality × output_validity × mechanism）。
 
-已裁决 6/52（owner_ruled）；待裁决 28 对。
+已裁决 6/52（owner_ruled）；待裁决 26 对。
 
 ## A 级：裁决会改变结论或 agent 判定非显然（18 对，建议先做）
 
 | 步骤 | 对照(agent) | 实验(agent) | validity | 卷宗 | 待你裁的问题 |
 |---|---|---|---|---|---|
-| PCA2-T-001#S6 | wrong_selection | reasonable_abstention | valid/valid | [P3_PCA2-T-001_S6.md](P3_PCA2-T-001_S6.md) | 对照判错（mosaicking 做资产打包）→实验合理弃权；请确认对照的'错误选择'标签 |
-| PCA2-T-033#S1 | indeterminate | correct_selection | truncated/valid | [P4_PCA2-T-033_S1.md](P4_PCA2-T-033_S1.md) | 实验正确但所用算子卡未变（gdal:rearrange_bands）——上下文诱发，按 R5 不能归因补卡；请确认判定 |
 
 ## B 级：低杠杆（多为弃权/截断标签确认，28 对）
 
