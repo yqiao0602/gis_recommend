@@ -20,5 +20,784 @@
  },
  "target": 1650,
  "tolerance": 10,
- "verification": "B tokens all within 1650±10"
+ "verification": "B tokens all within 1650±10",
+ "execution_freeze": {
+  "runner": "scripts/dx_run_stage_v2.py",
+  "runner_sha256": "0a615fb797782a9d4a91f7ab3e9c79f0fd3c2a05fe0f5c695d6b1bcb3e7ce12d",
+  "termination": "scripts/dx_termination_v2.py",
+  "termination_sha256": "3742a97e7803aa87e2293d01e07dce410729bc30e85e3f801f202b0324ab8932",
+  "analyzer": "scripts/dx_d1_analyze_v1.py",
+  "analyzer_sha256": "d139d1b92e24574d35eb367eafa98c50da0ac02d885aeba087b9f2a1bbd2fe8d",
+  "preaudit": "scripts/dx_d1_preaudit_v1.py",
+  "preaudit_sha256": "e6aebe668f52320178f24c9fd14828cbca13ea7539a425a6e6776a9f552f5dd0",
+  "preaudit_report": "D1_PREAUDIT_V1.json",
+  "preaudit_report_sha256": "e02fdb08691cac39071cada235dd59c49b0c62187a888058152e4eabf6ca040f",
+  "bootstrap": "task-level cluster bootstrap, 26 tasks, 10k, seed 20261018 (inside analyzer)"
+ },
+ "preaudit": {
+  "sha_checks": {
+   "sample_sha_ok": true,
+   "padding_sha_ok": true,
+   "prompts_sha_ok": true
+  },
+  "n_pairs": 47,
+  "target": 1650,
+  "tolerance": 10,
+  "all_pairs_ok": true,
+  "failures": [],
+  "rows": [
+   {
+    "step_key": "PCA2-T-003#S2",
+    "A_tokens": 1100,
+    "B_tokens": 1650,
+    "block_chars": 2708,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-003#S6",
+    "A_tokens": 1191,
+    "B_tokens": 1651,
+    "block_chars": 2258,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-012#S1",
+    "A_tokens": 1090,
+    "B_tokens": 1651,
+    "block_chars": 2758,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-012#S2",
+    "A_tokens": 1211,
+    "B_tokens": 1651,
+    "block_chars": 2155,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-013#S3",
+    "A_tokens": 1237,
+    "B_tokens": 1651,
+    "block_chars": 2025,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-021#S1",
+    "A_tokens": 1095,
+    "B_tokens": 1651,
+    "block_chars": 2729,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-021#S3",
+    "A_tokens": 1135,
+    "B_tokens": 1651,
+    "block_chars": 2535,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-021#S8",
+    "A_tokens": 1186,
+    "B_tokens": 1651,
+    "block_chars": 2281,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-022#S5",
+    "A_tokens": 952,
+    "B_tokens": 1651,
+    "block_chars": 3408,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-022#S6",
+    "A_tokens": 1143,
+    "B_tokens": 1651,
+    "block_chars": 2495,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-023#S1",
+    "A_tokens": 947,
+    "B_tokens": 1651,
+    "block_chars": 3450,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-024#S1",
+    "A_tokens": 1206,
+    "B_tokens": 1651,
+    "block_chars": 2186,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-024#S3",
+    "A_tokens": 1101,
+    "B_tokens": 1651,
+    "block_chars": 2708,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-024#S6",
+    "A_tokens": 1153,
+    "B_tokens": 1651,
+    "block_chars": 2450,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-027#S2",
+    "A_tokens": 944,
+    "B_tokens": 1651,
+    "block_chars": 3459,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-027#S3",
+    "A_tokens": 1178,
+    "B_tokens": 1651,
+    "block_chars": 2324,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-033#S1",
+    "A_tokens": 1033,
+    "B_tokens": 1651,
+    "block_chars": 3017,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-033#S5",
+    "A_tokens": 1229,
+    "B_tokens": 1651,
+    "block_chars": 2067,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-042#S2",
+    "A_tokens": 1207,
+    "B_tokens": 1651,
+    "block_chars": 2182,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-046#S4",
+    "A_tokens": 1184,
+    "B_tokens": 1651,
+    "block_chars": 2293,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-046#S5",
+    "A_tokens": 849,
+    "B_tokens": 1651,
+    "block_chars": 3909,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-048#S3",
+    "A_tokens": 1047,
+    "B_tokens": 1651,
+    "block_chars": 2952,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-052#S2",
+    "A_tokens": 1135,
+    "B_tokens": 1651,
+    "block_chars": 2535,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-052#S3",
+    "A_tokens": 1006,
+    "B_tokens": 1651,
+    "block_chars": 3147,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-052#S4",
+    "A_tokens": 1202,
+    "B_tokens": 1651,
+    "block_chars": 2201,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-057#S1",
+    "A_tokens": 1082,
+    "B_tokens": 1651,
+    "block_chars": 2788,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-057#S4",
+    "A_tokens": 1103,
+    "B_tokens": 1651,
+    "block_chars": 2700,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-059#S3",
+    "A_tokens": 1220,
+    "B_tokens": 1651,
+    "block_chars": 2105,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-059#S4",
+    "A_tokens": 1076,
+    "B_tokens": 1651,
+    "block_chars": 2807,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-060#S3",
+    "A_tokens": 1159,
+    "B_tokens": 1651,
+    "block_chars": 2410,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-062#S5",
+    "A_tokens": 1163,
+    "B_tokens": 1651,
+    "block_chars": 2395,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-068#S2",
+    "A_tokens": 1117,
+    "B_tokens": 1651,
+    "block_chars": 2630,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-068#S4",
+    "A_tokens": 1208,
+    "B_tokens": 1651,
+    "block_chars": 2173,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-068#S6",
+    "A_tokens": 1160,
+    "B_tokens": 1651,
+    "block_chars": 2406,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-079#S3",
+    "A_tokens": 1161,
+    "B_tokens": 1651,
+    "block_chars": 2402,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-079#S4",
+    "A_tokens": 1110,
+    "B_tokens": 1651,
+    "block_chars": 2671,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-081#S1",
+    "A_tokens": 1092,
+    "B_tokens": 1651,
+    "block_chars": 2745,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-083#S3",
+    "A_tokens": 1185,
+    "B_tokens": 1651,
+    "block_chars": 2289,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-084#S4",
+    "A_tokens": 857,
+    "B_tokens": 1651,
+    "block_chars": 3868,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-084#S7",
+    "A_tokens": 1130,
+    "B_tokens": 1651,
+    "block_chars": 2567,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-086#S2",
+    "A_tokens": 1119,
+    "B_tokens": 1651,
+    "block_chars": 2622,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-086#S4",
+    "A_tokens": 1160,
+    "B_tokens": 1651,
+    "block_chars": 2406,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-086#S5",
+    "A_tokens": 1044,
+    "B_tokens": 1651,
+    "block_chars": 2963,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-087#S4",
+    "A_tokens": 1233,
+    "B_tokens": 1651,
+    "block_chars": 2044,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-092#S2",
+    "A_tokens": 1189,
+    "B_tokens": 1651,
+    "block_chars": 2266,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-092#S6",
+    "A_tokens": 1119,
+    "B_tokens": 1651,
+    "block_chars": 2622,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   },
+   {
+    "step_key": "PCA2-T-098#S1",
+    "A_tokens": 1085,
+    "B_tokens": 1651,
+    "block_chars": 2778,
+    "ok": {
+     "pair_present": true,
+     "reconstruct_A": true,
+     "block_substring_of_padding": true,
+     "inserted_before_instruction": true,
+     "A_has_instruction": true,
+     "B_token_in_range": true,
+     "A_token_matches_record": true
+    },
+    "all_ok": true
+   }
+  ]
+ }
 }
