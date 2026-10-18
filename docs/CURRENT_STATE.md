@@ -225,8 +225,19 @@ interventions still require owner release.**
   implementation, L1 planning semantics anchored `script:line`, dependencies,
   L2 condition-implementation mapping, L3 fidelity, multi-reference, admission,
   pending evidence; all `draft_provisional`, awaiting owner per-group review
-  (risk order R19/R18/R20/R23 -> R09/R05/R21/R01 -> rest; 15 pending-evidence
-  items are second-pass anchors that do not change drafted structure)** -> split freeze -> three
+  (risk order R19/R18/R20/R23 -> R09/R05/R21/R01 -> rest)**. **OWNER
+  ROUND-1 REVIEW (2026-10-18): R19/R18/R20/R23 all needs_revision -> revised:
+  R18 split into R18-A (crop isomorphic template) / R18-B (eutrophication
+  candidate multiref, all four scripts use point geometry); R19 separates
+  structural equivalence / isomorphic template / multiref and adds cloud-
+  join/TSI/chart/inventory evidence; R20 refines aggregation-order wording
+  and the exact 4500-vs-5500 m range; R23 uses four branches (CART/RF/KMeans/
+  RF-v2), adds the full S096 instruction comparison, and separates planning/
+  extractor/schema admission. Three unified calibers landed in the governance
+  spec (three judgments; three status fields; cross-group leakage), plus
+  B_TRACK_CROSS_GROUP_OVERLAP_V1 (2 edges: R03-R10, R18A-R20). Index V2 = 25
+  records, five revised_pending_owner_review, rest draft_provisional.**
+  -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
   coverage, dependency correctness, harmful steps, long-chain degradation,
