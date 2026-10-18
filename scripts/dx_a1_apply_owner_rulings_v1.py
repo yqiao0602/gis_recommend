@@ -47,6 +47,18 @@ CTRL = Path(r"E:/02_projects/03_PythonProject/Operator-recommend-system/Algorith
 EXP = Path(r"E:/02_projects/03_PythonProject/Operator-recommend-system/Algorithm_classification/_a1_work/runs_local")
 
 OWNER = {
+ "PCA2-T-042#S1": {
+   "control": "reasonable_abstention", "experiment": "n/a_no_decision",
+   "validity": {"control": "valid", "experiment": "no_decision"},
+   "mechanism": "其他——实验臂空输出（无判定），不能评价为能力改善或退化",
+   "note": "owner：数据获取步骤无算子，对照合理弃权；实验臂空输出按 R2 记无判定，"
+           "不得计入弃权率（decision_quality 与 output_validity 分列）。"},
+ "PCA2-T-056#S5": {
+   "control": "reasonable_abstention", "experiment": "n/a_no_decision",
+   "validity": {"control": "valid", "experiment": "no_decision"},
+   "mechanism": "其他——实验臂无闭合决策（空输出），不构成卡片补全效果证据",
+   "note": "owner：RF 训练能力不可见，对照合理弃权；实验臂空输出记无判定、不入弃权率；"
+           "若后续材料显示并非空输出而是完整弃权论证，再按 R2 复核。"},
  "PCA2-T-009#S3": {
    "control": "reasonable_abstention", "experiment": "wrong_selection",
    "validity": {"control": "valid", "experiment": "valid"},
@@ -117,29 +129,38 @@ def derive_validity(key, arm):
         parsed = json.loads(pp.read_text(encoding="utf-8")) if pp.exists() else None
     if parsed is None or parsed.get("parser") != "s2_v2":
         parsed = parse_s2_v2(raw, OIDS.get(key, []))
-    if parsed.get("decision_section") == "think_unterminated":
+    # truncation has two signatures: unterminated think, or generation hitting
+    # the maxnew cap (gen_tokens >= maxnew) - the latter can cut a decision
+    # list mid-line even with a closed think block (e.g. T-003#S2 control).
+    hit_cap = False
+    gp = d / "gen.json"
+    if gp.exists():
+        g = json.loads(gp.read_text(encoding="utf-8"))
+        mx = g.get("maxnew")
+        gt = g.get("gen_tokens")
+        hit_cap = bool(mx and gt and gt >= int(mx))
+    if parsed.get("decision_section") == "think_unterminated" or hit_cap:
         return "truncated"
     return "valid"
 
 
 def main():
     d = json.loads(LEDGER.read_text(encoding="utf-8"))
-    # 1) apply R2 across all pairs still carrying NODEC on either arm
+    # 1) R2 pass over every non-owner-ruled arm: validity from raw+gen, and
+    #    NODEC -> indeterminate whenever truncation is detected
     reclassed = []
     for e in d["entries"]:
-        q = e["ledger_fields_pending_owner"]["decision_quality"]
-        for arm, cur in (("control", q["control"]), ("experiment", q["experiment"])):
-            if cur != "n/a_no_decision":
-                continue
-            v = derive_validity(e["step_key"], arm)
-            if v == "truncated":
-                q[arm] = "indeterminate"
-                reclassed.append((e["step_key"], arm))
-        # validity refresh
+        if e["step_key"] in OWNER:
+            continue
+        q = e["ledger_fields_pending_owner"]
         for arm in ("control", "experiment"):
-            if e["ledger_fields_pending_owner"]["output_validity"][arm] == "no_decision":
-                e["ledger_fields_pending_owner"]["output_validity"][arm] = \
-                    derive_validity(e["step_key"], arm)
+            v = derive_validity(e["step_key"], arm)
+            q["output_validity"][arm] = v
+            if v == "truncated" and q["decision_quality"][arm] == "n/a_no_decision":
+                q["decision_quality"][arm] = "indeterminate"
+                reclassed.append((e["step_key"], arm))
+        if e["step_key"] == "PCA2-T-005#S5":
+            q["output_validity"]["experiment"] = "self_contradictory"
 
     # 2) apply the six owner rulings (authoritative)
     ruled = 0

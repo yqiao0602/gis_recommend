@@ -128,7 +128,7 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "reasonable_abstention",
      "experiment": "n/a_no_decision"
@@ -137,9 +137,12 @@
      "control": "valid",
      "experiment": "no_decision"
     },
-    "mechanism": "生成波动",
-    "final_note": "数据获取步骤（GPM IMERG）无算子；实验臂空输出",
-    "confidence": "medium-high"
+    "mechanism": "其他——实验臂空输出（无判定），不能评价为能力改善或退化",
+    "final_note": "owner：数据获取步骤无算子，对照合理弃权；实验臂空输出按 R2 记无判定，不得计入弃权率（decision_quality 与 output_validity 分列）。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -165,7 +168,7 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "reasonable_abstention",
      "experiment": "n/a_no_decision"
@@ -174,9 +177,12 @@
      "control": "valid",
      "experiment": "no_decision"
     },
-    "mechanism": "生成波动",
-    "final_note": "RF 训练能力候选全无记载；实验臂无判定",
-    "confidence": "medium-high"
+    "mechanism": "其他——实验臂无闭合决策（空输出），不构成卡片补全效果证据",
+    "final_note": "owner：RF 训练能力不可见，对照合理弃权；实验臂空输出记无判定、不入弃权率；若后续材料显示并非空输出而是完整弃权论证，再按 R2 复核。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -211,7 +217,7 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "其他（待 P2/官方文档）",
@@ -252,7 +258,7 @@
      "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "no_decision"
     },
     "mechanism": "生成波动",
@@ -299,7 +305,7 @@
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "选择保持（算子替换、实验臂证据更充分）",
@@ -376,7 +382,7 @@
      "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "no_decision"
     },
     "mechanism": "生成波动",
@@ -504,7 +510,7 @@
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "补卡解锁正确选择",
     "final_note": "concatenateimages v0_5 卡：'list of images of the same size into a single multi-channel image'——正是逐像元跨时相堆叠；所选算子卡面变化",
@@ -543,8 +549,8 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid",
-     "experiment": "valid"
+     "control": "truncated",
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "候选无 SAR 斑点滤波；实验臂无判定",
@@ -581,7 +587,7 @@
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "其他",
     "final_note": "候选无跨影像中值合成（镶嵌≠中值）；弃权合理",
@@ -620,7 +626,7 @@
      "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "其他（对照错误被纠正为合理弃权）",
@@ -662,7 +668,7 @@
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "补卡解锁正确选择",
     "final_note": "contrastenhancement v0_5 卡含 minmax.manual.min/max——与步骤 -25/5 dB 线性拉伸精确匹配；所选算子卡面变化",
@@ -699,8 +705,8 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid",
-     "experiment": "valid"
+     "control": "truncated",
+     "experiment": "truncated"
     },
     "mechanism": "生成波动（正确→无判定）",
     "final_note": "对照 joinattributestable 一对多展开与步骤匹配；实验臂 think 未闭合截断",
@@ -743,8 +749,8 @@
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "valid",
-     "experiment": "valid"
+     "control": "truncated",
+     "experiment": "truncated"
     },
     "mechanism": "选择保持（实验臂增加冗余算子）",
     "final_note": "mergevectorlayers 与 concatenatevectordata 均满足展平合并；双选冗余但皆正确",
@@ -820,7 +826,7 @@
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "无可做 tile 划分的候选；实验臂无判定",
@@ -895,7 +901,7 @@
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "无昼夜均值合成算子；实验臂无判定",
@@ -932,7 +938,7 @@
     },
     "output_validity": {
      "control": "no_decision",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "其他",
     "final_note": "可视化制图超出处理算子；弃权合理",
@@ -969,8 +975,8 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid",
-     "experiment": "valid"
+     "control": "truncated",
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "无堆叠+逐像元计数的复合能力；实验臂无判定",
@@ -1010,7 +1016,7 @@
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "无掩膜+DEM 条件精化；实验臂无判定",
@@ -1087,11 +1093,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "补卡解锁正确选择",
@@ -1203,7 +1209,7 @@
     },
     "output_validity": {
      "control": "no_decision",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "其他",
     "final_note": "候选无跨时相均值；弃权合理",
@@ -1238,7 +1244,7 @@
      "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "no_decision"
     },
     "mechanism": "生成波动",
@@ -1315,7 +1321,7 @@
     },
     "output_validity": {
      "control": "no_decision",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "其他（上下文诱发正确选择）",
     "final_note": "statisticsforrasters 卡：GRIDS 多层输入 + MEAN 输出——跨栅格均值成立（所选算子卡未变）",
@@ -1353,7 +1359,7 @@
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "生成波动（对照错误→无判定）",
     "final_note": "对照 native:rasterize 卡描述=渲染地图画布，并非多栅格合成；判错",
@@ -1437,7 +1443,7 @@
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "其他（上下文诱发正确选择）",
     "final_note": "rearrange_bands 卡含 BANDS 波段索引参数——波段提取成立（所选算子卡未变）",
@@ -1472,8 +1478,8 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid",
-     "experiment": "valid"
+     "control": "truncated",
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "候选 native:polygonize 卡面 accepts=vector（栅格→矢量未由卡面证实）——弃权与卡面一致；实验臂无判定",
@@ -1661,7 +1667,7 @@
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "其他（上下文诱发正确选择）",
     "final_note": "native:aggregate 卡 GROUP_BY+AGGREGATES——按公园分区聚合损失成立(所选算子卡未变)",
@@ -1699,7 +1705,7 @@
     },
     "output_validity": {
      "control": "no_decision",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "其他（上下文诱发正确选择）",
     "final_note": "saga:resampling 卡含 TARGET_USER_* extent 参数——可达 ROI 对齐裁剪（所选算子卡未变，注意重采样≠裁剪的语义差）",
@@ -1736,7 +1742,7 @@
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "variabledistancebuffer=单缓冲按字段距离，非多级同心环；弃权合理；实验臂无判定",
@@ -1771,7 +1777,7 @@
      "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "no_decision"
     },
     "mechanism": "生成波动",
@@ -1808,7 +1814,7 @@
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "其他",
     "final_note": "无掩膜+DEM 条件精化；弃权合理",
@@ -1842,11 +1848,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "valid",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "其他",
@@ -1882,8 +1888,8 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid",
-     "experiment": "valid"
+     "control": "truncated",
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "无逐像元观测频次统计；实验臂无判定",
@@ -1925,7 +1931,7 @@
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "生成波动（正确→无判定）",
     "final_note": "对照 saga:morphologicalfilter 卡含 METHOD/KERNEL——形态学滤波与步骤匹配；实验臂 think 未闭合",
@@ -1963,7 +1969,7 @@
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "valid"
+     "experiment": "truncated"
     },
     "mechanism": "生成波动（正确→无判定）",
     "final_note": "对照 saga:clouddetection 卡输出 CLOUDS 掩膜（云识别核心能力；掩膜应用属平凡组合）；实验臂 think 未闭合",
@@ -1996,11 +2002,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "valid",
-     "experiment": "valid"
+     "control": "truncated",
+     "experiment": "truncated"
     },
     "mechanism": "生成波动",
     "final_note": "候选无 QA 条件去云；弃权合理",
@@ -2050,7 +2056,7 @@
  ],
  "owner_ruling": {
   "date": "2026-10-18",
-  "n_ruled": 6,
+  "n_ruled": 8,
   "rules": [
    "R1 复合步骤闭合：部分能力命中≠整体正确（T-032）",
    "R2 截断≠无判定：截断但有推理→output_validity=truncated + 证据不足不可判；空输出才是无判定（T-068/T-092/T-090 对照臂）",
@@ -2058,55 +2064,6 @@
    "R4 卡面字段完整度≠决策证据完整度（T-009#S6）",
    "R5 因果归因保守：改善≠补卡解锁，须对照臂形成闭合决策方可直接归因"
   ],
-  "R2_reclassified_arms": [
-   [
-    "PCA2-T-001#S4",
-    "experiment"
-   ],
-   [
-    "PCA2-T-046#S4",
-    "experiment"
-   ],
-   [
-    "PCA2-T-060#S1",
-    "experiment"
-   ],
-   [
-    "PCA2-T-073#S1",
-    "experiment"
-   ],
-   [
-    "PCA2-T-086#S4",
-    "experiment"
-   ],
-   [
-    "PCA2-T-089#S5",
-    "experiment"
-   ],
-   [
-    "PCA2-T-026#S4",
-    "experiment"
-   ],
-   [
-    "PCA2-T-052#S2",
-    "experiment"
-   ],
-   [
-    "PCA2-T-079#S3",
-    "experiment"
-   ],
-   [
-    "PCA2-T-086#S5",
-    "experiment"
-   ],
-   [
-    "PCA2-T-089#S4",
-    "experiment"
-   ],
-   [
-    "PCA2-T-092#S2",
-    "experiment"
-   ]
-  ]
+  "R2_reclassified_arms": []
  }
 }
