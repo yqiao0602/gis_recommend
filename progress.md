@@ -2358,3 +2358,15 @@
 - **未冻结**：6,092 条高置信跨 split pending + 1,387 条高置信组边截断待 owner 复核；val 行占比 6.2% 待确认。S1 批量审计暂停、S2 不启用、正式 B/C 训练冻结；P2 配额重算与抽样 V2 待 V3 验收。
 - **Gate 1 分类（同日，只读）**：V2 6,092 → **V3 4,391** 跨 split pending（V3 重划分后部分转同 split）；1,387 截断（G1 1,313/D2 74）；端点对重叠 0，去重 **5,778** 唯一关系；分诊 **A 2,739 / B 109 / C 2,930**（A=有直接同任务证据→优先复核，不自动合并；B=有反证→保持独立；C=证据不足/冲突→保持 pending）；泄漏优先集 **1,504**（A 跨 split 1,399 + 截断跨 split 105）；受影响 5,975 组件/2,274 族。产物 `B_TRACK_V3_HIGH_CONF_REVIEW_V1.md/.json`，**有序泄漏优先台账** `B_TRACK_V3_LEAKAGE_PRIORITY_V1.json/.csv/.md`（rank 1–1,504；T1 105/T2 1,399）。V3 仍不验收/不冻结；配额、抽样 V2、S1 恢复继续等待。
 - **Gate 1 机器对账 + T1 试审（同日）**：独立重算 pending 4,391 / deferred 1,387 / 并集 5,778 / T1 105 / T2 1,399，集合与 `review_id` 全部相等（`B_TRACK_GATE1_RECONCILIATION_V1.json` all_pass=True）。T1 试审 20 条：A16/C4、五模式、G1 14/D2 6；`asset_evidence_scope` 9 project_shared / 3 task_specific / 8 unclear；agent 初步 17 MERGE_provisional / 3 UNRESOLVED。观察：项目共享资产不单独构成合并轴；20/20 截断族大小和 >10,000 为真实分歧；同标题 built-up/fire 4 条需源码核验；地区/时间/输入条件差异 5 条待 owner 口径。协议草案 v0 未生效，T1 余 85 条与 T2 等锁定后继续。
+
+## 2026-10-18（D1 运行完成）：中性长文本插入使空输出 0→63.8%（全部 IMMEDIATE_EOS），预注册判定 SUPPORTED
+
+- **执行完整性**：94/94 记录（A/B 各 47）、零缺失、prompt_sha16 全对齐、commit 哈希全过、无异常；tar 双端 SHA `edfabde7…`；运行 74.9 min。
+- **主结果**：A 臂空输出 **0/47**、B 臂 **30/47 = 63.8%**；配对差 **+63.8pp**，任务级 cluster bootstrap（26 任务/10k/seed 20261018）95% CI **[+48.9, +77.8]pp**。
+- **配对转移**：非空→非空 17；**非空→空 30**；其余 0。
+- **终止四分**：A = EOS 9 / CAP_TRUNC 14 / END_MARK 24；B = **IMMEDIATE_EOS 30** / EOS 3 / CAP_TRUNC 3 / END_MARK 11。**真实截断 −23.4pp，全部新增空输出均为立即 EOS**。
+- **操纵核验**：B 臂全部 1,650±10、prompt SHA 全对齐、无失败样本。
+- **决策类别**（不评正确性）：A = POS 12 / ABST 24 / NODEC 11；B = POS 3 / EMPTY 30 / NODEC 3 / ABST 11；自相矛盾 A=0/B=0。
+- **A 臂 vs A1 历史**：空状态一致 46/47（历史那 1 条空本次非空）、决策类别一致 32/47、**原文精确匹配 0/47**——greedy+4bit+批组合差异导致文本不可复现，**印证 owner 要求同轮双臂的正确性**。
+- **预注册判定：SUPPORTED**（B 空输出率显著更高、CI 不含 0、截断未升、自相矛盾未增）。边界冻结：仅适用于 47 个历史短提示与该插入方案；总长度/指令距离/无关上下文不可分离；不外推。
+- 产物：`d1_v1/D1_EXEC_AUDIT_V1.json`、`D1_RESULTS_V1.json`、`D1_RESULTS_REPORT_V1.md`。
