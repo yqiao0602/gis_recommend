@@ -1,0 +1,73 @@
+{
+ "artifact": "B_TRACK_TASK_GROUP_MERGE_AUDIT_V1",
+ "date": "2026-10-18",
+ "baseline_commit": "339e077",
+ "rule": "合并需满足其一：共享脚本/内容哈希；任务描述近重复(J>=0.75)；同一任务的不同实现/同源派生（需语义+来源证据）。结构相似本身不构成合并理由。",
+ "candidates": [
+  {
+   "pair": [
+    "R03",
+    "R10"
+   ],
+   "script_overlap": [
+    "script_54184",
+    "script_54187",
+    "script_54188"
+   ],
+   "instruction_jaccard": 1.0,
+   "decision": "merge",
+   "reason": "三脚本重叠 + 任务描述一致（光谱解混家族）"
+  },
+  {
+   "pair": [
+    "R18A",
+    "R20"
+   ],
+   "script_overlap": [
+    "script_74490",
+    "script_74517"
+   ],
+   "instruction_jaccard": 1.0,
+   "decision": "merge",
+   "reason": "两脚本重叠 + 任务描述一致（作物产量家族）"
+  },
+  {
+   "pair": [
+    "R18B",
+    "R24EUTRO"
+   ],
+   "script_overlap": [],
+   "instruction_jaccard": 0.942,
+   "decision": "merge",
+   "reason": "任务描述近重复 + 同一优营养化目标（水体面积/chl-a/富营养化比例）；不同脚本=不同实现，防跨集合泄漏"
+  },
+  {
+   "pair": [
+    "R19",
+    "R22S027"
+   ],
+   "script_overlap": [],
+   "instruction_jaccard": 0.527,
+   "decision": "merge",
+   "reason": "同一藻华监测任务的不同实现/版本（NDCI/叶绿素/TSI/水库），语义同族；J 低于精确阈值但任务目标与输出一致"
+  },
+  {
+   "pair": [
+    "R17S068",
+    "R22S013"
+   ],
+   "script_overlap": [],
+   "instruction_jaccard": 0.481,
+   "decision": "no_merge",
+   "reason": "仅通用分类措辞相似；区域（Niayes vs Hefei）、传感器/年份、任务目标不同"
+  }
+ ],
+ "r24_split": {
+  "decision": "split",
+  "into": [
+   "R24AWEI",
+   "R24EUTRO"
+  ],
+  "reason": "AWEI 与优营养化是不同任务族，owner 第五轮要求分开登记"
+ }
+}

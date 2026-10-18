@@ -1,9 +1,9 @@
 {
  "artifact": "B_TRACK_RELATION_ADMISSION_FREEZE_V1",
- "version": "V1",
+ "version": "V1.1",
  "date": "2026-10-18",
  "baseline_commit": "9a418d1",
- "n_records": 28,
+ "n_records": 29,
  "rules": [
   "不新增无条件多参考准入",
   "关系标签/准入状态冻结后，变更须走 GOVERNANCE_CHANGE_LOG 并重检划分约束",
@@ -461,12 +461,30 @@
    "baseline_commit": "9a418d1"
   },
   {
-   "ref_id": "R24",
+   "ref_id": "R24AWEI",
    "pairs": [
-    "SAME-11",
+    "SAME-11"
+   ],
+   "coverage": "same_code_control_awei",
+   "structural_equivalence": true,
+   "isomorphic_template_of": true,
+   "multiref_of": null,
+   "semantic_judgment_confidence": "高",
+   "evidence_completeness": "partial",
+   "admission_status": "draft_provisional",
+   "owner_ruling": "modified_pass",
+   "open_evidence": [
+    "eutrophication var a = feature index 8 vs 33 (different analysis object)"
+   ],
+   "frozen": true,
+   "baseline_commit": "9a418d1"
+  },
+  {
+   "ref_id": "R24EUTRO",
+   "pairs": [
     "SAME-9"
    ],
-   "coverage": "same_code_normal",
+   "coverage": "same_code_control_eutrophication",
    "structural_equivalence": true,
    "isomorphic_template_of": true,
    "multiref_of": null,
@@ -522,5 +540,6 @@
    "frozen": true,
    "baseline_commit": "9a418d1"
   }
- ]
+ ],
+ "note": "V1.1: R24 split into R24AWEI/R24EUTRO per owner round-5; relation/admission fields unchanged"
 }

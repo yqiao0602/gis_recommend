@@ -259,7 +259,18 @@ interventions still require owner release.**
   components R03+R10 and R18A+R20). Split constraints frozen
   (`B_TRACK_SPLIT_CONSTRAINTS_V1`): shared-script groups must be same-side;
   overlap edge != multiref relation. Five external-evidence items remain
-  tracked separately and do not gate steps 1-2.** -> split freeze -> three
+  tracked separately and do not gate steps 1-2.** **STAGE-3 STEP 3 DONE
+  (2026-10-18):** near-duplicate merge audit (`B_TRACK_TASK_GROUP_MERGE_AUDIT_V1`)
+  merged four components - R03+R10 (3 shared scripts, J=1.0), R18A+R20 (2 shared
+  scripts, J=1.0), R18B+R24EUTRO (J=0.942, eutrophication family), R19+R22S027
+  (J=0.527, algal-bloom family); R24 split into AWEI/EUTRO; R17S068-R22S013
+  (J=0.481) NOT merged (different tasks). Split manifest V1: 25 atomic units,
+  seed 20261018, train 18 / val 4 / test 3, shared by A/B/C. ABC experiment
+  protocol V1 frozen as a candidate (B-A = governance effect, C-B = two-layer
+  increment, C-A not standalone; same splits/model/budget/decode/eval;
+  primary metrics + co-gates, thresholds pending owner approval). Relation/
+  admission baseline bumped to V1.1 (29 records). No training started.**
+  -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
   coverage, dependency correctness, harmful steps, long-chain degradation,
