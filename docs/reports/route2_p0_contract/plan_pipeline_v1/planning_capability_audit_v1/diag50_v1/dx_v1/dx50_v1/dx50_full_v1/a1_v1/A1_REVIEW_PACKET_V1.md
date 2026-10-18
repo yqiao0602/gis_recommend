@@ -12,6 +12,7 @@ NO OPERATOR FOR THIS STEP
 Because none of the provided operators support calculating vegetation indices (e.g., NDVI, NDSI) which require arithmetic combinations (ratio/difference) of specific bands; available operators only offer classification, buffering, recasting, or simple band-wise statistics.
 ```
 ### 实验臂 (v0_5) 决策摘录
+
 ```
 SELECT saga:multibandvariation - It computes statistical variations (mean, std dev, difference) across specified bands, generating new derived feature rasters from multi-band input.
 ```

@@ -100,6 +100,13 @@ OWNER = {
    "mechanism": "生成波动",
    "note": "owner：对照 saga:morphologicalfilter 卡 INPUT→RESULT + METHOD/KERNEL_* 与形态学去噪目标直接匹配→正确；"
            "实验推理中曾倾向双选但无闭合决策→截断不计入；补卡（classificationmapregularization 等）与决策无因果证据。"},
+ "PCA2-T-005#S5": {
+   "control": "correct_selection", "experiment": "indeterminate",
+   "validity": {"control": "valid", "experiment": "self_contradictory"},
+   "mechanism": "选择保持；实验臂输出自相矛盾（生成波动，不归因补卡）",
+   "note": "owner 终裁：对照选择 r.mask.vect 与'矢量火灾边界生成二值栅格掩膜'目标相符→正确（卡面无参数不否定语义选择）；"
+           "实验先 SELECT 同一算子随后又输出 NO OPERATOR→自相矛盾，决策不可判、不计入正确/错误/弃权任一率；"
+           "自相矛盾作为独立异常类型单独统计；两臂目标算子卡相同、变化卡 disparitymaptoelevationmap 未被选→不支持补卡归因。"},
  "PCA2-T-001#S6": {
    "control": "wrong_selection", "experiment": "indeterminate",
    "validity": {"control": "valid", "experiment": "valid"},
@@ -288,6 +295,17 @@ def main():
             if c.get("validity"):
                 e["ledger_fields_pending_owner"]["output_validity"] = dict(c["validity"])
 
+    # 2c) owner batch-confirmation of the remaining B-tier pairs (2026-10-18):
+    # values unchanged; status distinguishes it from independently adjudicated.
+    batch = 0
+    for e in d["entries"]:
+        q = e["ledger_fields_pending_owner"]
+        if q.get("status") == "agent_adjudication_v1_pending_owner_spotcheck":
+            q["status"] = "owner_batch_confirmed"
+            q["batch_confirmation_note"] = (
+                "owner 2026-10-18 批量确认（基于 agent 逐对核对表，未独立阅读全部卷宗）")
+            batch += 1
+
     # 2) apply the six owner rulings (authoritative)
     ruled = 0
     for e in d["entries"]:
@@ -342,8 +360,17 @@ def main():
         trans[(q["control"], q["experiment"])] += 1
     summary = {"after_owner_rulings": True,
                "control": rates(ctl), "experiment": rates(exp),
+               "self_contradictory": {
+                   "control": sum(1 for e in d["entries"]
+                                  if e["ledger_fields_pending_owner"]["output_validity"]["control"]
+                                  == "self_contradictory"),
+                   "experiment": sum(1 for e in d["entries"]
+                                     if e["ledger_fields_pending_owner"]["output_validity"]["experiment"]
+                                     == "self_contradictory"),
+                   "note": "独立异常类型：不计入正确/错误/弃权率，单独报告数量与比例"},
                "transitions": {f"{a} -> {b}": n for (a, b), n in trans.items()},
-               "owner_ruled_pairs": list(OWNER)}
+               "owner_ruled_pairs": list(OWNER),
+               "owner_batch_confirmed": sum(1 for e in d["entries"] if e["ledger_fields_pending_owner"].get("status") == "owner_batch_confirmed")}
     (P / "A1_ADJUDICATION_SUMMARY_V1.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=1))

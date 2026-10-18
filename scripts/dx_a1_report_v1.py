@@ -70,6 +70,12 @@ def main():
           f"| 误弃权 | {ctl['wrong_abstention']} | {exp['wrong_abstention']} |",
           f"| 证据不足不可判（截断等） | {ci} | {ei} |",
           f"| 无判定（空输出，不计入） | {cn} | {en} |",
+          f"| 自相矛盾（独立异常，不计入） | "
+          f"{sum(1 for e in d['entries'] if e['ledger_fields_pending_owner']['output_validity']['control']=='self_contradictory')} | "
+          f"{sum(1 for e in d['entries'] if e['ledger_fields_pending_owner']['output_validity']['experiment']=='self_contradictory')} |",
+          f"| 状态 | owner 独立裁决 {sum(1 for e in d['entries'] if e['ledger_fields_pending_owner'].get('status')=='owner_ruled')} ｜ "
+          f"批量确认 {sum(1 for e in d['entries'] if e['ledger_fields_pending_owner'].get('status')=='owner_batch_confirmed')} ｜ "
+          f"待裁 {sum(1 for e in d['entries'] if e['ledger_fields_pending_owner'].get('status')=='agent_adjudication_v1_pending_owner_spotcheck')} |",
           "", "## 逐对裁决（★owner=owner 已裁决；其余待抽检）", "",
           "| 步骤 | 批次 | 对照 | 实验 | validity 对照/实验 | 机制 | 状态 |",
           "|---|---|---|---|---|---|---|"] + rows

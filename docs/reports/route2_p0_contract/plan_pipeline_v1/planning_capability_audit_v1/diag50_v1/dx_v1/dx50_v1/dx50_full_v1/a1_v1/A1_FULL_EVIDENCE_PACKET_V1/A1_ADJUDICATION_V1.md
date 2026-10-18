@@ -6,13 +6,15 @@
 
 | 指标 | 对照 v0_4 | 实验 v0_5 |
 |---|---|---|
-| 形成判定步数 | 29 | 22 |
-| 正确选择 | 5 (17.2%) | 8 (36.4%) |
-| 错误选择 | 1 (3.4%) | 3 (13.6%) |
-| 合理弃权 | 23 (79.3%) | 11 (50.0%) |
+| 形成判定步数 | 30 | 22 |
+| 正确选择 | 6 (20.0%) | 8 (36.4%) |
+| 错误选择 | 1 (3.3%) | 3 (13.6%) |
+| 合理弃权 | 23 (76.7%) | 11 (50.0%) |
 | 误弃权 | 0 | 0 |
-| 证据不足不可判（截断等） | 16 | 22 |
+| 证据不足不可判（截断等） | 15 | 22 |
 | 无判定（空输出，不计入） | 7 | 8 |
+| 自相矛盾（独立异常，不计入） | 0 | 1 |
+| 状态 | owner 独立裁决 27 ｜ 批量确认 25 ｜ 待裁 0 |
 
 ## 逐对裁决（★owner=owner 已裁决；其余待抽检）
 
@@ -46,7 +48,7 @@
 | PCA2-T-092#S5 | P3 | reasonable_abstention | n/a_no_decision | valid/no_decision | 生成波动 |  |
 | PCA2-T-003#S2 | P4 | reasonable_abstention | correct_selection | valid/valid | 补卡解锁正确选择 |  |
 | PCA2-T-005#S3 | P4 | n/a_no_decision | reasonable_abstention | no_decision/valid | 其他 |  |
-| PCA2-T-005#S5 | P4 | indeterminate | indeterminate | valid/self_contradictory | 生成波动（自相矛盾输出） |  |
+| PCA2-T-005#S5 | P4 | correct_selection | indeterminate | valid/self_contradictory | 选择保持；实验臂输出自相矛盾（生成波动，不归因补卡） |  |
 | PCA2-T-012#S3 | P4 | n/a_no_decision | reasonable_abstention | no_decision/valid | 其他 |  |
 | PCA2-T-021#S4 | P4 | reasonable_abstention | n/a_no_decision | valid/no_decision | 生成波动 |  |
 | PCA2-T-022#S6 | P4 | reasonable_abstention | indeterminate | valid/valid | 其他——输入组织方式不明确（补卡诱发未认定） |  |
