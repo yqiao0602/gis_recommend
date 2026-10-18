@@ -797,7 +797,7 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "indeterminate",
      "experiment": "wrong_selection"
@@ -806,9 +806,12 @@
      "control": "truncated",
      "experiment": "valid"
     },
-    "mechanism": "补卡诱发错误选择（部分匹配/上下文）",
-    "final_note": "步骤含 Band Stacking + Mosaic 两半；mosaicking 卡仅空间镶嵌（FILE_LIST/TARGET_OUT_GRID），无波段堆叠证据——所选算子未变，属上下文诱发",
-    "confidence": "medium-high"
+    "mechanism": "其他——步骤目标覆盖不足（补卡诱发未认定）",
+    "final_note": "owner：对照 think 未闭合→截断、不计入指标、不追溯补答；实验选 saga:mosaicking 仅证空间镶嵌，未证波段堆叠（Mosaic≠Band stacking），步骤目标覆盖不足→错误选择；mosaicking 卡未变、未选改卡算子，不归因补卡。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1370,18 +1373,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "wrong_selection",
+     "control": "correct_selection",
      "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
      "experiment": "truncated"
     },
-    "mechanism": "生成波动（对照错误→无判定）",
-    "final_note": "对照 native:rasterize 卡描述=渲染地图画布，并非多栅格合成；判错",
-    "confidence": "medium-high"
+    "mechanism": "生成波动",
+    "final_note": "owner：步骤目标=可视化整合，native:rasterize 的'渲染地图画布'（LAYERS 多图层+OUTPUT 栅格）与之直接关联→对照正确；但对照理由中'合并为单幅多波段栅格'超出卡面，须纠正（若任务要求多波段数据立方体则证据不足）；实验 think 未闭合→截断不计入，机制=生成波动（otb:rasterization 补卡与多栅格可视化不直接对应）。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1945,7 +1951,7 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "correct_selection",
      "experiment": "indeterminate"
@@ -1954,9 +1960,12 @@
      "control": "valid",
      "experiment": "truncated"
     },
-    "mechanism": "生成波动（正确→无判定）",
-    "final_note": "对照 saga:morphologicalfilter 卡含 METHOD/KERNEL——形态学滤波与步骤匹配；实验臂 think 未闭合",
-    "confidence": "medium-high"
+    "mechanism": "生成波动",
+    "final_note": "owner：对照 saga:morphologicalfilter 卡 INPUT→RESULT + METHOD/KERNEL_* 与形态学去噪目标直接匹配→正确；实验推理中曾倾向双选但无闭合决策→截断不计入；补卡（classificationmapregularization 等）与决策无因果证据。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -2059,25 +2068,28 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "wrong_selection",
-     "experiment": "n/a_no_decision"
+     "control": "correct_selection",
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "truncated"
     },
-    "mechanism": "生成波动（对照错误→无判定）",
-    "final_note": "对照 resamplingfilter=LOPASS/HIPASS 空间滤波（SCALE 参数），非时间序列平滑；判错",
-    "confidence": "medium-high"
+    "mechanism": "生成波动",
+    "final_note": "owner：对照选 resamplingfilter 低通（LOPASS 输出）抑制高频噪声，与平滑目标相符（前提：时间序列堆叠为波段成立；卡面未证专门时间维处理，此边界保留）→正确；实验 think 未闭合→截断不计入，不得按推理候选反推选择。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   }
  ],
  "owner_ruling": {
   "date": "2026-10-18",
-  "n_ruled": 15,
+  "n_ruled": 19,
   "rules": [
    "R1 复合步骤闭合：部分能力命中≠整体正确（T-032）",
    "R2 截断≠无判定：截断但有推理→output_validity=truncated + 证据不足不可判；空输出才是无判定（T-068/T-092/T-090 对照臂）",

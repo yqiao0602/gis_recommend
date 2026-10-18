@@ -59,6 +59,32 @@ OWNER = {
    "mechanism": "其他——实验臂无闭合决策（空输出），不构成卡片补全效果证据",
    "note": "owner：RF 训练能力不可见，对照合理弃权；实验臂空输出记无判定、不入弃权率；"
            "若后续材料显示并非空输出而是完整弃权论证，再按 R2 复核。"},
+ "PCA2-T-056#S3": {
+   "control": "indeterminate", "experiment": "wrong_selection",
+   "validity": {"control": "truncated", "experiment": "valid"},
+   "mechanism": "其他——步骤目标覆盖不足（补卡诱发未认定）",
+   "note": "owner：对照 think 未闭合→截断、不计入指标、不追溯补答；实验选 saga:mosaicking 仅证空间镶嵌，"
+           "未证波段堆叠（Mosaic≠Band stacking），步骤目标覆盖不足→错误选择；mosaicking 卡未变、未选改卡算子，"
+           "不归因补卡。"},
+ "PCA2-T-026#S4": {
+   "control": "correct_selection", "experiment": "indeterminate",
+   "validity": {"control": "valid", "experiment": "truncated"},
+   "mechanism": "生成波动",
+   "note": "owner：步骤目标=可视化整合，native:rasterize 的'渲染地图画布'（LAYERS 多图层+OUTPUT 栅格）与之直接关联→对照正确；"
+           "但对照理由中'合并为单幅多波段栅格'超出卡面，须纠正（若任务要求多波段数据立方体则证据不足）；"
+           "实验 think 未闭合→截断不计入，机制=生成波动（otb:rasterization 补卡与多栅格可视化不直接对应）。"},
+ "PCA2-T-098#S6": {
+   "control": "correct_selection", "experiment": "indeterminate",
+   "validity": {"control": "valid", "experiment": "truncated"},
+   "mechanism": "生成波动",
+   "note": "owner：对照选 resamplingfilter 低通（LOPASS 输出）抑制高频噪声，与平滑目标相符（前提：时间序列堆叠为波段成立；"
+           "卡面未证专门时间维处理，此边界保留）→正确；实验 think 未闭合→截断不计入，不得按推理候选反推选择。"},
+ "PCA2-T-089#S4": {
+   "control": "correct_selection", "experiment": "indeterminate",
+   "validity": {"control": "valid", "experiment": "truncated"},
+   "mechanism": "生成波动",
+   "note": "owner：对照 saga:morphologicalfilter 卡 INPUT→RESULT + METHOD/KERNEL_* 与形态学去噪目标直接匹配→正确；"
+           "实验推理中曾倾向双选但无闭合决策→截断不计入；补卡（classificationmapregularization 等）与决策无因果证据。"},
  "PCA2-T-083#S7": {
    "control": "indeterminate", "experiment": "correct_selection",
    "validity": {"control": "valid", "experiment": "valid"},
