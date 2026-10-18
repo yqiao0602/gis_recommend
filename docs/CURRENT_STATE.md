@@ -225,30 +225,17 @@ interventions still require owner release.**
   implementation, L1 planning semantics anchored `script:line`, dependencies,
   L2 condition-implementation mapping, L3 fidelity, multi-reference, admission,
   pending evidence; all `draft_provisional`, awaiting owner per-group review
-  (risk order R19/R18/R20/R23 -> R09/R05/R21/R01 -> rest)**. **OWNER
-  ROUND-1 REVIEW (2026-10-18): R19/R18/R20/R23 all needs_revision -> revised:
-  R18 split into R18-A (crop isomorphic template) / R18-B (eutrophication
-  candidate multiref, all four scripts use point geometry); R19 separates
-  structural equivalence / isomorphic template / multiref and adds cloud-
-  join/TSI/chart/inventory evidence; R20 refines aggregation-order wording
-  and the exact 4500-vs-5500 m range; R23 uses four branches (CART/RF/KMeans/
-  RF-v2), adds the full S096 instruction comparison, and separates planning/
-  extractor/schema admission. Three unified calibers landed in the governance
-  spec (three judgments; three status fields; cross-group leakage), plus
-  B_TRACK_CROSS_GROUP_OVERLAP_V1 (2 edges: R03-R10, R18A-R20). **OWNER
-  ROUND-2 REVIEW (2026-10-18): R19 multiref rewritten under the condition-
-  consistency hard gate (different conditions -> isomorphic template only;
-  unspecified conditions never imply equivalence); R18-A condition line
-  anchors filled but stays draft_provisional; R18-B evidence downgraded to
-  partial (geometry undefined in-script, tlist/a/feat external) and
-  multiref deferred; R20 P8 anchors filled (7+7 series charts) with the
-  scale-rule boundary; R23 S100 branch dependency verified (RF-v2 uses a
-  different feature set and NOT the KMeans output) and stays partial.
-  Three stage-3 rules frozen in the governance spec section 8.2: relation
-  label != admission label; condition consistency = multiref hard gate;
-  split by script-overlap connected components (R03+R10, R18A+R20).
-  Index V3.**
-  -> split freeze -> three
+  (risk order R19/R18/R20/R23 -> R09/R05/R21/R01 -> rest; 15 pending-evidence
+  items are second-pass anchors that do not change drafted structure). **OWNER ROUNDS 2-3 (2026-10-18):**
+  five groups revised under the condition-consistency hard gate and the
+  three stage-3 rules (relation != admission; condition consistency = multiref
+  hard gate; split by script-overlap connected components R03+R10, R18A+R20);
+  R01-R11 reviewed: R01/R11 pass, R02/R06/R07/R09/R10 modified pass, R03 pass
+  with a caliber review (same script/identical description judged under-
+  described vs mis-described), R04 partial (WorldPop external units), R05 and
+  all other multiref deferred, R08 split with two draft facts corrected
+  (S042 both S2 depth/4-segment SST; S048 ETOPO1 vs S2, 4 vs 2 segments).
+  Batch R12-R17 packet ready (`B_TRACK_BATCH3_REVIEW_PACKET.md`).** -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
   coverage, dependency correctness, harmful steps, long-chain degradation,
