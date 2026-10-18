@@ -1,0 +1,66 @@
+{
+ "artifact": "B_TRACK_S1_AUDIT_QUOTAS_V1",
+ "date": "2026-10-18",
+ "phase": 1,
+ "targets": {
+  "t": 6500,
+  "v": 800,
+  "s": 800
+ },
+ "expected_admission_rate": 0.701,
+ "expected_admitted_rows": {
+  "t": 4299,
+  "v": 531,
+  "s": 470
+ },
+ "constraints": [
+  "long >=20% (test >=30%)",
+  "singleton+low >=40%",
+  "single task_type <=20% (applied at sampling)",
+  "high >=10%"
+ ],
+ "quotas_by_split_stratum": {
+  "t": {
+   "high|short": 996,
+   "high|medium": 147,
+   "high|long": 36,
+   "mid|short": 695,
+   "mid|medium": 753,
+   "mid|long": 163,
+   "low|short": 363,
+   "low|medium": 1100,
+   "low|long": 374,
+   "singleton|short": 110,
+   "singleton|medium": 1037,
+   "singleton|long": 359
+  },
+  "v": {
+   "high|short": 121,
+   "high|medium": 18,
+   "high|long": 4,
+   "mid|short": 89,
+   "mid|medium": 91,
+   "mid|long": 21,
+   "low|short": 45,
+   "low|medium": 134,
+   "low|long": 48,
+   "singleton|short": 14,
+   "singleton|medium": 127,
+   "singleton|long": 46
+  },
+  "s": {
+   "high|short": 99,
+   "high|medium": 18,
+   "high|long": 4,
+   "mid|short": 70,
+   "mid|medium": 76,
+   "mid|long": 21,
+   "low|short": 34,
+   "low|medium": 140,
+   "low|long": 44,
+   "singleton|short": 12,
+   "singleton|medium": 110,
+   "singleton|long": 43
+  }
+ }
+}

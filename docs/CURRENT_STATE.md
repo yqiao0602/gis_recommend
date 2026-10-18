@@ -290,7 +290,16 @@ interventions still require owner release.**
   corpus, S3 113-row pipeline smoke only (no capability claim). ABC sample
   lists V1 and evaluation-implementation freeze V1 (partial) delivered;
   item 4 = split done / admission pending, item 6 = audited subset ready /
-  full corpus blocked, item 7 = partial. Training not released.**
+  full corpus blocked, item 7 = partial. **OWNER RULING (2026-10-18): S3 smoke +
+  S1 stratified audit in parallel; S2 NOT enabled; formal B/C training set stays
+  FROZEN; training not released.** S1 design V1: component-level strata (split x
+  support tier x length band x task type), Phase-1 quotas 7,562 components
+  (train 6,133 / val 758 / test 671), expected ~5,300 admitted rows (train
+  4,299 / val 531 / test 470); long-chain >=20% (test >=30%), singleton+low
+  >=40%, single task type <=20%. S3 smoke: data-integrity 5/5 PASS (split
+  atomicity 0 violations, audit mapping, long-chain definability, deterministic
+  row_split f93e60dd..., sample-list traceability); metric/evaluator and
+  model-level smoke PENDING; engineering-only, no capability claims.**
   -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
