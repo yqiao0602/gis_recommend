@@ -235,8 +235,19 @@ interventions still require owner release.**
   RF-v2), adds the full S096 instruction comparison, and separates planning/
   extractor/schema admission. Three unified calibers landed in the governance
   spec (three judgments; three status fields; cross-group leakage), plus
-  B_TRACK_CROSS_GROUP_OVERLAP_V1 (2 edges: R03-R10, R18A-R20). Index V2 = 25
-  records, five revised_pending_owner_review, rest draft_provisional.**
+  B_TRACK_CROSS_GROUP_OVERLAP_V1 (2 edges: R03-R10, R18A-R20). **OWNER
+  ROUND-2 REVIEW (2026-10-18): R19 multiref rewritten under the condition-
+  consistency hard gate (different conditions -> isomorphic template only;
+  unspecified conditions never imply equivalence); R18-A condition line
+  anchors filled but stays draft_provisional; R18-B evidence downgraded to
+  partial (geometry undefined in-script, tlist/a/feat external) and
+  multiref deferred; R20 P8 anchors filled (7+7 series charts) with the
+  scale-rule boundary; R23 S100 branch dependency verified (RF-v2 uses a
+  different feature set and NOT the KMeans output) and stays partial.
+  Three stage-3 rules frozen in the governance spec section 8.2: relation
+  label != admission label; condition consistency = multiref hard gate;
+  split by script-overlap connected components (R03+R10, R18A+R20).
+  Index V3.**
   -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
