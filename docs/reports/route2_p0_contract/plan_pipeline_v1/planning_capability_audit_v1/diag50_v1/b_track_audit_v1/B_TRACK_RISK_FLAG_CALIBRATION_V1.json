@@ -1,0 +1,1005 @@
+{
+ "artifact": "B_TRACK_RISK_FLAG_CALIBRATION_V1",
+ "date": "2026-10-18",
+ "rules_version": "V1_calibrated_20261018",
+ "components": [
+  {
+   "component_id": 45165,
+   "split": "s",
+   "task_type": "Habitat conversion/fragmentation",
+   "script": "script_278452",
+   "path": ".tmp_gee_batch13_sources\\Data\\data280000\\script_278452.txt",
+   "old_flags": [
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 0,
+    "dup_lines": 4,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "nonliteral_asset_arg"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 0,
+    "map_interactive_calls": 0,
+    "substantive_lines": 163,
+    "dup_line_max": 2,
+    "dup_triple_max": 1,
+    "duplicate_line": false,
+    "duplicate_block": false,
+    "dup_severity": "none",
+    "literal_assets": [],
+    "bare_identifier_args": [
+     "image",
+     "toExportAccuracy",
+     "toExportMatrix"
+    ],
+    "concat_args": [],
+    "other_nonliteral_args": [
+     "fiveWindowJoin.map(function(image) {\n\n    var annualSRC_md_tm_indices = ee.ImageCollection.fromImages(image.get('images'));\n\n    return ee.Image(image).addBands",
+     "threeWindowJoin.map(function(image) {\n\n    var forestCol_tm = ee.ImageCollection.fromImages(image.get('images'));\n\n    return ee.Image(image).addBands(forestCol"
+    ],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 3,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "nonliteral_asset_arg"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 48878,
+   "split": "s",
+   "task_type": "Land surface/agriculture indicators",
+   "script": "script_79821",
+   "path": ".tmp_gee_batch13_sources\\Data\\data80000\\script_79821.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 4,
+    "dup_lines": 38,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "nonliteral_asset_arg",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 4,
+    "map_interactive_calls": 0,
+    "substantive_lines": 157,
+    "dup_line_max": 5,
+    "dup_triple_max": 5,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "medium",
+    "literal_assets": [
+     "LANDSAT/LC08/C01/T1_TOA",
+     "MODIS/006/MOD11A1"
+    ],
+    "bare_identifier_args": [
+     "L8imgList",
+     "eigenVectors",
+     "image"
+    ],
+    "concat_args": [],
+    "other_nonliteral_args": [
+     "eigenValues.sqrt()"
+    ],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 3,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "nonliteral_asset_arg",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 103943,
+   "split": "v",
+   "task_type": "Land use/land cover",
+   "script": "script_56389",
+   "path": ".tmp_gee_batch13_sources\\Data\\data60000\\script_56389.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 39,
+    "dup_lines": 55,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "ui_interactive",
+    "ui_chart",
+    "ui_display",
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "nonliteral_asset_arg",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 13,
+    "ui_chart_calls": 3,
+    "ui_display_calls": 8,
+    "map_display_calls": 17,
+    "map_interactive_calls": 1,
+    "substantive_lines": 276,
+    "dup_line_max": 8,
+    "dup_triple_max": 2,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "medium",
+    "literal_assets": [
+     "LANDSAT/LC08/C01/T1_SR",
+     "LANDSAT/LE07/C01/T1_SR",
+     "LANDSAT/LT04/C01/T1_SR",
+     "LANDSAT/LT05/C01/T1_SR"
+    ],
+    "bare_identifier_args": [
+     "iCol",
+     "point",
+     "region",
+     "selectedImage"
+    ],
+    "concat_args": [],
+    "other_nonliteral_args": [
+     "miscUtils.doIndices(colNoClouds, params)",
+     "miscUtils.doIndices(colNoClouds, params)",
+     "iCol.min()",
+     "iCol.max()",
+     "cur_points.filterMetadata('ID', 'equals',ee.Number.parse(selectedID))"
+    ],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 4,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "ui_interactive",
+     "ui_chart",
+     "ui_display",
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "nonliteral_asset_arg",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 51891,
+   "split": "v",
+   "task_type": "Terrestrial hydrosphere indicators",
+   "script": "script_69165",
+   "path": ".tmp_gee_batch13_sources\\Data\\data70000\\script_69165.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 2,
+    "dup_lines": 50,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "map_display",
+    "duplicate_block",
+    "nonliteral_asset_arg",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 2,
+    "map_interactive_calls": 0,
+    "substantive_lines": 181,
+    "dup_line_max": 2,
+    "dup_triple_max": 2,
+    "duplicate_line": false,
+    "duplicate_block": true,
+    "dup_severity": "low",
+    "literal_assets": [
+     "COPERNICUS/S1_GRD",
+     "COPERNICUS/S2",
+     "NOAA/CFSV2/FOR6H"
+    ],
+    "bare_identifier_args": [
+     "im",
+     "image",
+     "mosaic_imlist"
+    ],
+    "concat_args": [],
+    "other_nonliteral_args": [
+     "simpleJoin.apply(mod1, mod2, filter)"
+    ],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 3,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "map_display",
+     "duplicate_block",
+     "nonliteral_asset_arg",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 50842,
+   "split": "s",
+   "task_type": "Water quality",
+   "script": "script_184064",
+   "path": ".tmp_gee_batch13_sources\\Data\\data190000\\script_184064.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 5,
+    "dup_lines": 210,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "nonliteral_asset_arg",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 5,
+    "map_interactive_calls": 0,
+    "substantive_lines": 560,
+    "dup_line_max": 27,
+    "dup_triple_max": 14,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "high",
+    "literal_assets": [
+     "COPERNICUS/S2",
+     "COPERNICUS/S2_SR",
+     "COPERNICUS/S2_SR/",
+     "HYCOM/sea_temp_salinity",
+     "HYCOM/sea_water_velocity",
+     "NASA/OCEANDATA/MODIS-Aqua/L3SMI",
+     "NASA/OCEANDATA/MODIS-Terra/L3SMI",
+     "NOAA/CDR/OISST/V2_1",
+     "NOAA/CFSV2/FOR6H"
+    ],
+    "bare_identifier_args": [
+     "MSST01"
+    ],
+    "concat_args": [
+     "'COPERNICUS/S2_SR/' + sceneID"
+    ],
+    "other_nonliteral_args": [],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 2,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "nonliteral_asset_arg",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 42446,
+   "split": "t",
+   "task_type": "Land surface/agriculture indicators",
+   "script": "script_121276",
+   "path": ".tmp_gee_batch13_sources\\Data\\data130000\\script_121276.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 3,
+    "dup_lines": 16,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 3,
+    "map_interactive_calls": 0,
+    "substantive_lines": 50,
+    "dup_line_max": 3,
+    "dup_triple_max": 3,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "low",
+    "literal_assets": [
+     "LANDSAT/LC08/C01/T1_TOA",
+     "LANDSAT/LE07/C01/T1_TOA",
+     "LANDSAT/LT05/C01/T1_TOA"
+    ],
+    "bare_identifier_args": [],
+    "concat_args": [],
+    "other_nonliteral_args": [
+     "data.get(1)"
+    ],
+    "nonliteral_asset_arg": false,
+    "nonliteral_count": 0,
+    "nonliteral_severity": "none",
+    "flags": [
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 58126,
+   "split": "t",
+   "task_type": "Vegetation",
+   "script": "script_176447",
+   "path": ".tmp_gee_batch13_sources\\Data\\data180000\\script_176447.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 10,
+    "dup_lines": 89,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "ui_interactive",
+    "ui_chart",
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "nonliteral_asset_arg",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 1,
+    "ui_display_calls": 0,
+    "map_display_calls": 9,
+    "map_interactive_calls": 1,
+    "substantive_lines": 248,
+    "dup_line_max": 9,
+    "dup_triple_max": 4,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "medium",
+    "literal_assets": [
+     "COPERNICUS/S2",
+     "LANDSAT/LC08/C01/T1_SR",
+     "LANDSAT/LC08/C01/T1_TOA"
+    ],
+    "bare_identifier_args": [
+     "interp_index",
+     "interp_ndvi"
+    ],
+    "concat_args": [],
+    "other_nonliteral_args": [],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 2,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "ui_interactive",
+     "ui_chart",
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "nonliteral_asset_arg",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 74228,
+   "split": "v",
+   "task_type": "Water quality",
+   "script": "script_184015",
+   "path": ".tmp_gee_batch13_sources\\Data\\data190000\\script_184015.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 5,
+    "dup_lines": 210,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "nonliteral_asset_arg",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 5,
+    "map_interactive_calls": 0,
+    "substantive_lines": 560,
+    "dup_line_max": 27,
+    "dup_triple_max": 14,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "high",
+    "literal_assets": [
+     "COPERNICUS/S2",
+     "COPERNICUS/S2_SR",
+     "COPERNICUS/S2_SR/",
+     "HYCOM/sea_temp_salinity",
+     "HYCOM/sea_water_velocity",
+     "NASA/OCEANDATA/MODIS-Aqua/L3SMI",
+     "NASA/OCEANDATA/MODIS-Terra/L3SMI",
+     "NOAA/CDR/OISST/V2_1",
+     "NOAA/CFSV2/FOR6H"
+    ],
+    "bare_identifier_args": [
+     "MSST01"
+    ],
+    "concat_args": [
+     "'COPERNICUS/S2_SR/' + sceneID"
+    ],
+    "other_nonliteral_args": [],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 2,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "nonliteral_asset_arg",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 17106,
+   "split": "s",
+   "task_type": "Vegetation",
+   "script": "script_81346",
+   "path": ".tmp_gee_batch13_sources\\Data\\data90000\\script_81346.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 32,
+    "dup_lines": 243,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "ui_interactive",
+    "ui_chart",
+    "ui_display",
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "nonliteral_asset_arg",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 12,
+    "ui_chart_calls": 5,
+    "ui_display_calls": 7,
+    "map_display_calls": 6,
+    "map_interactive_calls": 1,
+    "substantive_lines": 461,
+    "dup_line_max": 27,
+    "dup_triple_max": 13,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "high",
+    "literal_assets": [
+     "COPERNICUS/S2",
+     "LANDSAT/LC08/C01/T1_SR",
+     "LANDSAT/LE07/C01/T1_SR",
+     "LANDSAT/LT04/C01/T1_SR",
+     "LANDSAT/LT05/C01/T1_SR"
+    ],
+    "bare_identifier_args": [
+     "image0_dry",
+     "image0_rain"
+    ],
+    "concat_args": [],
+    "other_nonliteral_args": [
+     "imagery_list_rain.get(cloudness)",
+     "imagery_list_dry.get(cloudness)"
+    ],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 2,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "ui_interactive",
+     "ui_chart",
+     "ui_display",
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "nonliteral_asset_arg",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 48801,
+   "split": "t",
+   "task_type": "Water quality",
+   "script": "script_183961",
+   "path": ".tmp_gee_batch13_sources\\Data\\data190000\\script_183961.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 5,
+    "dup_lines": 209,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "nonliteral_asset_arg",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 5,
+    "map_interactive_calls": 0,
+    "substantive_lines": 560,
+    "dup_line_max": 27,
+    "dup_triple_max": 14,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "high",
+    "literal_assets": [
+     "COPERNICUS/S2",
+     "COPERNICUS/S2_SR",
+     "COPERNICUS/S2_SR/",
+     "HYCOM/sea_temp_salinity",
+     "HYCOM/sea_water_velocity",
+     "NASA/OCEANDATA/MODIS-Aqua/L3SMI",
+     "NASA/OCEANDATA/MODIS-Terra/L3SMI",
+     "NOAA/CDR/OISST/V2_1",
+     "NOAA/CFSV2/FOR6H"
+    ],
+    "bare_identifier_args": [
+     "MSST01"
+    ],
+    "concat_args": [
+     "'COPERNICUS/S2_SR/' + sceneID"
+    ],
+    "other_nonliteral_args": [],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 2,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "nonliteral_asset_arg",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 35770,
+   "split": "v",
+   "task_type": "Land surface/agriculture indicators",
+   "script": "script_6756",
+   "path": ".tmp_gee_batch13_sources\\Data\\data10000\\script_6756.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 1,
+    "dup_lines": 1360,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "map_display",
+    "duplicate_block",
+    "duplicate_line",
+    "nonliteral_asset_arg"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 1,
+    "map_interactive_calls": 0,
+    "substantive_lines": 1907,
+    "dup_line_max": 124,
+    "dup_triple_max": 124,
+    "duplicate_line": true,
+    "duplicate_block": true,
+    "dup_severity": "high",
+    "literal_assets": [],
+    "bare_identifier_args": [
+     "ini",
+     "list_of_images",
+     "list_of_images1"
+    ],
+    "concat_args": [],
+    "other_nonliteral_args": [
+     "ee.List([])",
+     "imgcol_B2.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B3.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B4.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B5.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B6.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B7.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B8.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B8A.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B11.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_B12.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_EVI2.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDVI1.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDWI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_LSWI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_OSAVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NMDI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDPI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_AFRI2.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_ATSAVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_GVMI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_LAIgreen.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_LAIbrown.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_ARVI2.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_BNDVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_MSAVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDII.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDRE.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_PVR.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_SIWSI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_SLAVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_VI700.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_IRECI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CVI_1.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_DATT3.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_GVMI_1.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_LCI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_ARI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_GLI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NGRDI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_WDRVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NIRv.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_AVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_BRI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CARI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CRI700.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_EPIChla.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_IPVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_MCARI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_REIP.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_TCARI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_TCARI_OSAVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_MCARI_OSAVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_MTCI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_S2REP.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_PSSRb.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_PSSRc.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CIgreen.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_RARSc.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_PSNDc.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_RBRI_1.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_RBRI_2.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_PSRI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CRI550.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CARrededge.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CARgreen.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_SR.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_PRI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_talcarotenoids.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_mACI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_SIPI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_mARI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CCCI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NPNC.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CARI_car.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDVIRE.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_RTVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_GCVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_CIre.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_SRI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_GEMI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDFI760.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDFI760.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_VARIgreen.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDBI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_MNDBI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_MNDWI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_IBI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDLI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_DBI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_DBSI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_MNDSI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDTI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_RTVI2.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_BAI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_Brightness.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_Wetness.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_Greenness.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_BCI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_RUI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NRUI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NHI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_mosaic_linear_QA_cloud.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_RedSWIR.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDMI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NBR.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NBR2.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_AFRI1_6.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_MNSI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_DCNI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NRI1510.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_PPR.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDNI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_YI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDI5.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDI7.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_STI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDSVI.iterate(fill, ft)",
+     "ee.List([])",
+     "imgcol_NDRI.iterate(fill, ft)",
+     "ee.List([])",
+     "VH.iterate(fill, ft)",
+     "ee.List([])",
+     "VV.iterate(fill, ft)",
+     "ee.List([])",
+     "qc.iterate(fill, ft)"
+    ],
+    "nonliteral_asset_arg": true,
+    "nonliteral_count": 3,
+    "nonliteral_severity": "medium",
+    "flags": [
+     "map_display",
+     "duplicate_block",
+     "duplicate_line",
+     "nonliteral_asset_arg"
+    ]
+   },
+   "match": true
+  },
+  {
+   "component_id": 45703,
+   "split": "s",
+   "task_type": "Land surface/agriculture indicators",
+   "script": "script_131792",
+   "path": ".tmp_gee_batch13_sources\\Data\\data140000\\script_131792.txt",
+   "old_flags": [
+    "ui_scaffold",
+    "indirect_asset"
+   ],
+   "old_wave_counts": {
+    "ui_calls": 4,
+    "dup_lines": 0,
+    "indirect_asset": true
+   },
+   "manual_expected_flags": [
+    "map_display",
+    "literal_asset"
+   ],
+   "new": {
+    "rules_version": "V1_calibrated_20261018",
+    "ui_control_calls": 0,
+    "ui_chart_calls": 0,
+    "ui_display_calls": 0,
+    "map_display_calls": 4,
+    "map_interactive_calls": 0,
+    "substantive_lines": 80,
+    "dup_line_max": 1,
+    "dup_triple_max": 1,
+    "duplicate_line": false,
+    "duplicate_block": false,
+    "dup_severity": "none",
+    "literal_assets": [
+     "MODIS/006/MCD12Q1",
+     "MODIS/006/MOD13A1",
+     "USDOS/LSIB_SIMPLE/2017"
+    ],
+    "bare_identifier_args": [],
+    "concat_args": [],
+    "other_nonliteral_args": [
+     "NDVIi.first()"
+    ],
+    "nonliteral_asset_arg": false,
+    "nonliteral_count": 0,
+    "nonliteral_severity": "none",
+    "flags": [
+     "map_display",
+     "literal_asset"
+    ]
+   },
+   "match": true
+  }
+ ]
+}

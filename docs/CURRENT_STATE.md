@@ -130,7 +130,17 @@ Last updated: 2026-10-15
   retrieval comparison (no silent retrieval change) → B independent. Instrument finding: S1 retrieval is operator-ID
   lexical similarity (0/1291 profiles have a description key; layer_c_intent
   unread) — S1 fix is a separate controlled change; card completion must NOT
-  write the top-level `description` key.** B-track (GEE planning): owner
+  write the top-level `description` key.**B-track CURRENT AUTHORITY (2026-10-18): P0 risk-flag calibration COMPLETE
+(regression 20/20; 12 components expected=actual 12/12; UI 90.9%→16.0%,
+duplicate 71.8%→34.3%, indirect 55.3%→37.8%). P1 task-family merge + Split V3
+CANDIDATE built: 34,647 families (largest 10,956 identical-title group), rows
+107,470/7,973/13,004 = 83.7/6.2/10.1, known oil/forest families unified,
+verification 7/7. V3 is NOT frozen: 6,092 high-confidence cross-split pending
+edges and 1,387 high-confidence deferred group edges await owner review. S1
+batch audit PAUSED; S2 OFF; formal B/C training FROZEN. Authority:
+`docs/reports/.../b_track_audit_v1/B_TRACK_SPLIT_V3_ACCEPTANCE_V1.md`.**
+
+** B-track (GEE planning): owner
   hypothesis ruling + joint audit **Q1-Q4 ALL COMPLETE** (`diag50_v1/
   B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`, `B_TRACK_Q2Q4_RULING_OWNER_V1.md`,
   `B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md` [V1.1], artifacts `b_track_audit_v1/`):

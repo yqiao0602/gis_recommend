@@ -80,7 +80,11 @@ P1/P2 与 E2E 详细过程以 `docs/CURRENT_STATE.md` 英文版为准）
   ——T-009 卡盲区解除。队列下一步：A1 pack（v0_5 卡 × 冻结 Top-10）→ 服务器 S2
   重跑 → 四分指标；再 A2 受控检索对照（不静默改检索）→ B 独立。仪器发现：S1 检索实为算子 ID 词面相似度
   （0/1291 有 description 键、layer_c_intent 未读取）——S1 修复另立受控变更；
-  补卡禁写顶层 description 键。** B 轨（GEE 规划）：owner 假设裁定 + 联合审计 **Q1-Q4 全部完成**
+  补卡禁写顶层 description 键。
+
+**B 轨当前权威状态（2026-10-18）：P0 风险旗标校准完成（回归 20/20；12 组件预期=实际 12/12；UI 90.9%→16.0%、重复 71.8%→34.3%、间接 55.3%→37.8%）。P1 任务族合并 + Split V3 候选：34,647 族（最大 10,956 同标题组），行 107,470/7,973/13,004 = 83.7/6.2/10.1，油膜/森林已知家族各归一，验证 7/7。V3 未冻结：6,092 条高置信跨 split pending + 1,387 条高置信截断组边待 owner 复核。S1 批量审计暂停；S2 不启用；正式 B/C 训练冻结。权威文件：`b_track_audit_v1/B_TRACK_SPLIT_V3_ACCEPTANCE_V1.md`。**
+
+** B 轨（GEE 规划）：owner 假设裁定 + 联合审计 **Q1-Q4 全部完成**
   （`diag50_v1/B_TRACK_GEE_PLANNING_RULING_OWNER_V1.md`、`B_TRACK_Q2Q4_RULING_OWNER_V1.md`、
   `B_TRACK_GEE_POOL_JOINT_AUDIT_V1.md`[V1.1]、产物 `b_track_audit_v1/`）：全链复制度不高但
   局部高度集中（Q1）；任务条件→结构耦合存在且单调，**Q2 40 对人工判读已完成并登记（见下）**；

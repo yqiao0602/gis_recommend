@@ -1,0 +1,148 @@
+{
+  "artifact": "B_TRACK_RISK_FLAG_REGRESSION_V1",
+  "date": "2026-10-18",
+  "rules_version": "V1_calibrated_20261018",
+  "note": "Positive / negative / boundary fixtures for the calibrated risk flags. Expected flags are exact set equality. Synthetic snippets isolate one rule at a time; real 12-component results are recorded separately in B_TRACK_RISK_FLAG_CALIBRATION_V1.json.",
+  "cases": [
+    {
+      "id": "pos_ui_control_button",
+      "class": "positive",
+      "rule": "ui_interactive",
+      "source": "var btn = ui.Button('Go', function() { print('x'); });",
+      "expected_flags": ["ui_interactive"]
+    },
+    {
+      "id": "pos_ui_control_select",
+      "class": "positive",
+      "rule": "ui_interactive",
+      "source": "var sel = ui.Select({items: ['a', 'b'], onChange: function(v) { print(v); }});",
+      "expected_flags": ["ui_interactive"]
+    },
+    {
+      "id": "pos_ui_chart",
+      "class": "positive",
+      "rule": "ui_chart",
+      "source": "print(ui.Chart.image.series(collection, roi, ee.Reducer.mean(), 30));",
+      "expected_flags": ["ui_chart"]
+    },
+    {
+      "id": "pos_ui_display_label",
+      "class": "positive",
+      "rule": "ui_display",
+      "source": "var label = ui.Label('Status');",
+      "expected_flags": ["ui_display"]
+    },
+    {
+      "id": "pos_map_display",
+      "class": "positive",
+      "rule": "map_display",
+      "source": "Map.addLayer(image, {min: 0, max: 1}, 'NDVI');\nMap.centerObject(roi, 8);\nMap.add(panel);",
+      "expected_flags": ["map_display"]
+    },
+    {
+      "id": "pos_map_onclick",
+      "class": "positive",
+      "rule": "ui_interactive",
+      "source": "Map.onClick(function(coords) { print(coords); });",
+      "expected_flags": ["ui_interactive"]
+    },
+    {
+      "id": "pos_duplicate_block",
+      "class": "positive",
+      "rule": "duplicate_block",
+      "source": "var alpha = image.select('B4').multiply(0.0001);\nvar beta = image.select('B5').multiply(0.0001);\nvar gamma = image.select('B6').multiply(0.0001);\nvar alpha = image.select('B4').multiply(0.0001);\nvar beta = image.select('B5').multiply(0.0001);\nvar gamma = image.select('B6').multiply(0.0001);",
+      "expected_flags": ["duplicate_block"]
+    },
+    {
+      "id": "pos_duplicate_line_3x",
+      "class": "positive",
+      "rule": "duplicate_line",
+      "source": "var delta = image.select('B7').multiply(0.0001);\nvar delta = image.select('B7').multiply(0.0001);\nvar delta = image.select('B7').multiply(0.0001);\nvar epsilon = image.select('B8').multiply(0.0001);",
+      "expected_flags": ["duplicate_line"]
+    },
+    {
+      "id": "pos_nonliteral_bare",
+      "class": "positive",
+      "rule": "nonliteral_asset_arg",
+      "source": "var src = 'users/foo/bar';\nvar col = ee.ImageCollection(src);",
+      "expected_flags": ["nonliteral_asset_arg"]
+    },
+    {
+      "id": "pos_nonliteral_concat",
+      "class": "positive",
+      "rule": "nonliteral_asset_arg",
+      "source": "var img = ee.Image('COPERNICUS/S2_SR/' + sceneID);",
+      "expected_flags": ["nonliteral_asset_arg", "literal_asset"]
+    },
+    {
+      "id": "neg_short_repeated_punctuation",
+      "class": "negative",
+      "rule": "duplicate_block",
+      "source": "}));\n});\nprint(1);\n});\n}));\n});\nprint(1);\n});",
+      "expected_flags": []
+    },
+    {
+      "id": "neg_numeric_asset_arg",
+      "class": "negative",
+      "rule": "nonliteral_asset_arg",
+      "source": "var img = ee.Image(0.0001);\nvar img2 = ee.Image(1);",
+      "expected_flags": []
+    },
+    {
+      "id": "neg_literal_asset_only",
+      "class": "negative",
+      "rule": "nonliteral_asset_arg",
+      "source": "var col = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR');",
+      "expected_flags": ["literal_asset"]
+    },
+    {
+      "id": "neg_array_asset_arg",
+      "class": "negative",
+      "rule": "nonliteral_asset_arg",
+      "source": "var col = ee.ImageCollection([min, max, range, mean]);",
+      "expected_flags": []
+    },
+    {
+      "id": "boundary_two_line_block_repeated",
+      "class": "boundary",
+      "rule": "duplicate_block",
+      "source": "var q1 = image.select('B4');\nvar q2 = image.select('B5');\nvar q1 = image.select('B4');\nvar q2 = image.select('B5');",
+      "expected_flags": []
+    },
+    {
+      "id": "boundary_repeated_comments",
+      "class": "boundary",
+      "rule": "duplicate_block",
+      "source": "// section one\n// section one\n// section one\nvar x = image.select('B4');",
+      "expected_flags": []
+    },
+    {
+      "id": "boundary_computed_image_arg",
+      "class": "boundary",
+      "rule": "nonliteral_asset_arg",
+      "source": "var img = ee.Image(image.select('B4'));",
+      "expected_flags": []
+    },
+    {
+      "id": "boundary_nested_number_arg",
+      "class": "boundary",
+      "rule": "nonliteral_asset_arg",
+      "source": "var img = ee.Image(ee.Number(1));",
+      "expected_flags": []
+    },
+    {
+      "id": "boundary_map_setcenter_only",
+      "class": "boundary",
+      "rule": "map_display",
+      "source": "Map.setCenter(100.1, 3.2, 8);",
+      "expected_flags": ["map_display"]
+    },
+    {
+      "id": "boundary_ui_map_widget",
+      "class": "boundary",
+      "rule": "ui_interactive",
+      "source": "var m = ui.Map();\nvar linker = ui.Map.Linker([m]);",
+      "expected_flags": ["ui_interactive"]
+    }
+  ]
+}
