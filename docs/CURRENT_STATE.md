@@ -135,10 +135,13 @@ Last updated: 2026-10-15
 duplicate 71.8%→34.3%, indirect 55.3%→37.8%). P1 task-family merge + Split V3
 CANDIDATE built: 34,647 families (largest 10,956 identical-title group), rows
 107,470/7,973/13,004 = 83.7/6.2/10.1, known oil/forest families unified,
-verification 7/7. V3 is NOT frozen: 6,092 high-confidence cross-split pending
-edges and 1,387 high-confidence deferred group edges await owner review. S1
-batch audit PAUSED; S2 OFF; formal B/C training FROZEN. Authority:
-`docs/reports/.../b_track_audit_v1/B_TRACK_SPLIT_V3_ACCEPTANCE_V1.md`.**
+verification 7/7. V3 is NOT frozen: Gate 1 triage produced 5,778 deduped
+high-confidence relations (V3 4,391 cross-split pending + 1,387 deferred;
+endpoint overlap 0): A 2,739 / B 109 / C 2,930, leakage-priority 1,504
+(A cross-split 1,399 + deferred cross-split 105). Owner adjudication pending.
+S1 batch audit PAUSED; S2 OFF; formal B/C training FROZEN. Authority:
+`docs/reports/.../b_track_audit_v1/B_TRACK_SPLIT_V3_ACCEPTANCE_V1.md` and
+`B_TRACK_V3_HIGH_CONF_REVIEW_V1.md`.**
 
 ** B-track (GEE planning): owner
   hypothesis ruling + joint audit **Q1-Q4 ALL COMPLETE** (`diag50_v1/
