@@ -1,0 +1,82 @@
+# R15 evidence pack | pairs=['S044']
+# scripts: ['script_152447', 'script_152529']
+
+## script_152447 (381 lines)
+  NUM L75: var pastureImazon = imazon.eq(15)
+  NUM L83: .sum().reduce(ee.Reducer.sum()).gte(20)
+  NUM L87: var nonforest = ee.Image(assetIntegrated).eq(12)
+  NUM L89: .reduce(ee.Reducer.sum()).gte(24);
+  NUM L91: var waterMask = ee.Image(assetIntegrated).eq(33)
+  NUM L93: .reduce(ee.Reducer.sum()).gte(24);
+  NUM L107: }).lt(1000);
+  NUM L117: }).lt(1000);
+  NUM L127: }).lt(500);
+  NUM L133: agree = agree.where(nonforest.eq(1), 0);
+  NUM L203: Map.addLayer(swsc.updateMask(swsc.eq(1)).clip(amazonBiome), {palette: '0099ff'}, 'swsc', false);
+  NUM L343: scale: 30,
+  API lines: 40 (first 25 shown)
+  L17: var amazonBiome = ee.FeatureCollection(assetBiome)
+  L43: var integrated = ee.Image(assetIntegrated)
+  L45: .select('classification_' + year);
+  L47: var imazon = ee.ImageCollection(assetImazon)
+  L53: .toBands()
+  L55: .rename(years.map(
+  L65: .clip(amazonBiome)
+  L67: .select('classification_' + year);;
+  L69: var lapig = ee.Image(assetLapig + '/' + year + '-' + 1)
+  L71: .remap([0,15],[0,1])
+  L77: .remap([0,1],[0,2])
+  L81: var swsc = ee.ImageCollection(assetWater)
+  L83: .sum().reduce(ee.Reducer.sum()).gte(20)
+  L87: var nonforest = ee.Image(assetIntegrated).eq(12)
+  L89: .reduce(ee.Reducer.sum()).gte(24);
+  L91: var waterMask = ee.Image(assetIntegrated).eq(33)
+  L93: .reduce(ee.Reducer.sum()).gte(24);
+  L95: var deforestationCol5 = ee.ImageCollection(assetDefor)
+  L97: .mosaic();
+  L99: var bufferWater = ee.Image(1)
+  L109: var bufferSwsc = ee.Image(1)
+  L119: var bufferNonforest = ee.Image(1)
+  L131: .clip(amazonBiome);
+  L133: agree = agree.where(nonforest.eq(1), 0);
+  L199: Map.addLayer(waterMask.selfMask().clip(amazonBiome), {palette: '0000ff'}, 'water mask ' + year, false);
+
+## script_152529 (339 lines)
+  NUM L33: var pastureImazon = imazon.eq(15)
+  NUM L41: .sum().reduce(ee.Reducer.sum()).gte(20)
+  NUM L45: var nonforest = ee.Image(assetIntegrated).eq(12)
+  NUM L47: .reduce(ee.Reducer.sum()).gte(24);
+  NUM L49: var waterMask = ee.Image(assetIntegrated).eq(33)
+  NUM L51: .reduce(ee.Reducer.sum()).gte(24);
+  NUM L65: }).lt(1000);
+  NUM L75: }).lt(1000);
+  NUM L85: }).lt(500);
+  NUM L91: agree = agree.where(nonforest.eq(1), 0);
+  NUM L161: Map.addLayer(swsc.updateMask(swsc.eq(1)).clip(amazonBiome), {palette: '0099ff'}, 'swsc', false);
+  NUM L301: scale: 30,
+  API lines: 36 (first 25 shown)
+  L17: var amazonBiome = ee.FeatureCollection(assetBiome)
+  L21: var integrated = ee.Image(assetIntegrated)
+  L23: .select('classification_' + year);
+  L25: var imazon = ee.Image(assetImazon + year + '-' + 5);
+  L27: var lapig = ee.Image(assetLapig + '/' + year + '-' + 1)
+  L29: .remap([0,15],[0,1])
+  L35: .remap([0,1],[0,2])
+  L39: var swsc = ee.ImageCollection(assetWater)
+  L41: .sum().reduce(ee.Reducer.sum()).gte(20)
+  L45: var nonforest = ee.Image(assetIntegrated).eq(12)
+  L47: .reduce(ee.Reducer.sum()).gte(24);
+  L49: var waterMask = ee.Image(assetIntegrated).eq(33)
+  L51: .reduce(ee.Reducer.sum()).gte(24);
+  L53: var deforestationCol5 = ee.ImageCollection(assetDefor)
+  L55: .mosaic();
+  L57: var bufferWater = ee.Image(1)
+  L67: var bufferSwsc = ee.Image(1)
+  L77: var bufferNonforest = ee.Image(1)
+  L89: .clip(amazonBiome);
+  L91: agree = agree.where(nonforest.eq(1), 0);
+  L157: Map.addLayer(waterMask.selfMask().clip(amazonBiome), {palette: '0000ff'}, 'water mask ' + year, false);
+  L161: Map.addLayer(swsc.updateMask(swsc.eq(1)).clip(amazonBiome), {palette: '0099ff'}, 'swsc', false);
+  L165: Map.addLayer(nonforest.selfMask().clip(amazonBiome),{palette: 'cc00cc'}, 'nonforest mask ' + year, false);
+  L257: var pixelArea = ee.Image.pixelArea().divide(1000000);
+  L261: item = ee.Dictionary(item);

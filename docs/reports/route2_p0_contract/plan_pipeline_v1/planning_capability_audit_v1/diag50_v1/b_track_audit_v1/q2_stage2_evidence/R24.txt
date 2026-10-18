@@ -1,0 +1,122 @@
+# R24 evidence pack | pairs=['SAME-11', 'SAME-9']
+# scripts: ['script_38679', 'script_38703', 'script_62640', 'script_62643']
+
+## script_38679 (547 lines)
+  NUM L137: scale: 30
+  NUM L161: scale: 30,
+  NUM L177: var eut = chl.gte(0).selfMask();
+  NUM L187: scale: 30
+  NUM L251: scale: 30
+  NUM L275: scale: 30,
+  NUM L291: var eut = chl.gte(0).selfMask();
+  NUM L301: scale: 30
+  NUM L365: scale: 30
+  NUM L389: scale: 30,
+  NUM L405: var eut = chl.gte(0).selfMask();
+  NUM L415: scale: 30
+  API lines: 127 (first 25 shown)
+  L13: var start = ee.Date('2019-01-01');
+  L15: var end = ee.Date('2022-01-01');
+  L17: var l8_start = ee.Date('2014-01-01');
+  L19: var l8_end = ee.Date('2022-01-01');
+  L21: var l7_start = ee.Date('2000-01-01');
+  L23: var l7_end = ee.Date('2014-01-01');
+  L25: var l5_start = ee.Date('1987-01-01');
+  L27: var l5_end = ee.Date('2000-01-01');
+  L43: var datelist = ee.List.sequence(1987, 2021);
+  L53: var point = ee.Geometry.Point([ee.Number(long), ee.Number(lat)]);
+  L57: var date_collection = ee.ImageCollection(s2)
+  L59: .filterBounds(point)
+  L61: .filterDate(start, end)
+  L63: .filter(ee.Filter.calendarRange(4, 4,'month'))
+  L65: .sort('CLOUD_COVERAGE_ASSESSMENT')
+  L67: .first()
+  L71: var date = ee.Date(ee.Date(date_collection).format('YYYY-MM-dd'));
+  L73: var collection = ee.ImageCollection(s2)
+  L75: .filterBounds(geometry)
+  L77: .filterDate(date.advance(-4, 'day'), date.advance(4, 'day'))
+  L79: .mosaic()
+  L81: .clip(geometry);
+  L85: var arealist = ee.Array([], ee.PixelType.float());
+  L87: var chllist = ee.Array([], ee.PixelType.float());
+  L89: var eutlist = ee.Array([], ee.PixelType.float());
+
+## script_38703 (547 lines)
+  NUM L137: scale: 30
+  NUM L161: scale: 30,
+  NUM L177: var eut = chl.gte(0).selfMask();
+  NUM L187: scale: 30
+  NUM L251: scale: 30
+  NUM L275: scale: 30,
+  NUM L291: var eut = chl.gte(0).selfMask();
+  NUM L301: scale: 30
+  NUM L365: scale: 30
+  NUM L389: scale: 30,
+  NUM L405: var eut = chl.gte(0).selfMask();
+  NUM L415: scale: 30
+  API lines: 127 (first 25 shown)
+  L13: var start = ee.Date('2019-01-01');
+  L15: var end = ee.Date('2022-01-01');
+  L17: var l8_start = ee.Date('2014-01-01');
+  L19: var l8_end = ee.Date('2022-01-01');
+  L21: var l7_start = ee.Date('2000-01-01');
+  L23: var l7_end = ee.Date('2014-01-01');
+  L25: var l5_start = ee.Date('1987-01-01');
+  L27: var l5_end = ee.Date('2000-01-01');
+  L43: var datelist = ee.List.sequence(1987, 2021);
+  L53: var point = ee.Geometry.Point([ee.Number(long), ee.Number(lat)]);
+  L57: var date_collection = ee.ImageCollection(s2)
+  L59: .filterBounds(point)
+  L61: .filterDate(start, end)
+  L63: .filter(ee.Filter.calendarRange(4, 4,'month'))
+  L65: .sort('CLOUD_COVERAGE_ASSESSMENT')
+  L67: .first()
+  L71: var date = ee.Date(ee.Date(date_collection).format('YYYY-MM-dd'));
+  L73: var collection = ee.ImageCollection(s2)
+  L75: .filterBounds(geometry)
+  L77: .filterDate(date.advance(-4, 'day'), date.advance(4, 'day'))
+  L79: .mosaic()
+  L81: .clip(geometry);
+  L85: var arealist = ee.Array([], ee.PixelType.float());
+  L87: var chllist = ee.Array([], ee.PixelType.float());
+  L89: var eutlist = ee.Array([], ee.PixelType.float());
+
+## script_62640 (49 lines)
+  DS  L1: LANDSAT/LC08/C01/T1_RT_TOA
+  NUM L21: var watermask = awei_nsh.gt(0);
+  NUM L45: scale: 30,
+  API lines: 14 (first 25 shown)
+  L1: var landsat8 = ee.ImageCollection("LANDSAT/LC08/C01/T1_RT_TOA")
+  L3: .filterBounds(ROI)
+  L5: .filterDate('2013-01-01', '2019-12-30');
+  L9: var blue = img.select('B2');
+  L11: var green = img.select('B3');
+  L13: var nir = img.select('B5');
+  L15: var swir1 = img.select('B6');
+  L17: var swir2 = img.select('B7');
+  L19: var awei_nsh = (((green.subtract(swir1)).multiply(4)).subtract(nir.multiply(0.25)).subtract(swir2.multiply(2.7
+  L23: var area = ee.Image.pixelArea();
+  L27: img = img.addBands(waterArea);
+  L33: var collection = landsat8.map(waterfunction);
+  L39: imageCollection: collection.select('WaterArea'),
+  L43: reducer: ee.Reducer.sum(),
+
+## script_62643 (49 lines)
+  DS  L1: LANDSAT/LC08/C01/T1_RT_TOA
+  NUM L21: var watermask = awei_nsh.gt(0);
+  NUM L45: scale: 30,
+  API lines: 14 (first 25 shown)
+  L1: var landsat8 = ee.ImageCollection("LANDSAT/LC08/C01/T1_RT_TOA")
+  L3: .filterBounds(ROI)
+  L5: .filterDate('2013-01-01', '2019-12-30');
+  L9: var blue = img.select('B2');
+  L11: var green = img.select('B3');
+  L13: var nir = img.select('B5');
+  L15: var swir1 = img.select('B6');
+  L17: var swir2 = img.select('B7');
+  L19: var awei_nsh = (((green.subtract(swir1)).multiply(4)).subtract(nir.multiply(0.25)).subtract(swir2.multiply(2.7
+  L23: var area = ee.Image.pixelArea();
+  L27: img = img.addBands(waterArea);
+  L33: var collection = landsat8.map(waterfunction);
+  L39: imageCollection: collection.select('WaterArea'),
+  L43: reducer: ee.Reducer.sum(),

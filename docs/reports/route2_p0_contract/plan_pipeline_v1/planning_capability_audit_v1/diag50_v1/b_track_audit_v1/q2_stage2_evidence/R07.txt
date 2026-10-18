@@ -1,0 +1,194 @@
+# R07 evidence pack | pairs=['S102', 'S103', 'S104']
+# scripts: ['script_30698', 'script_30704', 'script_65640', 'script_65642', 'script_71201', 'script_71206']
+
+## script_30698 (137 lines)
+  NUM L59: scale: 30
+  NUM L103: var split = 0.7;  // Roughly 70% training, 30% testing.
+  NUM L133: scale: 30,
+  API lines: 19 (first 25 shown)
+  L1: var spatialFiltered = l8.filterBounds(GB);
+  L5: var temporalFiltered = spatialFiltered.filterDate('2014-01-01', '2014-12-31');
+  L9: var composite = ee.Algorithms.Landsat.simpleComposite({
+  L19: Water.merge(Pine)
+  L21: .merge(Wetland)
+  L23: .merge(Sand)
+  L25: .merge(Urban)
+  L27: .merge(Grass)
+  L29: .merge(HWTC)
+  L53: var training = composite.select(bands).sampleRegions({
+  L63: var classifier = ee.Classifier.cart().train({
+  L73: var classified = composite.classify(classifier);
+  L101: var withRandom = training.randomColumn('random');
+  L105: var trainingPartition = withRandom.filter(ee.Filter.lt('random', split));
+  L107: var testingPartition = withRandom.filter(ee.Filter.gte('random', split));
+  L109: var trainedClassifierGMO = ee.Classifier.gmoMaxEnt().train({
+  L119: var test = testingPartition.classify(trainedClassifierGMO);
+  L121: var confusionMatrix = test.errorMatrix(classProperty, 'classification');
+  L127: Export.image.toDrive({
+
+## script_30704 (137 lines)
+  NUM L59: scale: 30
+  NUM L103: var split = 0.7;  // Roughly 70% training, 30% testing.
+  NUM L133: scale: 30,
+  API lines: 19 (first 25 shown)
+  L1: var spatialFiltered = l8.filterBounds(GB);
+  L5: var temporalFiltered = spatialFiltered.filterDate('2014-01-01', '2014-12-31');
+  L9: var composite = ee.Algorithms.Landsat.simpleComposite({
+  L19: Water.merge(Pine)
+  L21: .merge(Wetland)
+  L23: .merge(Sand)
+  L25: .merge(Urban)
+  L27: .merge(Grass)
+  L29: .merge(HWTC)
+  L53: var training = composite.select(bands).sampleRegions({
+  L63: var classifier = ee.Classifier.cart().train({
+  L73: var classified = composite.classify(classifier);
+  L101: var withRandom = training.randomColumn('random');
+  L105: var trainingPartition = withRandom.filter(ee.Filter.lt('random', split));
+  L107: var testingPartition = withRandom.filter(ee.Filter.gte('random', split));
+  L109: var trainedClassifiersvm = ee.Classifier.svm().train({
+  L119: var test = testingPartition.classify(trainedClassifiersvm);
+  L121: var confusionMatrix = test.errorMatrix(classProperty, 'classification');
+  L127: Export.image.toDrive({
+
+## script_65640 (513 lines)
+  DS  L1: users/chenbo19241/qujing
+  DS  L41:  LANDSAT/LC08/C01/T1_SR
+  DS  L155: LANDSAT/LC08/C01/T1_SR
+  DS  L263: USGS/SRTMGL1_003
+  DS  L323: users/chenbo19241/1qujing
+  NUM L53: var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+  NUM L55: .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  NUM L67: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  NUM L87: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  NUM L107: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  NUM L127: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  NUM L281: var decision4=slope.lt(6);
+  NUM L337: scale: 10,
+  NUM L339: tileScale:2
+  NUM L349: scale: 10,
+  NUM L351: tileScale:2
+  NUM L377: var paddy=(classified.eq(4)).and(decision4.eq(1));
+  API lines: 122 (first 25 shown)
+  L1: var region=ee.FeatureCollection('users/chenbo19241/qujing');
+  L7: var empty = ee.Image().toByte();
+  L9: var outline = ee.Image()
+  L23: var start_date = ee.Date.fromYMD(year,1,1);
+  L25: var end_date = ee.Date.fromYMD(year,12,31);
+  L41: var srImageList = ee.ImageCollection(' LANDSAT/LC08/C01/T1_SR')
+  L47: var cloudShadowBitMask = ee.Number(2).pow(3).int();
+  L49: var cloudsBitMask = ee.Number(2).pow(5).int();
+  L51: var qa = image.select('pixel_qa');
+  L57: return image.updateMask(mask);
+  L65: var VI = image.normalizedDifference([b1,b2]).rename(bName);
+  L67: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  L75: var VI = image.expression('2.5 * (nir - red) / (nir + 6 * red - 7.5 * blue + 1)',
+  L79: blue: image.select(B1).multiply(0.0001),
+  L81: red:  image.select(B2).multiply(0.0001),
+  L83: nir:  image.select(B3).multiply(0.0001)
+  L85: }).rename('EVI');
+  L87: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  L95: var VI = image.expression('0.5*(120*(nir - green) / 200*(red-green))',
+  L99: nir:  image.select(B1).multiply(0.0001),
+  L101: green:  image.select(B2).multiply(0.0001),
+  L103: red:  image.select(B3).multiply(0.0001),
+  L105: }).rename('TVI');
+  L107: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  L115: var VI = image.expression( '(1 + L) * float(nir - red)/ (nir + red + L)',
+
+## script_65642 (511 lines)
+  DS  L1: users/chenbo19241/qujing
+  DS  L41:  LANDSAT/LC08/C01/T1_SR
+  DS  L155: LANDSAT/LC08/C01/T1_SR
+  DS  L263: USGS/SRTMGL1_003
+  DS  L323: users/chenbo19241/1qujing
+  NUM L53: var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+  NUM L55: .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  NUM L67: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  NUM L87: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  NUM L107: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  NUM L127: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  NUM L281: var decision4=slope.lt(5);
+  NUM L337: scale: 10,
+  NUM L339: tileScale:2
+  NUM L349: scale: 10,
+  NUM L351: tileScale:2
+  NUM L375: var paddy=(classified.eq(4)).and(decision4.eq(1));
+  API lines: 122 (first 25 shown)
+  L1: var region=ee.FeatureCollection('users/chenbo19241/qujing');
+  L7: var empty = ee.Image().toByte();
+  L9: var outline = ee.Image()
+  L23: var start_date = ee.Date.fromYMD(year,1,1);
+  L25: var end_date = ee.Date.fromYMD(year,12,31);
+  L41: var srImageList = ee.ImageCollection(' LANDSAT/LC08/C01/T1_SR')
+  L47: var cloudShadowBitMask = ee.Number(2).pow(3).int();
+  L49: var cloudsBitMask = ee.Number(2).pow(5).int();
+  L51: var qa = image.select('pixel_qa');
+  L57: return image.updateMask(mask);
+  L65: var VI = image.normalizedDifference([b1,b2]).rename(bName);
+  L67: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  L75: var VI = image.expression('2.5 * (nir - red) / (nir + 6 * red - 7.5 * blue + 1)',
+  L79: blue: image.select(B1).multiply(0.0001),
+  L81: red:  image.select(B2).multiply(0.0001),
+  L83: nir:  image.select(B3).multiply(0.0001)
+  L85: }).rename('EVI');
+  L87: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  L95: var VI = image.expression('0.5*(120*(nir - green) / 200*(red-green))',
+  L99: nir:  image.select(B1).multiply(0.0001),
+  L101: green:  image.select(B2).multiply(0.0001),
+  L103: red:  image.select(B3).multiply(0.0001),
+  L105: }).rename('TVI');
+  L107: return VI.updateMask(VI.gt(-1).and(VI.lt(1)));
+  L115: var VI = image.expression( '(1 + L) * float(nir - red)/ (nir + red + L)',
+
+## script_71201 (107 lines)
+  NUM L17: var input = landsat.updateMask(landsat.select('fmask').lte(1))//only gives portions of image with no
+  API lines: 22 (first 25 shown)
+  L7: var landsat = ee.Image(l8
+  L9: .filterDate('2014-05-01', '2014-10-31')
+  L11: .filterBounds(roi)
+  L13: .sort('CLOUD_COVER')
+  L15: .first());
+  L17: var input = landsat.updateMask(landsat.select('fmask').lte(1))//only gives portions of image with no clouds or
+  L21: var training = input.addBands(NASS).stratifiedSample({
+  L31: }).filter(ee.Filter.neq('b1', null));
+  L33: var classifier = ee.Classifier.randomForest(10)
+  L35: .train(training, 'b1');
+  L37: var classified = input.classify(classifier);
+  L47: var validation = input.addBands(NASS).stratifiedSample({
+  L57: }).filter(ee.Filter.neq('b1', null));  // Filter the result to get rid of any null pixels.
+  L59: var validated = validation.classify(classifier);
+  L61: var testAccuracy = validated.errorMatrix('b1', 'classification');
+  L69: classified=classified.select(['classification'],['b1'])
+  L77: var classHist=classified.reduceRegion(ee.Reducer.frequencyHistogram().unweighted(),roi.geometry())
+  L79: var nassHist=NASS.reduceRegion(ee.Reducer.frequencyHistogram().unweighted(),roi.geometry())
+  L85: var classHistv = ee.FeatureCollection([ee.Feature(null, classHist)]);
+  L87: var nassHistv = ee.FeatureCollection([ee.Feature(null, nassHist)]); //ground truth
+  L89: Export.table.toDrive({
+  L99: Export.table.toDrive({
+
+## script_71206 (107 lines)
+  NUM L17: var input = landsat.updateMask(landsat.select('fmask').lte(1))//only gives portions of image with no
+  API lines: 22 (first 25 shown)
+  L7: var landsat = ee.Image(l8
+  L9: .filterDate('2014-05-01', '2014-10-31')
+  L11: .filterBounds(roi)
+  L13: .sort('CLOUD_COVER')
+  L15: .first());
+  L17: var input = landsat.updateMask(landsat.select('fmask').lte(1))//only gives portions of image with no clouds or
+  L21: var training = input.addBands(NASS).stratifiedSample({
+  L31: }).filter(ee.Filter.neq('b1', null));
+  L33: var classifier = ee.Classifier.cart()
+  L35: .train(training, 'b1');
+  L37: var classified = input.classify(classifier);
+  L47: var validation = input.addBands(NASS).stratifiedSample({
+  L57: }).filter(ee.Filter.neq('b1', null));  // Filter the result to get rid of any null pixels.
+  L59: var validated = validation.classify(classifier);
+  L61: var testAccuracy = validated.errorMatrix('b1', 'classification');
+  L69: classified=classified.select(['classification'],['b1'])
+  L77: var classHist=classified.reduceRegion(ee.Reducer.frequencyHistogram().unweighted(),roi.geometry())
+  L79: var nassHist=NASS.reduceRegion(ee.Reducer.frequencyHistogram().unweighted(),roi.geometry())
+  L85: var classHistv = ee.FeatureCollection([ee.Feature(null, classHist)]);
+  L87: var nassHistv = ee.FeatureCollection([ee.Feature(null, nassHist)]); //ground truth
+  L89: Export.table.toDrive({
+  L99: Export.table.toDrive({

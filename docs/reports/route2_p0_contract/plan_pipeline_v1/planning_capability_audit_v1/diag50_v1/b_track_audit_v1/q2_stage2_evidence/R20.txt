@@ -1,0 +1,187 @@
+# R20 evidence pack | pairs=['S021', 'S009']
+# scripts: ['script_228758', 'script_277196', 'script_74490', 'script_74517']
+
+## script_228758 (515 lines)
+  DS  L27: IDAHO_EPSCOR/TERRACLIMATE
+  DS  L41: USDOS/LSIB_SIMPLE/2017
+  DS  L359: IDAHO_EPSCOR/TERRACLIMATE
+  NUM L77: scale: 4500,
+  NUM L91: scale: 4500,
+  NUM L105: scale: 4500,
+  NUM L119: scale: 4500,
+  NUM L133: scale: 4500,
+  NUM L147: scale: 4500,
+  NUM L161: scale: 4500,
+  NUM L175: scale: 4500,
+  NUM L189: scale: 4500,
+  NUM L203: scale: 4500,
+  NUM L217: scale: 4500,
+  NUM L231: scale: 4500,
+  API lines: 53 (first 25 shown)
+  L27: var Terraclimate = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
+  L29: .filter(ee.Filter.date(inicio,final))
+  L31: .map(Bet)
+  L33: var Terra_max = Terraclimate.select('tmmx').mean().rename("T°max");
+  L35: var Terra_min = Terraclimate.select('tmmn').mean().rename("T°min");
+  L41: var paises = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017")
+  L43: var vacio = ee.Image().byte();
+  L57: var Guate = paises.filter(ee.Filter.eq("country_co","GT"));
+  L59: var ElSalv = paises.filter(ee.Filter.eq("country_co","ES"));
+  L61: var Hond = paises.filter(ee.Filter.eq("country_co","HO"));
+  L63: var Nic = paises.filter(ee.Filter.eq("country_co","NU"));
+  L65: var CostR = paises.filter(ee.Filter.eq("country_co","CS"));
+  L67: var Pan = paises.filter(ee.Filter.eq("country_co","PM"));
+  L69: var RepD = paises.filter(ee.Filter.eq("country_co","DR"));
+  L71: var gtTmax = Terra_max.reduceRegion({
+  L73: reducer: ee.Reducer.mean(),
+  L85: var gtTmin = Terra_min.reduceRegion({
+  L87: reducer: ee.Reducer.mean(),
+  L99: var ESTmax = Terra_max.reduceRegion({
+  L101: reducer: ee.Reducer.mean(),
+  L113: var ESTmin = Terra_min.reduceRegion({
+  L115: reducer: ee.Reducer.mean(),
+  L127: var HondTmax = Terra_max.reduceRegion({
+  L129: reducer: ee.Reducer.mean(),
+  L141: var HondTmin = Terra_min.reduceRegion({
+
+## script_277196 (519 lines)
+  DS  L11: IDAHO_EPSCOR/TERRACLIMATE
+  DS  L23: USDOS/LSIB_SIMPLE/2017
+  DS  L361: IDAHO_EPSCOR/TERRACLIMATE
+  NUM L47: scale: 4500,
+  NUM L63: scale: 4500,
+  NUM L79: scale: 5500,
+  NUM L95: scale: 5500,
+  NUM L111: scale: 5500,
+  NUM L127: scale: 5500,
+  NUM L143: scale: 5500,
+  NUM L159: scale: 5500,
+  NUM L175: scale: 5500,
+  NUM L191: scale: 5500,
+  NUM L207: scale: 5500,
+  NUM L223: scale: 5500,
+  API lines: 61 (first 25 shown)
+  L11: var Terraclimate = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
+  L13: .filter(ee.Filter.date(inicio,fin))
+  L15: .map(Tempescale)
+  L17: var Terra_max = Terraclimate.select("tmmx").mean().rename("°Tmax");
+  L19: var Terra_min = Terraclimate.select("tmmn").mean().rename("°Tmin");
+  L23: var paises = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
+  L25: var vacio = ee.Image().byte();
+  L39: var gt = paises.filter(ee.Filter.eq("country_co","GT"))
+  L41: var gt_anual = Terra_max.reduceRegion({
+  L43: reducer: ee.Reducer.mean(),
+  L55: var gt = paises.filter(ee.Filter.eq("country_co","GT"))
+  L57: var gt_anual = Terra_min.reduceRegion({
+  L59: reducer: ee.Reducer.mean(),
+  L71: var Salvador = paises.filter(ee.Filter.eq("country_co","ES"));
+  L73: var Anual_es = Terra_max.reduceRegion({
+  L75: reducer: ee.Reducer.mean(),
+  L87: var Salvador = paises.filter(ee.Filter.eq("country_co","ES"));
+  L89: var Anual_es = Terra_min.reduceRegion({
+  L91: reducer: ee.Reducer.mean(),
+  L103: var Honduras = paises.filter(ee.Filter.eq("country_co","HO"));
+  L105: var Anual_ho = Terra_max.reduceRegion({
+  L107: reducer: ee.Reducer.mean(),
+  L119: var Honduras = paises.filter(ee.Filter.eq("country_co","HO"));
+  L121: var Anual_ho = Terra_min.reduceRegion({
+  L123: reducer: ee.Reducer.mean(),
+
+## script_74490 (1135 lines)
+  DS  L37: users/cristinamilesi/shapefiles/India_Districts2020
+  DS  L47: projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/
+  DS  L61: users/cristinamilesi/shapefiles/GPs/mncfc_2022-23Kharif_village_shapefiles
+  DS  L141: MODIS/006/MOD17A2H
+  DS  L183: MODIS/006/MYD17A2H
+  DS  L451: MODIS/006/MOD17A2H
+  DS  L493: MODIS/006/MYD17A2H
+  DS  L709: MODIS/061/MCD15A3H
+  DS  L897: JAXA/GCOM-C/L3/LAND/LAI/V3
+  NUM L103: scale: 100
+  NUM L233: scale: 500,
+  NUM L251: scale: 500,
+  NUM L281: scale: 500
+  NUM L543: scale: 500,
+  NUM L561: scale: 500,
+  NUM L591: scale: 500
+  NUM L771: scale: 500,
+  NUM L789: scale: 500,
+  NUM L817: scale: 500
+  NUM L943: scale: 1000,
+  NUM L961: scale: 500,
+  API lines: 143 (first 25 shown)
+  L37: var india_districts = ee.FeatureCollection('users/cristinamilesi/shapefiles/India_Districts2020');
+  L39: var district = india_districts.filter(ee.Filter.inList('dtname', [dtname]));//'Vidisha','Ashoknagar', 'Ujjain'
+  L45: Map.addLayer(ee.Image(1), {palette:['ffffff']}, 'white');
+  L47: var crop_classified = ee.Image('projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/'+districtn+'_'+crop+'_LC10
+  L61: var villages = ee.FeatureCollection('users/cristinamilesi/shapefiles/GPs/mncfc_2022-23Kharif_village_shapefile
+  L63: .filter(ee.Filter.inList('DISTNA2011',[districtn])) //use this layer for Village names
+  L69: var crop_classified = crop_classified.clip(villages)
+  L71: var areaImage = ee.Image.pixelArea().divide(1e4).multiply(crop_classified); //creates an image with one band c
+  L75: var area = areaImage.reduceRegion({
+  L77: reducer: ee.Reducer.sum(),
+  L95: var areaImage = crop_classified.multiply(ee.Image.pixelArea()).divide(1e4)
+  L99: reducer: ee.Reducer.sum(),
+  L109: .filter(ee.Filter.gt('sum', 100))
+  L137: var Prod = ee.Number(CropAreadistrict).multiply(ee.Number(YIELDadj))
+  L141: var TerraGPP = ee.ImageCollection("MODIS/006/MOD17A2H").select('Gpp')
+  L143: .filterBounds(villages)
+  L145: .filterDate(ee.Date(startdate_early),ee.Date(enddate_early))
+  L147: .map(
+  L151: var rescaled_GPP = img.select('Gpp')
+  L155: .rename('Gpp_')
+  L157: .clip(villages);
+  L159: return img.addBands(rescaled_GPP);
+  L167: var cumTerraGPP = TerraGPP.select('Gpp_').reduce(ee.Reducer.sum()).updateMask(crop_classified)
+  L171: TerraGPP.select('Gpp_'), district, ee.Reducer.mean(), 500)
+  L183: var AquaGPP = ee.ImageCollection("MODIS/006/MYD17A2H").select('Gpp')
+
+## script_74517 (1135 lines)
+  DS  L31: users/cristinamilesi/shapefiles/India_Districts2020
+  DS  L43: projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/
+  DS  L57: projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/Merged_MNCFC_2022-23KHARIF_50_GPsfromMNCFC_with_CCE_value
+  DS  L61: projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/Merged_MNCFC_2022-23KHARIF_50_GPsfromMNCFC_with_CCE_value
+  DS  L141: MODIS/006/MOD17A2H
+  DS  L183: MODIS/006/MYD17A2H
+  DS  L451: MODIS/006/MOD17A2H
+  DS  L493: MODIS/006/MYD17A2H
+  DS  L709: MODIS/061/MCD15A3H
+  DS  L897: JAXA/GCOM-C/L3/LAND/LAI/V3
+  NUM L103: scale: 100
+  NUM L233: scale: 500,
+  NUM L251: scale: 500,
+  NUM L281: scale: 500
+  NUM L543: scale: 500,
+  NUM L561: scale: 500,
+  NUM L591: scale: 500
+  NUM L771: scale: 500,
+  NUM L789: scale: 500,
+  NUM L817: scale: 500
+  NUM L943: scale: 1000,
+  NUM L961: scale: 500,
+  API lines: 146 (first 25 shown)
+  L31: var india_districts = ee.FeatureCollection('users/cristinamilesi/shapefiles/India_Districts2020');
+  L33: var districts = india_districts.filter(ee.Filter.inList('dtname', ['Osmanabad','Nanded']));//'Vidisha','Ashokn
+  L37: var district = india_districts.filter(ee.Filter.inList('dtname', [districtn]));//'Vidisha','Ashoknagar', 'Ujja
+  L41: Map.addLayer(ee.Image(1), {palette:['ffffff']}, 'white');
+  L43: var crop_classified = ee.Image('projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/'+districtn+'_'+crop+'_LC10
+  L57: var villages = ee.FeatureCollection('projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/Merged_MNCFC_2022-23KH
+  L59: .filter(ee.Filter.inList('DISTNA2011',[districtn])) //use this layer for GP names
+  L61: var villages = ee.FeatureCollection('projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/Merged_MNCFC_2022-23KH
+  L63: .filter(ee.Filter.inList('DISTNA2011',[districtn])) //use this layer for GP names
+  L69: var crop_classified = crop_classified.clip(villages)
+  L71: var areaImage = ee.Image.pixelArea().divide(1e4).multiply(crop_classified); //creates an image with one band c
+  L75: var area = areaImage.reduceRegion({
+  L77: reducer: ee.Reducer.sum(),
+  L95: var areaImage = crop_classified.multiply(ee.Image.pixelArea()).divide(1e4)
+  L99: reducer: ee.Reducer.sum(),
+  L109: .filter(ee.Filter.gt('sum', 100))
+  L137: var Prod = ee.Number(CropAreadistrict).multiply(ee.Number(YIELDadj))
+  L141: var TerraGPP = ee.ImageCollection("MODIS/006/MOD17A2H").select('Gpp')
+  L143: .filterBounds(villages)
+  L145: .filterDate(ee.Date(startdate_early),ee.Date(enddate_early))
+  L147: .map(
+  L151: var rescaled_GPP = img.select('Gpp')
+  L155: .rename('Gpp_')
+  L157: .clip(villages);
+  L159: return img.addBands(rescaled_GPP);

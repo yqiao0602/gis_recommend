@@ -1,0 +1,276 @@
+# R22 evidence pack | pairs=['DIFF-5', 'S013', 'S027']
+# scripts: ['script_109923', 'script_137561', 'script_178822', 'script_269963', 'script_269974', 'script_292317']
+
+## script_109923 (3325 lines)
+  DS  L3: users/gustavoonagel/Logo_AlgaeMap
+  DS  L59: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L189: projects/ee-algalbloom-gee4geo/assets/NDCI_daily
+  DS  L211: users/gustavoonagel/UGRHI
+  DS  L213: projects/ee-algalbloom-gee4geo/assets/Reservatorios_SP_2019_Tiet
+  DS  L215: projects/ee-algalbloom-gee4geo/assets/Reservatorios_71_2019
+  DS  L217: projects/ee-algalbloom-gee4geo/assets/Sub_bacias_17_all
+  DS  L371: projects/ee-algalbloom-gee4geo/assets/RS_UY
+  DS  L535: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L685: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L1195: COPERNICUS/S2
+  DS  L1255: COPERNICUS/S2
+  DS  L1283: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L1989: COPERNICUS/S2
+  DS  L2051: COPERNICUS/S2
+  DS  L2079: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L2795: JRC/GSW1_0/GlobalSurfaceWater
+  NUM L61: var dataset = JRC.select('occurrence').eq(90)
+  NUM L539: JRC = JRC.updateMask(JRC.gte(50));
+  NUM L689: var BB_mask = JRC.updateMask(JRC.gte(50));
+  NUM L709: var NDCI = image.select('NDCIn_mean')//.updateMask(JRC.gte(50))
+  NUM L711: var Bloom = NDCI.gte(0.025).rename('Bloom')
+  NUM L729: var BloomFreq = chla.select('Bloom').sum().divide(chla.select('Bloom').count())//.updateMask(JRC.gte
+  NUM L1075: scale: 30,
+  NUM L1107: scale: 30,
+  NUM L1139: scale: 30,
+  NUM L1287: var BB_mask = JRC.updateMask(JRC.gte(50));
+  NUM L1299: var NDCI = image.select('NDCIn_mean')//.updateMask(JRC.gte(50))
+  NUM L1301: var Bloom = NDCI.gte(0.025).rename('Bloom')
+  API lines: 271 (first 25 shown)
+  L3: var logo = ee.Image('users/gustavoonagel/Logo_AlgaeMap').visualize({
+  L59: var JRC = ee.Image('JRC/GSW1_0/GlobalSurfaceWater');                            //// Get just within Pekel
+  L61: var dataset = JRC.select('occurrence').eq(90)
+  L79: Map.addLayer(dataset.clipToCollection(Reservatorios), visualization, 'Water Bodies');
+  L133: var point = ee.Geometry.Point([Lo, La]);
+  L189: var col = ee.ImageCollection('projects/ee-algalbloom-gee4geo/assets/NDCI_daily')     //// NDCI
+  L191: var primeira = col.first();
+  L193: var comdata = primeira.set('eedate', ee.Date.fromYMD(primeira.get('year'),primeira.get('month'),primeira.get('
+  L197: var image_data = image.set('eedate', ee.Date.fromYMD(image.get('year'),image.get('month'),image.get('day')))
+  L199: return image_data.select('NDCIn_mean');
+  L205: return image.select('NDCIn_mean').divide(1000).copyProperties(image,['system:asset_size', 'year', 'month', 'da
+  L209: var col_data = col.map(DATA).map(FACTOR);
+  L211: var ugrhs = ee.FeatureCollection('users/gustavoonagel/UGRHI')
+  L213: var reservatorio = ee.FeatureCollection('projects/ee-algalbloom-gee4geo/assets/Reservatorios_SP_2019_Tiet')
+  L215: var reservatorio1 = ee.FeatureCollection('projects/ee-algalbloom-gee4geo/assets/Reservatorios_71_2019')
+  L217: var Bacia = ee.FeatureCollection('projects/ee-algalbloom-gee4geo/assets/Sub_bacias_17_all')
+  L219: var AltoTiete = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 6])));
+  L221: var ParaibaSul = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 2])));
+  L223: var TieteSorocaba = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 10])));
+  L225: var PCJ = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 5])));
+  L227: var RioGrande = Bacia.filter(ee.Filter.inList('fid', ee.List([ 257])));
+  L229: var Paranaíba = Bacia.filter(ee.Filter.inList('fid', ee.List([ 258])));
+  L231: var Paranapanema = Bacia.filter(ee.Filter.inList('fid', ee.List([ 251])));
+  L233: var Itaipu = Bacia.filter(ee.Filter.inList('fid', ee.List([ 250])));
+  L235: var Iguaçu = Bacia.filter(ee.Filter.inList('fid', ee.List([ 249])));
+
+## script_137561 (3281 lines)
+  DS  L3: users/gustavoonagel/Logo_AlgaeMap
+  DS  L59: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L87: projects/ee-algalbloom-gee4geo/assets/NDCI_daily
+  DS  L109: users/gustavoonagel/UGRHI
+  DS  L111: projects/ee-algalbloom-gee4geo/assets/Reservatorios_SP_2019_Tiet
+  DS  L113: projects/ee-algalbloom-gee4geo/assets/Reservatorios_71_2019
+  DS  L115: projects/ee-algalbloom-gee4geo/assets/Sub_bacias_17_all
+  DS  L269: projects/ee-algalbloom-gee4geo/assets/RS_UY
+  DS  L481: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L579: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L1021: COPERNICUS/S2
+  DS  L1123: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L1139: COPERNICUS/S2
+  DS  L1813: COPERNICUS/S2
+  DS  L1905: JRC/GSW1_0/GlobalSurfaceWater
+  DS  L1921: COPERNICUS/S2
+  DS  L2527: JRC/GSW1_0/GlobalSurfaceWater
+  NUM L61: var dataset = JRC.select('occurrence').eq(90)
+  NUM L485: JRC = JRC.updateMask(JRC.gte(50));
+  NUM L583: var BB_mask = JRC.updateMask(JRC.gte(50));
+  NUM L597: var NDCI = image.select('NDCIn_mean').updateMask(JRC.gte(50))
+  NUM L599: var Bloom = NDCI.gte(0.025).rename('Bloom')
+  NUM L617: var BloomFreq = chla.select('Bloom').sum().divide(chla.select('Bloom').count()).updateMask(JRC.gte(5
+  NUM L631: Map.addLayer(chla.select('Chla').mean().clip(region3).updateMask(JRC.gte(50)), vis, 'Chl-a Temporal 
+  NUM L633: Map.addLayer(chla.select('Chla').min().clip(region3).updateMask(JRC.gte(50)), vis, 'Chl-a Temporal M
+  NUM L635: Map.addLayer(chla.select('Chla').max().clip(region3).updateMask(JRC.gte(50)), vis, 'Chl-a Temporal M
+  NUM L637: Map.addLayer(chla.select('NDCIn_mean').mean().clip(region3).updateMask(JRC.gte(50)), visNDCI, 'NDCI 
+  NUM L639: Map.addLayer(chla.select('NDCIn_mean').max().clip(region3).updateMask(JRC.gte(50)), visNDCI, 'NDCI T
+  NUM L641: Map.addLayer(chla.select('NDCIn_mean').min().clip(region3).updateMask(JRC.gte(50)), visNDCI, 'NDCI T
+  API lines: 268 (first 25 shown)
+  L3: var logo = ee.Image('users/gustavoonagel/Logo_AlgaeMap').visualize({
+  L59: var JRC = ee.Image('JRC/GSW1_0/GlobalSurfaceWater');                            //// Get just within Pekel
+  L61: var dataset = JRC.select('occurrence').eq(90)
+  L79: Map.addLayer(dataset.clipToCollection(Reservatorios), visualization, 'Water Bodies');
+  L87: var col = ee.ImageCollection('projects/ee-algalbloom-gee4geo/assets/NDCI_daily')     //// NDCI
+  L89: var primeira = col.first();
+  L91: var comdata = primeira.set('eedate', ee.Date.fromYMD(primeira.get('year'),primeira.get('month'),primeira.get('
+  L95: var image_data = image.set('eedate', ee.Date.fromYMD(image.get('year'),image.get('month'),image.get('day')))
+  L97: return image_data.select('NDCIn_mean');
+  L103: return image.select('NDCIn_mean').divide(1000).copyProperties(image,['system:asset_size', 'year', 'month', 'da
+  L107: var col_data = col.map(DATA).map(FACTOR);
+  L109: var ugrhs = ee.FeatureCollection('users/gustavoonagel/UGRHI')
+  L111: var reservatorio = ee.FeatureCollection('projects/ee-algalbloom-gee4geo/assets/Reservatorios_SP_2019_Tiet')
+  L113: var reservatorio1 = ee.FeatureCollection('projects/ee-algalbloom-gee4geo/assets/Reservatorios_71_2019')
+  L115: var Bacia = ee.FeatureCollection('projects/ee-algalbloom-gee4geo/assets/Sub_bacias_17_all')
+  L117: var AltoTiete = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 6])));
+  L119: var ParaibaSul = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 2])));
+  L121: var TieteSorocaba = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 10])));
+  L123: var PCJ = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 5])));
+  L125: var RioGrande = Bacia.filter(ee.Filter.inList('fid', ee.List([ 257])));
+  L127: var Paranaíba = Bacia.filter(ee.Filter.inList('fid', ee.List([ 258])));
+  L129: var Paranapanema = Bacia.filter(ee.Filter.inList('fid', ee.List([ 251])));
+  L131: var Itaipu = Bacia.filter(ee.Filter.inList('fid', ee.List([ 250])));
+  L133: var Iguaçu = Bacia.filter(ee.Filter.inList('fid', ee.List([ 249])));
+  L135: var ItaGuaçu = Itaipu.merge(Iguaçu)
+
+## script_178822 (185 lines)
+  DS  L1: UMD/hansen/global_forest_change_2015
+  DS  L65: USDOS/LSIB_SIMPLE/2017
+  DS  L69: UMD/hansen/global_forest_change_2015
+  DS  L105: USDOS/LSIB_SIMPLE/2017
+  DS  L117: WCMC/WDPA/current/polygons
+  DS  L137: UMD/hansen/global_forest_change_2015
+  NUM L79: scale: 30,
+  NUM L97: scale: 30,
+  NUM L139: var lossIn2012 = gfc2014.select(['lossyear']).eq(12);
+  NUM L149: scale: 30,
+  NUM L171: scale: 30,
+  API lines: 34 (first 25 shown)
+  L1: var gfc2014 = ee.Image('UMD/hansen/global_forest_change_2015');
+  L41: var treeCover = gfc2014.select(['treecover2000']);
+  L43: var lossImage = gfc2014.select(['loss']);
+  L45: var gainImage = gfc2014.select(['gain']);
+  L47: Map.addLayer(treeCover.updateMask(treeCover),
+  L51: Map.addLayer(lossImage.updateMask(lossImage),
+  L55: Map.addLayer(gainImage.updateMask(gainImage),
+  L61: Map.addLayer(gainAndLoss.updateMask(gainAndLoss),
+  L65: var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+  L67: var congo = countries.filter(ee.Filter.eq('country_na', 'Rep of the Congo'));
+  L69: var gfc2014 = ee.Image('UMD/hansen/global_forest_change_2015');
+  L71: var lossImage = gfc2014.select(['loss']);
+  L73: var stats = lossImage.reduceRegion({
+  L75: reducer: ee.Reducer.sum(),
+  L89: var areaImage = lossImage.multiply(ee.Image.pixelArea());
+  L91: var stats = areaImage.reduceRegion({
+  L93: reducer: ee.Reducer.sum(),
+  L105: var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+  L111: .filter(ee.Filter.eq('country_na', 'Rep of the Congo'))
+  L113: .first()
+  L117: var protectedAreas = ee.FeatureCollection('WCMC/WDPA/current/polygons')
+  L119: .filter(ee.Filter.and(
+  L121: ee.Filter.bounds(congo.geometry()),
+  L123: ee.Filter.neq('IUCN_CAT', 'VI'),
+  L125: ee.Filter.neq('STATUS', 'proposed'),
+
+## script_269963 (617 lines)
+  DS  L37: LANDSAT/LT05/C02/T1_L2
+  DS  L83: USGS/SRTMGL1_003
+  NUM L3: var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  NUM L5: var saturationMask = image.select('QA_RADSAT').eq(0);
+  NUM L115: scale: 30
+  NUM L121: var split = 0.7;
+  NUM L183: scale: 30,
+  NUM L209: scale:30,
+  NUM L283: var lx_1=classified.eq(1)
+  NUM L285: var lx_1 = lx_1.gt(0)
+  NUM L299: scale: 30  ,
+  NUM L313: scale: 30  ,
+  NUM L327: scale: 30  ,
+  NUM L341: scale: 30  ,
+  API lines: 88 (first 25 shown)
+  L3: var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  L5: var saturationMask = image.select('QA_RADSAT').eq(0);
+  L7: var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  L9: var thermalBand = image.select('ST_B6').multiply(0.00341802).add(149.0);
+  L11: return image.addBands(opticalBands, null, true)
+  L13: .addBands(thermalBand, null, true)
+  L15: .updateMask(qaMask)
+  L17: .updateMask(saturationMask);
+  L23: var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  L25: var thermalBand = image.select('ST_B6').multiply(0.00341802).add(149.0);
+  L27: return image.addBands(opticalBands, null, true)
+  L29: .addBands(thermalBand, null, true);
+  L37: var cj=ee.ImageCollection("LANDSAT/LT05/C02/T1_L2")
+  L39: .filterBounds(bj)
+  L41: .filterDate('2002-02-01','2002-10-30')
+  L43: .filter(ee.Filter.lte('CLOUD_COVER',5))
+  L45: .map(maskL5sr)
+  L47: .select(LC5_BANDS, STD_NAMES)
+  L49: .median()
+  L51: var cjyx=cj.clip(bj)
+  L55: var NDVI=cjyx.normalizedDifference(['SR_B5','SR_B4'])
+  L57: var evi=cjyx.expression('2.5*((NIR-RED)/(NIR+6*RED-7.5*BLUE+1))',
+  L59: {'NIR':cjyx.select("SR_B5"),
+  L61: 'RED':cjyx.select("SR_B4"),
+  L63: 'BLUE':cjyx.select("SR_B2")})
+
+## script_269974 (349 lines)
+  DS  L37: LANDSAT/LT05/C02/T1_L2
+  DS  L83: USGS/SRTMGL1_003
+  NUM L3: var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  NUM L5: var saturationMask = image.select('QA_RADSAT').eq(0);
+  NUM L115: scale: 30
+  NUM L129: var split = 0.7;
+  NUM L195: scale: 30,
+  NUM L213: scale: 30,
+  NUM L277: scale:30,
+  API lines: 76 (first 25 shown)
+  L3: var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  L5: var saturationMask = image.select('QA_RADSAT').eq(0);
+  L7: var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  L9: var thermalBand = image.select('ST_B6').multiply(0.00341802).add(149.0);
+  L11: return image.addBands(opticalBands, null, true)
+  L13: .addBands(thermalBand, null, true)
+  L15: .updateMask(qaMask)
+  L17: .updateMask(saturationMask);
+  L23: var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  L25: var thermalBand = image.select('ST_B6').multiply(0.00341802).add(149.0);
+  L27: return image.addBands(opticalBands, null, true)
+  L29: .addBands(thermalBand, null, true);
+  L37: var cj=ee.ImageCollection("LANDSAT/LT05/C02/T1_L2")
+  L39: .filterBounds(bj)
+  L41: .filterDate('2010-03-01','2010-08-30')
+  L43: .filter(ee.Filter.lte('CLOUD_COVER',5))
+  L45: .map(applyScaleFactors)
+  L47: .select(LC5_BANDS, STD_NAMES)
+  L49: .median()
+  L51: var cjyx=cj.clip(bj)
+  L55: var NDVI=cjyx.normalizedDifference(['SR_B5','SR_B4'])
+  L57: var evi=cjyx.expression('2.5*((NIR-RED)/(NIR+6*RED-7.5*BLUE+1))',
+  L59: {'NIR':cjyx.select("SR_B5"),
+  L61: 'RED':cjyx.select("SR_B4"),
+  L63: 'BLUE':cjyx.select("SR_B2")})
+
+## script_292317 (191 lines)
+  DS  L1: UMD/hansen/global_forest_change_2015
+  DS  L61: UMD/hansen/global_forest_change_2015
+  DS  L73: USDOS/LSIB_SIMPLE/2017
+  DS  L77: UMD/hansen/global_forest_change_2015
+  DS  L93: USDOS/LSIB_SIMPLE/2017
+  DS  L97: UMD/hansen/global_forest_change_2015
+  DS  L117: USDOS/LSIB_SIMPLE/2017
+  DS  L127: WCMC/WDPA/current/polygons
+  DS  L145: UMD/hansen/global_forest_change_2015
+  NUM L85: geometry: congo, scale: 30,
+  NUM L109: scale: 30,
+  NUM L147: var lossIn2012 = gfc2014.select(['lossyear']).eq(12);
+  NUM L157: scale: 30,
+  NUM L179: scale: 30, maxPixels: 1e9
+  API lines: 40 (first 25 shown)
+  L1: var gfc2014 = ee.Image('UMD/hansen/global_forest_change_2015'); Map.addLayer(gfc2014);
+  L43: var treeCover = gfc2014.select(['treecover2000']);
+  L45: var lossImage = gfc2014.select(['loss']);
+  L47: var gainImage = gfc2014.select(['gain']);
+  L49: Map.addLayer(treeCover.updateMask(treeCover),
+  L53: Map.addLayer(lossImage.updateMask(lossImage),
+  L57: Map.addLayer(gainImage.updateMask(gainImage),
+  L61: var gfc2014 = ee.Image('UMD/hansen/global_forest_change_2015');
+  L63: var lossImage = gfc2014.select(['loss']);
+  L65: var gainImage = gfc2014.select(['gain']);
+  L69: Map.addLayer(gainAndLoss.updateMask(gainAndLoss),
+  L73: var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+  L75: var congo = countries.filter(ee.Filter.eq('country_na', 'Rep of the Congo'));
+  L77: var gfc2014 = ee.Image('UMD/hansen/global_forest_change_2015');
+  L79: var lossImage = gfc2014.select(['loss']);
+  L81: var stats = lossImage.reduceRegion({
+  L83: reducer: ee.Reducer.sum(),
+  L93: var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+  L95: var congo = countries.filter(ee.Filter.eq('country_na', 'Rep of the Congo'));
+  L97: var gfc2014 = ee.Image('UMD/hansen/global_forest_change_2015');
+  L99: var lossImage = gfc2014.select(['loss']);
+  L101: var areaImage = lossImage.multiply(ee.Image.pixelArea());
+  L103: var stats = areaImage.reduceRegion({
+  L105: reducer: ee.Reducer.sum(),
+  L117: var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');

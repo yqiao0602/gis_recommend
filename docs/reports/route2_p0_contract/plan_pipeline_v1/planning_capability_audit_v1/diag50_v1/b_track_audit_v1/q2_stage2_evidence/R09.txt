@@ -1,0 +1,74 @@
+# R09 evidence pack | pairs=['DIFF-19']
+# scripts: ['script_73545', 'script_73548']
+
+## script_73545 (109 lines)
+  DS  L9: ft:1qL4t8fK2lAPJb_XR7Niy76rLUWzAwc8ezLx9g6UZ
+  NUM L19: var mask = stamp.eq(0);
+  NUM L33: var mask = qa.bitwiseAnd(cloudBitMask).eq(0).and(
+  NUM L35: qa.bitwiseAnd(cirrusBitMask).eq(0));
+  NUM L69: var nbrmask = s2_after_med.select('nbr').lte(0).clipToCollection(bandipur) // NBR in the after image
+  NUM L71: var watermask = s2_before.select('ndwi').median().lte(0.05).clipToCollection(bandipur) // NDWI < 0.0
+  NUM L75: var delta = delta.gte(0.3); // delta > 0.3 is retained
+  NUM L103: scale: 20,
+  API lines: 30 (first 25 shown)
+  L9: var pas = ee.FeatureCollection('ft:1qL4t8fK2lAPJb_XR7Niy76rLUWzAwc8ezLx9g6UZ', 'geometry');
+  L11: var bandipur = pas.filter(ee.Filter.eq('PA_Name', 'Bandipur'));
+  L13: var black = ee.Image(0);
+  L15: var hole = ee.Image(1).clip(bandipur.geometry().buffer(100));
+  L17: var stamp = black.where(hole, 1);
+  L21: var background = stamp.updateMask(mask);
+  L27: var qa = image.select('QA60');
+  L37: var nbr = image.normalizedDifference(['B8', 'B12']).rename('nbr');
+  L39: var ndwi = image.normalizedDifference(['B3', 'B8']).rename('ndwi');
+  L41: return image.divide(10000).addBands(nbr).addBands(ndwi).updateMask(mask);
+  L45: var s2_beforeWithClouds = ee.ImageCollection(s2
+  L47: .filterDate('2016-11-01', '2017-01-31')
+  L49: .filterBounds(bandipur)
+  L53: var s2_afterWithClouds = ee.ImageCollection(s2
+  L55: .filterDate('2017-02-10', '2017-04-30')
+  L57: .filterBounds(bandipur)
+  L61: var s2_before = s2_beforeWithClouds.map(maskS2clouds)
+  L63: var s2_after = s2_afterWithClouds.map(maskS2clouds)
+  L65: var s2_before_med = s2_before.median().clipToCollection(bandipur)
+  L67: var s2_after_med = s2_after.median().clipToCollection(bandipur)
+  L69: var nbrmask = s2_after_med.select('nbr').lte(0).clipToCollection(bandipur) // NBR in the after image less than
+  L71: var watermask = s2_before.select('ndwi').median().lte(0.05).clipToCollection(bandipur) // NDWI < 0.05 retained
+  L73: var delta = (s2_before.select('nbr').min()).subtract(s2_after.select('nbr').min()).clipToCollection(bandipur);
+  L83: Map.centerObject(ee.Geometry.Point(76.535, 11.78), 10)
+  L85: Map.addLayer(s2_before.select('ndwi').median().clipToCollection(bandipur),{palette:ndwi_palette},'ndwi',false)
+
+## script_73548 (111 lines)
+  DS  L11: ft:1qL4t8fK2lAPJb_XR7Niy76rLUWzAwc8ezLx9g6UZ
+  NUM L21: var mask = stamp.eq(0);
+  NUM L35: var mask = qa.bitwiseAnd(cloudBitMask).eq(0).and(
+  NUM L37: qa.bitwiseAnd(cirrusBitMask).eq(0));
+  NUM L71: var nbrmask = s2_after_med.select('nbr').lte(-0.02).clipToCollection(bandipur) // NBR in the after i
+  NUM L73: var watermask = s2_before.select('ndwi').median().lte(0.05).clipToCollection(bandipur) // NDWI < 0.0
+  NUM L77: var delta = delta.gte(0.3); // delta > 0.3 is retained
+  NUM L105: scale: 20,
+  API lines: 29 (first 25 shown)
+  L11: var pas = ee.FeatureCollection('ft:1qL4t8fK2lAPJb_XR7Niy76rLUWzAwc8ezLx9g6UZ', 'geometry');
+  L13: var bandipur = pas.filter(ee.Filter.eq('PA_Name', 'Bandipur'));
+  L15: var black = ee.Image(0);
+  L17: var hole = ee.Image(1).clip(bandipur.geometry().buffer(100));
+  L19: var stamp = black.where(hole, 1);
+  L23: var background = stamp.updateMask(mask);
+  L29: var qa = image.select('QA60');
+  L39: var nbr = image.normalizedDifference(['B8', 'B12']).rename('nbr');
+  L41: var ndwi = image.normalizedDifference(['B3', 'B8']).rename('ndwi');
+  L43: return image.divide(10000).addBands(nbr).addBands(ndwi).updateMask(mask);
+  L47: var s2_beforeWithClouds = ee.ImageCollection(s2
+  L49: .filterDate('2016-11-01', '2017-01-31')
+  L51: .filterBounds(bandipur)
+  L55: var s2_afterWithClouds = ee.ImageCollection(s2
+  L57: .filterDate('2017-02-10', '2017-04-30')
+  L59: .filterBounds(bandipur)
+  L63: var s2_before = s2_beforeWithClouds.map(maskS2clouds)
+  L65: var s2_after = s2_afterWithClouds.map(maskS2clouds)
+  L67: var s2_before_med = s2_before.median().clipToCollection(bandipur)
+  L69: var s2_after_med = s2_after.median().clipToCollection(bandipur)
+  L71: var nbrmask = s2_after_med.select('nbr').lte(-0.02).clipToCollection(bandipur) // NBR in the after image less 
+  L73: var watermask = s2_before.select('ndwi').median().lte(0.05).clipToCollection(bandipur) // NDWI < 0.05 retained
+  L75: var delta = (s2_before.select('nbr').min()).subtract(s2_after.select('nbr').min()).clipToCollection(bandipur);
+  L87: Map.addLayer(s2_before.select('ndwi').median().clipToCollection(bandipur),{palette:ndwi_palette},'ndwi',false)
+  L89: Map.addLayer(s2_after.select('nbr').median().clipToCollection(bandipur),{palette:ndwi_palette},'nbrAfter',fals

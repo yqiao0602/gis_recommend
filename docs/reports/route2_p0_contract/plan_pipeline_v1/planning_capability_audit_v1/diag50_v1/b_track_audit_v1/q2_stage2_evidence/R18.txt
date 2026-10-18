@@ -1,0 +1,261 @@
+# R18 evidence pack | pairs=['S009', 'S113', 'S115']
+# scripts: ['script_38685', 'script_38688', 'script_38694', 'script_38701', 'script_74490', 'script_74517']
+
+## script_38685 (547 lines)
+  NUM L137: scale: 30
+  NUM L161: scale: 30,
+  NUM L177: var eut = chl.gte(0).selfMask();
+  NUM L187: scale: 30
+  NUM L251: scale: 30
+  NUM L275: scale: 30,
+  NUM L291: var eut = chl.gte(0).selfMask();
+  NUM L301: scale: 30
+  NUM L365: scale: 30
+  NUM L389: scale: 30,
+  NUM L405: var eut = chl.gte(0).selfMask();
+  NUM L415: scale: 30
+  API lines: 127 (first 25 shown)
+  L13: var start = ee.Date('2019-01-01');
+  L15: var end = ee.Date('2022-01-01');
+  L17: var l8_start = ee.Date('2014-01-01');
+  L19: var l8_end = ee.Date('2022-01-01');
+  L21: var l7_start = ee.Date('2000-01-01');
+  L23: var l7_end = ee.Date('2014-01-01');
+  L25: var l5_start = ee.Date('1987-01-01');
+  L27: var l5_end = ee.Date('2000-01-01');
+  L43: var datelist = ee.List.sequence(1987, 2021);
+  L53: var point = ee.Geometry.Point([ee.Number(long), ee.Number(lat)]);
+  L57: var date_collection = ee.ImageCollection(s2)
+  L59: .filterBounds(point)
+  L61: .filterDate(start, end)
+  L63: .filter(ee.Filter.calendarRange(4, 4,'month'))
+  L65: .sort('CLOUD_COVERAGE_ASSESSMENT')
+  L67: .first()
+  L71: var date = ee.Date(ee.Date(date_collection).format('YYYY-MM-dd'));
+  L73: var collection = ee.ImageCollection(s2)
+  L75: .filterBounds(geometry)
+  L77: .filterDate(date.advance(-4, 'day'), date.advance(4, 'day'))
+  L79: .mosaic()
+  L81: .clip(geometry);
+  L85: var arealist = ee.Array([], ee.PixelType.float());
+  L87: var chllist = ee.Array([], ee.PixelType.float());
+  L89: var eutlist = ee.Array([], ee.PixelType.float());
+
+## script_38688 (547 lines)
+  NUM L137: scale: 30
+  NUM L161: scale: 30,
+  NUM L177: var eut = chl.gte(0).selfMask();
+  NUM L187: scale: 30
+  NUM L251: scale: 30
+  NUM L275: scale: 30,
+  NUM L291: var eut = chl.gte(0).selfMask();
+  NUM L301: scale: 30
+  NUM L365: scale: 30
+  NUM L389: scale: 30,
+  NUM L405: var eut = chl.gte(0).selfMask();
+  NUM L415: scale: 30
+  API lines: 127 (first 25 shown)
+  L13: var start = ee.Date('2019-01-01');
+  L15: var end = ee.Date('2022-01-01');
+  L17: var l8_start = ee.Date('2014-01-01');
+  L19: var l8_end = ee.Date('2022-01-01');
+  L21: var l7_start = ee.Date('2000-01-01');
+  L23: var l7_end = ee.Date('2014-01-01');
+  L25: var l5_start = ee.Date('1987-01-01');
+  L27: var l5_end = ee.Date('2000-01-01');
+  L43: var datelist = ee.List.sequence(1987, 2021);
+  L53: var point = ee.Geometry.Point([ee.Number(long), ee.Number(lat)]);
+  L57: var date_collection = ee.ImageCollection(s2)
+  L59: .filterBounds(point)
+  L61: .filterDate(start, end)
+  L63: .filter(ee.Filter.calendarRange(4, 4,'month'))
+  L65: .sort('CLOUD_COVERAGE_ASSESSMENT')
+  L67: .first()
+  L71: var date = ee.Date(ee.Date(date_collection).format('YYYY-MM-dd'));
+  L73: var collection = ee.ImageCollection(s2)
+  L75: .filterBounds(geometry)
+  L77: .filterDate(date.advance(-4, 'day'), date.advance(4, 'day'))
+  L79: .mosaic()
+  L81: .clip(geometry);
+  L85: var arealist = ee.Array([], ee.PixelType.float());
+  L87: var chllist = ee.Array([], ee.PixelType.float());
+  L89: var eutlist = ee.Array([], ee.PixelType.float());
+
+## script_38694 (547 lines)
+  NUM L137: scale: 30
+  NUM L161: scale: 30,
+  NUM L177: var eut = chl.gte(0).selfMask();
+  NUM L187: scale: 30
+  NUM L251: scale: 30
+  NUM L275: scale: 30,
+  NUM L291: var eut = chl.gte(0).selfMask();
+  NUM L301: scale: 30
+  NUM L365: scale: 30
+  NUM L389: scale: 30,
+  NUM L405: var eut = chl.gte(0).selfMask();
+  NUM L415: scale: 30
+  API lines: 127 (first 25 shown)
+  L13: var start = ee.Date('2019-01-01');
+  L15: var end = ee.Date('2022-01-01');
+  L17: var l8_start = ee.Date('2014-01-01');
+  L19: var l8_end = ee.Date('2022-01-01');
+  L21: var l7_start = ee.Date('2000-01-01');
+  L23: var l7_end = ee.Date('2014-01-01');
+  L25: var l5_start = ee.Date('1987-01-01');
+  L27: var l5_end = ee.Date('2000-01-01');
+  L43: var datelist = ee.List.sequence(1987, 2021);
+  L53: var point = ee.Geometry.Point([ee.Number(long), ee.Number(lat)]);
+  L57: var date_collection = ee.ImageCollection(s2)
+  L59: .filterBounds(point)
+  L61: .filterDate(start, end)
+  L63: .filter(ee.Filter.calendarRange(4, 4,'month'))
+  L65: .sort('CLOUD_COVERAGE_ASSESSMENT')
+  L67: .first()
+  L71: var date = ee.Date(ee.Date(date_collection).format('YYYY-MM-dd'));
+  L73: var collection = ee.ImageCollection(s2)
+  L75: .filterBounds(geometry)
+  L77: .filterDate(date.advance(-4, 'day'), date.advance(4, 'day'))
+  L79: .mosaic()
+  L81: .clip(geometry);
+  L85: var arealist = ee.Array([], ee.PixelType.float());
+  L87: var chllist = ee.Array([], ee.PixelType.float());
+  L89: var eutlist = ee.Array([], ee.PixelType.float());
+
+## script_38701 (547 lines)
+  NUM L137: scale: 30
+  NUM L161: scale: 30,
+  NUM L177: var eut = chl.gte(0).selfMask();
+  NUM L187: scale: 30
+  NUM L251: scale: 30
+  NUM L275: scale: 30,
+  NUM L291: var eut = chl.gte(0).selfMask();
+  NUM L301: scale: 30
+  NUM L365: scale: 30
+  NUM L389: scale: 30,
+  NUM L405: var eut = chl.gte(0).selfMask();
+  NUM L415: scale: 30
+  API lines: 127 (first 25 shown)
+  L13: var start = ee.Date('2019-01-01');
+  L15: var end = ee.Date('2022-01-01');
+  L17: var l8_start = ee.Date('2014-01-01');
+  L19: var l8_end = ee.Date('2022-01-01');
+  L21: var l7_start = ee.Date('2000-01-01');
+  L23: var l7_end = ee.Date('2014-01-01');
+  L25: var l5_start = ee.Date('1987-01-01');
+  L27: var l5_end = ee.Date('2000-01-01');
+  L43: var datelist = ee.List.sequence(1987, 2021);
+  L53: var point = ee.Geometry.Point([ee.Number(long), ee.Number(lat)]);
+  L57: var date_collection = ee.ImageCollection(s2)
+  L59: .filterBounds(point)
+  L61: .filterDate(start, end)
+  L63: .filter(ee.Filter.calendarRange(4, 4,'month'))
+  L65: .sort('CLOUD_COVERAGE_ASSESSMENT')
+  L67: .first()
+  L71: var date = ee.Date(ee.Date(date_collection).format('YYYY-MM-dd'));
+  L73: var collection = ee.ImageCollection(s2)
+  L75: .filterBounds(geometry)
+  L77: .filterDate(date.advance(-4, 'day'), date.advance(4, 'day'))
+  L79: .mosaic()
+  L81: .clip(geometry);
+  L85: var arealist = ee.Array([], ee.PixelType.float());
+  L87: var chllist = ee.Array([], ee.PixelType.float());
+  L89: var eutlist = ee.Array([], ee.PixelType.float());
+
+## script_74490 (1135 lines)
+  DS  L37: users/cristinamilesi/shapefiles/India_Districts2020
+  DS  L47: projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/
+  DS  L61: users/cristinamilesi/shapefiles/GPs/mncfc_2022-23Kharif_village_shapefiles
+  DS  L141: MODIS/006/MOD17A2H
+  DS  L183: MODIS/006/MYD17A2H
+  DS  L451: MODIS/006/MOD17A2H
+  DS  L493: MODIS/006/MYD17A2H
+  DS  L709: MODIS/061/MCD15A3H
+  DS  L897: JAXA/GCOM-C/L3/LAND/LAI/V3
+  NUM L103: scale: 100
+  NUM L233: scale: 500,
+  NUM L251: scale: 500,
+  NUM L281: scale: 500
+  NUM L543: scale: 500,
+  NUM L561: scale: 500,
+  NUM L591: scale: 500
+  NUM L771: scale: 500,
+  NUM L789: scale: 500,
+  NUM L817: scale: 500
+  NUM L943: scale: 1000,
+  NUM L961: scale: 500,
+  API lines: 143 (first 25 shown)
+  L37: var india_districts = ee.FeatureCollection('users/cristinamilesi/shapefiles/India_Districts2020');
+  L39: var district = india_districts.filter(ee.Filter.inList('dtname', [dtname]));//'Vidisha','Ashoknagar', 'Ujjain'
+  L45: Map.addLayer(ee.Image(1), {palette:['ffffff']}, 'white');
+  L47: var crop_classified = ee.Image('projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/'+districtn+'_'+crop+'_LC10
+  L61: var villages = ee.FeatureCollection('users/cristinamilesi/shapefiles/GPs/mncfc_2022-23Kharif_village_shapefile
+  L63: .filter(ee.Filter.inList('DISTNA2011',[districtn])) //use this layer for Village names
+  L69: var crop_classified = crop_classified.clip(villages)
+  L71: var areaImage = ee.Image.pixelArea().divide(1e4).multiply(crop_classified); //creates an image with one band c
+  L75: var area = areaImage.reduceRegion({
+  L77: reducer: ee.Reducer.sum(),
+  L95: var areaImage = crop_classified.multiply(ee.Image.pixelArea()).divide(1e4)
+  L99: reducer: ee.Reducer.sum(),
+  L109: .filter(ee.Filter.gt('sum', 100))
+  L137: var Prod = ee.Number(CropAreadistrict).multiply(ee.Number(YIELDadj))
+  L141: var TerraGPP = ee.ImageCollection("MODIS/006/MOD17A2H").select('Gpp')
+  L143: .filterBounds(villages)
+  L145: .filterDate(ee.Date(startdate_early),ee.Date(enddate_early))
+  L147: .map(
+  L151: var rescaled_GPP = img.select('Gpp')
+  L155: .rename('Gpp_')
+  L157: .clip(villages);
+  L159: return img.addBands(rescaled_GPP);
+  L167: var cumTerraGPP = TerraGPP.select('Gpp_').reduce(ee.Reducer.sum()).updateMask(crop_classified)
+  L171: TerraGPP.select('Gpp_'), district, ee.Reducer.mean(), 500)
+  L183: var AquaGPP = ee.ImageCollection("MODIS/006/MYD17A2H").select('Gpp')
+
+## script_74517 (1135 lines)
+  DS  L31: users/cristinamilesi/shapefiles/India_Districts2020
+  DS  L43: projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/
+  DS  L57: projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/Merged_MNCFC_2022-23KHARIF_50_GPsfromMNCFC_with_CCE_value
+  DS  L61: projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/Merged_MNCFC_2022-23KHARIF_50_GPsfromMNCFC_with_CCE_value
+  DS  L141: MODIS/006/MOD17A2H
+  DS  L183: MODIS/006/MYD17A2H
+  DS  L451: MODIS/006/MOD17A2H
+  DS  L493: MODIS/006/MYD17A2H
+  DS  L709: MODIS/061/MCD15A3H
+  DS  L897: JAXA/GCOM-C/L3/LAND/LAI/V3
+  NUM L103: scale: 100
+  NUM L233: scale: 500,
+  NUM L251: scale: 500,
+  NUM L281: scale: 500
+  NUM L543: scale: 500,
+  NUM L561: scale: 500,
+  NUM L591: scale: 500
+  NUM L771: scale: 500,
+  NUM L789: scale: 500,
+  NUM L817: scale: 500
+  NUM L943: scale: 1000,
+  NUM L961: scale: 500,
+  API lines: 146 (first 25 shown)
+  L31: var india_districts = ee.FeatureCollection('users/cristinamilesi/shapefiles/India_Districts2020');
+  L33: var districts = india_districts.filter(ee.Filter.inList('dtname', ['Osmanabad','Nanded']));//'Vidisha','Ashokn
+  L37: var district = india_districts.filter(ee.Filter.inList('dtname', [districtn]));//'Vidisha','Ashoknagar', 'Ujja
+  L41: Map.addLayer(ee.Image(1), {palette:['ffffff']}, 'white');
+  L43: var crop_classified = ee.Image('projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/'+districtn+'_'+crop+'_LC10
+  L57: var villages = ee.FeatureCollection('projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/Merged_MNCFC_2022-23KH
+  L59: .filter(ee.Filter.inList('DISTNA2011',[districtn])) //use this layer for GP names
+  L61: var villages = ee.FeatureCollection('projects/ee-cristinamilesi/assets/MNCFC_Kharif2022/Merged_MNCFC_2022-23KH
+  L63: .filter(ee.Filter.inList('DISTNA2011',[districtn])) //use this layer for GP names
+  L69: var crop_classified = crop_classified.clip(villages)
+  L71: var areaImage = ee.Image.pixelArea().divide(1e4).multiply(crop_classified); //creates an image with one band c
+  L75: var area = areaImage.reduceRegion({
+  L77: reducer: ee.Reducer.sum(),
+  L95: var areaImage = crop_classified.multiply(ee.Image.pixelArea()).divide(1e4)
+  L99: reducer: ee.Reducer.sum(),
+  L109: .filter(ee.Filter.gt('sum', 100))
+  L137: var Prod = ee.Number(CropAreadistrict).multiply(ee.Number(YIELDadj))
+  L141: var TerraGPP = ee.ImageCollection("MODIS/006/MOD17A2H").select('Gpp')
+  L143: .filterBounds(villages)
+  L145: .filterDate(ee.Date(startdate_early),ee.Date(enddate_early))
+  L147: .map(
+  L151: var rescaled_GPP = img.select('Gpp')
+  L155: .rename('Gpp_')
+  L157: .clip(villages);
+  L159: return img.addBands(rescaled_GPP);

@@ -1,0 +1,40 @@
+# R11 evidence pack | pairs=['S026']
+# scripts: ['script_205671', 'script_306671']
+
+## script_205671 (53 lines)
+  DS  L29: LANDSAT/LC08/C01/T1_SR
+  NUM L21: var mask = qa.bitwiseAnd(maskCloud).eq(0)
+  NUM L23: .and(qa.bitwiseAnd(maskShadow).eq(0));
+  NUM L49: scale: 30
+  API lines: 12 (first 25 shown)
+  L1: var pts = ee.Geometry.Point(121.36, 37.53).buffer(100);
+  L7: var ndvi = img.normalizedDifference(['B5', 'B4']).rename(['NDVI']);
+  L9: return img.addBands(ndvi);
+  L19: var qa = img.select(['pixel_qa']);
+  L25: return img.updateMask(mask);
+  L29: var imgs = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+  L31: .filterBounds(pts)
+  L33: .filterDate('2020-1-1', '2020-12-31')
+  L35: .map(removeCloudSrL8)
+  L37: .map(addNDVIL8)
+  L43: imageCollection: imgs.select(['NDVI']),
+  L47: reducer: ee.Reducer.median(),
+
+## script_306671 (49 lines)
+  DS  L27: LANDSAT/LC08/C01/T1_SR
+  NUM L17: var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+  NUM L19: .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  NUM L45: scale:30
+  API lines: 12 (first 25 shown)
+  L3: var ndvi = image.normalizedDifference(['B5','B4']).rename('NDVI');
+  L5: return image.addBands(ndvi);
+  L15: var qa = image.select('pixel_qa');
+  L21: return image.updateMask(mask);
+  L25: var pts = ee.Geometry.Point(121.6918,37.45173).buffer(50);
+  L27: var imgs = ee.ImageCollection("LANDSAT/LC08/C01/T1_SR")
+  L29: .filterDate('2013-1-1','2021-10-31')
+  L31: .filterBounds(pts)
+  L33: .map(addNDVI)
+  L35: .map(removeCloud)
+  L39: imageCollection:imgs.select('NDVI'),
+  L43: reducer:ee.Reducer.median(),

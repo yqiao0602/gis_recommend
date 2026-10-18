@@ -1,0 +1,146 @@
+# R16 evidence pack | pairs=['S054', 'S055', 'S057']
+# scripts: ['script_17869', 'script_17871', 'script_3327', 'script_69799']
+
+## script_17869 (431 lines)
+  DS  L1: WWF/HydroSHEDS/v1/Basins/hybas_12
+  NUM L109: scale: 3000,
+  NUM L123: scale: 3000,
+  NUM L205: scale: 500,
+  NUM L219: scale: 500,
+  NUM L241: scale: 500,
+  NUM L295: scale: 500,
+  API lines: 64 (first 25 shown)
+  L1: var dataset = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_12")
+  L5: var main = dataset.filter(ee.Filter.eq('MAIN_BAS', mainID))
+  L19: var current = CHIRPS.filterDate(date1, date2).select('precipitation').sum().clip(aoi);
+  L23: var R = ee.Image(current.multiply(0.363).add(79)).rename('R');
+  L27: soil = soil.select('b0').clip(aoi).rename('soil')
+  L31: var K = soil.expression(
+  L59: .rename('K').clip(aoi);
+  L63: var elevation = DEM.select('elevation');
+  L65: var slope1 = ee.Terrain.slope(elevation).clip(aoi);
+  L73: var LS3 = ee.Image(slope.multiply(0.53));
+  L75: var LS2 = ee.Image(slope).multiply(ee.Image(slope).multiply(0.076));
+  L77: var LS1 = ee.Image(LS3).add(LS2).add(0.76);
+  L79: var LS = ee.Image(LS1).multiply(LS4).rename("LS");
+  L83: s2 = s2.filterDate(date1, date2).median().clip(aoi);
+  L85: var image_ndvi = s2.normalizedDifference(['B8','B4']).rename("NDVI");
+  L89: var alpha = ee.Number(-2)
+  L91: var beta = ee.Number (1)
+  L95: var oneImage = ee.Image(1).clip(aoi);
+  L99: var C3 = C1.divide(C2).rename('C3')
+  L103: var maxC4 = C4.reduceRegion({
+  L107: reducer: ee.Reducer.max(),
+  L115: var C5 = maxC4.toImage().clip(aoi)
+  L117: var minC4 = C4.reduceRegion({
+  L121: reducer: ee.Reducer.min(),
+  L129: var C6 = minC4.toImage().clip(aoi)
+
+## script_17871 (425 lines)
+  NUM L103: scale: 3000,
+  NUM L117: scale: 3000,
+  NUM L199: scale: 500,
+  NUM L213: scale: 500,
+  NUM L235: scale: 500,
+  NUM L289: scale: 500,
+  API lines: 62 (first 25 shown)
+  L13: var current = CHIRPS.filterDate(date1, date2).select('precipitation').sum().clip(aoi);
+  L17: var R = ee.Image(current.multiply(0.363).add(79)).rename('R');
+  L21: soil = soil.select('b0').clip(aoi).rename('soil')
+  L25: var K = soil.expression(
+  L53: .rename('K').clip(aoi);
+  L57: var elevation = DEM.select('elevation');
+  L59: var slope1 = ee.Terrain.slope(elevation).clip(aoi);
+  L67: var LS3 = ee.Image(slope.multiply(0.53));
+  L69: var LS2 = ee.Image(slope).multiply(ee.Image(slope).multiply(0.076));
+  L71: var LS1 = ee.Image(LS3).add(LS2).add(0.76);
+  L73: var LS = ee.Image(LS1).multiply(LS4).rename("LS");
+  L77: s2 = s2.filterDate(date1, date2).median().clip(aoi);
+  L79: var image_ndvi = s2.normalizedDifference(['B8','B4']).rename("NDVI");
+  L83: var alpha = ee.Number(-2)
+  L85: var beta = ee.Number (1)
+  L89: var oneImage = ee.Image(1).clip(aoi);
+  L93: var C3 = C1.divide(C2).rename('C3')
+  L97: var maxC4 = C4.reduceRegion({
+  L101: reducer: ee.Reducer.max(),
+  L109: var C5 = maxC4.toImage().clip(aoi)
+  L111: var minC4 = C4.reduceRegion({
+  L115: reducer: ee.Reducer.min(),
+  L123: var C6 = minC4.toImage().clip(aoi)
+  L129: var C = C7.divide(C8).rename('C')
+  L133: var lulc = modis.filterDate(date1, date2).select('LC_Type1')
+
+## script_3327 (431 lines)
+  DS  L1: WWF/HydroSHEDS/v1/Basins/hybas_12
+  NUM L109: scale: 3000,
+  NUM L123: scale: 3000,
+  NUM L205: scale: 500,
+  NUM L219: scale: 500,
+  NUM L241: scale: 500,
+  NUM L295: scale: 500,
+  API lines: 64 (first 25 shown)
+  L1: var dataset = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_12")
+  L5: var main = dataset.filter(ee.Filter.eq('MAIN_BAS', mainID))
+  L19: var current = CHIRPS.filterDate(date1, date2).select('precipitation').sum().clip(aoi);
+  L23: var R = ee.Image(current.multiply(0.363).add(79)).rename('R');
+  L27: soil = soil.select('b0').clip(aoi).rename('soil')
+  L31: var K = soil.expression(
+  L59: .rename('K').clip(aoi);
+  L63: var elevation = DEM.select('elevation');
+  L65: var slope1 = ee.Terrain.slope(elevation).clip(aoi);
+  L73: var LS3 = ee.Image(slope.multiply(0.53));
+  L75: var LS2 = ee.Image(slope).multiply(ee.Image(slope).multiply(0.076));
+  L77: var LS1 = ee.Image(LS3).add(LS2).add(0.76);
+  L79: var LS = ee.Image(LS1).multiply(LS4).rename("LS");
+  L83: s2 = s2.filterDate(date1, date2).median().clip(aoi);
+  L85: var image_ndvi = s2.normalizedDifference(['B8','B4']).rename("NDVI");
+  L89: var alpha = ee.Number(-2)
+  L91: var beta = ee.Number (1)
+  L95: var oneImage = ee.Image(1).clip(aoi);
+  L99: var C3 = C1.divide(C2).rename('C3')
+  L103: var maxC4 = C4.reduceRegion({
+  L107: reducer: ee.Reducer.max(),
+  L115: var C5 = maxC4.toImage().clip(aoi)
+  L117: var minC4 = C4.reduceRegion({
+  L121: reducer: ee.Reducer.min(),
+  L129: var C6 = minC4.toImage().clip(aoi)
+
+## script_69799 (441 lines)
+  DS  L1: UCSB-CHG/CHIRPS/PENTAD
+  DS  L3: OpenLandMap/SOL/SOL_TEXTURE-CLASS_USDA-TT_M/v02
+  DS  L5: USGS/SRTMGL1_003
+  DS  L7: COPERNICUS/S2
+  DS  L9: MODIS/006/MCD12Q1
+  DS  L11: WWF/HydroSHEDS/v1/Basins/hybas_7
+  NUM L119: scale: 3000,
+  NUM L133: scale: 3000,
+  NUM L215: scale: 500,
+  NUM L229: scale: 500,
+  NUM L251: scale: 500,
+  NUM L305: scale: 500,
+  API lines: 69 (first 25 shown)
+  L1: var CHIRPS = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD"),
+  L3: soil = ee.Image("OpenLandMap/SOL/SOL_TEXTURE-CLASS_USDA-TT_M/v02"),
+  L5: DEM = ee.Image("USGS/SRTMGL1_003"),
+  L7: s2 = ee.ImageCollection("COPERNICUS/S2"),
+  L9: modis = ee.ImageCollection("MODIS/006/MCD12Q1");
+  L11: var dataset = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_7")
+  L15: var main = dataset.filter(ee.Filter.eq('PFAF_ID', mainID))
+  L29: var current = CHIRPS.filterDate(date1, date2).select('precipitation').sum().clip(aoi);
+  L33: var R = ee.Image(current.multiply(0.363).add(79)).rename('R');
+  L37: soil = soil.select('b0').clip(aoi).rename('soil')
+  L41: var K = soil.expression(
+  L69: .rename('K').clip(aoi);
+  L73: var elevation = DEM.select('elevation');
+  L75: var slope1 = ee.Terrain.slope(elevation).clip(aoi);
+  L83: var LS3 = ee.Image(slope.multiply(0.53));
+  L85: var LS2 = ee.Image(slope).multiply(ee.Image(slope).multiply(0.076));
+  L87: var LS1 = ee.Image(LS3).add(LS2).add(0.76);
+  L89: var LS = ee.Image(LS1).multiply(LS4).rename("LS");
+  L93: s2 = s2.filterDate(date1, date2).median().clip(aoi);
+  L95: var image_ndvi = s2.normalizedDifference(['B8','B4']).rename("NDVI");
+  L99: var alpha = ee.Number(-2)
+  L101: var beta = ee.Number (1)
+  L105: var oneImage = ee.Image(1).clip(aoi);
+  L109: var C3 = C1.divide(C2).rename('C3')
+  L113: var maxC4 = C4.reduceRegion({

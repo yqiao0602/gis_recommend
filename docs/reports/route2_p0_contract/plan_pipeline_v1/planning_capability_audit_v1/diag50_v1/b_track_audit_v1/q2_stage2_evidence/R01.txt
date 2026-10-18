@@ -1,0 +1,92 @@
+# R01 evidence pack | pairs=['SAME-15']
+# scripts: ['script_21438', 'script_72061']
+
+## script_21438 (395 lines)
+  DS  L1: COPERNICUS/S1_GRD
+  DS  L37: COPERNICUS/S2_SR
+  DS  L69: USGS/SRTMGL1_003
+  DS  L83: ESA/WorldCover/v100
+  DS  L105: LARSE/GEDI/GEDI04_B_002
+  NUM L21: var S1_PRS_pc_Feats = S1_PRS_pc_Feats.reproject({crs: 'EPSG:32735',scale: 30});
+  NUM L47: var mask = qa.bitwiseAnd(cloudBitMask).eq(0).and(
+  NUM L49: qa.bitwiseAnd(cirrusBitMask).eq(0));
+  NUM L63: var S2_composite = composite.median().reproject({crs: 'EPSG:32735', scale: 30});
+  NUM L73: var elevation = elevation.reproject({crs: 'EPSG:32735',scale: 30});
+  NUM L79: var slope = slope.reproject({crs: 'EPSG:32735',scale: 30});
+  NUM L89: ESA_LC_2020.eq(10) // Only keep pixels where class equals 2
+  NUM L111: var dataset = dataset.reproject({crs: 'EPSG:32735', scale: 100});
+  NUM L125: scale: 100,
+  NUM L139: var split = 0.7;
+  NUM L155: scale: 100 // Need to change the scale of training data to avoid the 'out of memory' problem
+  NUM L183: scale: 30,
+  API lines: 62 (first 25 shown)
+  L1: var S1_PRS = ee.ImageCollection('COPERNICUS/S1_GRD')
+  L3: .filterDate('2021-04-01', '2021-06-30')
+  L5: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+  L7: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+  L9: .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  L11: .filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING'))
+  L13: .filterBounds(boundary);
+  L15: var S1_PRS_pc = S1_PRS.reduce(ee.Reducer.percentile([25,50,75]));
+  L17: var S1_PRS_pc = ee.Image(10).pow(S1_PRS_pc.divide(10));
+  L19: var S1_PRS_pc_Feats = S1_PRS_pc.select(['VH_p50','VV_p50']).clip(boundary);
+  L21: var S1_PRS_pc_Feats = S1_PRS_pc_Feats.reproject({crs: 'EPSG:32735',scale: 30});
+  L25: var PRS_VV_iqr = S1_PRS_pc_Feats.addBands((S1_PRS_pc.select('VV_p75').subtract(S1_PRS_pc.select('VV_p25'))).re
+  L27: var PRS_VH_iqr = S1_PRS_pc_Feats.addBands((S1_PRS_pc.select('VH_p75').subtract(S1_PRS_pc.select('VH_p25'))).re
+  L33: Map.addLayer(PRS_VV_iqr.clip(boundary), {'bands': 'VV_iqr', min: 0,max: 0.1}, 'Sentinel-1 IW VV');
+  L35: Map.addLayer( PRS_VH_iqr.clip(boundary), {'bands': 'VH_iqr', min: 0,max: 0.1}, 'Sentinel-1 IW VH');
+  L37: var s2 = ee.ImageCollection('COPERNICUS/S2_SR');
+  L41: var qa = image.select('QA60');
+  L43: var cloudBitMask = ee.Number(2).pow(10).int();
+  L45: var cirrusBitMask = ee.Number(2).pow(11).int();
+  L51: return image.updateMask(mask).divide(10000);
+  L55: var composite = s2.filterDate('2021-04-01', '2021-06-30')
+  L57: .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 20))
+  L59: .map(maskS2clouds)
+  L61: .select('B2', 'B3', 'B4','B5','B6','B7','B8','B11', 'B12');
+  L63: var S2_composite = composite.median().reproject({crs: 'EPSG:32735', scale: 30});
+
+## script_72061 (395 lines)
+  DS  L1: COPERNICUS/S1_GRD
+  DS  L37: COPERNICUS/S2_SR
+  DS  L69: USGS/SRTMGL1_003
+  DS  L83: ESA/WorldCover/v100
+  DS  L105: LARSE/GEDI/GEDI04_B_002
+  NUM L21: var S1_PRS_pc_Feats = S1_PRS_pc_Feats.reproject({crs: 'EPSG:32735',scale: 30});
+  NUM L47: var mask = qa.bitwiseAnd(cloudBitMask).eq(0).and(
+  NUM L49: qa.bitwiseAnd(cirrusBitMask).eq(0));
+  NUM L63: var S2_composite = composite.median().reproject({crs: 'EPSG:32735', scale: 30});
+  NUM L73: var elevation = elevation.reproject({crs: 'EPSG:32735',scale: 30});
+  NUM L79: var slope = slope.reproject({crs: 'EPSG:32735',scale: 30});
+  NUM L89: ESA_LC_2020.eq(10) // Only keep pixels where class equals 2
+  NUM L111: var dataset = dataset.reproject({crs: 'EPSG:32735', scale: 100});
+  NUM L125: scale: 100,
+  NUM L139: var split = 0.7;
+  NUM L155: scale: 100 // Need to change the scale of training data to avoid the 'out of memory' problem
+  NUM L183: scale: 30,
+  API lines: 62 (first 25 shown)
+  L1: var S1_PRS = ee.ImageCollection('COPERNICUS/S1_GRD')
+  L3: .filterDate('2021-04-01', '2021-06-30')
+  L5: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+  L7: .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+  L9: .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  L11: .filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING'))
+  L13: .filterBounds(boundary);
+  L15: var S1_PRS_pc = S1_PRS.reduce(ee.Reducer.percentile([25,50,75]));
+  L17: var S1_PRS_pc = ee.Image(10).pow(S1_PRS_pc.divide(10));
+  L19: var S1_PRS_pc_Feats = S1_PRS_pc.select(['VH_p50','VV_p50']).clip(boundary);
+  L21: var S1_PRS_pc_Feats = S1_PRS_pc_Feats.reproject({crs: 'EPSG:32735',scale: 30});
+  L25: var PRS_VV_iqr = S1_PRS_pc_Feats.addBands((S1_PRS_pc.select('VV_p75').subtract(S1_PRS_pc.select('VV_p25'))).re
+  L27: var PRS_VH_iqr = S1_PRS_pc_Feats.addBands((S1_PRS_pc.select('VH_p75').subtract(S1_PRS_pc.select('VH_p25'))).re
+  L33: Map.addLayer(PRS_VV_iqr.clip(boundary), {'bands': 'VV_iqr', min: 0,max: 0.1}, 'Sentinel-1 IW VV');
+  L35: Map.addLayer( PRS_VH_iqr.clip(boundary), {'bands': 'VH_iqr', min: 0,max: 0.1}, 'Sentinel-1 IW VH');
+  L37: var s2 = ee.ImageCollection('COPERNICUS/S2_SR');
+  L41: var qa = image.select('QA60');
+  L43: var cloudBitMask = ee.Number(2).pow(10).int();
+  L45: var cirrusBitMask = ee.Number(2).pow(11).int();
+  L51: return image.updateMask(mask).divide(10000);
+  L55: var composite = s2.filterDate('2021-04-01', '2021-06-30')
+  L57: .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 20))
+  L59: .map(maskS2clouds)
+  L61: .select('B2', 'B3', 'B4','B5','B6','B7','B8','B11', 'B12');
+  L63: var S2_composite = composite.median().reproject({crs: 'EPSG:32735', scale: 30});

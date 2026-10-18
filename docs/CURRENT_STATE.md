@@ -220,7 +220,13 @@ interventions still require owner release.**
   always retained). `B_TRACK_TRUSTED_REFERENCE_SET_V0_SCOPING.md` selects 24
   representative groups across 10 difference types (semantic fields pending
   evidence-backed curation, no model-imagined steps). Five-step order:
-  governance freeze (done) -> minimal reference set -> split freeze -> three
+  governance freeze (done) -> **stage 2: 24 reference-set drafts COMPLETE
+  (2026-10-18) - `q2_stage2_reference_drafts/R01-R24.md` + INDEX, each with raw
+  implementation, L1 planning semantics anchored `script:line`, dependencies,
+  L2 condition-implementation mapping, L3 fidelity, multi-reference, admission,
+  pending evidence; all `draft_provisional`, awaiting owner per-group review
+  (risk order R19/R18/R20/R23 -> R09/R05/R21/R01 -> rest; 15 pending-evidence
+  items are second-pass anchors that do not change drafted structure)** -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
   coverage, dependency correctness, harmful steps, long-chain degradation,

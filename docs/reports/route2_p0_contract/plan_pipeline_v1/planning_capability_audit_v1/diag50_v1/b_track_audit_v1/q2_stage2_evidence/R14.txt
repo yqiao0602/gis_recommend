@@ -1,0 +1,62 @@
+# R14 evidence pack | pairs=['DIFF-12']
+# scripts: ['script_146438', 'script_146442']
+
+## script_146438 (303 lines)
+  DS  L157: LANDSAT/LE07/C02/T1_L2
+  NUM L227: scale: 10
+  API lines: 54 (first 25 shown)
+  L1: var SF = ee.FeatureCollection(four_polygons_wCentroids);
+  L3: var x_pairs = ee.List([[-119.824520, 47.1593417],
+  L15: var buffer_1 = ee.Feature(ee.Geometry.Point(x_pairs.get(0)).buffer(small_tile_size).bounds());
+  L17: var buffer_2 = ee.Feature(ee.Geometry.Point(x_pairs.get(1)).buffer(small_tile_size).bounds());
+  L19: var buffer_3 = ee.Feature(ee.Geometry.Point(x_pairs.get(2)).buffer(small_tile_size).bounds());
+  L21: var buffer_4 = ee.Feature(ee.Geometry.Point(x_pairs.get(3)).buffer(small_tile_size).bounds());
+  L33: var buffers = ee.FeatureCollection([buffer_1, buffer_2, buffer_3, buffer_4]);
+  L45: var qa = image.select('QA_PIXEL');
+  L51: return image.updateMask(cloud.not()); //.updateMask(mask2);
+  L59: var yearBand = ee.Image.constant(year).uint16().rename('image_year');
+  L61: return image.addBands(yearBand);
+  L67: var C = collec.map(addYear_to_image);
+  L75: var doy = ee.Date(image.get('system:time_start')).getRelative('day', 'year');
+  L77: var doyBand = ee.Image.constant(doy).uint16().rename('doy');
+  L79: doyBand = doyBand.updateMask(image.select('SR_B1').mask()); // B5 in landsat8 is the same as B8 in sentinel
+  L81: return image.addBands(doyBand);
+  L87: var C = collec.map(addDoY_to_image);
+  L95: image = image.addBands(image.metadata('system:time_start').rename("system_start_time"));
+  L103: var c = colss.map(add_system_start_time_image);
+  L111: var ndvi = image.normalizedDifference(['SR_B4', 'SR_B3']).rename('NDVI');
+  L113: return image.addBands(ndvi);
+  L119: var NDVI_IC = image_IC.map(addNDVI_to_image);
+  L127: var evi = image.expression(
+  L131: 'NIR': image.select('SR_B4'),
+  L133: 'RED': image.select('SR_B3'),
+
+## script_146442 (307 lines)
+  DS  L161: LANDSAT/LE07/C01/T1_SR
+  NUM L231: scale: 10
+  API lines: 55 (first 25 shown)
+  L1: var SF = ee.FeatureCollection(four_polygons_wCentroids);
+  L3: var x_pairs = ee.List([[-119.824520, 47.1593417],
+  L15: var buffer_1 = ee.Feature(ee.Geometry.Point(x_pairs.get(0)).buffer(small_tile_size).bounds());
+  L17: var buffer_2 = ee.Feature(ee.Geometry.Point(x_pairs.get(1)).buffer(small_tile_size).bounds());
+  L19: var buffer_3 = ee.Feature(ee.Geometry.Point(x_pairs.get(2)).buffer(small_tile_size).bounds());
+  L21: var buffer_4 = ee.Feature(ee.Geometry.Point(x_pairs.get(3)).buffer(small_tile_size).bounds());
+  L33: var buffers = ee.FeatureCollection([buffer_1, buffer_2, buffer_3, buffer_4]);
+  L45: var qa = image.select('pixel_qa');
+  L53: var mask2 = image.mask().reduce(ee.Reducer.min());
+  L55: return image.updateMask(cloud.not()).updateMask(mask2);
+  L63: var yearBand = ee.Image.constant(year).uint16().rename('image_year');
+  L65: return image.addBands(yearBand);
+  L71: var C = collec.map(addYear_to_image);
+  L79: var doy = ee.Date(image.get('system:time_start')).getRelative('day', 'year');
+  L81: var doyBand = ee.Image.constant(doy).uint16().rename('doy');
+  L83: doyBand = doyBand.updateMask(image.select('B5').mask()); // B5 in landsat8 is the same as B8 in sentinel
+  L85: return image.addBands(doyBand);
+  L91: var C = collec.map(addDoY_to_image);
+  L99: image = image.addBands(image.metadata('system:time_start').rename("system_start_time"));
+  L107: var c = colss.map(add_system_start_time_image);
+  L115: var ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
+  L117: return image.addBands(ndvi);
+  L123: var NDVI_IC = image_IC.map(addNDVI_to_image);
+  L131: var evi = image.expression(
+  L135: 'NIR': image.select('B4'),

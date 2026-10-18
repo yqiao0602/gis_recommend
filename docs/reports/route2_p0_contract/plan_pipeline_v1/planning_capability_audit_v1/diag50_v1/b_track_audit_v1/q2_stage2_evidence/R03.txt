@@ -1,0 +1,107 @@
+# R03 evidence pack | pairs=['S011', 'S001']
+# scripts: ['script_54184', 'script_54187', 'script_54188']
+
+## script_54184 (127 lines)
+  DS  L1: users/bradycgee/Shapefiles/Large_ROIs/GOM_10digit_hucs_mar_2018_merge_100m_buff_simp
+  DS  L3: LANDSAT/LT05/C01/T1_SR
+  DS  L79: users/bradycgee/Masks/AV/GOM_Aquatic_Veg_Poss_073120
+  NUM L21: var mask = quality.eq(2).or(quality.eq(4)).or(quality.eq(8)).or(quality.eq(9)).or(quality.eq(12)).or
+  NUM L23: .or(quality.eq(20)).or(quality.eq(24)).or(quality.eq(34)).or(quality.eq(36)).or(quality.eq(40)).or(q
+  NUM L81: var av_possible_mask = fractional_lw.select('Init_Land').gt(0.0000000001).and(av_possible.eq(1)).and
+  NUM L121: scale: 30,
+  API lines: 31 (first 25 shown)
+  L1: var roi = ee.FeatureCollection('users/bradycgee/Shapefiles/Large_ROIs/GOM_10digit_hucs_mar_2018_merge_100m_buf
+  L3: var landsat5Collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR').merge(ee.ImageCollection('LANDSAT/LT05/C
+  L5: .filterDate('2010-06-30', '2012-06-30')
+  L7: .filterDate('2007-06-30', '2008-08-31')
+  L9: .filter(ee.Filter.calendarRange(5,5,'month').not())
+  L11: .filterBounds(roi);
+  L19: var quality = image.select('sr_cloud_qa');
+  L25: return image.updateMask(mask);
+  L33: .addBands(image.normalizedDifference(['B4', 'B3']).rename('NDVI'))
+  L37: .addBands(image.normalizedDifference(['B2', 'B5']).rename('mNDWI'))
+  L41: .addBands(image.normalizedDifference(['B5', 'B4']).rename('NDBI'))
+  L49: .filterBounds(roi)
+  L51: .map(maskClouds)
+  L53: .map(addVariables);
+  L55: var median = filteredLandsat.reduce(ee.Reducer.median()).clip(roi).select('B2_median','B3_median','B4_median',
+  L57: var sd = filteredLandsat.reduce(ee.Reducer.stdDev()).clip(roi).select('B2_stdDev','B3_stdDev','B4_stdDev','B5_
+  L59: var med_select = median.select('NDVI_median', 'mNDWI_median', 'NDBI_median');
+  L61: var sd_select = sd.select('NDVI_stdDev', 'mNDWI_stdDev', 'NDBI_stdDev');
+  L63: var lw_temp = median.select('B5_median','B7_median','mNDWI_median');
+  L65: var lw_temp2 = median.select('mNDWI_median');
+  L75: .rename(['Init_Land','Init_Water']);
+  L79: var av_possible = ee.Image('users/bradycgee/Masks/AV/GOM_Aquatic_Veg_Poss_073120').clip(roi);
+  L81: var av_possible_mask = fractional_lw.select('Init_Land').gt(0.0000000001).and(av_possible.eq(1)).and(sd_select
+  L85: var temp = median.select('B4_median','B5_median','B7_median','NDVI_median','mNDWI_median').updateMask(av_possi
+  L95: .rename(['Land','FAV','SAV']);
+
+## script_54187 (123 lines)
+  DS  L1: users/bradycgee/Shapefiles/Large_ROIs/GOM_10digit_hucs_mar_2018_merge_100m_buff_simp
+  DS  L3: LANDSAT/LT05/C01/T1_SR
+  DS  L75: users/bradycgee/Masks/AV/GOM_Aquatic_Veg_Poss_073120
+  NUM L15: var mask = quality.eq(2).or(quality.eq(4)).or(quality.eq(8)).or(quality.eq(9)).or(quality.eq(12)).or
+  NUM L17: .or(quality.eq(20)).or(quality.eq(24)).or(quality.eq(34)).or(quality.eq(36)).or(quality.eq(40)).or(q
+  NUM L77: var av_possible_mask = fractional_lw.select('Init_Land').gt(0.0000000001).and(av_possible.eq(1)).and
+  NUM L117: scale: 30,
+  API lines: 30 (first 25 shown)
+  L1: var roi = ee.FeatureCollection('users/bradycgee/Shapefiles/Large_ROIs/GOM_10digit_hucs_mar_2018_merge_100m_buf
+  L3: var landsat5Collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+  L5: .filterDate('1984-08-01', '1986-12-01')
+  L7: .filterBounds(roi);
+  L13: var quality = image.select('sr_cloud_qa');
+  L19: return image.updateMask(mask);
+  L27: .addBands(image.normalizedDifference(['B4', 'B3']).rename('NDVI'))
+  L31: .addBands(image.normalizedDifference(['B2', 'B5']).rename('mNDWI'))
+  L35: .addBands(image.normalizedDifference(['B5', 'B4']).rename('NDBI'))
+  L43: .filterBounds(roi)
+  L45: .map(maskClouds)
+  L47: .map(addVariables);
+  L49: var median = filteredLandsat.reduce(ee.Reducer.median()).clip(roi).select('B2_median','B3_median','B4_median',
+  L51: var sd = filteredLandsat.reduce(ee.Reducer.stdDev()).clip(roi).select('B2_stdDev','B3_stdDev','B4_stdDev','B5_
+  L53: var medindices = median.select('NDVI_median','mNDWI_median','NDBI_median').toFloat().clip(roi)
+  L55: var med_select = median.select('NDVI_median', 'mNDWI_median', 'NDBI_median');
+  L57: var sd_select = sd.select('NDVI_stdDev', 'mNDWI_stdDev', 'NDBI_stdDev');
+  L59: var lw_temp = median.select('B5_median','B7_median','mNDWI_median');
+  L61: var lw_temp2 = median.select('mNDWI_median');
+  L71: .rename(['Init_Land','Init_Water']);
+  L75: var av_possible = ee.Image('users/bradycgee/Masks/AV/GOM_Aquatic_Veg_Poss_073120').clip(roi)
+  L77: var av_possible_mask = fractional_lw.select('Init_Land').gt(0.0000000001).and(av_possible.eq(1)).and(sd_select
+  L81: var temp = median.select('B4_median','B5_median','B7_median','NDVI_median','mNDWI_median').updateMask(av_possi
+  L91: .rename(['Land','FAV','SAV']);
+  L95: var final_perc_land = fractional_land_fav_sav.select('Land').multiply(fractional_lw.select('Init_Land')).renam
+
+## script_54188 (125 lines)
+  DS  L1: users/bradycgee/Shapefiles/Large_ROIs/GOM_10digit_hucs_mar_2018_merge_100m_buff_simp
+  DS  L3: LANDSAT/LT05/C01/T1_SR
+  DS  L77: users/bradycgee/Masks/AV/GOM_Aquatic_Veg_Poss_073120
+  NUM L17: var mask = quality.eq(2).or(quality.eq(4)).or(quality.eq(8)).or(quality.eq(9)).or(quality.eq(12)).or
+  NUM L19: .or(quality.eq(20)).or(quality.eq(24)).or(quality.eq(34)).or(quality.eq(36)).or(quality.eq(40)).or(q
+  NUM L79: var av_possible_mask = fractional_lw.select('Init_Land').gt(0.0000000001).and(av_possible.eq(1)).and
+  NUM L119: scale: 30,
+  API lines: 31 (first 25 shown)
+  L1: var roi = ee.FeatureCollection('users/bradycgee/Shapefiles/Large_ROIs/GOM_10digit_hucs_mar_2018_merge_100m_buf
+  L3: var landsat5Collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+  L5: .filterDate('2010-01-01', '2012-12-31')
+  L7: .filter(ee.Filter.calendarRange(5,5,'month').not())
+  L9: .filterBounds(roi);
+  L15: var quality = image.select('sr_cloud_qa');
+  L21: return image.updateMask(mask);
+  L29: .addBands(image.normalizedDifference(['B4', 'B3']).rename('NDVI'))
+  L33: .addBands(image.normalizedDifference(['B2', 'B5']).rename('mNDWI'))
+  L37: .addBands(image.normalizedDifference(['B5', 'B4']).rename('NDBI'))
+  L45: .filterBounds(roi)
+  L47: .map(maskClouds)
+  L49: .map(addVariables);
+  L51: var median = filteredLandsat.reduce(ee.Reducer.median()).clip(roi).select('B2_median','B3_median','B4_median',
+  L53: var sd = filteredLandsat.reduce(ee.Reducer.stdDev()).clip(roi).select('B2_stdDev','B3_stdDev','B4_stdDev','B5_
+  L55: var medindices = median.select('NDVI_median','mNDWI_median','NDBI_median').toFloat().clip(roi)
+  L57: var med_select = median.select('NDVI_median', 'mNDWI_median', 'NDBI_median');
+  L59: var sd_select = sd.select('NDVI_stdDev', 'mNDWI_stdDev', 'NDBI_stdDev');
+  L61: var lw_temp = median.select('B5_median','B7_median','mNDWI_median');
+  L63: var lw_temp2 = median.select('mNDWI_median');
+  L73: .rename(['Init_Land','Init_Water']);
+  L77: var av_possible = ee.Image('users/bradycgee/Masks/AV/GOM_Aquatic_Veg_Poss_073120').clip(roi);
+  L79: var av_possible_mask = fractional_lw.select('Init_Land').gt(0.0000000001).and(av_possible.eq(1)).and(sd_select
+  L83: var temp = median.select('B4_median','B5_median','B7_median','NDVI_median','mNDWI_median').updateMask(av_possi
+  L93: .rename(['Land','FAV','SAV']);

@@ -1,0 +1,115 @@
+# R21 evidence pack | pairs=['DIFF-6', 'S033']
+# scripts: ['script_213841', 'script_213853', 'script_45670', 'script_45675']
+
+## script_213841 (345 lines)
+  DS  L1: COPERNICUS/S2_SR
+  NUM L3: var maskcloud1 = function(image) {var QA60 = image.select(['QA60']);return image.updateMask(QA60.lt(
+  NUM L7: var maskcloud2 = function(image) {var B1 = image.select(['B1']);var bin = B1.gt(1500);return image.u
+  NUM L85: scale: 30,
+  API lines: 20 (first 25 shown)
+  L1: var s2 = ee.ImageCollection("COPERNICUS/S2_SR");
+  L3: var maskcloud1 = function(image) {var QA60 = image.select(['QA60']);return image.updateMask(QA60.lt(1));};
+  L5: s2 = s2.map(maskcloud1);
+  L7: var maskcloud2 = function(image) {var B1 = image.select(['B1']);var bin = B1.gt(1500);return image.updateMask(
+  L9: s2 = s2.map(maskcloud2);
+  L11: s2 = s2.map(maskcloud1);
+  L15: var ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+  L17: return image.addBands(ndvi).clip(roiclip);
+  L21: var withNDVIS2 = s2.filterDate('2020-01-01', '2020-12-11')
+  L25: .map(addNDVI);//me permite aplicar la función de ADDNDVI  a toda la colección
+  L29: var tc = image.expression('(224.76-1.1995)*NDVI', {
+  L31: 'NDVI': image.select('NDVI')
+  L35: return image.addBands(tc.rename('Tc').clip(roiclip));
+  L39: var withKC = withNDVIS2.filterDate('2020-03-01', '2020-10-30')
+  L41: .map(addKC);
+  L45: withKC, roiclip, ee.Reducer.median(), 'Tc', 20, 'system:time_start', 'label')
+  L63: Map.addLayer(withKC.select(['Tc']),{min: 0, max: 150, palette: [
+  L83: reducer: ee.Reducer.mean(),
+  L117: var image = ee.Image(collection.filter(ee.Filter.equals('system:time_start', xValue)).first()).clip(extent);
+  L253: var ciChart = buildChart(withKC.select(["Tc"]));
+
+## script_213853 (411 lines)
+  DS  L1: COPERNICUS/S2_SR
+  DS  L355: COPERNICUS/S2_SR
+  NUM L3: var maskcloud1 = function(image) {var QA60 = image.select(['QA60']);return image.updateMask(QA60.lt(
+  NUM L7: var maskcloud2 = function(image) {var B1 = image.select(['B1']);var bin = B1.gt(1500);return image.u
+  NUM L85: scale: 30,
+  API lines: 31 (first 25 shown)
+  L1: var s2 = ee.ImageCollection("COPERNICUS/S2_SR");
+  L3: var maskcloud1 = function(image) {var QA60 = image.select(['QA60']);return image.updateMask(QA60.lt(1));};
+  L5: s2 = s2.map(maskcloud1);
+  L7: var maskcloud2 = function(image) {var B1 = image.select(['B1']);var bin = B1.gt(1500);return image.updateMask(
+  L9: s2 = s2.map(maskcloud2);
+  L11: s2 = s2.map(maskcloud1);
+  L15: var ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+  L17: return image.addBands(ndvi).clip(roiclip);
+  L21: var withNDVIS2 = s2.filterDate('2020-01-01', '2020-12-11')
+  L25: .map(addNDVI);//me permite aplicar la función de ADDNDVI  a toda la colección
+  L29: var tc = image.expression('(224.76-1.1995)*NDVI', {
+  L31: 'NDVI': image.select('NDVI')
+  L35: return image.addBands(tc.rename('Tc').clip(roiclip));
+  L39: var withKC = withNDVIS2.filterDate('2020-03-01', '2020-10-30')
+  L41: .map(addKC);
+  L45: withKC, roiclip, ee.Reducer.median(), 'Tc', 20, 'system:time_start', 'label')
+  L63: Map.addLayer(withKC.select(['Tc']),{min: 0, max: 150, palette: [
+  L83: reducer: ee.Reducer.mean(),
+  L117: var image = ee.Image(collection.filter(ee.Filter.equals('system:time_start', xValue)).first()).clip(extent);
+  L253: var ciChart = buildChart(withKC.select(["Tc"]));
+  L351: var Start_period = ee.Date('2020-01-01')
+  L353: var End_period = ee.Date(new Date().getTime())
+  L355: var sentinel_dataset = ee.ImageCollection("COPERNICUS/S2_SR")
+  L357: .filterBounds(subset)
+  L359: .filterDate(Start_period, End_period)
+
+## script_45670 (367 lines)
+  DS  L9: users/servirmekong/countries/VNM_adm1
+  DS  L17: projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_
+  DS  L19: projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_
+  DS  L21: projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_
+  DS  L33: projects/mangrovescience/DAAC_Hba_Simard
+  API lines: 17 (first 25 shown)
+  L9: var vietnam = ee.FeatureCollection("users/servirmekong/countries/VNM_adm1");
+  L11: var roi = vietnam.filter(ee.Filter.eq("NAME_1",province)).geometry();
+  L13: var Guyana = ee.FeatureCollection
+  L17: var extent2000 = ee.Image('projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_'+(year1)).clip(r
+  L19: var extent2010 = ee.Image('projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_'+(year2)).clip(r
+  L21: var extent2020 = ee.Image('projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_'+(year3)).clip(r
+  L25: var ccc = ee.ImageCollection([prefix+(2000),prefix+(2001),prefix+(2002),prefix+(2003),prefix+(2004),prefix+(20
+  L33: var simard = ee.ImageCollection('projects/mangrovescience/DAAC_Hba_Simard')
+  L35: var hba = simard.mosaic().clip(roi)
+  L63: var ext2000 = ui.Map.Layer(extent2000.updateMask(extent2000), palette1, 'Extent'+(year1),false)
+  L65: var ext2010 = ui.Map.Layer(extent2010.updateMask(extent2010), palette2, 'Extent'+(year2),false)
+  L67: var ext2020 = ui.Map.Layer(extent2020.updateMask(extent2020), palette3, 'Extent'+(year3),false)
+  L143: var lon = ee.Image.pixelLonLat().select('longitude');
+  L183: var lon = ee.Image.pixelLonLat().select('longitude');
+  L223: var lon = ee.Image.pixelLonLat().select('longitude');
+  L345: var point = ee.Geometry.Point(coords.lon, coords.lat);
+  L351: var ndviChart = ui.Chart.image.series(ccc, point, ee.Reducer.mean(), 500);
+
+## script_45675 (421 lines)
+  DS  L9: users/servirmekong/countries/VNM_adm1
+  DS  L17: projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_
+  DS  L19: projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_
+  DS  L21: projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_
+  DS  L33: projects/mangrovescience/DAAC_Hba_Simard
+  API lines: 20 (first 25 shown)
+  L9: var vietnam = ee.FeatureCollection("users/servirmekong/countries/VNM_adm1");
+  L11: var roi = vietnam.filter(ee.Filter.eq("NAME_1",province)).geometry();
+  L13: var Guyana = ee.FeatureCollection
+  L17: var extent2000 = ee.Image('projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_'+(year1)).clip(r
+  L19: var extent2010 = ee.Image('projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_'+(year2)).clip(r
+  L21: var extent2020 = ee.Image('projects/servir-mekong/yearly_primitives_smoothed/tree_canopy/tcc_'+(year3)).clip(r
+  L25: var ccc = ee.ImageCollection([prefix+(2000),prefix+(2001),prefix+(2002),prefix+(2003),prefix+(2004),prefix+(20
+  L33: var simard = ee.ImageCollection('projects/mangrovescience/DAAC_Hba_Simard')
+  L35: var hba = simard.mosaic().clip(roi)
+  L63: var ext2000 = ui.Map.Layer(extent2000.updateMask(extent2000), palette1, 'Extent'+(year1),false)
+  L65: var ext2010 = ui.Map.Layer(extent2010.updateMask(extent2010), palette2, 'Extent'+(year2),false)
+  L67: var ext2020 = ui.Map.Layer(extent2020.updateMask(extent2020), palette3, 'Extent'+(year3),false)
+  L143: var lon = ee.Image.pixelLonLat().select('longitude');
+  L183: var lon = ee.Image.pixelLonLat().select('longitude');
+  L223: var lon = ee.Image.pixelLonLat().select('longitude');
+  L345: var point = ee.Geometry.Point(coords.lon, coords.lat);
+  L351: var ndviChart = ui.Chart.image.series(cc, point, ee.Reducer.mean(), 500);
+  L387: var point = ee.Geometry.Point(coords.lon, coords.lat);
+  L389: var reduce = extent2020.reduce(ee.Reducer.first());
+  L391: var sampledPoint = reduce.reduceRegion(ee.Reducer.first(), point, 30);

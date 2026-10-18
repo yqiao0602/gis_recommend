@@ -1,0 +1,41 @@
+# R02 evidence pack | pairs=['S002']
+# scripts: ['script_28603', 'script_28606']
+
+## script_28603 (57 lines)
+  DS  L11: LANDSAT/LC08/C01/T1
+  NUM L5: var mask = qa.bitwiseAnd(1<<4).eq(0);
+  API lines: 12 (first 25 shown)
+  L3: var qa = image.select('BQA');
+  L7: return image.updateMask(mask);
+  L11: var dataset = ee.ImageCollection("LANDSAT/LC08/C01/T1")
+  L13: .filterDate('2022-01-01', '2022-12-31')
+  L15: .filterBounds(medan)
+  L17: .map(maskL8)
+  L19: .select('B10');
+  L21: var first = dataset.first();
+  L39: var Celcius = dataset.map(function(img){
+  L43: return img.expression('((1321.08/log(774.89/((TIR*0.0003342)+0.1)+1)))-272.15)', {'TIR' :img})
+  L45: .rename('B10')
+  L51: var celciusmean = Celcius.mean().clip(medan);
+
+## script_28606 (75 lines)
+  DS  L11: LANDSAT/LC08/C02/T1
+  DS  L61: LANDSAT/LC08/C02/T1_TOA/LC08_123032_20140515
+  NUM L5: var mask = qa.bitwiseAnd(1<<4).eq(0);
+  NUM L71: scale: 60,
+  API lines: 15 (first 25 shown)
+  L3: var qa = image.select('QA_PIXEL');
+  L7: return image.updateMask(mask);
+  L11: var dataset = ee.ImageCollection('LANDSAT/LC08/C02/T1')
+  L13: .filterDate('2022-01-01', '2022-12-31')
+  L15: .filterBounds(medan)
+  L17: .map(maskL8)
+  L19: .select('B10');
+  L21: var first = dataset.first();
+  L39: var Celcius = dataset.map(function(img){
+  L43: return img.expression('((1321.08/(log(774.89/((TIR*0.0003342)+0.1)+1)))-272.15)'
+  L47: .rename('B10')
+  L53: var celciusmean = Celcius.mean().clip(medan);
+  L61: var landsat = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_123032_20140515')
+  L63: .select(['B4','B3','B2']);
+  L65: Export.image.toDrive({

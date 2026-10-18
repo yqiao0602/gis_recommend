@@ -1,0 +1,38 @@
+# R06 evidence pack | pairs=['S094']
+# scripts: ['script_154408', 'script_154411']
+
+## script_154408 (61 lines)
+  DS  L1: LANDSAT/LC08/C01/T1_SR
+  NUM L25: scale:30
+  NUM L51: scale: 30,
+  API lines: 12 (first 25 shown)
+  L1: var image = ee.Image(ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+  L3: .filterBounds(poi)
+  L5: .filterDate('2019-10-01', '2019-11-30')
+  L7: .sort('CLOUD_COVER')
+  L9: .first());
+  L11: var training_points = air.merge(urban).merge(vegetasi).merge(tanah).merge(tegalan);
+  L13: var cek_acc = cekAir.merge(cekVegetasi).merge(cekUrban).merge(cekTanah).merge(cekTegalan);
+  L19: var sampling = image.sampleRegions({
+  L31: var trained = ee.Classifier.smileRandomForest(1000).train(sampling, label, bands);
+  L33: var classified = image.select(bands).classify(trained);
+  L45: var validation = classified.sampleRegions({
+  L57: var testAccuracy = validation.errorMatrix('LC', 'classification');
+
+## script_154411 (61 lines)
+  DS  L1: LANDSAT/LC08/C01/T1_SR
+  NUM L25: scale:30
+  NUM L51: scale: 30,
+  API lines: 12 (first 25 shown)
+  L1: var image = ee.Image(ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+  L3: .filterBounds(poi)
+  L5: .filterDate('2019-10-01', '2019-11-30')
+  L7: .sort('CLOUD_COVER')
+  L9: .first());
+  L11: var training_points = air.merge(urban).merge(vegetasi).merge(tanah).merge(tegalan);
+  L13: var cek_acc = cekAir.merge(cekVegetasi).merge(cekUrban).merge(cekTanah).merge(cekTegalan);
+  L19: var sampling = image.sampleRegions({
+  L31: var trained = ee.Classifier.libsvm().train(sampling, label, bands);
+  L33: var classified = image.select(bands).classify(trained);
+  L45: var validation = classified.sampleRegions({
+  L57: var testAccuracy = validation.errorMatrix('LC', 'classification');

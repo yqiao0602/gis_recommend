@@ -6,3 +6,4 @@
 | 2026-10-18 | — | 17 条阻断性深查项单列（其余 8 条非阻断运行核验） | 相关记录标 provisional | 待专项核验 | `Q2_ADMISSION_V1.json::pending_deep_check_blocking` |
 
 **规则**：规则演进先 commit 再重跑；每次变更记录规则 diff、影响样本数、重跑命令、生效日期。
+| 2026-10-18 | B_TRACK_GOVERNANCE_V1 (stage 2) | 24 组参考集草案起草（L1/L2/L3/多参考/准入/证据锚点） | 24/24 draft_provisional，待 owner 逐组复核；17 阻断项按 provisional 处理 | `q2_stage2_reference_drafts/` + `B_TRACK_TRUSTED_REFERENCE_DRAFTS_V1.json` | owner 2026-10-18 阶段二批准 |

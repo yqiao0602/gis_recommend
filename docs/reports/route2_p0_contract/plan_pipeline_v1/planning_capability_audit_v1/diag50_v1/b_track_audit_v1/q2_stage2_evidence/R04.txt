@@ -1,0 +1,80 @@
+# R04 evidence pack | pairs=['S090']
+# scripts: ['script_402494', 'script_402531']
+
+## script_402494 (162 lines)
+  DS  L9: FAO/GAUL/2015/level0
+  DS  L44: Oxford/MAP/accessibility_to_cities_2015_v1_0
+  DS  L53: FAO/GAUL/2015/level1
+  DS  L64: WorldPop/GP/100m/pop
+  DS  L78: NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG
+  DS  L100: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L105: WWF/HydroSHEDS/v1/FreeFlowingRivers
+  DS  L120: FAO/GAUL/2015/level2
+  NUM L19: scale: 1000,
+  NUM L71: var populationCenters = population.gt(50);
+  NUM L102: .gt(80)
+  API lines: 47 (first 25 shown)
+  L9: country: ee.FeatureCollection('FAO/GAUL/2015/level0')
+  L10: .filter(ee.Filter.eq('ADM0_NAME', 'Angola'))
+  L32: .reproject({crs: 'EPSG:4326', scale: DIST_SCALE});
+  L44: var accessibility = ee.Image('Oxford/MAP/accessibility_to_cities_2015_v1_0').clip(STUDY_AREA.country);
+  L45: var roadAccessScore = accessibility.multiply(-0.0001).add(1).clamp(0.1, 1).rename('road_access_score');
+  L46: var roadConnectivityScore = ee.Image.constant(0.5).clip(STUDY_AREA.country).rename('road_connectivity_score');
+  L51: var gridConnectionScore = accessibility.multiply(-0.00005).add(0.5).clamp(0.1, 1).rename('grid_connection_scor
+  L53: var majorCities = ee.FeatureCollection('FAO/GAUL/2015/level1')
+  L54: .filter(ee.Filter.eq('ADM0_NAME', 'Angola'))
+  L55: .filter(ee.Filter.gt('Shape_Area', 1000000000));
+  L57: var substationMask = ee.Image().byte().paint(majorCities, 1);
+  L58: var substationProximity = computeDistanceKm(substationMask).clamp(0, 200).rename('substation_distance_km');
+  L59: var substationAccessScore = substationProximity.multiply(-0.1).add(1).clamp(0.1, 1).rename('substation_access_
+  L64: var population = ee.ImageCollection('WorldPop/GP/100m/pop')
+  L65: .filter(ee.Filter.eq('country', 'AGO'))
+  L66: .filter(ee.Filter.eq('year', 2020))
+  L67: .first()
+  L68: .clip(STUDY_AREA.country)
+  L69: .rename('population');
+  L72: var demandDistance = computeDistanceKm(populationCenters).clamp(0, 150).rename('demand_distance_km');
+  L73: var demandProximityScore = demandDistance.multiply(-0.008).add(1).clamp(0.1, 1).rename('demand_proximity_score
+  L78: var nightLights = ee.ImageCollection('NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG')
+  L79: .filterDate(CONFIG.dataSources.nightlights[0], CONFIG.dataSources.nightlights[1])
+  L80: .select('avg_rad')
+  L81: .median()
+
+## script_402531 (162 lines)
+  DS  L9: FAO/GAUL/2015/level0
+  DS  L44: Oxford/MAP/accessibility_to_cities_2015_v1_0
+  DS  L53: FAO/GAUL/2015/level1
+  DS  L64: WorldPop/GP/100m/pop
+  DS  L78: NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG
+  DS  L100: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L105: WWF/HydroSHEDS/v1/FreeFlowingRivers
+  DS  L120: FAO/GAUL/2015/level2
+  NUM L19: scale: 1000,
+  NUM L71: var populationCenters = population.gt(50);
+  NUM L102: .gt(80)
+  API lines: 47 (first 25 shown)
+  L9: country: ee.FeatureCollection('FAO/GAUL/2015/level0')
+  L10: .filter(ee.Filter.eq('ADM0_NAME', 'Angola'))
+  L32: .reproject({crs: 'EPSG:4326', scale: DIST_SCALE});
+  L44: var accessibility = ee.Image('Oxford/MAP/accessibility_to_cities_2015_v1_0').clip(STUDY_AREA.country);
+  L45: var roadAccessScore = accessibility.multiply(-0.0001).add(1).clamp(0.1, 1).rename('road_access_score');
+  L46: var roadConnectivityScore = ee.Image.constant(0.5).clip(STUDY_AREA.country).rename('road_connectivity_score');
+  L51: var gridConnectionScore = accessibility.multiply(-0.00005).add(0.5).clamp(0.1, 1).rename('grid_connection_scor
+  L53: var majorCities = ee.FeatureCollection('FAO/GAUL/2015/level1')
+  L54: .filter(ee.Filter.eq('ADM0_NAME', 'Angola'))
+  L55: .filter(ee.Filter.gt('Shape_Area', 1000000000));
+  L57: var substationMask = ee.Image().byte().paint(majorCities, 1);
+  L58: var substationProximity = computeDistanceKm(substationMask).clamp(0, 200).rename('substation_distance_km');
+  L59: var substationAccessScore = substationProximity.multiply(-0.1).add(1).clamp(0.1, 1).rename('substation_access_
+  L64: var population = ee.ImageCollection('WorldPop/GP/100m/pop')
+  L65: .filter(ee.Filter.eq('country', 'AGO'))
+  L66: .filter(ee.Filter.eq('year', 2020))
+  L67: .first()
+  L68: .clip(STUDY_AREA.country)
+  L69: .rename('population');
+  L72: var demandDistance = computeDistanceKm(populationCenters).clamp(0, 150).rename('demand_distance_km');
+  L73: var demandProximityScore = demandDistance.multiply(-0.008).add(1).clamp(0.1, 1).rename('demand_proximity_score
+  L78: var nightLights = ee.ImageCollection('NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG')
+  L79: .filterDate(CONFIG.dataSources.nightlights[0], CONFIG.dataSources.nightlights[1])
+  L80: .select('avg_rad')
+  L81: .median()

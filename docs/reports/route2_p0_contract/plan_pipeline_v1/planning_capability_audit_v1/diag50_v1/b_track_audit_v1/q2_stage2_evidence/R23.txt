@@ -1,0 +1,202 @@
+# R23 evidence pack | pairs=['S096', 'S100', 'S110']
+# scripts: ['script_131053', 'script_131074', 'script_186175', 'script_187237', 'script_55520', 'script_55526']
+
+## script_131053 (205 lines)
+  NUM L33: var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+  NUM L35: .and(qa.bitwiseAnd(cloudsBitMask).eq(0))
+  NUM L37: .and(qa.bitwiseAnd(cloudsCirrusBitMask).eq(0))
+  NUM L39: .and(qa.bitwiseAnd(cloudsDilatedBitMask).eq(0));
+  NUM L77: scale: 30
+  NUM L89: scale: 30
+  NUM L101: scale: 30
+  NUM L131: scale: 30
+  NUM L179: scale: 30,
+  API lines: 24 (first 25 shown)
+  L3: var LandsatMdD = Landsat.filterBounds(MdDBnd)
+  L5: .filterDate('2020-01-01', '2020-12-31')
+  L11: var optical = img.select('SR_B.').multiply(0.0000275).add(-0.2);
+  L13: var thermal = img.select('ST_B.*').multiply(0.00341802).add(149.0);
+  L15: return img.addBands(optical, null, true)
+  L17: .addBands(thermal, null, true);
+  L31: var qa = img.select('QA_PIXEL');
+  L41: return img.updateMask(mask);
+  L47: var ndvi = img.normalizedDifference(['SR_B5', 'SR_B4']).select([0], ['ndvi']);
+  L49: var lswi = img.normalizedDifference(['SR_B5', 'SR_B6']).select([0], ['lswi']);
+  L51: return img.addBands(ndvi).addBands(lswi);
+  L55: var LandsatMdDprepross = LandsatMdD.map(maskClouds).map(scalingLS).map(calcVIsLS);
+  L57: var medianLS = LandsatMdDprepross.median().clip(MdDBnd).select(['SR_B.','ndvi','lswi']);
+  L107: var puntosColetados = bosque.merge(agPasto).merge(infraestructura).merge(mineria).merge(cuerposDagua);
+  L111: Export.table.toDrive({
+  L125: .sampleRegions({
+  L139: var CARTclassifier = ee.Classifier.smileCart().train({
+  L153: var classificacionCART = medianLS.classify(CARTclassifier);
+  L157: var RFclassifier = ee.Classifier.smileRandomForest({numberOfTrees:10,seed:5}).train({
+  L171: var RFclassificacion = medianLS.classify(RFclassifier);
+  L175: var entrenamientoAgrupador = medianLS.sample({
+  L185: var clusterer = ee.Clusterer.wekaKMeans({nClusters:5,seed:5}).train(entrenamientoAgrupador);
+  L193: var RFclassifierV2 = ee.Classifier.smileRandomForest({numberOfTrees:10,seed:5}).train({
+  L203: var RFclassificacionV2 = medianLS.classify(RFclassifierV2);
+
+## script_131074 (243 lines)
+  NUM L33: var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+  NUM L35: .and(qa.bitwiseAnd(cloudsBitMask).eq(0))
+  NUM L37: .and(qa.bitwiseAnd(cloudsCirrusBitMask).eq(0))
+  NUM L39: .and(qa.bitwiseAnd(cloudsDilatedBitMask).eq(0));
+  NUM L77: scale: 30
+  NUM L89: scale: 30
+  NUM L101: scale: 30
+  NUM L131: scale: 30
+  NUM L179: scale: 30,
+  NUM L227: scale: 30
+  API lines: 31 (first 25 shown)
+  L3: var LandsatMdD = Landsat.filterBounds(MdDBnd)
+  L5: .filterDate('2020-01-01', '2020-12-31')
+  L11: var optical = img.select('SR_B.').multiply(0.0000275).add(-0.2);
+  L13: var thermal = img.select('ST_B.*').multiply(0.00341802).add(149.0);
+  L15: return img.addBands(optical, null, true)
+  L17: .addBands(thermal, null, true);
+  L31: var qa = img.select('QA_PIXEL');
+  L41: return img.updateMask(mask);
+  L47: var ndvi = img.normalizedDifference(['SR_B5', 'SR_B4']).select([0], ['ndvi']);
+  L49: var lswi = img.normalizedDifference(['SR_B5', 'SR_B6']).select([0], ['lswi']);
+  L51: return img.addBands(ndvi).addBands(lswi);
+  L55: var LandsatMdDprepross = LandsatMdD.map(maskClouds).map(scalingLS).map(calcVIsLS);
+  L57: var medianLS = LandsatMdDprepross.median().clip(MdDBnd).select(['SR_B.','ndvi','lswi']);
+  L107: var puntosColetados = bosque.merge(agPasto).merge(infraestructura).merge(mineria).merge(cuerposDagua);
+  L111: Export.table.toDrive({
+  L125: .sampleRegions({
+  L139: var CARTclassifier = ee.Classifier.smileCart().train({
+  L153: var classificacionCART = medianLS.classify(CARTclassifier);
+  L157: var RFclassifier = ee.Classifier.smileRandomForest({numberOfTrees:10,seed:5}).train({
+  L171: var RFclassificacion = medianLS.classify(RFclassifier);
+  L175: var entrenamientoAgrupador = medianLS.sample({
+  L185: var clusterer = ee.Clusterer.wekaKMeans({nClusters:5,seed:5}).train(entrenamientoAgrupador);
+  L193: var RFclassifierV2 = ee.Classifier.smileRandomForest({numberOfTrees:10,seed:5}).train({
+  L203: var RFclassificacionV2 = medianLS.classify(RFclassifierV2);
+  L207: var LandsatMdDV3 = Landsat.filterBounds(MdDBnd)
+
+## script_186175 (155 lines)
+  API lines: 15 (first 25 shown)
+  L1: var y = ee.List([ 0.2848061,  0.30228013,  0.34789697,  0.32501599,  0.39469027,  0.4377276,
+  L79: var order_range = ee.List.sequence(0, order)
+  L81: var k_range = ee.List.sequence(-half_window, half_window)
+  L83: var b = ee.Array(k_range.map(function (k) { return order_range.map(function(o) { return ee.Number(k).pow(o)})}
+  L87: var mPI = ee.Array(b.matrixPseudoInverse())
+  L97: var firstvals = y.slice(1, half_window+1).reverse().map(
+  L99: function(e) { return ee.Number(e).subtract(y0).abs().multiply(-1).add(y0) }
+  L107: var lastvals = y.slice(-half_window-1,-1).reverse().map(
+  L109: function(e) { return ee.Number(e).subtract(yend).abs().add(yend) }
+  L119: var runLength = ee.List.sequence(0, y_ext.length().subtract(window_size))
+  L121: var smooth = runLength.map(function(i) {
+  L123: return ee.Array(y_ext.slice(ee.Number(i), ee.Number(i).add(window_size))).multiply(impulse_response).reduce("s
+  L129: var yValues = ee.Array.cat([y, smooth], 1);
+  L131: var xValues = ee.List.sequence(1, y.length()).map(function(t) {
+  L133: return ee.Date('2018-01-01').advance(ee.Number(t), 'day').millis()
+
+## script_187237 (149 lines)
+  API lines: 13 (first 25 shown)
+  L1: var y = ee.List([ 0.2848061,  0.30228013,  0.34789697,  0.32501599,  0.39469027,  0.4377276,
+  L79: var order_range = ee.List.sequence(0,order)
+  L81: var k_range = ee.List.sequence(-half_window, half_window)
+  L83: var b = ee.Array(k_range.map(function (k) { return order_range.map(function(o) { return ee.Number(k).pow(o)})}
+  L87: var mPI = ee.Array(b.matrixPseudoInverse())
+  L97: var firstvals = y.slice(1, half_window+1).reverse().map(
+  L99: function(e) { return ee.Number(e).subtract(y0).abs().multiply(-1).add(y0) }
+  L107: var lastvals = y.slice(-half_window-1,-1).reverse().map(
+  L109: function(e) { return ee.Number(e).subtract(yend).abs().add(yend) }
+  L119: var runLength = ee.List.sequence(0, y_ext.length().subtract(window_size))
+  L121: var smooth = runLength.map(function(i) {
+  L123: return ee.Array(y_ext.slice(ee.Number(i), ee.Number(i).add(window_size))).multiply(impulse_response).reduce("s
+  L129: var yValues = ee.Array.cat([y, smooth], 1);
+
+## script_55520 (1553 lines)
+  DS  L95: USGS/SRTMGL1_003
+  DS  L259: USGS/SRTMGL1_003
+  DS  L423: USGS/SRTMGL1_003
+  DS  L587: USGS/SRTMGL1_003
+  DS  L751: USGS/SRTMGL1_003
+  DS  L915: USGS/SRTMGL1_003
+  NUM L15: var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+  NUM L17: .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  NUM L129: scale: 30,
+  NUM L131: tileScale:4,
+  NUM L293: scale: 30,
+  NUM L295: tileScale:4,
+  NUM L457: scale: 30,
+  NUM L459: tileScale:4,
+  NUM L621: scale: 30,
+  NUM L623: tileScale:4,
+  NUM L785: scale: 30,
+  NUM L787: tileScale:4,
+  API lines: 248 (first 25 shown)
+  L3: var fc = SA.merge(Mangrove).merge(PA).merge(forest).merge(building).merge(soil).merge(water)
+  L13: var qa = image.select('QA_PIXEL');
+  L19: return image.updateMask(mask);
+  L25: var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  L27: var thermalBands = image.select('ST_B.*').multiply(0.00341802).add(149.0);
+  L29: return image.addBands(opticalBands, null, true)
+  L31: .addBands(thermalBands, null, true);
+  L57: var dataset_ningde = data.filterDate('2016-06-01', '2016-08-31')
+  L59: .filterBounds(ningde)
+  L65: var datasetcomposite_ningde = dataset_ningde.map(applyScaleFactors)
+  L67: .map(maskL5sr)
+  L71: .clip(ningde)
+  L75: var ndvi1 = datasetcomposite_ningde.normalizedDifference(['SR_B5','SR_B4'])
+  L77: var lswi1 = datasetcomposite_ningde.normalizedDifference(['SR_B5','SR_B7'])
+  L79: var rvi1 = datasetcomposite_ningde.expression(
+  L85: "b8":datasetcomposite_ningde.select("SR_B5"),
+  L87: "b4":datasetcomposite_ningde.select("SR_B4")
+  L91: ).rename("rvi")
+  L93: var mndwi1 = datasetcomposite_ningde.normalizedDifference(['SR_B3','SR_B6'])
+  L95: var srtm1 = ee.Image("USGS/SRTMGL1_003")
+  L97: var dem1 = ee.Algorithms.Terrain(srtm1)
+  L99: var elevation1 = dem1.select("elevation")
+  L101: var slope1 = dem1.select("slope")
+  L103: var dataimage_ningde = datasetcomposite_ningde.addBands(ndvi1.rename("NDVI1"))
+  L105: .addBands(mndwi1.rename("mNDWI1"))
+
+## script_55526 (1553 lines)
+  DS  L95: USGS/SRTMGL1_003
+  DS  L259: USGS/SRTMGL1_003
+  DS  L423: USGS/SRTMGL1_003
+  DS  L587: USGS/SRTMGL1_003
+  DS  L751: USGS/SRTMGL1_003
+  DS  L915: USGS/SRTMGL1_003
+  NUM L15: var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+  NUM L17: .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  NUM L129: scale: 30,
+  NUM L131: tileScale:4,
+  NUM L293: scale: 30,
+  NUM L295: tileScale:4,
+  NUM L457: scale: 30,
+  NUM L459: tileScale:4,
+  NUM L621: scale: 30,
+  NUM L623: tileScale:4,
+  NUM L785: scale: 30,
+  NUM L787: tileScale:4,
+  API lines: 248 (first 25 shown)
+  L3: var fc = SA.merge(Mangrove).merge(PA).merge(forest).merge(building).merge(soil).merge(water)
+  L13: var qa = image.select('QA_PIXEL');
+  L19: return image.updateMask(mask);
+  L25: var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  L27: var thermalBands = image.select('ST_B.*').multiply(0.00341802).add(149.0);
+  L29: return image.addBands(opticalBands, null, true)
+  L31: .addBands(thermalBands, null, true);
+  L57: var dataset_ningde = data.filterDate('2020-06-01', '2020-08-15')
+  L59: .filterBounds(ningde)
+  L65: var datasetcomposite_ningde = dataset_ningde.map(applyScaleFactors)
+  L67: .map(maskL5sr)
+  L71: .clip(ningde)
+  L75: var ndvi1 = datasetcomposite_ningde.normalizedDifference(['SR_B5','SR_B4'])
+  L77: var lswi1 = datasetcomposite_ningde.normalizedDifference(['SR_B5','SR_B7'])
+  L79: var rvi1 = datasetcomposite_ningde.expression(
+  L85: "b8":datasetcomposite_ningde.select("SR_B5"),
+  L87: "b4":datasetcomposite_ningde.select("SR_B4")
+  L91: ).rename("rvi")
+  L93: var mndwi1 = datasetcomposite_ningde.normalizedDifference(['SR_B3','SR_B6'])
+  L95: var srtm1 = ee.Image("USGS/SRTMGL1_003")
+  L97: var dem1 = ee.Algorithms.Terrain(srtm1)
+  L99: var elevation1 = dem1.select("elevation")
+  L101: var slope1 = dem1.select("slope")
+  L103: var dataimage_ningde = datasetcomposite_ningde.addBands(ndvi1.rename("NDVI1"))
+  L105: .addBands(mndwi1.rename("mNDWI1"))

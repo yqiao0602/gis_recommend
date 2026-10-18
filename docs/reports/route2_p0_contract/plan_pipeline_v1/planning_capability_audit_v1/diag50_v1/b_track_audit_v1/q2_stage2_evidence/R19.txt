@@ -1,0 +1,172 @@
+# R19 evidence pack | pairs=['S056']
+# scripts: ['script_109917', 'script_109918']
+
+## script_109917 (4899 lines)
+  DS  L33: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L61: projects/ee-felipellobo/assets/RS_UY
+  DS  L63: users/gustavoonagel/UGRHI
+  DS  L65: projects/ee-felipellobo/assets/Reservatorios_SP_2019_Tiet
+  DS  L67: projects/ee-felipellobo/assets/massa_dagua_ANA_777_BaciasEstados
+  DS  L69: projects/ee-felipellobo/assets/massa_dagua_ANA_BH_CAxias_UY
+  DS  L71: projects/ee-felipellobo/assets/BOLIVIA_lakes1
+  DS  L73: projects/ee-felipellobo/assets/Sub_bacias_17_all
+  DS  L75: projects/ee-felipellobo/assets/Cordoba_Arg
+  DS  L77: projects/ee-felipellobo/assets/lago_titicaca_FINAL
+  DS  L79: projects/ee-felipellobo/assets/patos_rec
+  DS  L81: projects/ee-felipellobo/assets/Mirim_rec
+  DS  L83: projects/ee-felipellobo/assets/arequipa_lakes_poly
+  DS  L659: projects/ee-felipellobo/assets/NDCI_daily
+  DS  L723: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L757: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L759: COPERNICUS/S2_SR_HARMONIZED
+  DS  L957: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L965: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L1499: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L1507: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L1519: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L1521: COPERNICUS/S2_SR_HARMONIZED
+  DS  L1657: COPERNICUS/S2
+  DS  L1715: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L1723: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L1737: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L1739: COPERNICUS/S2_SR_HARMONIZED
+  DS  L1923: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L1931: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L2009: COPERNICUS/S2_HARMONIZED
+  DS  L2811: COPERNICUS/S2
+  DS  L2859: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L2867: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L2881: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L2883: COPERNICUS/S2_SR_HARMONIZED
+  DS  L3067: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L3075: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L3143: COPERNICUS/S2_HARMONIZED
+  DS  L3881: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L3889: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L3903: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L3905: COPERNICUS/S2_SR_HARMONIZED
+  DS  L4095: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L4103: JRC/GSW1_4/GlobalSurfaceWater
+  NUM L35: var dataset = JRC.select('occurrence').eq(90)
+  NUM L727: var JRC = ee.ImageCollection([JRC.gte(10).selfMask(), LagoadosPatos]).mosaic().clipToCollection(Rese
+  NUM L969: var JRC = ee.ImageCollection([JRC.gte(10).selfMask(), LagoadosPatos, Piaui]).mosaic().clipToCollecti
+  NUM L987: var Bloom = NDCI.gte(0.025).rename('Bloom')
+  NUM L1289: scale: 30,
+  NUM L1321: scale: 90,
+  NUM L1353: scale: 30,
+  NUM L1385: scale: 90,
+  NUM L1417: scale: 30,
+  NUM L1449: scale: 90,
+  NUM L1511: var JRC = ee.ImageCollection([JRC.gte(10).selfMask(), LagoadosPatos, Piaui]).mosaic().clipToCollecti
+  NUM L1727: var JRC = ee.ImageCollection([JRC.gte(10).selfMask(), LagoadosPatos, Piaui]).mosaic().clipToCollecti
+  API lines: 663 (first 25 shown)
+  L33: var JRC = ee.Image('JRC/GSW1_4/GlobalSurfaceWater');                            //// Get just within Pekel
+  L35: var dataset = JRC.select('occurrence').eq(90)
+  L53: Map.addLayer(dataset.clipToCollection(Reservatorios), visualization, 'Water Bodies');
+  L61: var RS = ee.FeatureCollection('projects/ee-felipellobo/assets/RS_UY')
+  L63: var ugrhs = ee.FeatureCollection('users/gustavoonagel/UGRHI')
+  L65: var reservatorio = ee.FeatureCollection('projects/ee-felipellobo/assets/Reservatorios_SP_2019_Tiet')
+  L67: var reservatorio1 = ee.FeatureCollection('projects/ee-felipellobo/assets/massa_dagua_ANA_777_BaciasEstados')
+  L69: var reservatorio2 = ee.FeatureCollection('projects/ee-felipellobo/assets/massa_dagua_ANA_BH_CAxias_UY')
+  L71: var reservatorio3 = ee.FeatureCollection('projects/ee-felipellobo/assets/BOLIVIA_lakes1')
+  L73: var Bacia = ee.FeatureCollection('projects/ee-felipellobo/assets/Sub_bacias_17_all')
+  L75: var cordoba = ee.FeatureCollection('projects/ee-felipellobo/assets/Cordoba_Arg')
+  L77: var Titicaca = ee.FeatureCollection('projects/ee-felipellobo/assets/lago_titicaca_FINAL')
+  L79: var Patos_rec = ee.FeatureCollection('projects/ee-felipellobo/assets/patos_rec')
+  L81: var Mirim_rec = ee.FeatureCollection('projects/ee-felipellobo/assets/Mirim_rec')
+  L83: var Arequipa = ee.FeatureCollection('projects/ee-felipellobo/assets/arequipa_lakes_poly')
+  L85: var AltoTiete = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 6])));
+  L87: var ParaibaSul = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 2])));
+  L89: var TieteSorocaba = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 10])));
+  L91: var PCJ = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 5])));
+  L93: var RioGrande = Bacia.filter(ee.Filter.inList('fid', ee.List([ 257])));
+  L95: var Paranaíba = Bacia.filter(ee.Filter.inList('fid', ee.List([ 258])));
+  L97: var Paranapanema = Bacia.filter(ee.Filter.inList('fid', ee.List([ 251])));
+  L99: var Itaipu = Bacia.filter(ee.Filter.inList('fid', ee.List([ 250])));
+  L101: var Iguaçu = Bacia.filter(ee.Filter.inList('fid', ee.List([ 249])));
+  L103: var ItaGuaçu = Itaipu.merge(Iguaçu)
+
+## script_109918 (4957 lines)
+  DS  L33: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L61: projects/ee-felipellobo/assets/RS_UY
+  DS  L63: users/gustavoonagel/UGRHI
+  DS  L65: projects/ee-felipellobo/assets/Reservatorios_SP_2019_Tiet
+  DS  L67: projects/ee-felipellobo/assets/massa_dagua_ANA_777_BaciasEstados
+  DS  L69: projects/ee-felipellobo/assets/massa_dagua_ANA_BH_CAxias_UY
+  DS  L71: projects/ee-felipellobo/assets/BOLIVIA_lakes1
+  DS  L73: projects/ee-felipellobo/assets/Sub_bacias_17_all
+  DS  L75: projects/ee-felipellobo/assets/Cordoba_Arg
+  DS  L77: projects/ee-felipellobo/assets/lago_titicaca_FINAL
+  DS  L79: projects/ee-felipellobo/assets/patos_rec
+  DS  L81: projects/ee-felipellobo/assets/Mirim_rec
+  DS  L83: projects/ee-felipellobo/assets/arequipa_lakes_poly
+  DS  L717: projects/ee-felipellobo/assets/NDCI_daily
+  DS  L781: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L815: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L817: COPERNICUS/S2_SR_HARMONIZED
+  DS  L1015: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L1023: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L1557: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L1565: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L1577: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L1579: COPERNICUS/S2_SR_HARMONIZED
+  DS  L1715: COPERNICUS/S2
+  DS  L1773: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L1781: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L1795: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L1797: COPERNICUS/S2_SR_HARMONIZED
+  DS  L1981: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L1989: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L2067: COPERNICUS/S2_HARMONIZED
+  DS  L2869: COPERNICUS/S2
+  DS  L2917: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L2925: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L2939: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L2941: COPERNICUS/S2_SR_HARMONIZED
+  DS  L3125: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L3133: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L3201: COPERNICUS/S2_HARMONIZED
+  DS  L3939: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L3947: JRC/GSW1_4/GlobalSurfaceWater
+  DS  L3961: COPERNICUS/S2_CLOUD_PROBABILITY
+  DS  L3963: COPERNICUS/S2_SR_HARMONIZED
+  DS  L4153: projects/ee-felipellobo/assets/Reservatorios_Piaui
+  DS  L4161: JRC/GSW1_4/GlobalSurfaceWater
+  NUM L35: var dataset = JRC.select('occurrence').eq(90)
+  NUM L785: var JRC = ee.ImageCollection([JRC.gte(10).selfMask(), LagoadosPatos]).mosaic().clipToCollection(Rese
+  NUM L1027: var JRC = ee.ImageCollection([JRC.gte(10).selfMask(), LagoadosPatos, Piaui]).mosaic().clipToCollecti
+  NUM L1045: var Bloom = NDCI.gte(0.025).rename('Bloom')
+  NUM L1347: scale: 30,
+  NUM L1379: scale: 90,
+  NUM L1411: scale: 30,
+  NUM L1443: scale: 90,
+  NUM L1475: scale: 30,
+  NUM L1507: scale: 90,
+  NUM L1569: var JRC = ee.ImageCollection([JRC.gte(10).selfMask(), LagoadosPatos, Piaui]).mosaic().clipToCollecti
+  NUM L1785: var JRC = ee.ImageCollection([JRC.gte(10).selfMask(), LagoadosPatos, Piaui]).mosaic().clipToCollecti
+  API lines: 671 (first 25 shown)
+  L33: var JRC = ee.Image('JRC/GSW1_4/GlobalSurfaceWater');                            //// Get just within Pekel
+  L35: var dataset = JRC.select('occurrence').eq(90)
+  L53: Map.addLayer(dataset.clipToCollection(Reservatorios), visualization, 'Water Bodies');
+  L61: var RS = ee.FeatureCollection('projects/ee-felipellobo/assets/RS_UY')
+  L63: var ugrhs = ee.FeatureCollection('users/gustavoonagel/UGRHI')
+  L65: var reservatorio = ee.FeatureCollection('projects/ee-felipellobo/assets/Reservatorios_SP_2019_Tiet')
+  L67: var reservatorio1 = ee.FeatureCollection('projects/ee-felipellobo/assets/massa_dagua_ANA_777_BaciasEstados')
+  L69: var reservatorio2 = ee.FeatureCollection('projects/ee-felipellobo/assets/massa_dagua_ANA_BH_CAxias_UY')
+  L71: var reservatorio3 = ee.FeatureCollection('projects/ee-felipellobo/assets/BOLIVIA_lakes1')
+  L73: var Bacia = ee.FeatureCollection('projects/ee-felipellobo/assets/Sub_bacias_17_all')
+  L75: var cordoba = ee.FeatureCollection('projects/ee-felipellobo/assets/Cordoba_Arg')
+  L77: var Titicaca = ee.FeatureCollection('projects/ee-felipellobo/assets/lago_titicaca_FINAL')
+  L79: var Patos_rec = ee.FeatureCollection('projects/ee-felipellobo/assets/patos_rec')
+  L81: var Mirim_rec = ee.FeatureCollection('projects/ee-felipellobo/assets/Mirim_rec')
+  L83: var Arequipa = ee.FeatureCollection('projects/ee-felipellobo/assets/arequipa_lakes_poly')
+  L85: var AltoTiete = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 6])));
+  L87: var ParaibaSul = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 2])));
+  L89: var TieteSorocaba = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 10])));
+  L91: var PCJ = ugrhs.filter(ee.Filter.inList('Codigo', ee.List([ 5])));
+  L93: var RioGrande = Bacia.filter(ee.Filter.inList('fid', ee.List([ 257])));
+  L95: var Paranaíba = Bacia.filter(ee.Filter.inList('fid', ee.List([ 258])));
+  L97: var Paranapanema = Bacia.filter(ee.Filter.inList('fid', ee.List([ 251])));
+  L99: var Itaipu = Bacia.filter(ee.Filter.inList('fid', ee.List([ 250])));
+  L101: var Iguaçu = Bacia.filter(ee.Filter.inList('fid', ee.List([ 249])));
+  L103: var ItaGuaçu = Itaipu.merge(Iguaçu)

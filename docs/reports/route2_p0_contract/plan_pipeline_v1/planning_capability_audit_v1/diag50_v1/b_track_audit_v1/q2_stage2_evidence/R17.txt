@@ -1,0 +1,155 @@
+# R17 evidence pack | pairs=['S068', 'S105']
+# scripts: ['script_236615', 'script_236626', 'script_26818', 'script_26820']
+
+## script_236615 (471 lines)
+  DS  L1: users/diabirane/limite_niaye_Vrai
+  DS  L27: JAXA/ALOS/AW3D30/V2_2
+  DS  L31: USGS/SRTMGL1_003
+  DS  L41: LANDSAT/LE07/C01/T1_SR
+  DS  L143: LANDSAT/LE07/C01/T1_SR
+  NUM L71: scale:30,
+  NUM L203: scale: 30,
+  NUM L217: scale: 30,
+  NUM L275: scale:30,
+  NUM L297: scale: 30
+  NUM L317: var Eau = classified.eq(3);
+  NUM L333: scale: 30,
+  NUM L357: scale: 30,
+  NUM L373: scale: 30,
+  NUM L389: scale:30,
+  NUM L417: scale: 100, /// echelle du diagramme
+  NUM L419: tileScale: 4,
+  API lines: 67 (first 25 shown)
+  L1: var niayes= ee.FeatureCollection('users/diabirane/limite_niaye_Vrai');
+  L5: var RED= image.select('B3');
+  L7: var NIR= image.select('B4');
+  L9: var NDVI=NIR.subtract(RED).divide(NIR.add(RED)).rename('NDVI');
+  L11: return image.addBands(NDVI);
+  L17: var GREEN= image.select('B2');
+  L19: var NIR= image.select('B4');
+  L21: var NDWI=GREEN.subtract(NIR).divide(GREEN.add(NIR)).rename('NDWI');
+  L23: return image.addBands(NDWI);
+  L27: var srtm=ee.Image("JAXA/ALOS/AW3D30/V2_2")
+  L29: .select('AVE_DSM')
+  L31: .clip(niayes);///ee.Image("USGS/SRTMGL1_003")
+  L41: var collectionLE07 = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+  L43: .filterBounds(niayes)
+  L45: .filterDate('2000-04-01', '2000-04-30')
+  L47: .sort('CLOUD_COVER')
+  L49: .map(addNDVI)
+  L51: .map(addNDWI);
+  L57: .select('B1','B2', 'B3', 'B4', 'B5', 'B6', 'B7')
+  L59: .median()
+  L61: .clip(niayes)
+  L67: Export.image.toDrive ({
+  L83: var bNDVI= addNDVI(image).select('NDVI');
+  L85: var bNDWI = addNDWI(image).select('NDWI')
+  L89: var bandsl07 =image.select(['B1','B2', 'B3', 'B4', 'B5','B7']);
+
+## script_236626 (377 lines)
+  DS  L1: users/diabirane/limite_niaye_Vrai
+  DS  L57: JAXA/ALOS/AW3D30/V2_2
+  DS  L61: USGS/SRTMGL1_003
+  DS  L71: LANDSAT/LT05/C01/T1_SR
+  DS  L149: IDAHO_EPSCOR/TERRACLIMATE
+  NUM L27: var mask= qa.bitwiseAnd(cloudBitMask).eq(0).and(qa.bitwiseAnd(currisBitMask).eq(0));
+  NUM L125: scale:60,
+  NUM L181: scale:30,
+  NUM L203: scale: 30
+  NUM L223: var Eau = classified.eq(3);
+  NUM L239: scale: 30,
+  NUM L263: scale: 30,
+  NUM L279: scale: 30,
+  NUM L295: scale:30,
+  NUM L323: scale: 100, /// echelle du diagramme
+  NUM L325: tileScale: 4,
+  NUM L343: scale: 100,
+  API lines: 53 (first 25 shown)
+  L1: var niayes= ee.FeatureCollection('users/diabirane/limite_niaye_Vrai');
+  L5: var qa = image.select('pixel_qa');
+  L13: var mask2 = image.mask().reduce(ee.Reducer.min());
+  L15: return image.updateMask(cloud.not()).updateMask(mask2);
+  L21: var qa= image.select('QA60');
+  L29: return image.updateMask(mask).divide(10000);
+  L35: var RED= image.select('B3');
+  L37: var NIR= image.select('B4');
+  L39: var NDVI=NIR.subtract(RED).divide(NIR.add(RED)).rename('NDVI');
+  L41: return image.addBands(NDVI);
+  L47: var GREEN= image.select('B2');
+  L49: var NIR= image.select('B4');
+  L51: var NDWI=GREEN.subtract(NIR).divide(GREEN.add(NIR)).rename('NDWI');
+  L53: return image.addBands(NDWI);
+  L57: var srtm=ee.Image("JAXA/ALOS/AW3D30/V2_2")
+  L59: .select('AVE_DSM')
+  L61: .clip(niayes);///ee.Image("USGS/SRTMGL1_003")
+  L71: var collectionLT05 = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+  L73: .filterBounds(niayes)
+  L75: .filterDate('1994-04-01', '1994-04-30')
+  L77: .sort('CLOUD_COVER')
+  L79: .map(addNDVI)
+  L81: .map(addNDWI);
+  L87: .select('B1','B2', 'B3', 'B4', 'B5', 'B6', 'B7')
+  L89: .median()
+
+## script_26818 (171 lines)
+  NUM L53: scale: 30
+  NUM L59: var split = 0.75;  // Roughly 70% training, 30% testing.
+  NUM L117: scale: 30,
+  NUM L163: scale: 30,
+  API lines: 24 (first 25 shown)
+  L5: .filterDate('2014-03-01','2014-03-30');
+  L21: var spectral = ee.Algorithms.Landsat.simpleComposite({
+  L33: var composite = spectral.addBands(srtm.select('elevation'))
+  L37: .merge(mix)
+  L39: .merge(bare)
+  L41: .merge(vegatation)
+  L47: var training = composite.select(bands).sampleRegions({
+  L57: var withRandom = training.randomColumn('random');
+  L61: var trainingPartition = withRandom.filter(ee.Filter.lt('random', split));
+  L63: var testingPartition = withRandom.filter(ee.Filter.gte('random', split));
+  L65: var classifier = ee.Classifier.cart({
+  L71: .train({
+  L81: var classified = composite.classify(classifier);
+  L89: var test = testingPartition.classify(classifier);
+  L91: var confusionMatrix = test.errorMatrix(classProperty, 'classification');
+  L111: image: ee.Image.pixelArea().addBands(classified),
+  L119: reducer: ee.Reducer.sum(),
+  L127: Map.addLayer(ee.Image().paint(PostHammar, 0, 3), {}, 'Hammar Perimeter');
+  L131: .filterDate('2020-01-01','2020-01-30');
+  L133: var spectralT = ee.Algorithms.Landsat.simpleComposite({
+  L145: var compositeT = spectralT.addBands(srtm.select('elevation'))
+  L147: var classifiedT = compositeT.classify(classifier);
+  L157: image: ee.Image.pixelArea().addBands(classifiedT),
+  L165: reducer: ee.Reducer.sum(),
+
+## script_26820 (173 lines)
+  NUM L53: scale: 30
+  NUM L59: var split = 0.75;  // Roughly 70% training, 30% testing.
+  NUM L117: scale: 30,
+  NUM L163: scale: 30,
+  API lines: 25 (first 25 shown)
+  L5: .filterDate('2015-05-01','2015-05-31');
+  L21: var spectral = ee.Algorithms.Landsat.simpleComposite({
+  L33: var composite = spectral.addBands(srtm.select('elevation'))
+  L37: .merge(mix)
+  L39: .merge(bare)
+  L41: .merge(vegatation)
+  L47: var training = composite.select(bands).sampleRegions({
+  L57: var withRandom = training.randomColumn('random');
+  L61: var trainingPartition = withRandom.filter(ee.Filter.lt('random', split));
+  L63: var testingPartition = withRandom.filter(ee.Filter.gte('random', split));
+  L65: var classifier = ee.Classifier.cart({
+  L71: .train({
+  L81: var classified = composite.classify(classifier);
+  L89: var test = testingPartition.classify(classifier);
+  L91: var confusionMatrix = test.errorMatrix(classProperty, 'classification');
+  L111: image: ee.Image.pixelArea().addBands(classified),
+  L119: reducer: ee.Reducer.sum(),
+  L127: Map.addLayer(ee.Image().paint(PostHammar, 0, 3), {}, 'Hammar Perimeter');
+  L131: .filterDate('2016-08-01','2016-08-30');
+  L133: var spectralT = ee.Algorithms.Landsat.simpleComposite({
+  L145: var compositeT = spectralT.addBands(srtm.select('elevation'))
+  L147: var classifiedT = compositeT.classify(classifier);
+  L157: image: ee.Image.pixelArea().addBands(classifiedT),
+  L165: reducer: ee.Reducer.sum(),
+  L173: Map.addLayer(ee.Image().paint(PostHammar, 0, 3), {}, 'Hammar Perimeter');

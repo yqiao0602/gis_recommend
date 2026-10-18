@@ -1,0 +1,252 @@
+# R12 evidence pack | pairs=['S034', 'S036', 'S108']
+# scripts: ['script_145163', 'script_145186', 'script_145191', 'script_145241', 'script_145258']
+
+## script_145163 (799 lines)
+  DS  L27: NASA/GLDAS/V021/NOAH/G025/T3H
+  DS  L63: USGS/GMTED2010
+  DS  L281: LANDSAT/LE07/C01/T1_SR
+  DS  L283: UCSB-CHG/CHIRPS/DAILY
+  DS  L285: MODIS/006/MOD16A2
+  DS  L445: UCSB-CHG/CHIRPS/DAILY
+  DS  L449: users/ignaciofuentessanroman/UL05
+  DS  L451: users/ignaciofuentessanroman/UL515
+  DS  L453: users/ignaciofuentessanroman/LL05
+  DS  L455: users/ignaciofuentessanroman/LL515
+  NUM L275: Map.addLayer(ee.Image(gldas_daily_eto_coll_resample.first()).reproject({scale:500, crs:'EPSG:4326'})
+  NUM L319: var maskCloudShadows = masking.bitwiseAnd(8).eq(0)                         // bit3 so in power 3
+  NUM L321: var maskClouds = masking.bitwiseAnd(32).eq(0)                              // masking bit 5 so 2 in 
+  NUM L593: NDVI=NDVI.where(NDVI.lt(0),0)
+  NUM L613: Kcb = Kcb.where(Kcb.lt(0), 0)
+  NUM L627: De_new_rtzone=De_new_rtzone.where(De_new_rtzone.lt(0),0)
+  NUM L645: few=few.where(few.lt(0),0)                                       //this cant be negative
+  NUM L649: Ke=Ke.where(Ke.lt(0),0)
+  NUM L653: KexETo= KexETo.where(KexETo.lt(0),0)
+  NUM L657: var soilzonefill_intosoil=ee.Image(soilzonefill).where(ee.Image(soilzonefill).gt(0), //is there rtzo
+  NUM L661: De_new_soil = ee.Image(De_new_soil).where(De_new_soil.gt(0),De_new_soil.subtract(soilzonefill_intoso
+  NUM L663: De_new_soil= De_new_soil.where(De_new_soil.lt(0), 0)                                                
+  API lines: 210 (first 25 shown)
+  L3: var start_dt = ee.Date("2017-11-22");
+  L5: var end_dt = ee.Date("2018-05-01");
+  L17: print('developmentstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.1666).round(
+  L19: print('midstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.4444).round(), 'day'
+  L21: print('latestage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.75).round(), 'day')
+  L25: var days = ee.Number(365)
+  L27: var gldas_coll = ee.ImageCollection('NASA/GLDAS/V021/NOAH/G025/T3H') //v 2.0 or 2.1
+  L29: .filterDate(start_dt, end_dt.advance(1, 'day'))
+  L31: .select(['Tair_f_inst', 'Wind_f_inst', 'Qair_f_inst', 'SWdown_f_tavg', 'Psurf_f_inst'])
+  L35: gldas_coll=gldas_coll.map(function(img){
+  L37: var date=ee.Date(img.get('system:time_start'))
+  L41: 'system:time_start': date.advance(10, 'hour').millis(),
+  L43: 'system:time_end': date.advance(13, 'hour').millis()
+  L49: gldas_coll = gldas_coll.map(function(img) {
+  L51: var img_K = ee.Image(img).select('Tair_f_inst');
+  L53: var img_C = img_K.subtract(ee.Image(273.15));
+  L55: img_C.rename('Tair_f_inst');
+  L57: return ee.Image(img).addBands({srcImg:img_C,
+  L63: var elev = ee.Image("USGS/GMTED2010");
+  L67: print ("Elevation:",elev.reduceRegion(ee.Reducer.mean(), geometry).get('be75'));
+  L69: var lat = ee.Image.pixelLonLat().select('latitude').multiply(Math.PI / 180);
+  L71: var lon = ee.Image.pixelLonLat().select('longitude').multiply(Math.PI / 180);
+  L73: var pair = elev.expression('101.3 * pow((293 - 0.0065 * b()) / 293, 5.26)');
+  L83: 'DATE': ee.Date(date).format('YYYY-MM-dd'),
+  L85: 'system:time_start': ee.Number(date),
+
+## script_145186 (799 lines)
+  DS  L27: NASA/GLDAS/V021/NOAH/G025/T3H
+  DS  L63: USGS/GMTED2010
+  DS  L281: LANDSAT/LE07/C01/T1_SR
+  DS  L283: UCSB-CHG/CHIRPS/DAILY
+  DS  L285: MODIS/006/MOD16A2
+  DS  L445: UCSB-CHG/CHIRPS/DAILY
+  DS  L449: users/ignaciofuentessanroman/UL05
+  DS  L451: users/ignaciofuentessanroman/UL515
+  DS  L453: users/ignaciofuentessanroman/LL05
+  DS  L455: users/ignaciofuentessanroman/LL515
+  NUM L275: Map.addLayer(ee.Image(gldas_daily_eto_coll_resample.first()).reproject({scale:500, crs:'EPSG:4326'})
+  NUM L319: var maskCloudShadows = masking.bitwiseAnd(8).eq(0)                         // bit3 so in power 3
+  NUM L321: var maskClouds = masking.bitwiseAnd(32).eq(0)                              // masking bit 5 so 2 in 
+  NUM L593: NDVI=NDVI.where(NDVI.lt(0),0)
+  NUM L613: Kcb = Kcb.where(Kcb.lt(0), 0)
+  NUM L627: De_new_rtzone=De_new_rtzone.where(De_new_rtzone.lt(0),0)
+  NUM L645: few=few.where(few.lt(0),0)                                       //this cant be negative
+  NUM L649: Ke=Ke.where(Ke.lt(0),0)
+  NUM L653: KexETo= KexETo.where(KexETo.lt(0),0)
+  NUM L657: var soilzonefill_intosoil=ee.Image(soilzonefill).where(ee.Image(soilzonefill).gt(0), //is there rtzo
+  NUM L661: De_new_soil = ee.Image(De_new_soil).where(De_new_soil.gt(0),De_new_soil.subtract(soilzonefill_intoso
+  NUM L663: De_new_soil= De_new_soil.where(De_new_soil.lt(0), 0)                                                
+  API lines: 210 (first 25 shown)
+  L3: var start_dt = ee.Date("2017-11-22");
+  L5: var end_dt = ee.Date("2018-05-01");
+  L17: print('developmentstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.1666).round(
+  L19: print('midstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.4444).round(), 'day'
+  L21: print('latestage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.75).round(), 'day')
+  L25: var days = ee.Number(365)
+  L27: var gldas_coll = ee.ImageCollection('NASA/GLDAS/V021/NOAH/G025/T3H') //v 2.0 or 2.1
+  L29: .filterDate(start_dt, end_dt.advance(1, 'day'))
+  L31: .select(['Tair_f_inst', 'Wind_f_inst', 'Qair_f_inst', 'SWdown_f_tavg', 'Psurf_f_inst'])
+  L35: gldas_coll=gldas_coll.map(function(img){
+  L37: var date=ee.Date(img.get('system:time_start'))
+  L41: 'system:time_start': date.advance(10, 'hour').millis(),
+  L43: 'system:time_end': date.advance(13, 'hour').millis()
+  L49: gldas_coll = gldas_coll.map(function(img) {
+  L51: var img_K = ee.Image(img).select('Tair_f_inst');
+  L53: var img_C = img_K.subtract(ee.Image(273.15));
+  L55: img_C.rename('Tair_f_inst');
+  L57: return ee.Image(img).addBands({srcImg:img_C,
+  L63: var elev = ee.Image("USGS/GMTED2010");
+  L67: print ("Elevation:",elev.reduceRegion(ee.Reducer.mean(), geometry).get('be75'));
+  L69: var lat = ee.Image.pixelLonLat().select('latitude').multiply(Math.PI / 180);
+  L71: var lon = ee.Image.pixelLonLat().select('longitude').multiply(Math.PI / 180);
+  L73: var pair = elev.expression('101.3 * pow((293 - 0.0065 * b()) / 293, 5.26)');
+  L83: 'DATE': ee.Date(date).format('YYYY-MM-dd'),
+  L85: 'system:time_start': ee.Number(date),
+
+## script_145191 (799 lines)
+  DS  L27: NASA/GLDAS/V021/NOAH/G025/T3H
+  DS  L63: USGS/GMTED2010
+  DS  L281: LANDSAT/LE07/C01/T1_SR
+  DS  L283: UCSB-CHG/CHIRPS/DAILY
+  DS  L285: MODIS/006/MOD16A2
+  DS  L445: UCSB-CHG/CHIRPS/DAILY
+  DS  L449: users/ignaciofuentessanroman/UL05
+  DS  L451: users/ignaciofuentessanroman/UL515
+  DS  L453: users/ignaciofuentessanroman/LL05
+  DS  L455: users/ignaciofuentessanroman/LL515
+  NUM L275: Map.addLayer(ee.Image(gldas_daily_eto_coll_resample.first()).reproject({scale:500, crs:'EPSG:4326'})
+  NUM L319: var maskCloudShadows = masking.bitwiseAnd(8).eq(0)                         // bit3 so in power 3
+  NUM L321: var maskClouds = masking.bitwiseAnd(32).eq(0)                              // masking bit 5 so 2 in 
+  NUM L593: NDVI=NDVI.where(NDVI.lt(0),0)
+  NUM L613: Kcb = Kcb.where(Kcb.lt(0), 0)
+  NUM L627: De_new_rtzone=De_new_rtzone.where(De_new_rtzone.lt(0),0)
+  NUM L645: few=few.where(few.lt(0),0)                                       //this cant be negative
+  NUM L649: Ke=Ke.where(Ke.lt(0),0)
+  NUM L653: KexETo= KexETo.where(KexETo.lt(0),0)
+  NUM L657: var soilzonefill_intosoil=ee.Image(soilzonefill).where(ee.Image(soilzonefill).gt(0), //is there rtzo
+  NUM L661: De_new_soil = ee.Image(De_new_soil).where(De_new_soil.gt(0),De_new_soil.subtract(soilzonefill_intoso
+  NUM L663: De_new_soil= De_new_soil.where(De_new_soil.lt(0), 0)                                                
+  API lines: 210 (first 25 shown)
+  L3: var start_dt = ee.Date("2017-11-22");
+  L5: var end_dt = ee.Date("2018-05-01");
+  L17: print('developmentstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.1666).round(
+  L19: print('midstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.4444).round(), 'day'
+  L21: print('latestage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.75).round(), 'day')
+  L25: var days = ee.Number(365)
+  L27: var gldas_coll = ee.ImageCollection('NASA/GLDAS/V021/NOAH/G025/T3H') //v 2.0 or 2.1
+  L29: .filterDate(start_dt, end_dt.advance(1, 'day'))
+  L31: .select(['Tair_f_inst', 'Wind_f_inst', 'Qair_f_inst', 'SWdown_f_tavg', 'Psurf_f_inst'])
+  L35: gldas_coll=gldas_coll.map(function(img){
+  L37: var date=ee.Date(img.get('system:time_start'))
+  L41: 'system:time_start': date.advance(10, 'hour').millis(),
+  L43: 'system:time_end': date.advance(13, 'hour').millis()
+  L49: gldas_coll = gldas_coll.map(function(img) {
+  L51: var img_K = ee.Image(img).select('Tair_f_inst');
+  L53: var img_C = img_K.subtract(ee.Image(273.15));
+  L55: img_C.rename('Tair_f_inst');
+  L57: return ee.Image(img).addBands({srcImg:img_C,
+  L63: var elev = ee.Image("USGS/GMTED2010");
+  L67: print ("Elevation:",elev.reduceRegion(ee.Reducer.mean(), geometry).get('be75'));
+  L69: var lat = ee.Image.pixelLonLat().select('latitude').multiply(Math.PI / 180);
+  L71: var lon = ee.Image.pixelLonLat().select('longitude').multiply(Math.PI / 180);
+  L73: var pair = elev.expression('101.3 * pow((293 - 0.0065 * b()) / 293, 5.26)');
+  L83: 'DATE': ee.Date(date).format('YYYY-MM-dd'),
+  L85: 'system:time_start': ee.Number(date),
+
+## script_145241 (769 lines)
+  DS  L27: NASA/GLDAS/V021/NOAH/G025/T3H
+  DS  L63: USGS/GMTED2010
+  DS  L281: LANDSAT/LE07/C01/T1_SR
+  DS  L283: UCSB-CHG/CHIRPS/DAILY
+  DS  L285: MODIS/006/MOD16A2
+  DS  L445: UCSB-CHG/CHIRPS/DAILY
+  DS  L449: users/ignaciofuentessanroman/UL05
+  DS  L451: users/ignaciofuentessanroman/UL515
+  DS  L453: users/ignaciofuentessanroman/LL05
+  DS  L455: users/ignaciofuentessanroman/LL515
+  NUM L275: Map.addLayer(ee.Image(gldas_daily_eto_coll_resample.first()).reproject({scale:500, crs:'EPSG:4326'})
+  NUM L319: var maskCloudShadows = masking.bitwiseAnd(8).eq(0)                         // bit3 so in power 3
+  NUM L321: var maskClouds = masking.bitwiseAnd(32).eq(0)                              // masking bit 5 so 2 in 
+  NUM L593: NDVI=NDVI.where(NDVI.lt(0),0)
+  NUM L613: Kcb = Kcb.where(Kcb.lt(0), 0)
+  NUM L627: De_new_rtzone=De_new_rtzone.where(De_new_rtzone.lt(0),0)
+  NUM L643: few=few.where(few.lt(0),0)                                       //this cant be negative
+  NUM L647: Ke=Ke.where(Ke.lt(0),0)
+  NUM L651: KexETo= KexETo.where(KexETo.lt(0),0)
+  NUM L655: var soilzonefill_intosoil=ee.Image(soilzonefill).where(ee.Image(soilzonefill).gt(0), //is there rtzo
+  NUM L659: De_new_soil = ee.Image(De_new_soil).where(De_new_soil.gt(0),De_new_soil.subtract(soilzonefill_intoso
+  NUM L661: De_new_soil= De_new_soil.where(De_new_soil.lt(0), 0)                                                
+  API lines: 200 (first 25 shown)
+  L3: var start_dt = ee.Date("2017-11-22");
+  L5: var end_dt = ee.Date("2018-05-01");
+  L17: print('developmentstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.1666).round(
+  L19: print('midstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.4444).round(), 'day'
+  L21: print('latestage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.75).round(), 'day')
+  L25: var days = ee.Number(365)
+  L27: var gldas_coll = ee.ImageCollection('NASA/GLDAS/V021/NOAH/G025/T3H') //v 2.0 or 2.1
+  L29: .filterDate(start_dt, end_dt.advance(1, 'day'))
+  L31: .select(['Tair_f_inst', 'Wind_f_inst', 'Qair_f_inst', 'SWdown_f_tavg', 'Psurf_f_inst'])
+  L35: gldas_coll=gldas_coll.map(function(img){
+  L37: var date=ee.Date(img.get('system:time_start'))
+  L41: 'system:time_start': date.advance(10, 'hour').millis(),
+  L43: 'system:time_end': date.advance(13, 'hour').millis()
+  L49: gldas_coll = gldas_coll.map(function(img) {
+  L51: var img_K = ee.Image(img).select('Tair_f_inst');
+  L53: var img_C = img_K.subtract(ee.Image(273.15));
+  L55: img_C.rename('Tair_f_inst');
+  L57: return ee.Image(img).addBands({srcImg:img_C,
+  L63: var elev = ee.Image("USGS/GMTED2010");
+  L67: print ("Elevation:",elev.reduceRegion(ee.Reducer.mean(), geometry).get('be75'));
+  L69: var lat = ee.Image.pixelLonLat().select('latitude').multiply(Math.PI / 180);
+  L71: var lon = ee.Image.pixelLonLat().select('longitude').multiply(Math.PI / 180);
+  L73: var pair = elev.expression('101.3 * pow((293 - 0.0065 * b()) / 293, 5.26)');
+  L83: 'DATE': ee.Date(date).format('YYYY-MM-dd'),
+  L85: 'system:time_start': ee.Number(date),
+
+## script_145258 (769 lines)
+  DS  L27: NASA/GLDAS/V021/NOAH/G025/T3H
+  DS  L63: USGS/GMTED2010
+  DS  L281: LANDSAT/LE07/C01/T1_SR
+  DS  L283: UCSB-CHG/CHIRPS/DAILY
+  DS  L285: MODIS/006/MOD16A2
+  DS  L445: UCSB-CHG/CHIRPS/DAILY
+  DS  L449: users/ignaciofuentessanroman/UL05
+  DS  L451: users/ignaciofuentessanroman/UL515
+  DS  L453: users/ignaciofuentessanroman/LL05
+  DS  L455: users/ignaciofuentessanroman/LL515
+  NUM L275: Map.addLayer(ee.Image(gldas_daily_eto_coll_resample.first()).reproject({scale:500, crs:'EPSG:4326'})
+  NUM L319: var maskCloudShadows = masking.bitwiseAnd(8).eq(0)                         // bit3 so in power 3
+  NUM L321: var maskClouds = masking.bitwiseAnd(32).eq(0)                              // masking bit 5 so 2 in 
+  NUM L593: NDVI=NDVI.where(NDVI.lt(0),0)
+  NUM L613: Kcb = Kcb.where(Kcb.lt(0), 0)
+  NUM L627: De_new_rtzone=De_new_rtzone.where(De_new_rtzone.lt(0),0)
+  NUM L643: few=few.where(few.lt(0),0)                                       //this cant be negative
+  NUM L647: Ke=Ke.where(Ke.lt(0),0)
+  NUM L651: KexETo= KexETo.where(KexETo.lt(0),0)
+  NUM L655: var soilzonefill_intosoil=ee.Image(soilzonefill).where(ee.Image(soilzonefill).gt(0), //is there rtzo
+  NUM L659: De_new_soil = ee.Image(De_new_soil).where(De_new_soil.gt(0),De_new_soil.subtract(soilzonefill_intoso
+  NUM L661: De_new_soil= De_new_soil.where(De_new_soil.lt(0), 0)                                                
+  API lines: 200 (first 25 shown)
+  L3: var start_dt = ee.Date("2017-11-22");
+  L5: var end_dt = ee.Date("2018-05-01");
+  L17: print('developmentstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.1666).round(
+  L19: print('midstage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.4444).round(), 'day'
+  L21: print('latestage starts at:',start_dt.advance(end_dt.difference(start_dt,"day").multiply(0.75).round(), 'day')
+  L25: var days = ee.Number(365)
+  L27: var gldas_coll = ee.ImageCollection('NASA/GLDAS/V021/NOAH/G025/T3H') //v 2.0 or 2.1
+  L29: .filterDate(start_dt, end_dt.advance(1, 'day'))
+  L31: .select(['Tair_f_inst', 'Wind_f_inst', 'Qair_f_inst', 'SWdown_f_tavg', 'Psurf_f_inst'])
+  L35: gldas_coll=gldas_coll.map(function(img){
+  L37: var date=ee.Date(img.get('system:time_start'))
+  L41: 'system:time_start': date.advance(10, 'hour').millis(),
+  L43: 'system:time_end': date.advance(13, 'hour').millis()
+  L49: gldas_coll = gldas_coll.map(function(img) {
+  L51: var img_K = ee.Image(img).select('Tair_f_inst');
+  L53: var img_C = img_K.subtract(ee.Image(273.15));
+  L55: img_C.rename('Tair_f_inst');
+  L57: return ee.Image(img).addBands({srcImg:img_C,
+  L63: var elev = ee.Image("USGS/GMTED2010");
+  L67: print ("Elevation:",elev.reduceRegion(ee.Reducer.mean(), geometry).get('be75'));
+  L69: var lat = ee.Image.pixelLonLat().select('latitude').multiply(Math.PI / 180);
+  L71: var lon = ee.Image.pixelLonLat().select('longitude').multiply(Math.PI / 180);
+  L73: var pair = elev.expression('101.3 * pow((293 - 0.0065 * b()) / 293, 5.26)');
+  L83: 'DATE': ee.Date(date).format('YYYY-MM-dd'),
+  L85: 'system:time_start': ee.Number(date),

@@ -1,0 +1,79 @@
+# R13 evidence pack | pairs=['S040']
+# scripts: ['script_80223', 'script_80237']
+
+## script_80223 (345 lines)
+  DS  L13: users/davideandreatta/VATshp/viote_pla
+  DS  L17: users/davideandreatta/VATrast/vatviote_pla
+  DS  L45: COPERNICUS/S2_SR
+  NUM L27: var cloud = cloudProb.lt(5);
+  NUM L29: var snow = snowProb.lt(5);
+  NUM L33: var shadow = scl.eq(3); // 3 = cloud shadow
+  NUM L35: var cirrus = scl.eq(10); // 10 = cirrus
+  NUM L37: var mask = (cloud.and(snow)).and(cirrus.neq(1)).and(shadow.neq(1));
+  NUM L215: var indietrolt0YN = ar_norm.subtract(ar_1adxfilled).lt(0)
+  NUM L217: var avantigt0YN = ar_norm.subtract(ar_1asxfilled).lt(0) //giusto tenereLT perchè faccio ad es posizi
+  API lines: 50 (first 25 shown)
+  L13: var PratiFasci = ee.FeatureCollection("users/davideandreatta/VATshp/viote_pla")
+  L17: var VAT = ee.Image("users/davideandreatta/VATrast/vatviote_pla")
+  L19: .clipToCollection(PratiFasci).int8()
+  L23: var cloudProb = image.select('MSK_CLDPRB');
+  L25: var snowProb = image.select('MSK_SNWPRB');
+  L31: var scl = image.select('SCL');
+  L39: return image.updateMask(mask)
+  L45: var s2collection = ee.ImageCollection('COPERNICUS/S2_SR')
+  L47: .filterDate(startDate,endDate)
+  L49: .map(maskCloudAndShadows)
+  L51: .filter(ee.Filter.bounds(PratiFasci))
+  L57: var ndvi = image.normalizedDifference(['B8', 'B12']).rename('NDVI') ;
+  L59: return image.addBands(ndvi);
+  L63: var withNDVI = s2collection.map(addNDVI);
+  L69: imgs = imgs.map(function(img){
+  L71: var d = ee.Date(img.get('system:time_start'));
+  L79: var simpleDate = ee.Date.fromYMD(y,m,day);
+  L81: return ee.Image(img.copyProperties(img,
+  L87: var days = ee.Dictionary(imgs.aggregate_histogram('simpleTime')).keys();
+  L89: imgs = days.map(function(d){
+  L91: d = ee.Number.parse(d);
+  L93: d = ee.Date(d);
+  L95: var t = imgs.filterDate(d,d.advance(1,'day'));
+  L97: var f = ee.Image(t.first());
+  L109: imgs = ee.ImageCollection.fromImages(imgs);
+
+## script_80237 (425 lines)
+  DS  L13: users/davideandreatta/VATshp/predPP
+  DS  L17: users/davideandreatta/VATrast/vatpredPP
+  DS  L45: COPERNICUS/S2_SR
+  NUM L27: var cloud = cloudProb.lt(5);
+  NUM L29: var snow = snowProb.lt(5);
+  NUM L33: var shadow = scl.eq(3); // 3 = cloud shadow
+  NUM L35: var cirrus = scl.eq(10); // 10 = cirrus
+  NUM L37: var mask = (cloud.and(snow)).and(cirrus.neq(1)).and(shadow.neq(1));
+  NUM L265: var indietrolt0YN = ar_norm.subtract(ar_1adxfilled).lt(0)
+  NUM L267: var avantigt0YN = ar_norm.subtract(ar_1asxfilled).lt(0) //giusto tenereLT perchè faccio ad es posizi
+  NUM L403: scale: 10,
+  API lines: 65 (first 25 shown)
+  L13: var PratiFasci = ee.FeatureCollection("users/davideandreatta/VATshp/predPP")
+  L17: var VAT = ee.Image("users/davideandreatta/VATrast/vatpredPP")
+  L19: .clipToCollection(PratiFasci).int8()
+  L23: var cloudProb = image.select('MSK_CLDPRB');
+  L25: var snowProb = image.select('MSK_SNWPRB');
+  L31: var scl = image.select('SCL');
+  L39: return image.updateMask(mask)
+  L45: var s2collection = ee.ImageCollection('COPERNICUS/S2_SR')
+  L47: .filterDate(startDate,endDate)
+  L49: .map(maskCloudAndShadows)
+  L51: .filter(ee.Filter.bounds(PratiFasci))
+  L57: var ndvi = image.normalizedDifference(['B8', 'B12']).rename('NDVI') ;
+  L59: return image.addBands(ndvi);
+  L63: var withNDVI = s2collection.map(addNDVI);
+  L69: imgs = imgs.map(function(img){
+  L71: var d = ee.Date(img.get('system:time_start'));
+  L79: var simpleDate = ee.Date.fromYMD(y,m,day);
+  L81: return ee.Image(img.copyProperties(img,
+  L87: var days = ee.Dictionary(imgs.aggregate_histogram('simpleTime')).keys();
+  L89: imgs = days.map(function(d){
+  L91: d = ee.Number.parse(d);
+  L93: d = ee.Date(d);
+  L95: var t = imgs.filterDate(d,d.advance(1,'day'));
+  L97: var f = ee.Image(t.first());
+  L109: imgs = ee.ImageCollection.fromImages(imgs);
