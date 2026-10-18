@@ -139,9 +139,12 @@ verification 7/7. V3 is NOT frozen: Gate 1 triage produced 5,778 deduped
 high-confidence relations (V3 4,391 cross-split pending + 1,387 deferred;
 endpoint overlap 0): A 2,739 / B 109 / C 2,930, leakage-priority 1,504
 (A cross-split 1,399 + deferred cross-split 105). Owner adjudication pending.
-S1 batch audit PAUSED; S2 OFF; formal B/C training FROZEN. Authority:
-`docs/reports/.../b_track_audit_v1/B_TRACK_SPLIT_V3_ACCEPTANCE_V1.md` and
-`B_TRACK_V3_HIGH_CONF_REVIEW_V1.md`.**
+Gate 1 machine reconciliation passed (4,391/1,387/5,778/T1 105/T2 1,399);
+T1 pilot-20 is ready (A16/C4, five patterns, 17 provisional merge / 3
+unresolved); adjudication protocol v0 is NOT locked. S1 batch audit PAUSED;
+S2 OFF; formal B/C training FROZEN. Authority:
+`docs/reports/.../b_track_audit_v1/B_TRACK_SPLIT_V3_ACCEPTANCE_V1.md`,
+`B_TRACK_V3_HIGH_CONF_REVIEW_V1.md`, `B_TRACK_T1_PILOT20_V1.md`.**
 
 ** B-track (GEE planning): owner
   hypothesis ruling + joint audit **Q1-Q4 ALL COMPLETE** (`diag50_v1/

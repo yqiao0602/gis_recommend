@@ -1,0 +1,2234 @@
+{
+ "artifact": "B_TRACK_T1_PILOT20_V1",
+ "date": "2026-10-18",
+ "purpose": "protocol calibration, not accuracy estimation",
+ "pilot_observations": [
+  "project_shared 9 条：8 条仍有文本/链第二轴 → MERGE_provisional；1 条仅资产轴（R00888）→ UNRESOLVED。asset_evidence_scope 起到“阻断资产单证合并”的作用，但不会否决多轴证据。",
+  "截断 20/20 的端点族大小之和 > 10,000（G1 14 / D2 6）；截断是族上限造成的真实分歧，不是证据缺失。",
+  "same_title_diff_source 4 条（built-up / fire）T=0.667、O=2、无共享资产；暂 MERGE，但需源码级核验定义（BU index vs nighttime lights vs non-forest built-up）。",
+  "task_type_diff 2 条均 UNRESOLVED；协议要求至少一个目标/来源/链之外的独立证据。",
+  "地区/时间/输入条件不同 5 条（R00150、R01290、R00257、R01340、R00916）；是否同族需 owner 先锁定“条件差异”口径。"
+ ],
+ "coverage": {
+  "n": 20,
+  "by_class": {
+   "A_merge_candidate": 16,
+   "C_undetermined": 4
+  },
+  "by_pattern": {
+   "same_assets_diff_title": 4,
+   "mixed_or_weak": 5,
+   "same_targets_diff_title": 5,
+   "same_title_diff_source": 4,
+   "task_type_diff": 2
+  },
+  "by_rule": {
+   "G1_exact_asset_set_group": 14,
+   "D2_star_group": 6
+  },
+  "by_asset_scope": {
+   "project_shared": 9,
+   "task_specific": 3,
+   "unclear": 8
+  },
+  "by_agent_tentative": {
+   "MERGE_provisional": 17,
+   "UNRESOLVED": 3
+  },
+  "size_sum_gt_cap": 20
+ },
+ "dossiers": [
+  {
+   "review_id": "R00787",
+   "priority_rank": 1,
+   "class": "A_merge_candidate",
+   "pattern": "same_assets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "G6465ebad24c3b001",
+   "group_record": {
+    "n_components": 2,
+    "signature_group_size": 2,
+    "anchor": 11706,
+    "n_merged": 1,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 1,
+   "group_edges": 1,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F5fb95067f1fbbd5a",
+   "family_sizes": [
+    11525,
+    6019
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 11706,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_66373",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover into four categories (Vetylw, Low, Medium, High) using a Gradient Tree Boosting classifier trained on multi-source remote sensing data including Sentinel-1 SAR, Sentinel-2 optical indices, Landsat 8 derived vegetation indices, terrain attributes, soil, geology, and forest structure. The output includes a classified land cover map, variable import"
+    },
+    {
+     "component_id": 86005,
+     "family": "F5fb95067f1fbbd5a",
+     "v3_split": "s",
+     "script": "script_66376",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using multi-source remote sensing data the workflow performs land cover classification using a Random Forest model trained on a wide array of multispectral, terrain, soil, vegetation indices, SAR texture, and seasonal spectral difference features. It generates a classified land cover map and derives a confidence index (SEDCI) based on prediction probabilities from multipl"
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover using multi-source remote sensing data",
+   "title_j": 0.3333,
+   "body_j": 0.3469,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "landsat",
+    "other",
+    "sentinel-1",
+    "sentinel-2"
+   ],
+   "asset_shared": [
+    "COPERNICUS/S1_GRD",
+    "COPERNICUS/S2",
+    "COPERNICUS/S2_SR",
+    "JAXA/ALOS/PALSAR/YEARLY/SAR",
+    "LANDSAT/LC08/C01/T1_SR",
+    "LANDSAT/LC08/C01/T1_TOA",
+    "projects/chenyangcyhyy/assets/EOSx",
+    "projects/chenyangcyhyy/assets/LOSx",
+    "users/chenyangcyhyy/AnalyticalHillshading",
+    "users/chenyangcyhyy/Aspect",
+    "users/chenyangcyhyy/CJDEM",
+    "users/chenyangcyhyy/ChannelNetworkBaseLevel",
+    "users/chenyangcyhyy/ChannelNetworkDistance",
+    "users/chenyangcyhyy/ClosedDepressions",
+    "users/chenyangcyhyy/ConvergenceIndex",
+    "users/chenyangcyhyy/EVI_L_p",
+    "users/chenyangcyhyy/EVI_sum",
+    "users/chenyangcyhyy/Export_Output_14",
+    "users/chenyangcyhyy/ForestBx",
+    "users/chenyangcyhyy/ForestCx",
+    "users/chenyangcyhyy/ForestDx",
+    "users/chenyangcyhyy/ForestEx",
+    "users/chenyangcyhyy/ForestHeight",
+    "users/chenyangcyhyy/GZDEM",
+    "users/chenyangcyhyy/GZLAI",
+    "users/chenyangcyhyy/GZLAIFVC",
+    "users/chenyangcyhyy/GZZBLX",
+    "users/chenyangcyhyy/GZ_FVC",
+    "users/chenyangcyhyy/GZsoil",
+    "users/chenyangcyhyy/LSFactor",
+    "users/chenyangcyhyy/Lossyear",
+    "users/chenyangcyhyy/Maxvalue",
+    "users/chenyangcyhyy/NDVI_L_p",
+    "users/chenyangcyhyy/NDVI_L_slo",
+    "users/chenyangcyhyy/NDVI_L_slo2000",
+    "users/chenyangcyhyy/NDVI_mk_p",
+    "users/chenyangcyhyy/NDVI_mk_slo",
+    "users/chenyangcyhyy/NDVImax",
+    "users/chenyangcyhyy/NDVIme",
+    "users/chenyangcyhyy/NDVImin",
+    "users/chenyangcyhyy/NDVImm",
+    "users/chenyangcyhyy/NDVIsum",
+    "users/chenyangcyhyy/P_Max",
+    "users/chenyangcyhyy/P_Min",
+    "users/chenyangcyhyy/P_Range",
+    "users/chenyangcyhyy/ProfileCurvature",
+    "users/chenyangcyhyy/RF_SOM",
+    "users/chenyangcyhyy/RF_clay",
+    "users/chenyangcyhyy/RF_sand",
+    "users/chenyangcyhyy/RF_slit",
+    "users/chenyangcyhyy/RFk",
+    "users/chenyangcyhyy/RealSurfaceArea",
+    "users/chenyangcyhyy/Regr_RF",
+    "users/chenyangcyhyy/RelativeSlopePosition",
+    "users/chenyangcyhyy/Rock_Age",
+    "users/chenyangcyhyy/Rock_Type",
+    "users/chenyangcyhyy/SAVI_L_p",
+    "users/chenyangcyhyy/SAVI_L_slo",
+    "users/chenyangcyhyy/SAVImax",
+    "users/chenyangcyhyy/SAVImin",
+    "users/chenyangcyhyy/SAVIsum",
+    "users/chenyangcyhyy/SOS",
+    "users/chenyangcyhyy/Slope",
+    "users/chenyangcyhyy/StreamPowerIndex",
+    "users/chenyangcyhyy/TRI",
+    "users/chenyangcyhyy/TWI",
+    "users/chenyangcyhyy/T_Max",
+    "users/chenyangcyhyy/T_Min",
+    "users/chenyangcyhyy/T_Range",
+    "users/chenyangcyhyy/TerrainSurfaceConvexity",
+    "users/chenyangcyhyy/TotalCatchmentArea",
+    "users/chenyangcyhyy/ValleyDept",
+    "users/chenyangcyhyy/jiuxian",
+    "users/chenyangcyhyy/midtime",
+    "users/chenyangcyhyy/plan",
+    "users/chenyangcyhyy/pre",
+    "users/chenyangcyhyy/tem",
+    "users/chenyangcyhyy/vaulest"
+   ],
+   "asset_shared_count": 78,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 2,
+    "shared_assets": 78,
+    "custom_assets": 72,
+    "asset_families": [
+     "custom",
+     "landsat",
+     "other",
+     "sentinel-1",
+     "sentinel-2"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 40.4067,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 strong axes despite project-shared assets"
+  },
+  {
+   "review_id": "R00888",
+   "priority_rank": 2,
+   "class": "A_merge_candidate",
+   "pattern": "same_assets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "G91c3c7fdb203640c",
+   "group_record": {
+    "n_components": 4,
+    "signature_group_size": 4,
+    "anchor": 40905,
+    "n_merged": 2,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 2,
+   "group_edges": 2,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F5fb95067f1fbbd5a",
+   "family_sizes": [
+    11525,
+    6019
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 40905,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_66371",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover into four categories (Vetylw, Low, Medium, High) using a combination of Sentinel-1 SAR, Sentinel-2 optical indices, Landsat 8 surface reflectance, terrain features, soil, vegetation dynamics, and texture metrics. It trains an SVM classifier with labeled samples and produces a classified map exported to Google Drive."
+    },
+    {
+     "component_id": 41240,
+     "family": "F5fb95067f1fbbd5a",
+     "v3_split": "s",
+     "script": "script_66359",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using multi-source remote sensing data the workflow performs land cover classification using a Random Forest model trained on a wide array of environmental variables derived from Sentinel-1, Sentinel-2, Landsat 8, ALOS PALSAR, and numerous terrain, soil, vegetation, and climate indices. It outputs a classified land cover map with four classes (Vetylw, Low, Medium, High), "
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover using multi-source remote sensing data",
+   "title_j": 0.3333,
+   "body_j": 0.3226,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "landsat",
+    "other",
+    "sentinel-1",
+    "sentinel-2"
+   ],
+   "asset_shared": [
+    "COPERNICUS/S1_GRD",
+    "COPERNICUS/S2",
+    "COPERNICUS/S2_SR",
+    "JAXA/ALOS/PALSAR/YEARLY/SAR",
+    "LANDSAT/LC08/C01/T1_SR",
+    "LANDSAT/LC08/C01/T1_TOA",
+    "users/chenyangcyhyy/AnalyticalHillshading",
+    "users/chenyangcyhyy/Aspect",
+    "users/chenyangcyhyy/CJDEM",
+    "users/chenyangcyhyy/ChannelNetworkBaseLevel",
+    "users/chenyangcyhyy/ChannelNetworkDistance",
+    "users/chenyangcyhyy/ClosedDepressions",
+    "users/chenyangcyhyy/ConvergenceIndex",
+    "users/chenyangcyhyy/EOS",
+    "users/chenyangcyhyy/EVI_L_p",
+    "users/chenyangcyhyy/EVI_sum",
+    "users/chenyangcyhyy/Export_Output_14",
+    "users/chenyangcyhyy/ForestBx",
+    "users/chenyangcyhyy/ForestCx",
+    "users/chenyangcyhyy/ForestDx",
+    "users/chenyangcyhyy/ForestEx",
+    "users/chenyangcyhyy/ForestHeight",
+    "users/chenyangcyhyy/GZDEM",
+    "users/chenyangcyhyy/GZLAI",
+    "users/chenyangcyhyy/GZLAIFVC",
+    "users/chenyangcyhyy/GZZBLX",
+    "users/chenyangcyhyy/GZ_FVC",
+    "users/chenyangcyhyy/GZsoil",
+    "users/chenyangcyhyy/LOS",
+    "users/chenyangcyhyy/LSFactor",
+    "users/chenyangcyhyy/Lossyear",
+    "users/chenyangcyhyy/Maxvalue",
+    "users/chenyangcyhyy/NDVI_L_p",
+    "users/chenyangcyhyy/NDVI_L_slo",
+    "users/chenyangcyhyy/NDVI_L_slo2000",
+    "users/chenyangcyhyy/NDVI_mk_p",
+    "users/chenyangcyhyy/NDVI_mk_slo",
+    "users/chenyangcyhyy/NDVImax",
+    "users/chenyangcyhyy/NDVIme",
+    "users/chenyangcyhyy/NDVImin",
+    "users/chenyangcyhyy/NDVImm",
+    "users/chenyangcyhyy/NDVIsum",
+    "users/chenyangcyhyy/P_Max",
+    "users/chenyangcyhyy/P_Min",
+    "users/chenyangcyhyy/P_Range",
+    "users/chenyangcyhyy/ProfileCurvature",
+    "users/chenyangcyhyy/RF_SOM",
+    "users/chenyangcyhyy/RF_clay",
+    "users/chenyangcyhyy/RF_sand",
+    "users/chenyangcyhyy/RF_slit",
+    "users/chenyangcyhyy/RFk",
+    "users/chenyangcyhyy/RealSurfaceArea",
+    "users/chenyangcyhyy/Regr_RF",
+    "users/chenyangcyhyy/RelativeSlopePosition",
+    "users/chenyangcyhyy/Rock_Age",
+    "users/chenyangcyhyy/Rock_Type",
+    "users/chenyangcyhyy/SAVI_L_p",
+    "users/chenyangcyhyy/SAVI_L_slo",
+    "users/chenyangcyhyy/SAVImax",
+    "users/chenyangcyhyy/SAVImin",
+    "users/chenyangcyhyy/SAVIsum",
+    "users/chenyangcyhyy/SOS",
+    "users/chenyangcyhyy/Slope",
+    "users/chenyangcyhyy/StreamPowerIndex",
+    "users/chenyangcyhyy/TRI",
+    "users/chenyangcyhyy/TWI",
+    "users/chenyangcyhyy/T_Max",
+    "users/chenyangcyhyy/T_Min",
+    "users/chenyangcyhyy/T_Range",
+    "users/chenyangcyhyy/TerrainSurfaceConvexity",
+    "users/chenyangcyhyy/TotalCatchmentArea",
+    "users/chenyangcyhyy/ValleyDept",
+    "users/chenyangcyhyy/jiuxian",
+    "users/chenyangcyhyy/midtime",
+    "users/chenyangcyhyy/plan",
+    "users/chenyangcyhyy/pre",
+    "users/chenyangcyhyy/tem",
+    "users/chenyangcyhyy/vaulest"
+   ],
+   "asset_shared_count": 78,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 4,
+    "shared_assets": 78,
+    "custom_assets": 72,
+    "asset_families": [
+     "custom",
+     "landsat",
+     "other",
+     "sentinel-1",
+     "sentinel-2"
+    ]
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 0,
+   "strength": 40.0946,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "UNRESOLVED",
+   "agent_rationale": "project-shared assets plus fewer than 2 strong text/chain axes"
+  },
+  {
+   "review_id": "R00769",
+   "priority_rank": 3,
+   "class": "A_merge_candidate",
+   "pattern": "same_assets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "Ga6e25cbb13b9c695",
+   "group_record": {
+    "n_components": 5,
+    "signature_group_size": 5,
+    "anchor": 54640,
+    "n_merged": 4,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 3,
+   "group_edges": 4,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F5fb95067f1fbbd5a",
+   "family_sizes": [
+    11525,
+    6019
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 8291,
+     "family": "F5fb95067f1fbbd5a",
+     "v3_split": "s",
+     "script": "script_66361",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using multisource remote sensing data Classify land cover by training a Random Forest model using a combination of Sentinel-1 SAR texture features, Sentinel-2 spectral indices (summer and winter), and numerous terrain, soil, vegetation, and climate variables derived from DEMs and other environmental layers. The output is a classified land cover map and associated probabil"
+    },
+    {
+     "component_id": 54640,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_240628",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover (LC) types in the Jiuxian region using a Random Forest classifier in Google Earth Engine. It integrates multi-source data including Sentinel-1 SAR imagery (VV/VH backscatter and GLCM texture features), Sentinel-2 optical indices (NDVI, EVI, SAVI, etc.) from summer and winter seasons, and numerous terrain, soil, geology, and climate variables deri"
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover using multisource remote sensing data",
+   "title_j": 0.375,
+   "body_j": 0.3241,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "sentinel-1",
+    "sentinel-2"
+   ],
+   "asset_shared": [
+    "COPERNICUS/S1_GRD",
+    "COPERNICUS/S2",
+    "COPERNICUS/S2_SR",
+    "users/chenyangcyhyy/AnalyticalHillshading",
+    "users/chenyangcyhyy/Aspect",
+    "users/chenyangcyhyy/ChannelNetworkBaseLevel",
+    "users/chenyangcyhyy/ChannelNetworkDistance",
+    "users/chenyangcyhyy/ClosedDepressions",
+    "users/chenyangcyhyy/ConvergenceIndex",
+    "users/chenyangcyhyy/EVI_L_p",
+    "users/chenyangcyhyy/EVI_sum",
+    "users/chenyangcyhyy/ForestHeight",
+    "users/chenyangcyhyy/GZDEM",
+    "users/chenyangcyhyy/GZLAI",
+    "users/chenyangcyhyy/LSFactor",
+    "users/chenyangcyhyy/Lossyear",
+    "users/chenyangcyhyy/NDVI_L_p",
+    "users/chenyangcyhyy/NDVI_L_slo",
+    "users/chenyangcyhyy/NDVI_L_slo2000",
+    "users/chenyangcyhyy/NDVImax",
+    "users/chenyangcyhyy/NDVIme",
+    "users/chenyangcyhyy/NDVImin",
+    "users/chenyangcyhyy/NDVImm",
+    "users/chenyangcyhyy/NDVIsum",
+    "users/chenyangcyhyy/ProfileCurvature",
+    "users/chenyangcyhyy/RealSurfaceArea",
+    "users/chenyangcyhyy/Regr_RF",
+    "users/chenyangcyhyy/RelativeSlopePosition",
+    "users/chenyangcyhyy/Rock_Age",
+    "users/chenyangcyhyy/Rock_Type",
+    "users/chenyangcyhyy/SAVI_L_p",
+    "users/chenyangcyhyy/SAVI_L_slo",
+    "users/chenyangcyhyy/SAVImax",
+    "users/chenyangcyhyy/SAVImin",
+    "users/chenyangcyhyy/SAVIsum",
+    "users/chenyangcyhyy/SOM",
+    "users/chenyangcyhyy/Slope",
+    "users/chenyangcyhyy/StreamPowerIndex",
+    "users/chenyangcyhyy/TRI",
+    "users/chenyangcyhyy/TWI",
+    "users/chenyangcyhyy/TerrainSurfaceConvexity",
+    "users/chenyangcyhyy/TotalCatchmentArea",
+    "users/chenyangcyhyy/ValleyDept",
+    "users/chenyangcyhyy/clay",
+    "users/chenyangcyhyy/jiuxian",
+    "users/chenyangcyhyy/plan",
+    "users/chenyangcyhyy/pre",
+    "users/chenyangcyhyy/sand",
+    "users/chenyangcyhyy/silt",
+    "users/chenyangcyhyy/tem"
+   ],
+   "asset_shared_count": 50,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 5,
+    "shared_assets": 50,
+    "custom_assets": 47,
+    "asset_families": [
+     "custom",
+     "sentinel-1",
+     "sentinel-2"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 0,
+   "strength": 26.437,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 strong axes despite project-shared assets"
+  },
+  {
+   "review_id": "R00916",
+   "priority_rank": 4,
+   "class": "A_merge_candidate",
+   "pattern": "same_assets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "Gf9df68e374f3aa0f",
+   "group_record": {
+    "n_components": 2,
+    "signature_group_size": 2,
+    "anchor": 69985,
+    "n_merged": 1,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 1,
+   "group_edges": 1,
+   "v3_splits": [
+    "v",
+    "t"
+   ],
+   "v2_splits": [
+    "t",
+    "v"
+   ],
+   "family_a": "F3a9f5165e6de27d5",
+   "family_b": "Fa5ad55d64d83cd29",
+   "family_sizes": [
+    1,
+    11525
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 69985,
+     "family": "F3a9f5165e6de27d5",
+     "v3_split": "v",
+     "script": "script_284114",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Identify land cover probability Compute land cover class probabilities (Cropland, Forest, Grassland, Others) for the year 2015 using a Random Forest classifier trained on labeled sample points. It adds SRTM-derived elevation and slope as features to a series of surface reflectance images, trains separate probability models for each class by iteratively redefining positive and negative classe"
+    },
+    {
+     "component_id": 106924,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_284403",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover types using a time series of surface reflectance images from 1998 to 2017, augmented with SRTM-derived elevation and slope data. It trains a Random Forest classifier in probability mode for four classes (Cropland, Forest, Grassland, Others) using labeled sample points from 'table2', generating per-pixel class probabilities. The output is a multi-"
+    }
+   ],
+   "title_a": "identify land cover probability",
+   "title_b": "classify land cover types",
+   "title_j": 0.3333,
+   "body_j": 0.4362,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "srtm",
+    "usgs"
+   ],
+   "asset_shared": [
+    "USGS/SRTMGL1_003",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_1998",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_1999",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2000",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2001",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2002",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2003",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2004",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2005",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2006",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2007",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2008",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2009",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2010",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2011",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2012",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2013",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2014",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2015",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2016",
+    "users/547695554/LP_Data/LP_SRImage/LP_SRImage_2017"
+   ],
+   "asset_shared_count": 21,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 2,
+    "shared_assets": 21,
+    "custom_assets": 20,
+    "asset_families": [
+     "custom",
+     "usgs"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 11.9514,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 strong axes despite project-shared assets"
+  },
+  {
+   "review_id": "R00150",
+   "priority_rank": 5,
+   "class": "A_merge_candidate",
+   "pattern": "mixed_or_weak",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "G601baca445d04231",
+   "group_record": {
+    "n_components": 3,
+    "signature_group_size": 3,
+    "anchor": 494,
+    "n_merged": 2,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 2,
+   "group_edges": 2,
+   "v3_splits": [
+    "s",
+    "t"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "Ff10c5e3739bfc1d1",
+   "family_b": "Fa5ad55d64d83cd29",
+   "family_sizes": [
+    2,
+    11525
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 494,
+     "family": "Ff10c5e3739bfc1d1",
+     "v3_split": "s",
+     "script": "script_249519",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover in Bangladesh Classify land use and land cover (LULC) in Bangladesh using multi-source satellite data from 2015 to 2020. It generates a training dataset by combining MODIS, NLCD, CGLS, GAIA, Hansen forest change, and other ancillary datasets, then applies a Random Forest classifier on Sentinel-2, Sentinel-1, and WorldPop-derived features to produce a high-resolution LULC "
+    },
+    {
+     "component_id": 75726,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_249520",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover types over a user-defined region using multi-source satellite data from 2015 to 2020. It generates a training dataset by combining Sentinel-2, Sentinel-1, MODIS, and auxiliary datasets (e.g., forest change, urban, population), applies a Random Forest classifier, and produces a classified land use/land cover (LULC) map per grid tile. The output in"
+    }
+   ],
+   "title_a": "classify land cover in bangladesh",
+   "title_b": "classify land cover types",
+   "title_j": 0.6,
+   "body_j": 0.4787,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "jrc",
+    "landsat",
+    "modis",
+    "nasa",
+    "other",
+    "sentinel-1",
+    "sentinel-2",
+    "usgs"
+   ],
+   "asset_shared": [
+    "COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019",
+    "COPERNICUS/S1_GRD",
+    "COPERNICUS/S2_SR",
+    "JAXA/ALOS/PALSAR/YEARLY/FNF",
+    "JRC/GSW1_2/GlobalSurfaceWater",
+    "LANDSAT/MANGROVE_FORESTS",
+    "MODIS/006/MCD12Q1",
+    "NASA/JPL/global_forest_canopy_height_2005",
+    "NASA/MEASURES/GFCC/TC/v3",
+    "Tsinghua/FROM-GLC/GAIA/v10",
+    "UMD/hansen/global_forest_change_2019_v1_7",
+    "USDOS/LSIB_SIMPLE/2017",
+    "USGS/GFSAD1000_V1",
+    "USGS/NLCD",
+    "WorldPop/GP/100m/pop"
+   ],
+   "asset_shared_count": 15,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 3,
+    "shared_assets": 15,
+    "custom_assets": 0,
+    "asset_families": [
+     "jrc",
+     "landsat",
+     "modis",
+     "nasa",
+     "other",
+     "sentinel-1",
+     "sentinel-2",
+     "usgs"
+    ]
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 8.9394,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 strong axes despite project-shared assets"
+  },
+  {
+   "review_id": "R00652",
+   "priority_rank": 6,
+   "class": "A_merge_candidate",
+   "pattern": "mixed_or_weak",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "Gc64b86fc179c607e",
+   "group_record": {
+    "n_components": 6,
+    "signature_group_size": 6,
+    "anchor": 58147,
+    "n_merged": 5,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 3,
+   "group_edges": 5,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F45aba8c6d9a4dab5",
+   "family_sizes": [
+    11525,
+    31
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 58147,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_92508",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover types using Landsat surface reflectance data from 1994, 2002, and 2007, trained on INEGI land use reference data for a specific Mexican state, applying topographic correction and cloud masking, and outputs a mode-reduced land cover classification map for 1994."
+    },
+    {
+     "component_id": 67135,
+     "family": "F45aba8c6d9a4dab5",
+     "v3_split": "s",
+     "script": "script_92510",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using RF Classify land cover types (e.g., croplands, forest, urban, shrub/grass) for a specific Mexican state using Landsat surface reflectance data from 1994, applying Random Forest classification trained on stratified samples derived from INEGI land use maps across multiple years, with topographic and illumination corrections."
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover using rf",
+   "title_j": 0.6,
+   "body_j": 0.463,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "landsat",
+    "other",
+    "usgs"
+   ],
+   "asset_shared": [
+    "LANDSAT/LE07/C01/T1_SR",
+    "LANDSAT/LT05/C01/T1_SR",
+    "USGS/SRTMGL1_003",
+    "ft:1jgYOOLXCqEOJuAtwDIp7AA-5B9BztyNDjvm-G6cy",
+    "users/dwmmclaughlin/01_inegi1_lu",
+    "users/dwmmclaughlin/01_inegi2_lu_2019_04_09",
+    "users/dwmmclaughlin/01_inegi3_lu_2019_04_09",
+    "users/dwmmclaughlin/01_inegi4_lu_2019_04_09",
+    "users/dwmmclaughlin/inegi02_20190409",
+    "users/dwmmclaughlin/inegi03_20190409",
+    "users/dwmmclaughlin/inegi04_20190409"
+   ],
+   "asset_shared_count": 11,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 6,
+    "shared_assets": 11,
+    "custom_assets": 7,
+    "asset_families": [
+     "custom",
+     "landsat",
+     "other",
+     "usgs"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 7.2315,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "3 strong axes despite project-shared assets"
+  },
+  {
+   "review_id": "R00653",
+   "priority_rank": 7,
+   "class": "A_merge_candidate",
+   "pattern": "mixed_or_weak",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "Gc64b86fc179c607e",
+   "group_record": {
+    "n_components": 6,
+    "signature_group_size": 6,
+    "anchor": 58147,
+    "n_merged": 5,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 4,
+   "group_edges": 5,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "v"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F45aba8c6d9a4dab5",
+   "family_sizes": [
+    11525,
+    31
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 58147,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_92508",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover types using Landsat surface reflectance data from 1994, 2002, and 2007, trained on INEGI land use reference data for a specific Mexican state, applying topographic correction and cloud masking, and outputs a mode-reduced land cover classification map for 1994."
+    },
+    {
+     "component_id": 111899,
+     "family": "F45aba8c6d9a4dab5",
+     "v3_split": "s",
+     "script": "script_92573",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using RF Classify land cover types using a Random Forest classifier trained on stratified samples from Landsat surface reflectance data, INEGI land use maps, and terrain variables (slope, aspect, month) for multiple years. The output includes classified land cover images and an error matrix for accuracy assessment."
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover using rf",
+   "title_j": 0.6,
+   "body_j": 0.3051,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "landsat",
+    "other",
+    "usgs"
+   ],
+   "asset_shared": [
+    "LANDSAT/LE07/C01/T1_SR",
+    "LANDSAT/LT05/C01/T1_SR",
+    "USGS/SRTMGL1_003",
+    "ft:1jgYOOLXCqEOJuAtwDIp7AA-5B9BztyNDjvm-G6cy",
+    "users/dwmmclaughlin/01_inegi1_lu",
+    "users/dwmmclaughlin/01_inegi2_lu_2019_04_09",
+    "users/dwmmclaughlin/01_inegi3_lu_2019_04_09",
+    "users/dwmmclaughlin/01_inegi4_lu_2019_04_09",
+    "users/dwmmclaughlin/inegi02_20190409",
+    "users/dwmmclaughlin/inegi03_20190409",
+    "users/dwmmclaughlin/inegi04_20190409"
+   ],
+   "asset_shared_count": 11,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 6,
+    "shared_assets": 11,
+    "custom_assets": 7,
+    "asset_families": [
+     "custom",
+     "landsat",
+     "other",
+     "usgs"
+    ]
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 6.8525,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 strong axes despite project-shared assets"
+  },
+  {
+   "review_id": "R00257",
+   "priority_rank": 8,
+   "class": "A_merge_candidate",
+   "pattern": "mixed_or_weak",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "G59b73f3e9b120f31",
+   "group_record": {
+    "n_components": 30,
+    "signature_group_size": 30,
+    "anchor": 2533,
+    "n_merged": 29,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 16,
+   "group_edges": 29,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "s",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "Ff08ce6bb0f09e7bc",
+   "family_sizes": [
+    11525,
+    1
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 2533,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_177973",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover types in the Upper East region of Ghana using Sentinel-2 surface reflectance imagery from April 2021. It computes multiple spectral indices (NDVI, MNDWI, GNDVI, NDMI, BSI, SAVI, EVI) and applies a Random Forest classifier trained on ground control points with 70% for training and 30% for validation. the workflow includes hyperparameter tuning for"
+    },
+    {
+     "component_id": 12354,
+     "family": "Ff08ce6bb0f09e7bc",
+     "v3_split": "s",
+     "script": "script_177994",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover in January Classify land use and land cover (LULC) for January 2021 in the Upper East region of Ghana using Sentinel-2 surface reflectance imagery. It applies cloud masking via QA60 and SCL bands, computes a median composite, and derives multiple spectral indices (NDVI, MNDWI, GNDVI, NDMI, BSI, SAVI, EVI). A CART classifier is trained on ground control points with ClassDo"
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover in january",
+   "title_j": 0.6,
+   "body_j": 0.4848,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "sentinel-2"
+   ],
+   "asset_shared": [
+    "COPERNICUS/S2_SR",
+    "users/kakpoti/Buffer200mS",
+    "users/kakpoti/BufferClip1",
+    "users/kakpoti/BufferClip2",
+    "users/kakpoti/BufferClip3",
+    "users/kakpoti/BufferIntersect1km250m",
+    "users/kakpoti/ClassDomain",
+    "users/kakpoti/NOV2019_20",
+    "users/kakpoti/UpperEast"
+   ],
+   "asset_shared_count": 9,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 30,
+    "shared_assets": 9,
+    "custom_assets": 8,
+    "asset_families": [
+     "custom",
+     "sentinel-2"
+    ]
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 0,
+   "strength": 5.9424,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 strong axes despite project-shared assets"
+  },
+  {
+   "review_id": "R00356",
+   "priority_rank": 10,
+   "class": "A_merge_candidate",
+   "pattern": "mixed_or_weak",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "G330afe34384a7e76",
+   "group_record": {
+    "n_components": 10,
+    "signature_group_size": 10,
+    "anchor": 7985,
+    "n_merged": 9,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 8,
+   "group_edges": 9,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "s"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F45aba8c6d9a4dab5",
+   "family_sizes": [
+    11525,
+    31
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 7985,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_92569",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land use and land cover (LULC) types in a specific Mexican state using Landsat surface reflectance data from 1994, 2002, and 2007. It applies topographic correction (SCSc), masks clouds, trains a Random Forest classifier on stratified training samples derived from INEGI land use maps, and generates a mode-reduced classified land cover image for the year 199"
+    },
+    {
+     "component_id": 111271,
+     "family": "F45aba8c6d9a4dab5",
+     "v3_split": "s",
+     "script": "script_92504",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using RF Classify land cover types (e.g., croplands, forest, urban, shrub/grass) using a Random Forest classifier trained on Landsat surface reflectance data, SRTM-derived topography (slope and aspect), and month information. Training and testing points are derived from INEGI land use reference data for specific years (1994, 2002, 2007). The output is a classified land co"
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover using rf",
+   "title_j": 0.6,
+   "body_j": 0.375,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "landsat",
+    "other",
+    "usgs"
+   ],
+   "asset_shared": [
+    "LANDSAT/LE07/C01/T1_SR",
+    "LANDSAT/LT05/C01/T1_SR",
+    "USGS/SRTMGL1_003",
+    "ft:1jgYOOLXCqEOJuAtwDIp7AA-5B9BztyNDjvm-G6cy",
+    "users/dwmmclaughlin/01_inegi1_lu",
+    "users/dwmmclaughlin/01_inegi2_lu_2019_04_09",
+    "users/dwmmclaughlin/01_inegi3_lu_2019_04_09",
+    "users/dwmmclaughlin/01_inegi4_lu_2019_04_09"
+   ],
+   "asset_shared_count": 8,
+   "asset_evidence_scope": "project_shared",
+   "asset_evidence_detail": {
+    "group_size": 10,
+    "shared_assets": 8,
+    "custom_assets": 4,
+    "asset_families": [
+     "custom",
+     "landsat",
+     "other",
+     "usgs"
+    ]
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 0,
+   "strength": 5.3875,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 strong axes despite project-shared assets"
+  },
+  {
+   "review_id": "R01348",
+   "priority_rank": 45,
+   "class": "A_merge_candidate",
+   "pattern": "same_targets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "Gb67892a809d0413b",
+   "group_record": {
+    "n_components": 2,
+    "signature_group_size": 2,
+    "anchor": 103059,
+    "n_merged": 1,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 1,
+   "group_edges": 1,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "v",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F5fb95067f1fbbd5a",
+   "family_sizes": [
+    11525,
+    6019
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 103059,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_158515",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types the workflow performs Tasseled Cap transformation on a Landsat 8 surface reflectance image to derive brightness, greenness, and wetness components. It then creates a labeled feature collection of training points representing six land cover classes (Urban, Agriculture, Rangeland, Forest, Water, Barren) with spatial buffers around sample points. These points are joine"
+    },
+    {
+     "component_id": 115574,
+     "family": "F5fb95067f1fbbd5a",
+     "v3_split": "s",
+     "script": "script_158517",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using Tasseled Cap transformation the workflow performs a Tasseled Cap transformation on a Landsat 8 surface reflectance image to derive brightness, greenness, wetness, and additional orthogonal components. It creates a labeled feature collection of training samples representing six land cover classes (Urban, Agriculture, Rangeland, Forest, Water, Barren) with spatial buf"
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover using tasseled cap transformation",
+   "title_j": 0.4286,
+   "body_j": 0.6304,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "landsat"
+   ],
+   "asset_shared": [
+    "LANDSAT/LC08/C02/T1_L2",
+    "LANDSAT/LC08/C02/T1_L2/LC08_046032_20150215"
+   ],
+   "asset_shared_count": 2,
+   "asset_evidence_scope": "task_specific",
+   "asset_evidence_detail": {
+    "group_size": 2,
+    "shared_assets": 2,
+    "custom_assets": 0,
+    "asset_families": [
+     "landsat"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 2,
+   "strength": 2.6438,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "4 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R01143",
+   "priority_rank": 47,
+   "class": "A_merge_candidate",
+   "pattern": "same_targets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "G9a3de8eb849b432f",
+   "group_record": {
+    "n_components": 21,
+    "signature_group_size": 21,
+    "anchor": 2789,
+    "n_merged": 14,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 12,
+   "group_edges": 14,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "s",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F130efdb2767d24aa",
+   "family_sizes": [
+    11525,
+    2
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 2789,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_202294",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover in a basin using Landsat 5 surface reflectance data from June to September 2006. It computes spectral indices (NDVI, NDBI, MNDWI, BSI) and integrates ALOS elevation data to form a composite. After normalization, a Random Forest classifier is trained on labeled ground control points to produce a land cover map. Post-classification refinement adjus"
+    },
+    {
+     "component_id": 94032,
+     "family": "F130efdb2767d24aa",
+     "v3_split": "s",
+     "script": "script_8072",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover with spectral indices Classify land cover types using Landsat 5 surface reflectance data, spectral indices (NDVI, NDBI, MNDWI, BSI), ALOS elevation data, and a random forest classifier. It further refines the classification by reassigning certain classes based on threshold conditions involving BSI and NDVI, then exports the resulting classified image for 2011."
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover with spectral indices",
+   "title_j": 0.5,
+   "body_j": 0.3902,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "landsat",
+    "other"
+   ],
+   "asset_shared": [
+    "JAXA/ALOS/AW3D30/V2_2",
+    "LANDSAT/LT05/C01/T1_SR"
+   ],
+   "asset_shared_count": 2,
+   "asset_evidence_scope": "unclear",
+   "asset_evidence_detail": {
+    "group_size": 21,
+    "shared_assets": 2,
+    "custom_assets": 0,
+    "asset_families": [
+     "landsat",
+     "other"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 2.5951,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "3 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R01290",
+   "priority_rank": 48,
+   "class": "A_merge_candidate",
+   "pattern": "same_targets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "Ge00f065bad59dbd8",
+   "group_record": {
+    "n_components": 3,
+    "signature_group_size": 3,
+    "anchor": 20813,
+    "n_merged": 1,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 1,
+   "group_edges": 1,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "v",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F120b8726311e3eac",
+   "family_sizes": [
+    11525,
+    3
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 20813,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_255642",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover types in Inner Mongolia using Sentinel-2 imagery from May to June 2020. It uses a Random Forest classifier trained on user-defined samples (water, trees, grass, etc.) and applies it to median-composited Sentinel-2 bands (Blue, Green, Red, NIR, SWIR1, SWIR2). The output is a classified raster map visualized with ESRI-style land cover colors and in"
+    },
+    {
+     "component_id": 117825,
+     "family": "F120b8726311e3eac",
+     "v3_split": "s",
+     "script": "script_255641",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover in Inner Mongolia Classify land cover types in Inner Mongolia using a Random Forest classifier applied to median-composited Landsat 4, 5, and 8 surface reflectance imagery from 2021. Training samples are merged from multiple land cover classes (water, trees, flooded vegetation, crops, built area, bare ground, rangeland, others, clouds), and the classification is performed"
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover in inner mongolia",
+   "title_j": 0.5,
+   "body_j": 0.3551,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom"
+   ],
+   "asset_shared": [
+    "projects/sat-io/open-datasets/landcover/ESRI_Global-LULC_10m",
+    "users/zhangby/ChinaAdminProvince"
+   ],
+   "asset_shared_count": 2,
+   "asset_evidence_scope": "unclear",
+   "asset_evidence_detail": {
+    "group_size": 3,
+    "shared_assets": 2,
+    "custom_assets": 2,
+    "asset_families": [
+     "custom"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 2.5775,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "3 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R01340",
+   "priority_rank": 50,
+   "class": "A_merge_candidate",
+   "pattern": "same_targets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "G7df9adb0e0591ab0",
+   "group_record": {
+    "n_components": 2,
+    "signature_group_size": 2,
+    "anchor": 83390,
+    "n_merged": 1,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 1,
+   "group_edges": 1,
+   "v3_splits": [
+    "v",
+    "t"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "Faca5fe24b8c7e2e8",
+   "family_b": "Fa5ad55d64d83cd29",
+   "family_sizes": [
+    4,
+    11525
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 83390,
+     "family": "Faca5fe24b8c7e2e8",
+     "v3_split": "v",
+     "script": "script_158440",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using Sentinel-2 and elevation data Classify land cover in a user-defined region using Sentinel-2 surface reflectance imagery from May to September 2020, combined with SRTM elevation and derived terrain metrics (slope), spectral indices (NDVI, EVI, SAVI, NDBI, NDWI), and GLCM texture features from band B8. A Random Forest classifier is trained on labeled sample points fro"
+    },
+    {
+     "component_id": 113146,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_158437",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover types in a specific region using Sentinel-2 surface reflectance data, terrain variables (elevation and slope), and spectral indices (NDVI, EVI, SAVI, NDBI, NDWI) along with GLCM texture features from band B8. It applies a Random Forest classifier trained on field sample points, evaluates accuracy using confusion matrices, and exports the resultin"
+    }
+   ],
+   "title_a": "classify land cover using sentinel-2 and elevation data",
+   "title_b": "classify land cover types",
+   "title_j": 0.375,
+   "body_j": 0.4643,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "custom",
+    "sentinel-2"
+   ],
+   "asset_shared": [
+    "COPERNICUS/S2_SR",
+    "users/jakubowskifjsd43/1117_5"
+   ],
+   "asset_shared_count": 2,
+   "asset_evidence_scope": "unclear",
+   "asset_evidence_detail": {
+    "group_size": 2,
+    "shared_assets": 2,
+    "custom_assets": 1,
+    "asset_families": [
+     "custom",
+     "sentinel-2"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 2.5071,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "3 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R01275",
+   "priority_rank": 51,
+   "class": "A_merge_candidate",
+   "pattern": "same_targets_diff_title",
+   "rule": "G1_exact_asset_set_group",
+   "group_id": "Ga728e691362bbda8",
+   "group_record": {
+    "n_components": 9,
+    "signature_group_size": 10,
+    "anchor": 16813,
+    "n_merged": 8,
+    "decision": "merge",
+    "purpose_class": "detect"
+   },
+   "group_edge_rank": 7,
+   "group_edges": 8,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "Fa5ad55d64d83cd29",
+   "family_b": "F56359038461d499c",
+   "family_sizes": [
+    11525,
+    1
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 16813,
+     "family": "Fa5ad55d64d83cd29",
+     "v3_split": "t",
+     "script": "script_115881",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover types Classify land cover types using a Random Forest classifier trained on multi-temporal Sentinel-2 optical imagery and ALOS PALSAR SAR data, with NDVI as a spectral index. The output is a classified land cover map masked to a specific area, visualized with a custom color palette."
+    },
+    {
+     "component_id": 122147,
+     "family": "F56359038461d499c",
+     "v3_split": "s",
+     "script": "script_85762",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using SAR and multispectral data Classify land cover types using a combination of ALOS PALSAR SAR data and multiple Sentinel-2 image composites. It computes NDVI from Sentinel-2 bands, creates temporal mosaics based on NDVI quality, stacks them with SAR data, and trains Random Forest and SVM classifiers using labeled training samples (campo) to produce classified land cov"
+    }
+   ],
+   "title_a": "classify land cover types",
+   "title_b": "classify land cover using sar and multispectral data",
+   "title_j": 0.4286,
+   "body_j": 0.3421,
+   "effective_targets": [
+    "cover",
+    "land"
+   ],
+   "dataset_shared": [
+    "other",
+    "sentinel-2"
+   ],
+   "asset_shared": [
+    "COPERNICUS/S2",
+    "JAXA/ALOS/PALSAR/YEARLY/SAR"
+   ],
+   "asset_shared_count": 2,
+   "asset_evidence_scope": "unclear",
+   "asset_evidence_detail": {
+    "group_size": 10,
+    "shared_assets": 2,
+    "custom_assets": 0,
+    "asset_families": [
+     "other",
+     "sentinel-2"
+    ]
+   },
+   "chain_same": true,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 2.4996,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "3 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R04697",
+   "priority_rank": 88,
+   "class": "C_undetermined",
+   "pattern": "same_title_diff_source",
+   "rule": "D2_star_group",
+   "group_id": "Sfd79630fb61db7ed",
+   "group_record": {
+    "bucket_size": 501,
+    "anchor": 7772,
+    "decision": "merge",
+    "purpose_class": "detect",
+    "bucket": [
+     "built",
+     "up"
+    ]
+   },
+   "group_edge_rank": 193,
+   "group_edges": 356,
+   "v3_splits": [
+    "t",
+    "v"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "F925c318fd4d0208a",
+   "family_b": "F1e4e357a44cff9c7",
+   "family_sizes": [
+    10312,
+    2
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 7772,
+     "family": "F925c318fd4d0208a",
+     "v3_split": "t",
+     "script": "script_228160",
+     "task_type": "Human settlements",
+     "instruction": "Task: Identify built-up areas Identify built-up and non-built-up areas in Sri Lanka using Sentinel-2 surface reflectance imagery from January to August 2021. It performs cloud masking by joining S2_CLOUD_PROBABILITY, computes a median composite, and creates a mosaic based on minimum spectral distance to the median. Training samples for built-up (id=1) and non-built-up (id=2) are balanced and split"
+    },
+    {
+     "component_id": 112868,
+     "family": "F1e4e357a44cff9c7",
+     "v3_split": "v",
+     "script": "script_272408",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Identify built-up areas using BU index Compute a Built-Up (BU) index for the year 1992 using Landsat 5 Surface Reflectance data. It first generates a median image from cloud-filtered imagery, then calculates NDVI and NDBI using specific band ratios. Binary masks based on NDVI are created to isolate vegetated areas, which are then used to derive binary versions of NDBI and NDVI. The BU index "
+    }
+   ],
+   "title_a": "identify built-up areas",
+   "title_b": "identify built-up areas using bu index",
+   "title_j": 0.6667,
+   "body_j": 0.2087,
+   "effective_targets": [
+    "built",
+    "up"
+   ],
+   "dataset_shared": [],
+   "asset_shared": [],
+   "asset_shared_count": 0,
+   "asset_evidence_scope": "unclear",
+   "asset_evidence_detail": {
+    "shared_assets": 0
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Human settlements",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": false,
+   "outputs_shared": 0,
+   "strength": 1.371,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R04691",
+   "priority_rank": 89,
+   "class": "C_undetermined",
+   "pattern": "same_title_diff_source",
+   "rule": "D2_star_group",
+   "group_id": "Sfd79630fb61db7ed",
+   "group_record": {
+    "bucket_size": 501,
+    "anchor": 7772,
+    "decision": "merge",
+    "purpose_class": "detect",
+    "bucket": [
+     "built",
+     "up"
+    ]
+   },
+   "group_edge_rank": 194,
+   "group_edges": 356,
+   "v3_splits": [
+    "t",
+    "v"
+   ],
+   "v2_splits": [
+    "t",
+    "s"
+   ],
+   "family_a": "F925c318fd4d0208a",
+   "family_b": "F3319a746907cde74",
+   "family_sizes": [
+    10312,
+    1
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 7772,
+     "family": "F925c318fd4d0208a",
+     "v3_split": "t",
+     "script": "script_228160",
+     "task_type": "Human settlements",
+     "instruction": "Task: Identify built-up areas Identify built-up and non-built-up areas in Sri Lanka using Sentinel-2 surface reflectance imagery from January to August 2021. It performs cloud masking by joining S2_CLOUD_PROBABILITY, computes a median composite, and creates a mosaic based on minimum spectral distance to the median. Training samples for built-up (id=1) and non-built-up (id=2) are balanced and split"
+    },
+    {
+     "component_id": 55012,
+     "family": "F3319a746907cde74",
+     "v3_split": "v",
+     "script": "script_240882",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Identify non-forest built-up areas Identify built-up areas within non-forest and non-water regions using Landsat 8 surface reflectance imagery from October to December 2020. It applies cloud and shadow masking, clips to a study area, and masks out forested areas (using an external forest mask 'fmask') and permanent water bodies (from JRC Global Surface Water dataset). The final output is a m"
+    }
+   ],
+   "title_a": "identify built-up areas",
+   "title_b": "identify non-forest built-up areas",
+   "title_j": 0.6667,
+   "body_j": 0.2035,
+   "effective_targets": [
+    "built",
+    "up"
+   ],
+   "dataset_shared": [],
+   "asset_shared": [],
+   "asset_shared_count": 0,
+   "asset_evidence_scope": "unclear",
+   "asset_evidence_detail": {
+    "shared_assets": 0
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Human settlements",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": false,
+   "outputs_shared": 1,
+   "strength": 1.3684,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R01374",
+   "priority_rank": 90,
+   "class": "A_merge_candidate",
+   "pattern": "same_title_diff_source",
+   "rule": "D2_star_group",
+   "group_id": "Sfd79630fb61db7ed",
+   "group_record": {
+    "bucket_size": 501,
+    "anchor": 7772,
+    "decision": "merge",
+    "purpose_class": "detect",
+    "bucket": [
+     "built",
+     "up"
+    ]
+   },
+   "group_edge_rank": 199,
+   "group_edges": 356,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "t"
+   ],
+   "family_a": "F925c318fd4d0208a",
+   "family_b": "F5fb95067f1fbbd5a",
+   "family_sizes": [
+    10312,
+    6019
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 7772,
+     "family": "F925c318fd4d0208a",
+     "v3_split": "t",
+     "script": "script_228160",
+     "task_type": "Human settlements",
+     "instruction": "Task: Identify built-up areas Identify built-up and non-built-up areas in Sri Lanka using Sentinel-2 surface reflectance imagery from January to August 2021. It performs cloud masking by joining S2_CLOUD_PROBABILITY, computes a median composite, and creates a mosaic based on minimum spectral distance to the median. Training samples for built-up (id=1) and non-built-up (id=2) are balanced and split"
+    },
+    {
+     "component_id": 17621,
+     "family": "F5fb95067f1fbbd5a",
+     "v3_split": "s",
+     "script": "script_86380",
+     "task_type": "Human settlements",
+     "instruction": "Task: Identify built-up areas with nighttime lights Identify built-up areas by combining multitemporal built-up surface data from the JRC GHSL dataset with median nighttime light intensity from VIIRS DNB monthly composites in 2014. It applies a threshold on median radiance (gt(2)) and masks it with built-up areas greater than 2 to refine human settlement detection, producing binary layers before a"
+    }
+   ],
+   "title_a": "identify built-up areas",
+   "title_b": "identify built-up areas with nighttime lights",
+   "title_j": 0.6667,
+   "body_j": 0.1827,
+   "effective_targets": [
+    "built",
+    "up"
+   ],
+   "dataset_shared": [],
+   "asset_shared": [],
+   "asset_shared_count": 0,
+   "asset_evidence_scope": "unclear",
+   "asset_evidence_detail": {
+    "shared_assets": 0
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Human settlements",
+   "task_type_b": "Human settlements",
+   "task_type_same": true,
+   "outputs_shared": 1,
+   "strength": 1.358,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R01372",
+   "priority_rank": 92,
+   "class": "A_merge_candidate",
+   "pattern": "same_title_diff_source",
+   "rule": "D2_star_group",
+   "group_id": "Sba49287fdf0f54b4",
+   "group_record": {
+    "bucket_size": 153,
+    "anchor": 3146,
+    "decision": "merge",
+    "purpose_class": "detect",
+    "bucket": [
+     "affected",
+     "fire"
+    ]
+   },
+   "group_edge_rank": 28,
+   "group_edges": 120,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "v",
+    "s"
+   ],
+   "family_a": "F925c318fd4d0208a",
+   "family_b": "F5fb95067f1fbbd5a",
+   "family_sizes": [
+    10312,
+    6019
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 3146,
+     "family": "F925c318fd4d0208a",
+     "v3_split": "t",
+     "script": "script_66872",
+     "task_type": "Natural hazards",
+     "instruction": "Task: Identify fire affected areas Analyze wildfire boundaries within a specific region (small_poly_mnts) by filtering a feature collection of fires from 2003 onward, computing the union of all fires, and comparing spatial differences between the study area and both individual (Santiago) and combined fire perimeters. It visualizes the remaining non-burned areas after subtracting fire extents."
+    },
+    {
+     "component_id": 126317,
+     "family": "F5fb95067f1fbbd5a",
+     "v3_split": "s",
+     "script": "script_162795",
+     "task_type": "Natural hazards",
+     "instruction": "Task: Identify fire-affected areas using dXBR and dNBR Identify fire-affected areas by computing the difference in XBR (eXist Burn Ratio) and dNBR (differenced Normalized Burn Ratio) from Sentinel-2 imagery before and after a fire event. It uses cloud-masked images to calculate pre- and post-fire spectral indices, applies thresholds to detect burn anomalies (dXBR > 0.15 and dNBR > 0.10), counts an"
+    }
+   ],
+   "title_a": "identify fire affected areas",
+   "title_b": "identify fire-affected areas using dxbr and dnbr",
+   "title_j": 0.6667,
+   "body_j": 0.1683,
+   "effective_targets": [
+    "affected",
+    "fire"
+   ],
+   "dataset_shared": [],
+   "asset_shared": [],
+   "asset_shared_count": 0,
+   "asset_evidence_scope": "unclear",
+   "asset_evidence_detail": {
+    "shared_assets": 0
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Natural hazards",
+   "task_type_b": "Natural hazards",
+   "task_type_same": true,
+   "outputs_shared": 0,
+   "strength": 1.3508,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "MERGE_provisional",
+   "agent_rationale": "2 independent axes (target/source/chain/text)"
+  },
+  {
+   "review_id": "R05668",
+   "priority_rank": 99,
+   "class": "C_undetermined",
+   "pattern": "task_type_diff",
+   "rule": "D2_star_group",
+   "group_id": "Sf6b531621399112e",
+   "group_record": {
+    "bucket_size": 167,
+    "anchor": 7480,
+    "decision": "merge",
+    "purpose_class": "detect",
+    "bucket": [
+     "featur",
+     "terrain"
+    ]
+   },
+   "group_edge_rank": 67,
+   "group_edges": 143,
+   "v3_splits": [
+    "t",
+    "s"
+   ],
+   "v2_splits": [
+    "t",
+    "s"
+   ],
+   "family_a": "F925c318fd4d0208a",
+   "family_b": "Fd3847540ade9533b",
+   "family_sizes": [
+    10312,
+    1
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 7480,
+     "family": "F925c318fd4d0208a",
+     "v3_split": "t",
+     "script": "script_129418",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Classify land cover using Sentinel-2 and terrain features Classify land cover types in a region of southern Africa (EPSG:32734) using a time series of Sentinel-2 surface reflectance data combined with SRTM-derived terrain variables (elevation, slope, aspect, CHILI, TPI) and angular-based synthetic bands generated via the OGC function. Classification is performed using a spatial k-fold cross-"
+    },
+    {
+     "component_id": 115102,
+     "family": "Fd3847540ade9533b",
+     "v3_split": "s",
+     "script": "script_35848",
+     "task_type": "Land surface/agriculture indicators",
+     "instruction": "Task: Extract terrain-corrected SAR and optical features for agricultural plots the workflow performs terrain flattening on Sentinel-1 GRD data using a volume scattering model and SRTM elevation data, computes a VV-VH ratio, and combines it with cloud-masked Sentinel-2 SR data. It then extracts stratified samples from user-defined plot buffers, combining SAR and optical bands into a unified featur"
+    }
+   ],
+   "title_a": "classify land cover using sentinel-2 and terrain features",
+   "title_b": "extract terrain-corrected sar and optical features for agricultural plots",
+   "title_j": 0.1538,
+   "body_j": 0.1343,
+   "effective_targets": [
+    "terrain"
+   ],
+   "dataset_shared": [
+    "sentinel-2",
+    "srtm",
+    "usgs"
+   ],
+   "asset_shared": [
+    "USGS/SRTMGL1_003"
+   ],
+   "asset_shared_count": 1,
+   "asset_evidence_scope": "task_specific",
+   "asset_evidence_detail": {
+    "shared_assets": 1,
+    "custom_assets": 0,
+    "asset_families": [
+     "usgs"
+    ]
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land use/land cover",
+   "task_type_b": "Land surface/agriculture indicators",
+   "task_type_same": false,
+   "outputs_shared": 1,
+   "strength": 1.021,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "UNRESOLVED",
+   "agent_rationale": "task_type differs and text evidence is weak"
+  },
+  {
+   "review_id": "R05660",
+   "priority_rank": 100,
+   "class": "C_undetermined",
+   "pattern": "task_type_diff",
+   "rule": "D2_star_group",
+   "group_id": "S23b2cc43a6c778d6",
+   "group_record": {
+    "bucket_size": 269,
+    "anchor": 5295,
+    "decision": "merge",
+    "purpose_class": "detect",
+    "bucket": [
+     "1",
+     "vv"
+    ]
+   },
+   "group_edge_rank": 110,
+   "group_edges": 134,
+   "v3_splits": [
+    "s",
+    "t"
+   ],
+   "v2_splits": [
+    "t",
+    "v"
+   ],
+   "family_a": "F5fb95067f1fbbd5a",
+   "family_b": "F925c318fd4d0208a",
+   "family_sizes": [
+    6019,
+    10312
+   ],
+   "size_sum_gt_cap": true,
+   "cap": 10000,
+   "endpoints": [
+    {
+     "component_id": 5295,
+     "family": "F5fb95067f1fbbd5a",
+     "v3_split": "s",
+     "script": "script_98645",
+     "task_type": "Land surface/agriculture indicators",
+     "instruction": "Task: Extract Sentinel-1 VV backscatter the workflow retrieves the first available Sentinel-1 GRD image with VV polarization for each month within the date range from May 2015 to December 2017 at a specific point location, forming a monthly time series of SAR backscatter observations."
+    },
+    {
+     "component_id": 120050,
+     "family": "F925c318fd4d0208a",
+     "v3_split": "t",
+     "script": "script_174658",
+     "task_type": "Land use/land cover",
+     "instruction": "Task: Detect land cover changes using Sentinel-1 VV Analyze temporal changes in backscatter from Sentinel-1 GRD data using VV polarization to detect land surface changes between two periods (2021-07–2021-12 and 2022-01–2022-07). It separates ascending and descending orbits, computes mean composites for each period, calculates a ratio-based change metric, applies focal smoothing, and derives a bina"
+    }
+   ],
+   "title_a": "extract sentinel-1 vv backscatter",
+   "title_b": "detect land cover changes using sentinel-1 vv",
+   "title_j": 0.3333,
+   "body_j": 0.1759,
+   "effective_targets": [],
+   "dataset_shared": [
+    "sentinel-1"
+   ],
+   "asset_shared": [
+    "COPERNICUS/S1_GRD"
+   ],
+   "asset_shared_count": 1,
+   "asset_evidence_scope": "task_specific",
+   "asset_evidence_detail": {
+    "shared_assets": 1,
+    "custom_assets": 0,
+    "asset_families": [
+     "sentinel-1"
+    ]
+   },
+   "chain_same": false,
+   "purpose_a": "detect",
+   "purpose_b": "detect",
+   "purpose_compatible": true,
+   "task_type_a": "Land surface/agriculture indicators",
+   "task_type_b": "Land use/land cover",
+   "task_type_same": false,
+   "outputs_shared": 0,
+   "strength": 0.9213,
+   "adjudication": {
+    "decision": "",
+    "counter_evidence": "",
+    "evidence_needed": "",
+    "adjudicator": "",
+    "date": ""
+   },
+   "agent_tentative": "UNRESOLVED",
+   "agent_rationale": "task_type differs and text evidence is weak"
+  }
+ ]
+}
