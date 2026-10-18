@@ -242,8 +242,16 @@ interventions still require owner release.**
   to verify); R14 C2 reflectance scaling NOT observed on either side (B uses C2
   L2 without 0.0000275/-0.2 -> numerical semantics not directly comparable);
   R15 six L2 condition fields registered (collection/year/load mode/LAPIG/
-  schema/mask thresholds). All multiref deferred. Batch R16/R17/R21/R22/R24
-  packet ready (`B_TRACK_BATCH4_REVIEW_PACKET.md`).** -> split freeze -> three
+  schema/mask thresholds). **OWNER ROUND-5 (2026-10-18): R16/R17/R21/R22/R24
+  reviewed** - R16 modified pass (isomorphic template only; 69799 uses HYBAS_ID,
+  not Feature Index); R17 split into S068/S105 (TerraClimate is display-only,
+  not a classification dependency; S105 reuses ONE classifier for both periods);
+  R21 modified pass (UI exclusion kept; `cc` is undefined at 45675:L351 while
+  `ccc` is defined at L25 -> executability defect in the core chart call);
+  R22 split into DIFF5/S013/S027; R24 modified pass (eutrophication `a` is a
+  56-feature list INDEX, not a year loop -> A/B analyze different features).
+  ALL 28 records reviewed; NO group has unconditional multiref admission.**
+  -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
   coverage, dependency correctness, harmful steps, long-chain degradation,

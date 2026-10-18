@@ -11,3 +11,4 @@
 | 2026-10-18 | B_TRACK_GOVERNANCE_V1.2 | owner 第二轮复核：多参考硬门槛=条件一致性；关系≠准入；按脚本重叠连通分量划分 | 五组修订状态；阶段三三规则入规范 §8.2 | `B_TRACK_CROSS_GROUP_OVERLAP_V1` 连通分量、索引 V3 | owner 第二轮评审 |
 | 2026-10-18 | B_TRACK_GOVERNANCE_V1.3 | owner 第三轮：R01–R11 逐组裁定（多参考全部暂缓；R03/R10 口径漂移待裁；R04 外部单位待补；R08 事实修正） | 11 组关系/证据/准入更新；索引 V4 | `B_TRACK_TRUSTED_REFERENCE_DRAFTS_V1.json` | owner 第三轮评审 |
 | 2026-10-18 | B_TRACK_GOVERNANCE_V1.4 | owner 第四轮：R12–R15 修改后通过（多参考全部暂缓；R12 方法映射修正；R14 C2 缩放未观测） | 4 组状态更新；索引 V5；R16/R17/R21/R22/R24 复核包 | `B_TRACK_BATCH4_REVIEW_PACKET.md` | owner 第四轮评审 |
+| 2026-10-18 | B_TRACK_GOVERNANCE_V1.5 | owner 第五轮：R16/R17/R21/R22/R24 修改后通过/拆分；R17→S068+S105；R22→DIFF5+S013+S027；R24 修正 a=要素索引 | 29 条记录全复核；无无条件多参考准入；索引 V6 | `B_TRACK_BATCH4_REVIEW_PACKET.md` 更新前版本 | owner 第五轮评审 |
