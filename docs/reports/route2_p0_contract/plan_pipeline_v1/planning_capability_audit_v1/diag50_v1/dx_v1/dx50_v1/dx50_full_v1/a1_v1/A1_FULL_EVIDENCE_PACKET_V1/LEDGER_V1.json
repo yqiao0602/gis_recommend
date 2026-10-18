@@ -217,7 +217,7 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "valid"
     },
     "mechanism": "其他（待 P2/官方文档）",
@@ -258,7 +258,7 @@
      "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "no_decision"
     },
     "mechanism": "生成波动",
@@ -385,7 +385,7 @@
      "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "no_decision"
     },
     "mechanism": "生成波动",
@@ -555,7 +555,7 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "truncated"
     },
     "mechanism": "生成波动",
@@ -593,7 +593,7 @@
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
     "mechanism": "其他",
     "final_note": "候选无跨影像中值合成（镶嵌≠中值）；弃权合理",
@@ -626,18 +626,43 @@
     ]
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_conflict_pending",
     "decision_quality": {
      "control": "wrong_selection",
      "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "valid"
     },
     "mechanism": "其他（对照错误被纠正为合理弃权）",
     "final_note": "对照选 mosaicking（属上一步功能，非资产打包/导出）→ 错误；实验合理弃权（候选无栅格资产导出）",
-    "confidence": "medium-high"
+    "confidence": "medium-high",
+    "owner_conflict": {
+     "control_agreed": "错误选择（有效）",
+     "validity": {
+      "control": "valid",
+      "experiment": "valid"
+     },
+     "variants": [
+      {
+       "source": "owner 批 A",
+       "experiment": "合理弃权（有效）",
+       "mechanism": "其他——纠正步骤目标理解"
+      },
+      {
+       "source": "owner 批 B",
+       "experiment": "误弃权（有效）",
+       "mechanism": "其他——过度保守弃权"
+      },
+      {
+       "source": "owner 批 B 自注备选",
+       "experiment": "证据不足不可判",
+       "mechanism": "若要求卡面直接证明资产导出/格式包装则降为不可判"
+      }
+     ],
+     "note": "两批对实验臂不一致（合理弃权 vs 误弃权，批 B 自注可降不可判）；owner 要求先固定'资产交付'步骤目标解释再冻结入账。"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -956,7 +981,7 @@
     },
     "output_validity": {
      "control": "no_decision",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
     "mechanism": "其他",
     "final_note": "可视化制图超出处理算子；弃权合理",
@@ -993,7 +1018,7 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "truncated"
     },
     "mechanism": "生成波动",
@@ -1230,7 +1255,7 @@
     },
     "output_validity": {
      "control": "no_decision",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
     "mechanism": "其他",
     "final_note": "候选无跨时相均值；弃权合理",
@@ -1265,7 +1290,7 @@
      "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "no_decision"
     },
     "mechanism": "生成波动",
@@ -1338,18 +1363,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision",
-     "experiment": "truncated"
+     "control": "truncated",
+     "experiment": "valid"
     },
-    "mechanism": "其他（上下文诱发正确选择）",
-    "final_note": "statisticsforrasters 卡：GRIDS 多层输入 + MEAN 输出——跨栅格均值成立（所选算子卡未变）",
-    "confidence": "medium-high"
+    "mechanism": "其他——上下文诱发的选择（非补卡解锁）",
+    "final_note": "owner：对照无闭合决策→截断不计入；实验 statisticsforrasters 卡 GRIDS→MEAN 与逐像元均值直接匹配→正确；该算子两臂卡面相同、变化算子 imageregression 未被选→不归因补卡。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1463,18 +1491,38 @@
     ]
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_conflict_pending",
     "decision_quality": {
      "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
     "mechanism": "其他（上下文诱发正确选择）",
     "final_note": "rearrange_bands 卡含 BANDS 波段索引参数——波段提取成立（所选算子卡未变）",
-    "confidence": "medium-high"
+    "confidence": "medium-high",
+    "owner_conflict": {
+     "control_agreed": "证据不足不可判（截断）",
+     "validity": {
+      "control": "truncated",
+      "experiment": "valid"
+     },
+     "variants": [
+      {
+       "source": "owner 批 A",
+       "experiment": "证据不足不可判（有效）",
+       "mechanism": "其他——输出形式证据不足"
+      },
+      {
+       "source": "owner 批 B",
+       "experiment": "正确选择（有效）",
+       "mechanism": "其他——重复调用约束（分别运行两次）"
+      }
+     ],
+     "note": "两批对实验臂不一致（不可判 vs 正确）；分歧点=是否允许一个计划步骤展开为多次算子调用。批 B 保留边界：单次调用只证一个栅格输出。"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1505,7 +1553,7 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "truncated"
     },
     "mechanism": "生成波动",
@@ -1690,18 +1738,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "indeterminate",
-     "experiment": "correct_selection"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
-    "mechanism": "其他（上下文诱发正确选择）",
-    "final_note": "native:aggregate 卡 GROUP_BY+AGGREGATES——按公园分区聚合损失成立(所选算子卡未变)",
-    "confidence": "medium-high"
+    "mechanism": "其他——输入字段与年度汇总语义未闭合（补卡未认定）",
+    "final_note": "owner：对照无闭合决策→截断不计入；实验选 native:aggregate（GROUP_BY+AGGREGATES）方向成立，但未证 Step 5 输出含公园分区标识/年度损失/面积字段，也未证同时产出'各年度'与'累计'两类结果→不可判；变化算子 smallregionsmerging 未被选、aggregate 卡未变→不归因补卡。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1728,18 +1779,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "reasonable_abstention",
      "experiment": "correct_selection"
     },
     "output_validity": {
      "control": "no_decision",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
-    "mechanism": "其他（上下文诱发正确选择）",
-    "final_note": "saga:resampling 卡含 TARGET_USER_* extent 参数——可达 ROI 对齐裁剪（所选算子卡未变，注意重采样≠裁剪的语义差）",
-    "confidence": "medium-high"
+    "mechanism": "其他——上下文诱发的选择（非补卡解锁）",
+    "final_note": "owner：对照空输出记 output_validity=无判定，但仍判合理弃权（⚠与 R2'空输出不入弃权率'存在口径张力，已标记待确认）；实验 saga:resampling 卡含 TARGET_USER_XMIN/XMAX/YMIN/YMAX→可限定 ROI 输出范围，判正确（重采样≠裁剪，但范围参数成立）；变化算子 segmentation 未被选→非补卡解锁。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1807,7 +1861,7 @@
      "experiment": "n/a_no_decision"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "no_decision"
     },
     "mechanism": "生成波动",
@@ -1844,7 +1898,7 @@
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
     "mechanism": "其他",
     "final_note": "无掩膜+DEM 条件精化；弃权合理",
@@ -1918,7 +1972,7 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "truncated"
     },
     "mechanism": "生成波动",
@@ -2041,7 +2095,7 @@
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "truncated"
     },
     "mechanism": "生成波动",
@@ -2095,7 +2149,7 @@
  ],
  "owner_ruling": {
   "date": "2026-10-18",
-  "n_ruled": 21,
+  "n_ruled": 24,
   "rules": [
    "R1 复合步骤闭合：部分能力命中≠整体正确（T-032）",
    "R2 截断≠无判定：截断但有推理→output_validity=truncated + 证据不足不可判；空输出才是无判定（T-068/T-092/T-090 对照臂）",

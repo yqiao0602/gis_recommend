@@ -33,6 +33,7 @@ Owner-ruled pairs (6):
           reading; card matches the step)
 """
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -99,6 +100,26 @@ OWNER = {
    "mechanism": "生成波动",
    "note": "owner：对照 saga:morphologicalfilter 卡 INPUT→RESULT + METHOD/KERNEL_* 与形态学去噪目标直接匹配→正确；"
            "实验推理中曾倾向双选但无闭合决策→截断不计入；补卡（classificationmapregularization 等）与决策无因果证据。"},
+ "PCA2-T-025#S4": {
+   "control": "indeterminate", "experiment": "correct_selection",
+   "validity": {"control": "truncated", "experiment": "valid"},
+   "mechanism": "其他——上下文诱发的选择（非补卡解锁）",
+   "note": "owner：对照无闭合决策→截断不计入；实验 statisticsforrasters 卡 GRIDS→MEAN 与逐像元均值直接匹配→正确；"
+           "该算子两臂卡面相同、变化算子 imageregression 未被选→不归因补卡。"},
+ "PCA2-T-068#S6": {
+   "control": "indeterminate", "experiment": "indeterminate",
+   "validity": {"control": "truncated", "experiment": "valid"},
+   "mechanism": "其他——输入字段与年度汇总语义未闭合（补卡未认定）",
+   "note": "owner：对照无闭合决策→截断不计入；实验选 native:aggregate（GROUP_BY+AGGREGATES）方向成立，"
+           "但未证 Step 5 输出含公园分区标识/年度损失/面积字段，也未证同时产出'各年度'与'累计'两类结果→不可判；"
+           "变化算子 smallregionsmerging 未被选、aggregate 卡未变→不归因补卡。"},
+ "PCA2-T-070#S1": {
+   "control": "reasonable_abstention", "experiment": "correct_selection",
+   "validity": {"control": "no_decision", "experiment": "valid"},
+   "mechanism": "其他——上下文诱发的选择（非补卡解锁）",
+   "note": "owner：对照空输出记 output_validity=无判定，但仍判合理弃权（⚠与 R2'空输出不入弃权率'存在口径张力，"
+           "已标记待确认）；实验 saga:resampling 卡含 TARGET_USER_XMIN/XMAX/YMIN/YMAX→可限定 ROI 输出范围，"
+           "判正确（重采样≠裁剪，但范围参数成立）；变化算子 segmentation 未被选→非补卡解锁。"},
  "PCA2-T-083#S7": {
    "control": "indeterminate", "experiment": "correct_selection",
    "validity": {"control": "valid", "experiment": "valid"},
@@ -186,6 +207,38 @@ DEC = {"C": "correct_selection", "W": "wrong_selection",
        "RA": "reasonable_abstention", "WA": "wrong_abstention",
        "IND": "indeterminate", "NODEC": "n/a_no_decision"}
 
+# Owner batches A/B disagreed on the experiment arm for these two pairs.
+# Left UNCHANGED in the ledger (agent values retained) with both variants
+# recorded until the owner fixes the step-goal interpretation.
+CONFLICTS = {
+ "PCA2-T-001#S6": {
+   "control_agreed": "错误选择（有效）",
+   "validity": {"control": "valid", "experiment": "valid"},
+   "variants": [
+     {"source": "owner 批 A", "experiment": "合理弃权（有效）",
+      "mechanism": "其他——纠正步骤目标理解"},
+     {"source": "owner 批 B", "experiment": "误弃权（有效）",
+      "mechanism": "其他——过度保守弃权"},
+     {"source": "owner 批 B 自注备选", "experiment": "证据不足不可判",
+      "mechanism": "若要求卡面直接证明资产导出/格式包装则降为不可判"},
+   ],
+   "note": "两批对实验臂不一致（合理弃权 vs 误弃权，批 B 自注可降不可判）；"
+           "owner 要求先固定'资产交付'步骤目标解释再冻结入账。",
+ },
+ "PCA2-T-033#S1": {
+   "control_agreed": "证据不足不可判（截断）",
+   "validity": {"control": "truncated", "experiment": "valid"},
+   "variants": [
+     {"source": "owner 批 A", "experiment": "证据不足不可判（有效）",
+      "mechanism": "其他——输出形式证据不足"},
+     {"source": "owner 批 B", "experiment": "正确选择（有效）",
+      "mechanism": "其他——重复调用约束（分别运行两次）"},
+   ],
+   "note": "两批对实验臂不一致（不可判 vs 正确）；分歧点=是否允许一个计划步骤展开为"
+           "多次算子调用。批 B 保留边界：单次调用只证一个栅格输出。",
+ },
+}
+
 
 AFFECTED = json.loads((P / ".." / "A1_AFFECTED_SET_V1.json").read_text(encoding="utf-8"))
 OIDS = {}
@@ -213,19 +266,15 @@ def derive_validity(key, arm):
         parsed = json.loads(pp.read_text(encoding="utf-8")) if pp.exists() else None
     if parsed is None or parsed.get("parser") != "s2_v2":
         parsed = parse_s2_v2(raw, OIDS.get(key, []))
-    # truncation has two signatures: unterminated think, or generation hitting
-    # the maxnew cap (gen_tokens >= maxnew) - the latter can cut a decision
-    # list mid-line even with a closed think block (e.g. T-003#S2 control).
-    hit_cap = False
-    gp = d / "gen.json"
-    if gp.exists():
-        g = json.loads(gp.read_text(encoding="utf-8"))
-        mx = g.get("maxnew")
-        gt = g.get("gen_tokens")
-        hit_cap = bool(mx and gt and gt >= int(mx))
-    if parsed.get("decision_section") == "think_unterminated" or hit_cap:
+    if parsed.get("decision_section") == "think_unterminated":
         return "truncated"
-    return "valid"
+    # A closed think with a COMPLETE terminal decision line is valid even if
+    # generation later hit the cap (owner rulings on T-025#S5 / T-001#S3 exp).
+    dec = raw.split("</think>")[-1] if "</think>" in raw else raw
+    if re.search(r"(?m)^\s*(SELECT\s+[A-Za-z0-9_:.\-]+|NO OPERATOR FOR THIS STEP)",
+                 dec):
+        return "valid"
+    return "truncated"  # decision list with no terminal line = cut
 
 
 def main():
@@ -245,6 +294,15 @@ def main():
                 reclassed.append((e["step_key"], arm))
         if e["step_key"] == "PCA2-T-005#S5":
             q["output_validity"]["experiment"] = "self_contradictory"
+
+    # 2b) record conflicts (values left unchanged until owner fixes the rule)
+    for e in d["entries"]:
+        c = CONFLICTS.get(e["step_key"])
+        if c:
+            e["ledger_fields_pending_owner"]["owner_conflict"] = c
+            e["ledger_fields_pending_owner"]["status"] = "owner_conflict_pending"
+            if c.get("validity"):
+                e["ledger_fields_pending_owner"]["output_validity"] = dict(c["validity"])
 
     # 2) apply the six owner rulings (authoritative)
     ruled = 0
