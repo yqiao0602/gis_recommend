@@ -279,6 +279,18 @@ interventions still require owner release.**
   excludes 0 AND guardrails/gates pass. Test set has only 3 independent units ->
   preliminary evidence only; do not inflate n by steps or split frozen
   components. Release checklist 3/7; TRAINING STILL NOT RELEASED.**
+  **STAGE-3 PREP FOR ITEMS 4/6/7 (2026-10-18):** full-corpus split V2 done
+  (`B_TRACK_SPLIT_MANIFEST_V2`: 128,447 rows / 124,937 components / component-
+  level 80-10-10, seed 20261018, row-level map persisted; reproducible script
+  `scripts/b_track_full_corpus_split_v1.py`). Audited overlay: only 221 rows
+  (97 components), of which A/C1/M-eligible = 113 train / 21 val / 21 test.
+  **BLOCKER: B/C would be 113 training rows vs A_full 102,731 (0.11%) — the
+  sample-size confound would dominate any governance effect.** Options for
+  owner: S1 stratified audit expansion (recommended), S2 rule-governed full
+  corpus, S3 113-row pipeline smoke only (no capability claim). ABC sample
+  lists V1 and evaluation-implementation freeze V1 (partial) delivered;
+  item 4 = split done / admission pending, item 6 = audited subset ready /
+  full corpus blocked, item 7 = partial. Training not released.**
   -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint

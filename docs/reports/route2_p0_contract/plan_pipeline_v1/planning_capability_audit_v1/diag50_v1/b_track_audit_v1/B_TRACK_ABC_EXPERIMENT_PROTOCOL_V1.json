@@ -90,7 +90,7 @@
   },
   {
    "item": "audit of 25 split units vs full training corpus task-group mapping",
-   "status": "pending_full_corpus"
+   "status": "split_done_admission_pending_owner_strategy"
   },
   {
    "item": "test independence + small-test evidence limitation declared",
@@ -98,12 +98,22 @@
   },
   {
    "item": "training-data version + per-group sample/exclusion lists",
-   "status": "pending"
+   "status": "audited_subset_ready_full_corpus_blocked"
   },
   {
    "item": "training config and evaluator scripts frozen",
-   "status": "pending"
+   "status": "partial_specs_frozen_implementation_pending"
   }
  ],
- "training_released": false
+ "training_released": false,
+ "blocker": {
+  "issue": "audited training rows = 113 (B/C) vs 102,731 (A_full)",
+  "evidence": "B_TRACK_FULL_CORPUS_INVENTORY_V1.json",
+  "options": [
+   "S1 stratified audit expansion (recommended)",
+   "S2 rule-governed full corpus (requires owner acceptance)",
+   "S3 113-row pipeline smoke only (no capability claim)"
+  ],
+  "decision": "pending owner"
+ }
 }
