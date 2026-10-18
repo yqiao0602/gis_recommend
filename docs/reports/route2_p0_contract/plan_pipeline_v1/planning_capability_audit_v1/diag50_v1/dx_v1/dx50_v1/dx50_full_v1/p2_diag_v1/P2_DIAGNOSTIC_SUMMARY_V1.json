@@ -1,0 +1,263 @@
+{
+ "population": {
+  "n_items": 158,
+  "arms": 2,
+  "prompt_tokens": {
+   "min": 710,
+   "median": 1316,
+   "max": 2185
+  },
+  "bins": [
+   1104,
+   1241,
+   1388,
+   1570
+  ]
+ },
+ "per_arm_158": {
+  "control": {
+   "raw_states": {
+    "THINK_UNCLOSED": 29,
+    "TERMINAL": 92,
+    "EMPTY": 33,
+    "NO_TERMINAL": 4
+   },
+   "buckets": {
+    "truncated/unclosed": 33,
+    "terminal": 92,
+    "empty": 33
+   }
+  },
+  "experiment": {
+   "raw_states": {
+    "EMPTY": 38,
+    "TERMINAL": 90,
+    "THINK_UNCLOSED": 28,
+    "CONTRADICTORY": 1,
+    "NO_TERMINAL": 1
+   },
+   "buckets": {
+    "empty": 38,
+    "terminal": 90,
+    "truncated/unclosed": 29,
+    "contradictory": 1
+   }
+  }
+ },
+ "reconciliation_52pairs": {
+  "n_pairs": 52,
+  "control": {
+   "truncated/unclosed": 13,
+   "terminal": 31,
+   "empty": 8
+  },
+  "experiment": {
+   "terminal": 29,
+   "truncated/unclosed": 13,
+   "contradictory": 1,
+   "empty": 9
+  }
+ },
+ "by_prompt_bin": {
+  "control|B1(<= 1104)": {
+   "n": 46,
+   "empty": 0,
+   "trunc": 14,
+   "empty_rate": 0.0,
+   "trunc_rate": 0.304
+  },
+  "control|B2(<= 1241)": {
+   "n": 34,
+   "empty": 0,
+   "trunc": 5,
+   "empty_rate": 0.0,
+   "trunc_rate": 0.147
+  },
+  "control|B3(<= 1388)": {
+   "n": 25,
+   "empty": 6,
+   "trunc": 6,
+   "empty_rate": 0.24,
+   "trunc_rate": 0.24
+  },
+  "control|B4(<= 1570)": {
+   "n": 30,
+   "empty": 13,
+   "trunc": 5,
+   "empty_rate": 0.433,
+   "trunc_rate": 0.167
+  },
+  "control|B5(> 1570)": {
+   "n": 23,
+   "empty": 14,
+   "trunc": 3,
+   "empty_rate": 0.609,
+   "trunc_rate": 0.13
+  },
+  "experiment|B1(<= 1104)": {
+   "n": 18,
+   "empty": 0,
+   "trunc": 6,
+   "empty_rate": 0.0,
+   "trunc_rate": 0.333
+  },
+  "experiment|B2(<= 1241)": {
+   "n": 29,
+   "empty": 1,
+   "trunc": 8,
+   "empty_rate": 0.034,
+   "trunc_rate": 0.276
+  },
+  "experiment|B3(<= 1388)": {
+   "n": 38,
+   "empty": 5,
+   "trunc": 6,
+   "empty_rate": 0.132,
+   "trunc_rate": 0.158
+  },
+  "experiment|B4(<= 1570)": {
+   "n": 33,
+   "empty": 12,
+   "trunc": 4,
+   "empty_rate": 0.364,
+   "trunc_rate": 0.121
+  },
+  "experiment|B5(> 1570)": {
+   "n": 40,
+   "empty": 20,
+   "trunc": 5,
+   "empty_rate": 0.5,
+   "trunc_rate": 0.125
+  }
+ },
+ "by_position": {
+  "control|early<=1/3": {
+   "n": 40,
+   "empty": 10,
+   "trunc": 5,
+   "empty_rate": 0.25,
+   "trunc_rate": 0.125
+  },
+  "control|last": {
+   "n": 26,
+   "empty": 6,
+   "trunc": 4,
+   "empty_rate": 0.231,
+   "trunc_rate": 0.154
+  },
+  "control|mid": {
+   "n": 92,
+   "empty": 17,
+   "trunc": 24,
+   "empty_rate": 0.185,
+   "trunc_rate": 0.261
+  },
+  "experiment|early<=1/3": {
+   "n": 40,
+   "empty": 8,
+   "trunc": 7,
+   "empty_rate": 0.2,
+   "trunc_rate": 0.175
+  },
+  "experiment|last": {
+   "n": 26,
+   "empty": 6,
+   "trunc": 2,
+   "empty_rate": 0.231,
+   "trunc_rate": 0.077
+  },
+  "experiment|mid": {
+   "n": 92,
+   "empty": 24,
+   "trunc": 20,
+   "empty_rate": 0.261,
+   "trunc_rate": 0.217
+  }
+ },
+ "task_concentration": {
+  "control": {
+   "total_failures": 62,
+   "top5": [
+    [
+     "PCA2-T-009",
+     4,
+     8
+    ],
+    [
+     "PCA2-T-056",
+     4,
+     6
+    ],
+    [
+     "PCA2-T-001",
+     3,
+     5
+    ],
+    [
+     "PCA2-T-003",
+     3,
+     5
+    ],
+    [
+     "PCA2-T-033",
+     3,
+     4
+    ]
+   ],
+   "top5_share": 0.274
+  },
+  "experiment": {
+   "total_failures": 61,
+   "top5": [
+    [
+     "PCA2-T-009",
+     4,
+     8
+    ],
+    [
+     "PCA2-T-092",
+     4,
+     7
+    ],
+    [
+     "PCA2-T-080",
+     3,
+     4
+    ],
+    [
+     "PCA2-T-083",
+     3,
+     4
+    ],
+    [
+     "PCA2-T-087",
+     3,
+     5
+    ]
+   ],
+   "top5_share": 0.279
+  }
+ },
+ "paired_states_52": {
+  "empty->terminal": 8,
+  "terminal->contradictory": 1,
+  "terminal->empty": 9,
+  "terminal->terminal": 8,
+  "terminal->trunc": 13,
+  "trunc->terminal": 13
+ },
+ "empty_term_distribution": {
+  "control": {
+   "CAP_TRUNC": 23,
+   "EOS": 10
+  },
+  "experiment": {
+   "CAP_TRUNC": 23,
+   "EOS": 15
+  }
+ },
+ "card_share": {
+  "failed": 0.8122,
+  "terminal": 0.7908
+ }
+}
