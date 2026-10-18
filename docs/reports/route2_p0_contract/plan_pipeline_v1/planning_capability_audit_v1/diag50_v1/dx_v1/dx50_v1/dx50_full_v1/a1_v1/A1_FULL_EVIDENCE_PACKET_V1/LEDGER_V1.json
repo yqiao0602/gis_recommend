@@ -503,18 +503,21 @@
     ]
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
     "mechanism": "补卡解锁正确选择",
-    "final_note": "concatenateimages v0_5 卡：'list of images of the same size into a single multi-channel image'——正是逐像元跨时相堆叠；所选算子卡面变化",
-    "confidence": "medium-high"
+    "final_note": "owner：对照未形成闭合决策（截断，不得追溯）；实验卡'同尺寸图像列表→单幅多通道图像'+il 参数，逐像元多时相堆叠成立；升降轨分组由输入列表完成，不要求算子自身分组。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -661,18 +664,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "indeterminate",
-     "experiment": "correct_selection"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "truncated",
-     "experiment": "truncated"
+     "experiment": "valid"
     },
-    "mechanism": "补卡解锁正确选择",
-    "final_note": "contrastenhancement v0_5 卡含 minmax.manual.min/max——与步骤 -25/5 dB 线性拉伸精确匹配；所选算子卡面变化",
-    "confidence": "medium-high"
+    "mechanism": "其他——目标变换语义证据不足（线性拉伸能力缺少明确证据）",
+    "final_note": "owner：实验卡新增 minmax.manual.min/max，但描述明确为直方图均衡算法；指定端点(-25/5 dB)的线性拉伸未获卡面证明——选择方向相关但理由超出证据；不计入补卡解锁正确选择；待权威实现证据后复核。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1091,18 +1097,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "indeterminate",
+     "control": "reasonable_abstention",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "valid"
     },
     "mechanism": "补卡解锁正确选择",
-    "final_note": "opticalcalibration v0_5 卡：TOA/TOC 定标+手动参数通路（Landsat 不在内置传感器列表但有手动通路）；所选算子卡面变化",
-    "confidence": "medium-high"
+    "final_note": "owner：对照卡无参数→拒绝有依据；实验卡 TOA/TOC+手动校准通路（Landsat 不在列表但未排除）；DN→反射率与算子目标一致；acqui.gainbias/solarilluminations 属执行条件不否定选择。单一步骤，无大气校正附加要求。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1583,7 +1592,7 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "indeterminate",
      "experiment": "correct_selection"
@@ -1593,8 +1602,11 @@
      "experiment": "valid"
     },
     "mechanism": "补卡解锁正确选择",
-    "final_note": "compareimages v0_5 卡含 ref.in/meas.in 双输入与 mse/mae/psnr 输出参数——MSD 计算成立；所选算子卡面变化",
-    "confidence": "medium-high"
+    "final_note": "owner：实验卡 ref.in/meas.in 双输入+mse 字段+'Estimator between 2 images'；两次成对比较可实现两个 MSD。证据边界：mse 列在 params 而非 outputs，不得声称卡面已证明输出端口。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -2056,7 +2068,7 @@
  ],
  "owner_ruling": {
   "date": "2026-10-18",
-  "n_ruled": 8,
+  "n_ruled": 12,
   "rules": [
    "R1 复合步骤闭合：部分能力命中≠整体正确（T-032）",
    "R2 截断≠无判定：截断但有推理→output_validity=truncated + 证据不足不可判；空输出才是无判定（T-068/T-092/T-090 对照臂）",

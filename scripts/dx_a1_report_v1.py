@@ -82,6 +82,30 @@ def main():
                   f"experiment={q['decision_quality']['experiment']}（validity "
                   f"{q['output_validity']['control']}/{q['output_validity']['experiment']}）"
                   f"——{q['mechanism']}")
+
+    # core-criterion decomposition (dynamic)
+    def pairs(cond):
+        return [e["step_key"] for e in d["entries"]
+                if cond(e["ledger_fields_pending_owner"])]
+    ra2c = pairs(lambda q: q["decision_quality"]["control"] == "reasonable_abstention"
+                 and q["decision_quality"]["experiment"] == "correct_selection")
+    unlocked = pairs(lambda q: q["mechanism"].startswith("补卡解锁正确选择"))
+    ind2c = pairs(lambda q: q["decision_quality"]["control"] == "indeterminate"
+                  and q["decision_quality"]["experiment"] == "correct_selection")
+    nd2c = pairs(lambda q: q["decision_quality"]["control"] == "n/a_no_decision"
+                 and q["decision_quality"]["experiment"] == "correct_selection")
+    c2c = pairs(lambda q: q["decision_quality"]["control"] == "correct_selection"
+                and q["decision_quality"]["experiment"] == "correct_selection")
+    c2bad = pairs(lambda q: q["decision_quality"]["control"] == "correct_selection"
+                  and q["decision_quality"]["experiment"] in
+                  ("wrong_selection", "wrong_abstention"))
+    md += ["", "## 核心判据分解（动态计算）", "",
+           f"- 合理弃权→正确选择（直接命中）：{len(ra2c)} 对 {ra2c}",
+           f"- 机制标注『补卡解锁正确选择』：{len(unlocked)} 对 {unlocked}",
+           f"- 截断→正确选择：{len(ind2c)} 对 {ind2c}",
+           f"- 空输出→正确选择：{len(nd2c)} 对 {nd2c}",
+           f"- 正确→正确：{len(c2c)} 对 {c2c}",
+           f"- 正确→错误（破坏）：{len(c2bad)} 对 {c2bad}"]
     (P / "A1_ADJUDICATION_V1.md").write_text("\n".join(md), encoding="utf-8")
 
     rr = ["# A1 owner 裁决 V1（2026-10-18，六样本两批）", "",

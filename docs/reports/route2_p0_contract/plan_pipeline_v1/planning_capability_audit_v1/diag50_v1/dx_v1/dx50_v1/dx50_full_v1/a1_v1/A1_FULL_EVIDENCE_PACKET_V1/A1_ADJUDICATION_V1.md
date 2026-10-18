@@ -6,12 +6,12 @@
 
 | 指标 | 对照 v0_4 | 实验 v0_5 |
 |---|---|---|
-| 形成判定步数 | 29 | 25 |
-| 正确选择 | 4 (13.8%) | 11 (44.0%) |
-| 错误选择 | 3 (10.3%) | 2 (8.0%) |
-| 合理弃权 | 22 (75.9%) | 12 (48.0%) |
+| 形成判定步数 | 30 | 24 |
+| 正确选择 | 4 (13.3%) | 10 (41.7%) |
+| 错误选择 | 3 (10.0%) | 2 (8.3%) |
+| 合理弃权 | 23 (76.7%) | 12 (50.0%) |
 | 误弃权 | 0 | 0 |
-| 证据不足不可判（截断等） | 15 | 18 |
+| 证据不足不可判（截断等） | 14 | 19 |
 | 无判定（空输出，不计入） | 8 | 9 |
 
 ## 逐对裁决（★owner=owner 已裁决；其余待抽检）
@@ -29,11 +29,11 @@
 | PCA2-T-084#S5 | P1 | reasonable_abstention | n/a_no_decision | truncated/no_decision | 生成波动 |  |
 | PCA2-T-090#S4 | P1 | indeterminate | correct_selection | truncated/valid | 其他——卡面补全使已有正确候选的功能变得可验证（非新增候选解锁） | ★owner |
 | PCA2-T-092#S9 | P1 | indeterminate | reasonable_abstention | truncated/valid | 其他——复合步骤能力边界识别；不能归因为补卡解锁 | ★owner |
-| PCA2-T-001#S3 | P3 | indeterminate | correct_selection | truncated/truncated | 补卡解锁正确选择 |  |
+| PCA2-T-001#S3 | P3 | indeterminate | correct_selection | truncated/valid | 补卡解锁正确选择 |  |
 | PCA2-T-001#S4 | P3 | reasonable_abstention | indeterminate | truncated/truncated | 生成波动 |  |
 | PCA2-T-001#S5 | P3 | indeterminate | reasonable_abstention | truncated/truncated | 其他 |  |
 | PCA2-T-001#S6 | P3 | wrong_selection | reasonable_abstention | truncated/valid | 其他（对照错误被纠正为合理弃权） |  |
-| PCA2-T-025#S5 | P3 | indeterminate | correct_selection | truncated/truncated | 补卡解锁正确选择 |  |
+| PCA2-T-025#S5 | P3 | indeterminate | indeterminate | truncated/valid | 其他——目标变换语义证据不足（线性拉伸能力缺少明确证据） |  |
 | PCA2-T-046#S4 | P3 | correct_selection | indeterminate | truncated/truncated | 生成波动（正确→无判定） |  |
 | PCA2-T-046#S5 | P3 | correct_selection | correct_selection | truncated/truncated | 选择保持（实验臂增加冗余算子） |  |
 | PCA2-T-056#S3 | P3 | indeterminate | wrong_selection | truncated/valid | 补卡诱发错误选择（部分匹配/上下文） |  |
@@ -44,7 +44,7 @@
 | PCA2-T-086#S4 | P3 | reasonable_abstention | indeterminate | truncated/truncated | 生成波动 |  |
 | PCA2-T-089#S5 | P3 | reasonable_abstention | indeterminate | valid/truncated | 生成波动 |  |
 | PCA2-T-092#S5 | P3 | reasonable_abstention | n/a_no_decision | valid/no_decision | 生成波动 |  |
-| PCA2-T-003#S2 | P4 | indeterminate | correct_selection | truncated/valid | 补卡解锁正确选择 |  |
+| PCA2-T-003#S2 | P4 | reasonable_abstention | correct_selection | valid/valid | 补卡解锁正确选择 |  |
 | PCA2-T-005#S3 | P4 | n/a_no_decision | reasonable_abstention | no_decision/valid | 其他 |  |
 | PCA2-T-005#S5 | P4 | indeterminate | indeterminate | valid/self_contradictory | 生成波动（自相矛盾输出） |  |
 | PCA2-T-012#S3 | P4 | n/a_no_decision | reasonable_abstention | no_decision/truncated | 其他 |  |
@@ -79,3 +79,12 @@
 - **PCA2-T-068#S4**：control=indeterminate / experiment=reasonable_abstention（validity truncated/valid）——其他——从开放式推理转为明确弃权；不能证明补卡收益
 - **PCA2-T-092#S9**：control=indeterminate / experiment=reasonable_abstention（validity truncated/valid）——其他——复合步骤能力边界识别；不能归因为补卡解锁
 - **PCA2-T-090#S4**：control=indeterminate / experiment=correct_selection（validity truncated/valid）——其他——卡面补全使已有正确候选的功能变得可验证（非新增候选解锁）
+
+## 核心判据分解（动态计算）
+
+- 合理弃权→正确选择（直接命中）：1 对 ['PCA2-T-003#S2']
+- 机制标注『补卡解锁正确选择』：3 对 ['PCA2-T-001#S3', 'PCA2-T-003#S2', 'PCA2-T-057#S4']
+- 截断→正确选择：6 对 ['PCA2-T-083#S7', 'PCA2-T-090#S4', 'PCA2-T-001#S3', 'PCA2-T-033#S1', 'PCA2-T-057#S4', 'PCA2-T-068#S6']
+- 空输出→正确选择：2 对 ['PCA2-T-025#S4', 'PCA2-T-070#S1']
+- 正确→正确：1 对 ['PCA2-T-046#S5']
+- 正确→错误（破坏）：0 对 []

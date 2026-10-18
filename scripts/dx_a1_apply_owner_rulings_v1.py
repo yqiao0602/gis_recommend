@@ -59,6 +59,30 @@ OWNER = {
    "mechanism": "其他——实验臂无闭合决策（空输出），不构成卡片补全效果证据",
    "note": "owner：RF 训练能力不可见，对照合理弃权；实验臂空输出记无判定、不入弃权率；"
            "若后续材料显示并非空输出而是完整弃权论证，再按 R2 复核。"},
+ "PCA2-T-003#S2": {
+   "control": "reasonable_abstention", "experiment": "correct_selection",
+   "validity": {"control": "valid", "experiment": "valid"},
+   "mechanism": "补卡解锁正确选择",
+   "note": "owner：对照卡无参数→拒绝有依据；实验卡 TOA/TOC+手动校准通路（Landsat 不在列表但未排除）；"
+           "DN→反射率与算子目标一致；acqui.gainbias/solarilluminations 属执行条件不否定选择。单一步骤，无大气校正附加要求。"},
+ "PCA2-T-001#S3": {
+   "control": "indeterminate", "experiment": "correct_selection",
+   "validity": {"control": "truncated", "experiment": "valid"},
+   "mechanism": "补卡解锁正确选择",
+   "note": "owner：对照未形成闭合决策（截断，不得追溯）；实验卡'同尺寸图像列表→单幅多通道图像'+il 参数，"
+           "逐像元多时相堆叠成立；升降轨分组由输入列表完成，不要求算子自身分组。"},
+ "PCA2-T-025#S5": {
+   "control": "indeterminate", "experiment": "indeterminate",
+   "validity": {"control": "truncated", "experiment": "valid"},
+   "mechanism": "其他——目标变换语义证据不足（线性拉伸能力缺少明确证据）",
+   "note": "owner：实验卡新增 minmax.manual.min/max，但描述明确为直方图均衡算法；指定端点(-25/5 dB)的线性拉伸"
+           "未获卡面证明——选择方向相关但理由超出证据；不计入补卡解锁正确选择；待权威实现证据后复核。"},
+ "PCA2-T-057#S4": {
+   "control": "indeterminate", "experiment": "correct_selection",
+   "validity": {"control": "truncated", "experiment": "valid"},
+   "mechanism": "补卡解锁正确选择",
+   "note": "owner：实验卡 ref.in/meas.in 双输入+mse 字段+'Estimator between 2 images'；两次成对比较可实现两个 MSD。"
+           "证据边界：mse 列在 params 而非 outputs，不得声称卡面已证明输出端口。"},
  "PCA2-T-009#S3": {
    "control": "reasonable_abstention", "experiment": "wrong_selection",
    "validity": {"control": "valid", "experiment": "valid"},

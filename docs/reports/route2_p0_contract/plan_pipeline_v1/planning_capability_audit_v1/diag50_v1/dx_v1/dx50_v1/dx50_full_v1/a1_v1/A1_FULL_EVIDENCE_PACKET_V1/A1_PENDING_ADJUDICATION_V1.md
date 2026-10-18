@@ -2,25 +2,21 @@
 
 位置：本目录 `A1_FULL_EVIDENCE_PACKET_V1/`。每对一卷宗（任务全文/步骤定义/Top-10/双版本卡面/双臂完整决策）。裁决写入 `LEDGER_V1.json` 对应条目的 `ledger_fields_pending_owner`（decision_quality × output_validity × mechanism）。
 
-已裁决 6/52（owner_ruled）；待裁决 44 对。
+已裁决 6/52（owner_ruled）；待裁决 40 对。
 
 ## A 级：裁决会改变结论或 agent 判定非显然（18 对，建议先做）
 
 | 步骤 | 对照(agent) | 实验(agent) | validity | 卷宗 | 待你裁的问题 |
 |---|---|---|---|---|---|
 | PCA2-T-083#S7 | indeterminate | correct_selection | truncated/valid | [P1_PCA2-T-083_S7.md](P1_PCA2-T-083_S7.md) | 算子替换判定：对照'加载预训练模型'卡面未载(不可判)、实验 imageclassifier 卡明确(model file + probamap)——请确认实验=正确/对照=不可判 |
-| PCA2-T-001#S3 | indeterminate | correct_selection | truncated/truncated | [P3_PCA2-T-001_S3.md](P3_PCA2-T-001_S3.md) | 补卡解锁候选①：concatenateimages 卡新增'同尺寸图像列表→多通道图像'；请确认正确选择 |
 | PCA2-T-001#S6 | wrong_selection | reasonable_abstention | truncated/valid | [P3_PCA2-T-001_S6.md](P3_PCA2-T-001_S6.md) | 对照判错（mosaicking 做资产打包）→实验合理弃权；请确认对照的'错误选择'标签 |
-| PCA2-T-025#S5 | indeterminate | correct_selection | truncated/truncated | [P3_PCA2-T-025_S5.md](P3_PCA2-T-025_S5.md) | 补卡解锁候选②：contrastenhancement 卡新增 minmax.manual.min/max；请确认正确选择 |
 | PCA2-T-046#S4 | correct_selection | indeterminate | truncated/truncated | [P3_PCA2-T-046_S4.md](P3_PCA2-T-046_S4.md) | 对照正确（joinattributestable 一对多展开）→实验截断；请确认对照正确 |
 | PCA2-T-046#S5 | correct_selection | correct_selection | truncated/truncated | [P3_PCA2-T-046_S5.md](P3_PCA2-T-046_S5.md) | 正确→正确（选择保持但实验臂双选 concatenatevectordata+mergevectorlayers，冗余）——请确认双选是否仍算正确 |
 | PCA2-T-056#S3 | indeterminate | wrong_selection | truncated/valid | [P3_PCA2-T-056_S3.md](P3_PCA2-T-056_S3.md) | 实验判错（部分匹配：镶嵌≠波段堆叠）；请确认是否按 R1 复合步骤口径判错 |
-| PCA2-T-003#S2 | indeterminate | correct_selection | truncated/valid | [P4_PCA2-T-003_S2.md](P4_PCA2-T-003_S2.md) | 补卡解锁候选③：opticalcalibration 卡新增 TOA/TOC+手动参数；请确认（参照 T-032 的 R1 尺度：本步仅要 DN→反射率，无大气校正附加要求） |
 | PCA2-T-022#S6 | reasonable_abstention | indeterminate | valid/valid | [P4_PCA2-T-022_S6.md](P4_PCA2-T-022_S6.md) | 实验不可判（r.blend.rgb 混合三栅格 vs 从多波段提取 RGB，取决于步骤 5 输出结构）；请确认判不可判或错误 |
 | PCA2-T-025#S4 | n/a_no_decision | correct_selection | no_decision/truncated | [P4_PCA2-T-025_S4.md](P4_PCA2-T-025_S4.md) | 实验正确但所用算子卡未变（saga:statisticsforrasters GRIDS→MEAN）——上下文诱发；请确认 |
 | PCA2-T-026#S4 | wrong_selection | indeterminate | valid/truncated | [P4_PCA2-T-026_S4.md](P4_PCA2-T-026_S4.md) | 对照判错（native:rasterize 卡=渲染地图画布，非多栅格合成）；请确认 |
 | PCA2-T-033#S1 | indeterminate | correct_selection | truncated/truncated | [P4_PCA2-T-033_S1.md](P4_PCA2-T-033_S1.md) | 实验正确但所用算子卡未变（gdal:rearrange_bands）——上下文诱发，按 R5 不能归因补卡；请确认判定 |
-| PCA2-T-057#S4 | indeterminate | correct_selection | truncated/valid | [P4_PCA2-T-057_S4.md](P4_PCA2-T-057_S4.md) | 补卡解锁候选④：compareimages 卡新增 ref.in/meas.in + mse/mae/psnr；请确认正确选择 |
 | PCA2-T-068#S6 | indeterminate | correct_selection | truncated/truncated | [P4_PCA2-T-068_S6.md](P4_PCA2-T-068_S6.md) | 实验正确但所用算子卡未变（native:aggregate GROUP_BY）——上下文诱发；请确认 |
 | PCA2-T-070#S1 | n/a_no_decision | correct_selection | no_decision/truncated | [P4_PCA2-T-070_S1.md](P4_PCA2-T-070_S1.md) | 实验正确但所用算子卡未变（saga:resampling extent 参数）——'有条件正确'是否成立；请确认 |
 | PCA2-T-089#S4 | correct_selection | indeterminate | valid/truncated | [P4_PCA2-T-089_S4.md](P4_PCA2-T-089_S4.md) | 对照正确（morphologicalfilter 卡含 METHOD/KERNEL）→实验截断；请确认 |
