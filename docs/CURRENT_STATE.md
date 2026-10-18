@@ -235,7 +235,15 @@ interventions still require owner release.**
   described vs mis-described), R04 partial (WorldPop external units), R05 and
   all other multiref deferred, R08 split with two draft facts corrected
   (S042 both S2 depth/4-segment SST; S048 ETOPO1 vs S2, 4 vs 2 segments).
-  Batch R12-R17 packet ready (`B_TRACK_BATCH3_REVIEW_PACKET.md`).** -> split freeze -> three
+  Batch R12-R17 packet (`B_TRACK_BATCH3_REVIEW_PACKET.md`). **OWNER ROUND-4
+  (2026-10-18): R12-R15 modified pass** - R12 method mapping corrected (145191 is
+  the inverse path; method difference only in S034/S036); R13 L3 caliber unified
+  (extra smoothing branch is not mis-description; B8/B12 flagged as a code fact
+  to verify); R14 C2 reflectance scaling NOT observed on either side (B uses C2
+  L2 without 0.0000275/-0.2 -> numerical semantics not directly comparable);
+  R15 six L2 condition fields registered (collection/year/load mode/LAPIG/
+  schema/mask thresholds). All multiref deferred. Batch R16/R17/R21/R22/R24
+  packet ready (`B_TRACK_BATCH4_REVIEW_PACKET.md`).** -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint
   coverage, dependency correctness, harmful steps, long-chain degradation,

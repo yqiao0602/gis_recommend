@@ -1,34 +1,23 @@
-# 阶段二参考集草案索引 V4（25 条）
+# 阶段二参考集草案索引 V5（25 条）
 
-- **日期**：2026-10-18；**状态**：R01–R11 owner 第三轮复核完成；R12–R17/R21/R22/R24 待复核。
-- **统一裁定原则**：关系≠准入；多参考条件一致性硬门槛；证据完整≠语义置信。
+- **日期**：2026-10-18；R01–R15 已复核；R16–R17/R21/R22/R24 待复核（R18–R20/R23 已复核）。
 
-## R01–R11 复核结果
+## R12–R15 复核结果
 
-| ID | 关系 | 证据 | 准入 | owner 结论 |
+| ID | 关系 | 证据 | 准入 | 结论 |
 | --- | --- | --- | --- | --- |
-| R01 | structural_equivalence | partial | B_candidate_A_excluded | pass |
-| R02 | — | partial | A_C2_B_Q1 | conditional_pass |
-| R03 | structural_equivalence,isomorphic_template_of | complete | 54184_excluded_others_conditional | pass_with_caliber_review |
-| R04 | structural_equivalence | partial | A_Q1_B_conditional | not_fully_pass |
-| R05 | structural_equivalence,isomorphic_template_of | complete | draft_provisional | multiref_deferred |
-| R06 | structural_equivalence,isomorphic_template_of | partial | draft_provisional | modified_pass |
-| R07 | structural_equivalence,isomorphic_template_of | partial | draft_provisional | modified_pass_split_subrelations |
-| R08 | isomorphic_template_of | partial | draft_provisional | split_recheck |
-| R09 | structural_equivalence,isomorphic_template_of | complete | B_conditional_A_no_fidelity_supervision | modified_pass |
-| R10 | structural_equivalence,isomorphic_template_of | complete | 54184_excluded_others_conditional | modified_pass |
-| R11 | structural_equivalence,isomorphic_template_of | complete | conditional_instance | pass |
+| R12 | structural_equivalence,isomorphic_template_of | partial | draft_provisional | modified_pass |
+| R13 | structural_equivalence,isomorphic_template_of | complete | draft_provisional | modified_pass |
+| R14 | structural_equivalence,isomorphic_template_of | partial | draft_provisional | modified_pass |
+| R15 | structural_equivalence,isomorphic_template_of | complete | draft_provisional | modified_pass |
 
-## 两项待 owner 裁定
+## 本轮事实修正（重要）
 
-1. **R03/R10 口径漂移**：S001-A 与 S011-A 同脚本、**任务描述文本完全相同**，却分别判欠描述/失实；需确认是否统一口径。
-2. **R04 B 单位语义**：`persons/ha` 依赖 WorldPop 2020 像元值定义（外部证据未补），B 暂不升级。
+- **R12**：`145191` 实为逆路径（非简化式）；方法差异仅在 S034（145186 vs 145241）与 S036（145163 vs 145258）；S108 仅参数不同。
+- **R13**：L3 口径统一——A 的额外平滑支路不构成失实，撤销欠描述；B8/B12 记为待核代码事实。
+- **R14**：两侧均未观测到 C2 反射率缩放表达式（B 用 C2 L2 却无 0.0000275/-0.2）→ 数值语义不可直接比较。
+- **R15**：年份+版本同时变化，不作同任务多参考；六项 L2 条件字段已登记。
 
-## 下一批待复核（9 条）
+## 待复核（5 条）
 
-- R12（棉花 IWR 方法级差异）、R13（草地刈割平滑级）、R14（L7 C1→C2）、R15（MapBiomas C5→C6）、R16（RUSLE 分区层级）、R17（传感器年代）
-- R21（UI 脚手架）、R22（重复块/重构）、R24（同码对照）
-
-## 阶段三规则（已冻结）
-
-- 关系≠准入；条件一致性=多参考硬门槛；按脚本重叠连通分量划分（R03+R10、R18A+R20）。
+- R16（RUSLE 分区）、R17（传感器年代）、R21（UI 脚手架）、R22（重复块/重构）、R24（同码对照）
