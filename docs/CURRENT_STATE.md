@@ -300,6 +300,16 @@ interventions still require owner release.**
   atomicity 0 violations, audit mapping, long-chain definability, deterministic
   row_split f93e60dd..., sample-list traceability); metric/evaluator and
   model-level smoke PENDING; engineering-only, no capability claims.**
+  **S1 ROUND-1 (2026-10-18):** sampling list V1 generated (7,562 components,
+  SHA 0d95ab17..., zero capacity gaps, seed 20261018); calibration wave of 12
+  components triaged. Two blocking findings: (1) risk flags are too broad
+  (ui 90.6%, duplicate 71.5%, indirect 55.1% -> definitions must be recalibrated);
+  (2) **V2 split leaks same-task families across splits** - oil-surface
+  manifestation 48801(t)/74228(v)/50842(s) with max J=0.660, forest
+  degradation 45165(s)/103943(v) - because V2 only merges J>=0.75 or shared
+  scripts. Required: full task-family merge pass -> split V3 before any
+  training; recompute quotas -> sampling list V2. No admission yield estimated;
+  training remains frozen.**
   -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint

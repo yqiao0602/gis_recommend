@@ -1,0 +1,386 @@
+{
+ "artifact": "B_TRACK_S1_WAVE1_REPORT_V1",
+ "date": "2026-10-18",
+ "n_components": 12,
+ "triage_counts": {
+  "T1_structural_ok_provisional": 7,
+  "merge_pending": 5
+ },
+ "admission_yield": "not_estimated_in_calibration_wave",
+ "instrument_issues": [
+  "ui flag too broad (Map.addLayer counted)",
+  "duplicate flag too broad (short lines)",
+  "indirect asset flag matches concatenation"
+ ],
+ "cross_split_leakage": [
+  {
+   "family": "oil_surface_manifestation",
+   "components": [
+    "48801(t)",
+    "74228(v)",
+    "50842(s)"
+   ],
+   "max_jaccard": 0.66
+  },
+  {
+   "family": "forest_degradation",
+   "components": [
+    "45165(s)",
+    "103943(v)"
+   ],
+   "max_jaccard": "<0.75"
+  }
+ ],
+ "next": [
+  "recalibrate flags + regression on these 12",
+  "full task-family merge pass -> split V3",
+  "recompute quotas -> sampling list V2",
+  "continue semantic audit waves"
+ ],
+ "training_released": false,
+ "components": [
+  {
+   "component_id": 45165,
+   "split": "s",
+   "tier": "low",
+   "band": "long",
+   "task_type": "Habitat conversion/fragmentation",
+   "n_rows": 1,
+   "flags": [
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_278452",
+   "instruction": "Task: Classify forest degradation and deforestation\nClassify forest conditions into intact forest, degraded forest, and deforested areas using time-series Landsat surface reflectance data from 2000 to 2018 for training and 2017–2021 for classification. It computes spectral indices (NDVI, NDWI, SAVI) and temporal metrics (min, max, mean, stdDev, CV, kurtosis, skewness, linear trends, maximum absolute slope over 5-year windows, and last-year values) from masked imagery. A Random Forest classifier is trained on labeled sample points and applied to classify the study area, with results masked to persistent forest areas derived from MapBiomas land cover data. Outputs include a classified raster m",
+   "rle_steps": 30,
+   "datasets": [],
+   "ui_calls": 0,
+   "dup_lines": 4,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 48878,
+   "split": "s",
+   "tier": "singleton",
+   "band": "long",
+   "task_type": "Land surface/agriculture indicators",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_79821",
+   "instruction": "Task: Assess ecological quality using PCA and RSEI\nthe workflow assesses regional ecological condition in Wuhan by computing the Remote Sensing Ecological Index (RSEI) based on four indicators: WET (wetness), NDVI (vegetation), LST (land surface temperature), and NDBSI (built-up index). It uses Landsat 8 TOA reflectance and MODIS LST data to derive these indices, normalizes them, applies Principal Component Analysis (PCA), and computes RSEI as the inverse of the first principal component (PC1). The final output is a yearly ecological quality map for 2020.",
+   "rle_steps": 23,
+   "datasets": [
+    "LANDSAT/LC08/C01/T1_TOA",
+    "MODIS/006/MOD11A1"
+   ],
+   "ui_calls": 4,
+   "dup_lines": 38,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 103943,
+   "split": "v",
+   "tier": "low",
+   "band": "long",
+   "task_type": "Land use/land cover",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_56389",
+   "instruction": "Task: Identify deforestation and degradation\nIdentify forest disturbance events, specifically deforestation and degradation, using a time series of Landsat surface reflectance data from 1990 to 2019. It applies spectral unmixing and change detection algorithms (via the 'coded' product) to detect changes, with outputs visualized as a map where red indicates deforestation and yellow indicates degradation. Time series plots of vegetation indices (NDFI, GV, NPV, EVI) and endmember fractions are generated for user-selected points.",
+   "rle_steps": 30,
+   "datasets": [
+    "LANDSAT/LC08/C01/T1_SR",
+    "LANDSAT/LE07/C01/T1_SR",
+    "LANDSAT/LT04/C01/T1_SR",
+    "LANDSAT/LT05/C01/T1_SR"
+   ],
+   "ui_calls": 39,
+   "dup_lines": 55,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 51891,
+   "split": "v",
+   "tier": "singleton",
+   "band": "long",
+   "task_type": "Terrestrial hydrosphere indicators",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_69165",
+   "instruction": "Task: Map surface water dynamics\nProcess Sentinel-1 SAR imagery to map surface water extent over time by applying Refined Lee speckle filtering, wind masking, and temporal mosaicking. It also filters optical Sentinel-2 data for cloud-free conditions to support multi-sensor analysis of hydrological dynamics in a study area.",
+   "rle_steps": 23,
+   "datasets": [
+    "COPERNICUS/S1_GRD",
+    "COPERNICUS/S2",
+    "NOAA/CFSV2/FOR6H"
+   ],
+   "ui_calls": 2,
+   "dup_lines": 50,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 50842,
+   "split": "s",
+   "tier": "high",
+   "band": "long",
+   "task_type": "Water quality",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_184064",
+   "instruction": "Task: Identify oil surface manifestation spectral characteristics\nAnalyze Sentinel-2 MSI imagery to detect and characterize oil surface manifestations by computing spectral statistics and contrast values between target areas, buffer zones, and background regions. It extracts radiometric properties (B1–B12) from both surface reflectance (SR) and top-of-atmosphere (TOA) data, calculates statistical metrics (min, max, mean, stdev), and derives spectral contrast. Meteorological and oceanographic parameters (wind, current velocity, SST from HYCOM, NOAA, MODIS) are integrated for environmental context. Outputs include shapefiles of targets, buffers, temporal metadata, spectral statistics, contrast",
+   "rle_steps": 69,
+   "datasets": [
+    "COPERNICUS/S2",
+    "COPERNICUS/S2_SR",
+    "COPERNICUS/S2_SR/",
+    "HYCOM/sea_temp_salinity",
+    "HYCOM/sea_water_velocity",
+    "NASA/OCEANDATA/MODIS-Aqua/L3SMI",
+    "NASA/OCEANDATA/MODIS-Terra/L3SMI",
+    "NOAA/CDR/OISST/V2_1"
+   ],
+   "ui_calls": 5,
+   "dup_lines": 210,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 42446,
+   "split": "t",
+   "tier": "low",
+   "band": "long",
+   "task_type": "Land surface/agriculture indicators",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_121276",
+   "instruction": "Task: Analyze vegetation cover change\nCompute median top-of-atmosphere (TOA) reflectance from Landsat 5, 7, and 8 collections over a region of interest between 2000 and 2020, masking clouds and shadows, then fills gaps using mean pixel values within the region. It generates a time-composited image collection clipped to the ROI for annual vegetation monitoring, visualized using bands B5, B4, B3—suitable for assessing vegetation dynamics over time.",
+   "rle_steps": 37,
+   "datasets": [
+    "LANDSAT/LC08/C01/T1_TOA",
+    "LANDSAT/LE07/C01/T1_TOA",
+    "LANDSAT/LT05/C01/T1_TOA"
+   ],
+   "ui_calls": 3,
+   "dup_lines": 16,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 58126,
+   "split": "t",
+   "tier": "singleton",
+   "band": "long",
+   "task_type": "Vegetation",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_176447",
+   "instruction": "Task: Smooth NDVI time series\nAnalyze NDVI dynamics over a user-defined point in Jiangxi Province using Sentinel-2 and Landsat 8 imagery from March to October 2019. It applies cloud masking (via QA bands and Sen2Cloud algorithm), merges the two satellite datasets, fills temporal gaps with median compositing, and applies a smoothing algorithm (from a shared module) to generate a continuous, smoothed NDVI time series. Outputs include raw and smoothed NDVI values plotted over time as an interactive chart, along with intermediate image collections for S2 NDVI, L8 NDVI, and gap-filled observations.",
+   "rle_steps": 36,
+   "datasets": [
+    "COPERNICUS/S2",
+    "LANDSAT/LC08/C01/T1_SR",
+    "LANDSAT/LC08/C01/T1_TOA"
+   ],
+   "ui_calls": 10,
+   "dup_lines": 89,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 74228,
+   "split": "v",
+   "tier": "high",
+   "band": "long",
+   "task_type": "Water quality",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_184015",
+   "instruction": "Task: Identify oil surface manifestation spectral characteristics\nAnalyze Sentinel-2 MSI imagery to detect and characterize oil surface manifestations by computing spectral statistics and contrast values between target areas and surrounding buffer zones. It extracts radiometric properties (min, max, mean, stdev) for all SR and TOA bands over the target and background regions, calculates spectral contrast relative to backgrounds, and integrates auxiliary hydrometeorological data (sea surface temperature, wind, currents from HYCOM, NOAA, MODIS). The workflow includes geometric buffering, time synchronization, and multi-source data fusion, producing geospatial tables with spectral, temporal, an",
+   "rle_steps": 69,
+   "datasets": [
+    "COPERNICUS/S2",
+    "COPERNICUS/S2_SR",
+    "COPERNICUS/S2_SR/",
+    "HYCOM/sea_temp_salinity",
+    "HYCOM/sea_water_velocity",
+    "NASA/OCEANDATA/MODIS-Aqua/L3SMI",
+    "NASA/OCEANDATA/MODIS-Terra/L3SMI",
+    "NOAA/CDR/OISST/V2_1"
+   ],
+   "ui_calls": 5,
+   "dup_lines": 210,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 17106,
+   "split": "s",
+   "tier": "mid",
+   "band": "long",
+   "task_type": "Vegetation",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_81346",
+   "instruction": "Task: Analyze NDVI BSI and Tasseled Cap trends\nAnalyze time series of NDVI, Brightness, Greenness, Wetness, and Bare Soil Index (BSI) from Landsat and Sentinel-2 surface reflectance and TOA data at a specific point location, generating interactive charts for temporal vegetation and surface condition monitoring between 2020 and 2021.",
+   "rle_steps": 99,
+   "datasets": [
+    "COPERNICUS/S2",
+    "LANDSAT/LC08/C01/T1_SR",
+    "LANDSAT/LE07/C01/T1_SR",
+    "LANDSAT/LT04/C01/T1_SR",
+    "LANDSAT/LT05/C01/T1_SR"
+   ],
+   "ui_calls": 32,
+   "dup_lines": 243,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 48801,
+   "split": "t",
+   "tier": "high",
+   "band": "long",
+   "task_type": "Water quality",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_183961",
+   "instruction": "Task: Identify oil surface manifestation\nAnalyze Sentinel-2 MSI imagery to detect and characterize oil surface manifestations by computing spectral statistics and contrast between target areas, buffer zones, and background regions. It extracts radiometric values (min, max, mean, stdev) for all Sentinel-2 SR and TOA bands over user-defined geometries, calculates spectral contrast relative to surrounding areas, and integrates auxiliary data including sea surface temperature (SST), wind velocity/direction, and ocean current vectors from HYCOM and NOAA models. The workflow includes geometric refinement of input features, temporal alignment with satellite overpass time, and multi-source environme",
+   "rle_steps": 69,
+   "datasets": [
+    "COPERNICUS/S2",
+    "COPERNICUS/S2_SR",
+    "COPERNICUS/S2_SR/",
+    "HYCOM/sea_temp_salinity",
+    "HYCOM/sea_water_velocity",
+    "NASA/OCEANDATA/MODIS-Aqua/L3SMI",
+    "NASA/OCEANDATA/MODIS-Terra/L3SMI",
+    "NOAA/CDR/OISST/V2_1"
+   ],
+   "ui_calls": 5,
+   "dup_lines": 209,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 35770,
+   "split": "v",
+   "tier": "mid",
+   "band": "long",
+   "task_type": "Land surface/agriculture indicators",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "duplicate_lines",
+    "indirect_asset"
+   ],
+   "script": "script_6756",
+   "instruction": "Task: Extract time series of vegetation and land surface indices\nCompute a comprehensive set of optical, radar, and derived spectral indices from Sentinel-2 and Sentinel-1 data over Shuangjidao in 2021, applies cloud masking and temporal linear interpolation, then extracts pixel values at specific geometry locations for time-series analysis. Outputs are exported as individual CSV files per band/index to Google Drive.",
+   "rle_steps": 29,
+   "datasets": [],
+   "ui_calls": 1,
+   "dup_lines": 1360,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  },
+  {
+   "component_id": 45703,
+   "split": "s",
+   "tier": "low",
+   "band": "medium",
+   "task_type": "Land surface/agriculture indicators",
+   "n_rows": 1,
+   "flags": [
+    "ui_scaffold",
+    "indirect_asset"
+   ],
+   "script": "script_131792",
+   "instruction": "Task: Identify agricultural drought using VCI\nCalculate the Vegetation Condition Index (VCI) from MODIS NDVI data to identify drought conditions in agricultural areas of South Africa between 2001 and 2018, with a focus on 2016. It masks non-agricultural land using IGBP LC_Type1 and quantifies the area experiencing severe vegetation stress (VCI < 40%) within croplands.",
+   "rle_steps": 8,
+   "datasets": [
+    "MODIS/006/MCD12Q1",
+    "MODIS/006/MOD13A1",
+    "USDOS/LSIB_SIMPLE/2017"
+   ],
+   "ui_calls": 4,
+   "dup_lines": 0,
+   "indirect_asset": true,
+   "known_buckets": [],
+   "triage": "T1_structural_ok_provisional",
+   "admission": null,
+   "note": "instrument calibration only; no admission"
+  }
+ ]
+}
