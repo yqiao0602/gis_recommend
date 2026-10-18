@@ -46,8 +46,13 @@
 | B | 109 | 0 |
 | C | 2,883 | 47 |
 
-**泄漏优先集** = A 中跨 split 的 1,399 + 截断边跨 split 的 105 = **1,504 条**。
-这些是“若证据成立、合并后会改变 split”的关系；应先复核。
+**泄漏优先集** = A 中跨 split 的 1,399 + 截断边跨 split 的 105（A 94 / C 11）
+= **1,504 条**。这些是“若证据成立、合并后会改变 split”的关系；应先复核。
+
+> **顺序说明**：本 JSON 按 `class → pattern → kind → rule → pair` 排序，
+> **不是**泄漏优先级；因此**前 1,504 条不等于泄漏优先集**。泄漏优先集已另存
+> `B_TRACK_V3_LEAKAGE_PRIORITY_V1.json/.csv/.md`，`priority_rank` 1–1,504：
+> T1 截断跨 split（105）→ T2 pending A 跨 split（1,399），层内按 `strength` 降序。
 
 ## 3. 证据模式 × 类别
 
