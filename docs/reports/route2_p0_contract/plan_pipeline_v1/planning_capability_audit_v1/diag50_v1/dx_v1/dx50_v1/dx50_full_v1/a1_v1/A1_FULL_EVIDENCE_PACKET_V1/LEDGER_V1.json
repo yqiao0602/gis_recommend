@@ -37,7 +37,7 @@
     ]
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "reasonable_abstention",
      "experiment": "wrong_selection"
@@ -46,9 +46,12 @@
      "control": "valid",
      "experiment": "valid"
     },
-    "mechanism": "补卡诱发错误选择（间接/上下文）",
-    "final_note": "multibandvariation 卡输出仅 MEAN/STDDEV/DIFF（纯统计），步骤要求 NDVI/NDSI 波段运算；所选算子卡未变——其余 OTB 候选卡面变化诱发错误选择",
-    "confidence": "medium-high"
+    "mechanism": "其他——功能泛化型错误选择，可能受上下文影响（补卡⇒错误：间接，未认定直接因果）",
+    "final_note": "owner：DIFF 是多波段差异统计，不实现 NDVI/NDSI 公式；双臂该卡相同，实验臂无新增指数证据；对照的弃权是在给定候选内合理识别能力缺口，实验臂降低了语义正确性。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -84,7 +87,7 @@
     ]
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "reasonable_abstention",
      "experiment": "indeterminate"
@@ -93,9 +96,12 @@
      "control": "valid",
      "experiment": "valid"
     },
-    "mechanism": "其他（待 P2 enum 证据）",
-    "final_note": "卡面证明分类器训练+模型文件输出+矢量/特征/类别字段；classifier(Choice) 选项未展开（CART 不可见）——owner 的'足以证明算法选择'门槛未达成，不能凭外部知识升级为正确",
-    "confidence": "medium-high"
+    "mechanism": "其他——卡面暴露分类器配置入口，但关键枚举证据缺失",
+    "final_note": "owner：方向匹配（训练对象/输入类型/分类任务），但 classifier(Choice) 枚举未展开，CART 不受证；io.out 只证明存在文件输出接口，不证明是 CART 决策树模型。卡片字段完整度≠决策证据完整度。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -403,18 +409,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "n/a_no_decision",
-     "experiment": "wrong_selection"
+     "control": "indeterminate",
+     "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
-    "mechanism": "生成波动（大小写笔误→越选）",
-    "final_note": "实验臂输出 'otc:ImageClassifier'（应为 otb:imageclassifier），OOC 按预注册判错",
-    "confidence": "medium-high"
+    "mechanism": "其他——卡面补全使已有正确候选的功能变得可验证（非新增候选解锁）",
+    "final_note": "owner：'otb:ImageClassifier' 按 otb:imageclassifier 计（大小写笔误不改变算子身份）；in/model/out 与描述完全匹配步骤；对照截断→不可判，因果归因保守。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -441,18 +450,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
-    "mechanism": "其他（能力边界经卡面明确化）",
-    "final_note": "步骤同时要求平滑+混淆矩阵/精度报告；候选仅覆盖平滑——弃权合理",
-    "confidence": "medium-high"
+    "mechanism": "其他——复合步骤能力边界识别；不能归因为补卡解锁",
+    "final_note": "owner：需同时平滑+混淆矩阵/总体精度报告；classificationmapregularization 支撑平滑，trainimagesclassifier 的 confmatout 不能证明可对既有分类图独立验证；对照截断→不可判。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -487,11 +499,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "补卡解锁正确选择",
@@ -528,11 +540,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "候选无 SAR 斑点滤波；实验臂无判定",
@@ -564,11 +576,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "其他",
@@ -645,11 +657,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "补卡解锁正确选择",
@@ -684,11 +696,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "correct_selection",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动（正确→无判定）",
     "final_note": "对照 joinattributestable 一对多展开与步骤匹配；实验臂 think 未闭合截断",
@@ -766,11 +778,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "wrong_selection"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "补卡诱发错误选择（部分匹配/上下文）",
@@ -804,11 +816,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "无可做 tile 划分的候选；实验臂无判定",
@@ -879,11 +891,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "无昼夜均值合成算子；实验臂无判定",
@@ -954,11 +966,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "无堆叠+逐像元计数的复合能力；实验臂无判定",
@@ -994,11 +1006,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "无掩膜+DEM 条件精化；实验臂无判定",
@@ -1079,7 +1091,7 @@
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "valid",
      "experiment": "valid"
     },
     "mechanism": "补卡解锁正确选择",
@@ -1337,11 +1349,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "wrong_selection",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动（对照错误→无判定）",
     "final_note": "对照 native:rasterize 卡描述=渲染地图画布，并非多栅格合成；判错",
@@ -1374,18 +1386,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "correct_selection"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
      "experiment": "valid"
     },
-    "mechanism": "补卡解锁正确选择（owner 核心判据命中）",
-    "final_note": "步骤要求定标+大气校正；opticalcalibration 卡载 TOA/TOC（TOC 覆盖大气校正通路）；所选算子卡面变化——本对=合理弃权→正确选择",
-    "confidence": "medium-high"
+    "mechanism": "其他——卡片补全暴露有效辐射定标能力，但任务要求超出单算子已证实能力",
+    "final_note": "owner：TOA/TOC+手动参数为实质证据，但 level(Choice) 未展开、Landsat 4–8 大气校正未证明；复合步骤（定标+大气校正）部分能力命中不升级为整体正确——不记补卡解锁金标。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1417,11 +1432,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "其他（上下文诱发正确选择）",
@@ -1454,11 +1469,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "候选 native:polygonize 卡面 accepts=vector（栅格→矢量未由卡面证实）——弃权与卡面一致；实验臂无判定",
@@ -1564,11 +1579,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "补卡解锁正确选择",
@@ -1598,18 +1613,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "n/a_no_decision",
-     "experiment": "wrong_abstention"
+     "control": "indeterminate",
+     "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
-    "mechanism": "上下文诱发误弃权",
-    "final_note": "候选 grass7:r.statistics 卡载 base+cover+method（分区统计），完全满足按公园多边形统计类别像元数——弃权错误（对照臂 think 内已自行找到该算子后截断）",
-    "confidence": "medium-high"
+    "mechanism": "其他——从开放式推理转为明确弃权；不能证明补卡收益",
+    "final_note": "owner：对照 think 内已指向 r.statistics 但无闭合决策（截断），不得追溯补答；r.statistics 卡面（base/cover/method 均为 literal，无矢量分区输入/输出类型/统计方法明文）不足以证适用，实验弃权理由成立。变化算子 smallregionsmerging 与目标无关。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1638,11 +1656,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "其他（上下文诱发正确选择）",
@@ -1714,11 +1732,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "variabledistancebuffer=单缓冲按字段距离，非多级同心环；弃权合理；实验臂无判定",
@@ -1785,11 +1803,11 @@
    "ledger_fields_pending_owner": {
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
-     "control": "n/a_no_decision",
+     "control": "indeterminate",
      "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "truncated",
      "experiment": "valid"
     },
     "mechanism": "其他",
@@ -1828,7 +1846,7 @@
      "experiment": "reasonable_abstention"
     },
     "output_validity": {
-     "control": "no_decision",
+     "control": "valid",
      "experiment": "valid"
     },
     "mechanism": "其他",
@@ -1861,11 +1879,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "reasonable_abstention",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "无逐像元观测频次统计；实验臂无判定",
@@ -1903,11 +1921,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "correct_selection",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动（正确→无判定）",
     "final_note": "对照 saga:morphologicalfilter 卡含 METHOD/KERNEL——形态学滤波与步骤匹配；实验臂 think 未闭合",
@@ -1941,11 +1959,11 @@
     "status": "agent_adjudication_v1_pending_owner_spotcheck",
     "decision_quality": {
      "control": "correct_selection",
-     "experiment": "n/a_no_decision"
+     "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动（正确→无判定）",
     "final_note": "对照 saga:clouddetection 卡输出 CLOUDS 掩膜（云识别核心能力；掩膜应用属平凡组合）；实验臂 think 未闭合",
@@ -1982,7 +2000,7 @@
     },
     "output_validity": {
      "control": "valid",
-     "experiment": "no_decision"
+     "experiment": "valid"
     },
     "mechanism": "生成波动",
     "final_note": "候选无 QA 条件去云；弃权合理",
@@ -2029,5 +2047,66 @@
    },
    "sel_contains_unverified_exp": false
   }
- ]
+ ],
+ "owner_ruling": {
+  "date": "2026-10-18",
+  "n_ruled": 6,
+  "rules": [
+   "R1 复合步骤闭合：部分能力命中≠整体正确（T-032）",
+   "R2 截断≠无判定：截断但有推理→output_validity=truncated + 证据不足不可判；空输出才是无判定（T-068/T-092/T-090 对照臂）",
+   "R3 大小写笔误不改变算子身份（T-090: otb:ImageClassifier→otb:imageclassifier）",
+   "R4 卡面字段完整度≠决策证据完整度（T-009#S6）",
+   "R5 因果归因保守：改善≠补卡解锁，须对照臂形成闭合决策方可直接归因"
+  ],
+  "R2_reclassified_arms": [
+   [
+    "PCA2-T-001#S4",
+    "experiment"
+   ],
+   [
+    "PCA2-T-046#S4",
+    "experiment"
+   ],
+   [
+    "PCA2-T-060#S1",
+    "experiment"
+   ],
+   [
+    "PCA2-T-073#S1",
+    "experiment"
+   ],
+   [
+    "PCA2-T-086#S4",
+    "experiment"
+   ],
+   [
+    "PCA2-T-089#S5",
+    "experiment"
+   ],
+   [
+    "PCA2-T-026#S4",
+    "experiment"
+   ],
+   [
+    "PCA2-T-052#S2",
+    "experiment"
+   ],
+   [
+    "PCA2-T-079#S3",
+    "experiment"
+   ],
+   [
+    "PCA2-T-086#S5",
+    "experiment"
+   ],
+   [
+    "PCA2-T-089#S4",
+    "experiment"
+   ],
+   [
+    "PCA2-T-092#S2",
+    "experiment"
+   ]
+  ]
+ }
 }
