@@ -59,6 +59,26 @@ OWNER = {
    "mechanism": "其他——实验臂无闭合决策（空输出），不构成卡片补全效果证据",
    "note": "owner：RF 训练能力不可见，对照合理弃权；实验臂空输出记无判定、不入弃权率；"
            "若后续材料显示并非空输出而是完整弃权论证，再按 R2 复核。"},
+ "PCA2-T-083#S7": {
+   "control": "indeterminate", "experiment": "correct_selection",
+   "validity": {"control": "valid", "experiment": "valid"},
+   "mechanism": "补卡解锁正确选择",
+   "note": "owner：对照 SAGA 卡的'加载已训练模型'未获证明（FILE_LOAD 语义不明）→按 R4 判不可判而非错误；"
+           "实验 otb:imageclassifier 卡明确 model(InputFilename)+in(InputImage)+out(OutputImage)+probamap/confmap，"
+           "与'模型→输入影像→分类输出'直接对应。机制=补卡使接口关系可验证（非 OTB 优于 SAGA）。"},
+ "PCA2-T-046#S4": {
+   "control": "correct_selection", "experiment": "indeterminate",
+   "validity": {"control": "valid", "experiment": "truncated"},
+   "mechanism": "生成波动",
+   "note": "owner：对照 joinattributestable 卡 INPUT/INPUT_2/FIELD/FIELD_2/OUTPUT 与点—日期特征构建相符（基于"
+           "任务给出的逐点列表含多条可按标识匹配记录的合理解释）；实验臂 think 未闭合→validity=截断、不计入决策质量，"
+           "不得追溯补答，也不能解释为合理弃权。"},
+ "PCA2-T-046#S5": {
+   "control": "correct_selection", "experiment": "wrong_selection",
+   "validity": {"control": "valid", "experiment": "valid"},
+   "mechanism": "其他——冗余双选（补卡诱发未认定，按 R5 保守归因）",
+   "note": "owner：mergevectorlayers 卡'同几何类型多图层→单图层'与展平步骤直接对应=对照正确；实验双臂同时选"
+           "concatenatevectordata+mergevectorlayers，功能重叠且无互补证据，违反 R1 复合步骤闭合→错误选择。"},
  "PCA2-T-003#S2": {
    "control": "reasonable_abstention", "experiment": "correct_selection",
    "validity": {"control": "valid", "experiment": "valid"},

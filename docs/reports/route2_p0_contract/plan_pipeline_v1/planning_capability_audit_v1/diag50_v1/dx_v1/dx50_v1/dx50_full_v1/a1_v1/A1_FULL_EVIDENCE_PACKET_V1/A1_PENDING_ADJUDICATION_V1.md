@@ -2,16 +2,13 @@
 
 位置：本目录 `A1_FULL_EVIDENCE_PACKET_V1/`。每对一卷宗（任务全文/步骤定义/Top-10/双版本卡面/双臂完整决策）。裁决写入 `LEDGER_V1.json` 对应条目的 `ledger_fields_pending_owner`（decision_quality × output_validity × mechanism）。
 
-已裁决 6/52（owner_ruled）；待裁决 40 对。
+已裁决 6/52（owner_ruled）；待裁决 37 对。
 
 ## A 级：裁决会改变结论或 agent 判定非显然（18 对，建议先做）
 
 | 步骤 | 对照(agent) | 实验(agent) | validity | 卷宗 | 待你裁的问题 |
 |---|---|---|---|---|---|
-| PCA2-T-083#S7 | indeterminate | correct_selection | truncated/valid | [P1_PCA2-T-083_S7.md](P1_PCA2-T-083_S7.md) | 算子替换判定：对照'加载预训练模型'卡面未载(不可判)、实验 imageclassifier 卡明确(model file + probamap)——请确认实验=正确/对照=不可判 |
 | PCA2-T-001#S6 | wrong_selection | reasonable_abstention | truncated/valid | [P3_PCA2-T-001_S6.md](P3_PCA2-T-001_S6.md) | 对照判错（mosaicking 做资产打包）→实验合理弃权；请确认对照的'错误选择'标签 |
-| PCA2-T-046#S4 | correct_selection | indeterminate | truncated/truncated | [P3_PCA2-T-046_S4.md](P3_PCA2-T-046_S4.md) | 对照正确（joinattributestable 一对多展开）→实验截断；请确认对照正确 |
-| PCA2-T-046#S5 | correct_selection | correct_selection | truncated/truncated | [P3_PCA2-T-046_S5.md](P3_PCA2-T-046_S5.md) | 正确→正确（选择保持但实验臂双选 concatenatevectordata+mergevectorlayers，冗余）——请确认双选是否仍算正确 |
 | PCA2-T-056#S3 | indeterminate | wrong_selection | truncated/valid | [P3_PCA2-T-056_S3.md](P3_PCA2-T-056_S3.md) | 实验判错（部分匹配：镶嵌≠波段堆叠）；请确认是否按 R1 复合步骤口径判错 |
 | PCA2-T-022#S6 | reasonable_abstention | indeterminate | valid/valid | [P4_PCA2-T-022_S6.md](P4_PCA2-T-022_S6.md) | 实验不可判（r.blend.rgb 混合三栅格 vs 从多波段提取 RGB，取决于步骤 5 输出结构）；请确认判不可判或错误 |
 | PCA2-T-025#S4 | n/a_no_decision | correct_selection | no_decision/truncated | [P4_PCA2-T-025_S4.md](P4_PCA2-T-025_S4.md) | 实验正确但所用算子卡未变（saga:statisticsforrasters GRIDS→MEAN）——上下文诱发；请确认 |

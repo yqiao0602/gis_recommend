@@ -299,18 +299,21 @@
     ]
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "indeterminate",
      "experiment": "correct_selection"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "valid"
     },
-    "mechanism": "选择保持（算子替换、实验臂证据更充分）",
-    "final_note": "对照 supervisedclassificationforrasters 的'加载预训练模型'语义卡面未载（不可判）；实验 otb:imageclassifier 卡明载 'classification according to a model file' + probamap/confmap 输出，与步骤'概率或离散分类输出'完全匹配",
-    "confidence": "medium-high"
+    "mechanism": "补卡解锁正确选择",
+    "final_note": "owner：对照 SAGA 卡的'加载已训练模型'未获证明（FILE_LOAD 语义不明）→按 R4 判不可判而非错误；实验 otb:imageclassifier 卡明确 model(InputFilename)+in(InputImage)+out(OutputImage)+probamap/confmap，与'模型→输入影像→分类输出'直接对应。机制=补卡使接口关系可验证（非 OTB 优于 SAGA）。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -705,18 +708,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "correct_selection",
      "experiment": "indeterminate"
     },
     "output_validity": {
-     "control": "truncated",
+     "control": "valid",
      "experiment": "truncated"
     },
-    "mechanism": "生成波动（正确→无判定）",
-    "final_note": "对照 joinattributestable 一对多展开与步骤匹配；实验臂 think 未闭合截断",
-    "confidence": "medium-high"
+    "mechanism": "生成波动",
+    "final_note": "owner：对照 joinattributestable 卡 INPUT/INPUT_2/FIELD/FIELD_2/OUTPUT 与点—日期特征构建相符（基于任务给出的逐点列表含多条可按标识匹配记录的合理解释）；实验臂 think 未闭合→validity=截断、不计入决策质量，不得追溯补答，也不能解释为合理弃权。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -749,18 +755,21 @@
     ]
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "correct_selection",
-     "experiment": "correct_selection"
+     "experiment": "wrong_selection"
     },
     "output_validity": {
-     "control": "truncated",
-     "experiment": "truncated"
+     "control": "valid",
+     "experiment": "valid"
     },
-    "mechanism": "选择保持（实验臂增加冗余算子）",
-    "final_note": "mergevectorlayers 与 concatenatevectordata 均满足展平合并；双选冗余但皆正确",
-    "confidence": "medium-high"
+    "mechanism": "其他——冗余双选（补卡诱发未认定，按 R5 保守归因）",
+    "final_note": "owner：mergevectorlayers 卡'同几何类型多图层→单图层'与展平步骤直接对应=对照正确；实验双臂同时选concatenatevectordata+mergevectorlayers，功能重叠且无互补证据，违反 R1 复合步骤闭合→错误选择。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -2068,7 +2077,7 @@
  ],
  "owner_ruling": {
   "date": "2026-10-18",
-  "n_ruled": 12,
+  "n_ruled": 15,
   "rules": [
    "R1 复合步骤闭合：部分能力命中≠整体正确（T-032）",
    "R2 截断≠无判定：截断但有推理→output_validity=truncated + 证据不足不可判；空输出才是无判定（T-068/T-092/T-090 对照臂）",
