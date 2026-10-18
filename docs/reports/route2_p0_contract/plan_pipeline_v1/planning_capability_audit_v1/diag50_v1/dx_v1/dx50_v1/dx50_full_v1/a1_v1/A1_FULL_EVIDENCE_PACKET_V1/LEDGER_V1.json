@@ -1297,7 +1297,7 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
      "control": "reasonable_abstention",
      "experiment": "indeterminate"
@@ -1306,9 +1306,12 @@
      "control": "valid",
      "experiment": "valid"
     },
-    "mechanism": "其他（待输入结构）",
-    "final_note": "r.blend.rgb 为三栅格混合成 RGB；若输入为多波段合成体则需波段提取而非混合——取决于步骤 5 输出结构",
-    "confidence": "medium-high"
+    "mechanism": "其他——输入组织方式不明确（补卡诱发未认定）",
+    "final_note": "owner：对照合理弃权（HIS/RGB 转换与锐化均非波段提取；r.blend.rgb 卡当时无输入/输出/语义）；实验选 r.blend.rgb 但其卡仅名称+accepts:raster，无端口/参数；任务为多波段合成体中提取 TCI_R/G/B，而实验理由假设已有三个独立 R/G/B 栅格——输入组织方式未证；按 R4 判不可判（不因卡缺断言算子不能）。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -1992,18 +1995,21 @@
     "evidence_checks": []
    },
    "ledger_fields_pending_owner": {
-    "status": "agent_adjudication_v1_pending_owner_spotcheck",
+    "status": "owner_ruled",
     "decision_quality": {
-     "control": "correct_selection",
+     "control": "indeterminate",
      "experiment": "indeterminate"
     },
     "output_validity": {
      "control": "valid",
      "experiment": "truncated"
     },
-    "mechanism": "生成波动（正确→无判定）",
-    "final_note": "对照 saga:clouddetection 卡输出 CLOUDS 掩膜（云识别核心能力；掩膜应用属平凡组合）；实验臂 think 未闭合",
-    "confidence": "medium-high"
+    "mechanism": "生成波动",
+    "final_note": "owner：clouddetection 卡足以支持云检测/掩膜输出，但未证明可将掩膜应用于 Sentinel-2 栈并输出清理后的栈，候选亦无明确掩膜应用算子→对照判证据不足不可判（非正确/错误）；实验 think 未闭合→截断不计入；唯一改卡算子 otb:pixelvalue 未被选中→不归因补卡。",
+    "confidence": "medium-high",
+    "agent_initial": {
+     "note": "agent 初判保留于 git 历史（commit b4875dc）"
+    }
    },
    "sel_contains_unverified_exp": false
   },
@@ -2089,7 +2095,7 @@
  ],
  "owner_ruling": {
   "date": "2026-10-18",
-  "n_ruled": 19,
+  "n_ruled": 21,
   "rules": [
    "R1 复合步骤闭合：部分能力命中≠整体正确（T-032）",
    "R2 截断≠无判定：截断但有推理→output_validity=truncated + 证据不足不可判；空输出才是无判定（T-068/T-092/T-090 对照臂）",

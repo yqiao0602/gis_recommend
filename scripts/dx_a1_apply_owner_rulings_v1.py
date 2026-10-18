@@ -59,6 +59,20 @@ OWNER = {
    "mechanism": "其他——实验臂无闭合决策（空输出），不构成卡片补全效果证据",
    "note": "owner：RF 训练能力不可见，对照合理弃权；实验臂空输出记无判定、不入弃权率；"
            "若后续材料显示并非空输出而是完整弃权论证，再按 R2 复核。"},
+ "PCA2-T-092#S2": {
+   "control": "indeterminate", "experiment": "indeterminate",
+   "validity": {"control": "valid", "experiment": "truncated"},
+   "mechanism": "生成波动",
+   "note": "owner：clouddetection 卡足以支持云检测/掩膜输出，但未证明可将掩膜应用于 Sentinel-2 栈并输出清理后的栈，"
+           "候选亦无明确掩膜应用算子→对照判证据不足不可判（非正确/错误）；实验 think 未闭合→截断不计入；"
+           "唯一改卡算子 otb:pixelvalue 未被选中→不归因补卡。"},
+ "PCA2-T-022#S6": {
+   "control": "reasonable_abstention", "experiment": "indeterminate",
+   "validity": {"control": "valid", "experiment": "valid"},
+   "mechanism": "其他——输入组织方式不明确（补卡诱发未认定）",
+   "note": "owner：对照合理弃权（HIS/RGB 转换与锐化均非波段提取；r.blend.rgb 卡当时无输入/输出/语义）；"
+           "实验选 r.blend.rgb 但其卡仅名称+accepts:raster，无端口/参数；任务为多波段合成体中提取 TCI_R/G/B，"
+           "而实验理由假设已有三个独立 R/G/B 栅格——输入组织方式未证；按 R4 判不可判（不因卡缺断言算子不能）。"},
  "PCA2-T-056#S3": {
    "control": "indeterminate", "experiment": "wrong_selection",
    "validity": {"control": "truncated", "experiment": "valid"},
