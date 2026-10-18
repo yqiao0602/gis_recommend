@@ -269,7 +269,16 @@ interventions still require owner release.**
   protocol V1 frozen as a candidate (B-A = governance effect, C-B = two-layer
   increment, C-A not standalone; same splits/model/budget/decode/eval;
   primary metrics + co-gates, thresholds pending owner approval). Relation/
-  admission baseline bumped to V1.1 (29 records). No training started.**
+  admission baseline bumped to V1.1 (29 records). **OWNER CONDITIONAL APPROVAL
+  (2026-10-18):** protocol design approved; the original +5pp/3pp/5pp text NOT
+  approved as-is. V1.1 + JSON spec rewrite: primary = necessary-step recall
+  (task-level, bootstrap over task groups, semantic matching primary); key
+  guardrails = constraint coverage + dependency correctness (drop <=3pp); four
+  co-gates = harmful/extra rate, long-chain subset (top quartile AND >=20 steps,
+  frozen), parse health field-by-field, anomalies; success = +5pp point AND CI
+  excludes 0 AND guardrails/gates pass. Test set has only 3 independent units ->
+  preliminary evidence only; do not inflate n by steps or split frozen
+  components. Release checklist 3/7; TRAINING STILL NOT RELEASED.**
   -> split freeze -> three
   small controlled arms (A original-sequence SFT / B curated-sequence SFT /
   C curated two-layer supervision; judged on necessary-step recall, constraint

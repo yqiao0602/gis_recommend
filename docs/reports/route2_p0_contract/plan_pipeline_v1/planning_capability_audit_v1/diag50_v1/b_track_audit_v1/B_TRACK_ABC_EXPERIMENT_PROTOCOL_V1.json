@@ -1,0 +1,109 @@
+{
+ "artifact": "B_TRACK_ABC_EXPERIMENT_PROTOCOL_V1",
+ "version": "V1.1",
+ "date": "2026-10-18",
+ "status": "conditionally_approved_protocol; thresholds revised to executable rules; training NOT released",
+ "comparisons": {
+  "primary": [
+   "B_minus_A",
+   "C_minus_B"
+  ],
+  "C_minus_A": "total_only_not_attributable"
+ },
+ "metrics": {
+  "primary": {
+   "name": "necessary_step_recall",
+   "formula": "mean_over_tasks(|pred and gold_necessary| / |gold_necessary|)",
+   "aggregation": "task-level equal weight; report task-group mean; bootstrap over task groups",
+   "match_level": "semantic primary; operator-level strict auxiliary; frozen mapping table"
+  },
+  "key_planning": [
+   "task_constraint_coverage",
+   "dependency_correctness"
+  ],
+  "cogates": {
+   "harmful_extra_step_rate": {
+    "rule": "relative increase >3.0pp vs comparator -> FAIL",
+    "comparator": "A for B-A; B for C-B"
+   },
+   "long_chain_degradation": {
+    "subset_rule": "top quartile of evaluation reference step counts AND >=20 steps; list frozen with split manifest",
+    "rule": "NSR drop >3.0pp OR DRC drop >3.0pp vs comparator -> FAIL"
+   },
+   "parse_health": {
+    "fields": [
+     "parse",
+     "invalid",
+     "hit_cap",
+     "termination"
+    ],
+    "rule": "each field worse >5.0pp -> FAIL; report separately"
+   },
+   "anomalies": {
+    "fields": [
+     "empty_workflow",
+     "adjacent_duplicate",
+     "unlinked_steps"
+    ],
+    "rule": "each rate increase >5.0pp -> FAIL with samples"
+   }
+  },
+  "auxiliary": [
+   "exact_sequence_match",
+   "multiref_eligibility",
+   "length_preservation",
+   "termination_distribution"
+  ]
+ },
+ "decision_rule": {
+  "demonstrated": [
+   "delta_NSR >= +5.0pp point estimate AND task-group bootstrap 95% CI excludes 0",
+   "TCC and DRC drop <=3.0pp vs comparator",
+   "all four co-gates not triggered"
+  ],
+  "otherwise": "not_demonstrated; report actual values, CI and triggered gates",
+  "note": "+5pp is a practical improvement target, not a significance substitute; no post-hoc caliber selection"
+ },
+ "split": {
+  "manifest": "B_TRACK_SPLIT_MANIFEST_V1",
+  "units": 25,
+  "train": 18,
+  "val": 4,
+  "test": 3,
+  "seed": 20261018,
+  "test_units": 3,
+  "limitation": "preliminary evidence only; report unit/task-group/task distribution; do not inflate n by steps; do not split frozen components to enlarge test"
+ },
+ "multiref_discipline": "multiref_of all empty; do not relax admission for metrics; eligibility reported only",
+ "release_checklist": [
+  {
+   "item": "A/B/C definitions and attribution boundaries frozen",
+   "status": "done"
+  },
+  {
+   "item": "primary/key/cogate calculation calibers defined",
+   "status": "done"
+  },
+  {
+   "item": "thresholds rewritten as recomputable rules",
+   "status": "done"
+  },
+  {
+   "item": "audit of 25 split units vs full training corpus task-group mapping",
+   "status": "pending_full_corpus"
+  },
+  {
+   "item": "test independence + small-test evidence limitation declared",
+   "status": "done"
+  },
+  {
+   "item": "training-data version + per-group sample/exclusion lists",
+   "status": "pending"
+  },
+  {
+   "item": "training config and evaluator scripts frozen",
+   "status": "pending"
+  }
+ ],
+ "training_released": false
+}
